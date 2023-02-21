@@ -3,26 +3,22 @@
 solver.tui.setup
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.setup
+     :autosummary:
 .. toctree::
    :hidden:
 
-   overset_interfaces/index
-   mesh_interfaces/index
-   mixing_planes/index
-   named_expressions/index
-   reference_frames/index
-   reference_values/index
-   expert/index
-   operating_conditions/index
-   gap_model/index
-   models/index
-   materials/index
-   turbo_model/index
    boundary_conditions/index
    dynamic_mesh/index
+   expert/index
+   gap_model/index
+   materials/index
+   mesh_interfaces/index
+   mixing_planes/index
+   models/index
+   named_expressions/index
+   operating_conditions/index
+   overset_interfaces/index
+   reference_frames/index
+   reference_values/index
+   turbo_model/index

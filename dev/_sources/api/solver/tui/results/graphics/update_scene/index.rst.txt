@@ -3,11 +3,5 @@
 solver.tui.results.graphics.update\_scene
 =========================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.update_scene
-   :members: delete, transform, draw_frame, select_geometry, display, set_frame, overlays, iso_sweep, time, pathline
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.results.graphics.update_scene
+     :autosummary:

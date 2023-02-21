@@ -3,11 +3,5 @@
 solver.tui.solution.methods.multiphase\_numerics.viscous\_flow
 ==============================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.methods.multiphase_numerics.viscous_flow
-   :members: viscosity_averaging, turb_visc_based_damping, interfacial_artificial_viscosity
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solution.methods.multiphase_numerics.viscous_flow
+     :autosummary:

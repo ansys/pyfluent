@@ -3,17 +3,13 @@
 solver.tui.define.phases.set\_domain\_properties.interaction\_domain
 ====================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.phases.set_domain_properties.interaction_domain
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.phases.set_domain_properties.interaction_domain
+     :autosummary:
 .. toctree::
    :hidden:
 
-   numerics/index
    forces/index
    heat_mass_reactions/index
-   model_transition/index
    interfacial_area/index
+   model_transition/index
+   numerics/index

@@ -3,14 +3,8 @@
 solver.tui.setup.models.eulerian\_wallfilm
 ==========================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.eulerian_wallfilm
-   :members: enable_film_vof_transition_message, initialize_wallfilm_model, solve_wallfilm_equation, film_material, list_film_walls, enable_wallfilm_model, model_options, solution_options
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.setup.models.eulerian_wallfilm
+     :autosummary:
 .. toctree::
    :hidden:
 

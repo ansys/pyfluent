@@ -13,4 +13,3 @@ solver.datamodel
 
    workflow/index
    preferences/index
-   solverworkflow/index

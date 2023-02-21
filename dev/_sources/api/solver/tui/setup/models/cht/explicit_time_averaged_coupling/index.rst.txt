@@ -3,11 +3,5 @@
 solver.tui.setup.models.cht.explicit\_time\_averaged\_coupling
 ==============================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.cht.explicit_time_averaged_coupling
-   :members: coupling_controls, conformal_coupled_walls, fuse_explicit_cht_zones, mapped_interfaces
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.setup.models.cht.explicit_time_averaged_coupling
+     :autosummary:

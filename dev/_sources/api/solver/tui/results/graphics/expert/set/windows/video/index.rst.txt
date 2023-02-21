@@ -3,11 +3,5 @@
 solver.tui.results.graphics.expert.set.windows.video
 ====================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.windows.video
-   :members: pixel_size, on, background, color_filter, foreground
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.results.graphics.expert.set.windows.video
+     :autosummary:

@@ -3,11 +3,5 @@
 solver.tui.preferences.graphics.hardcopy\_settings
 ==================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.graphics.hardcopy_settings
-   :members: post_script_permission_override, transparent_embedded_windows, save_embedded_hardcopies_separately, hardcopy_line_width, export_edges_for_avz, save_embedded_windows_in_hardcopy, hardware_image_accel, hardcopy_driver
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.preferences.graphics.hardcopy_settings
+     :autosummary:

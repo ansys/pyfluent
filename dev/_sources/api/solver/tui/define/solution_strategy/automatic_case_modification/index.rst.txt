@@ -3,11 +3,5 @@
 solver.tui.define.solution\_strategy.automatic\_case\_modification
 ==================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.solution_strategy.automatic_case_modification
-   :members: original_settings, before_init_modification, modifications
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.solution_strategy.automatic_case_modification
+     :autosummary:

@@ -3,11 +3,5 @@
 solver.tui.define.materials.data\_base
 ======================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.materials.data_base
-   :members: database_type, save, new, edit, list_properties, list_materials
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.materials.data_base
+     :autosummary:

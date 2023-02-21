@@ -3,11 +3,5 @@
 meshing.tui.diagnostics.face\_connectivity
 ==========================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.diagnostics.face_connectivity
-   :members: fix_multi_faces, fix_free_faces, fix_duplicate_faces, fix_invalid_normals, fix_spikes, remove_label_from_small_islands, fix_deviations, fix_point_contacts, fix_self_intersections, fix_slivers, add_label_to_small_neighbors, fix_islands, fix_steps
-
+.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.diagnostics.face_connectivity
+     :autosummary:

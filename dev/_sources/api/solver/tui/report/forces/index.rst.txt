@@ -3,11 +3,5 @@
 solver.tui.report.forces
 ========================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.report.forces
-   :members: pressure_center, wall_moments, wall_forces
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.report.forces
+     :autosummary:

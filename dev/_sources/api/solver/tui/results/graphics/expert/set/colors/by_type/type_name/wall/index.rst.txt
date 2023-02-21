@@ -1,0 +1,7 @@
+.. _ref_solver_tui_results_graphics_expert_set_colors_by_type_type_name_wall:
+
+solver.tui.results.graphics.expert.set.colors.by\_type.type\_name.wall
+======================================================================
+
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.results.graphics.expert.set.colors.by_type.type_name.wall
+     :autosummary:

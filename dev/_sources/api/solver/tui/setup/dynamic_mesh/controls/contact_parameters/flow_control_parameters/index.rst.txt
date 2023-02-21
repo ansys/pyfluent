@@ -3,11 +3,5 @@
 solver.tui.setup.dynamic\_mesh.controls.contact\_parameters.flow\_control\_parameters
 =====================================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.dynamic_mesh.controls.contact_parameters.flow_control_parameters
-   :members: solution_stabilization, delete_flow_control_zone, create_flow_control_zone
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.setup.dynamic_mesh.controls.contact_parameters.flow_control_parameters
+     :autosummary:

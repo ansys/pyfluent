@@ -3,11 +3,5 @@
 solver.tui.display.set.velocity\_vectors
 ========================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.velocity_vectors
-   :members: color_levels, component_z, color, global_range, surfaces, component_x, relative, auto_scale, log_scale, in_plane, node_values, render_mesh, constant_length, scale_head, component_y, scale, style
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.display.set.velocity_vectors
+     :autosummary:

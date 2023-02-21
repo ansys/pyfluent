@@ -3,11 +3,5 @@
 solver.tui.results.graphics.expert.set.windows.axes
 ===================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.windows.axes
-   :members: right, border, visible, bottom, clear
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.results.graphics.expert.set.windows.axes
+     :autosummary:

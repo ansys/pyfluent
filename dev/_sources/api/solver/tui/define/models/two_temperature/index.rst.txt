@@ -3,11 +3,5 @@
 solver.tui.define.models.two\_temperature
 =========================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.two_temperature
-   :members: weak_ionization, robustness_enhancement, set_verbosity, enable, nasa9_enhancement
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.models.two_temperature
+     :autosummary:

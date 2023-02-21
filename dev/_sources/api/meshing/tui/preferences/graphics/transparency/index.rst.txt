@@ -3,11 +3,5 @@
 meshing.tui.preferences.graphics.transparency
 =============================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.graphics.transparency
-   :members: depth_peeling_preference, zsort_options, algorithm_for_modern_drivers, depth_peeling_layers, quick_moves
-
+.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.preferences.graphics.transparency
+     :autosummary:

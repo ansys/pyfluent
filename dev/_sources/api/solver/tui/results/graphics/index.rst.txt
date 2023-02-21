@@ -3,19 +3,13 @@
 solver.tui.results.graphics
 ===========================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics
-   :members: clear_annotations, annotate, color_map, hsf_file
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.results.graphics
+     :autosummary:
 .. toctree::
    :hidden:
 
-   lights/index
    expert/index
+   lights/index
    objects/index
-   update_scene/index
    rendering_options/index
+   update_scene/index

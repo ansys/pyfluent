@@ -3,11 +3,5 @@
 solver.tui.solve.set.warped\_face\_gradient\_correction
 =======================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.warped_face_gradient_correction
-   :members: turbulence_options, enable
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solve.set.warped_face_gradient_correction
+     :autosummary:

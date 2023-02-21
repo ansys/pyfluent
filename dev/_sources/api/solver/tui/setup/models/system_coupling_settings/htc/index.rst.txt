@@ -3,14 +3,10 @@
 solver.tui.setup.models.system\_coupling\_settings.htc
 ======================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.system_coupling_settings.htc
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.setup.models.system_coupling_settings.htc
+     :autosummary:
 .. toctree::
    :hidden:
 
-   htc_calculation_method/index
    unsteady_statistics/index
+   htc_calculation_method/index

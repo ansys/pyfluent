@@ -1,0 +1,6 @@
+get\_ansys\_version
+===================
+
+.. currentmodule:: ansys.fluent.core.launcher.launcher
+
+.. autofunction:: get_ansys_version

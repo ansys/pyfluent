@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
-    <link rel="next" title="meshing.tui.mesh.poly.controls.prism" href="prism/index.html" />
-    <link rel="prev" title="meshing.tui.mesh.poly.local_regions" href="../local_regions/index.html" />
+    <link rel="next" title="meshing.tui.mesh.poly.controls.smooth_controls" href="smooth_controls/index.html" />
+    <link rel="prev" title="meshing.tui.mesh.poly" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -304,13 +304,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -323,6 +318,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../../index.html">
      meshing.tui
@@ -334,13 +334,48 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../material_point/index.html">
-       meshing.tui.material_point
+      <a class="reference internal" href="../../../file/index.html">
+       meshing.tui.file
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../boundary/index.html">
+       meshing.tui.boundary
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../preferences/index.html">
+       meshing.tui.preferences
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../size_functions/index.html">
+       meshing.tui.size_functions
       </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../../../scoped_sizing/index.html">
        meshing.tui.scoped_sizing
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../objects/index.html">
+       meshing.tui.objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../diagnostics/index.html">
+       meshing.tui.diagnostics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../material_point/index.html">
+       meshing.tui.material_point
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -354,6 +389,61 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
+        <a class="reference internal" href="../../cartesian/index.html">
+         meshing.tui.mesh.cartesian
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../cavity/index.html">
+         meshing.tui.mesh.cavity
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../domains/index.html">
+         meshing.tui.mesh.domains
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../hexcore/index.html">
+         meshing.tui.mesh.hexcore
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../modify/index.html">
+         meshing.tui.mesh.modify
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../non_conformals/index.html">
+         meshing.tui.mesh.non_conformals
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../rapid_octree/index.html">
+         meshing.tui.mesh.rapid_octree
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../prism/index.html">
+         meshing.tui.mesh.prism
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../pyramid/index.html">
+         meshing.tui.mesh.pyramid
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../thin_volume_mesh/index.html">
+         meshing.tui.mesh.thin_volume_mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../separate/index.html">
+         meshing.tui.mesh.separate
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../tet/index.html">
          meshing.tui.mesh.tet
         </a>
@@ -364,43 +454,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../domains/index.html">
-         meshing.tui.mesh.domains
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../pyramid/index.html">
-         meshing.tui.mesh.pyramid
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../cavity/index.html">
-         meshing.tui.mesh.cavity
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../cell_zone_conditions/index.html">
          meshing.tui.mesh.cell_zone_conditions
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../auto_mesh_controls/index.html">
-         meshing.tui.mesh.auto_mesh_controls
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../non_conformals/index.html">
-         meshing.tui.mesh.non_conformals
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../hexcore/index.html">
-         meshing.tui.mesh.hexcore
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../prism/index.html">
-         meshing.tui.mesh.prism
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -413,11 +468,6 @@ function checkPageExistsAndRedirect(event) {
          </i>
         </label>
         <ul class="current">
-         <li class="toctree-l5">
-          <a class="reference internal" href="../local_regions/index.html">
-           meshing.tui.mesh.poly.local_regions
-          </a>
-         </li>
          <li class="toctree-l5 current active has-children">
           <a class="current reference internal" href="#">
            meshing.tui.mesh.poly.controls
@@ -429,23 +479,23 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul>
            <li class="toctree-l6">
-            <a class="reference internal" href="prism/index.html">
-             meshing.tui.mesh.poly.controls.prism
-            </a>
-           </li>
-           <li class="toctree-l6">
             <a class="reference internal" href="smooth_controls/index.html">
              meshing.tui.mesh.poly.controls.smooth_controls
             </a>
            </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="prism/index.html">
+             meshing.tui.mesh.poly.controls.prism
+            </a>
+           </li>
           </ul>
          </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../local_regions/index.html">
+           meshing.tui.mesh.poly.local_regions
+          </a>
+         </li>
         </ul>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../modify/index.html">
-         meshing.tui.mesh.modify
-        </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../poly_hexcore/index.html">
@@ -453,23 +503,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../thin_volume_mesh/index.html">
-         meshing.tui.mesh.thin_volume_mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../rapid_octree/index.html">
-         meshing.tui.mesh.rapid_octree
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../cartesian/index.html">
-         meshing.tui.mesh.cartesian
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../separate/index.html">
-         meshing.tui.mesh.separate
+        <a class="reference internal" href="../../auto_mesh_controls/index.html">
+         meshing.tui.mesh.auto_mesh_controls
         </a>
        </li>
        <li class="toctree-l4">
@@ -485,28 +520,8 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../preferences/index.html">
-       meshing.tui.preferences
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../boundary/index.html">
-       meshing.tui.boundary
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../reference_frames/index.html">
-       meshing.tui.reference_frames
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../diagnostics/index.html">
-       meshing.tui.diagnostics
+      <a class="reference internal" href="../../../report/index.html">
+       meshing.tui.report
       </a>
      </li>
      <li class="toctree-l3">
@@ -515,28 +530,13 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../file/index.html">
-       meshing.tui.file
+      <a class="reference internal" href="../../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../objects/index.html">
-       meshing.tui.objects
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../report/index.html">
-       meshing.tui.report
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../size_functions/index.html">
-       meshing.tui.size_functions
+      <a class="reference internal" href="../../../reference_frames/index.html">
+       meshing.tui.reference_frames
       </a>
      </li>
     </ul>
@@ -578,7 +578,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.mesh.poly.controls
@@ -587,7 +587,16 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.cell_sizing">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.mesh.poly.controls.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.cell_sizing">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.poly.controls.cell_sizing()
@@ -596,7 +605,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.edge_size_ratio">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.edge_size_ratio">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.poly.controls.edge_size_ratio()
@@ -605,7 +614,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.face_size_ratio">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.face_size_ratio">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.poly.controls.face_size_ratio()
@@ -614,7 +623,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.feature_angle">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.feature_angle">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.poly.controls.feature_angle()
@@ -623,7 +632,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.improve">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.improve">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.poly.controls.improve()
@@ -632,7 +641,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.merge_skew">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.merge_skew">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.poly.controls.merge_skew()
@@ -641,7 +650,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.non_fluid_type">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.non_fluid_type">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.poly.controls.non_fluid_type()
@@ -650,7 +659,54 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.remesh_skew">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.mesh.poly.controls.prism
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism.__init__">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.mesh.poly.controls.prism.__init__()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism.apply_growth">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.mesh.poly.controls.prism.apply_growth()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism.clear_growth">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.mesh.poly.controls.prism.clear_growth()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism.list_growth">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.mesh.poly.controls.prism.list_growth()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.remesh_skew">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.poly.controls.remesh_skew()
@@ -659,13 +715,105 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.sliver_cell_area_fraction">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.sliver_cell_area_fraction">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.poly.controls.sliver_cell_area_fraction()
       </span>
      </code>
     </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.mesh.poly.controls.smooth_controls
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.__init__">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.mesh.poly.controls.smooth_controls.__init__()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.centroid_smooth_iterations">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.mesh.poly.controls.smooth_controls.centroid_smooth_iterations()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.edge_smooth_iterations">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.mesh.poly.controls.smooth_controls.edge_smooth_iterations()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.laplace_smooth_iterations">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.mesh.poly.controls.smooth_controls.laplace_smooth_iterations()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_attempts">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.mesh.poly.controls.smooth_controls.smooth_attempts()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_boundary">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.mesh.poly.controls.smooth_controls.smooth_boundary()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_iterations">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.mesh.poly.controls.smooth_controls.smooth_iterations()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_on_layer">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.mesh.poly.controls.smooth_controls.smooth_on_layer()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_skew">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.mesh.poly.controls.smooth_controls.smooth_skew()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
@@ -690,66 +838,253 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-mesh-poly-controls">
 <span id="ref-meshing-tui-mesh-poly-controls"></span><h1>meshing.tui.mesh.poly.controls<a class="headerlink" href="#meshing-tui-mesh-poly-controls" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.poly.</span></span><span class="sig-name descname"><span class="pre">controls</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Enters the controls menu for setting poly parameters.</p>
+<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.cell_sizing" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.cell_sizing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_sizing</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets cell volume distribution function as geometric, linear, or size-field.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.edge_size_ratio" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.edge_size_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_size_ratio</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the threshold for the size ratio of two connected edges.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.face_size_ratio" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.face_size_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_size_ratio</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the threshold for the size ratio of two faces on one cell.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.feature_angle" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.feature_angle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">feature_angle</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the minimum threshold that should be preserved as a feature.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.improve" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.improve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">improve</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables poly mesh improvement by smoothing based on the smooth-controls.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.merge_skew" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.merge_skew"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_skew</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the minimum skewness threshold for cell merge.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.non_fluid_type" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.non_fluid_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_fluid_type</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Selects the default type for non-fluid zones.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.remesh_skew" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.remesh_skew"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remesh_skew</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the target skewness when remeshing.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.sliver_cell_area_fraction" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.sliver_cell_area_fraction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sliver_cell_area_fraction</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the threshold for the area of a single face to the cell surface area.</p></td>
+</tr>
 </tbody>
 </table>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.poly.</span></span><span class="sig-name descname"><span class="pre">controls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls" title="Permalink to this definition">#</a></dt>
-<dd><p>Enters the controls menu for setting poly parameters.</p>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prism</span></code></a></p></td>
+<td><p>Poly prism transition controls.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_controls</span></code></a></p></td>
+<td><p>Enters the menu for setting smoothing parameters for poly mesh.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.cell_sizing">
-<span class="sig-name descname"><span class="pre">cell_sizing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.cell_sizing" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.cell_sizing">
+<span class="sig-name descname"><span class="pre">cell_sizing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.cell_sizing" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets cell volume distribution function as geometric, linear, or size-field.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.edge_size_ratio">
-<span class="sig-name descname"><span class="pre">edge_size_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.edge_size_ratio" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.edge_size_ratio">
+<span class="sig-name descname"><span class="pre">edge_size_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.edge_size_ratio" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the threshold for the size ratio of two connected edges. Recommended range is 20 to 200.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.face_size_ratio">
-<span class="sig-name descname"><span class="pre">face_size_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.face_size_ratio" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.face_size_ratio">
+<span class="sig-name descname"><span class="pre">face_size_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.face_size_ratio" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the threshold for the size ratio of two faces on one cell. Recommended range is 100 to 300.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.feature_angle">
-<span class="sig-name descname"><span class="pre">feature_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.feature_angle" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.feature_angle">
+<span class="sig-name descname"><span class="pre">feature_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.feature_angle" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the minimum threshold that should be preserved as a feature.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.improve">
-<span class="sig-name descname"><span class="pre">improve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.improve" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.improve">
+<span class="sig-name descname"><span class="pre">improve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.improve" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables poly mesh improvement by smoothing based on the smooth-controls.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.merge_skew">
-<span class="sig-name descname"><span class="pre">merge_skew</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.merge_skew" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.merge_skew">
+<span class="sig-name descname"><span class="pre">merge_skew</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.merge_skew" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the minimum skewness threshold for cell merge.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.non_fluid_type">
-<span class="sig-name descname"><span class="pre">non_fluid_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.non_fluid_type" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.non_fluid_type">
+<span class="sig-name descname"><span class="pre">non_fluid_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.non_fluid_type" title="Permalink to this definition">#</a></dt>
 <dd><p>Selects the default type for non-fluid zones.</p>
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prism</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Poly prism transition controls.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism.apply_growth" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism.apply_growth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_growth</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Apply growth settings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism.clear_growth" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism.clear_growth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_growth</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Clear growth settings.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism.list_growth" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism.list_growth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_growth</span></code></a>(*args, **kwargs)</p></td>
+<td><p>List growth settings.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.remesh_skew">
-<span class="sig-name descname"><span class="pre">remesh_skew</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.remesh_skew" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism.apply_growth">
+<span class="sig-name descname"><span class="pre">apply_growth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism.apply_growth" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply growth settings.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism.clear_growth">
+<span class="sig-name descname"><span class="pre">clear_growth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism.clear_growth" title="Permalink to this definition">#</a></dt>
+<dd><p>Clear growth settings.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism.list_growth">
+<span class="sig-name descname"><span class="pre">list_growth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.prism.list_growth" title="Permalink to this definition">#</a></dt>
+<dd><p>List growth settings.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.remesh_skew">
+<span class="sig-name descname"><span class="pre">remesh_skew</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.remesh_skew" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the target skewness when remeshing.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.sliver_cell_area_fraction">
-<span class="sig-name descname"><span class="pre">sliver_cell_area_fraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls.sliver_cell_area_fraction" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.sliver_cell_area_fraction">
+<span class="sig-name descname"><span class="pre">sliver_cell_area_fraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.sliver_cell_area_fraction" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the threshold for the area of a single face to the cell surface area. Recommended range is 0.00001 to 0.001.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">smooth_controls</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Enters the menu for setting smoothing parameters for poly mesh.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.centroid_smooth_iterations" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.centroid_smooth_iterations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">centroid_smooth_iterations</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the number of passes for tet-cell centroid smoothing during the poly mesh generation phase.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.edge_smooth_iterations" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.edge_smooth_iterations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_smooth_iterations</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the number of passes for tet-cell edge smoothing during the poly mesh generation phase.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.laplace_smooth_iterations" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.laplace_smooth_iterations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">laplace_smooth_iterations</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the number of passes for tet-cell Laplace smoothing during the poly mesh generation phase.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_attempts" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_attempts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_attempts</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the maximum number of movements for a single node during poly mesh smoothing.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_boundary" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_boundary</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables boundary smoothing as part of poly cell smoothing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_iterations" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_iterations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_iterations</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the number of improvement passes over the full poly mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_on_layer" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_on_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_on_layer</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Constrains movement of nodes to maintain layering during poly mesh smoothing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_skew" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_skew"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_skew</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the minimum skewness threshold for poly mesh smoothing.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.centroid_smooth_iterations">
+<span class="sig-name descname"><span class="pre">centroid_smooth_iterations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.centroid_smooth_iterations" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the number of passes for tet-cell centroid smoothing during the poly mesh generation phase.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.edge_smooth_iterations">
+<span class="sig-name descname"><span class="pre">edge_smooth_iterations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.edge_smooth_iterations" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the number of passes for tet-cell edge smoothing during the poly mesh generation phase.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.laplace_smooth_iterations">
+<span class="sig-name descname"><span class="pre">laplace_smooth_iterations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.laplace_smooth_iterations" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the number of passes for tet-cell Laplace smoothing during the poly mesh generation phase.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_attempts">
+<span class="sig-name descname"><span class="pre">smooth_attempts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_attempts" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the maximum number of movements for a single node during poly mesh smoothing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_boundary">
+<span class="sig-name descname"><span class="pre">smooth_boundary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_boundary" title="Permalink to this definition">#</a></dt>
+<dd><p>Enables boundary smoothing as part of poly cell smoothing. Default is no.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_iterations">
+<span class="sig-name descname"><span class="pre">smooth_iterations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_iterations" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the number of improvement passes over the full poly mesh.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_on_layer">
+<span class="sig-name descname"><span class="pre">smooth_on_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_on_layer" title="Permalink to this definition">#</a></dt>
+<dd><p>Constrains movement of nodes to maintain layering during poly mesh smoothing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_skew">
+<span class="sig-name descname"><span class="pre">smooth_skew</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.poly.controls.smooth_controls.smooth_skew" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the minimum skewness threshold for poly mesh smoothing.</p>
+</dd></dl>
+
 </dd></dl>
 
 </dd></dl>

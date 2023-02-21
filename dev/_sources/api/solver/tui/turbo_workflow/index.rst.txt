@@ -3,12 +3,8 @@
 solver.tui.turbo\_workflow
 ==========================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.turbo_workflow
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.turbo_workflow
+     :autosummary:
 .. toctree::
    :hidden:
 

@@ -3,14 +3,8 @@
 solver.tui.solve.animate.playback.video
 =======================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.animate.playback.video
-   :members: scale, width, format, quality, use_original_resolution, name, height, set_standard_resolution, fps
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solve.animate.playback.video
+     :autosummary:
 .. toctree::
    :hidden:
 

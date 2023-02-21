@@ -3,11 +3,5 @@
 solver.tui.surface.query
 ========================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.surface.query
-   :members: list_named_selection, list_surfaces, delete_query, list_queries, named_surface_list
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.surface.query
+     :autosummary:

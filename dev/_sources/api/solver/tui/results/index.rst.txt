@@ -3,18 +3,14 @@
 solver.tui.results
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.results
+     :autosummary:
 .. toctree::
    :hidden:
 
-   report/index
-   graphics/index
    animate/index
+   graphics/index
    plot/index
+   report/index
    surface/index
    graphics_window/index

@@ -3,14 +3,8 @@
 meshing.tui.display.set.picture.driver
 ======================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.set.picture.driver
-   :members: ppm, dump_window, png, jpeg, tiff, vrml, eps, hsf, post_script, list, avz, glb, options
-
+.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.display.set.picture.driver
+     :autosummary:
 .. toctree::
    :hidden:
 

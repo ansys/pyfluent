@@ -3,11 +3,5 @@
 solver.tui.results.graphics.expert.set.particle\_tracks.filter\_settings
 ========================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.particle_tracks.filter_settings
-   :members: filter_variable, minimum, enable_filtering, maximum, inside
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.results.graphics.expert.set.particle_tracks.filter_settings
+     :autosummary:

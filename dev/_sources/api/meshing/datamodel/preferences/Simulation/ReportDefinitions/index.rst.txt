@@ -3,11 +3,6 @@
 meshing.datamodel.preferences.Simulation.ReportDefinitions
 ==========================================================
 
-.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.Simulation.ReportDefinitions
-   :members: AutomaticPlotFile, ReportPlotHistoryDataSize
+.. autoclass:: ansys.fluent.core.datamodel_222.preferences::Root.Simulation.ReportDefinitions
+     :autosummary:
 

@@ -3,11 +3,5 @@
 solver.tui.solution.controls.contact\_solution\_controls.amg
 ============================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.controls.contact_solution_controls.amg
-   :members: pre_sweeps, specify_coarsening_rate, enforce_laplace_coarsening, increase_pre_sweeps, coarsen_rate
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solution.controls.contact_solution_controls.amg
+     :autosummary:

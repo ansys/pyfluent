@@ -3,21 +3,17 @@
 solver.tui.solve.set.multiphase\_numerics
 =========================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.multiphase_numerics
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solve.set.multiphase_numerics
+     :autosummary:
 .. toctree::
    :hidden:
 
-   heat_mass_transfer/index
+   porous_media/index
+   compressible_flow/index
+   boiling_parameters/index
    viscous_flow/index
+   heat_mass_transfer/index
+   advanced_stability_controls/index
+   default_controls/index
    face_pressure_controls/index
    solution_stabilization/index
-   boiling_parameters/index
-   porous_media/index
-   default_controls/index
-   advanced_stability_controls/index
-   compressible_flow/index

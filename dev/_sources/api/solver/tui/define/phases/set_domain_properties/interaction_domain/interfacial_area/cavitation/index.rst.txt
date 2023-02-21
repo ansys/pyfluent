@@ -3,11 +3,5 @@
 solver.tui.define.phases.set\_domain\_properties.interaction\_domain.interfacial\_area.cavitation
 =================================================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.phases.set_domain_properties.interaction_domain.interfacial_area.cavitation
-   :members: visc_disp_factor, vmass_implicit, cavitation, sfc_model_type, wall_adhesion, lift, vmass_implicit_options, lift_shaver_podowski, vmass_coeff, interphase_discr, interphase_visc_disp, sfc_tension_coeff, sfc_modeling, jump_adhesion, lift_montoya, slope_limiter, virtual_mass
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.phases.set_domain_properties.interaction_domain.interfacial_area.cavitation
+     :autosummary:

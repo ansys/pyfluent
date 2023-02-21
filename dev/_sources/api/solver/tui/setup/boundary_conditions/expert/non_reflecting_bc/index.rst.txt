@@ -3,14 +3,10 @@
 solver.tui.setup.boundary\_conditions.expert.non\_reflecting\_bc
 ================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.boundary_conditions.expert.non_reflecting_bc
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.setup.boundary_conditions.expert.non_reflecting_bc
+     :autosummary:
 .. toctree::
    :hidden:
 
-   turbo_specific_nrbc/index
    general_nrbc/index
+   turbo_specific_nrbc/index

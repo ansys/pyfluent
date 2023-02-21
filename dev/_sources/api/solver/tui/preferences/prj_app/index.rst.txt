@@ -1,0 +1,7 @@
+.. _ref_solver_tui_preferences_prj_app:
+
+solver.tui.preferences.prj\_app
+===============================
+
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.preferences.prj_app
+     :autosummary:

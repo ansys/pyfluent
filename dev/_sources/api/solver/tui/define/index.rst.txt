@@ -3,36 +3,30 @@
 solver.tui.define
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define
-   :members: beta_feature_access, set_unit_system, enable_mesh_morpher_optimizer, physics, injections, units
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define
+     :autosummary:
 .. toctree::
    :hidden:
 
-   parameters/index
-   curvilinear_coordinate_system/index
-   turbo_model/index
-   user_defined/index
-   reference_frames/index
-   overset_interfaces/index
-   dynamic_mesh/index
-   custom_field_functions/index
-   mixing_planes/index
-   materials/index
-   periodic_conditions/index
-   models/index
-   phases/index
-   named_expressions/index
-   solution_strategy/index
-   spectral/index
-   mesh_interfaces/index
-   virtual_boundary/index
-   operating_conditions/index
-   profiles/index
    boundary_conditions/index
+   spectral/index
+   custom_field_functions/index
+   dynamic_mesh/index
+   mesh_interfaces/index
    gap_model/index
+   materials/index
+   mixing_planes/index
+   models/index
+   overset_interfaces/index
+   operating_conditions/index
+   parameters/index
+   periodic_conditions/index
+   turbo_model/index
+   phases/index
+   profiles/index
+   solution_strategy/index
+   reference_frames/index
+   user_defined/index
+   named_expressions/index
+   virtual_boundary/index
+   curvilinear_coordinate_system/index

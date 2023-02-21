@@ -3,27 +3,21 @@
 meshing.tui.preferences.graphics
 ================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.graphics
-   :members: enable_non_object_based_workflow, show_hidden_surfaces, double_buffering, remove_partition_lines_tolerance, event_poll_timeout, graphics_window_point_symbol, min_graphics_text_size, remove_partition_lines, show_hidden_lines, marker_drawing_mode, lower_resolution_graphics_window_line_width, animation_option, rotation_centerpoint_visible, higher_resolution_graphics_window_line_width, scroll_wheel_event_end_timer, force_key_frame_animation_markers_to_off, set_camera_normal_to_surface_increments, test_use_external_function, text_window_line_width, event_poll_interval, graphics_window_line_width, switch_to_open_glfor_remote_visualization, point_tool_size, hidden_surface_removal_method, max_graphics_text_size, plot_legend_margin
-
+.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.preferences.graphics
+     :autosummary:
 .. toctree::
    :hidden:
 
-   graphics_effects/index
-   manage_hoops_memory/index
-   performance/index
-   embedded_windows/index
-   transparency/index
-   colormap_settings/index
-   export_video_settings/index
    boundary_markers/index
-   vector_settings/index
-   lighting/index
+   colormap_settings/index
+   embedded_windows/index
+   export_video_settings/index
+   graphics_effects/index
    hardcopy_settings/index
-   meshing_mode/index
+   lighting/index
+   manage_hoops_memory/index
    material_effects/index
+   meshing_mode/index
+   performance/index
+   transparency/index
+   vector_settings/index

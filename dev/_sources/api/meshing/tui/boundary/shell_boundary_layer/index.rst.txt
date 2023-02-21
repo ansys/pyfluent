@@ -3,14 +3,8 @@
 meshing.tui.boundary.shell\_boundary\_layer
 ===========================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.boundary.shell_boundary_layer
-   :members: create
-
+.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.boundary.shell_boundary_layer
+     :autosummary:
 .. toctree::
    :hidden:
 

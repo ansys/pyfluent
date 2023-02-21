@@ -3,11 +3,5 @@
 solver.tui.results.graphics.expert.set.path\_lines
 ==================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.path_lines
-   :members: relative_pathlines, sphere_attrib, arrow_space, reverse, twist_factor, line_width, maximum_error, maximum_steps, step_size, marker_size, radius, error_control, track_in_phase, arrow_scale, style, display_steps
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.results.graphics.expert.set.path_lines
+     :autosummary:

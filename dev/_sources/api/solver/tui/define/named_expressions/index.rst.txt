@@ -3,11 +3,5 @@
 solver.tui.define.named\_expressions
 ====================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.named_expressions
-   :members: copy, edit, compute, import_from_tsv, list_properties, export_to_tsv, add, delete, list
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.named_expressions
+     :autosummary:

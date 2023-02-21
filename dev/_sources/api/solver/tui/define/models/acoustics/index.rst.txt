@@ -3,18 +3,12 @@
 solver.tui.define.models.acoustics
 ==================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.acoustics
-   :members: auto_prune, export_volumetric_sources_cgns, acoustic_modal_analysis, off, export_source_data, read_compute_write, write_centroid_info, moving_receiver, export_volumetric_sources, sources, receivers, compute_write, ffowcs_williams, display_flow_time, cylindrical_export, wave_equation, modal_analysis, convective_effects, broad_band_noise, write_acoustic_signals, export_source_data_cgns, display_frequencies
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.models.acoustics
+     :autosummary:
 .. toctree::
    :hidden:
 
-   wave_equation_options/index
-   sponge_layers/index
    far_field_parameters/index
+   wave_equation_options/index
    sources_fft/index
+   sponge_layers/index

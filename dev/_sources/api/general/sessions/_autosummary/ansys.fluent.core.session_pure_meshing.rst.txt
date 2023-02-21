@@ -1,0 +1,31 @@
+﻿session\_pure\_meshing
+======================
+
+.. automodule:: ansys.fluent.core.session_pure_meshing
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: flobject-class-template.rst
+   
+      PureMeshing
+   
+   
+
+   
+   
+   
+
+
+

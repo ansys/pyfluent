@@ -3,16 +3,9 @@
 solver.tui.results.graphics\_window.views
 =========================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics_window.views
-   :members: write_views, last_view, auto_scale, restore_view, default_view, save_view, delete_view, next_view, list_views, read_views
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.results.graphics_window.views
+     :autosummary:
 .. toctree::
    :hidden:
 
    camera/index
-   display_states/index

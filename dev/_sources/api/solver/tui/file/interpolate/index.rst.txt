@@ -3,11 +3,5 @@
 solver.tui.file.interpolate
 ===========================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file.interpolate
-   :members: write_data, zone_selection, read_data
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.file.interpolate
+     :autosummary:

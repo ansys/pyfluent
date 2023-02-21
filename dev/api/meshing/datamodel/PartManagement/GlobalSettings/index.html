@@ -303,13 +303,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -322,6 +317,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../tui/index.html">
      meshing.tui
@@ -388,11 +388,6 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../Mirror/index.html">
-         meshing.datamodel.PartManagement.Mirror
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../Node/index.html">
          meshing.datamodel.PartManagement.Node
         </a>
@@ -408,33 +403,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../Rotate/index.html">
-         meshing.datamodel.PartManagement.Rotate
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../RotateAboutAxis/index.html">
-         meshing.datamodel.PartManagement.RotateAboutAxis
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../Scaling/index.html">
-         meshing.datamodel.PartManagement.Scaling
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../Transform/index.html">
          meshing.datamodel.PartManagement.Transform
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../TransformBase/index.html">
-         meshing.datamodel.PartManagement.TransformBase
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../Translate/index.html">
-         meshing.datamodel.PartManagement.Translate
         </a>
        </li>
       </ul>
@@ -483,7 +453,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.GlobalSettings">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings">
    <code class="docutils literal notranslate">
     <span class="pre">
      Root.GlobalSettings
@@ -492,28 +462,547 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.GlobalSettings.CurrentContext">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext">
      <code class="docutils literal notranslate">
       <span class="pre">
        Root.GlobalSettings.CurrentContext
       </span>
      </code>
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.__init__">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentContext.__init__()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.default_value">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentContext.default_value()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.docstring">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentContext.docstring
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.getAttribValue">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentContext.getAttribValue()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.getState">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentContext.getState()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.get_attr">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentContext.get_attr()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.get_state">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentContext.get_state()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.help">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentContext.help()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.is_active">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentContext.is_active()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.is_read_only">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentContext.is_read_only()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.max">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentContext.max()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.min">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentContext.min()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.setState">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentContext.setState()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.set_state">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentContext.set_state()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.GlobalSettings.CurrentNode">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode">
      <code class="docutils literal notranslate">
       <span class="pre">
        Root.GlobalSettings.CurrentNode
       </span>
      </code>
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.__init__">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentNode.__init__()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.allowed_values">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentNode.allowed_values()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.default_value">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentNode.default_value()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.docstring">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentNode.docstring
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.getAttribValue">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentNode.getAttribValue()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.getState">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentNode.getState()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.get_attr">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentNode.get_attr()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.get_state">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentNode.get_state()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.help">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentNode.help()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.is_active">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentNode.is_active()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.is_read_only">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentNode.is_read_only()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.setState">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentNode.setState()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.set_state">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.CurrentNode.set_state()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.GlobalSettings.LengthUnit">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit">
      <code class="docutils literal notranslate">
       <span class="pre">
        Root.GlobalSettings.LengthUnit
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.__init__">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.LengthUnit.__init__()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.allowed_values">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.LengthUnit.allowed_values()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.default_value">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.LengthUnit.default_value()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.docstring">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.LengthUnit.docstring
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.getAttribValue">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.LengthUnit.getAttribValue()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.getState">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.LengthUnit.getState()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.get_attr">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.LengthUnit.get_attr()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.get_state">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.LengthUnit.get_state()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.help">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.LengthUnit.help()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.is_active">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.LengthUnit.is_active()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.is_read_only">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.LengthUnit.is_read_only()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.setState">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.LengthUnit.setState()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.set_state">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Root.GlobalSettings.LengthUnit.set_state()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Root.GlobalSettings.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.create_command_arguments">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Root.GlobalSettings.create_command_arguments()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.delete_all_child_objects">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Root.GlobalSettings.delete_all_child_objects()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.delete_child">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Root.GlobalSettings.delete_child()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.delete_child_objects">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Root.GlobalSettings.delete_child_objects()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.docstring">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Root.GlobalSettings.docstring
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.fix_state">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Root.GlobalSettings.fix_state()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.getAttribValue">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Root.GlobalSettings.getAttribValue()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.getState">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Root.GlobalSettings.getState()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.get_attr">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Root.GlobalSettings.get_attr()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.get_state">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Root.GlobalSettings.get_state()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.help">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Root.GlobalSettings.help()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.is_active">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Root.GlobalSettings.is_active()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.name">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Root.GlobalSettings.name()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.rename">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Root.GlobalSettings.rename()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.setState">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Root.GlobalSettings.setState()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.set_state">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Root.GlobalSettings.set_state()
       </span>
      </code>
     </a>
@@ -541,30 +1030,974 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-datamodel-partmanagement-globalsettings">
 <span id="ref-meshing-datamodel-partmanagement-globalsettings"></span><h1>meshing.datamodel.PartManagement.GlobalSettings<a class="headerlink" href="#meshing-datamodel-partmanagement-globalsettings" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Root.</span></span><span class="sig-name descname"><span class="pre">GlobalSettings</span></span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_se.PyMenu</span></code></p>
+<p>Singleton GlobalSettings.</p>
+<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CurrentContext</span></code></a></p></td>
+<td><p>Parameter CurrentContext of value type int.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CurrentNode</span></code></a></p></td>
+<td><p>Parameter CurrentNode of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LengthUnit</span></code></a></p></td>
+<td><p>Parameter LengthUnit of value type str.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.__init__" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(service, rules, path)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.create_command_arguments" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.create_command_arguments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_command_arguments</span></code></a>(command)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.delete_all_child_objects" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.delete_all_child_objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_all_child_objects</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.delete_child" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.delete_child"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_child</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.delete_child_objects" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.delete_child_objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_child_objects</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.fix_state" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.fix_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fix_state</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.getAttribValue" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.getAttribValue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getAttribValue</span></code></a>(attrib)</p></td>
+<td><p>Get attribute value of the current object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.getState" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.getState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getState</span></code></a>()</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.get_attr" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.get_attr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_attr</span></code></a>(attrib)</p></td>
+<td><p>Get attribute value of the current object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.get_state" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.get_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_state</span></code></a>()</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.help" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.help"><code class="xref py py-obj docutils literal notranslate"><span class="pre">help</span></code></a>()</p></td>
+<td><p>Print help string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.is_active" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.is_active"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_active</span></code></a>()</p></td>
+<td><p>Returns true if the parameter is active.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.name" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a>()</p></td>
+<td><p>Get the name of the named object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.rename" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.rename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rename</span></code></a>(new_name)</p></td>
+<td><p>Rename the named object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.setState" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.setState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setState</span></code></a>([state])</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.set_state" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.set_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_state</span></code></a>([state])</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.docstring" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.docstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">docstring</span></code></a></p></td>
+<td><p></p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.GlobalSettings">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Root.</span></span><span class="sig-name descname"><span class="pre">GlobalSettings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.GlobalSettings" title="Permalink to this definition">#</a></dt>
-<dd><p>Singleton GlobalSettings.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.GlobalSettings.CurrentContext">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CurrentContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.GlobalSettings.CurrentContext" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter CurrentContext of value type int.</p>
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CurrentContext</span></span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_se.PyNumerical</span></code></p>
+<p>Parameter CurrentContext of value type int.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.__init__" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(service, rules[, path])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.default_value" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.default_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_value</span></code></a>()</p></td>
+<td><p>Get default value of the parameter.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.getAttribValue" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.getAttribValue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getAttribValue</span></code></a>(attrib)</p></td>
+<td><p>Get attribute value of the current object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.getState" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.getState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getState</span></code></a>()</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.get_attr" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.get_attr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_attr</span></code></a>(attrib)</p></td>
+<td><p>Get attribute value of the current object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.get_state" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.get_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_state</span></code></a>()</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.help" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.help"><code class="xref py py-obj docutils literal notranslate"><span class="pre">help</span></code></a>()</p></td>
+<td><p>Print help string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.is_active" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.is_active"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_active</span></code></a>()</p></td>
+<td><p>Returns true if the parameter is active.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.is_read_only" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.is_read_only"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_read_only</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.max" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.min" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.setState" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.setState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setState</span></code></a>([state])</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.set_state" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.set_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_state</span></code></a>([state])</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.docstring" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.docstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">docstring</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.__init__" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service</strong> (<em>ansys.fluent.core.services.datamodel_se.DatamodelService</em>) – </p></li>
+<li><p><strong>rules</strong> (<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Optional" title="(in Python v3.12)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.List" title="(in Python v3.12)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Tuple" title="(in Python v3.12)"><em>Tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.default_value">
+<span class="sig-name descname"><span class="pre">default_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.default_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Get default value of the parameter.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.docstring">
+<span class="sig-name descname"><span class="pre">docstring</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.docstring" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.getAttribValue">
+<span class="sig-name descname"><span class="pre">getAttribValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attrib</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.getAttribValue" title="Permalink to this definition">#</a></dt>
+<dd><p>Get attribute value of the current object.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>attrib</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>:</dt><dd></dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></dt><dd><p>Value of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>attrib</strong> (<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.getState">
+<span class="sig-name descname"><span class="pre">getState</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.getState" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.get_attr">
+<span class="sig-name descname"><span class="pre">get_attr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attrib</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.get_attr" title="Permalink to this definition">#</a></dt>
+<dd><p>Get attribute value of the current object.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>attrib</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>:</dt><dd></dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></dt><dd><p>Value of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>attrib</strong> (<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.get_state">
+<span class="sig-name descname"><span class="pre">get_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.get_state" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.help">
+<span class="sig-name descname"><span class="pre">help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.help" title="Permalink to this definition">#</a></dt>
+<dd><p>Print help string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.is_active">
+<span class="sig-name descname"><span class="pre">is_active</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.is_active" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns true if the parameter is active.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.is_read_only">
+<span class="sig-name descname"><span class="pre">is_read_only</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.is_read_only" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.max">
+<span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.max" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.min">
+<span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.min" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.setState">
+<span class="sig-name descname"><span class="pre">setState</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.setState" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Optional" title="(in Python v3.12)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><em>Any</em></a><em>]</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.set_state">
+<span class="sig-name descname"><span class="pre">set_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentContext.set_state" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Optional" title="(in Python v3.12)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><em>Any</em></a><em>]</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.GlobalSettings.CurrentNode">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CurrentNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.GlobalSettings.CurrentNode" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter CurrentNode of value type str.</p>
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CurrentNode</span></span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_se.PyTextual</span></code></p>
+<p>Parameter CurrentNode of value type str.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.__init__" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(service, rules[, path])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.allowed_values" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.allowed_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">allowed_values</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.default_value" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.default_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_value</span></code></a>()</p></td>
+<td><p>Get default value of the parameter.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.getAttribValue" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.getAttribValue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getAttribValue</span></code></a>(attrib)</p></td>
+<td><p>Get attribute value of the current object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.getState" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.getState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getState</span></code></a>()</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.get_attr" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.get_attr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_attr</span></code></a>(attrib)</p></td>
+<td><p>Get attribute value of the current object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.get_state" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.get_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_state</span></code></a>()</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.help" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.help"><code class="xref py py-obj docutils literal notranslate"><span class="pre">help</span></code></a>()</p></td>
+<td><p>Print help string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.is_active" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.is_active"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_active</span></code></a>()</p></td>
+<td><p>Returns true if the parameter is active.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.is_read_only" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.is_read_only"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_read_only</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.setState" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.setState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setState</span></code></a>([state])</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.set_state" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.set_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_state</span></code></a>([state])</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.docstring" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.docstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">docstring</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.__init__" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service</strong> (<em>ansys.fluent.core.services.datamodel_se.DatamodelService</em>) – </p></li>
+<li><p><strong>rules</strong> (<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Optional" title="(in Python v3.12)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.List" title="(in Python v3.12)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Tuple" title="(in Python v3.12)"><em>Tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.allowed_values">
+<span class="sig-name descname"><span class="pre">allowed_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.allowed_values" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.default_value">
+<span class="sig-name descname"><span class="pre">default_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.default_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Get default value of the parameter.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.docstring">
+<span class="sig-name descname"><span class="pre">docstring</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.docstring" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.getAttribValue">
+<span class="sig-name descname"><span class="pre">getAttribValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attrib</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.getAttribValue" title="Permalink to this definition">#</a></dt>
+<dd><p>Get attribute value of the current object.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>attrib</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>:</dt><dd></dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></dt><dd><p>Value of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>attrib</strong> (<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.getState">
+<span class="sig-name descname"><span class="pre">getState</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.getState" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.get_attr">
+<span class="sig-name descname"><span class="pre">get_attr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attrib</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.get_attr" title="Permalink to this definition">#</a></dt>
+<dd><p>Get attribute value of the current object.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>attrib</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>:</dt><dd></dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></dt><dd><p>Value of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>attrib</strong> (<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.get_state">
+<span class="sig-name descname"><span class="pre">get_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.get_state" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.help">
+<span class="sig-name descname"><span class="pre">help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.help" title="Permalink to this definition">#</a></dt>
+<dd><p>Print help string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.is_active">
+<span class="sig-name descname"><span class="pre">is_active</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.is_active" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns true if the parameter is active.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.is_read_only">
+<span class="sig-name descname"><span class="pre">is_read_only</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.is_read_only" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.setState">
+<span class="sig-name descname"><span class="pre">setState</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.setState" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Optional" title="(in Python v3.12)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><em>Any</em></a><em>]</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.set_state">
+<span class="sig-name descname"><span class="pre">set_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.CurrentNode.set_state" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Optional" title="(in Python v3.12)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><em>Any</em></a><em>]</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.GlobalSettings.LengthUnit">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LengthUnit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.GlobalSettings.LengthUnit" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter LengthUnit of value type str.</p>
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LengthUnit</span></span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_se.PyTextual</span></code></p>
+<p>Parameter LengthUnit of value type str.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.__init__" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(service, rules[, path])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.allowed_values" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.allowed_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">allowed_values</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.default_value" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.default_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_value</span></code></a>()</p></td>
+<td><p>Get default value of the parameter.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.getAttribValue" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.getAttribValue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getAttribValue</span></code></a>(attrib)</p></td>
+<td><p>Get attribute value of the current object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.getState" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.getState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getState</span></code></a>()</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.get_attr" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.get_attr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_attr</span></code></a>(attrib)</p></td>
+<td><p>Get attribute value of the current object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.get_state" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.get_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_state</span></code></a>()</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.help" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.help"><code class="xref py py-obj docutils literal notranslate"><span class="pre">help</span></code></a>()</p></td>
+<td><p>Print help string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.is_active" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.is_active"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_active</span></code></a>()</p></td>
+<td><p>Returns true if the parameter is active.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.is_read_only" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.is_read_only"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_read_only</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.setState" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.setState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setState</span></code></a>([state])</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.set_state" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.set_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_state</span></code></a>([state])</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.docstring" title="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.docstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">docstring</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.__init__" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>service</strong> (<em>ansys.fluent.core.services.datamodel_se.DatamodelService</em>) – </p></li>
+<li><p><strong>rules</strong> (<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p></li>
+<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Optional" title="(in Python v3.12)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.List" title="(in Python v3.12)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Tuple" title="(in Python v3.12)"><em>Tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em><em>]</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.allowed_values">
+<span class="sig-name descname"><span class="pre">allowed_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.allowed_values" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.default_value">
+<span class="sig-name descname"><span class="pre">default_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.default_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Get default value of the parameter.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.docstring">
+<span class="sig-name descname"><span class="pre">docstring</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.docstring" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.getAttribValue">
+<span class="sig-name descname"><span class="pre">getAttribValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attrib</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.getAttribValue" title="Permalink to this definition">#</a></dt>
+<dd><p>Get attribute value of the current object.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>attrib</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>:</dt><dd></dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></dt><dd><p>Value of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>attrib</strong> (<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.getState">
+<span class="sig-name descname"><span class="pre">getState</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.getState" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.get_attr">
+<span class="sig-name descname"><span class="pre">get_attr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attrib</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.get_attr" title="Permalink to this definition">#</a></dt>
+<dd><p>Get attribute value of the current object.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>attrib</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>:</dt><dd></dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></dt><dd><p>Value of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>attrib</strong> (<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.get_state">
+<span class="sig-name descname"><span class="pre">get_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.get_state" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.help">
+<span class="sig-name descname"><span class="pre">help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.help" title="Permalink to this definition">#</a></dt>
+<dd><p>Print help string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.is_active">
+<span class="sig-name descname"><span class="pre">is_active</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.is_active" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns true if the parameter is active.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.is_read_only">
+<span class="sig-name descname"><span class="pre">is_read_only</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.is_read_only" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.setState">
+<span class="sig-name descname"><span class="pre">setState</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.setState" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Optional" title="(in Python v3.12)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><em>Any</em></a><em>]</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.set_state">
+<span class="sig-name descname"><span class="pre">set_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.LengthUnit.set_state" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Optional" title="(in Python v3.12)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><em>Any</em></a><em>]</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.create_command_arguments">
+<span class="sig-name descname"><span class="pre">create_command_arguments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.create_command_arguments" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.delete_all_child_objects">
+<span class="sig-name descname"><span class="pre">delete_all_child_objects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.delete_all_child_objects" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.delete_child">
+<span class="sig-name descname"><span class="pre">delete_child</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.delete_child" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.delete_child_objects">
+<span class="sig-name descname"><span class="pre">delete_child_objects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.delete_child_objects" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.docstring">
+<span class="sig-name descname"><span class="pre">docstring</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.docstring" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.fix_state">
+<span class="sig-name descname"><span class="pre">fix_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.fix_state" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.getAttribValue">
+<span class="sig-name descname"><span class="pre">getAttribValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attrib</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.getAttribValue" title="Permalink to this definition">#</a></dt>
+<dd><p>Get attribute value of the current object.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>attrib</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>:</dt><dd></dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></dt><dd><p>Value of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>attrib</strong> (<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.getState">
+<span class="sig-name descname"><span class="pre">getState</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.getState" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.get_attr">
+<span class="sig-name descname"><span class="pre">get_attr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attrib</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.get_attr" title="Permalink to this definition">#</a></dt>
+<dd><p>Get attribute value of the current object.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>attrib</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>:</dt><dd></dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></dt><dd><p>Value of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>attrib</strong> (<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.get_state">
+<span class="sig-name descname"><span class="pre">get_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.get_state" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.help">
+<span class="sig-name descname"><span class="pre">help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.help" title="Permalink to this definition">#</a></dt>
+<dd><p>Print help string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.is_active">
+<span class="sig-name descname"><span class="pre">is_active</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.is_active" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns true if the parameter is active.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the name of the named object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.rename">
+<span class="sig-name descname"><span class="pre">rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.rename" title="Permalink to this definition">#</a></dt>
+<dd><p>Rename the named object.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>new_name</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>New name for the object.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_name</strong> (<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.setState">
+<span class="sig-name descname"><span class="pre">setState</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.setState" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Optional" title="(in Python v3.12)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><em>Any</em></a><em>]</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.set_state">
+<span class="sig-name descname"><span class="pre">set_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_222.PartManagement.Root.GlobalSettings.set_state" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Optional" title="(in Python v3.12)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><em>Any</em></a><em>]</em>) – </p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

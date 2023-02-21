@@ -3,11 +3,5 @@
 solver.tui.setup.dynamic\_mesh.controls.implicit\_update\_parameters
 ====================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.dynamic_mesh.controls.implicit_update_parameters
-   :members: residual_criteria, update_interval, motion_relaxation
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.setup.dynamic_mesh.controls.implicit_update_parameters
+     :autosummary:

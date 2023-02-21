@@ -3,14 +3,8 @@
 solver.tui.results.report.dpm\_histogram
 ========================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.report.dpm_histogram
-   :members: reduce_picked_sample, compute_sample, prep_dpm_sample_cont_plot_exprs, plot_sample, write_sample, read_sample, list_samples, delete_sample, pick_sample_to_reduce
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.results.report.dpm_histogram
+     :autosummary:
 .. toctree::
    :hidden:
 

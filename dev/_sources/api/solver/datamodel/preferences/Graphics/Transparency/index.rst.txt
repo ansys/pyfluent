@@ -3,12 +3,7 @@
 solver.datamodel.preferences.Graphics.Transparency
 ==================================================
 
-.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.Graphics.Transparency
-   :members: AlgorithmForModernDrivers, DepthPeelingLayers, DepthPeelingPreference, QuickMoves, ZSortOptions
+.. autoclass:: ansys.fluent.core.datamodel_222.preferences::Root.Graphics.Transparency
+     :autosummary:
    :noindex:
 

@@ -3,11 +3,5 @@
 solver.tui.results.graphics.rendering\_options
 ==============================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.rendering_options
-   :members: help_text_color, color_map_alignment, show_colormap, double_buffering, device_info, surface_edge_visibility, face_displacement, driver, hidden_surface_method, outer_face_cull, set_rendering_options, hidden_surfaces, auto_spin, animation_option
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.results.graphics.rendering_options
+     :autosummary:

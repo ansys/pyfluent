@@ -3,11 +3,5 @@
 meshing.tui.mesh.prism.post\_ignore
 ===================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.prism.post_ignore
-   :members: post_remove_cells, mark_cavity_prism_cap, mark_prism_cap, create_cavity
-
+.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.mesh.prism.post_ignore
+     :autosummary:

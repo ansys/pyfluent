@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="meshing.tui.cad_assemblies.update_options" href="update_options/index.html" />
-    <link rel="prev" title="meshing.tui.objects.create_new_mesh_object" href="../objects/create_new_mesh_object/index.html" />
+    <link rel="next" title="meshing.tui.cad_assemblies.draw_options" href="draw_options/index.html" />
+    <link rel="prev" title="meshing.tui.boundary.boundary_conditions" href="../boundary/boundary_conditions/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -302,13 +302,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -321,6 +316,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../index.html">
      meshing.tui
@@ -332,63 +332,13 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../material_point/index.html">
-       meshing.tui.material_point
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../mesh/index.html">
-       meshing.tui.mesh
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../display/index.html">
-       meshing.tui.display
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../preferences/index.html">
-       meshing.tui.preferences
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../boundary/index.html">
-       meshing.tui.boundary
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../reference_frames/index.html">
-       meshing.tui.reference_frames
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../openmp_controls/index.html">
-       meshing.tui.openmp_controls
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../diagnostics/index.html">
-       meshing.tui.diagnostics
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../parallel/index.html">
-       meshing.tui.parallel
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../file/index.html">
        meshing.tui.file
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../objects/index.html">
-       meshing.tui.objects
+      <a class="reference internal" href="../boundary/index.html">
+       meshing.tui.boundary
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -402,13 +352,13 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul>
        <li class="toctree-l4">
-        <a class="reference internal" href="update_options/index.html">
-         meshing.tui.cad_assemblies.update_options
+        <a class="reference internal" href="draw_options/index.html">
+         meshing.tui.cad_assemblies.draw_options
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="draw_options/index.html">
-         meshing.tui.cad_assemblies.draw_options
+        <a class="reference internal" href="manage_state/index.html">
+         meshing.tui.cad_assemblies.manage_state
         </a>
        </li>
        <li class="toctree-l4">
@@ -417,11 +367,51 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="manage_state/index.html">
-         meshing.tui.cad_assemblies.manage_state
+        <a class="reference internal" href="update_options/index.html">
+         meshing.tui.cad_assemblies.update_options
         </a>
        </li>
       </ul>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../preferences/index.html">
+       meshing.tui.preferences
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../size_functions/index.html">
+       meshing.tui.size_functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../objects/index.html">
+       meshing.tui.objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../diagnostics/index.html">
+       meshing.tui.diagnostics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../material_point/index.html">
+       meshing.tui.material_point
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../mesh/index.html">
+       meshing.tui.mesh
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../display/index.html">
+       meshing.tui.display
+      </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../report/index.html">
@@ -429,8 +419,18 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../size_functions/index.html">
-       meshing.tui.size_functions
+      <a class="reference internal" href="../parallel/index.html">
+       meshing.tui.parallel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../openmp_controls/index.html">
+       meshing.tui.openmp_controls
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../reference_frames/index.html">
+       meshing.tui.reference_frames
       </a>
      </li>
     </ul>
@@ -472,7 +472,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.cad_assemblies
@@ -481,7 +481,16 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.add_prefix">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.cad_assemblies.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.add_prefix">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.cad_assemblies.add_prefix()
@@ -490,7 +499,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.add_to_object">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.add_to_object">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.cad_assemblies.add_to_object()
@@ -499,7 +508,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.create_objects">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.create_objects">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.cad_assemblies.create_objects()
@@ -508,7 +517,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.delete_cad_assemblies">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.delete_cad_assemblies">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.cad_assemblies.delete_cad_assemblies()
@@ -517,7 +526,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.draw">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.cad_assemblies.draw()
@@ -526,7 +535,54 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.extract_edges_zones">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.cad_assemblies.draw_options
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options.__init__">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.cad_assemblies.draw_options.__init__()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options.add_to_graphics">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.cad_assemblies.draw_options.add_to_graphics()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options.draw_unlabelled_zones">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.cad_assemblies.draw_options.draw_unlabelled_zones()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options.remove_from_graphics">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.cad_assemblies.draw_options.remove_from_graphics()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.extract_edges_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.cad_assemblies.extract_edges_zones()
@@ -535,7 +591,119 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.rename">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.cad_assemblies.labels
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.__init__">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.cad_assemblies.labels.__init__()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.add_to_graphics">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.cad_assemblies.labels.add_to_graphics()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.delete">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.cad_assemblies.labels.delete()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.draw">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.cad_assemblies.labels.draw()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.remove_from_graphics">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.cad_assemblies.labels.remove_from_graphics()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.rename">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.cad_assemblies.labels.rename()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.cad_assemblies.manage_state
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state.__init__">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.cad_assemblies.manage_state.__init__()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state.suppress">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.cad_assemblies.manage_state.suppress()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state.unlock">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.cad_assemblies.manage_state.unlock()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state.unsuppress">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.cad_assemblies.manage_state.unsuppress()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.rename">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.cad_assemblies.rename()
@@ -544,7 +712,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.replace_object">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.replace_object">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.cad_assemblies.replace_object()
@@ -553,13 +721,69 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.update_cad_assemblies">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_cad_assemblies">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.cad_assemblies.update_cad_assemblies()
       </span>
      </code>
     </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.cad_assemblies.update_options
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.__init__">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.cad_assemblies.update_options.__init__()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.import_edge_zones">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.cad_assemblies.update_options.import_edge_zones()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.one_object_per">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.cad_assemblies.update_options.one_object_per()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.one_zone_per">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.cad_assemblies.update_options.one_zone_per()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.tessellation">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.cad_assemblies.update_options.tessellation()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
@@ -584,66 +808,335 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-cad-assemblies">
 <span id="ref-meshing-tui-cad-assemblies"></span><h1>meshing.tui.cad_assemblies<a class="headerlink" href="#meshing-tui-cad-assemblies" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.</span></span><span class="sig-name descname"><span class="pre">cad_assemblies</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Menu for cad assemblies.</p>
+<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.add_prefix" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.add_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_prefix</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to add a prefix to the selected entities.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.add_to_object" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.add_to_object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_to_object</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to add the selected CAD entities to an existing object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.create_objects" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.create_objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_objects</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to create new geometry/mesh objects for the selected entities.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.delete_cad_assemblies" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.delete_cad_assemblies"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_cad_assemblies</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Deletes all the CAD assemblies data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Displays the selected CAD entities.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.extract_edges_zones" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.extract_edges_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_edges_zones</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Extract feature edges for CAD assemblies.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.rename" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.rename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rename</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to rename the selected entities.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.replace_object" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.replace_object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">replace_object</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to replace an object with the selected CAD entities.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_cad_assemblies" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_cad_assemblies"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_cad_assemblies</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reimports the selected CAD entities using new parameters specified in the update-options/ menu.</p></td>
+</tr>
 </tbody>
 </table>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.</span></span><span class="sig-name descname"><span class="pre">cad_assemblies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies" title="Permalink to this definition">#</a></dt>
-<dd><p>Menu for cad assemblies.</p>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_options</span></code></a></p></td>
+<td><p>Contains additional options for displaying CAD entities.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="labels/index.html#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">labels</span></code></a></p></td>
+<td><p>Contains options for displaying and managing labels.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="manage_state/index.html#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">manage_state</span></code></a></p></td>
+<td><p>Contains options for setting the CAD entity state.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="update_options/index.html#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_options</span></code></a></p></td>
+<td><p>Contains options for updating the CAD entities on reimport.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.add_prefix">
-<span class="sig-name descname"><span class="pre">add_prefix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.add_prefix" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.add_prefix">
+<span class="sig-name descname"><span class="pre">add_prefix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.add_prefix" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables you to add a prefix to the selected entities. Specify the path for the entities and the prefix to be added.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.add_to_object">
-<span class="sig-name descname"><span class="pre">add_to_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.add_to_object" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.add_to_object">
+<span class="sig-name descname"><span class="pre">add_to_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.add_to_object" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables you to add the selected CAD entities to an existing object. Specify the path for the entities to be added and select the object to be modified.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.create_objects">
-<span class="sig-name descname"><span class="pre">create_objects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.create_objects" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.create_objects">
+<span class="sig-name descname"><span class="pre">create_objects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.create_objects" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables you to create new geometry/mesh objects for the selected entities. Specify the path for the entities and if required, choose to create one object per CAD entity selected and/or retain the CAD zone granularity for object creation. By default, a single object will be created for all entities selected and the CAD zone granularity will not be retained. Specify the object name (if applicable), object type (geom or mesh), and cell zone type (dead, fluid, or solid).</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.delete_cad_assemblies">
-<span class="sig-name descname"><span class="pre">delete_cad_assemblies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.delete_cad_assemblies" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.delete_cad_assemblies">
+<span class="sig-name descname"><span class="pre">delete_cad_assemblies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.delete_cad_assemblies" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes all the CAD assemblies data.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.draw">
-<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.draw" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw" title="Permalink to this definition">#</a></dt>
 <dd><p>Displays the selected CAD entities.</p>
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">draw_options</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Contains additional options for displaying CAD entities.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options.add_to_graphics" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options.add_to_graphics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_to_graphics</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Adds the selected entities to the display in the graphics window.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options.draw_unlabelled_zones" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options.draw_unlabelled_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_unlabelled_zones</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Displays the unlabeled zones for the selected entities in the graphics window.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options.remove_from_graphics" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options.remove_from_graphics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_from_graphics</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Removes the selected entities from the display in the graphics window.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.extract_edges_zones">
-<span class="sig-name descname"><span class="pre">extract_edges_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.extract_edges_zones" title="Permalink to this definition">#</a></dt>
-<dd><p>Extract feature edges for CAD assemblies.</p>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options.add_to_graphics">
+<span class="sig-name descname"><span class="pre">add_to_graphics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options.add_to_graphics" title="Permalink to this definition">#</a></dt>
+<dd><p>Adds the selected entities to the display in the graphics window.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.rename">
-<span class="sig-name descname"><span class="pre">rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.rename" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options.draw_unlabelled_zones">
+<span class="sig-name descname"><span class="pre">draw_unlabelled_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options.draw_unlabelled_zones" title="Permalink to this definition">#</a></dt>
+<dd><p>Displays the unlabeled zones for the selected entities in the graphics window.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options.remove_from_graphics">
+<span class="sig-name descname"><span class="pre">remove_from_graphics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.draw_options.remove_from_graphics" title="Permalink to this definition">#</a></dt>
+<dd><p>Removes the selected entities from the display in the graphics window.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.extract_edges_zones">
+<span class="sig-name descname"><span class="pre">extract_edges_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.extract_edges_zones" title="Permalink to this definition">#</a></dt>
+<dd><p>Extract feature edges for CAD assemblies.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">labels</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Contains options for displaying and managing labels.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="labels/index.html#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="labels/index.html#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.add_to_graphics" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.add_to_graphics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_to_graphics</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Adds the selected labels to the display in the graphics window.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="labels/index.html#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.delete" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Deletes the selected labels.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="labels/index.html#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.draw" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Displays the selected labels.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="labels/index.html#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.remove_from_graphics" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.remove_from_graphics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_from_graphics</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Removes the selected labels from the display in the graphics window.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="labels/index.html#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.rename" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.rename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rename</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to rename the selected labels.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.add_to_graphics">
+<span class="sig-name descname"><span class="pre">add_to_graphics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.add_to_graphics" title="Permalink to this definition">#</a></dt>
+<dd><p>Adds the selected labels to the display in the graphics window.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.delete" title="Permalink to this definition">#</a></dt>
+<dd><p>Deletes the selected labels.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.draw" title="Permalink to this definition">#</a></dt>
+<dd><p>Displays the selected labels.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.remove_from_graphics">
+<span class="sig-name descname"><span class="pre">remove_from_graphics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.remove_from_graphics" title="Permalink to this definition">#</a></dt>
+<dd><p>Removes the selected labels from the display in the graphics window.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.rename">
+<span class="sig-name descname"><span class="pre">rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.labels.rename" title="Permalink to this definition">#</a></dt>
+<dd><p>Enables you to rename the selected labels. Specify the path for the labels and the new name. For multiple selections, the specified name will be used, with a suitable index as suffix. For example, specifying a new label name wall will result in entities wall.1, wall.2, etc.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">manage_state</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Contains options for setting the CAD entity state.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="manage_state/index.html#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="manage_state/index.html#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state.suppress" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state.suppress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">suppress</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Suppresses the selected CAD entities.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="manage_state/index.html#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state.unlock" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state.unlock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unlock</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Unlocks the selected CAD entities.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="manage_state/index.html#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state.unsuppress" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state.unsuppress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unsuppress</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Unsuppresses the selected CAD entities.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state.suppress">
+<span class="sig-name descname"><span class="pre">suppress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state.suppress" title="Permalink to this definition">#</a></dt>
+<dd><p>Suppresses the selected CAD entities.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state.unlock">
+<span class="sig-name descname"><span class="pre">unlock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state.unlock" title="Permalink to this definition">#</a></dt>
+<dd><p>Unlocks the selected CAD entities.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state.unsuppress">
+<span class="sig-name descname"><span class="pre">unsuppress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.manage_state.unsuppress" title="Permalink to this definition">#</a></dt>
+<dd><p>Unsuppresses the selected CAD entities.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.rename">
+<span class="sig-name descname"><span class="pre">rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.rename" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables you to rename the selected entities. Specify the path for the entities and the new name. For multiple entities, the specified name will be used, with a suitable index as suffix. For example, specifying a new name wall will result in entities wall.1, wall.2, etc.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.replace_object">
-<span class="sig-name descname"><span class="pre">replace_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.replace_object" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.replace_object">
+<span class="sig-name descname"><span class="pre">replace_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.replace_object" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables you to replace an object with the selected CAD entities. Specify the path for the entities to be added and select the object to be modified.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.update_cad_assemblies">
-<span class="sig-name descname"><span class="pre">update_cad_assemblies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.update_cad_assemblies" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_cad_assemblies">
+<span class="sig-name descname"><span class="pre">update_cad_assemblies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_cad_assemblies" title="Permalink to this definition">#</a></dt>
 <dd><p>Reimports the selected CAD entities using new parameters specified in the update-options/ menu.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_options</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Contains options for updating the CAD entities on reimport.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="update_options/index.html#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="update_options/index.html#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.import_edge_zones" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.import_edge_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">import_edge_zones</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to import edge zones from the CAD entities on reimport.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="update_options/index.html#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.one_object_per" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.one_object_per"><code class="xref py py-obj docutils literal notranslate"><span class="pre">one_object_per</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to change the CAD object granularity on reimport.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="update_options/index.html#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.one_zone_per" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.one_zone_per"><code class="xref py py-obj docutils literal notranslate"><span class="pre">one_zone_per</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to change the CAD zone granularity on reimport.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="update_options/index.html#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.tessellation" title="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.tessellation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tessellation</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to control the tessellation (faceting) during reimport.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.import_edge_zones">
+<span class="sig-name descname"><span class="pre">import_edge_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.import_edge_zones" title="Permalink to this definition">#</a></dt>
+<dd><p>Enables you to import edge zones from the CAD entities on reimport. Specify an appropriate value for feature angle.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.one_object_per">
+<span class="sig-name descname"><span class="pre">one_object_per</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.one_object_per" title="Permalink to this definition">#</a></dt>
+<dd><p>Enables you to change the CAD object granularity on reimport.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.one_zone_per">
+<span class="sig-name descname"><span class="pre">one_zone_per</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.one_zone_per" title="Permalink to this definition">#</a></dt>
+<dd><p>Enables you to change the CAD zone granularity on reimport.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.tessellation">
+<span class="sig-name descname"><span class="pre">tessellation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.cad_assemblies.update_options.tessellation" title="Permalink to this definition">#</a></dt>
+<dd><p>Enables you to control the tessellation (faceting) during reimport. You can select either cad-faceting or cfd-surface-mesh.   CAD faceting enables you to control the tessellation based on the CAD faceting tolerance and maximum facet size specified.   CFD Surface Mesh enables you to use a size field file during reimport. If you enter yes, specify the size field file to be read. If you do not want to use a size field file, you can obtain conformal faceting based on the underlying curve and surface curvature (using the minimum and maximum facet sizes, and the facet curvature normal angle specified) and edge proximity (using the cells per gap specified). You can also save the size field in a file (size field is computed based on the specified parameters; that is, Min Size, Max Size, Curvature Normal Angle, Cells Per Gap).</p>
+</dd></dl>
+
 </dd></dl>
 
 </dd></dl>

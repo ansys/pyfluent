@@ -3,14 +3,8 @@
 solver.tui.define.mixing\_planes.set
 ====================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.mixing_planes.set
-   :members: fix_pressure_level, under_relaxation, averaging_method
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.mixing_planes.set
+     :autosummary:
 .. toctree::
    :hidden:
 

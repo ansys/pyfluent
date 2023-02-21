@@ -1,0 +1,7 @@
+.. _ref_solver_tui_report_volume_integrals:
+
+solver.tui.report.volume\_integrals
+===================================
+
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.report.volume_integrals
+     :autosummary:

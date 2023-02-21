@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
-    <link rel="next" title="solver.tui.mesh.adapt.geometry" href="../geometry/index.html" />
-    <link rel="prev" title="solver.tui.mesh.adapt.manage_criteria" href="../manage_criteria/index.html" />
+    <link rel="next" title="solver.tui.mesh.adapt.manage_criteria" href="../manage_criteria/index.html" />
+    <link rel="prev" title="solver.tui.mesh.adapt.profile" href="../profile/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -305,13 +305,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -355,53 +350,23 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../surface/index.html">
-         solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../setup/index.html">
-         solver.tui.setup
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../solution/index.html">
-         solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../adjoint/index.html">
          solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
+        <a class="reference internal" href="../../../display/index.html">
+         solver.tui.display
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
+        <a class="reference internal" href="../../../define/index.html">
+         solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../file/index.html">
+         solver.tui.file
         </a>
        </li>
        <li class="toctree-l4">
@@ -419,21 +384,6 @@ function checkPageExistsAndRedirect(event) {
          </i>
         </label>
         <ul class="current">
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../repair_improve/index.html">
-           solver.tui.mesh.repair_improve
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../modify_zones/index.html">
-           solver.tui.mesh.modify_zones
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../polyhedra/index.html">
-           solver.tui.mesh.polyhedra
-          </a>
-         </li>
          <li class="toctree-l5 current active has-children">
           <a class="reference internal" href="../index.html">
            solver.tui.mesh.adapt
@@ -450,13 +400,13 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../multi_layer_refinement/index.html">
-             solver.tui.mesh.adapt.multi_layer_refinement
-            </a>
-           </li>
-           <li class="toctree-l6">
             <a class="reference internal" href="../profile/index.html">
              solver.tui.mesh.adapt.profile
+            </a>
+           </li>
+           <li class="toctree-l6 current active">
+            <a class="current reference internal" href="#">
+             solver.tui.mesh.adapt.cell_registers
             </a>
            </li>
            <li class="toctree-l6">
@@ -464,9 +414,9 @@ function checkPageExistsAndRedirect(event) {
              solver.tui.mesh.adapt.manage_criteria
             </a>
            </li>
-           <li class="toctree-l6 current active">
-            <a class="current reference internal" href="#">
-             solver.tui.mesh.adapt.cell_registers
+           <li class="toctree-l6">
+            <a class="reference internal" href="../multi_layer_refinement/index.html">
+             solver.tui.mesh.adapt.multi_layer_refinement
             </a>
            </li>
            <li class="toctree-l6">
@@ -477,8 +427,23 @@ function checkPageExistsAndRedirect(event) {
           </ul>
          </li>
          <li class="toctree-l5">
+          <a class="reference internal" href="../../modify_zones/index.html">
+           solver.tui.mesh.modify_zones
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../polyhedra/index.html">
+           solver.tui.mesh.polyhedra
+          </a>
+         </li>
+         <li class="toctree-l5">
           <a class="reference internal" href="../../reorder/index.html">
            solver.tui.mesh.reorder
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../repair_improve/index.html">
+           solver.tui.mesh.repair_improve
           </a>
          </li>
          <li class="toctree-l5">
@@ -486,12 +451,17 @@ function checkPageExistsAndRedirect(event) {
            solver.tui.mesh.surface_mesh
           </a>
          </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../geometry/index.html">
-           solver.tui.mesh.geometry
-          </a>
-         </li>
         </ul>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parallel/index.html">
+         solver.tui.parallel
+        </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../plot/index.html">
@@ -504,8 +474,48 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../results/index.html">
          solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
         </a>
        </li>
        <li class="toctree-l4">
@@ -519,28 +529,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../display/index.html">
-         solver.tui.display
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../define/index.html">
-         solver.tui.define
+        <a class="reference internal" href="../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
       </ul>
@@ -609,7 +599,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.mesh.adapt.cell_registers
@@ -618,7 +608,16 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.adapt">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.mesh.adapt.cell_registers.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.adapt">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.adapt.cell_registers.adapt()
@@ -627,7 +626,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.add">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.add">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.adapt.cell_registers.add()
@@ -636,7 +635,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.apply_poor_mesh_numerics">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.apply_poor_mesh_numerics">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.adapt.cell_registers.apply_poor_mesh_numerics()
@@ -645,7 +644,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.coarsen">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.coarsen">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.adapt.cell_registers.coarsen()
@@ -654,7 +653,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.delete">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.adapt.cell_registers.delete()
@@ -663,7 +662,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.display">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.display">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.adapt.cell_registers.display()
@@ -672,7 +671,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.edit">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.edit">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.adapt.cell_registers.edit()
@@ -681,7 +680,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.list">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.list">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.adapt.cell_registers.list()
@@ -690,7 +689,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.list_properties">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.list_properties">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.adapt.cell_registers.list_properties()
@@ -699,7 +698,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.refine">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.refine">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.adapt.cell_registers.refine()
@@ -730,72 +729,112 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-mesh-adapt-cell-registers">
 <span id="ref-solver-tui-mesh-adapt-cell-registers"></span><h1>solver.tui.mesh.adapt.cell_registers<a class="headerlink" href="#solver-tui-mesh-adapt-cell-registers" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.adapt.</span></span><span class="sig-name descname"><span class="pre">cell_registers</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Enters the cell registers menu.</p>
+<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.adapt" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.adapt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adapt</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Adapt cell register objects.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.add" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Add a new object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.apply_poor_mesh_numerics" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.apply_poor_mesh_numerics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_poor_mesh_numerics</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Applies poor mesh numerics to the mesh of a cell register.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.coarsen" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.coarsen"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coarsen</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Coarsen cell register objects.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.delete" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Deletes a cell register.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.display" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.display"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Displays a cell register.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.edit" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.edit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edit</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Edit an object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.list" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Lists all of the currently defined cell registers.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.list_properties" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.list_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_properties</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Lists the properties of a cell register.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.refine" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.refine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">refine</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Refine cell register objects.</p></td>
+</tr>
 </tbody>
 </table>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.adapt.</span></span><span class="sig-name descname"><span class="pre">cell_registers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers" title="Permalink to this definition">#</a></dt>
-<dd><p>Enters the cell registers menu.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.adapt">
-<span class="sig-name descname"><span class="pre">adapt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.adapt" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.adapt">
+<span class="sig-name descname"><span class="pre">adapt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.adapt" title="Permalink to this definition">#</a></dt>
 <dd><p>Adapt cell register objects.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.add">
-<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.add" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.add" title="Permalink to this definition">#</a></dt>
 <dd><p>Add a new object.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.apply_poor_mesh_numerics">
-<span class="sig-name descname"><span class="pre">apply_poor_mesh_numerics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.apply_poor_mesh_numerics" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.apply_poor_mesh_numerics">
+<span class="sig-name descname"><span class="pre">apply_poor_mesh_numerics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.apply_poor_mesh_numerics" title="Permalink to this definition">#</a></dt>
 <dd><p>Applies poor mesh numerics to the mesh of a cell register.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.coarsen">
-<span class="sig-name descname"><span class="pre">coarsen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.coarsen" title="Permalink to this definition">#</a></dt>
-<dd><p>Coarsen the mesh based on a cell register.</p>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.coarsen">
+<span class="sig-name descname"><span class="pre">coarsen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.coarsen" title="Permalink to this definition">#</a></dt>
+<dd><p>Coarsen cell register objects.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.delete">
-<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.delete" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes a cell register.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.display">
-<span class="sig-name descname"><span class="pre">display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.display" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.display">
+<span class="sig-name descname"><span class="pre">display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.display" title="Permalink to this definition">#</a></dt>
 <dd><p>Displays a cell register.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.edit">
-<span class="sig-name descname"><span class="pre">edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.edit" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.edit">
+<span class="sig-name descname"><span class="pre">edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.edit" title="Permalink to this definition">#</a></dt>
 <dd><p>Edit an object.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.list">
-<span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.list" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.list">
+<span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.list" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists all of the currently defined cell registers.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.list_properties">
-<span class="sig-name descname"><span class="pre">list_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.list_properties" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.list_properties">
+<span class="sig-name descname"><span class="pre">list_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.list_properties" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists the properties of a cell register.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.refine">
-<span class="sig-name descname"><span class="pre">refine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers.refine" title="Permalink to this definition">#</a></dt>
-<dd><p>Refine the mesh based on a cell register.</p>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.refine">
+<span class="sig-name descname"><span class="pre">refine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.adapt.cell_registers.refine" title="Permalink to this definition">#</a></dt>
+<dd><p>Refine cell register objects.</p>
 </dd></dl>
 
 </dd></dl>

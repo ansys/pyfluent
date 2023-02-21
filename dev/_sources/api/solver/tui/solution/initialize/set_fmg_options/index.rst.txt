@@ -3,11 +3,5 @@
 solver.tui.solution.initialize.set\_fmg\_options
 ================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.initialize.set_fmg_options
-   :members: species_reactions, viscous_terms, set_turbulent_viscosity_ratio
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solution.initialize.set_fmg_options
+     :autosummary:

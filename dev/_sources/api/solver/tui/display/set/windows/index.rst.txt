@@ -3,20 +3,14 @@
 solver.tui.display.set.windows
 ==============================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.windows
-   :members: logo, aspect_ratio, ruler, logo_color
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.display.set.windows
+     :autosummary:
 .. toctree::
    :hidden:
 
    axes/index
-   text/index
    main/index
    scale/index
+   text/index
    video/index
    xy/index

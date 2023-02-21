@@ -3,32 +3,26 @@
 meshing.tui.mesh
 ================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh
-   :members: selective_mesh_check, reset_mesh, list_mesh_parameter, zone_names_clean_up, auto_mesh, clear_undo_stack, auto_mesh_multiple_objects, cutcell, activate_lean_datastructures, check_mesh, laplace_smooth_nodes, create_heat_exchanger, reset_mesh_parameter, repair_face_handedness, prepare_for_solve, auto_prefix_cell_zones, create_frustrum, deactivate_lean_datastructures, check_quality_level, clear_mesh, check_quality
-
+.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.mesh
+     :autosummary:
 .. toctree::
    :hidden:
 
+   cartesian/index
+   cavity/index
+   domains/index
+   hexcore/index
+   modify/index
+   non_conformals/index
+   rapid_octree/index
+   prism/index
+   pyramid/index
+   thin_volume_mesh/index
+   separate/index
    tet/index
    manage/index
-   domains/index
-   pyramid/index
-   cavity/index
    cell_zone_conditions/index
-   auto_mesh_controls/index
-   non_conformals/index
-   hexcore/index
-   prism/index
    poly/index
-   modify/index
    poly_hexcore/index
-   thin_volume_mesh/index
-   rapid_octree/index
-   cartesian/index
-   separate/index
+   auto_mesh_controls/index
    scoped_prisms/index

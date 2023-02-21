@@ -3,14 +3,8 @@
 solver.tui.solution.run\_calculation
 ====================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.run_calculation
-   :members: mesh_motion, number_of_iterations, update_physical_time, set_solution_steering, adaptive_time_stepping, solution_steering, second_order_time_options, variable_time_stepping, multistage_time_iterate, residual_tolerance, reporting_interval, time_step, iterate, cfl_based_adaptive_time_stepping, summary, data_sampling, residual_verbosity, max_corrections, dual_time_iterate
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solution.run_calculation
+     :autosummary:
 .. toctree::
    :hidden:
 

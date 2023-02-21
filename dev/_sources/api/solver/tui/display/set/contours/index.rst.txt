@@ -3,11 +3,5 @@
 solver.tui.display.set.contours
 ===============================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.contours
-   :members: global_range, log_scale, node_values, auto_range, clip_to_range, coloring, render_mesh, n_contour, filled_contours, line_contours, surfaces
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.display.set.contours
+     :autosummary:

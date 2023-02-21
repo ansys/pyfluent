@@ -3,11 +3,5 @@
 solver.tui.display.set.picture.color\_mode
 ==========================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.picture.color_mode
-   :members: gray_scale, mono_chrome, list, color
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.display.set.picture.color_mode
+     :autosummary:

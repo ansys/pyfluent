@@ -1,0 +1,6 @@
+get\_si\_unit\_from\_dim
+========================
+
+.. currentmodule:: ansys.fluent.core.quantity
+
+.. autofunction:: get_si_unit_from_dim

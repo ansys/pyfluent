@@ -3,11 +3,5 @@
 solver.tui.setup.models.shell\_conduction
 =========================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.shell_conduction
-   :members: multi_layer_shell, read_csv, write_csv, save_shell_zones, settings, enhanced_encapsulation
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.setup.models.shell_conduction
+     :autosummary:

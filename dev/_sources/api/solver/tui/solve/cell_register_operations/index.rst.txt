@@ -3,11 +3,5 @@
 solver.tui.solve.cell\_register\_operations
 ===========================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.cell_register_operations
-   :members: delete, add, list_properties, edit, list
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solve.cell_register_operations
+     :autosummary:

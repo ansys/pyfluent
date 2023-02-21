@@ -3,12 +3,6 @@
 solver.datamodel.preferences
 ============================
 
-.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root
    :noindex:
 
 .. toctree::
@@ -21,6 +15,6 @@ solver.datamodel.preferences
    MatProApp/index
    MeshingWorkflow/index
    Navigation/index
-   ParametricStudy/index
+   PrjApp/index
    Simulation/index
    TurboWorkflow/index

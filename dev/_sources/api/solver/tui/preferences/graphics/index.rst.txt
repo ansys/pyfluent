@@ -3,27 +3,21 @@
 solver.tui.preferences.graphics
 ===============================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.graphics
-   :members: remove_partition_lines_tolerance, set_camera_normal_to_surface_increments, graphics_window_line_width, marker_drawing_mode, text_window_line_width, lower_resolution_graphics_window_line_width, enable_non_object_based_workflow, animation_option, point_tool_size, show_hidden_surfaces, force_key_frame_animation_markers_to_off, plot_legend_margin, event_poll_timeout, hidden_surface_removal_method, graphics_window_point_symbol, higher_resolution_graphics_window_line_width, scroll_wheel_event_end_timer, event_poll_interval, switch_to_open_glfor_remote_visualization, double_buffering, test_use_external_function, rotation_centerpoint_visible, remove_partition_lines, min_graphics_text_size, show_hidden_lines, max_graphics_text_size
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.preferences.graphics
+     :autosummary:
 .. toctree::
    :hidden:
 
    boundary_markers/index
-   hardcopy_settings/index
-   manage_hoops_memory/index
-   vector_settings/index
-   material_effects/index
    colormap_settings/index
    embedded_windows/index
-   graphics_effects/index
    export_video_settings/index
+   graphics_effects/index
+   hardcopy_settings/index
+   lighting/index
+   manage_hoops_memory/index
+   material_effects/index
+   meshing_mode/index
    performance/index
    transparency/index
-   lighting/index
-   meshing_mode/index
+   vector_settings/index

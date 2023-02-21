@@ -344,16 +344,6 @@ function checkPageExistsAndRedirect(event) {
    Apply solution settings
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="case_reader.html">
-   Use case reader
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="data_transfer.html">
-   Transfer data
-  </a>
- </li>
 </ul>
 
   </div>
@@ -446,7 +436,7 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="launch-fluent-locally">
 <span id="ref-user-guide-launch"></span><h1>Launch Fluent locally<a class="headerlink" href="#launch-fluent-locally" title="Permalink to this heading">#</a></h1>
-<p>You can use the <code class="xref py py-func docutils literal notranslate"><span class="pre">launch_fluent()</span></code>
+<p>You can use the <a class="reference internal" href="../api/general/launcher/_autosummary/ansys.fluent.core.launcher.launcher.launch_fluent.html#ansys.fluent.core.launcher.launcher.launch_fluent" title="ansys.fluent.core.launcher.launcher.launch_fluent"><code class="xref py py-func docutils literal notranslate"><span class="pre">launch_fluent()</span></code></a>
 method to start Fluent from Python in gRPC mode. This code starts Fluent in the background
 so that commands can be sent to Fluent from the Python interpreter:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ansys.fluent.core</span> <span class="k">as</span> <span class="nn">pyfluent</span>
@@ -456,7 +446,7 @@ so that commands can be sent to Fluent from the Python interpreter:</p>
 <section id="launcher-options">
 <h2>Launcher options<a class="headerlink" href="#launcher-options" title="Permalink to this heading">#</a></h2>
 <p>The following examples show different ways that you can launch Fluent locally.
-For more information, see <code class="xref py py-func docutils literal notranslate"><span class="pre">launch_fluent()</span></code>.</p>
+For more information, see <a class="reference internal" href="../api/general/launcher/_autosummary/ansys.fluent.core.launcher.launcher.launch_fluent.html#ansys.fluent.core.launcher.launcher.launch_fluent" title="ansys.fluent.core.launcher.launcher.launch_fluent"><code class="xref py py-func docutils literal notranslate"><span class="pre">launch_fluent()</span></code></a>.</p>
 <section id="solver-mode">
 <h3>Solver mode<a class="headerlink" href="#solver-mode" title="Permalink to this heading">#</a></h3>
 <p>This example shows how to launch Fluent in solution mode:</p>
@@ -525,7 +515,7 @@ in string or <code class="docutils literal notranslate"><span class="pre">enum</
 </section>
 <section id="scheduler-support">
 <h2>Scheduler support<a class="headerlink" href="#scheduler-support" title="Permalink to this heading">#</a></h2>
-<p>When PyFluent is run within a job scheduler environment, the <code class="xref py py-func docutils literal notranslate"><span class="pre">launch_fluent()</span></code> method automatically determines
+<p>When PyFluent is run within a job scheduler environment, the <a class="reference internal" href="../api/general/launcher/_autosummary/ansys.fluent.core.launcher.launcher.launch_fluent.html#ansys.fluent.core.launcher.launcher.launch_fluent" title="ansys.fluent.core.launcher.launcher.launch_fluent"><code class="xref py py-func docutils literal notranslate"><span class="pre">launch_fluent()</span></code></a> method automatically determines
 the list of machines and core counts to start Fluent with. The supported
 scheduler environments are Univa Grid Engine (UGE), Load Sharing Facility (LSF),
 Portable Batch System (PBS), and Slurm.</p>
@@ -565,7 +555,7 @@ also configure the virtual environment as part of the job script if desired.</p>
 the supported interfaces.</p></li>
 </ul>
 <p>Once running within the scheduler environment, the
-<code class="xref py py-func docutils literal notranslate"><span class="pre">launch_fluent()</span></code>
+<a class="reference internal" href="../api/general/launcher/_autosummary/ansys.fluent.core.launcher.launcher.launch_fluent.html#ansys.fluent.core.launcher.launcher.launch_fluent" title="ansys.fluent.core.launcher.launcher.launch_fluent"><code class="xref py py-func docutils literal notranslate"><span class="pre">launch_fluent()</span></code></a>
 method can be used in a few different ways. This example shows how to start
 the three-dimensional, double precision version of Fluent on all the requested
 machines and cores:</p>
@@ -586,7 +576,7 @@ environment allocates all the cores on a machine and you know that Fluent may
 not scale well on all the allocated cores.</p>
 <p>Finally, if you want to ignore the scheduler allocation, you can pass the <code class="docutils literal notranslate"><span class="pre">-t</span></code>
 or <code class="docutils literal notranslate"><span class="pre">-t</span></code> and <code class="docutils literal notranslate"><span class="pre">-cnf</span></code> arguments to the
-<code class="xref py py-func docutils literal notranslate"><span class="pre">launch_fluent()</span></code> method
+<a class="reference internal" href="../api/general/launcher/_autosummary/ansys.fluent.core.launcher.launcher.launch_fluent.html#ansys.fluent.core.launcher.launcher.launch_fluent" title="ansys.fluent.core.launcher.launcher.launch_fluent"><code class="xref py py-func docutils literal notranslate"><span class="pre">launch_fluent()</span></code></a> method
 using the <code class="docutils literal notranslate"><span class="pre">additional_arguments</span></code> parameter. For local parallel execution, simply pass the <code class="docutils literal notranslate"><span class="pre">-t</span></code>
 argument:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">solver</span> <span class="o">=</span> <span class="n">pyfluent</span><span class="o">.</span><span class="n">launch_fluent</span><span class="p">(</span>

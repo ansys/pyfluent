@@ -1,0 +1,7 @@
+.. _ref_meshing_tui_display_views_camera:
+
+meshing.tui.display.views.camera
+================================
+
+.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.display.views.camera
+     :autosummary:

@@ -3,11 +3,5 @@
 meshing.tui.file.export
 =======================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.file.export
-   :members: hypermesh, nastran, ansys, patran, stl
-
+.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.file.export
+     :autosummary:

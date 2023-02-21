@@ -3,24 +3,18 @@
 solver.tui.solve
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve
-   :members: update_physical_time, iterate, convergence_conditions, multistage_time_iterate, iterate_steady_2way_fsi, patch, mesh_motion, dpm_update, dual_time_iterate
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solve
+     :autosummary:
 .. toctree::
    :hidden:
 
-   set/index
    animate/index
-   cell_register_operations/index
-   execute_commands/index
-   cell_registers/index
+   initialize/index
    monitors/index
+   report_files/index
    report_definitions/index
    report_plots/index
-   initialize/index
-   report_files/index
+   cell_registers/index
+   cell_register_operations/index
+   set/index
+   execute_commands/index

@@ -3,11 +3,6 @@
 meshing.datamodel.PartManagement.MeshingOperations
 ==================================================
 
-.. currentmodule:: ansys.fluent.core.datamodel_231.PartManagement
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.datamodel_231.PartManagement::Root.MeshingOperations
-   :members: Children, Name, DeleteAllOperations, UpdateAllOperations
+.. autoclass:: ansys.fluent.core.datamodel_222.PartManagement::Root.MeshingOperations
+     :autosummary:
 

@@ -3,11 +3,5 @@
 solver.tui.solve.monitors.residual
 ==================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.monitors.residual
-   :members: monitor, convergence_criteria, plot, normalization_factors, normalize, check_convergence, reset, scale_by_coefficient, enhanced_continuity_residual, n_save, criterion_type, print, n_display, re_normalize, relative_conv_criteria, n_maximize_norms
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solve.monitors.residual
+     :autosummary:

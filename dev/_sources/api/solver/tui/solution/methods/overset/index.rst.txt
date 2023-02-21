@@ -3,14 +3,8 @@
 solver.tui.solution.methods.overset
 ===================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.methods.overset
-   :members: high_order_pressure, orphan_cell_treatment, interpolation_method
-
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solution.methods.overset
+     :autosummary:
 .. toctree::
    :hidden:
 

@@ -3,21 +3,17 @@
 solver.tui.solution
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution
+.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solution
+     :autosummary:
 .. toctree::
    :hidden:
 
+   calculation_activities/index
+   cell_registers/index
+   controls/index
    expert/index
-   report_definitions/index
    initialize/index
    methods/index
-   calculation_activities/index
-   controls/index
-   cell_registers/index
    monitors/index
+   report_definitions/index
    run_calculation/index
