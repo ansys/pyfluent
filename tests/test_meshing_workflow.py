@@ -545,9 +545,8 @@ def test_extended_wrapper(
     new_mesh_session,
     mixing_elbow_geometry
 ):
-    workflow = new_mesh_session.workflow
-    workflow.watertight()
-    import_geometry = workflow.import_geometry
+    watertight_workflow = new_mesh_session.watertight()
+    import_geometry = watertight_workflow.import_geometry
     assert import_geometry.Arguments() == {}
     import_geometry.Arguments = dict(
         FileName=mixing_elbow_geometry
@@ -564,7 +563,7 @@ def test_extended_wrapper(
     assert import_geometry.FileName() == "bob"
     import_geometry.FileName.set_state(mixing_elbow_geometry)
     import_geometry.Execute()
-    add_local_sizing = workflow.add_local_sizing
+    add_local_sizing = watertight_workflow.add_local_sizing
     assert not add_local_sizing.ordered_children()
     add_local_sizing.add_child(
         state={"BOIFaceLabelList": ["cold-inlet"]}
@@ -580,12 +579,12 @@ def test_extended_wrapper(
         "elbow-fluid"
     ]
     #restart
-    workflow.watertight()
-    assert workflow.import_geometry.State() == "Out-of-date"
-    workflow.import_geometry(
+    watertight_workflow = new_mesh_session.watertight()
+    assert watertight_workflow.import_geometry.State() == "Out-of-date"
+    watertight_workflow.import_geometry(
         FileName=mixing_elbow_geometry,
         AppendMesh=False
     )
-    assert workflow.import_geometry.State() == "Up-to-date"
-    import_geometry_state = workflow.import_geometry.arguments()
+    assert watertight_workflow.import_geometry.State() == "Up-to-date"
+    import_geometry_state = watertight_workflow.import_geometry.arguments()
     assert len(import_geometry_state) > 2

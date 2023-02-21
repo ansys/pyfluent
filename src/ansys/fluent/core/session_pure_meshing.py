@@ -38,6 +38,14 @@ class PureMeshing(_BaseSession):
         """workflow datamodel root."""
         return self._base_meshing.workflow
 
+    def watertight(self):
+        self.workflow.watertight()
+        return self.workflow
+
+    def fault_tolerant(self):
+        self.workflow.fault_tolerant()
+        return self.workflow
+
     @property
     def PartManagement(self):
         """PartManagement datamodel root."""
