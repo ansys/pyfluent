@@ -589,8 +589,13 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         return obj_names_list
 
     def __getitem__(self, name: str) -> ChildTypeT:
-        if name not in self.get_object_names():
-            raise KeyError(name)
+        try:
+            if name not in self.get_object_names():
+                raise KeyError(name)
+        except KeyError:
+            keys = self.get_object_names()
+            print(f"KeyError: '{name}'")
+            print(f"Available keys are - {keys}")
         obj = self._objects.get(name)
         if not obj:
             obj = self._create_child_object(name)
