@@ -413,7 +413,7 @@ jobs:
   build_test_232:
     name: Build and Test with 23.2 Fluent
     needs: test-import
-    runs-on: [self-hosted, pyfluent]
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
