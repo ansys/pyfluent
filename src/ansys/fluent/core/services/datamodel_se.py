@@ -3,7 +3,6 @@ from enum import Enum
 import itertools
 from typing import Any, Callable, Dict, Iterator, List, Tuple
 import warnings
-import weakref
 
 import grpc
 
@@ -152,7 +151,9 @@ class DatamodelService(StreamingService):
 
     def begin_event_streaming(self, started_evt):
         """Begin datamodel event streaming."""
-        self._streams = self._stub.BeginEventStreaming(self.request, metadata=self._metadata)
+        self._streams = self._stub.BeginEventStreaming(
+            self.request, metadata=self._metadata
+        )
         started_evt.set()
         while True:
             try:
@@ -356,9 +357,14 @@ class PyStateContainer(PyCallableStateObject):
     docstring = None
 
 
-class EventSubscription():
+class EventSubscription:
     """EventSubscription class for any datamodel event."""
-    def __init__(self, service: DatamodelService, request: DataModelProtoModule.SubscribeEventsRequest):
+
+    def __init__(
+        self,
+        service: DatamodelService,
+        request: DataModelProtoModule.SubscribeEventsRequest,
+    ):
         """Subscribe to a datamodel event."""
         self._service = service
         response = service.subscribe_events(request)
@@ -401,7 +407,6 @@ class PyMenu(PyStateContainer):
     """
 
     def __init__(self, service: DatamodelService, rules: str, path: Path = None):
-        self.events = weakref.WeakSet()
         super().__init__(service, rules, path)
 
     def __setattr__(self, name: str, value: Any):
