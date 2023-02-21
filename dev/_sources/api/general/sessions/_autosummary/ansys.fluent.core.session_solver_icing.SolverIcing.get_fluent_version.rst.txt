@@ -1,6 +1,0 @@
-get\_fluent\_version
-====================
-
-.. currentmodule:: ansys.fluent.core.session_solver_icing
-
-.. automethod:: SolverIcing.get_fluent_version

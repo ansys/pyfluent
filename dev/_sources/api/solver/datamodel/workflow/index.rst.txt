@@ -3,6 +3,13 @@
 solver.datamodel.workflow
 =========================
 
+.. currentmodule:: ansys.fluent.core.datamodel_231.workflow
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.workflow::Root
+   :members: CreateCompositeTask, CreateNewWorkflow, DeleteTasks, InitializeWorkflow, InsertNewTask, LoadState, LoadWorkflow, ResetWorkflow, SaveWorkflow
    :noindex:
 
 .. toctree::

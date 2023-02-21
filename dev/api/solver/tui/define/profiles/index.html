@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
-    <link rel="next" title="solver.tui.define.solution_strategy" href="../solution_strategy/index.html" />
-    <link rel="prev" title="solver.tui.define.phases.iac_expert" href="../phases/iac_expert/index.html" />
+    <link rel="next" title="solver.tui.mesh" href="../../mesh/index.html" />
+    <link rel="prev" title="solver.tui.define.user_defined.real_gas_models" href="../user_defined/real_gas_models/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -304,8 +304,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -349,13 +354,73 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
+        <a class="reference internal" href="../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../simulation_reports/index.html">
+         solver.tui.simulation_reports
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../adjoint/index.html">
          solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../parallel/index.html">
+         solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -369,18 +434,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../boundary_conditions/index.html">
-           solver.tui.define.boundary_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../spectral/index.html">
-           solver.tui.define.spectral
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../custom_field_functions/index.html">
-           solver.tui.define.custom_field_functions
+          <a class="reference internal" href="../parameters/index.html">
+           solver.tui.define.parameters
           </a>
          </li>
          <li class="toctree-l5">
@@ -389,23 +444,28 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../mesh_interfaces/index.html">
-           solver.tui.define.mesh_interfaces
+          <a class="reference internal" href="../turbo_model/index.html">
+           solver.tui.define.turbo_model
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../gap_model/index.html">
-           solver.tui.define.gap_model
+          <a class="reference internal" href="../custom_field_functions/index.html">
+           solver.tui.define.custom_field_functions
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../materials/index.html">
-           solver.tui.define.materials
+          <a class="reference internal" href="../phases/index.html">
+           solver.tui.define.phases
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../mixing_planes/index.html">
-           solver.tui.define.mixing_planes
+          <a class="reference internal" href="../spectral/index.html">
+           solver.tui.define.spectral
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../boundary_conditions/index.html">
+           solver.tui.define.boundary_conditions
           </a>
          </li>
          <li class="toctree-l5">
@@ -414,53 +474,8 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../overset_interfaces/index.html">
-           solver.tui.define.overset_interfaces
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../operating_conditions/index.html">
-           solver.tui.define.operating_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../parameters/index.html">
-           solver.tui.define.parameters
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../periodic_conditions/index.html">
-           solver.tui.define.periodic_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../turbo_model/index.html">
-           solver.tui.define.turbo_model
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../phases/index.html">
-           solver.tui.define.phases
-          </a>
-         </li>
-         <li class="toctree-l5 current active">
-          <a class="current reference internal" href="#">
-           solver.tui.define.profiles
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../solution_strategy/index.html">
-           solver.tui.define.solution_strategy
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../reference_frames/index.html">
-           solver.tui.define.reference_frames
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../user_defined/index.html">
-           solver.tui.define.user_defined
+          <a class="reference internal" href="../gap_model/index.html">
+           solver.tui.define.gap_model
           </a>
          </li>
          <li class="toctree-l5">
@@ -469,8 +484,8 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../virtual_boundary/index.html">
-           solver.tui.define.virtual_boundary
+          <a class="reference internal" href="../mesh_interfaces/index.html">
+           solver.tui.define.mesh_interfaces
           </a>
          </li>
          <li class="toctree-l5">
@@ -478,61 +493,61 @@ function checkPageExistsAndRedirect(event) {
            solver.tui.define.curvilinear_coordinate_system
           </a>
          </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../overset_interfaces/index.html">
+           solver.tui.define.overset_interfaces
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../reference_frames/index.html">
+           solver.tui.define.reference_frames
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../periodic_conditions/index.html">
+           solver.tui.define.periodic_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../mixing_planes/index.html">
+           solver.tui.define.mixing_planes
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../materials/index.html">
+           solver.tui.define.materials
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../operating_conditions/index.html">
+           solver.tui.define.operating_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../virtual_boundary/index.html">
+           solver.tui.define.virtual_boundary
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../solution_strategy/index.html">
+           solver.tui.define.solution_strategy
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../user_defined/index.html">
+           solver.tui.define.user_defined
+          </a>
+         </li>
+         <li class="toctree-l5 current active">
+          <a class="current reference internal" href="#">
+           solver.tui.define.profiles
+          </a>
+         </li>
         </ul>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../icing/index.html">
-         solver.tui.icing
-        </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../mesh/index.html">
          solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../preferences/index.html">
-         solver.tui.preferences
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../solution/index.html">
-         solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../solve/index.html">
-         solver.tui.solve
         </a>
        </li>
        <li class="toctree-l4">
@@ -541,18 +556,18 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../views/index.html">
+         solver.tui.views
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../simulation_reports/index.html">
-         solver.tui.simulation_reports
+        <a class="reference internal" href="../../solve/index.html">
+         solver.tui.solve
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../server/index.html">
-         solver.tui.server
+        <a class="reference internal" href="../../report/index.html">
+         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4">
@@ -561,18 +576,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
+        <a class="reference internal" href="../../display/index.html">
+         solver.tui.display
         </a>
        </li>
       </ul>
@@ -641,7 +646,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.define.profiles
@@ -650,16 +655,7 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.define.profiles.__init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.delete">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.profiles.delete()
@@ -668,7 +664,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.delete_all">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.delete_all">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.profiles.delete_all()
@@ -677,7 +673,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.display_profile_point_cloud_data">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.display_profile_point_cloud_data">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.profiles.display_profile_point_cloud_data()
@@ -686,7 +682,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.display_profile_surface">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.display_profile_surface">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.profiles.display_profile_surface()
@@ -695,7 +691,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.interpolation_method">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.interpolation_method">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.profiles.interpolation_method()
@@ -704,7 +700,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.link_profile_to_reference_frame">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.link_profile_to_reference_frame">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.profiles.link_profile_to_reference_frame()
@@ -713,7 +709,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.list_profile_fields">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.list_profile_fields">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.profiles.list_profile_fields()
@@ -722,7 +718,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.list_profile_parameters">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.list_profile_parameters">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.profiles.list_profile_parameters()
@@ -731,7 +727,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.list_profiles">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.list_profiles">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.profiles.list_profiles()
@@ -740,7 +736,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.morphing">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.morphing">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.profiles.morphing()
@@ -749,7 +745,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.orient_profile">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.orient_profile">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.profiles.orient_profile()
@@ -758,7 +754,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.overlay_profile_point_cloud_data">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.overlay_profile_point_cloud_data">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.profiles.overlay_profile_point_cloud_data()
@@ -767,7 +763,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.overlay_profile_surface">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.overlay_profile_surface">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.profiles.overlay_profile_surface()
@@ -776,7 +772,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.replicate_profile">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.replicate_profile">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.profiles.replicate_profile()
@@ -785,7 +781,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.set_preference_profile_point_cloud_data">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.set_preference_profile_point_cloud_data">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.profiles.set_preference_profile_point_cloud_data()
@@ -794,7 +790,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.update_interval">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.update_interval">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.profiles.update_interval()
@@ -825,165 +821,107 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-define-profiles">
 <span id="ref-solver-tui-define-profiles"></span><h1>solver.tui.define.profiles<a class="headerlink" href="#solver-tui-define-profiles" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.profiles">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.</span></span><span class="sig-name descname"><span class="pre">profiles</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enters the boundary profiles menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.delete" title="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Deletes a profile.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.delete_all" title="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.delete_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_all</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Deletes all boundary-profiles.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.display_profile_point_cloud_data" title="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.display_profile_point_cloud_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display_profile_point_cloud_data</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Display Profile Point Cloud Data.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.display_profile_surface" title="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.display_profile_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display_profile_surface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Display the profile as a surface (this option is only available if the specified profile contains node-connectivity data).</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.interpolation_method" title="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.interpolation_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolation_method</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Chooses the method for interpolation of profiles.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.link_profile_to_reference_frame" title="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.link_profile_to_reference_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_profile_to_reference_frame</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Attaches a profile to a reference frame so that the profile will rotate according to the reference frame.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.list_profile_fields" title="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.list_profile_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_profile_fields</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Lists the fields of a particular profile.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.list_profile_parameters" title="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.list_profile_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_profile_parameters</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List the parameters of a particular profile.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.list_profiles" title="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.list_profiles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_profiles</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Lists all profiles.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.morphing" title="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.morphing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">morphing</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables profile morphing options in Orient Profile panel.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.orient_profile" title="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.orient_profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orient_profile</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Re-orient an existing profile.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.overlay_profile_point_cloud_data" title="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.overlay_profile_point_cloud_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overlay_profile_point_cloud_data</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Overlay Profile Point Cloud Data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.overlay_profile_surface" title="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.overlay_profile_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overlay_profile_surface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Overlay Profile Surface.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.replicate_profile" title="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.replicate_profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">replicate_profile</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Replicate Profile.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.set_preference_profile_point_cloud_data" title="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.set_preference_profile_point_cloud_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_preference_profile_point_cloud_data</span></code></a>(...)</p></td>
-<td><p>Set Preference Profile Point Cloud Data e.g., Point marker symbol,size,color.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.update_interval" title="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.update_interval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_interval</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets interval between updates of dynamic profiles.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.profiles">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.</span></span><span class="sig-name descname"><span class="pre">profiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the boundary profiles menu.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.delete">
-<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.delete" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.profiles.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes a profile.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.delete_all">
-<span class="sig-name descname"><span class="pre">delete_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.delete_all" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.profiles.delete_all">
+<span class="sig-name descname"><span class="pre">delete_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.delete_all" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes all boundary-profiles.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.display_profile_point_cloud_data">
-<span class="sig-name descname"><span class="pre">display_profile_point_cloud_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.display_profile_point_cloud_data" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.profiles.display_profile_point_cloud_data">
+<span class="sig-name descname"><span class="pre">display_profile_point_cloud_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.display_profile_point_cloud_data" title="Permalink to this definition">#</a></dt>
 <dd><p>Display Profile Point Cloud Data.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.display_profile_surface">
-<span class="sig-name descname"><span class="pre">display_profile_surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.display_profile_surface" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.profiles.display_profile_surface">
+<span class="sig-name descname"><span class="pre">display_profile_surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.display_profile_surface" title="Permalink to this definition">#</a></dt>
 <dd><p>Display the profile as a surface (this option is only available if the specified profile contains node-connectivity data).</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.interpolation_method">
-<span class="sig-name descname"><span class="pre">interpolation_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.interpolation_method" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.profiles.interpolation_method">
+<span class="sig-name descname"><span class="pre">interpolation_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.interpolation_method" title="Permalink to this definition">#</a></dt>
 <dd><p>Chooses the method for interpolation of profiles.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.link_profile_to_reference_frame">
-<span class="sig-name descname"><span class="pre">link_profile_to_reference_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.link_profile_to_reference_frame" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.profiles.link_profile_to_reference_frame">
+<span class="sig-name descname"><span class="pre">link_profile_to_reference_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.link_profile_to_reference_frame" title="Permalink to this definition">#</a></dt>
 <dd><p>Attaches a profile to a reference frame so that the profile will rotate according to the reference frame.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.list_profile_fields">
-<span class="sig-name descname"><span class="pre">list_profile_fields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.list_profile_fields" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.profiles.list_profile_fields">
+<span class="sig-name descname"><span class="pre">list_profile_fields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.list_profile_fields" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists the fields of a particular profile.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.list_profile_parameters">
-<span class="sig-name descname"><span class="pre">list_profile_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.list_profile_parameters" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.profiles.list_profile_parameters">
+<span class="sig-name descname"><span class="pre">list_profile_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.list_profile_parameters" title="Permalink to this definition">#</a></dt>
 <dd><p>List the parameters of a particular profile.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.list_profiles">
-<span class="sig-name descname"><span class="pre">list_profiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.list_profiles" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.profiles.list_profiles">
+<span class="sig-name descname"><span class="pre">list_profiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.list_profiles" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists all profiles.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.morphing">
-<span class="sig-name descname"><span class="pre">morphing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.morphing" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.profiles.morphing">
+<span class="sig-name descname"><span class="pre">morphing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.morphing" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables/disables profile morphing options in Orient Profile panel.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.orient_profile">
-<span class="sig-name descname"><span class="pre">orient_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.orient_profile" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.profiles.orient_profile">
+<span class="sig-name descname"><span class="pre">orient_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.orient_profile" title="Permalink to this definition">#</a></dt>
 <dd><p>Re-orient an existing profile.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.overlay_profile_point_cloud_data">
-<span class="sig-name descname"><span class="pre">overlay_profile_point_cloud_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.overlay_profile_point_cloud_data" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.profiles.overlay_profile_point_cloud_data">
+<span class="sig-name descname"><span class="pre">overlay_profile_point_cloud_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.overlay_profile_point_cloud_data" title="Permalink to this definition">#</a></dt>
 <dd><p>Overlay Profile Point Cloud Data.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.overlay_profile_surface">
-<span class="sig-name descname"><span class="pre">overlay_profile_surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.overlay_profile_surface" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.profiles.overlay_profile_surface">
+<span class="sig-name descname"><span class="pre">overlay_profile_surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.overlay_profile_surface" title="Permalink to this definition">#</a></dt>
 <dd><p>Overlay Profile Surface.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.replicate_profile">
-<span class="sig-name descname"><span class="pre">replicate_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.replicate_profile" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.profiles.replicate_profile">
+<span class="sig-name descname"><span class="pre">replicate_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.replicate_profile" title="Permalink to this definition">#</a></dt>
 <dd><p>Replicate Profile.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.set_preference_profile_point_cloud_data">
-<span class="sig-name descname"><span class="pre">set_preference_profile_point_cloud_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.set_preference_profile_point_cloud_data" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.profiles.set_preference_profile_point_cloud_data">
+<span class="sig-name descname"><span class="pre">set_preference_profile_point_cloud_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.set_preference_profile_point_cloud_data" title="Permalink to this definition">#</a></dt>
 <dd><p>Set Preference Profile Point Cloud Data e.g., Point marker symbol,size,color.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.profiles.update_interval">
-<span class="sig-name descname"><span class="pre">update_interval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.profiles.update_interval" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.profiles.update_interval">
+<span class="sig-name descname"><span class="pre">update_interval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.profiles.update_interval" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets interval between updates of dynamic profiles.</p>
 </dd></dl>
 

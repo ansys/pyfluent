@@ -1,7 +1,0 @@
-.. _ref_solver_tui_solve_set_advanced_turbo_solver_options:
-
-solver.tui.solve.set.advanced.turbo\_solver\_options
-====================================================
-
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solve.set.advanced.turbo_solver_options
-     :autosummary:

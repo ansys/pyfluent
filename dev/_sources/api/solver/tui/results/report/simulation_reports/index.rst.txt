@@ -3,5 +3,15 @@
 solver.tui.results.report.simulation\_reports
 =============================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.results.report.simulation_reports
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.report.simulation_reports
+   :members: rename_simulation_report, delete_simulation_report, export_simulation_report_as_pptx, export_simulation_report_as_pdf, export_simulation_report_as_html, list_simulation_reports, write_report_names_to_file, view_simulation_report, write_simulation_report_template_file, reset_report_to_defaults, duplicate_simulation_report, generate_simulation_report, read_simulation_report_template_file
+
+.. toctree::
+   :hidden:
+
+   parametric_study/index

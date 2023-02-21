@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../search.html" />
-    <link rel="next" title="solver.tui.setup.boundary_conditions.expert.non_reflecting_bc" href="../non_reflecting_bc/index.html" />
-    <link rel="prev" title="solver.tui.setup.boundary_conditions.expert" href="../index.html" />
+    <link rel="next" title="solver.tui.setup.boundary_conditions.expert.periodic_conditions" href="../periodic_conditions/index.html" />
+    <link rel="prev" title="solver.tui.setup.boundary_conditions.expert.perforated_walls" href="../perforated_walls/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -306,8 +306,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -351,23 +356,23 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../adjoint/index.html">
-         solver.tui.adjoint
+        <a class="reference internal" href="../../../../solution/index.html">
+         solver.tui.solution
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../define/index.html">
-         solver.tui.define
+        <a class="reference internal" href="../../../../server/index.html">
+         solver.tui.server
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../file/index.html">
-         solver.tui.file
+        <a class="reference internal" href="../../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4">
@@ -376,8 +381,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../mesh/index.html">
-         solver.tui.mesh
+        <a class="reference internal" href="../../../../file/index.html">
+         solver.tui.file
         </a>
        </li>
        <li class="toctree-l4">
@@ -386,8 +391,18 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../../parallel/index.html">
          solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parametric_study/index.html">
+         solver.tui.parametric_study
         </a>
        </li>
        <li class="toctree-l4">
@@ -396,13 +411,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../preferences/index.html">
-         solver.tui.preferences
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../report/index.html">
-         solver.tui.report
+        <a class="reference internal" href="../../../../surface/index.html">
+         solver.tui.surface
         </a>
        </li>
        <li class="toctree-l4">
@@ -411,13 +421,18 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solution/index.html">
-         solver.tui.solution
+        <a class="reference internal" href="../../../../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solve/index.html">
-         solver.tui.solve
+        <a class="reference internal" href="../../../../define/index.html">
+         solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../mesh/index.html">
+         solver.tui.mesh
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -430,6 +445,16 @@ function checkPageExistsAndRedirect(event) {
          </i>
         </label>
         <ul class="current">
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../operating_conditions/index.html">
+           solver.tui.setup.operating_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../named_expressions/index.html">
+           solver.tui.setup.named_expressions
+          </a>
+         </li>
          <li class="toctree-l5 current active has-children">
           <a class="reference internal" href="../../index.html">
            solver.tui.setup.boundary_conditions
@@ -440,11 +465,6 @@ function checkPageExistsAndRedirect(event) {
            </i>
           </label>
           <ul class="current">
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../bc_settings/index.html">
-             solver.tui.setup.boundary_conditions.bc_settings
-            </a>
-           </li>
            <li class="toctree-l6 current active has-children">
             <a class="reference internal" href="../index.html">
              solver.tui.setup.boundary_conditions.expert
@@ -455,11 +475,6 @@ function checkPageExistsAndRedirect(event) {
              </i>
             </label>
             <ul class="current">
-             <li class="toctree-l7 current active">
-              <a class="current reference internal" href="#">
-               solver.tui.setup.boundary_conditions.expert.impedance_data_fitting
-              </a>
-             </li>
              <li class="toctree-l7">
               <a class="reference internal" href="../non_reflecting_bc/index.html">
                solver.tui.setup.boundary_conditions.expert.non_reflecting_bc
@@ -468,6 +483,11 @@ function checkPageExistsAndRedirect(event) {
              <li class="toctree-l7">
               <a class="reference internal" href="../perforated_walls/index.html">
                solver.tui.setup.boundary_conditions.expert.perforated_walls
+              </a>
+             </li>
+             <li class="toctree-l7 current active">
+              <a class="current reference internal" href="#">
+               solver.tui.setup.boundary_conditions.expert.impedance_data_fitting
               </a>
              </li>
              <li class="toctree-l7">
@@ -483,6 +503,11 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
+            <a class="reference internal" href="../../rename_zone/index.html">
+             solver.tui.setup.boundary_conditions.rename_zone
+            </a>
+           </li>
+           <li class="toctree-l6">
             <a class="reference internal" href="../../profiles/index.html">
              solver.tui.setup.boundary_conditions.profiles
             </a>
@@ -493,8 +518,8 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../rename_zone/index.html">
-             solver.tui.setup.boundary_conditions.rename_zone
+            <a class="reference internal" href="../../bc_settings/index.html">
+             solver.tui.setup.boundary_conditions.bc_settings
             </a>
            </li>
            <li class="toctree-l6">
@@ -505,18 +530,8 @@ function checkPageExistsAndRedirect(event) {
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../dynamic_mesh/index.html">
-           solver.tui.setup.dynamic_mesh
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../expert/index.html">
-           solver.tui.setup.expert
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../gap_model/index.html">
-           solver.tui.setup.gap_model
+          <a class="reference internal" href="../../../models/index.html">
+           solver.tui.setup.models
           </a>
          </li>
          <li class="toctree-l5">
@@ -525,33 +540,23 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
+          <a class="reference internal" href="../../../reference_values/index.html">
+           solver.tui.setup.reference_values
+          </a>
+         </li>
+         <li class="toctree-l5">
           <a class="reference internal" href="../../../mesh_interfaces/index.html">
            solver.tui.setup.mesh_interfaces
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../mixing_planes/index.html">
-           solver.tui.setup.mixing_planes
+          <a class="reference internal" href="../../../turbo_model/index.html">
+           solver.tui.setup.turbo_model
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../models/index.html">
-           solver.tui.setup.models
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../named_expressions/index.html">
-           solver.tui.setup.named_expressions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../operating_conditions/index.html">
-           solver.tui.setup.operating_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../overset_interfaces/index.html">
-           solver.tui.setup.overset_interfaces
+          <a class="reference internal" href="../../../expert/index.html">
+           solver.tui.setup.expert
           </a>
          </li>
          <li class="toctree-l5">
@@ -560,30 +565,40 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../reference_values/index.html">
-           solver.tui.setup.reference_values
+          <a class="reference internal" href="../../../dynamic_mesh/index.html">
+           solver.tui.setup.dynamic_mesh
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../turbo_model/index.html">
-           solver.tui.setup.turbo_model
+          <a class="reference internal" href="../../../overset_interfaces/index.html">
+           solver.tui.setup.overset_interfaces
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../mixing_planes/index.html">
+           solver.tui.setup.mixing_planes
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../gap_model/index.html">
+           solver.tui.setup.gap_model
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../../../views/index.html">
+         solver.tui.views
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
+        <a class="reference internal" href="../../../../solve/index.html">
+         solver.tui.solve
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../server/index.html">
-         solver.tui.server
+        <a class="reference internal" href="../../../../report/index.html">
+         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4">
@@ -592,18 +607,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
+        <a class="reference internal" href="../../../../display/index.html">
+         solver.tui.display
         </a>
        </li>
       </ul>
@@ -672,7 +677,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.setup.boundary_conditions.expert.impedance_data_fitting
@@ -681,16 +686,7 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.setup.boundary_conditions.expert.impedance_data_fitting.__init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.absorption_data">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.absorption_data">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.boundary_conditions.expert.impedance_data_fitting.absorption_data()
@@ -699,7 +695,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.convergence_tolerance">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.convergence_tolerance">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.boundary_conditions.expert.impedance_data_fitting.convergence_tolerance()
@@ -708,7 +704,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.impedance_data">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.impedance_data">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.boundary_conditions.expert.impedance_data_fitting.impedance_data()
@@ -717,7 +713,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.import_parameters">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.import_parameters">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.boundary_conditions.expert.impedance_data_fitting.import_parameters()
@@ -726,7 +722,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.iterations">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.iterations">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.boundary_conditions.expert.impedance_data_fitting.iterations()
@@ -735,7 +731,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.reflection_data">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.reflection_data">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.boundary_conditions.expert.impedance_data_fitting.reflection_data()
@@ -744,7 +740,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.residue_tolerance">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.residue_tolerance">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.boundary_conditions.expert.impedance_data_fitting.residue_tolerance()
@@ -753,7 +749,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.verbosity">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.verbosity">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.boundary_conditions.expert.impedance_data_fitting.verbosity()
@@ -784,93 +780,59 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-boundary-conditions-expert-impedance-data-fitting">
 <span id="ref-solver-tui-setup-boundary-conditions-expert-impedance-data-fitting"></span><h1>solver.tui.setup.boundary_conditions.expert.impedance_data_fitting<a class="headerlink" href="#solver-tui-setup-boundary-conditions-expert-impedance-data-fitting" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.boundary_conditions.expert.</span></span><span class="sig-name descname"><span class="pre">impedance_data_fitting</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enter the impedance data fitting menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.absorption_data" title="ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.absorption_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">absorption_data</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Read experimental absorption coefficient data and output impedance parameters for a boundary condition.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.convergence_tolerance" title="ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.convergence_tolerance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convergence_tolerance</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the convergence tolerance for the fitting algorithm.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.impedance_data" title="ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.impedance_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">impedance_data</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Read experimental impedance data and output impedance parameters for a boundary condition.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.import_parameters" title="ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.import_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">import_parameters</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Import impedance parameters into boundary condition.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.iterations" title="ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.iterations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iterations</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the number of iterations for the fitting algorithm.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.reflection_data" title="ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.reflection_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reflection_data</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Read experimental reflection coefficient data and output impedance parameters for a boundary condition.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.residue_tolerance" title="ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.residue_tolerance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">residue_tolerance</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the residue tolerance for the fitting algorithm.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.verbosity" title="ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.verbosity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verbosity</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set verbosity level [0, 1] for fitting algorithm.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.boundary_conditions.expert.</span></span><span class="sig-name descname"><span class="pre">impedance_data_fitting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the impedance data fitting menu.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.absorption_data">
-<span class="sig-name descname"><span class="pre">absorption_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.absorption_data" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.absorption_data">
+<span class="sig-name descname"><span class="pre">absorption_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.absorption_data" title="Permalink to this definition">#</a></dt>
 <dd><p>Read experimental absorption coefficient data and output impedance parameters for a boundary condition.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.convergence_tolerance">
-<span class="sig-name descname"><span class="pre">convergence_tolerance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.convergence_tolerance" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.convergence_tolerance">
+<span class="sig-name descname"><span class="pre">convergence_tolerance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.convergence_tolerance" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the convergence tolerance for the fitting algorithm.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.impedance_data">
-<span class="sig-name descname"><span class="pre">impedance_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.impedance_data" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.impedance_data">
+<span class="sig-name descname"><span class="pre">impedance_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.impedance_data" title="Permalink to this definition">#</a></dt>
 <dd><p>Read experimental impedance data and output impedance parameters for a boundary condition.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.import_parameters">
-<span class="sig-name descname"><span class="pre">import_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.import_parameters" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.import_parameters">
+<span class="sig-name descname"><span class="pre">import_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.import_parameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Import impedance parameters into boundary condition.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.iterations">
-<span class="sig-name descname"><span class="pre">iterations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.iterations" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.iterations">
+<span class="sig-name descname"><span class="pre">iterations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.iterations" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the number of iterations for the fitting algorithm.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.reflection_data">
-<span class="sig-name descname"><span class="pre">reflection_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.reflection_data" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.reflection_data">
+<span class="sig-name descname"><span class="pre">reflection_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.reflection_data" title="Permalink to this definition">#</a></dt>
 <dd><p>Read experimental reflection coefficient data and output impedance parameters for a boundary condition.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.residue_tolerance">
-<span class="sig-name descname"><span class="pre">residue_tolerance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.residue_tolerance" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.residue_tolerance">
+<span class="sig-name descname"><span class="pre">residue_tolerance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.residue_tolerance" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the residue tolerance for the fitting algorithm.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.verbosity">
-<span class="sig-name descname"><span class="pre">verbosity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.verbosity" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.verbosity">
+<span class="sig-name descname"><span class="pre">verbosity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.impedance_data_fitting.verbosity" title="Permalink to this definition">#</a></dt>
 <dd><p>Set verbosity level [0, 1] for fitting algorithm.</p>
 </dd></dl>
 

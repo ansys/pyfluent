@@ -3,8 +3,14 @@
 meshing.tui.boundary.refine
 ===========================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.boundary.refine
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.boundary.refine
+   :members: count, limits, refine, clear, auto_refine, mark
+
 .. toctree::
    :hidden:
 

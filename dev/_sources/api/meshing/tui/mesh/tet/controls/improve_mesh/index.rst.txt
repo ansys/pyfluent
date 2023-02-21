@@ -3,5 +3,11 @@
 meshing.tui.mesh.tet.controls.improve\_mesh
 ===========================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.mesh.tet.controls.improve_mesh
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.tet.controls.improve_mesh
+   :members: skewness_smooth, improve, laplace_smooth, swap
+

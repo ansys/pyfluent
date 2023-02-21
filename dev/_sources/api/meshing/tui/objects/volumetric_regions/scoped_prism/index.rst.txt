@@ -3,8 +3,14 @@
 meshing.tui.objects.volumetric\_regions.scoped\_prism
 =====================================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.objects.volumetric_regions.scoped_prism
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects.volumetric_regions.scoped_prism
+   :members: generate
+
 .. toctree::
    :hidden:
 

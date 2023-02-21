@@ -3,19 +3,24 @@
 solver.tui.report
 =================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.report
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.report
+   :members: dpm_extended_summary, uds_flow, species_mass_flow, particle_summary, projected_surface_area, dpm_summary, aero_optical_distortions, dpm_sample_sort_file, dpm_zone_summaries_per_injection, dpm_sample, mphase_summary, surface_integrals, print_histogram, path_line_summary, volume_integrals, dpm_sample_output_udf, element_mass_flow, summary, write_histogram
+
 .. toctree::
    :hidden:
 
-   dpm_histogram/index
-   fluxes/index
-   forces/index
-   reference_values/index
-   surface_integrals/index
-   volume_integrals/index
-   modified_setting/index
    population_balance/index
-   heat_exchanger/index
-   system/index
+   reference_values/index
    simulation_reports/index
+   fluxes/index
+   system/index
+   dpm_histogram/index
+   icing/index
+   modified_setting/index
+   forces/index
+   heat_exchanger/index

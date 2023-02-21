@@ -3,13 +3,17 @@
 solver.tui.solution.calculation\_activities
 ===========================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solution.calculation_activities
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.calculation_activities
 .. toctree::
    :hidden:
 
-   animate/index
-   auto_save/index
    cell_register_operations/index
    execute_commands/index
+   animate/index
+   auto_save/index
    solution_strategy/index

@@ -3,8 +3,13 @@
 solver.datamodel.preferences.Graphics.ExportVideoSettings
 =========================================================
 
-.. autoclass:: ansys.fluent.core.datamodel_222.preferences::Root.Graphics.ExportVideoSettings
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.Graphics.ExportVideoSettings
+   :members: VideoFPS, VideoFormat, VideoQuality, VideoResoutionX, VideoResoutionY, VideoScale, VideoSmoothScaling, VideoUseFrameResolution
    :noindex:
 
 .. toctree::

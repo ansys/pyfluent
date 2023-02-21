@@ -3,5 +3,11 @@
 solver.tui.display.objects
 ==========================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.display.objects
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.objects
+   :members: create, copy, delete, add_to_graphics, display, edit
+

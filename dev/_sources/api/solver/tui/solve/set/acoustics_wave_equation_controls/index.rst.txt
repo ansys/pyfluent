@@ -3,8 +3,14 @@
 solver.tui.solve.set.acoustics\_wave\_equation\_controls
 ========================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solve.set.acoustics_wave_equation_controls
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.acoustics_wave_equation_controls
+   :members: relative_convergence_criterion, max_iterations_per_timestep
+
 .. toctree::
    :hidden:
 

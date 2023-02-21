@@ -3,5 +3,11 @@
 solver.tui.define.models.acoustics.wave\_equation\_options.basic\_shapes
 ========================================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.models.acoustics.wave_equation_options.basic_shapes
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.acoustics.wave_equation_options.basic_shapes
+   :members: add_source_mask_shape, remove_source_mask_shape, remove_sponge_layer_shape, add_sponge_layer_shape, list_source_mask_shapes, list_sponge_layer_shapes, list_region_registers
+

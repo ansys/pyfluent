@@ -3,5 +3,11 @@
 solver.tui.mesh.modify\_zones
 =============================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.mesh.modify_zones
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.mesh.modify_zones
+   :members: delete_all_shells, fuse_face_zones, make_periodic, change_zone_state, zone_type, extrude_face_zone_delta, scale_zone, sep_cell_zone_region, copy_mrf_to_mesh_motion, translate_zone, slit_interior_between_diff_solids, merge_zones, orient_face_zone, zone_name, deactivate_cell_zone, sep_face_zone_region, rotate_zone, sep_face_zone_mark, copy_move_cell_zone, extrude_face_zone_para, create_periodic_interface, convert_all_solid_mrf_to_solid_motion, recreate_all_shells, mrf_to_sliding_mesh, matching_tolerance, list_zones, delete_cell_zone, activate_cell_zone, copy_mesh_to_mrf_motion, replace_zone, append_mesh, change_zone_phase, slit_periodic, create_all_shell_threads, sep_face_zone_angle, sep_cell_zone_mark, sep_face_zone_face, append_mesh_data, slit_face_zone
+

@@ -3,6 +3,11 @@
 meshing.datamodel.meshing.GlobalSettings.FTMRegionData
 ======================================================
 
-.. autoclass:: ansys.fluent.core.datamodel_222.meshing::Root.GlobalSettings.FTMRegionData
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.datamodel_231.meshing
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.meshing::Root.GlobalSettings.FTMRegionData
+   :members: AllOversetNameList, AllOversetSizeList, AllOversetTypeList, AllOversetVolumeFillList, AllRegionFilterCategories, AllRegionLeakageSizeList, AllRegionLinkedConstructionSurfaceList, AllRegionMeshMethodList, AllRegionNameList, AllRegionOversetComponenList, AllRegionSizeList, AllRegionSourceList, AllRegionTypeList, AllRegionVolumeFillList
 

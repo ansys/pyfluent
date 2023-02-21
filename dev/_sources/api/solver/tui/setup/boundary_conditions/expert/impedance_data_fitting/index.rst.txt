@@ -3,5 +3,11 @@
 solver.tui.setup.boundary\_conditions.expert.impedance\_data\_fitting
 =====================================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.setup.boundary_conditions.expert.impedance_data_fitting
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.boundary_conditions.expert.impedance_data_fitting
+   :members: impedance_data, verbosity, import_parameters, absorption_data, residue_tolerance, reflection_data, convergence_tolerance, iterations
+

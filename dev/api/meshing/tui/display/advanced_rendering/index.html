@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
-    <link rel="next" title="meshing.tui.report" href="../../report/index.html" />
-    <link rel="prev" title="meshing.tui.display.zones" href="../zones/index.html" />
+    <link rel="next" title="meshing.tui.display.set_grid" href="../set_grid/index.html" />
+    <link rel="prev" title="meshing.tui.display.update_scene" href="../update_scene/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -303,8 +303,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -317,11 +322,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -333,53 +333,13 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../file/index.html">
-       meshing.tui.file
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../boundary/index.html">
-       meshing.tui.boundary
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../preferences/index.html">
-       meshing.tui.preferences
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../../size_functions/index.html">
        meshing.tui.size_functions
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../objects/index.html">
-       meshing.tui.objects
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../diagnostics/index.html">
-       meshing.tui.diagnostics
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../material_point/index.html">
-       meshing.tui.material_point
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../mesh/index.html">
-       meshing.tui.mesh
+      <a class="reference internal" href="../../preferences/index.html">
+       meshing.tui.preferences
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -393,36 +353,6 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../set/index.html">
-         meshing.tui.display.set
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../set_grid/index.html">
-         meshing.tui.display.set_grid
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../views/index.html">
-         meshing.tui.display.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../display_states/index.html">
-         meshing.tui.display.display_states
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../xy_plot/index.html">
-         meshing.tui.display.xy_plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../update_scene/index.html">
-         meshing.tui.display.update_scene
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../objects/index.html">
          meshing.tui.display.objects
         </a>
@@ -432,16 +362,61 @@ function checkPageExistsAndRedirect(event) {
          meshing.tui.display.zones
         </a>
        </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../display_states/index.html">
+         meshing.tui.display.display_states
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../update_scene/index.html">
+         meshing.tui.display.update_scene
+        </a>
+       </li>
        <li class="toctree-l4 current active">
         <a class="current reference internal" href="#">
          meshing.tui.display.advanced_rendering
         </a>
        </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../set_grid/index.html">
+         meshing.tui.display.set_grid
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../xy_plot/index.html">
+         meshing.tui.display.xy_plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../set/index.html">
+         meshing.tui.display.set
+        </a>
+       </li>
       </ul>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../objects/index.html">
+       meshing.tui.objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
+      </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../../report/index.html">
        meshing.tui.report
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../diagnostics/index.html">
+       meshing.tui.diagnostics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../file/index.html">
+       meshing.tui.file
       </a>
      </li>
      <li class="toctree-l3">
@@ -450,8 +425,28 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../mesh/index.html">
+       meshing.tui.mesh
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../material_point/index.html">
+       meshing.tui.material_point
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../../openmp_controls/index.html">
        meshing.tui.openmp_controls
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../boundary/index.html">
+       meshing.tui.boundary
       </a>
      </li>
      <li class="toctree-l3">
@@ -498,7 +493,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.advanced_rendering">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.display.advanced_rendering
@@ -507,16 +502,7 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.display.advanced_rendering.__init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.edge_color">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.advanced_rendering.edge_color">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.display.advanced_rendering.edge_color()
@@ -525,7 +511,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.fast_silhouette_edges">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.advanced_rendering.fast_silhouette_edges">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.display.advanced_rendering.fast_silhouette_edges()
@@ -534,7 +520,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.max_extent_culling">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.advanced_rendering.max_extent_culling">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.display.advanced_rendering.max_extent_culling()
@@ -543,7 +529,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.simple_shadow">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.advanced_rendering.simple_shadow">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.display.advanced_rendering.simple_shadow()
@@ -552,7 +538,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.static_model">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.advanced_rendering.static_model">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.display.advanced_rendering.static_model()
@@ -583,66 +569,41 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-display-advanced-rendering">
 <span id="ref-meshing-tui-display-advanced-rendering"></span><h1>meshing.tui.display.advanced_rendering<a class="headerlink" href="#meshing-tui-display-advanced-rendering" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.display.</span></span><span class="sig-name descname"><span class="pre">advanced_rendering</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enter the advanced rendering menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.edge_color" title="ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.edge_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_color</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Choose between black and body colored edges.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.fast_silhouette_edges" title="ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.fast_silhouette_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fast_silhouette_edges</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enhances viewability by adding fast silhouette edges.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.max_extent_culling" title="ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.max_extent_culling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_extent_culling</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Truncates zones smaller that the maximum extent culling pixel value.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.simple_shadow" title="ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.simple_shadow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">simple_shadow</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enhances viewability by adding a simple shadow.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.static_model" title="ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.static_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">static_model</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Static model driver setting.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.advanced_rendering">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.display.</span></span><span class="sig-name descname"><span class="pre">advanced_rendering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.advanced_rendering" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the advanced rendering menu.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.edge_color">
-<span class="sig-name descname"><span class="pre">edge_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.edge_color" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.advanced_rendering.edge_color">
+<span class="sig-name descname"><span class="pre">edge_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.advanced_rendering.edge_color" title="Permalink to this definition">#</a></dt>
 <dd><p>Choose between black and body colored edges.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.fast_silhouette_edges">
-<span class="sig-name descname"><span class="pre">fast_silhouette_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.fast_silhouette_edges" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.advanced_rendering.fast_silhouette_edges">
+<span class="sig-name descname"><span class="pre">fast_silhouette_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.advanced_rendering.fast_silhouette_edges" title="Permalink to this definition">#</a></dt>
 <dd><p>Enhances viewability by adding fast silhouette edges.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.max_extent_culling">
-<span class="sig-name descname"><span class="pre">max_extent_culling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.max_extent_culling" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.advanced_rendering.max_extent_culling">
+<span class="sig-name descname"><span class="pre">max_extent_culling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.advanced_rendering.max_extent_culling" title="Permalink to this definition">#</a></dt>
 <dd><p>Truncates zones smaller that the maximum extent culling pixel value.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.simple_shadow">
-<span class="sig-name descname"><span class="pre">simple_shadow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.simple_shadow" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.advanced_rendering.simple_shadow">
+<span class="sig-name descname"><span class="pre">simple_shadow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.advanced_rendering.simple_shadow" title="Permalink to this definition">#</a></dt>
 <dd><p>Enhances viewability by adding a simple shadow.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.static_model">
-<span class="sig-name descname"><span class="pre">static_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.advanced_rendering.static_model" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.advanced_rendering.static_model">
+<span class="sig-name descname"><span class="pre">static_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.advanced_rendering.static_model" title="Permalink to this definition">#</a></dt>
 <dd><p>Static model driver setting.</p>
 </dd></dl>
 

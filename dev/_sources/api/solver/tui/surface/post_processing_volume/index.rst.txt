@@ -3,5 +3,11 @@
 solver.tui.surface.post\_processing\_volume
 ===========================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.surface.post_processing_volume
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.surface.post_processing_volume
+   :members: create_from_file, create_octree
+

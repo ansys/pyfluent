@@ -3,9 +3,11 @@
 solver.tui.results.graphics.expert.set.lights
 =============================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.results.graphics.expert.set.lights
-     :autosummary:
-.. toctree::
-   :hidden:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
 
-   lighting_interpolation/index
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.lights
+   :members: headlight_on, lights_on, lighting_interpolation, set_ambient_color, set_light
+

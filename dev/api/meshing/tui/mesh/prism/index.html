@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
-    <link rel="next" title="meshing.tui.mesh.prism.improve" href="improve/index.html" />
-    <link rel="prev" title="meshing.tui.mesh.rapid_octree.advanced_meshing_options" href="../rapid_octree/advanced_meshing_options/index.html" />
+    <link rel="next" title="meshing.tui.mesh.prism.post_ignore" href="post_ignore/index.html" />
+    <link rel="prev" title="meshing.tui.mesh.thin_volume_mesh" href="../thin_volume_mesh/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -303,8 +303,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -317,11 +322,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -333,18 +333,8 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../file/index.html">
-       meshing.tui.file
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../boundary/index.html">
-       meshing.tui.boundary
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
+      <a class="reference internal" href="../../size_functions/index.html">
+       meshing.tui.size_functions
       </a>
      </li>
      <li class="toctree-l3">
@@ -353,13 +343,8 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../size_functions/index.html">
-       meshing.tui.size_functions
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
+      <a class="reference internal" href="../../display/index.html">
+       meshing.tui.display
       </a>
      </li>
      <li class="toctree-l3">
@@ -368,13 +353,33 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../report/index.html">
+       meshing.tui.report
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../../diagnostics/index.html">
        meshing.tui.diagnostics
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../material_point/index.html">
-       meshing.tui.material_point
+      <a class="reference internal" href="../../file/index.html">
+       meshing.tui.file
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../parallel/index.html">
+       meshing.tui.parallel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -388,23 +393,23 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
+        <a class="reference internal" href="../cell_zone_conditions/index.html">
+         meshing.tui.mesh.cell_zone_conditions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../scoped_prisms/index.html">
+         meshing.tui.mesh.scoped_prisms
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../tet/index.html">
+         meshing.tui.mesh.tet
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../cartesian/index.html">
          meshing.tui.mesh.cartesian
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../cavity/index.html">
-         meshing.tui.mesh.cavity
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../domains/index.html">
-         meshing.tui.mesh.domains
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../hexcore/index.html">
-         meshing.tui.mesh.hexcore
         </a>
        </li>
        <li class="toctree-l4">
@@ -413,13 +418,53 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../non_conformals/index.html">
-         meshing.tui.mesh.non_conformals
+        <a class="reference internal" href="../cavity/index.html">
+         meshing.tui.mesh.cavity
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../auto_mesh_controls/index.html">
+         meshing.tui.mesh.auto_mesh_controls
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../hexcore/index.html">
+         meshing.tui.mesh.hexcore
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../manage/index.html">
+         meshing.tui.mesh.manage
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../poly_hexcore/index.html">
+         meshing.tui.mesh.poly_hexcore
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../rapid_octree/index.html">
          meshing.tui.mesh.rapid_octree
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../pyramid/index.html">
+         meshing.tui.mesh.pyramid
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../separate/index.html">
+         meshing.tui.mesh.separate
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../domains/index.html">
+         meshing.tui.mesh.domains
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../thin_volume_mesh/index.html">
+         meshing.tui.mesh.thin_volume_mesh
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -433,18 +478,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul>
          <li class="toctree-l5">
-          <a class="reference internal" href="improve/index.html">
-           meshing.tui.mesh.prism.improve
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="post_ignore/index.html">
            meshing.tui.mesh.prism.post_ignore
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="split/index.html">
-           meshing.tui.mesh.prism.split
           </a>
          </li>
          <li class="toctree-l5">
@@ -452,37 +487,17 @@ function checkPageExistsAndRedirect(event) {
            meshing.tui.mesh.prism.controls
           </a>
          </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="improve/index.html">
+           meshing.tui.mesh.prism.improve
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="split/index.html">
+           meshing.tui.mesh.prism.split
+          </a>
+         </li>
         </ul>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../pyramid/index.html">
-         meshing.tui.mesh.pyramid
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../thin_volume_mesh/index.html">
-         meshing.tui.mesh.thin_volume_mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../separate/index.html">
-         meshing.tui.mesh.separate
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../tet/index.html">
-         meshing.tui.mesh.tet
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../manage/index.html">
-         meshing.tui.mesh.manage
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../cell_zone_conditions/index.html">
-         meshing.tui.mesh.cell_zone_conditions
-        </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../poly/index.html">
@@ -490,40 +505,25 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../poly_hexcore/index.html">
-         meshing.tui.mesh.poly_hexcore
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../auto_mesh_controls/index.html">
-         meshing.tui.mesh.auto_mesh_controls
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../scoped_prisms/index.html">
-         meshing.tui.mesh.scoped_prisms
+        <a class="reference internal" href="../non_conformals/index.html">
+         meshing.tui.mesh.non_conformals
         </a>
        </li>
       </ul>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../display/index.html">
-       meshing.tui.display
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../report/index.html">
-       meshing.tui.report
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../parallel/index.html">
-       meshing.tui.parallel
+      <a class="reference internal" href="../../material_point/index.html">
+       meshing.tui.material_point
       </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../../openmp_controls/index.html">
        meshing.tui.openmp_controls
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../boundary/index.html">
+       meshing.tui.boundary
       </a>
      </li>
      <li class="toctree-l3">
@@ -570,7 +570,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.mesh.prism
@@ -579,565 +579,7 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.mesh.prism.__init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.mesh.prism.controls
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.controls.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.adjacent_zone">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.controls.adjacent_zone
-        </span>
-       </code>
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.adjacent_zone.__init__">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.adjacent_zone.__init__()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.adjacent_zone.project_adjacent_angle">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.adjacent_zone.project_adjacent_angle()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.adjacent_zone.side_feature_angle">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.adjacent_zone.side_feature_angle()
-          </span>
-         </code>
-        </a>
-       </li>
-      </ul>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.check_quality">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.controls.check_quality()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.controls.improve
-        </span>
-       </code>
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.__init__">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.improve.__init__()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.check_allowable_skew">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.improve.check_allowable_skew()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.corner_height_weight">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.improve.corner_height_weight()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.edge_swap_base_angle">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.improve.edge_swap_base_angle()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.edge_swap_cap_angle">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.improve.edge_swap_cap_angle()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.face_smooth_skew">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.improve.face_smooth_skew()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.improve_warp">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.improve.improve_warp()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.left_hand_check">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.improve.left_hand_check()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.max_allowable_cap_skew">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.improve.max_allowable_cap_skew()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.max_allowable_cell_skew">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.improve.max_allowable_cell_skew()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.smooth_improve_prism_cells">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.improve.smooth_improve_prism_cells()
-          </span>
-         </code>
-        </a>
-       </li>
-      </ul>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.merge_ignored_threads">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.controls.merge_ignored_threads()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.controls.morph
-        </span>
-       </code>
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.__init__">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.morph.__init__()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.improve_threshold">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.morph.improve_threshold()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.morphing_convergence_limit">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.morph.morphing_convergence_limit()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.morphing_frequency">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.morph.morphing_frequency()
-          </span>
-         </code>
-        </a>
-       </li>
-      </ul>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.controls.normal
-        </span>
-       </code>
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.__init__">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.normal.__init__()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.bisect_angle">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.normal.bisect_angle()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.compute_normal">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.normal.compute_normal()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.direction_method">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.normal.direction_method()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.direction_vector">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.normal.direction_vector()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.ignore_invalid_normals">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.normal.ignore_invalid_normals()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.max_angle_change">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.normal.max_angle_change()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.orient_mesh_object_face_normals">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.normal.orient_mesh_object_face_normals()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.orthogonal_layers">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.normal.orthogonal_layers()
-          </span>
-         </code>
-        </a>
-       </li>
-      </ul>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.offset">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.controls.offset
-        </span>
-       </code>
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.offset.__init__">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.offset.__init__()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.offset.first_aspect_ratio_min">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.offset.first_aspect_ratio_min()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.offset.min_aspect_ratio">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.offset.min_aspect_ratio()
-          </span>
-         </code>
-        </a>
-       </li>
-      </ul>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.post_ignore">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.controls.post_ignore
-        </span>
-       </code>
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.post_ignore.__init__">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.post_ignore.__init__()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.post_ignore.post_remove_cells">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.post_ignore.post_remove_cells()
-          </span>
-         </code>
-        </a>
-       </li>
-      </ul>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.controls.proximity
-        </span>
-       </code>
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.__init__">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.proximity.__init__()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.allow_ignore">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.proximity.allow_ignore()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.allow_shrinkage">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.proximity.allow_shrinkage()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.gap_factor">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.proximity.gap_factor()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.keep_first_layer_offsets">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.proximity.keep_first_layer_offsets()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.max_aspect_ratio">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.proximity.max_aspect_ratio()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.max_shrink_factor">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.proximity.max_shrink_factor()
-          </span>
-         </code>
-        </a>
-       </li>
-      </ul>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.remove_invalid_layer">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.controls.remove_invalid_layer()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.set_overset_prism_controls">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.controls.set_overset_prism_controls()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.set_post_mesh_controls">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.controls.set_post_mesh_controls()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.split">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.controls.split()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.controls.zone_specific_growth
-        </span>
-       </code>
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth.__init__">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.zone_specific_growth.__init__()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth.apply_growth">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.zone_specific_growth.apply_growth()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth.clear_growth">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.zone_specific_growth.clear_growth()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth.list_growth">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.mesh.prism.controls.zone_specific_growth.list_growth()
-          </span>
-         </code>
-        </a>
-       </li>
-      </ul>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.create">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.create">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.prism.create()
@@ -1146,81 +588,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.mesh.prism.improve
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.improve.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.improve_prism_cells">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.improve.improve_prism_cells()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_brute_force">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.improve.smooth_brute_force()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_cell_rings">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.improve.smooth_cell_rings()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_improve_prism_cells">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.improve.smooth_improve_prism_cells()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_prism_cells">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.improve.smooth_prism_cells()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_sliver_skew">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.improve.smooth_sliver_skew()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.list_parameters">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.list_parameters">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.prism.list_parameters()
@@ -1229,7 +597,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.mark_ignore_faces">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.mark_ignore_faces">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.prism.mark_ignore_faces()
@@ -1238,7 +606,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.mark_nonmanifold_nodes">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.mark_nonmanifold_nodes">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.prism.mark_nonmanifold_nodes()
@@ -1247,7 +615,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.mark_proximity_faces">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.mark_proximity_faces">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.prism.mark_proximity_faces()
@@ -1256,63 +624,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.mesh.prism.post_ignore
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.post_ignore.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.create_cavity">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.post_ignore.create_cavity()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.mark_cavity_prism_cap">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.post_ignore.mark_cavity_prism_cap()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.mark_prism_cap">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.post_ignore.mark_prism_cap()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.post_remove_cells">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.post_ignore.post_remove_cells()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.quality_method">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.quality_method">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.prism.quality_method()
@@ -1321,42 +633,13 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.reset_parameters">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.reset_parameters">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.prism.reset_parameters()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.split">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.mesh.prism.split
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.split.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.split.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.split.split">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.prism.split.split()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -1381,839 +664,54 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-mesh-prism">
 <span id="ref-meshing-tui-mesh-prism"></span><h1>meshing.tui.mesh.prism<a class="headerlink" href="#meshing-tui-mesh-prism" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.</span></span><span class="sig-name descname"><span class="pre">prism</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enters the prism menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.create" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Creates prism layers on one or more boundary face zones based on the offset method, growth method, number of layers, and rate specified.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.list_parameters" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.list_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_parameters</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Shows all prism mesh parameters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.mark_ignore_faces" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.mark_ignore_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mark_ignore_faces</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to mark the faces to be ignored during prism meshing.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.mark_nonmanifold_nodes" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.mark_nonmanifold_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mark_nonmanifold_nodes</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to mark the non-manifold prism base nodes.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.mark_proximity_faces" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.mark_proximity_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mark_proximity_faces</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Mark prism base faces with certain gap.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.quality_method" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.quality_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quality_method</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the quality method used during prism generation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.reset_parameters" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.reset_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_parameters</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Resets all prism parameters.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">controls</span></code></a></p></td>
-<td><p>Enters the prism controls menu.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">improve</span></code></a></p></td>
-<td><p>Enters the prism improve menu.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="post_ignore/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">post_ignore</span></code></a></p></td>
-<td><p>Contains the following options for ignoring prism cells:.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="split/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.split" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a></p></td>
-<td><p>Contains options for splitting the prism layers after the initial prism layers are generated, to generate the total number of layers required.</p></td>
-</tr>
-</tbody>
-</table>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.</span></span><span class="sig-name descname"><span class="pre">prism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the prism menu.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">controls</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enters the prism controls menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.check_quality" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.check_quality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_quality</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the checking of volume, skewness, and handedness of each new cell and face.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.merge_ignored_threads" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.merge_ignored_threads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_ignored_threads</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to automatically merge all ignored zones related to a base thread into a single thread.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.remove_invalid_layer" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.remove_invalid_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_invalid_layer</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Removes the last prism layer if it fails in the quality check.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.set_overset_prism_controls" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.set_overset_prism_controls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_overset_prism_controls</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set boundary layer controls for overset mesh generation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.set_post_mesh_controls" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.set_post_mesh_controls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_post_mesh_controls</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets controls specific to growing prisms post volume mesh generation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.split" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to set parameters for splitting the prism layers after the initial prism layers are generated, to generate the total number of layers required.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.adjacent_zone" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.adjacent_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adjacent_zone</span></code></a></p></td>
-<td><p>Enters the prism adjacent zone controls menu.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">improve</span></code></a></p></td>
-<td><p>Enters the prism smoothing controls menu.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">morph</span></code></a></p></td>
-<td><p>Enters the prism morphing controls menu.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal</span></code></a></p></td>
-<td><p>Enters the prism normal controls menu.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.offset" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.offset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">offset</span></code></a></p></td>
-<td><p>Enters the prism offset controls menu.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.post_ignore" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.post_ignore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">post_ignore</span></code></a></p></td>
-<td><p>Contains options for setting the parameters for removing poor quality prism cells after the required prism layers are created.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">proximity</span></code></a></p></td>
-<td><p>Enters the prism proximity controls menu.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zone_specific_growth</span></code></a></p></td>
-<td><p>Enters the prism growth controls menu.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.adjacent_zone">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">adjacent_zone</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.adjacent_zone" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enters the prism adjacent zone controls menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.adjacent_zone.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.adjacent_zone.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.adjacent_zone.project_adjacent_angle" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.adjacent_zone.project_adjacent_angle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project_adjacent_angle</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Determines whether or not to project to an adjacent zone.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.adjacent_zone.side_feature_angle" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.adjacent_zone.side_feature_angle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">side_feature_angle</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the angle used for computing the feature normals.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.adjacent_zone.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.adjacent_zone.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.adjacent_zone.project_adjacent_angle">
-<span class="sig-name descname"><span class="pre">project_adjacent_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.adjacent_zone.project_adjacent_angle" title="Permalink to this definition">#</a></dt>
-<dd><p>Determines whether or not to project to an adjacent zone. If a zone shares outer nodes with any of the zones from which the layers are being grown (the “base zones”), its angle with respect to the growth direction is compared with this value. If the angle is less than or equal to this value, then the zone will be projected to. The default value is 75 degrees. See  for details.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.adjacent_zone.side_feature_angle">
-<span class="sig-name descname"><span class="pre">side_feature_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.adjacent_zone.side_feature_angle" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the angle used for computing the feature normals.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.check_quality">
-<span class="sig-name descname"><span class="pre">check_quality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.check_quality" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables/disables the checking of volume, skewness, and handedness of each new cell and face.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">improve</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enters the prism smoothing controls menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.check_allowable_skew" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.check_allowable_skew"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_allowable_skew</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to check the skewness of the prism cap for every layer.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.corner_height_weight" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.corner_height_weight"><code class="xref py py-obj docutils literal notranslate"><span class="pre">corner_height_weight</span></code></a>(*args, **kwargs)</p></td>
-<td><p>When enabled, the offset height at corners with large angles (for example, 270º) is reduced to give a smoother prism cap.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.edge_swap_base_angle" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.edge_swap_base_angle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_swap_base_angle</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the maximum allowable angle between the normals of the base faces for skewness-driven edge swapping.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.edge_swap_cap_angle" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.edge_swap_cap_angle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_swap_cap_angle</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the maximum allowable angle between the normals of the cap faces for skewness-driven edge swapping.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.face_smooth_skew" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.face_smooth_skew"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_smooth_skew</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Min.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.improve_warp" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.improve_warp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">improve_warp</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables or disables improving of face warp during prism generation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.left_hand_check" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.left_hand_check"><code class="xref py py-obj docutils literal notranslate"><span class="pre">left_hand_check</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Controls checking for left-handedness of faces.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.max_allowable_cap_skew" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.max_allowable_cap_skew"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_allowable_cap_skew</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the maximum skewness allowed for a prism cap face.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.max_allowable_cell_skew" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.max_allowable_cell_skew"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_allowable_cell_skew</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the cell quality criteria for smoothing and quality checking.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.smooth_improve_prism_cells" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.smooth_improve_prism_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_improve_prism_cells</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to set the parameters for improving the prism cells after the required prism layers are created.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.check_allowable_skew">
-<span class="sig-name descname"><span class="pre">check_allowable_skew</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.check_allowable_skew" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables you to check the skewness of the prism cap for every layer.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.corner_height_weight">
-<span class="sig-name descname"><span class="pre">corner_height_weight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.corner_height_weight" title="Permalink to this definition">#</a></dt>
-<dd><p>When enabled, the offset height at corners with large angles (for example, 270º) is reduced to give a smoother prism cap.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.edge_swap_base_angle">
-<span class="sig-name descname"><span class="pre">edge_swap_base_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.edge_swap_base_angle" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the maximum allowable angle between the normals of the base faces for skewness-driven edge swapping.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.edge_swap_cap_angle">
-<span class="sig-name descname"><span class="pre">edge_swap_cap_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.edge_swap_cap_angle" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the maximum allowable angle between the normals of the cap faces for skewness-driven edge swapping.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.face_smooth_skew">
-<span class="sig-name descname"><span class="pre">face_smooth_skew</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.face_smooth_skew" title="Permalink to this definition">#</a></dt>
-<dd><p>Min. skewness to smooth cap faces.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.improve_warp">
-<span class="sig-name descname"><span class="pre">improve_warp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.improve_warp" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables or disables improving of face warp during prism generation. This option is disabled by default.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.left_hand_check">
-<span class="sig-name descname"><span class="pre">left_hand_check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.left_hand_check" title="Permalink to this definition">#</a></dt>
-<dd><p>Controls checking for left-handedness of faces. The default setting of 0 implies face handedness will not be checked. A value of 1 implies only cap faces will be checked, while 2 implies faces of all cells in current layer will be checked.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.max_allowable_cap_skew">
-<span class="sig-name descname"><span class="pre">max_allowable_cap_skew</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.max_allowable_cap_skew" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the maximum skewness allowed for a prism cap face. If the skewness of a cap face exceeds this value, the meshing process will stop and a warning indicates that the skewness for that layer is too high.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.max_allowable_cell_skew">
-<span class="sig-name descname"><span class="pre">max_allowable_cell_skew</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.max_allowable_cell_skew" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the cell quality criteria for smoothing and quality checking.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.smooth_improve_prism_cells">
-<span class="sig-name descname"><span class="pre">smooth_improve_prism_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.improve.smooth_improve_prism_cells" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables you to set the parameters for improving the prism cells after the required prism layers are created. You can select optimized smoothing (smooth), node movement (improve), or a combination of both to improve the quality. Specify the quality measure to be used, the cell quality threshold, the number of improvement iterations, and the minimum improvement required.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.merge_ignored_threads">
-<span class="sig-name descname"><span class="pre">merge_ignored_threads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.merge_ignored_threads" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables you to automatically merge all ignored zones related to a base thread into a single thread. This option is enabled by default. When this option is disabled, more than one ignored thread will be generated per base thread. However, various zones can be created by ignoring this option. They are:.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">morph</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enters the prism morphing controls menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.improve_threshold" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.improve_threshold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">improve_threshold</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the quality threshold used for improving the quality during the morphing operation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.morphing_convergence_limit" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.morphing_convergence_limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">morphing_convergence_limit</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the convergence limit for the morphing operation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.morphing_frequency" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.morphing_frequency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">morphing_frequency</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the frequency of the morphing operation.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.improve_threshold">
-<span class="sig-name descname"><span class="pre">improve_threshold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.improve_threshold" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the quality threshold used for improving the quality during the morphing operation.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.morphing_convergence_limit">
-<span class="sig-name descname"><span class="pre">morphing_convergence_limit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.morphing_convergence_limit" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the convergence limit for the morphing operation. The morpher uses an iterative solver. It is assumed to have converged when the relative residual is less than this number.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.morphing_frequency">
-<span class="sig-name descname"><span class="pre">morphing_frequency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.morphing_frequency" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the frequency of the morphing operation. The number specified denotes the number of prism layers after which the morpher is applied to the remainder of the mesh (for example, a value of 5 indicates that the morpher is applied to the mesh after every 5 prism layers grown).</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">normal</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enters the prism normal controls menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.bisect_angle" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.bisect_angle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bisect_angle</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Is required for growing prisms out of sharp interior corners.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.compute_normal" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.compute_normal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_normal</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Computes the normal for the specified face zone.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.direction_method" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.direction_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">direction_method</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies whether the prism layers should be grown normal to surfaces or along a specified direction vector.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.direction_vector" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.direction_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">direction_vector</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the direction vector for prism extrusion when the uniform method is selected for direction-method.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.ignore_invalid_normals" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.ignore_invalid_normals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ignore_invalid_normals</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to ignore nodes that have poor normals.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.max_angle_change" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.max_angle_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_angle_change</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the maximum angle by which the normal direction at a node can change during smoothing.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.orient_mesh_object_face_normals" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.orient_mesh_object_face_normals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orient_mesh_object_face_normals</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to orient the face normals for mesh object boundary zones.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.orthogonal_layers" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.orthogonal_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orthogonal_layers</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the number of layers to preserve orthogonality.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.bisect_angle">
-<span class="sig-name descname"><span class="pre">bisect_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.bisect_angle" title="Permalink to this definition">#</a></dt>
-<dd><p>Is required for growing prisms out of sharp interior corners. When the value of this angle is set, the normals are automatically projected onto the plane bisecting the angle between faces having an interior angle less than this angle.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.compute_normal">
-<span class="sig-name descname"><span class="pre">compute_normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.compute_normal" title="Permalink to this definition">#</a></dt>
-<dd><p>Computes the normal for the specified face zone.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.direction_method">
-<span class="sig-name descname"><span class="pre">direction_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.direction_method" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies whether the prism layers should be grown normal to surfaces or along a specified direction vector.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.direction_vector">
-<span class="sig-name descname"><span class="pre">direction_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.direction_vector" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the direction vector for prism extrusion when the uniform method is selected for direction-method.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.ignore_invalid_normals">
-<span class="sig-name descname"><span class="pre">ignore_invalid_normals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.ignore_invalid_normals" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables you to ignore nodes that have poor normals.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.max_angle_change">
-<span class="sig-name descname"><span class="pre">max_angle_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.max_angle_change" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the maximum angle by which the normal direction at a node can change during smoothing.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.orient_mesh_object_face_normals">
-<span class="sig-name descname"><span class="pre">orient_mesh_object_face_normals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.orient_mesh_object_face_normals" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables you to orient the face normals for mesh object boundary zones. Specify the mesh object, region or material point as appropriate, and specify whether walls, baffles or both comprising the prism base zones are to be separated and oriented.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.orthogonal_layers">
-<span class="sig-name descname"><span class="pre">orthogonal_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.orthogonal_layers" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the number of layers to preserve orthogonality. All smoothing is deferred until after these layers.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.offset">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">offset</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.offset" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enters the prism offset controls menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.offset.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.offset.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.offset.first_aspect_ratio_min" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.offset.first_aspect_ratio_min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">first_aspect_ratio_min</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the minimum first aspect ratio (ratio of prism base length to prism layer height) for the prism cells.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.offset.min_aspect_ratio" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.offset.min_aspect_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_aspect_ratio</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the minimum aspect ratio (ratio of prism base length to prism layer height) for the prism cells.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.offset.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.offset.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.offset.first_aspect_ratio_min">
-<span class="sig-name descname"><span class="pre">first_aspect_ratio_min</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.offset.first_aspect_ratio_min" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the minimum first aspect ratio (ratio of prism base length to prism layer height) for the prism cells.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.offset.min_aspect_ratio">
-<span class="sig-name descname"><span class="pre">min_aspect_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.offset.min_aspect_ratio" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the minimum aspect ratio (ratio of prism base length to prism layer height) for the prism cells.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.post_ignore">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">post_ignore</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.post_ignore" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Contains options for setting the parameters for removing poor quality prism cells after the required prism layers are created.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.post_ignore.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.post_ignore.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.post_ignore.post_remove_cells" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.post_ignore.post_remove_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">post_remove_cells</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to set the parameters for removing poor quality prism cells after the required prism layers are created.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.post_ignore.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.post_ignore.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.post_ignore.post_remove_cells">
-<span class="sig-name descname"><span class="pre">post_remove_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.post_ignore.post_remove_cells" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables you to set the parameters for removing poor quality prism cells after the required prism layers are created. You can remove cells based on quality, intersection, interior warp, and feature edges. Specify options for removing additional cells in regions of high aspect ratio and feature angle, the number of cell rings to be removed around the marked cells, and options for smoothing the prism boundary and prism side height.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">proximity</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enters the prism proximity controls menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.allow_ignore" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.allow_ignore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">allow_ignore</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to ignore nodes where the specified maximum shrink factor cannot be maintained.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.allow_shrinkage" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.allow_shrinkage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">allow_shrinkage</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables shrinkage while growing prism layers.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.gap_factor" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.gap_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gap_factor</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Controls the gap between the intersecting prisms layers in the proximity region with respect to the cell size of the prisms.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.keep_first_layer_offsets" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.keep_first_layer_offsets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">keep_first_layer_offsets</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to retain first layer offsets while performing proximity detection.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.max_aspect_ratio" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.max_aspect_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_aspect_ratio</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the maximum allowable cell aspect ratio to determine the limit for the shrinkage of prism layers.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.max_shrink_factor" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.max_shrink_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_shrink_factor</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the shrink factor determining the maximum shrinkage of the prism layers.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.allow_ignore">
-<span class="sig-name descname"><span class="pre">allow_ignore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.allow_ignore" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables you to ignore nodes where the specified maximum shrink factor cannot be maintained.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.allow_shrinkage">
-<span class="sig-name descname"><span class="pre">allow_shrinkage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.allow_shrinkage" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables shrinkage while growing prism layers.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.gap_factor">
-<span class="sig-name descname"><span class="pre">gap_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.gap_factor" title="Permalink to this definition">#</a></dt>
-<dd><p>Controls the gap between the intersecting prisms layers in the proximity region with respect to the cell size of the prisms.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.keep_first_layer_offsets">
-<span class="sig-name descname"><span class="pre">keep_first_layer_offsets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.keep_first_layer_offsets" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables you to retain first layer offsets while performing proximity detection.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.max_aspect_ratio">
-<span class="sig-name descname"><span class="pre">max_aspect_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.max_aspect_ratio" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the maximum allowable cell aspect ratio to determine the limit for the shrinkage of prism layers. This option is available only when the allow-ignore? option is disabled.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.max_shrink_factor">
-<span class="sig-name descname"><span class="pre">max_shrink_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.proximity.max_shrink_factor" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the shrink factor determining the maximum shrinkage of the prism layers. This option is available only when the allow-ignore? option is enabled.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.remove_invalid_layer">
-<span class="sig-name descname"><span class="pre">remove_invalid_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.remove_invalid_layer" title="Permalink to this definition">#</a></dt>
-<dd><p>Removes the last prism layer if it fails in the quality check.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.set_overset_prism_controls">
-<span class="sig-name descname"><span class="pre">set_overset_prism_controls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.set_overset_prism_controls" title="Permalink to this definition">#</a></dt>
-<dd><p>Set boundary layer controls for overset mesh generation.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.set_post_mesh_controls">
-<span class="sig-name descname"><span class="pre">set_post_mesh_controls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.set_post_mesh_controls" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets controls specific to growing prisms post volume mesh generation.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.split">
-<span class="sig-name descname"><span class="pre">split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.split" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables you to set parameters for splitting the prism layers after the initial prism layers are generated, to generate the total number of layers required. Specify the number of divisions per layer.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">zone_specific_growth</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enters the prism growth controls menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth.apply_growth" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth.apply_growth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_growth</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Applies the zone-specific growth parameters specified.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth.clear_growth" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth.clear_growth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_growth</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Clears the zone-specific growth specified.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth.list_growth" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth.list_growth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_growth</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Lists the zone-specific growth parameters specified for individual zones in the console.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth.apply_growth">
-<span class="sig-name descname"><span class="pre">apply_growth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth.apply_growth" title="Permalink to this definition">#</a></dt>
-<dd><p>Applies the zone-specific growth parameters specified.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth.clear_growth">
-<span class="sig-name descname"><span class="pre">clear_growth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth.clear_growth" title="Permalink to this definition">#</a></dt>
-<dd><p>Clears the zone-specific growth specified.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth.list_growth">
-<span class="sig-name descname"><span class="pre">list_growth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.zone_specific_growth.list_growth" title="Permalink to this definition">#</a></dt>
-<dd><p>Lists the zone-specific growth parameters specified for individual zones in the console.</p>
-</dd></dl>
-
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.create">
-<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.create" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.create" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates prism layers on one or more boundary face zones based on the offset method, growth method, number of layers, and rate specified.</p>
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">improve</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enters the prism improve menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.improve_prism_cells" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.improve_prism_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">improve_prism_cells</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Collects and smooths cells in layers around poor quality cells.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_brute_force" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_brute_force"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_brute_force</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Forcibly smooths cells if cell skewness is still high after regular smoothing.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_cell_rings" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_cell_rings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_cell_rings</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the number of cell rings around the skewed cell used by improve-prism-cells.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_improve_prism_cells" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_improve_prism_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_improve_prism_cells</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Uses a combination of node movement and optimized smoothing to improve the quality.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_prism_cells" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_prism_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_prism_cells</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables optimization based smoothing of prism cells.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_sliver_skew" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_sliver_skew"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_sliver_skew</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the skewness above which prism cells will be smoothed.</p></td>
-</tr>
-</tbody>
-</table>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.improve_prism_cells">
-<span class="sig-name descname"><span class="pre">improve_prism_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.improve_prism_cells" title="Permalink to this definition">#</a></dt>
-<dd><p>Collects and smooths cells in layers around poor quality cells. Cells with quality worse than the specified threshold value will be identified, and the nodes of the cells surrounding the poor quality cells will be moved to improve quality.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_brute_force">
-<span class="sig-name descname"><span class="pre">smooth_brute_force</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_brute_force" title="Permalink to this definition">#</a></dt>
-<dd><p>Forcibly smooths cells if cell skewness is still high after regular smoothing.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_cell_rings">
-<span class="sig-name descname"><span class="pre">smooth_cell_rings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_cell_rings" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the number of cell rings around the skewed cell used by improve-prism-cells.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_improve_prism_cells">
-<span class="sig-name descname"><span class="pre">smooth_improve_prism_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_improve_prism_cells" title="Permalink to this definition">#</a></dt>
-<dd><p>Uses a combination of node movement and optimized smoothing to improve the quality. This command is a combination of the smooth-prism-cells and improve-prism-cells commands. The cell aspect ratio will also be maintained based on the value specified for max-aspect-ratio.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_prism_cells">
-<span class="sig-name descname"><span class="pre">smooth_prism_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_prism_cells" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables optimization based smoothing of prism cells. The nodes of cells with quality worse than the specified threshold value will be moved to improve quality. The cell aspect ratio will also be maintained based on the value specified for max-aspect-ratio.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_sliver_skew">
-<span class="sig-name descname"><span class="pre">smooth_sliver_skew</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.improve.smooth_sliver_skew" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the skewness above which prism cells will be smoothed.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.list_parameters">
-<span class="sig-name descname"><span class="pre">list_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.list_parameters" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.list_parameters">
+<span class="sig-name descname"><span class="pre">list_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.list_parameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Shows all prism mesh parameters.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.mark_ignore_faces">
-<span class="sig-name descname"><span class="pre">mark_ignore_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.mark_ignore_faces" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.mark_ignore_faces">
+<span class="sig-name descname"><span class="pre">mark_ignore_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.mark_ignore_faces" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables you to mark the faces to be ignored during prism meshing.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.mark_nonmanifold_nodes">
-<span class="sig-name descname"><span class="pre">mark_nonmanifold_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.mark_nonmanifold_nodes" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.mark_nonmanifold_nodes">
+<span class="sig-name descname"><span class="pre">mark_nonmanifold_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.mark_nonmanifold_nodes" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables you to mark the non-manifold prism base nodes. A list of the non-manifold nodes will be printed in the console. The faces connected to the non-manifold nodes will also be marked. You can use this command after specifying zone-specific prism settings, prior to generating the prisms to verify that non-manifold configurations do not exist.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.mark_proximity_faces">
-<span class="sig-name descname"><span class="pre">mark_proximity_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.mark_proximity_faces" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.mark_proximity_faces">
+<span class="sig-name descname"><span class="pre">mark_proximity_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.mark_proximity_faces" title="Permalink to this definition">#</a></dt>
 <dd><p>Mark prism base faces with certain gap.</p>
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">post_ignore</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Contains the following options for ignoring prism cells:.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="post_ignore/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="post_ignore/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.create_cavity" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.create_cavity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_cavity</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Creates a cavity in regions where prism quality is adequate, but the quality of adjacent tetrahedra is poor.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="post_ignore/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.mark_cavity_prism_cap" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.mark_cavity_prism_cap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mark_cavity_prism_cap</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Marks the prism cap faces and tetrahedral cell faces bounding the cavity to be created in regions where prism quality is adequate, but the quality of adjacent tetrahedra is poor.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="post_ignore/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.mark_prism_cap" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.mark_prism_cap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mark_prism_cap</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Marks the prism cap faces for ignoring prism cells in regions of poor quality cells and sharp corners.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="post_ignore/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.post_remove_cells" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.post_remove_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">post_remove_cells</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to remove prism cells in layers around poor quality cells and sharp corners.</p></td>
-</tr>
-</tbody>
-</table>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.create_cavity">
-<span class="sig-name descname"><span class="pre">create_cavity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.create_cavity" title="Permalink to this definition">#</a></dt>
-<dd><p>Creates a cavity in regions where prism quality is adequate, but the quality of adjacent tetrahedra is poor. The cavity is created based on the tetrahedral cell zone, the quality measure and the corresponding threshold value, and the additional number of cell rings specified. You can create a cavity comprising only tetrahedral cells or optionally include prism cells in the cavity created. When prism cells are also included in the cavity, you can specify whether the non-conformal interface is to be created.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.mark_cavity_prism_cap">
-<span class="sig-name descname"><span class="pre">mark_cavity_prism_cap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.mark_cavity_prism_cap" title="Permalink to this definition">#</a></dt>
-<dd><p>Marks the prism cap faces and tetrahedral cell faces bounding the cavity to be created in regions where prism quality is adequate, but the quality of adjacent tetrahedra is poor. Specify the tetrahedral cell zone, the quality measure and the corresponding threshold value to be used, and the additional number of cell rings based on which the cavity will be created.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.mark_prism_cap">
-<span class="sig-name descname"><span class="pre">mark_prism_cap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.mark_prism_cap" title="Permalink to this definition">#</a></dt>
-<dd><p>Marks the prism cap faces for ignoring prism cells in regions of poor quality cells and sharp corners. Specify the prism cell zone and the basis for ignoring prism cells and the relevant parameters. The prism cells can be ignored based on quality, intersection, (both enabled by default), warp, and features (both disabled by default). Specify the quality measure and threshold value to be used for ignoring cells based on quality and (if applicable) the feature edges for ignoring cells based on features. Additionally, specify whether cells are to be marked in regions of high aspect ratio and based on feature angle, and the additional number of cell rings based on which prism cells will be removed.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.post_remove_cells">
-<span class="sig-name descname"><span class="pre">post_remove_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.post_ignore.post_remove_cells" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables you to remove prism cells in layers around poor quality cells and sharp corners. Specify the prism cell zone, the basis for ignoring prism cells (quality, intersection, warp, features) and the relevant parameters. Specify the number of cell rings to be removed around the marked cells. Cells will be marked for removal in regions of sharp corners based on quality, intersection, warp, and features (as applicable) and then extended based on the number of cell rings specified. Additional cells will be marked for removal in regions of high aspect ratio and based on feature angle (if applicable) around the exposed prism side. The boundary will be smoothed at feature corners after the prism cells have been removed. The prism-side faces exposed by the removal of the prism cells will be collected in a zone named prism-side-#, while for a zone wall-n, the faces corresponding to the ignored prism cells will be collected in a zone named wall-n:ignore. You can also optionally smooth the prism side nodes from the base node to the cap node to create better triangles for the non-conformal interface.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.quality_method">
-<span class="sig-name descname"><span class="pre">quality_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.quality_method" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.quality_method">
+<span class="sig-name descname"><span class="pre">quality_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.quality_method" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies the quality method used during prism generation.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.reset_parameters">
-<span class="sig-name descname"><span class="pre">reset_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.reset_parameters" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.reset_parameters">
+<span class="sig-name descname"><span class="pre">reset_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.reset_parameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Resets all prism parameters.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.split">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">split</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.split" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Contains options for splitting the prism layers after the initial prism layers are generated, to generate the total number of layers required.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="split/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.split.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.split.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="split/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.split.split" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.split.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to split the prism layers after the initial prism layers are generated, to generate the total number of layers required.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.split.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.split.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.split.split">
-<span class="sig-name descname"><span class="pre">split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.split.split" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables you to split the prism layers after the initial prism layers are generated, to generate the total number of layers required. Specify the prism cell zones to be split and the number of divisions per layer. You can also choose to use the existing growth rate (default) or specify the growth rate to be used while splitting the prism layers.</p>
-</dd></dl>
-
 </dd></dl>
 
 </dd></dl>

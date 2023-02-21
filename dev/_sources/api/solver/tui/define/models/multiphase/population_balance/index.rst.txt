@@ -3,8 +3,14 @@
 solver.tui.define.models.multiphase.population\_balance
 =======================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.models.multiphase.population_balance
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.multiphase.population_balance
+   :members: size_calculator, model, include_expansion
+
 .. toctree::
    :hidden:
 

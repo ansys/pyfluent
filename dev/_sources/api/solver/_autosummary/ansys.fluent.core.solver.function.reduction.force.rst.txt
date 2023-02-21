@@ -1,6 +1,0 @@
-force
-=====
-
-.. currentmodule:: ansys.fluent.core.solver.function.reduction
-
-.. autofunction:: force

@@ -3,8 +3,14 @@
 solver.tui.setup.materials
 ==========================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.setup.materials
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.materials
+   :members: copy, copy_by_formula, change_create, delete, list_properties, list_materials
+
 .. toctree::
    :hidden:
 

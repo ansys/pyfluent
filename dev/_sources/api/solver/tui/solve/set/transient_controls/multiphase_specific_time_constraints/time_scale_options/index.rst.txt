@@ -3,5 +3,11 @@
 solver.tui.solve.set.transient\_controls.multiphase\_specific\_time\_constraints.time\_scale\_options
 =====================================================================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options
+   :members: acoustic_scale, gravity_scale, surface_tension_scale, viscous_scale
+

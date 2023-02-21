@@ -3,8 +3,13 @@
 meshing.datamodel.preferences.Graphics.Performance
 ==================================================
 
-.. autoclass:: ansys.fluent.core.datamodel_222.preferences::Root.Graphics.Performance
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.Graphics.Performance
+   :members: OptimizeFor, RatioOfTargetFrameRateToClassifyHeavyGeometry, RatioOfTargetFrameRateToDeclassifyHeavyGeometry
 
 .. toctree::
    :hidden:

@@ -3,12 +3,16 @@
 solver.tui.solve.animate
 ========================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solve.animate
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.animate
 .. toctree::
    :hidden:
 
-   define/index
    playback/index
-   objects/index
    pulse/index
+   define/index
+   objects/index

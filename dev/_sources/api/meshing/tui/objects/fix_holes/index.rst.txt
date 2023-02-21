@@ -3,8 +3,14 @@
 meshing.tui.objects.fix\_holes
 ==============================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.objects.fix_holes
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects.fix_holes
+   :members: patch_all_holes, open_all_holes, reset_material_point, patch_holes, open_holes, shrink_wrap, find_holes
+
 .. toctree::
    :hidden:
 

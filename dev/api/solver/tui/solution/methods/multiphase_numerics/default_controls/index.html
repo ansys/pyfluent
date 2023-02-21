@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../search.html" />
-    <link rel="next" title="solver.tui.solution.methods.multiphase_numerics.face_pressure_controls" href="../face_pressure_controls/index.html" />
-    <link rel="prev" title="solver.tui.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion" href="../advanced_stability_controls/anti_diffusion/index.html" />
+    <link rel="next" title="solver.tui.solution.methods.multiphase_numerics.heat_mass_transfer" href="../heat_mass_transfer/index.html" />
+    <link rel="prev" title="solver.tui.solution.methods.multiphase_numerics.boiling_parameters" href="../boiling_parameters/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -306,8 +306,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -350,66 +355,6 @@ function checkPageExistsAndRedirect(event) {
        </i>
       </label>
       <ul class="current">
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../display/index.html">
-         solver.tui.display
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../define/index.html">
-         solver.tui.define
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../preferences/index.html">
-         solver.tui.preferences
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
        <li class="toctree-l4 current active has-children">
         <a class="reference internal" href="../../../index.html">
          solver.tui.solution
@@ -421,28 +366,18 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../calculation_activities/index.html">
-           solver.tui.solution.calculation_activities
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../cell_registers/index.html">
-           solver.tui.solution.cell_registers
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="../../../controls/index.html">
            solver.tui.solution.controls
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../expert/index.html">
-           solver.tui.solution.expert
+          <a class="reference internal" href="../../../report_definitions/index.html">
+           solver.tui.solution.report_definitions
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../initialize/index.html">
-           solver.tui.solution.initialize
+          <a class="reference internal" href="../../../cell_registers/index.html">
+           solver.tui.solution.cell_registers
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -455,16 +390,6 @@ function checkPageExistsAndRedirect(event) {
            </i>
           </label>
           <ul class="current">
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../expert/index.html">
-             solver.tui.solution.methods.expert
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../high_order_term_relaxation/index.html">
-             solver.tui.solution.methods.high_order_term_relaxation
-            </a>
-           </li>
            <li class="toctree-l6 current active has-children">
             <a class="reference internal" href="../index.html">
              solver.tui.solution.methods.multiphase_numerics
@@ -476,38 +401,13 @@ function checkPageExistsAndRedirect(event) {
             </label>
             <ul class="current">
              <li class="toctree-l7">
+              <a class="reference internal" href="../solution_stabilization/index.html">
+               solver.tui.solution.methods.multiphase_numerics.solution_stabilization
+              </a>
+             </li>
+             <li class="toctree-l7">
               <a class="reference internal" href="../porous_media/index.html">
                solver.tui.solution.methods.multiphase_numerics.porous_media
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../compressible_flow/index.html">
-               solver.tui.solution.methods.multiphase_numerics.compressible_flow
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../boiling_parameters/index.html">
-               solver.tui.solution.methods.multiphase_numerics.boiling_parameters
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../viscous_flow/index.html">
-               solver.tui.solution.methods.multiphase_numerics.viscous_flow
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../heat_mass_transfer/index.html">
-               solver.tui.solution.methods.multiphase_numerics.heat_mass_transfer
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../advanced_stability_controls/index.html">
-               solver.tui.solution.methods.multiphase_numerics.advanced_stability_controls
-              </a>
-             </li>
-             <li class="toctree-l7 current active">
-              <a class="current reference internal" href="#">
-               solver.tui.solution.methods.multiphase_numerics.default_controls
               </a>
              </li>
              <li class="toctree-l7">
@@ -516,16 +416,36 @@ function checkPageExistsAndRedirect(event) {
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../solution_stabilization/index.html">
-               solver.tui.solution.methods.multiphase_numerics.solution_stabilization
+              <a class="reference internal" href="../boiling_parameters/index.html">
+               solver.tui.solution.methods.multiphase_numerics.boiling_parameters
+              </a>
+             </li>
+             <li class="toctree-l7 current active">
+              <a class="current reference internal" href="#">
+               solver.tui.solution.methods.multiphase_numerics.default_controls
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../heat_mass_transfer/index.html">
+               solver.tui.solution.methods.multiphase_numerics.heat_mass_transfer
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../viscous_flow/index.html">
+               solver.tui.solution.methods.multiphase_numerics.viscous_flow
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../advanced_stability_controls/index.html">
+               solver.tui.solution.methods.multiphase_numerics.advanced_stability_controls
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../compressible_flow/index.html">
+               solver.tui.solution.methods.multiphase_numerics.compressible_flow
               </a>
              </li>
             </ul>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../nita_expert_controls/index.html">
-             solver.tui.solution.methods.nita_expert_controls
-            </a>
            </li>
            <li class="toctree-l6">
             <a class="reference internal" href="../../overset/index.html">
@@ -533,8 +453,8 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../pseudo_time_method/index.html">
-             solver.tui.solution.methods.pseudo_time_method
+            <a class="reference internal" href="../../expert/index.html">
+             solver.tui.solution.methods.expert
             </a>
            </li>
            <li class="toctree-l6">
@@ -543,8 +463,23 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
+            <a class="reference internal" href="../../pseudo_time_method/index.html">
+             solver.tui.solution.methods.pseudo_time_method
+            </a>
+           </li>
+           <li class="toctree-l6">
             <a class="reference internal" href="../../warped_face_gradient_correction/index.html">
              solver.tui.solution.methods.warped_face_gradient_correction
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../nita_expert_controls/index.html">
+             solver.tui.solution.methods.nita_expert_controls
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../high_order_term_relaxation/index.html">
+             solver.tui.solution.methods.high_order_term_relaxation
             </a>
            </li>
           </ul>
@@ -555,8 +490,13 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../report_definitions/index.html">
-           solver.tui.solution.report_definitions
+          <a class="reference internal" href="../../../initialize/index.html">
+           solver.tui.solution.initialize
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../calculation_activities/index.html">
+           solver.tui.solution.calculation_activities
           </a>
          </li>
          <li class="toctree-l5">
@@ -564,26 +504,16 @@ function checkPageExistsAndRedirect(event) {
            solver.tui.solution.run_calculation
           </a>
          </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../expert/index.html">
+           solver.tui.solution.expert
+          </a>
+         </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../setup/index.html">
-         solver.tui.setup
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../surface/index.html">
-         solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
+        <a class="reference internal" href="../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
        <li class="toctree-l4">
@@ -592,13 +522,33 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_post/index.html">
-         solver.tui.turbo_post
+        <a class="reference internal" href="../../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../views/index.html">
-         solver.tui.views
+        <a class="reference internal" href="../../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
        <li class="toctree-l4">
@@ -607,8 +557,63 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
+        <a class="reference internal" href="../../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../preferences/index.html">
+         solver.tui.preferences
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../define/index.html">
+         solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../views/index.html">
+         solver.tui.views
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../display/index.html">
+         solver.tui.display
         </a>
        </li>
       </ul>
@@ -677,7 +682,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.default_controls">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.default_controls">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.solution.methods.multiphase_numerics.default_controls
@@ -686,16 +691,7 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.default_controls.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.solution.methods.multiphase_numerics.default_controls.__init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.default_controls.recommended_defaults_for_existing_cases">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.default_controls.recommended_defaults_for_existing_cases">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.solution.methods.multiphase_numerics.default_controls.recommended_defaults_for_existing_cases()
@@ -704,7 +700,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.default_controls.revert_to_pre_r20_point_1_default_settings">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.default_controls.revert_to_pre_r20_point_1_default_settings">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.solution.methods.multiphase_numerics.default_controls.revert_to_pre_r20_point_1_default_settings()
@@ -735,39 +731,23 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solution-methods-multiphase-numerics-default-controls">
 <span id="ref-solver-tui-solution-methods-multiphase-numerics-default-controls"></span><h1>solver.tui.solution.methods.multiphase_numerics.default_controls<a class="headerlink" href="#solver-tui-solution-methods-multiphase-numerics-default-controls" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.default_controls">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solution.methods.multiphase_numerics.</span></span><span class="sig-name descname"><span class="pre">default_controls</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.default_controls" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Multiphase default controls menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.default_controls.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.default_controls.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.default_controls.recommended_defaults_for_existing_cases" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.default_controls.recommended_defaults_for_existing_cases"><code class="xref py py-obj docutils literal notranslate"><span class="pre">recommended_defaults_for_existing_cases</span></code></a>(...)</p></td>
-<td><p>Activate multiphase defaults for loaded case.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.default_controls.revert_to_pre_r20_point_1_default_settings" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.default_controls.revert_to_pre_r20_point_1_default_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">revert_to_pre_r20_point_1_default_settings</span></code></a>(...)</p></td>
-<td><p>Revert to pre-R20.1 multiphase flow default settings.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.default_controls">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solution.methods.multiphase_numerics.</span></span><span class="sig-name descname"><span class="pre">default_controls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.default_controls" title="Permalink to this definition">#</a></dt>
+<dd><p>Multiphase default controls menu.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.default_controls.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.default_controls.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.default_controls.recommended_defaults_for_existing_cases">
-<span class="sig-name descname"><span class="pre">recommended_defaults_for_existing_cases</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.default_controls.recommended_defaults_for_existing_cases" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.default_controls.recommended_defaults_for_existing_cases">
+<span class="sig-name descname"><span class="pre">recommended_defaults_for_existing_cases</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.default_controls.recommended_defaults_for_existing_cases" title="Permalink to this definition">#</a></dt>
 <dd><p>Activate multiphase defaults for loaded case.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.default_controls.revert_to_pre_r20_point_1_default_settings">
-<span class="sig-name descname"><span class="pre">revert_to_pre_r20_point_1_default_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.default_controls.revert_to_pre_r20_point_1_default_settings" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.default_controls.revert_to_pre_r20_point_1_default_settings">
+<span class="sig-name descname"><span class="pre">revert_to_pre_r20_point_1_default_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.default_controls.revert_to_pre_r20_point_1_default_settings" title="Permalink to this definition">#</a></dt>
 <dd><p>Revert to pre-R20.1 multiphase flow default settings.</p>
 </dd></dl>
 

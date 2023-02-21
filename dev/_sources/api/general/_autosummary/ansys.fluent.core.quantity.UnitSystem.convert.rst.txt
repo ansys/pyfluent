@@ -1,6 +1,0 @@
-convert
-=======
-
-.. currentmodule:: ansys.fluent.core.quantity
-
-.. automethod:: UnitSystem.convert

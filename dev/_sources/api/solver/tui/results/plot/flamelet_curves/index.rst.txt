@@ -3,5 +3,11 @@
 solver.tui.results.plot.flamelet\_curves
 ========================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.results.plot.flamelet_curves
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.plot.flamelet_curves
+   :members: write_to_file, plot_curves
+

@@ -3,15 +3,15 @@
 solver.tui.parallel
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.parallel
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.parallel
+   :members: check_verbosity, timer, thread_number_control, load_balance, bandwidth, network, latency, check, partition, set, show_connectivity, multidomain
+
 .. toctree::
    :hidden:
 
-   network/index
-   partition/index
-   set/index
-   load_balance/index
    gpgpu/index
-   timer/index
-   multidomain/index

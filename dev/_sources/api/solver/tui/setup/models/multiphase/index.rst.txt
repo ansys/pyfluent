@@ -3,12 +3,21 @@
 solver.tui.setup.models.multiphase
 ==================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.setup.models.multiphase
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.multiphase
+   :members: volume_fraction_parameters, mixture_parameters, vof_sub_models, model, body_force_formulation, number_of_phases, regime_transition_modeling, coupled_level_set, interface_modeling_options
+
 .. toctree::
    :hidden:
 
-   phases/index
-   wet_steam/index
    population_balance/index
+   phases/index
+   sub_models/index
+   flow_regime_modeling/index
    explicit_expert_options/index
+   wet_steam/index
+   hybrid_models/index

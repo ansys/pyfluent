@@ -3,10 +3,15 @@
 solver.tui.file.export
 ======================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.file.export
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file.export
+   :members: ensight_dvs_surfaces, particle_history_data, fieldview_unstruct_surfaces, ensight_gold_parallel_volume, fast_mesh, ensight_dvs_volume, ascii, common_fluids_format_post, tecplot, fieldview, mechanical_apdl, avs, ensight_gold_parallel_surfaces, gambit, fieldview_xdb, abaqus, mechanical_apdl_input, ensight, taitherm, system_coupling_definition_file_settings, patran_neutral, custom_heat_flux, patran_nodal, icemcfd_for_icepak, cgns, ideas, fast_velocity, nastran, fieldview_unstruct_mesh, fieldview_data, fieldview_unstruct_data, fast_solution, fast_scalar, dx, cdat_for_cfd_post__and__ensight, ensight_gold, fieldview_unstruct
+
 .. toctree::
    :hidden:
 
-   system_coupling_definition_file_settings/index
    settings/index

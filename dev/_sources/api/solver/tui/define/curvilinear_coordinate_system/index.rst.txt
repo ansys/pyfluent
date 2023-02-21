@@ -3,5 +3,11 @@
 solver.tui.define.curvilinear\_coordinate\_system
 =================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.curvilinear_coordinate_system
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.curvilinear_coordinate_system
+   :members: delete, new, display, display_settings, edit, calculation_settings
+

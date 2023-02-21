@@ -3,9 +3,11 @@
 meshing.tui.display.set.lights
 ==============================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.display.set.lights
-     :autosummary:
-.. toctree::
-   :hidden:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
 
-   lighting_interpolation/index
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.set.lights
+   :members: set_light, lighting_interpolation, headlight_on, set_ambient_color, lights_on
+

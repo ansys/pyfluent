@@ -3,5 +3,11 @@
 solver.tui.results.plot.cumulative\_plot
 ========================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.results.plot.cumulative_plot
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.plot.cumulative_plot
+   :members: add, edit, write, list, delete, list_properties, curves, print, axes, plot
+

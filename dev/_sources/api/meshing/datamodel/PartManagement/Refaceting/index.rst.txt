@@ -3,6 +3,11 @@
 meshing.datamodel.PartManagement.Refaceting
 ===========================================
 
-.. autoclass:: ansys.fluent.core.datamodel_222.PartManagement::Root.Refaceting._Refaceting
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.datamodel_231.PartManagement
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.PartManagement::Root.Refaceting._Refaceting
+   :members: Applied, Children, Context, Deviation, MaxSize, Name, NormalAngle, _name_, Add, Apply, Delete, Edit, Remove, Rename
 

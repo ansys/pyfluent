@@ -3,5 +3,11 @@
 meshing.tui.cad\_assemblies.draw\_options
 =========================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.cad_assemblies.draw_options
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.cad_assemblies.draw_options
+   :members: draw_unlabelled_zones, add_to_graphics, remove_from_graphics
+

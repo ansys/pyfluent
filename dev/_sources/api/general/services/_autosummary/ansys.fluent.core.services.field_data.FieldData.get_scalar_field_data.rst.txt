@@ -1,6 +1,0 @@
-get\_scalar\_field\_data
-========================
-
-.. currentmodule:: ansys.fluent.core.services.field_data
-
-.. automethod:: FieldData.get_scalar_field_data

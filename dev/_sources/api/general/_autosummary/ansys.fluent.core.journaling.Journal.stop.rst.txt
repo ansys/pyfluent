@@ -1,6 +1,0 @@
-stop
-====
-
-.. currentmodule:: ansys.fluent.core.journaling
-
-.. automethod:: Journal.stop

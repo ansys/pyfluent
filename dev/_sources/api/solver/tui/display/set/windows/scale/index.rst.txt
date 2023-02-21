@@ -3,5 +3,11 @@
 solver.tui.display.set.windows.scale
 ====================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.display.set.windows.scale
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.windows.scale
+   :members: top, right, margin, visible, left, bottom, border, clear, font_size, format
+

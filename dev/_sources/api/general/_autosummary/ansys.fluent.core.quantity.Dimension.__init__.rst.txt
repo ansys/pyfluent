@@ -1,6 +1,0 @@
-\_\_init\_\_
-============
-
-.. currentmodule:: ansys.fluent.core.quantity
-
-.. automethod:: Dimension.__init__

@@ -3,8 +3,13 @@
 meshing.datamodel.preferences.Appearance
 ========================================
 
-.. autoclass:: ansys.fluent.core.datamodel_222.preferences::Root.Appearance
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.Appearance
+   :members: ApplicationFontSize, AxisTriad, ColorTheme, Completer, CustomTitleBar, DefaultView, GraphicsBackgroundColor1, GraphicsBackgroundColor2, GraphicsBackgroundStyle, GraphicsColorTheme, GraphicsDefaultManualFaceColor, GraphicsDefaultManualNodeColor, GraphicsEdgeColor, GraphicsForegroundColor, GraphicsPartitionBoundaryColor, GraphicsSurfaceColor, GraphicsTitleWindowFramecolor, GraphicsView, GraphicsWallFaceColor, GroupByTreeView, ModelColorScheme, NumberOfFilesRecentlyUsed, NumberOfPastelColors, PastelColorSaturation, PastelColorValue, QuickPropertyView, Ruler, ShowEnabledModels, ShowInterfaceChildrenZone, ShowModelEdges, SolutionModeEdgeColorInMeshingMode, SurfaceEmissivity, SurfaceSpecularity, SurfaceSpecularityForContours, Titles, TitlesBorderOffset
 
 .. toctree::
    :hidden:

@@ -1,6 +1,0 @@
-build\_from\_fluent\_connection
-===============================
-
-.. currentmodule:: ansys.fluent.core.session_solver
-
-.. automethod:: Solver.build_from_fluent_connection

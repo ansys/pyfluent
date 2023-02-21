@@ -3,11 +3,17 @@
 solver.tui.preferences.appearance
 =================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.preferences.appearance
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.appearance
+   :members: graphics_default_manual_node_color, custom_title_bar, surface_specularity, graphics_surface_color, pastel_color_saturation, show_interface_children_zone, graphics_color_theme, graphics_background_color2, default_view, graphics_title_window_framecolor, show_enabled_models, graphics_edge_color, titles, number_of_files_recently_used, graphics_foreground_color, graphics_default_manual_face_color, show_model_edges, surface_emissivity, model_color_scheme, solution_mode_edge_color_in_meshing_mode, completer, graphics_partition_boundary_color, number_of_pastel_colors, graphics_view, titles_border_offset, color_theme, group_by_tree_view, axis_triad, application_font_size, graphics_background_color1, surface_specularity_for_contours, graphics_wall_face_color, graphics_background_style, quick_property_view, pastel_color_value, ruler
+
 .. toctree::
    :hidden:
 
-   ansys_logo/index
    charts/index
    selections/index
+   ansys_logo/index

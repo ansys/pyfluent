@@ -3,5 +3,11 @@
 meshing.tui.mesh.poly.controls.smooth\_controls
 ===============================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.mesh.poly.controls.smooth_controls
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.poly.controls.smooth_controls
+   :members: laplace_smooth_iterations, smooth_attempts, edge_smooth_iterations, smooth_skew, centroid_smooth_iterations, smooth_on_layer, smooth_iterations, smooth_boundary
+

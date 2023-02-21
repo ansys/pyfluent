@@ -3,6 +3,11 @@
 meshing.datamodel.preferences.Graphics.Performance.MinimumFrameRate
 ===================================================================
 
-.. autoclass:: ansys.fluent.core.datamodel_222.preferences::Root.Graphics.Performance.MinimumFrameRate
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.Graphics.Performance.MinimumFrameRate
+   :members: DynamicAdjustment, Enabled, FixedCullingValue, MaximumCullingThreshold, MinimumCullingThreshold, TargetFPS
 

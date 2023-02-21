@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="General" href="general/index.html" />
-    <link rel="prev" title="Apply solution settings" href="../user_guide/solution.html" />
+    <link rel="next" title="Launching Fluent" href="launcher.html" />
+    <link rel="prev" title="Transfer data" href="../user_guide/data_transfer.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -299,8 +299,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="general/index.html">
-   General
+  <a class="reference internal" href="launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -338,24 +343,23 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ref-general">
-   <span class="xref std std-ref">
-    ref_general
-   </span>
+  <a class="reference internal nav-link" href="#launching-fluent">
+   Launching Fluent
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ref-meshing">
-   <span class="xref std std-ref">
-    ref_meshing
-   </span>
+  <a class="reference internal nav-link" href="#pyfluent-utility-functions">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ref-solver">
-   <span class="xref std std-ref">
-    ref_solver
-   </span>
+  <a class="reference internal nav-link" href="#meshing">
+   Meshing
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#solver">
+   Solver
   </a>
  </li>
 </ul>
@@ -378,15 +382,36 @@ function checkPageExistsAndRedirect(event) {
               <article class="bd-article" role="main">
                 
   <section id="api-reference">
-<h1>API reference<a class="headerlink" href="#api-reference" title="Permalink to this heading">#</a></h1>
-<section id="ref-general">
-<h2><a class="reference internal" href="general/index.html#ref-general"><span class="std std-ref">General</span></a><a class="headerlink" href="#ref-general" title="Permalink to this heading">#</a></h2>
+<span id="ref-index-api"></span><h1>API reference<a class="headerlink" href="#api-reference" title="Permalink to this heading">#</a></h1>
+<p>This section describes the core Pythonic interfaces for Fluent.
+Here, you can find the application programming interfaces for
+such things as launching Fluent, assorted utilities, as well as
+the interfaces for the meshing and solver components of Fluent.</p>
+<section id="launching-fluent">
+<h2>Launching Fluent<a class="headerlink" href="#launching-fluent" title="Permalink to this heading">#</a></h2>
+<p>This component provides access to starting Fluent locally in
+server mode or connecting to a running Fluent server instance.</p>
 </section>
-<section id="ref-meshing">
-<h2><a class="reference internal" href="meshing/index.html#ref-meshing"><span class="std std-ref">Meshing</span></a><a class="headerlink" href="#ref-meshing" title="Permalink to this heading">#</a></h2>
+<section id="pyfluent-utility-functions">
+<h2>PyFluent utility functions<a class="headerlink" href="#pyfluent-utility-functions" title="Permalink to this heading">#</a></h2>
+<p>This component consists solely of a function to allow for
+asynchronous execution.</p>
 </section>
-<section id="ref-solver">
-<h2><a class="reference internal" href="solver/index.html#ref-solver"><span class="std std-ref">Solver</span></a><a class="headerlink" href="#ref-solver" title="Permalink to this heading">#</a></h2>
+<section id="meshing">
+<h2>Meshing<a class="headerlink" href="#meshing" title="Permalink to this heading">#</a></h2>
+<p>The meshing mode is dedicated to capturing the capabilities of
+the Fluent Meshing guided workflows and associated tools. This component
+consists of an interface that is derived from the Fluent (meshing)
+TUI, as well as a meshing workflow interface that manages workflow
+tasks, meshing functions, and part management.</p>
+</section>
+<section id="solver">
+<h2>Solver<a class="headerlink" href="#solver" title="Permalink to this heading">#</a></h2>
+<p>The solver mode is dedicated to capturing the power of the
+Fluent solver. This component consists of a <a class="reference internal" href="solver/settings.html#ref-settings"><span class="std std-ref">Solver settings objects</span></a>-based
+interface or a <a class="reference internal" href="solver/tui/index.html#ref-solver-tui"><span class="std std-ref">solver.tui</span></a>-based interface that is derived
+from the Fluent (solver) TUI, as well as access to Fluent surface,
+scalar and vector field data.</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
 </tbody>

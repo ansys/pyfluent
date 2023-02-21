@@ -3,5 +3,11 @@
 solver.tui.plot.ansys\_sound\_analysis
 ======================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.plot.ansys_sound_analysis
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.plot.ansys_sound_analysis
+   :members: write_files, print_indicators
+

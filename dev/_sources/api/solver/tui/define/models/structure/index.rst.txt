@@ -3,10 +3,16 @@
 solver.tui.define.models.structure
 ==================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.models.structure
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.structure
+   :members: structure_off, linear_elasticity, nonlinear_elasticity, thermal_effects
+
 .. toctree::
    :hidden:
 
-   controls/index
    expert/index
+   controls/index

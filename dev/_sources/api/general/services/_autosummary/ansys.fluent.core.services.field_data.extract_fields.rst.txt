@@ -1,6 +1,0 @@
-extract\_fields
-===============
-
-.. currentmodule:: ansys.fluent.core.services.field_data
-
-.. autofunction:: extract_fields

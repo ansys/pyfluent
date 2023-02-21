@@ -3,5 +3,11 @@
 solver.tui.setup.models.multiphase.phases.set\_domain\_properties.interaction\_domain.heat\_mass\_reactions.surface\_tension
 ============================================================================================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.surface_tension
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.surface_tension
+   :members: slope_limiter, cavitation, sfc_model_type, vmass_coeff, virtual_mass, sfc_modeling, sfc_tension_coeff, interphase_visc_disp, vmass_implicit_options, visc_disp_factor, lift_montoya, wall_adhesion, interphase_discr, lift_shaver_podowski, lift, vmass_implicit, jump_adhesion
+

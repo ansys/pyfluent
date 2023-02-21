@@ -3,5 +3,11 @@
 solver.tui.display.set.titles
 =============================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.display.set.titles
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.titles
+   :members: right_middle, right_bottom, right_top, left_top, left_bottom
+

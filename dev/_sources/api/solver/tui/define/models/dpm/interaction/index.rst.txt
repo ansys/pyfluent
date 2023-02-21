@@ -3,5 +3,11 @@
 solver.tui.define.models.dpm.interaction
 ========================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.models.dpm.interaction
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.dpm.interaction
+   :members: underrelaxation_factor, reset_sources_at_timestep, choice_of_eulerian_phase_for_interaction, replace_dpm_mass_source_by_mixture_fraction, ddpm_enhanced_inter_phase_exchange, linearized_dpm_mixture_fraction_source_terms, linearized_dpm_species_source_terms, min_vf_threshold_for_dpm_src_scaling, keep_linearized_dpm_source_terms_constant, coupled_calculations, linearized_dpm_source_terms_limiter, dpm_iteration_interval, enable_drag_scaling_due_to_flow_blocking, max_vf_allowed_for_blocking, ddpm_energy_coupling_via_source_term, implicit_source_term_coupling, linearized_dpm_source_terms, linear_growth_of_dpm_source_term, ddpm_iad_particle, enable_flow_blocking_by_particles, update_dpm_sources_every_flow_iteration, enable_source_scaling_due_to_flow_blocking, implicit_momentum_coupling
+

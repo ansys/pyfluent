@@ -3,5 +3,11 @@
 solver.tui.file.import\_.partition
 ==================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.file.import_.partition
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file.import_.partition
+   :members: metis_zone, metis
+

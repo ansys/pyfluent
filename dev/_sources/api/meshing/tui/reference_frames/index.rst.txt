@@ -3,5 +3,11 @@
 meshing.tui.reference\_frames
 =============================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.reference_frames
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.reference_frames
+   :members: add, delete, list_properties, list, hide, display, edit, display_edit
+

@@ -1,7 +1,0 @@
-.. _ref_solver_tui_define_models_electrolysis_setup_cathode_setup:
-
-solver.tui.define.models.electrolysis\_setup.cathode\_setup
-===========================================================
-
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.models.electrolysis_setup.cathode_setup
-     :autosummary:

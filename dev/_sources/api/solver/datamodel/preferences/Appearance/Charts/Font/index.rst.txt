@@ -3,7 +3,12 @@
 solver.datamodel.preferences.Appearance.Charts.Font
 ===================================================
 
-.. autoclass:: ansys.fluent.core.datamodel_222.preferences::Root.Appearance.Charts.Font
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.Appearance.Charts.Font
+   :members: Axes, AxesTitles, Legend, Title
    :noindex:
 

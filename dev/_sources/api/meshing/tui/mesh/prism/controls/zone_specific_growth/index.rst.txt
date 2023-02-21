@@ -3,5 +3,11 @@
 meshing.tui.mesh.prism.controls.zone\_specific\_growth
 ======================================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.mesh.prism.controls.zone_specific_growth
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.prism.controls.zone_specific_growth
+   :members: list_growth, apply_growth, clear_growth
+

@@ -3,5 +3,11 @@
 meshing.tui.cad\_assemblies.manage\_state
 =========================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.cad_assemblies.manage_state
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.cad_assemblies.manage_state
+   :members: unsuppress, suppress, unlock
+

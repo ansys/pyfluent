@@ -3,5 +3,11 @@
 solver.tui.setup.dynamic\_mesh.controls.layering\_parameters
 ============================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.setup.dynamic_mesh.controls.layering_parameters
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.dynamic_mesh.controls.layering_parameters
+   :members: constant_height, collapse_factor, split_factor
+

@@ -3,5 +3,11 @@
 solver.tui.define.parameters.input\_parameters.advance
 ======================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.parameters.input_parameters.advance
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.parameters.input_parameters.advance
+   :members: list, delete, use_in
+

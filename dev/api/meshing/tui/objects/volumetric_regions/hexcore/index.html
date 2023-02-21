@@ -56,7 +56,7 @@
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
     <link rel="next" title="meshing.tui.objects.volumetric_regions.hexcore.set" href="set/index.html" />
-    <link rel="prev" title="meshing.tui.objects.volumetric_regions.tet.set.tet_improve" href="../tet/set/tet_improve/index.html" />
+    <link rel="prev" title="meshing.tui.objects.volumetric_regions" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -304,8 +304,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -318,11 +323,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../../index.html">
      meshing.tui
@@ -334,18 +334,8 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../file/index.html">
-       meshing.tui.file
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../boundary/index.html">
-       meshing.tui.boundary
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
+      <a class="reference internal" href="../../../size_functions/index.html">
+       meshing.tui.size_functions
       </a>
      </li>
      <li class="toctree-l3">
@@ -354,13 +344,8 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../size_functions/index.html">
-       meshing.tui.size_functions
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
+      <a class="reference internal" href="../../../display/index.html">
+       meshing.tui.display
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -374,43 +359,13 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../cad_association/index.html">
-         meshing.tui.objects.cad_association
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../set/index.html">
-         meshing.tui.objects.set
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../deprecated/index.html">
-         meshing.tui.objects.deprecated
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../wrap/index.html">
-         meshing.tui.objects.wrap
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../remove_gaps/index.html">
          meshing.tui.objects.remove_gaps
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../join_intersect/index.html">
-         meshing.tui.objects.join_intersect
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../fix_holes/index.html">
-         meshing.tui.objects.fix_holes
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../create_new_mesh_object/index.html">
-         meshing.tui.objects.create_new_mesh_object
+        <a class="reference internal" href="../../wrap/index.html">
+         meshing.tui.objects.wrap
         </a>
        </li>
        <li class="toctree-l4">
@@ -428,16 +383,6 @@ function checkPageExistsAndRedirect(event) {
          </i>
         </label>
         <ul class="current">
-         <li class="toctree-l5">
-          <a class="reference internal" href="../scoped_prism/index.html">
-           meshing.tui.objects.volumetric_regions.scoped_prism
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../tet/index.html">
-           meshing.tui.objects.volumetric_regions.tet
-          </a>
-         </li>
          <li class="toctree-l5 current active has-children">
           <a class="current reference internal" href="#">
            meshing.tui.objects.volumetric_regions.hexcore
@@ -455,28 +400,53 @@ function checkPageExistsAndRedirect(event) {
            </li>
           </ul>
          </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../tet/index.html">
+           meshing.tui.objects.volumetric_regions.tet
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../scoped_prism/index.html">
+           meshing.tui.objects.volumetric_regions.scoped_prism
+          </a>
+         </li>
         </ul>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../deprecated/index.html">
+         meshing.tui.objects.deprecated
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../create_new_mesh_object/index.html">
+         meshing.tui.objects.create_new_mesh_object
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../join_intersect/index.html">
+         meshing.tui.objects.join_intersect
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../set/index.html">
+         meshing.tui.objects.set
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../fix_holes/index.html">
+         meshing.tui.objects.fix_holes
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../cad_association/index.html">
+         meshing.tui.objects.cad_association
+        </a>
        </li>
       </ul>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../diagnostics/index.html">
-       meshing.tui.diagnostics
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../material_point/index.html">
-       meshing.tui.material_point
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../mesh/index.html">
-       meshing.tui.mesh
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../display/index.html">
-       meshing.tui.display
+      <a class="reference internal" href="../../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
       </a>
      </li>
      <li class="toctree-l3">
@@ -485,13 +455,43 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../../../diagnostics/index.html">
+       meshing.tui.diagnostics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../file/index.html">
+       meshing.tui.file
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../../../parallel/index.html">
        meshing.tui.parallel
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../../../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../mesh/index.html">
+       meshing.tui.mesh
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../material_point/index.html">
+       meshing.tui.material_point
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../../../openmp_controls/index.html">
        meshing.tui.openmp_controls
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../boundary/index.html">
+       meshing.tui.boundary
       </a>
      </li>
      <li class="toctree-l3">
@@ -538,7 +538,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.objects.volumetric_regions.hexcore
@@ -547,269 +547,13 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.objects.volumetric_regions.hexcore.__init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.generate">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.generate">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.objects.volumetric_regions.hexcore.generate()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.objects.volumetric_regions.hexcore.set
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.objects.volumetric_regions.hexcore.set.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.avoid_1_by_8_cell_jump_in_hexcore">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.objects.volumetric_regions.hexcore.set.avoid_1_by_8_cell_jump_in_hexcore()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.buffer_layers">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.objects.volumetric_regions.hexcore.set.buffer_layers()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.compute_max_cell_length">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.objects.volumetric_regions.hexcore.set.compute_max_cell_length()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.define_hexcore_extents">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.objects.volumetric_regions.hexcore.set.define_hexcore_extents()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.delete_dead_zones">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.objects.volumetric_regions.hexcore.set.delete_dead_zones()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.maximum_cell_length">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.objects.volumetric_regions.hexcore.set.maximum_cell_length()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.maximum_initial_cells">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.objects.volumetric_regions.hexcore.set.maximum_initial_cells()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.merge_tets_to_pyramids">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.objects.volumetric_regions.hexcore.set.merge_tets_to_pyramids()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.non_fluid_type">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.objects.volumetric_regions.hexcore.set.non_fluid_type()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.octree_hexcore">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.objects.volumetric_regions.hexcore.set.octree_hexcore()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params
-        </span>
-       </code>
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.__init__">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.__init__()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align_boundaries">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align_boundaries()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align_tolerance">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align_tolerance()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.boundaries">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.boundaries()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.coordinates">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.coordinates()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.delete_old_face_zones">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.delete_old_face_zones()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.list">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.list()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.specify_boundaries">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.specify_boundaries()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.specify_coordinates">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.specify_coordinates()
-          </span>
-         </code>
-        </a>
-       </li>
-      </ul>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.peel_layers">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.objects.volumetric_regions.hexcore.set.peel_layers()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.print_region_based_sizing">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.objects.volumetric_regions.hexcore.set.print_region_based_sizing()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.set_region_based_sizing">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.objects.volumetric_regions.hexcore.set.set_region_based_sizing()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.skip_tet_refinement">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.objects.volumetric_regions.hexcore.set.skip_tet_refinement()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -834,294 +578,18 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-objects-volumetric-regions-hexcore">
 <span id="ref-meshing-tui-objects-volumetric-regions-hexcore"></span><h1>meshing.tui.objects.volumetric_regions.hexcore<a class="headerlink" href="#meshing-tui-objects-volumetric-regions-hexcore" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.objects.volumetric_regions.</span></span><span class="sig-name descname"><span class="pre">hexcore</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Contains options for setting hexcore mesh controls. See mesh/.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.generate" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.generate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Fill empty volume of selected regions with hexcore.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a></p></td>
-<td><p>Enter hexcore settings.</p></td>
-</tr>
-</tbody>
-</table>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.objects.volumetric_regions.</span></span><span class="sig-name descname"><span class="pre">hexcore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore" title="Permalink to this definition">#</a></dt>
+<dd><p>Contains options for setting hexcore mesh controls. See mesh/.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.generate">
-<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.generate" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.generate">
+<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.generate" title="Permalink to this definition">#</a></dt>
 <dd><p>Fill empty volume of selected regions with hexcore.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enter hexcore settings.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.avoid_1_by_8_cell_jump_in_hexcore" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.avoid_1_by_8_cell_jump_in_hexcore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">avoid_1_by_8_cell_jump_in_hexcore</span></code></a>(*args, ...)</p></td>
-<td><p>Avoid-1:8-cell-jump-in-hexcore.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.buffer_layers" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.buffer_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">buffer_layers</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Number of addition cells to mark for subdivision.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.compute_max_cell_length" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.compute_max_cell_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_max_cell_length</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute maximum cell length.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.define_hexcore_extents" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.define_hexcore_extents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">define_hexcore_extents</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables sspecificaton of hexcore outer domain parameters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.delete_dead_zones" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.delete_dead_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_dead_zones</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete dead zones after hexcore creation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.maximum_cell_length" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.maximum_cell_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maximum_cell_length</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Maximum cell length.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.maximum_initial_cells" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.maximum_initial_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maximum_initial_cells</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Maximum number of initial Cartesian cells.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.merge_tets_to_pyramids" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.merge_tets_to_pyramids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_tets_to_pyramids</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Merge tets into pyramids.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.non_fluid_type" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.non_fluid_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_fluid_type</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set non fluid type for cell zones.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.octree_hexcore" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.octree_hexcore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">octree_hexcore</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create hexcore using size-function driven octree.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.peel_layers" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.peel_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">peel_layers</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Number of hexcore cells to peel back from boundary.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.print_region_based_sizing" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.print_region_based_sizing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_region_based_sizing</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Print region based sizings.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.set_region_based_sizing" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.set_region_based_sizing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_region_based_sizing</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set region based sizings.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.skip_tet_refinement" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.skip_tet_refinement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">skip_tet_refinement</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Skip tethedral refinement in transition cell generation.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outer_domain_params</span></code></a></p></td>
-<td><p>Define outer domain parameters.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.avoid_1_by_8_cell_jump_in_hexcore">
-<span class="sig-name descname"><span class="pre">avoid_1_by_8_cell_jump_in_hexcore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.avoid_1_by_8_cell_jump_in_hexcore" title="Permalink to this definition">#</a></dt>
-<dd><p>Avoid-1:8-cell-jump-in-hexcore.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.buffer_layers">
-<span class="sig-name descname"><span class="pre">buffer_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.buffer_layers" title="Permalink to this definition">#</a></dt>
-<dd><p>Number of addition cells to mark for subdivision.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.compute_max_cell_length">
-<span class="sig-name descname"><span class="pre">compute_max_cell_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.compute_max_cell_length" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute maximum cell length.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.define_hexcore_extents">
-<span class="sig-name descname"><span class="pre">define_hexcore_extents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.define_hexcore_extents" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables sspecificaton of hexcore outer domain parameters.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.delete_dead_zones">
-<span class="sig-name descname"><span class="pre">delete_dead_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.delete_dead_zones" title="Permalink to this definition">#</a></dt>
-<dd><p>Delete dead zones after hexcore creation.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.maximum_cell_length">
-<span class="sig-name descname"><span class="pre">maximum_cell_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.maximum_cell_length" title="Permalink to this definition">#</a></dt>
-<dd><p>Maximum cell length.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.maximum_initial_cells">
-<span class="sig-name descname"><span class="pre">maximum_initial_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.maximum_initial_cells" title="Permalink to this definition">#</a></dt>
-<dd><p>Maximum number of initial Cartesian cells.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.merge_tets_to_pyramids">
-<span class="sig-name descname"><span class="pre">merge_tets_to_pyramids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.merge_tets_to_pyramids" title="Permalink to this definition">#</a></dt>
-<dd><p>Merge tets into pyramids.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.non_fluid_type">
-<span class="sig-name descname"><span class="pre">non_fluid_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.non_fluid_type" title="Permalink to this definition">#</a></dt>
-<dd><p>Set non fluid type for cell zones.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.octree_hexcore">
-<span class="sig-name descname"><span class="pre">octree_hexcore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.octree_hexcore" title="Permalink to this definition">#</a></dt>
-<dd><p>Create hexcore using size-function driven octree.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outer_domain_params</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Define outer domain parameters.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_align</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable auto-align?.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align_boundaries" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align_boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_align_boundaries</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Auto-align selected boundaries.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align_tolerance" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align_tolerance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_align_tolerance</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set auto-align-tolerance.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.boundaries" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boundaries</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set box-aligned zones which  have to be removed from hexcore meshing.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.coordinates" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coordinates</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Secifiy coordinates of outer box.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.delete_old_face_zones" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.delete_old_face_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_old_face_zones</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete replaced old tri face zones.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.list" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List the face zones selected for hexcore up to boundaries.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.specify_boundaries" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.specify_boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specify_boundaries</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set parameters to get hex mesh to boundary(s).</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.specify_coordinates" title="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.specify_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specify_coordinates</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables specification of coordinates of hexcore outer box.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align">
-<span class="sig-name descname"><span class="pre">auto_align</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align" title="Permalink to this definition">#</a></dt>
-<dd><p>Enable auto-align?.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align_boundaries">
-<span class="sig-name descname"><span class="pre">auto_align_boundaries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align_boundaries" title="Permalink to this definition">#</a></dt>
-<dd><p>Auto-align selected boundaries.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align_tolerance">
-<span class="sig-name descname"><span class="pre">auto_align_tolerance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align_tolerance" title="Permalink to this definition">#</a></dt>
-<dd><p>Set auto-align-tolerance.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.boundaries">
-<span class="sig-name descname"><span class="pre">boundaries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.boundaries" title="Permalink to this definition">#</a></dt>
-<dd><p>Set box-aligned zones which  have to be removed from hexcore meshing.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.coordinates">
-<span class="sig-name descname"><span class="pre">coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.coordinates" title="Permalink to this definition">#</a></dt>
-<dd><p>Secifiy coordinates of outer box.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.delete_old_face_zones">
-<span class="sig-name descname"><span class="pre">delete_old_face_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.delete_old_face_zones" title="Permalink to this definition">#</a></dt>
-<dd><p>Delete replaced old tri face zones.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.list">
-<span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.list" title="Permalink to this definition">#</a></dt>
-<dd><p>List the face zones selected for hexcore up to boundaries.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.specify_boundaries">
-<span class="sig-name descname"><span class="pre">specify_boundaries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.specify_boundaries" title="Permalink to this definition">#</a></dt>
-<dd><p>Set parameters to get hex mesh to boundary(s).</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.specify_coordinates">
-<span class="sig-name descname"><span class="pre">specify_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.specify_coordinates" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables specification of coordinates of hexcore outer box.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.peel_layers">
-<span class="sig-name descname"><span class="pre">peel_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.peel_layers" title="Permalink to this definition">#</a></dt>
-<dd><p>Number of hexcore cells to peel back from boundary.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.print_region_based_sizing">
-<span class="sig-name descname"><span class="pre">print_region_based_sizing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.print_region_based_sizing" title="Permalink to this definition">#</a></dt>
-<dd><p>Print region based sizings.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.set_region_based_sizing">
-<span class="sig-name descname"><span class="pre">set_region_based_sizing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.set_region_based_sizing" title="Permalink to this definition">#</a></dt>
-<dd><p>Set region based sizings.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.skip_tet_refinement">
-<span class="sig-name descname"><span class="pre">skip_tet_refinement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.objects.volumetric_regions.hexcore.set.skip_tet_refinement" title="Permalink to this definition">#</a></dt>
-<dd><p>Skip tethedral refinement in transition cell generation.</p>
-</dd></dl>
-
 </dd></dl>
 
 </dd></dl>

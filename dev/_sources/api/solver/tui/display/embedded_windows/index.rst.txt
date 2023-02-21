@@ -3,5 +3,11 @@
 solver.tui.display.embedded\_windows
 ====================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.display.embedded_windows
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.embedded_windows
+   :members: move_out_all, close, close_all, embed_in, move_out
+

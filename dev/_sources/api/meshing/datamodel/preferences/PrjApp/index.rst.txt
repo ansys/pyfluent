@@ -1,8 +1,0 @@
-.. _ref_meshing_datamodel_preferences_PrjApp:
-
-meshing.datamodel.preferences.PrjApp
-====================================
-
-.. autoclass:: ansys.fluent.core.datamodel_222.preferences::Root.PrjApp
-     :autosummary:
-

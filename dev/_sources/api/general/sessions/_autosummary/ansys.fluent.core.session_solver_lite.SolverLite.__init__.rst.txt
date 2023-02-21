@@ -1,6 +1,0 @@
-\_\_init\_\_
-============
-
-.. currentmodule:: ansys.fluent.core.session_solver_lite
-
-.. automethod:: SolverLite.__init__

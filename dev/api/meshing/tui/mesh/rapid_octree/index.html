@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
-    <link rel="next" title="meshing.tui.mesh.rapid_octree.refinement_regions" href="refinement_regions/index.html" />
-    <link rel="prev" title="meshing.tui.mesh.non_conformals.controls" href="../non_conformals/controls/index.html" />
+    <link rel="next" title="meshing.tui.mesh.rapid_octree.mesh_sizing" href="mesh_sizing/index.html" />
+    <link rel="prev" title="meshing.tui.mesh.poly_hexcore.controls" href="../poly_hexcore/controls/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -303,8 +303,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -317,11 +322,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -333,18 +333,8 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../file/index.html">
-       meshing.tui.file
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../boundary/index.html">
-       meshing.tui.boundary
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
+      <a class="reference internal" href="../../size_functions/index.html">
+       meshing.tui.size_functions
       </a>
      </li>
      <li class="toctree-l3">
@@ -353,13 +343,8 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../size_functions/index.html">
-       meshing.tui.size_functions
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
+      <a class="reference internal" href="../../display/index.html">
+       meshing.tui.display
       </a>
      </li>
      <li class="toctree-l3">
@@ -368,13 +353,33 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../report/index.html">
+       meshing.tui.report
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../../diagnostics/index.html">
        meshing.tui.diagnostics
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../material_point/index.html">
-       meshing.tui.material_point
+      <a class="reference internal" href="../../file/index.html">
+       meshing.tui.file
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../parallel/index.html">
+       meshing.tui.parallel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -388,23 +393,23 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
+        <a class="reference internal" href="../cell_zone_conditions/index.html">
+         meshing.tui.mesh.cell_zone_conditions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../scoped_prisms/index.html">
+         meshing.tui.mesh.scoped_prisms
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../tet/index.html">
+         meshing.tui.mesh.tet
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../cartesian/index.html">
          meshing.tui.mesh.cartesian
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../cavity/index.html">
-         meshing.tui.mesh.cavity
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../domains/index.html">
-         meshing.tui.mesh.domains
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../hexcore/index.html">
-         meshing.tui.mesh.hexcore
         </a>
        </li>
        <li class="toctree-l4">
@@ -413,8 +418,28 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../non_conformals/index.html">
-         meshing.tui.mesh.non_conformals
+        <a class="reference internal" href="../cavity/index.html">
+         meshing.tui.mesh.cavity
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../auto_mesh_controls/index.html">
+         meshing.tui.mesh.auto_mesh_controls
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../hexcore/index.html">
+         meshing.tui.mesh.hexcore
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../manage/index.html">
+         meshing.tui.mesh.manage
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../poly_hexcore/index.html">
+         meshing.tui.mesh.poly_hexcore
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -428,13 +453,18 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul>
          <li class="toctree-l5">
-          <a class="reference internal" href="refinement_regions/index.html">
-           meshing.tui.mesh.rapid_octree.refinement_regions
+          <a class="reference internal" href="mesh_sizing/index.html">
+           meshing.tui.mesh.rapid_octree.mesh_sizing
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="mesh_sizing/index.html">
-           meshing.tui.mesh.rapid_octree.mesh_sizing
+          <a class="reference internal" href="boundary_layer_mesh_configuration/index.html">
+           meshing.tui.mesh.rapid_octree.boundary_layer_mesh_configuration
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="refinement_regions/index.html">
+           meshing.tui.mesh.rapid_octree.refinement_regions
           </a>
          </li>
          <li class="toctree-l5">
@@ -445,18 +475,8 @@ function checkPageExistsAndRedirect(event) {
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../prism/index.html">
-         meshing.tui.mesh.prism
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../pyramid/index.html">
          meshing.tui.mesh.pyramid
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../thin_volume_mesh/index.html">
-         meshing.tui.mesh.thin_volume_mesh
         </a>
        </li>
        <li class="toctree-l4">
@@ -465,18 +485,18 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../tet/index.html">
-         meshing.tui.mesh.tet
+        <a class="reference internal" href="../domains/index.html">
+         meshing.tui.mesh.domains
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../manage/index.html">
-         meshing.tui.mesh.manage
+        <a class="reference internal" href="../thin_volume_mesh/index.html">
+         meshing.tui.mesh.thin_volume_mesh
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../cell_zone_conditions/index.html">
-         meshing.tui.mesh.cell_zone_conditions
+        <a class="reference internal" href="../prism/index.html">
+         meshing.tui.mesh.prism
         </a>
        </li>
        <li class="toctree-l4">
@@ -485,40 +505,25 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../poly_hexcore/index.html">
-         meshing.tui.mesh.poly_hexcore
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../auto_mesh_controls/index.html">
-         meshing.tui.mesh.auto_mesh_controls
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../scoped_prisms/index.html">
-         meshing.tui.mesh.scoped_prisms
+        <a class="reference internal" href="../non_conformals/index.html">
+         meshing.tui.mesh.non_conformals
         </a>
        </li>
       </ul>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../display/index.html">
-       meshing.tui.display
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../report/index.html">
-       meshing.tui.report
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../parallel/index.html">
-       meshing.tui.parallel
+      <a class="reference internal" href="../../material_point/index.html">
+       meshing.tui.material_point
       </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../../openmp_controls/index.html">
        meshing.tui.openmp_controls
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../boundary/index.html">
+       meshing.tui.boundary
       </a>
      </li>
      <li class="toctree-l3">
@@ -565,7 +570,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.mesh.rapid_octree
@@ -574,90 +579,16 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.__init__">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.boundary_mesh_optimization">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.rapid_octree.__init__()
+       main_menu.mesh.rapid_octree.boundary_mesh_optimization()
       </span>
      </code>
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.mesh.rapid_octree.advanced_meshing_options
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.advanced_meshing_options.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.aspect_ratio_skewness_limit">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.advanced_meshing_options.aspect_ratio_skewness_limit()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.distance_erosion_factor">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.advanced_meshing_options.distance_erosion_factor()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.projection_priority_zones">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.advanced_meshing_options.projection_priority_zones()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.pseudo_normal_mode">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.advanced_meshing_options.pseudo_normal_mode()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.rename_bounding_box_zones">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.advanced_meshing_options.rename_bounding_box_zones()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.target_cell_orthoskew">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.advanced_meshing_options.target_cell_orthoskew()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.boundary_treatment">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.boundary_treatment">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.rapid_octree.boundary_treatment()
@@ -666,7 +597,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.bounding_box">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.bounding_box">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.rapid_octree.bounding_box()
@@ -675,7 +606,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.create">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.create">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.rapid_octree.create()
@@ -684,7 +615,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.create_stair_step_mesh">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.create_stair_step_mesh">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.rapid_octree.create_stair_step_mesh()
@@ -693,7 +624,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.delete_poor_quality_cells">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.delete_poor_quality_cells">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.rapid_octree.delete_poor_quality_cells()
@@ -702,7 +633,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.distribute_geometry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.distribute_geometry">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.rapid_octree.distribute_geometry()
@@ -711,7 +642,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.dry_run">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.dry_run">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.rapid_octree.dry_run()
@@ -720,7 +651,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.estimate_cell_count">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.estimate_cell_count">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.rapid_octree.estimate_cell_count()
@@ -729,7 +660,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.flow_volume">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.flow_volume">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.rapid_octree.flow_volume()
@@ -738,7 +669,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.geometry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.geometry">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.rapid_octree.geometry()
@@ -747,7 +678,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.improve_geometry_resolution">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.improve_geometry_resolution">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.rapid_octree.improve_geometry_resolution()
@@ -756,7 +687,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.is_manifold_geo">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.is_manifold_geo">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.rapid_octree.is_manifold_geo()
@@ -765,209 +696,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.mesh.rapid_octree.mesh_sizing
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.mesh_sizing.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.add_surface_sizing">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.mesh_sizing.add_surface_sizing()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.boundary_cell_size">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.mesh_sizing.boundary_cell_size()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.boundary_layers">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.mesh_sizing.boundary_layers()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.buffer_layers">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.mesh_sizing.buffer_layers()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.change_surface_sizing">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.mesh_sizing.change_surface_sizing()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.clear_all_surface_sizings">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.mesh_sizing.clear_all_surface_sizings()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.clear_prism_layer_settings">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.mesh_sizing.clear_prism_layer_settings()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.delete_surface_sizing">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.mesh_sizing.delete_surface_sizing()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.feature_angle_refinement">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.mesh_sizing.feature_angle_refinement()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.list_surface_sizings">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.mesh_sizing.list_surface_sizings()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.max_cell_size">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.mesh_sizing.max_cell_size()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.mesh_coarsening_exponent">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.mesh_sizing.mesh_coarsening_exponent()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.prism_layers">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.mesh_sizing.prism_layers()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.surface_coarsening_layers">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.mesh_sizing.surface_coarsening_layers()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.projection_mesh_optimization">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.mesh.rapid_octree.projection_mesh_optimization()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.mesh.rapid_octree.refinement_regions
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.refinement_regions.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions.add">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.refinement_regions.add()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions.delete">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.refinement_regions.delete()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions.list">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.mesh.rapid_octree.refinement_regions.list()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.reset_bounding_box">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.reset_bounding_box">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.rapid_octree.reset_bounding_box()
@@ -976,7 +705,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.undo_last_meshing_operation">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.undo_last_meshing_operation">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.rapid_octree.undo_last_meshing_operation()
@@ -985,7 +714,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.verbosity">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.verbosity">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.rapid_octree.verbosity()
@@ -1016,446 +745,107 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-mesh-rapid-octree">
 <span id="ref-meshing-tui-mesh-rapid-octree"></span><h1>meshing.tui.mesh.rapid_octree<a class="headerlink" href="#meshing-tui-mesh-rapid-octree" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.</span></span><span class="sig-name descname"><span class="pre">rapid_octree</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enters the rapid octree menu, which provides text commands for using the Rapid Octree mesher.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.boundary_treatment" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.boundary_treatment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boundary_treatment</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Selects the boundary treatment option.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.bounding_box" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.bounding_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bounding_box</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Defines/modifies the bounding box around the geometry.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.create" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Creates a mesh using the Rapid Octree mesher.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.create_stair_step_mesh" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.create_stair_step_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_stair_step_mesh</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create rapid octree mesh with a cartesian boundary approximation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.delete_poor_quality_cells" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.delete_poor_quality_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_poor_quality_cells</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete all cells with orthogonal-quality less than 0.01.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.distribute_geometry" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.distribute_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distribute_geometry</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the distribution of the input geometry across partitions / compute nodes, so that it is not copied to each process.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.dry_run" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.dry_run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dry_run</span></code></a>(*args, **kwargs)</p></td>
-<td><p>If yes: Just print diagnostic information, do not create a mesh.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.estimate_cell_count" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.estimate_cell_count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">estimate_cell_count</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Give a quick estimate about the expected number of cells.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.flow_volume" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.flow_volume"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flow_volume</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the volume to be filled by the mesh.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.geometry" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geometry</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Allows you to apply the Rapid Octree mesher to a defined mesh object or geometry object rather than all available surface zones.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.improve_geometry_resolution" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.improve_geometry_resolution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">improve_geometry_resolution</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Activate improved geometry resolution, will significantly increase mesh generation time.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.is_manifold_geo" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.is_manifold_geo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_manifold_geo</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set to yes if the geomety is manifold (speed up mesh generation).</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.projection_mesh_optimization" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.projection_mesh_optimization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">projection_mesh_optimization</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set optimization for projection mesh.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.reset_bounding_box" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.reset_bounding_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_bounding_box</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Redefines the bounding box extents to encompass all of the surfaces of the currently selected geometry, and updates the base length scale used in the mesh generation process.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.undo_last_meshing_operation" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.undo_last_meshing_operation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">undo_last_meshing_operation</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Attempts to restore the object state (including its surfaces) as it was prior to the meshing operation performed by the Rapid Octree mesher.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.verbosity" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.verbosity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verbosity</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets the verbosity of the messages printed by the Rapid Octree mesher.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">advanced_meshing_options</span></code></a></p></td>
-<td><p>Advanced and experimental options for octree mesh generation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="mesh_sizing/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_sizing</span></code></a></p></td>
-<td><p>Enters the mesh sizing menu, which allows you to define the cell sizes.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="refinement_regions/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">refinement_regions</span></code></a></p></td>
-<td><p>Enters the rapid octree refinement region menu, which allows you to manage the refinement regions.</p></td>
-</tr>
-</tbody>
-</table>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.</span></span><span class="sig-name descname"><span class="pre">rapid_octree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the rapid octree menu, which provides text commands for using the Rapid Octree mesher.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">advanced_meshing_options</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Advanced and experimental options for octree mesh generation.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.aspect_ratio_skewness_limit" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.aspect_ratio_skewness_limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aspect_ratio_skewness_limit</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Ignore cells with higher skew in aspect ratio improvement.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.distance_erosion_factor" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.distance_erosion_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distance_erosion_factor</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set distance erosion factor as a factor of prism edge length.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.projection_priority_zones" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.projection_priority_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">projection_priority_zones</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Prioritize zone association of faces crossing multiple boundary zones.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.pseudo_normal_mode" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.pseudo_normal_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pseudo_normal_mode</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets the mode for cumputing projection front sudo normals.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.rename_bounding_box_zones" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.rename_bounding_box_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rename_bounding_box_zones</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set flag to change naming scheme of bounding box surface zones.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.target_cell_orthoskew" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.target_cell_orthoskew"><code class="xref py py-obj docutils literal notranslate"><span class="pre">target_cell_orthoskew</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set target orthoskew in mesh (0.0-1.0).</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.aspect_ratio_skewness_limit">
-<span class="sig-name descname"><span class="pre">aspect_ratio_skewness_limit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.aspect_ratio_skewness_limit" title="Permalink to this definition">#</a></dt>
-<dd><p>Ignore cells with higher skew in aspect ratio improvement.</p>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.boundary_mesh_optimization">
+<span class="sig-name descname"><span class="pre">boundary_mesh_optimization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.boundary_mesh_optimization" title="Permalink to this definition">#</a></dt>
+<dd><p>Enable optimization to improve orthogonality at the boundary mesh.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.distance_erosion_factor">
-<span class="sig-name descname"><span class="pre">distance_erosion_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.distance_erosion_factor" title="Permalink to this definition">#</a></dt>
-<dd><p>Set distance erosion factor as a factor of prism edge length.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.projection_priority_zones">
-<span class="sig-name descname"><span class="pre">projection_priority_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.projection_priority_zones" title="Permalink to this definition">#</a></dt>
-<dd><p>Prioritize zone association of faces crossing multiple boundary zones.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.pseudo_normal_mode">
-<span class="sig-name descname"><span class="pre">pseudo_normal_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.pseudo_normal_mode" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets the mode for cumputing projection front sudo normals.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.rename_bounding_box_zones">
-<span class="sig-name descname"><span class="pre">rename_bounding_box_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.rename_bounding_box_zones" title="Permalink to this definition">#</a></dt>
-<dd><p>Set flag to change naming scheme of bounding box surface zones.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.target_cell_orthoskew">
-<span class="sig-name descname"><span class="pre">target_cell_orthoskew</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.advanced_meshing_options.target_cell_orthoskew" title="Permalink to this definition">#</a></dt>
-<dd><p>Set target orthoskew in mesh (0.0-1.0). Smaller values are likely to increase pullback.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.boundary_treatment">
-<span class="sig-name descname"><span class="pre">boundary_treatment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.boundary_treatment" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.boundary_treatment">
+<span class="sig-name descname"><span class="pre">boundary_treatment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.boundary_treatment" title="Permalink to this definition">#</a></dt>
 <dd><p>Selects the boundary treatment option. Enter 0 for the Boundary Projection treatment or 1 for the Cartesian Snapping treatment.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.bounding_box">
-<span class="sig-name descname"><span class="pre">bounding_box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.bounding_box" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.bounding_box">
+<span class="sig-name descname"><span class="pre">bounding_box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.bounding_box" title="Permalink to this definition">#</a></dt>
 <dd><p>Defines/modifies the bounding box around the geometry.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.create">
-<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.create" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.create" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a mesh using the Rapid Octree mesher.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.create_stair_step_mesh">
-<span class="sig-name descname"><span class="pre">create_stair_step_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.create_stair_step_mesh" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.create_stair_step_mesh">
+<span class="sig-name descname"><span class="pre">create_stair_step_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.create_stair_step_mesh" title="Permalink to this definition">#</a></dt>
 <dd><p>Create rapid octree mesh with a cartesian boundary approximation.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.delete_poor_quality_cells">
-<span class="sig-name descname"><span class="pre">delete_poor_quality_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.delete_poor_quality_cells" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.delete_poor_quality_cells">
+<span class="sig-name descname"><span class="pre">delete_poor_quality_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.delete_poor_quality_cells" title="Permalink to this definition">#</a></dt>
 <dd><p>Delete all cells with orthogonal-quality less than 0.01.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.distribute_geometry">
-<span class="sig-name descname"><span class="pre">distribute_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.distribute_geometry" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.distribute_geometry">
+<span class="sig-name descname"><span class="pre">distribute_geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.distribute_geometry" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables/disables the distribution of the input geometry across partitions / compute nodes, so that it is not copied to each process. This reduces the memory requirements of the mesh generation significantly, especially for geometries with a high number of triangles. Note that this geometric distribution is enabled by default and is automatically deactivated if the geometry is not fully enclosed by the defined bounding box.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.dry_run">
-<span class="sig-name descname"><span class="pre">dry_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.dry_run" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.dry_run">
+<span class="sig-name descname"><span class="pre">dry_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.dry_run" title="Permalink to this definition">#</a></dt>
 <dd><p>If yes: Just print diagnostic information, do not create a mesh.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.estimate_cell_count">
-<span class="sig-name descname"><span class="pre">estimate_cell_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.estimate_cell_count" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.estimate_cell_count">
+<span class="sig-name descname"><span class="pre">estimate_cell_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.estimate_cell_count" title="Permalink to this definition">#</a></dt>
 <dd><p>Give a quick estimate about the expected number of cells.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.flow_volume">
-<span class="sig-name descname"><span class="pre">flow_volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.flow_volume" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.flow_volume">
+<span class="sig-name descname"><span class="pre">flow_volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.flow_volume" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies the volume to be filled by the mesh.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.geometry">
-<span class="sig-name descname"><span class="pre">geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.geometry" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.geometry">
+<span class="sig-name descname"><span class="pre">geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.geometry" title="Permalink to this definition">#</a></dt>
 <dd><p>Allows you to apply the Rapid Octree mesher to a defined mesh object or geometry object rather than all available surface zones. Note that using a mesh object with multiple volumetric regions allows you to generate multiple disconnected cell zones that can be coupled by a non-conformal mesh interface in the solution mode; all other input objects result in the creation of a single volume / cell zone.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.improve_geometry_resolution">
-<span class="sig-name descname"><span class="pre">improve_geometry_resolution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.improve_geometry_resolution" title="Permalink to this definition">#</a></dt>
-<dd><p>Activate improved geometry resolution, will significantly increase mesh generation time.</p>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.improve_geometry_resolution">
+<span class="sig-name descname"><span class="pre">improve_geometry_resolution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.improve_geometry_resolution" title="Permalink to this definition">#</a></dt>
+<dd><p>Enables improved geometry resolution.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.is_manifold_geo">
-<span class="sig-name descname"><span class="pre">is_manifold_geo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.is_manifold_geo" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.is_manifold_geo">
+<span class="sig-name descname"><span class="pre">is_manifold_geo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.is_manifold_geo" title="Permalink to this definition">#</a></dt>
 <dd><p>Set to yes if the geomety is manifold (speed up mesh generation).</p>
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mesh_sizing</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enters the mesh sizing menu, which allows you to define the cell sizes.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="mesh_sizing/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="mesh_sizing/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.add_surface_sizing" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.add_surface_sizing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_surface_sizing</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Add a size function definition.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="mesh_sizing/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.boundary_cell_size" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.boundary_cell_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boundary_cell_size</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets the default cell size for the geometry.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="mesh_sizing/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.boundary_layers" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.boundary_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boundary_layers</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the minimum number of constant-size cells adjacent to the geometry.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="mesh_sizing/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.buffer_layers" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.buffer_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">buffer_layers</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the number of buffer layers.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="mesh_sizing/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.change_surface_sizing" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.change_surface_sizing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">change_surface_sizing</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Change a size function definition.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="mesh_sizing/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.clear_all_surface_sizings" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.clear_all_surface_sizings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_all_surface_sizings</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete all size function definitions.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="mesh_sizing/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.clear_prism_layer_settings" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.clear_prism_layer_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_prism_layer_settings</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete all settings for prismatic layers in the domain.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="mesh_sizing/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.delete_surface_sizing" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.delete_surface_sizing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_surface_sizing</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete a size function definition.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="mesh_sizing/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.feature_angle_refinement" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.feature_angle_refinement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">feature_angle_refinement</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Defines the angular threshold and number of refinement levels for features.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="mesh_sizing/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.list_surface_sizings" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.list_surface_sizings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_surface_sizings</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List all size function definitions.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="mesh_sizing/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.max_cell_size" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.max_cell_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_cell_size</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets the maximum cell size in the octree mesh.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="mesh_sizing/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.mesh_coarsening_exponent" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.mesh_coarsening_exponent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_coarsening_exponent</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the exponent for mesh coarsening.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="mesh_sizing/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.prism_layers" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.prism_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prism_layers</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify the number of prismatic layers for surface zones.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="mesh_sizing/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.surface_coarsening_layers" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.surface_coarsening_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">surface_coarsening_layers</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the minimum number of constant-size cells adjacent to the geometry.</p></td>
-</tr>
-</tbody>
-</table>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.add_surface_sizing">
-<span class="sig-name descname"><span class="pre">add_surface_sizing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.add_surface_sizing" title="Permalink to this definition">#</a></dt>
-<dd><p>Add a size function definition.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.boundary_cell_size">
-<span class="sig-name descname"><span class="pre">boundary_cell_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.boundary_cell_size" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets the default cell size for the geometry.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.boundary_layers">
-<span class="sig-name descname"><span class="pre">boundary_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.boundary_layers" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the minimum number of constant-size cells adjacent to the geometry.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.buffer_layers">
-<span class="sig-name descname"><span class="pre">buffer_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.buffer_layers" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the number of buffer layers.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.change_surface_sizing">
-<span class="sig-name descname"><span class="pre">change_surface_sizing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.change_surface_sizing" title="Permalink to this definition">#</a></dt>
-<dd><p>Change a size function definition.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.clear_all_surface_sizings">
-<span class="sig-name descname"><span class="pre">clear_all_surface_sizings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.clear_all_surface_sizings" title="Permalink to this definition">#</a></dt>
-<dd><p>Delete all size function definitions.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.clear_prism_layer_settings">
-<span class="sig-name descname"><span class="pre">clear_prism_layer_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.clear_prism_layer_settings" title="Permalink to this definition">#</a></dt>
-<dd><p>Delete all settings for prismatic layers in the domain.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.delete_surface_sizing">
-<span class="sig-name descname"><span class="pre">delete_surface_sizing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.delete_surface_sizing" title="Permalink to this definition">#</a></dt>
-<dd><p>Delete a size function definition.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.feature_angle_refinement">
-<span class="sig-name descname"><span class="pre">feature_angle_refinement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.feature_angle_refinement" title="Permalink to this definition">#</a></dt>
-<dd><p>Defines the angular threshold and number of refinement levels for features. This text command is only available when the Boundary Projection treatment is selected through the /mesh/rapid-octree/boundary-treatment text command.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.list_surface_sizings">
-<span class="sig-name descname"><span class="pre">list_surface_sizings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.list_surface_sizings" title="Permalink to this definition">#</a></dt>
-<dd><p>List all size function definitions.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.max_cell_size">
-<span class="sig-name descname"><span class="pre">max_cell_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.max_cell_size" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets the maximum cell size in the octree mesh.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.mesh_coarsening_exponent">
-<span class="sig-name descname"><span class="pre">mesh_coarsening_exponent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.mesh_coarsening_exponent" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the exponent for mesh coarsening.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.prism_layers">
-<span class="sig-name descname"><span class="pre">prism_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.prism_layers" title="Permalink to this definition">#</a></dt>
-<dd><p>Specify the number of prismatic layers for surface zones.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.surface_coarsening_layers">
-<span class="sig-name descname"><span class="pre">surface_coarsening_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.mesh_sizing.surface_coarsening_layers" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the minimum number of constant-size cells adjacent to the geometry.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.projection_mesh_optimization">
-<span class="sig-name descname"><span class="pre">projection_mesh_optimization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.projection_mesh_optimization" title="Permalink to this definition">#</a></dt>
-<dd><p>Set optimization for projection mesh. 0 to deactivate.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">refinement_regions</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enters the rapid octree refinement region menu, which allows you to manage the refinement regions.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="refinement_regions/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="refinement_regions/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions.add" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Adds a refinement region to the domain.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="refinement_regions/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions.delete" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Deletes a refinement region.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="refinement_regions/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions.list" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Lists all of the refinement regions.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions.add">
-<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions.add" title="Permalink to this definition">#</a></dt>
-<dd><p>Adds a refinement region to the domain.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions.delete">
-<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions.delete" title="Permalink to this definition">#</a></dt>
-<dd><p>Deletes a refinement region.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions.list">
-<span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.refinement_regions.list" title="Permalink to this definition">#</a></dt>
-<dd><p>Lists all of the refinement regions.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.reset_bounding_box">
-<span class="sig-name descname"><span class="pre">reset_bounding_box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.reset_bounding_box" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.reset_bounding_box">
+<span class="sig-name descname"><span class="pre">reset_bounding_box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.reset_bounding_box" title="Permalink to this definition">#</a></dt>
 <dd><p>Redefines the bounding box extents to encompass all of the surfaces of the currently selected geometry, and updates the base length scale used in the mesh generation process.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.undo_last_meshing_operation">
-<span class="sig-name descname"><span class="pre">undo_last_meshing_operation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.undo_last_meshing_operation" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.undo_last_meshing_operation">
+<span class="sig-name descname"><span class="pre">undo_last_meshing_operation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.undo_last_meshing_operation" title="Permalink to this definition">#</a></dt>
 <dd><p>Attempts to restore the object state (including its surfaces) as it was prior to the meshing operation performed by the Rapid Octree mesher.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.verbosity">
-<span class="sig-name descname"><span class="pre">verbosity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.rapid_octree.verbosity" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.verbosity">
+<span class="sig-name descname"><span class="pre">verbosity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.verbosity" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the verbosity of the messages printed by the Rapid Octree mesher.</p>
 </dd></dl>
 

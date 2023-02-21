@@ -3,5 +3,11 @@
 solver.tui.solve.set.nita\_expert\_controls
 ===========================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solve.set.nita_expert_controls
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.nita_expert_controls
+   :members: skewness_neighbor_coupling, hybrid_nita_settings, set_verbosity
+

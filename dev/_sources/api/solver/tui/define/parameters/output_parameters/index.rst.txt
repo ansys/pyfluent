@@ -3,5 +3,11 @@
 solver.tui.define.parameters.output\_parameters
 ===============================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.parameters.output_parameters
-     :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.parameters.output_parameters
+   :members: delete, print_to_console, write_all_to_file, rename, write_to_file, create, edit, print_all_to_console
+

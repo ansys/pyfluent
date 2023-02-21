@@ -55,7 +55,7 @@
     <link rel="shortcut icon" href="../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../search.html" />
-    <link rel="next" title="solver.tui.setup.models.radiation.dtrm_parameters" href="../dtrm_parameters/index.html" />
+    <link rel="next" title="solver.tui.setup.models.radiation.solar_parameters" href="../solar_parameters/index.html" />
     <link rel="prev" title="solver.tui.setup.models.radiation" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
@@ -306,8 +306,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -351,23 +356,23 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../adjoint/index.html">
-         solver.tui.adjoint
+        <a class="reference internal" href="../../../../solution/index.html">
+         solver.tui.solution
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../define/index.html">
-         solver.tui.define
+        <a class="reference internal" href="../../../../server/index.html">
+         solver.tui.server
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../file/index.html">
-         solver.tui.file
+        <a class="reference internal" href="../../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4">
@@ -376,8 +381,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../mesh/index.html">
-         solver.tui.mesh
+        <a class="reference internal" href="../../../../file/index.html">
+         solver.tui.file
         </a>
        </li>
        <li class="toctree-l4">
@@ -386,8 +391,18 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../../parallel/index.html">
          solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parametric_study/index.html">
+         solver.tui.parametric_study
         </a>
        </li>
        <li class="toctree-l4">
@@ -396,13 +411,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../preferences/index.html">
-         solver.tui.preferences
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../report/index.html">
-         solver.tui.report
+        <a class="reference internal" href="../../../../surface/index.html">
+         solver.tui.surface
         </a>
        </li>
        <li class="toctree-l4">
@@ -411,13 +421,18 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solution/index.html">
-         solver.tui.solution
+        <a class="reference internal" href="../../../../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solve/index.html">
-         solver.tui.solve
+        <a class="reference internal" href="../../../../define/index.html">
+         solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../mesh/index.html">
+         solver.tui.mesh
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -431,38 +446,18 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
+          <a class="reference internal" href="../../../operating_conditions/index.html">
+           solver.tui.setup.operating_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../named_expressions/index.html">
+           solver.tui.setup.named_expressions
+          </a>
+         </li>
+         <li class="toctree-l5">
           <a class="reference internal" href="../../../boundary_conditions/index.html">
            solver.tui.setup.boundary_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../dynamic_mesh/index.html">
-           solver.tui.setup.dynamic_mesh
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../expert/index.html">
-           solver.tui.setup.expert
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../gap_model/index.html">
-           solver.tui.setup.gap_model
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../materials/index.html">
-           solver.tui.setup.materials
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../mesh_interfaces/index.html">
-           solver.tui.setup.mesh_interfaces
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../mixing_planes/index.html">
-           solver.tui.setup.mixing_planes
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -476,58 +471,13 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul class="current">
            <li class="toctree-l6">
+            <a class="reference internal" href="../../electrolysis/index.html">
+             solver.tui.setup.models.electrolysis
+            </a>
+           </li>
+           <li class="toctree-l6">
             <a class="reference internal" href="../../acoustics/index.html">
              solver.tui.setup.models.acoustics
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../optics/index.html">
-             solver.tui.setup.models.optics
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../eulerian_wallfilm/index.html">
-             solver.tui.setup.models.eulerian_wallfilm
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../dpm/index.html">
-             solver.tui.setup.models.dpm
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../shell_conduction/index.html">
-             solver.tui.setup.models.shell_conduction
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../system_coupling_settings/index.html">
-             solver.tui.setup.models.system_coupling_settings
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../cht/index.html">
-             solver.tui.setup.models.cht
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../two_temperature/index.html">
-             solver.tui.setup.models.two_temperature
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../multiphase/index.html">
-             solver.tui.setup.models.multiphase
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../nox_parameters/index.html">
-             solver.tui.setup.models.nox_parameters
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../soot_parameters/index.html">
-             solver.tui.setup.models.soot_parameters
             </a>
            </li>
            <li class="toctree-l6 current active has-children">
@@ -546,16 +496,66 @@ function checkPageExistsAndRedirect(event) {
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../dtrm_parameters/index.html">
-               solver.tui.setup.models.radiation.dtrm_parameters
-              </a>
-             </li>
-             <li class="toctree-l7">
               <a class="reference internal" href="../solar_parameters/index.html">
                solver.tui.setup.models.radiation.solar_parameters
               </a>
              </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../dtrm_parameters/index.html">
+               solver.tui.setup.models.radiation.dtrm_parameters
+              </a>
+             </li>
             </ul>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../system_coupling_settings/index.html">
+             solver.tui.setup.models.system_coupling_settings
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../optics/index.html">
+             solver.tui.setup.models.optics
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../eulerian_wallfilm/index.html">
+             solver.tui.setup.models.eulerian_wallfilm
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../two_temperature/index.html">
+             solver.tui.setup.models.two_temperature
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../nox_parameters/index.html">
+             solver.tui.setup.models.nox_parameters
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../multiphase/index.html">
+             solver.tui.setup.models.multiphase
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../structure/index.html">
+             solver.tui.setup.models.structure
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../viscous/index.html">
+             solver.tui.setup.models.viscous
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../heat_exchanger/index.html">
+             solver.tui.setup.models.heat_exchanger
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../cht/index.html">
+             solver.tui.setup.models.cht
+            </a>
            </li>
            <li class="toctree-l6">
             <a class="reference internal" href="../../solver/index.html">
@@ -568,45 +568,25 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../viscous/index.html">
-             solver.tui.setup.models.viscous
+            <a class="reference internal" href="../../soot_parameters/index.html">
+             solver.tui.setup.models.soot_parameters
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../structure/index.html">
-             solver.tui.setup.models.structure
+            <a class="reference internal" href="../../dpm/index.html">
+             solver.tui.setup.models.dpm
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../heat_exchanger/index.html">
-             solver.tui.setup.models.heat_exchanger
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../electrolysis_setup/index.html">
-             solver.tui.setup.models.electrolysis_setup
+            <a class="reference internal" href="../../shell_conduction/index.html">
+             solver.tui.setup.models.shell_conduction
             </a>
            </li>
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../named_expressions/index.html">
-           solver.tui.setup.named_expressions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../operating_conditions/index.html">
-           solver.tui.setup.operating_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../overset_interfaces/index.html">
-           solver.tui.setup.overset_interfaces
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../reference_frames/index.html">
-           solver.tui.setup.reference_frames
+          <a class="reference internal" href="../../../materials/index.html">
+           solver.tui.setup.materials
           </a>
          </li>
          <li class="toctree-l5">
@@ -615,25 +595,60 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
+          <a class="reference internal" href="../../../mesh_interfaces/index.html">
+           solver.tui.setup.mesh_interfaces
+          </a>
+         </li>
+         <li class="toctree-l5">
           <a class="reference internal" href="../../../turbo_model/index.html">
            solver.tui.setup.turbo_model
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../expert/index.html">
+           solver.tui.setup.expert
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../reference_frames/index.html">
+           solver.tui.setup.reference_frames
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../dynamic_mesh/index.html">
+           solver.tui.setup.dynamic_mesh
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../overset_interfaces/index.html">
+           solver.tui.setup.overset_interfaces
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../mixing_planes/index.html">
+           solver.tui.setup.mixing_planes
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../gap_model/index.html">
+           solver.tui.setup.gap_model
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../../../views/index.html">
+         solver.tui.views
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
+        <a class="reference internal" href="../../../../solve/index.html">
+         solver.tui.solve
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../server/index.html">
-         solver.tui.server
+        <a class="reference internal" href="../../../../report/index.html">
+         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4">
@@ -642,18 +657,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
+        <a class="reference internal" href="../../../../display/index.html">
+         solver.tui.display
         </a>
        </li>
       </ul>
@@ -722,7 +727,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.setup.models.radiation.s2s_parameters
@@ -731,16 +736,7 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.setup.models.radiation.s2s_parameters.__init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_clusters_and_vf_accelerated">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.compute_clusters_and_vf_accelerated">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.radiation.s2s_parameters.compute_clusters_and_vf_accelerated()
@@ -749,7 +745,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_fpsc_values">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.compute_fpsc_values">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.radiation.s2s_parameters.compute_fpsc_values()
@@ -758,7 +754,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_vf_accelerated">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.compute_vf_accelerated">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.radiation.s2s_parameters.compute_vf_accelerated()
@@ -767,7 +763,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_vf_only">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.compute_vf_only">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.radiation.s2s_parameters.compute_vf_only()
@@ -776,7 +772,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_write_vf">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.compute_write_vf">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.radiation.s2s_parameters.compute_write_vf()
@@ -785,7 +781,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.enable_mesh_interface_clustering">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.enable_mesh_interface_clustering">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.radiation.s2s_parameters.enable_mesh_interface_clustering()
@@ -794,7 +790,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.non_participating_boundary_zones_temperature">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.non_participating_boundary_zones_temperature">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.radiation.s2s_parameters.non_participating_boundary_zones_temperature()
@@ -803,7 +799,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.print_thread_clusters">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.print_thread_clusters">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.radiation.s2s_parameters.print_thread_clusters()
@@ -812,7 +808,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.print_zonewise_radiation">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.print_zonewise_radiation">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.radiation.s2s_parameters.print_zonewise_radiation()
@@ -821,7 +817,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.read_vf_file">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.read_vf_file">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.radiation.s2s_parameters.read_vf_file()
@@ -830,7 +826,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.set_global_faces_per_surface_cluster">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.set_global_faces_per_surface_cluster">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.radiation.s2s_parameters.set_global_faces_per_surface_cluster()
@@ -839,7 +835,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.set_vf_parameters">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.set_vf_parameters">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.radiation.s2s_parameters.set_vf_parameters()
@@ -848,7 +844,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.split_angle">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.split_angle">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.radiation.s2s_parameters.split_angle()
@@ -857,7 +853,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.use_new_cluster_algorithm">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.use_new_cluster_algorithm">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.radiation.s2s_parameters.use_new_cluster_algorithm()
@@ -866,7 +862,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.use_old_cluster_algorithm">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.use_old_cluster_algorithm">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.radiation.s2s_parameters.use_old_cluster_algorithm()
@@ -897,156 +893,101 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-models-radiation-s2s-parameters">
 <span id="ref-solver-tui-setup-models-radiation-s2s-parameters"></span><h1>solver.tui.setup.models.radiation.s2s_parameters<a class="headerlink" href="#solver-tui-setup-models-radiation-s2s-parameters" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.models.radiation.</span></span><span class="sig-name descname"><span class="pre">s2s_parameters</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enter the S2S parameters menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_clusters_and_vf_accelerated" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_clusters_and_vf_accelerated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_clusters_and_vf_accelerated</span></code></a>(*args, ...)</p></td>
-<td><p>Compute/Write surface cluster first and then view factors.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_fpsc_values" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_fpsc_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_fpsc_values</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute only fpsc values based on current settings.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_vf_accelerated" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_vf_accelerated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_vf_accelerated</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute/Write view factors from existing surface clusters.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_vf_only" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_vf_only"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_vf_only</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute/write view factors only.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_write_vf" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_write_vf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_write_vf</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute/write surface clusters and view factors for S2S radiation model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.enable_mesh_interface_clustering" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.enable_mesh_interface_clustering"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_mesh_interface_clustering</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable clustering on mesh interfaces?.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.non_participating_boundary_zones_temperature" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.non_participating_boundary_zones_temperature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_participating_boundary_zones_temperature</span></code></a>(...)</p></td>
-<td><p>Set temperature for the non-participating boundary zones.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.print_thread_clusters" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.print_thread_clusters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_thread_clusters</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Prints the following for all boundary threads: thread-id, number of faces, faces per surface cluster, and the number of surface clusters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.print_zonewise_radiation" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.print_zonewise_radiation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_zonewise_radiation</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Prints the zonewise incoming radiation, viewfactors, and average temperature.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.read_vf_file" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.read_vf_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_vf_file</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Read an S2S file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.set_global_faces_per_surface_cluster" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.set_global_faces_per_surface_cluster"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_global_faces_per_surface_cluster</span></code></a>(*args, ...)</p></td>
-<td><p>Set global value of faces per surface cluster for all boundary zones.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.set_vf_parameters" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.set_vf_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_vf_parameters</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the parameters needed for the view factor calculations.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.split_angle" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.split_angle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_angle</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the split angle for the clustering algorithm.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.use_new_cluster_algorithm" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.use_new_cluster_algorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_new_cluster_algorithm</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Use the new surface clustering algorithm.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.use_old_cluster_algorithm" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.use_old_cluster_algorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_old_cluster_algorithm</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Use the old surface clustering algorithm.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.models.radiation.</span></span><span class="sig-name descname"><span class="pre">s2s_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the S2S parameters menu.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_clusters_and_vf_accelerated">
-<span class="sig-name descname"><span class="pre">compute_clusters_and_vf_accelerated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_clusters_and_vf_accelerated" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.compute_clusters_and_vf_accelerated">
+<span class="sig-name descname"><span class="pre">compute_clusters_and_vf_accelerated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.compute_clusters_and_vf_accelerated" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute/Write surface cluster first and then view factors.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_fpsc_values">
-<span class="sig-name descname"><span class="pre">compute_fpsc_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_fpsc_values" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.compute_fpsc_values">
+<span class="sig-name descname"><span class="pre">compute_fpsc_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.compute_fpsc_values" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute only fpsc values based on current settings.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_vf_accelerated">
-<span class="sig-name descname"><span class="pre">compute_vf_accelerated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_vf_accelerated" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.compute_vf_accelerated">
+<span class="sig-name descname"><span class="pre">compute_vf_accelerated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.compute_vf_accelerated" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute/Write view factors from existing surface clusters.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_vf_only">
-<span class="sig-name descname"><span class="pre">compute_vf_only</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_vf_only" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.compute_vf_only">
+<span class="sig-name descname"><span class="pre">compute_vf_only</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.compute_vf_only" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute/write view factors only.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_write_vf">
-<span class="sig-name descname"><span class="pre">compute_write_vf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.compute_write_vf" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.compute_write_vf">
+<span class="sig-name descname"><span class="pre">compute_write_vf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.compute_write_vf" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute/write surface clusters and view factors for S2S radiation model.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.enable_mesh_interface_clustering">
-<span class="sig-name descname"><span class="pre">enable_mesh_interface_clustering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.enable_mesh_interface_clustering" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.enable_mesh_interface_clustering">
+<span class="sig-name descname"><span class="pre">enable_mesh_interface_clustering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.enable_mesh_interface_clustering" title="Permalink to this definition">#</a></dt>
 <dd><p>Enable clustering on mesh interfaces?.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.non_participating_boundary_zones_temperature">
-<span class="sig-name descname"><span class="pre">non_participating_boundary_zones_temperature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.non_participating_boundary_zones_temperature" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.non_participating_boundary_zones_temperature">
+<span class="sig-name descname"><span class="pre">non_participating_boundary_zones_temperature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.non_participating_boundary_zones_temperature" title="Permalink to this definition">#</a></dt>
 <dd><p>Set temperature for the non-participating boundary zones.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.print_thread_clusters">
-<span class="sig-name descname"><span class="pre">print_thread_clusters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.print_thread_clusters" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.print_thread_clusters">
+<span class="sig-name descname"><span class="pre">print_thread_clusters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.print_thread_clusters" title="Permalink to this definition">#</a></dt>
 <dd><p>Prints the following for all boundary threads: thread-id, number of faces, faces per surface cluster, and the number of surface clusters.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.print_zonewise_radiation">
-<span class="sig-name descname"><span class="pre">print_zonewise_radiation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.print_zonewise_radiation" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.print_zonewise_radiation">
+<span class="sig-name descname"><span class="pre">print_zonewise_radiation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.print_zonewise_radiation" title="Permalink to this definition">#</a></dt>
 <dd><p>Prints the zonewise incoming radiation, viewfactors, and average temperature.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.read_vf_file">
-<span class="sig-name descname"><span class="pre">read_vf_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.read_vf_file" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.read_vf_file">
+<span class="sig-name descname"><span class="pre">read_vf_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.read_vf_file" title="Permalink to this definition">#</a></dt>
 <dd><p>Read an S2S file.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.set_global_faces_per_surface_cluster">
-<span class="sig-name descname"><span class="pre">set_global_faces_per_surface_cluster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.set_global_faces_per_surface_cluster" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.set_global_faces_per_surface_cluster">
+<span class="sig-name descname"><span class="pre">set_global_faces_per_surface_cluster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.set_global_faces_per_surface_cluster" title="Permalink to this definition">#</a></dt>
 <dd><p>Set global value of faces per surface cluster for all boundary zones.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.set_vf_parameters">
-<span class="sig-name descname"><span class="pre">set_vf_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.set_vf_parameters" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.set_vf_parameters">
+<span class="sig-name descname"><span class="pre">set_vf_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.set_vf_parameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the parameters needed for the view factor calculations.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.split_angle">
-<span class="sig-name descname"><span class="pre">split_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.split_angle" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.split_angle">
+<span class="sig-name descname"><span class="pre">split_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.split_angle" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the split angle for the clustering algorithm.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.use_new_cluster_algorithm">
-<span class="sig-name descname"><span class="pre">use_new_cluster_algorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.use_new_cluster_algorithm" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.use_new_cluster_algorithm">
+<span class="sig-name descname"><span class="pre">use_new_cluster_algorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.use_new_cluster_algorithm" title="Permalink to this definition">#</a></dt>
 <dd><p>Use the new surface clustering algorithm.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.use_old_cluster_algorithm">
-<span class="sig-name descname"><span class="pre">use_old_cluster_algorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.radiation.s2s_parameters.use_old_cluster_algorithm" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.use_old_cluster_algorithm">
+<span class="sig-name descname"><span class="pre">use_old_cluster_algorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.s2s_parameters.use_old_cluster_algorithm" title="Permalink to this definition">#</a></dt>
 <dd><p>Use the old surface clustering algorithm.</p>
 </dd></dl>
 
