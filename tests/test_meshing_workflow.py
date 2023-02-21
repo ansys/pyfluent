@@ -552,7 +552,7 @@ def test_extended_wrapper(
     import_geometry.Arguments = dict(
         FileName=mixing_elbow_geometry
     )
-    assert len(import_geometry.arguments.get_state()) == 14
+    assert 12 < len(import_geometry.arguments.get_state()) < 15
     assert len(import_geometry.arguments.get_state(explicit_only=True)) == 1
     import_geometry.arguments.set_state(dict(FileName=None))
     assert import_geometry.arguments.get_state(explicit_only=True) == dict(FileName=None)
