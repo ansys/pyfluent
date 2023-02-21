@@ -9,5 +9,5 @@ solver.tui.setup.turbo\_model.general\_turbo\_interface\_settings.mixing\_plane\
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings
-   :members: list_mixing_planes, number_of_bands, mixing_set_constraint, bands_type, averaging_method
+   :members: averaging_method, bands_type, list_mixing_planes, number_of_bands, mixing_set_constraint
 

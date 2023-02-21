@@ -9,5 +9,5 @@ solver.tui.setup.boundary\_conditions.expert.impedance\_data\_fitting
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.boundary_conditions.expert.impedance_data_fitting
-   :members: reflection_data, residue_tolerance, iterations, verbosity, impedance_data, absorption_data, import_parameters, convergence_tolerance
+   :members: absorption_data, convergence_tolerance, iterations, impedance_data, import_parameters, verbosity, residue_tolerance, reflection_data
 

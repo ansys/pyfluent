@@ -9,5 +9,5 @@ meshing.tui.preferences.appearance.selections
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.appearance.selections
-   :members: highlight_gloss, probe_tooltip_hide_delay_timer, mouse_over_highlight_enabled, mouse_hover_probe_values_enabled, highlight_face_color, highlight_edge_weight, highlight_specular_component, probe_tooltip_show_delay_timer, general_displacement, highlight_transparency, highlight_edge_color
+   :members: highlight_specular_component, highlight_gloss, highlight_edge_color, highlight_transparency, mouse_hover_probe_values_enabled, mouse_over_highlight_enabled, general_displacement, probe_tooltip_hide_delay_timer, probe_tooltip_show_delay_timer, highlight_face_color, highlight_edge_weight
 

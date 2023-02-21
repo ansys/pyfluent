@@ -14,6 +14,6 @@ solver.tui.solution.monitors
 .. toctree::
    :hidden:
 
-   report_plots/index
    report_files/index
    residual/index
+   report_plots/index

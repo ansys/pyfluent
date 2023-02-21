@@ -9,5 +9,5 @@ solver.tui.results.report.modified\_setting
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.report.modified_setting
-   :members: modified_setting, write_user_setting
+   :members: write_user_setting, modified_setting
 

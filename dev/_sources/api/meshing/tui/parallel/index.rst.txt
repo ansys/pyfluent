@@ -9,5 +9,5 @@ meshing.tui.parallel
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.parallel
-   :members: thread_number_control, print_partition_info, agglomerate, spawn_solver_processes, auto_partition
+   :members: print_partition_info, auto_partition, agglomerate, thread_number_control, spawn_solver_processes
 

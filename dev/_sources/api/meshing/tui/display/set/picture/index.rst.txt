@@ -9,7 +9,7 @@ meshing.tui.display.set.picture
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.set.picture
-   :members: x_resolution, y_resolution, set_standard_resolution, landscape, use_window_resolution, dpi, jpeg_hardcopy_quality, preview, invert_background
+   :members: y_resolution, x_resolution, invert_background, set_standard_resolution, jpeg_hardcopy_quality, dpi, preview, use_window_resolution, landscape
 
 .. toctree::
    :hidden:

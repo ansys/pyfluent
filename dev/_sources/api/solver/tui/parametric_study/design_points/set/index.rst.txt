@@ -9,5 +9,5 @@ solver.tui.parametric\_study.design\_points.set
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.parametric_study.design_points.set
-   :members: input_parameters_of_dp, capture_simulation_report_data, current_dp, write_data
+   :members: current_dp, write_data, capture_simulation_report_data, input_parameters_of_dp
 

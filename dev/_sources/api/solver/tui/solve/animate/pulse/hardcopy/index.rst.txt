@@ -9,7 +9,7 @@ solver.tui.solve.animate.pulse.hardcopy
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.animate.pulse.hardcopy
-   :members: dpi, jpeg_hardcopy_quality, y_resolution, set_standard_resolution, invert_background, landscape, x_resolution, use_window_resolution, preview
+   :members: landscape, y_resolution, set_standard_resolution, x_resolution, invert_background, jpeg_hardcopy_quality, use_window_resolution, preview, dpi
 
 .. toctree::
    :hidden:

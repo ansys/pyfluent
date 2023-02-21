@@ -9,18 +9,18 @@ solver.tui.results.graphics.expert.set
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set
-   :members: mesh_level, nodewt_based_interp, color_map, mesh_partitions, duplicate_node_display, mesh_display_configuration, marker_symbol, render_mesh, zero_angle_dir, filled_mesh, n_stream_func, marker_size, element_shrink, periodic_instancing, reset_graphics, mirror_zones, mesh_surfaces, line_weight, overlays, mesh_zones, proximity_zones
+   :members: mesh_level, mesh_zones, mesh_surfaces, mirror_zones, duplicate_node_display, mesh_display_configuration, reset_graphics, color_map, periodic_instancing, filled_mesh, element_shrink, render_mesh, zero_angle_dir, marker_size, n_stream_func, mesh_partitions, overlays, proximity_zones, line_weight, marker_symbol, nodewt_based_interp
 
 .. toctree::
    :hidden:
 
-   rendering_options/index
-   velocity_vectors/index
-   windows/index
-   titles/index
-   colors/index
-   path_lines/index
-   picture/index
-   particle_tracks/index
-   contours/index
    lights/index
+   velocity_vectors/index
+   particle_tracks/index
+   colors/index
+   titles/index
+   picture/index
+   contours/index
+   rendering_options/index
+   windows/index
+   path_lines/index

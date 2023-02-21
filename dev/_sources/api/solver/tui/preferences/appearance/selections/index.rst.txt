@@ -9,5 +9,5 @@ solver.tui.preferences.appearance.selections
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.appearance.selections
-   :members: general_displacement, mouse_over_highlight_enabled, mouse_hover_probe_values_enabled, highlight_transparency, highlight_specular_component, highlight_edge_weight, highlight_gloss, probe_tooltip_show_delay_timer, probe_tooltip_hide_delay_timer, highlight_face_color, highlight_edge_color
+   :members: highlight_transparency, highlight_edge_color, highlight_gloss, highlight_specular_component, highlight_face_color, probe_tooltip_show_delay_timer, highlight_edge_weight, general_displacement, mouse_hover_probe_values_enabled, mouse_over_highlight_enabled, probe_tooltip_hide_delay_timer
 

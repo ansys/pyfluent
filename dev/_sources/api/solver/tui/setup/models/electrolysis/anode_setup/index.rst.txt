@@ -9,5 +9,5 @@ solver.tui.setup.models.electrolysis.anode\_setup
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.electrolysis.anode_setup
-   :members: electrolyte, flow_channel, porous_layer, current_collector, catalyst_layer
+   :members: current_collector, flow_channel, catalyst_layer, porous_layer, electrolyte
 

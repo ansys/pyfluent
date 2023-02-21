@@ -9,7 +9,7 @@ solver.tui.results.graphics.expert.set.picture.driver
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.picture.driver
-   :members: glb, tiff, hsf, avz, dump_window, vrml, ppm, options, png, list, post_script, jpeg, eps
+   :members: list, vrml, glb, jpeg, png, dump_window, tiff, hsf, avz, options, ppm, eps, post_script
 
 .. toctree::
    :hidden:

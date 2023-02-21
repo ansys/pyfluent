@@ -9,5 +9,5 @@ solver.tui.display.set.picture.driver.post\_format
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.picture.driver.post_format
-   :members: rle_raster, fast_raster, vector, raster
+   :members: raster, vector, fast_raster, rle_raster
 

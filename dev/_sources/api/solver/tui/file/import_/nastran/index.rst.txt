@@ -9,5 +9,5 @@ solver.tui.file.import\_.nastran
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file.import_.nastran
-   :members: bulkdata, output2
+   :members: output2, bulkdata
 

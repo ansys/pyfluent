@@ -9,5 +9,5 @@ meshing.tui.mesh.poly.controls.smooth\_controls
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.poly.controls.smooth_controls
-   :members: smooth_iterations, centroid_smooth_iterations, smooth_attempts, smooth_skew, edge_smooth_iterations, smooth_boundary, smooth_on_layer, laplace_smooth_iterations
+   :members: smooth_attempts, laplace_smooth_iterations, smooth_skew, smooth_iterations, edge_smooth_iterations, smooth_boundary, smooth_on_layer, centroid_smooth_iterations
 

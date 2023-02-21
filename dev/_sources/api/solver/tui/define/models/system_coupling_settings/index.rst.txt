@@ -9,7 +9,7 @@ solver.tui.define.models.system\_coupling\_settings
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.system_coupling_settings
-   :members: specify_system_coupling_volumetric_cell_zones, use_face_or_element_based_data_transfer, update_rigid_body_mesh_motion_before_mesh_transfer
+   :members: update_rigid_body_mesh_motion_before_mesh_transfer, specify_system_coupling_volumetric_cell_zones, use_face_or_element_based_data_transfer
 
 .. toctree::
    :hidden:

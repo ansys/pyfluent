@@ -9,5 +9,5 @@ meshing.tui.mesh.manage
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.manage
-   :members: type, name, origin, rotate, rotate_model, revolve_face_zone, copy, merge_dead_zones, id, adjacent_face_zones, delete, translate_model, active_list, list, change_suffix, change_prefix, auto_set_active, scale, set_active, merge, translate, get_material_point, scale_model
+   :members: change_suffix, get_material_point, merge, name, rotate, set_active, active_list, adjacent_face_zones, auto_set_active, type, merge_dead_zones, rotate_model, delete, list, id, origin, revolve_face_zone, copy, translate_model, translate, scale, scale_model, change_prefix
 

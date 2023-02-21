@@ -9,7 +9,7 @@ meshing.tui.display.set.picture.driver
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.set.picture.driver
-   :members: avz, ppm, hsf, vrml, tiff, list, png, eps, jpeg, glb, dump_window, post_script, options
+   :members: ppm, dump_window, png, jpeg, tiff, vrml, eps, hsf, post_script, list, avz, glb, options
 
 .. toctree::
    :hidden:

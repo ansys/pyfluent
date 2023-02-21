@@ -14,5 +14,5 @@ solver.tui.preferences.graphics.performance
 .. toctree::
    :hidden:
 
-   fast_display_mode/index
    minimum_frame_rate/index
+   fast_display_mode/index

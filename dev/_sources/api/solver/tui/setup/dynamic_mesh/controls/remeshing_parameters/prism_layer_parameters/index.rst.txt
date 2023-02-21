@@ -9,5 +9,5 @@ solver.tui.setup.dynamic\_mesh.controls.remeshing\_parameters.prism\_layer\_para
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_layer_parameters
-   :members: number_of_layers, growth_rate, first_height
+   :members: first_height, growth_rate, number_of_layers
 

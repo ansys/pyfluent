@@ -9,5 +9,5 @@ solver.tui.define.overset\_interfaces.adapt.set
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.overset_interfaces.adapt.set
-   :members: maximum_refinement_level, mark_fixed_orphans, buffer_layers, mark_gaps, mark_size, adaption_sweeps, automatic, mark_orphans, gap_resolution, anisotropic, length_ratio_max, mark_coarsening
+   :members: automatic, length_ratio_max, mark_fixed_orphans, mark_orphans, anisotropic, mark_gaps, gap_resolution, maximum_refinement_level, mark_size, adaption_sweeps, mark_coarsening, buffer_layers
 

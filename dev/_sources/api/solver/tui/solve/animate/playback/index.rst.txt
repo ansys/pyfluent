@@ -9,7 +9,7 @@ solver.tui.solve.animate.playback
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.animate.playback
-   :members: write, set_custom_frames, play, stored_view, delete, read
+   :members: delete, set_custom_frames, read, write, stored_view, play
 
 .. toctree::
    :hidden:

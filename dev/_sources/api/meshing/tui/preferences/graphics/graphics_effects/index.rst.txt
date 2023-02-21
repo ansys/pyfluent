@@ -9,5 +9,5 @@ meshing.tui.preferences.graphics.graphics\_effects
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.graphics.graphics_effects
-   :members: show_marker_reflections, bloom_strength, grid_plane_count, simple_shadows_enabled, ambient_occlusion_quality, show_edge_reflections, grid_color, bloom_enabled, grid_plane_size_factor, update_after_mouse_release, ambient_occlusion_enabled, reflections_enabled, bloom_blur, grid_plane_enabled, ambient_occlusion_strength, anti_aliasing, plane_direction, grid_plane_offset, shadow_map_enabled
+   :members: reflections_enabled, grid_plane_enabled, ambient_occlusion_strength, bloom_blur, grid_color, show_marker_reflections, grid_plane_size_factor, simple_shadows_enabled, bloom_strength, update_after_mouse_release, grid_plane_offset, bloom_enabled, ambient_occlusion_quality, grid_plane_count, ambient_occlusion_enabled, show_edge_reflections, plane_direction, shadow_map_enabled, anti_aliasing
 

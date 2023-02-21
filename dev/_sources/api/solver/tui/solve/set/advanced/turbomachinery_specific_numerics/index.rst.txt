@@ -9,5 +9,5 @@ solver.tui.solve.set.advanced.turbomachinery\_specific\_numerics
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.advanced.turbomachinery_specific_numerics
-   :members: settings, enable
+   :members: enable, settings
 

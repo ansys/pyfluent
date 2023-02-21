@@ -9,5 +9,5 @@ meshing.tui.mesh.prism.post\_ignore
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.prism.post_ignore
-   :members: mark_prism_cap, create_cavity, mark_cavity_prism_cap, post_remove_cells
+   :members: post_remove_cells, mark_cavity_prism_cap, mark_prism_cap, create_cavity
 

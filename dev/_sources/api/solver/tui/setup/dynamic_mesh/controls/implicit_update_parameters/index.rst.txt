@@ -9,5 +9,5 @@ solver.tui.setup.dynamic\_mesh.controls.implicit\_update\_parameters
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.dynamic_mesh.controls.implicit_update_parameters
-   :members: motion_relaxation, update_interval, residual_criteria
+   :members: residual_criteria, update_interval, motion_relaxation
 

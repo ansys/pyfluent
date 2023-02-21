@@ -9,5 +9,5 @@ solver.tui.solve.set.pseudo\_time\_method
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.pseudo_time_method
-   :members: relaxation_bounds, convergence_acceleration_for_stretched_meshes, relaxation_factors, local_time_step_settings, relaxation_method, formulation, verbosity, global_time_step_settings, advanced_options
+   :members: global_time_step_settings, verbosity, relaxation_factors, convergence_acceleration_for_stretched_meshes, relaxation_bounds, advanced_options, relaxation_method, formulation, local_time_step_settings
 

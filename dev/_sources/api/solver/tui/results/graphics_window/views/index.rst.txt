@@ -9,7 +9,7 @@ solver.tui.results.graphics\_window.views
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics_window.views
-   :members: read_views, auto_scale, list_views, write_views, last_view, restore_view, default_view, next_view, save_view, delete_view
+   :members: write_views, last_view, auto_scale, restore_view, default_view, save_view, delete_view, next_view, list_views, read_views
 
 .. toctree::
    :hidden:

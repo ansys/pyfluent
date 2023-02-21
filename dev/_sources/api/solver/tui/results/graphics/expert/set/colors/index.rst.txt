@@ -9,10 +9,10 @@ solver.tui.results.graphics.expert.set.colors
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.colors
-   :members: foreground, surface, symmetry_faces, automatic_skip, axis_faces, interior_faces, traction_faces, background, periodic_faces, internal_faces, reset_user_colors, far_field_faces, free_surface_faces, skip_label, user_color, rans_les_interface_faces, inlet_faces, interface_faces, color_by_type, overset_faces, list, show_user_colors, wall_faces, outlet_faces, graphics_color_theme, reset_colors
+   :members: rans_les_interface_faces, list, skip_label, foreground, outlet_faces, surface, reset_colors, periodic_faces, free_surface_faces, background, inlet_faces, axis_faces, traction_faces, interior_faces, overset_faces, graphics_color_theme, wall_faces, automatic_skip, user_color, color_by_type, interface_faces, symmetry_faces, far_field_faces, reset_user_colors, internal_faces, show_user_colors
 
 .. toctree::
    :hidden:
 
-   by_surface/index
    by_type/index
+   by_surface/index

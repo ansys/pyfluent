@@ -9,7 +9,7 @@ solver.tui.results.graphics\_window.picture
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics_window.picture
-   :members: use_window_resolution, y_resolution, x_resolution, invert_background, preview, dpi, jpeg_hardcopy_quality, landscape, set_standard_resolution
+   :members: jpeg_hardcopy_quality, use_window_resolution, landscape, preview, invert_background, y_resolution, x_resolution, set_standard_resolution, dpi
 
 .. toctree::
    :hidden:

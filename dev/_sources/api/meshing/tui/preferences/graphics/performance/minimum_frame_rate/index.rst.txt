@@ -9,5 +9,5 @@ meshing.tui.preferences.graphics.performance.minimum\_frame\_rate
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.graphics.performance.minimum_frame_rate
-   :members: dynamic_adjustment, target_fps, maximum_culling_threshold, fixed_culling_value, minimum_culling_threshold, enabled
+   :members: enabled, minimum_culling_threshold, dynamic_adjustment, fixed_culling_value, target_fps, maximum_culling_threshold
 

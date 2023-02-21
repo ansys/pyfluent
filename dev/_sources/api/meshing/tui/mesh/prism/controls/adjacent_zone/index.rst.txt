@@ -9,5 +9,5 @@ meshing.tui.mesh.prism.controls.adjacent\_zone
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.prism.controls.adjacent_zone
-   :members: side_feature_angle, project_adjacent_angle
+   :members: project_adjacent_angle, side_feature_angle
 
