@@ -46,6 +46,7 @@ class BatchedFuture(grpc.Future):
     An instance of BatchedFuture is returned if the gRPC method is
     queued to be executed in batch later.
     """
+
     def __init__(self, result_cls):
         self._result_cls = result_cls
 

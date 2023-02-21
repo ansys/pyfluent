@@ -210,8 +210,10 @@ def test_case_reader_get_rp_and_config_vars():
     with pytest.raises(ValueError) as msg:
         reader.config_var("rp-3d")
 
-    assert msg.value.args[0] == "rp-3d is not an allowed config-vars name.\n" \
-                                "The most similar names are: rp-3d?, rp-des?."
+    assert (
+        msg.value.args[0] == "rp-3d is not an allowed config-vars name.\n"
+        "The most similar names are: rp-3d?, rp-des?."
+    )
 
 
 def test_case_reader_input_parameter():

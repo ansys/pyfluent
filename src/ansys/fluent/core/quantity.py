@@ -212,7 +212,7 @@ def remove_multiplier(unit_str):
         unit_str, lambda item, unit: len(unit) > 0.0 and unit.startswith(item)
     )
     if has_multiplier:
-        unit_str = unit_str[len(prefix):]
+        unit_str = unit_str[len(prefix) :]
     return unit_str
 
 
@@ -866,7 +866,11 @@ class Quantity(float):
 
     def __init__(self, real_value, unit_str=None, quantity_map=None, dimensions=None):
         self._value = float(real_value)
-        if (unit_str and quantity_map) or (unit_str and dimensions) or (quantity_map and dimensions):
+        if (
+            (unit_str and quantity_map)
+            or (unit_str and dimensions)
+            or (quantity_map and dimensions)
+        ):
             raise ValueError("unit or quantity_map or dimensions is allowed.")
         if quantity_map:
             unit_str = get_unit_from_map(quantity_map)
