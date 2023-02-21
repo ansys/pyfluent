@@ -1,14 +1,14 @@
 
-from ansys.fluent.core.workflow import ExtendedWorkflow
+from ansys.fluent.core.workflow import WorkflowWrapper
 
 
-class MeshingWorkflow(ExtendedWorkflow):
+class MeshingWorkflow(WorkflowWrapper):
 
     def __init__(self, workflow, command_source):
         super().__init__(workflow, command_source)
 
     def watertight(self):
-        self._workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+        self._new_workflow("Watertight Geometry")
 
-    def tolerant(self):
-        self._workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
+    def fault_tolerant(self):
+        self._new_workflow("Fault-tolerant Meshing")

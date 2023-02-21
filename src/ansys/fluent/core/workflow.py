@@ -381,7 +381,10 @@ class WorkflowWrapper:
         attr : str
             An attribute not defined in WorkflowWrapper
         """
-        return getattr(self._workflow, attr)
+        return self._attr_from_wrapped_workflow(
+            attr) or self._task_with_cmd_matching_help_string(
+            attr
+        )
 
     def __dir__(self):
         """Override the behaviour of dir to include attributes in
@@ -411,26 +414,25 @@ class WorkflowWrapper:
         workflow_state = self._workflow_state()
         return self._task_by_id_impl(task_id, workflow_state)
 
-
-class ExtendedWorkflow(WorkflowWrapper):
-
-    def __init__(self, workflow, command_source):
-        super().__init__(workflow, command_source)
-
-    def __getattr__(self, attr):
+    def _attr_from_wrapped_workflow(self, attr):
         try:
-            result = super().__getattr__(attr)
+            result = getattr(self._workflow, attr)
             if result:
                 return result
         except AttributeError:
             pass
+
+    def _task_with_cmd_matching_help_string(self, help_string):
         child_tasks = self.ordered_children()
         for task in child_tasks:
             cmd = task._command()
             # temp reuse helpString
             py_name = cmd.get_attr("helpString")
-            if py_name == attr:
+            if py_name == help_string:
                 return task
+
+    def _new_workflow(self, name):
+        self._workflow.InitializeWorkflow(WorkflowType=name)
 
 
 class _MakeReadOnly:
