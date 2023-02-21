@@ -86,25 +86,31 @@ class SvarInfo:
                     
     class _ZonesInfo:
         class _ZoneInfo:
+            class _PartitionInfo:
+                def __init__(self, partition_info):
+                    self.count = partition_info.count
+                    self.start_index = partition_info.startIndex
+                    self.end_index = partition_info.endIndex
+                
             def __init__(self, zone_info):
                 self.name = zone_info.name
                 self.zone_id = zone_info.zoneId
                 self.zone_type = zone_info.zoneType
-                self.threadType = zone_info.threadType
-                self.partitionsInfo = zone_info.partitionsInfo
+                self.thread_type = zone_info.threadType
+                self.partitions_info = [self._PartitionInfo(partition_info)  for partition_info in zone_info.partitionsInfo]
                 
             def __repr__(self):
-              partitionStr = ""
-              for pinfo in self.partitionsInfo:
-                  partitionStr += f"{pinfo.count}[{pinfo.startIndex}:{pinfo.endIndex}] "
-              return f"name:{self.name} zone_id:{self.zone_id} zone_type:{self.zone_type} threadType:{'Cell' if self.threadType==SvarProtoModule.ThreadType.CELL_THREAD else 'Face'}\n\t{partitionStr}"            
+              partition_str = ""
+              for i,partition_info in enumerate(self.partitions_info):
+                  partition_str += f"\n\t{i}. {partition_info.count}[{partition_info.start_index}:{partition_info.end_index}]"
+              return f"name:{self.name} zone_id:{self.zone_id} zone_type:{self.zone_type} threadType:{'Cell' if self.thread_type==SvarProtoModule.ThreadType.CELL_THREAD else 'Face'}{partition_str}"            
                    
                     
         def __init__(self, zones_info, domains_info):
             self._zones_info = {}
             self._domains_info = {}
             for zone_info in zones_info:
-                self._zones_info[zone_info.name] = SvarInfo._ZonesInfo._ZoneInfo(zone_info)
+                self._zones_info[zone_info.name] = self._ZoneInfo(zone_info)
             for domain_info in domains_info:
                 self._domains_info[domain_info.name] = domain_info.domainId            
 
@@ -125,7 +131,7 @@ class SvarInfo:
     def __init__(self, service: SvarService,):       
         self._service = service
         
-    def get_svars_info(self, domain_name, zone_names):
+    def get_svars_info(self, zone_names, domain_name: str = "mixture"):
         allowed_zone_names = _AllowedZoneNames(self)
         allowed_domain_names = _AllowedDomainNames(self)
         svars_info = None 
@@ -498,20 +504,25 @@ class SvarData:
     def set_svar_data(
         self,
         svar_name: str,        
-        zones_name_to_svar_data,
-        domain_id : str = "mixture"
+        zone_names_to_svar_data,
+        domain_name : str = "mixture"
     ) -> Dict[int, np.array]:
         
+        domain_id = self._allowed_domain_names.valid_name(domain_name)
+        zone_ids_to_svar_data = {self._allowed_zone_names.valid_name(zone_name):svar_data  for zone_name,svar_data in zone_names_to_svar_data.items()}
         def generate_set_svar_data_requests():
             set_svar_data_requests = []
             
             set_svar_data_requests.append(
-              SvarProtoModule.SetSvarDataRequest(
-                  name = svar_name
-              )
+                SvarProtoModule.SetSvarDataRequest(
+                    header = SvarProtoModule.SvarHeader(
+                          name = svar_name,
+                          domainId = domain_id
+                    )    
+                )
             )            
             
-            for zone_id, svar_data in zones_id_to_svar_data.items():
+            for zone_id, svar_data in zone_ids_to_svar_data.items():
                 max_array_size  = _FieldDataConstants.chunk_size/np.dtype(svar_data.dtype).itemsize
                 svar_data_list = np.array_split(svar_data, math.ceil(svar_data.size/max_array_size))                                
                 set_svar_data_requests.append(
