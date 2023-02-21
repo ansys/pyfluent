@@ -67,6 +67,29 @@ class ArgumentsWrapper(PyCallableStateObject):
         self._task.CommandArguments.__setitem__(key, value)
 
 
+class ArgumentWrapper(PyCallableStateObject):
+    def __init__(self, task, arg):
+        print(1)
+        self._task = task
+        print(2)
+        self._arg_name = arg
+        print(3)
+        self._arg = getattr(task.CommandArguments, arg)
+        print(4)
+
+    def set_state(self, value):
+        self._task.Arguments.update_dict({self._arg_name : value})
+
+    def get_state(self, explicit_only=False):
+        return (
+            self._task.Arguments()[self._arg_name]
+            if explicit_only else self._arg()
+        )
+
+    def __getattr__(self, attr):
+        return getattr(self._arg, attr)
+
+
 class Task:
     """ Wrap a Workflow TaskObject instance, adding methods to discover
         more about the relationships between TaskObjects.
@@ -210,7 +233,17 @@ class Task:
         return ArgumentsWrapper(self)
 
     def __getattr__(self, attr):
-        return getattr(self._task, attr)
+        try:
+            result = getattr(self._task, attr)
+            if result:
+                return result
+        except AttributeError:
+            pass
+        try:
+            return ArgumentWrapper(self, attr)
+        except BaseException as ex:
+            print(str(ex))
+            #pass
 
     def __setattr__(self, attr, value):
         if attr in self.__dict__:

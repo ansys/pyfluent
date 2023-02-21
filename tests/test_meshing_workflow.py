@@ -559,6 +559,10 @@ def test_extended_wrapper(
     assert import_geometry.arguments.get_state()["FileName"] is None
     import_geometry.arguments.set_state(dict(FileName=mixing_elbow_geometry))
     assert import_geometry.arguments.get_state(explicit_only=True) == dict(FileName=mixing_elbow_geometry)
+    assert import_geometry.FileName() == mixing_elbow_geometry
+    import_geometry.FileName.set_state("bob")
+    assert import_geometry.FileName() == "bob"
+    import_geometry.FileName.set_state(mixing_elbow_geometry)
     import_geometry.Execute()
     add_local_sizing = workflow.add_local_sizing
     assert not add_local_sizing.ordered_children()
