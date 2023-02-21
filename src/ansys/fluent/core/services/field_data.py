@@ -1,7 +1,6 @@
 """Wrappers over FieldData gRPC service of Fluent."""
 from enum import IntEnum
 from functools import reduce
-import pydoc
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
 import grpc
@@ -15,7 +14,7 @@ from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInt
 
 
 def override_help_text(func, func_to_be_wrapped):
-    func.__doc__ = "\n" + pydoc.text.document(func_to_be_wrapped)
+    func.__doc__ = "\n" + func_to_be_wrapped.__doc__
     func.__name__ = func_to_be_wrapped.__qualname__
     return func
 
