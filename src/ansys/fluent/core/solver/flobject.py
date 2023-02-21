@@ -465,6 +465,7 @@ class Group(SettingsBase[DictStateType]):
 class WildcardPath(Group):
     """Class wrapping a wildcard path to perform get_var and set_var on
     flproxy."""
+
     def __init__(self, flproxy, path: str, state_cls, settings_cls):
         """__init__ of WildcardPath class."""
         self._setattr("_flproxy", flproxy)
@@ -492,8 +493,17 @@ class WildcardPath(Group):
         if hasattr(self._settings_cls, name):
             child_settings_cls = getattr(self._settings_cls, name)
             scheme_name = child_settings_cls.fluent_name
-            wildcard_cls = NamedObjectWildcardPath if issubclass(child_settings_cls, NamedObject) else WildcardPath
-            return wildcard_cls(self.flproxy, self.path + "/" + scheme_name, self._state_cls, child_settings_cls)
+            wildcard_cls = (
+                NamedObjectWildcardPath
+                if issubclass(child_settings_cls, NamedObject)
+                else WildcardPath
+            )
+            return wildcard_cls(
+                self.flproxy,
+                self.path + "/" + scheme_name,
+                self._state_cls,
+                child_settings_cls,
+            )
         raise AttributeError(name)
 
     def to_scheme_keys(self, value):
@@ -508,8 +518,14 @@ class WildcardPath(Group):
 class NamedObjectWildcardPath(WildcardPath):
     """WildcardPath at a NamedObject path, so it can be looked up by wildcard
     again."""
+
     def __getitem__(self, name: str):
-        return WildcardPath(self.flproxy, self.path + "/" + name, self._state_cls, self._settings_cls.child_object_type)
+        return WildcardPath(
+            self.flproxy,
+            self.path + "/" + name,
+            self._state_cls,
+            self._settings_cls.child_object_type,
+        )
 
     def __setitem__(self, name, value):
         self[name].set_state(value)
@@ -642,7 +658,9 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         if name not in self.get_object_names():
             if self.flproxy.has_wildcard(name):
                 child_cls = self.__class__.child_object_type
-                return WildcardPath(self.flproxy, self.path + "/" + name, self.__class__, child_cls)
+                return WildcardPath(
+                    self.flproxy, self.path + "/" + name, self.__class__, child_cls
+                )
             raise KeyError(name)
         obj = self._objects.get(name)
         if not obj:

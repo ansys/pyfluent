@@ -208,7 +208,9 @@ class _FluentConnection:
 
         self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
         self.scheme_eval = SchemeEval(self._scheme_eval_service)
-        self.settings_service = SettingsService(self._channel, self._metadata, self.scheme_eval)
+        self.settings_service = SettingsService(
+            self._channel, self._metadata, self.scheme_eval
+        )
 
         self._field_data_service = FieldDataService(self._channel, self._metadata)
         self.field_info = FieldInfo(self._field_data_service)
