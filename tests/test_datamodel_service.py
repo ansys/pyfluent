@@ -11,7 +11,7 @@ from ansys.fluent.core.services.datamodel_se import convert_path_to_se_path
 @pytest.mark.fluent_232
 def test_event_subscription(new_mesh_session):
     session = new_mesh_session
-    session.workflow.InitializeWorkflow(WorkflowType='Watertight Geometry')
+    session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     tags = [
         "/workflow/created/TaskObject",
         "/workflow/modified/TaskObject:TaskObject1/Arguments",
@@ -19,7 +19,7 @@ def test_event_subscription(new_mesh_session):
         "/workflow/affected/TaskObject:TaskObject1",
         "/workflow/affected/TaskObject",
         "/workflow/attribute_changed/TaskObject:TaskObject1/TaskList/isActive",
-        "/workflow/command_attribute_changed/InitializeWorkflow/arguments"
+        "/workflow/command_attribute_changed/InitializeWorkflow/arguments",
     ]
     request = datamodel_se_pb2.SubscribeEventsRequest()
     e1 = request.eventrequest.add(rules="workflow")
@@ -42,12 +42,24 @@ def test_event_subscription(new_mesh_session):
     e7.commandAttributeChangedEventRequest.command = "InitializeWorkflow"
     e7.commandAttributeChangedEventRequest.attribute = "arguments"
     response = session.fluent_connection.datamodel_service_se.subscribe_events(request)
-    assert all([r.status == datamodel_se_pb2.STATUS_SUBSCRIBED and r.tag == t for r, t in zip(response.response, tags)])
+    assert all(
+        [
+            r.status == datamodel_se_pb2.STATUS_SUBSCRIBED and r.tag == t
+            for r, t in zip(response.response, tags)
+        ]
+    )
 
     request = datamodel_se_pb2.UnsubscribeEventsRequest()
     request.tag.extend(tags)
-    response = session.fluent_connection.datamodel_service_se.unsubscribe_events(request)
-    assert all([r.status == datamodel_se_pb2.STATUS_UNSUBSCRIBED and r.tag == t for r, t in zip(response.response, tags)])
+    response = session.fluent_connection.datamodel_service_se.unsubscribe_events(
+        request
+    )
+    assert all(
+        [
+            r.status == datamodel_se_pb2.STATUS_UNSUBSCRIBED and r.tag == t
+            for r, t in zip(response.response, tags)
+        ]
+    )
 
 
 @pytest.mark.dev
@@ -55,7 +67,9 @@ def test_event_subscription(new_mesh_session):
 def test_add_on_child_created(new_mesh_session):
     meshing = new_mesh_session
     child_paths = []
-    subscription = meshing.workflow.add_on_child_created("TaskObject", lambda obj: child_paths.append(convert_path_to_se_path(obj.path)))
+    subscription = meshing.workflow.add_on_child_created(
+        "TaskObject", lambda obj: child_paths.append(convert_path_to_se_path(obj.path))
+    )
     assert child_paths == []
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     sleep(5)
@@ -70,8 +84,8 @@ def test_add_on_child_created(new_mesh_session):
         "/TaskObject:Create Regions",
         "/TaskObject:Update Regions",
         "/TaskObject:Add Boundary Layers",
-        "/TaskObject:Generate the Volume Mesh"
-        ]
+        "/TaskObject:Generate the Volume Mesh",
+    ]
     child_paths.clear()
     subscription.unsubscribe()
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
