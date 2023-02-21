@@ -20,6 +20,7 @@ from ansys.fluent.core import examples, launch_fluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.session import _BaseSession
+from ansys.fluent.core.utils.network import get_free_port
 
 
 class MockHealthServicer(health_pb2_grpc.HealthServicer):
@@ -74,7 +75,7 @@ class MockSchemeEvalServicer(scheme_eval_pb2_grpc.SchemeEvalServicer):
 def test_create_session_by_passing_ip_and_port_and_password() -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
-    port = 50051
+    port = get_free_port()
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
@@ -95,7 +96,7 @@ def test_create_session_by_setting_ip_and_port_env_var(
 ) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
-    port = 50051
+    port = get_free_port()
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
@@ -114,7 +115,7 @@ def test_create_session_by_setting_ip_and_port_env_var(
 def test_create_session_by_passing_grpc_channel() -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
-    port = 50051
+    port = get_free_port()
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
@@ -134,7 +135,7 @@ def test_create_session_by_passing_grpc_channel() -> None:
 def test_create_session_from_server_info_file(tmp_path: Path) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
-    port = 50051
+    port = get_free_port()
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
@@ -157,7 +158,7 @@ def test_create_session_from_server_info_file_with_wrong_password(
 ) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
-    port = 50051
+    port = get_free_port()
     server.add_insecure_port(f"{ip}:{port}")
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
@@ -179,7 +180,7 @@ def test_create_session_from_launch_fluent_by_passing_ip_and_port_and_password()
 ):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
-    port = 50051
+    port = get_free_port()
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
@@ -209,7 +210,7 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
 ) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
-    port = 50051
+    port = get_free_port()
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
