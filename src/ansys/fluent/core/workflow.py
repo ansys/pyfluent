@@ -1,4 +1,4 @@
-#from inspect import Arguments
+# from inspect import Arguments
 from typing import Any, Tuple
 
 from ansys.fluent.core.services.datamodel_se import PyCallableStateObject
@@ -55,8 +55,7 @@ class ArgumentsWrapper(PyCallableStateObject):
 
     def get_state(self, explicit_only=False):
         return (
-            self._task.Arguments()
-            if explicit_only else self._task.CommandArguments()
+            self._task.Arguments() if explicit_only else self._task.CommandArguments()
         )
 
     def __getattr__(self, attr):
@@ -77,34 +76,31 @@ class ArgumentWrapper(PyCallableStateObject):
         print(4)
 
     def set_state(self, value):
-        self._task.Arguments.update_dict({self._arg_name : value})
+        self._task.Arguments.update_dict({self._arg_name: value})
 
     def get_state(self, explicit_only=False):
-        return (
-            self._task.Arguments()[self._arg_name]
-            if explicit_only else self._arg()
-        )
+        return self._task.Arguments()[self._arg_name] if explicit_only else self._arg()
 
     def __getattr__(self, attr):
         return getattr(self._arg, attr)
 
 
 class Task:
-    """ Wrap a Workflow TaskObject instance, adding methods to discover
-        more about the relationships between TaskObjects.
+    """Wrap a Workflow TaskObject instance, adding methods to discover
+    more about the relationships between TaskObjects.
 
-        Methods
-        -------
-        get_direct_upstream_tasks()
-        get_direct_downstream_tasks()
-        ordered_children()
-        inactive_ordered_children()
-        get_id()
-        get_idx()
-        __getattr__(attr)
-        __setattr__(attr, value)
-        __dir__()
-        __call__()
+    Methods
+    -------
+    get_direct_upstream_tasks()
+    get_direct_downstream_tasks()
+    ordered_children()
+    inactive_ordered_children()
+    get_id()
+    get_idx()
+    __getattr__(attr)
+    __setattr__(attr, value)
+    __dir__()
+    __call__()
     """
 
     def __init__(self, command_source, task) -> None:
@@ -128,12 +124,11 @@ class Task:
             Upstream task list.
         """
         return self._tasks_with_matching_attributes(
-            attr="requiredInputs",
-            other_attr="outputs"
+            attr="requiredInputs", other_attr="outputs"
         )
 
     def get_direct_upstream_tasks(self) -> list:
-        """ Get the list of tasks upstream of this one and directly connected by a data dependency.
+        """Get the list of tasks upstream of this one and directly connected by a data dependency.
 
         Returns
         -------
@@ -141,9 +136,8 @@ class Task:
             Upstream task list.
         """
         return self._tasks_with_matching_attributes(
-            attr="requiredInputs",
-            other_attr="outputs"
-            )
+            attr="requiredInputs", other_attr="outputs"
+        )
 
     def get_direct_downstream_tasks(self) -> list:
         """Get the list of tasks downstream of this one and directly connected
@@ -248,7 +242,7 @@ class Task:
             return ArgumentWrapper(self, attr)
         except BaseException as ex:
             print(str(ex))
-            #pass
+            # pass
 
     def __setattr__(self, attr, value):
         if attr in self.__dict__:
@@ -262,15 +256,11 @@ class Task:
         )
 
     def __call__(self, **kwds) -> Any:
-        if (kwds):
+        if kwds:
             self._task.Arguments.set_state(**kwds)
         return self._task.Execute()
 
-    def _tasks_with_matching_attributes(
-        self,
-        attr: str,
-        other_attr: str
-    ) -> list:
+    def _tasks_with_matching_attributes(self, attr: str, other_attr: str) -> list:
         this_command = self._command()
         attrs = this_command.get_attr(attr)
         if not attrs:
@@ -310,7 +300,6 @@ class Task:
 
 
 class CompoundTask(Task):
-
     def __init__(self, command_source, task) -> None:
         super().__init__(command_source, task)
 
@@ -419,9 +408,8 @@ class WorkflowWrapper:
             An attribute not defined in WorkflowWrapper
         """
         return self._attr_from_wrapped_workflow(
-            attr) or self._task_with_cmd_matching_help_string(
             attr
-        )
+        ) or self._task_with_cmd_matching_help_string(attr)
 
     def __dir__(self):
         """Override the behaviour of dir to include attributes in
