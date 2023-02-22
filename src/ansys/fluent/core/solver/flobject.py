@@ -25,8 +25,7 @@ import sys
 from typing import Any, Dict, Generic, List, NewType, Tuple, TypeVar, Union
 import weakref
 
-from ansys.fluent.core.allowed_name_error_msg import allowed_name_error_message
-
+from .allowed_name_error_msg import allowed_name_error_message, allowed_values_error
 from .logging import LOG
 
 # Type hints
@@ -460,29 +459,24 @@ class Group(SettingsBase[DictStateType]):
                 raise RuntimeError(f"'{self.path}' is currently not active")
         try:
             return super().__getattribute__(name)
-        except AttributeError:
+        except AttributeError as ex:
             attributes = [
                 attribute
                 for attribute in self.__dict__.keys()
                 if not attribute.startswith("_")
             ]
-            print(
-                f"AttributeError: '{self.__class__.__name__}' object has no attribute '{name}'"
-            )
-            if len(attributes) > 3:
-                return allowed_name_error_message("Settings objects", name, attributes)
-            else:
-                return f"Available attributes are - {attributes}"
+            raise AttributeError(
+                allowed_name_error_message("Settings objects", name, attributes)
+            ) from ex
 
     def __setattr__(self, name: str, value):
-        if type(value) == str:
-            values = getattr(self, name).allowed_values()
-            if value not in values:
-                if len(values) > 3:
-                    raise ValueError(allowed_name_error_message(name, value, values))
-                else:
-                    raise ValueError(f"Available values are - {values}")
-        return getattr(self, name).set_state(value)
+        try:
+            return getattr(self, name).set_state(value)
+        except BaseException as ex:
+            if hasattr(getattr(self, name), "allowed_values"):
+                values = getattr(self, name).allowed_values()
+                if value not in values:
+                    raise allowed_values_error(name, value, values) from ex
 
 
 class WildcardPath(Group):
@@ -684,14 +678,12 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
                 return WildcardPath(
                     self.flproxy, self.path + "/" + name, self.__class__, child_cls
                 )
-        if len(self.get_object_names()) > 3:
             raise KeyError(
                 allowed_name_error_message(
                     "Settings objects", name, self.get_object_names()
                 )
             )
-        else:
-            raise KeyError(f"Available keys are - {self.get_object_names()}")
+
         obj = self._objects.get(name)
         if not obj:
             obj = self._create_child_object(name)
