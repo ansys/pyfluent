@@ -40,7 +40,9 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
     monkeypatch.setattr(pypim, "is_configured", mock_is_configured)
 
     if os.getenv("FLUENT_IMAGE_TAG"):
-        monkeypatch.setattr(launcher, "get_ansys_version", lambda: docker_image_version.get_version())
+        monkeypatch.setattr(
+            launcher, "get_ansys_version", lambda: docker_image_version.get_version()
+        )
 
     # Start fluent with launch_fluent
     # Note: This is mocking to start Fluent, but actually reusing the common one

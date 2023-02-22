@@ -25,7 +25,7 @@ markers = [
 
 
 [tool.black]
-force-exclude = ["src/ansys/fluent/core/meshing/tui", "src/ansys/fluent/core/solver/tui", "src/ansys/fluent/core/solver/settings", "src/ansys/fluent/core/datamodel"]
+extend-exclude = "/(src/ansys/fluent/core/meshing/tui*|src/ansys/fluent/core/solver/tui*|src/ansys/fluent/core/solver/settings*|src/ansys/fluent/core/datamodel*)/"
 
 
 [tool.isort]
@@ -63,14 +63,19 @@ exclude = [
     "src/ansys/fluent/core/solver/settings_231/",
     "src/ansys/fluent/core/datamodel_231/"
 ]
+pre-summary-space = true
+wrap-descriptions = 88
+wrap-summaries = 88
 
 
 [tool.coverage.run]
 source = ["ansys/fluent"]
 omit = [
-    "*/ansys/fluent/core/meshing/tui.py",
-    "*/ansys/fluent/core/solver/tui.py,",
-    "*/ansys/fluent/core/solver/settings.py",
+    "*/ansys/fluent/core/fluent_version_*",
+    "*/ansys/fluent/core/meshing/tui_*",
+    "*/ansys/fluent/core/solver/tui_*",
+    "*/ansys/fluent/core/solver/settings_*/*",
+    "*/ansys/fluent/core/datamodel_*/*"
 ]
 
 [tool.coverage.report]

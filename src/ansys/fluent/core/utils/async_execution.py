@@ -28,6 +28,7 @@ def asynchronous(f: Callable) -> Callable:
     .. _Future: https://docs.python.org/3/library/asyncio-future.html#future-object  # noqa: E501
     .. _result(): https://docs.python.org/3/library/asyncio-future.html#asyncio.Future.result  # noqa: E501
     """
+
     @functools.wraps(f)
     def func(*args, **kwargs) -> Callable:
         return ThreadPoolExecutor(max_workers=1).submit(f, *args, **kwargs)
