@@ -13,6 +13,7 @@ def test_report_system_proc_stats_tui(new_solver_session, capsys) -> None:
     captured = capsys.readouterr()
     assert "CPU" in captured.out
 
+
 def test_runtime_tui_menus(load_static_mixer_case) -> None:
     solver = load_static_mixer_case
     solver.tui.define.models.addon_module(3)

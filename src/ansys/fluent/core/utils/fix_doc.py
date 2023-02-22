@@ -12,6 +12,7 @@ def escape_wildcards(doc: str):
         prev_c = c
     return new_doc.getvalue()
 
+
 def fix_definition_list_in_class_doc(doc: str):
     old_lines = doc.splitlines(keepends=True)
     new_lines = []
@@ -34,6 +35,7 @@ def fix_definition_list_in_class_doc(doc: str):
         else:
             new_lines.append(line)
     return "".join(new_lines)
+
 
 def fix_settings_doc(doc: str):
     doc = escape_wildcards(doc)

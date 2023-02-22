@@ -1,4 +1,4 @@
-name: Nightly Documentation Build
+name: Nightly Development Documentation Build
 
 on:
   schedule:  # UTC at 0400
@@ -36,7 +36,7 @@ jobs:
       - name: Install OS packages
         run: |
           sudo apt update
-          sudo apt install pandoc libegl1
+          sudo apt-get install pandoc libegl1 make xvfb libfontconfig1 libxrender1 libxkbcommon-x11-0 -y
 
       - name: Install pyfluent
         run: make install
@@ -68,17 +68,23 @@ jobs:
           PYFLUENT_START_INSTANCE: 0
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Upload HTML documentation
-        if: matrix.image-tag == env.DOC_DEPLOYMENT_IMAGE_TAG
+      - name: Zip HTML Documentation before upload
+        run: |
+          sudo apt install zip -y
+          zip -r doc.zip doc/_build/html
+
+      - name: Upload HTML Documentation
         uses: actions/upload-artifact@v3
         with:
-          name: documentation-html
-          path: doc/_build/html
+          name: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          path: doc.zip
           retention-days: 7
 
       - name: "Deploy development documentation"
         if: matrix.image-tag == env.DOC_DEPLOYMENT_IMAGE_TAG
         uses: pyansys/actions/doc-deploy-dev@v3
         with:
+            doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
+            decompress_artifact: true
             cname: ${{ env.DOCUMENTATION_CNAME }}
             token: ${{ secrets.GITHUB_TOKEN }}
