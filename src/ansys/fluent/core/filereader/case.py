@@ -24,8 +24,9 @@ from typing import List
 
 import h5py
 
+from ansys.fluent.core.solver.allowed_name_error_msg import allowed_name_error_message
+
 from . import lispy
-from ..allowed_name_error_msg import allowed_name_error_message
 
 
 class InputParameter:
