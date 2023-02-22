@@ -5,6 +5,7 @@ from typing import Any
 import grpc
 
 from ansys.api.fluent.v0 import health_pb2, health_pb2_grpc
+from ansys.fluent.core.utils.logging import LOG
 
 
 def get_free_port() -> int:
@@ -21,18 +22,18 @@ def get_free_port() -> int:
     return sock.getsockname()[1]
 
 
-class HealthServicer(health_pb2_grpc.HealthServicer):
+class _HealthServicer(health_pb2_grpc.HealthServicer):
     def Check(self, request, context: grpc.ServicerContext):
         return health_pb2.HealthCheckResponse(
             status=health_pb2.HealthCheckResponse.ServingStatus.SERVING
         )
 
 
-class GrpcServer:
+class _GrpcServer:
     def __init__(self, address: str):
         self._server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
         self._server.add_insecure_port(address)
-        health_pb2_grpc.add_HealthServicer_to_server(HealthServicer(), self._server)
+        health_pb2_grpc.add_HealthServicer_to_server(_HealthServicer(), self._server)
         self._server.start()
 
     def __enter__(self):
@@ -42,7 +43,15 @@ class GrpcServer:
         self._server.stop(None)
 
 
-def get_remoting_ip():
+def find_remoting_ip() -> str:
+    """Find an ip address at which a grpc connection can be established
+    by looping over getaddrinfo output.
+
+    Returns
+    -------
+    str
+        remoting ip address
+    """
     for addrinfo in socket.getaddrinfo(
         socket.gethostname(),
         0,
@@ -53,7 +62,7 @@ def get_remoting_ip():
         ip = addrinfo[-1][0]
         port = get_free_port()
         address = f"{ip}:{port}"
-        with GrpcServer(address) as server:
+        with _GrpcServer(address) as server:
             with grpc.insecure_channel(address) as channel:
                 stub = health_pb2_grpc.HealthStub(channel)
                 try:
@@ -61,6 +70,8 @@ def get_remoting_ip():
                         stub.Check(health_pb2.HealthCheckRequest()).status
                         == health_pb2.HealthCheckResponse.ServingStatus.SERVING
                     ):
+                        LOG.debug(f"Can use {ip} as remoting ip")
                         return ip
                 except Exception:
+                    LOG.debug(f"Cannot use {ip} as remoting ip")
                     pass

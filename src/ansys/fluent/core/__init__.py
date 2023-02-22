@@ -98,4 +98,7 @@ except Exception:
 
 BUILDING_GALLERY = False
 
+# Set this to False to stop automatically setting REMOTING_SERVER_ADDRESS
+INFER_REMOTING_IP = True
+
 pydoc.text.docother = fldoc.docother.__get__(pydoc.text, pydoc.TextDoc)
