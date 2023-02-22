@@ -25,6 +25,8 @@ import sys
 from typing import Any, Dict, Generic, List, NewType, Tuple, TypeVar, Union
 import weakref
 
+from ansys.fluent.core.allowed_name_error_msg import allowed_name_error_message
+
 from .logging import LOG
 
 # Type hints
@@ -467,7 +469,10 @@ class Group(SettingsBase[DictStateType]):
             print(
                 f"AttributeError: '{self.__class__.__name__}' object has no attribute '{name}'"
             )
-            print(f"Available attributes are - {attributes}")
+            if len(attributes) > 3:
+                return allowed_name_error_message("Settings objects", name, attributes)
+            else:
+                return f"Available attributes are - {attributes}"
 
     def __setattr__(self, name: str, value):
         return getattr(self, name).set_state(value)
@@ -672,7 +677,14 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
                 return WildcardPath(
                     self.flproxy, self.path + "/" + name, self.__class__, child_cls
                 )
-            raise KeyError(name)
+        if len(self.get_object_names()) > 3:
+            raise KeyError(
+                allowed_name_error_message(
+                    "Settings objects", name, self.get_object_names()
+                )
+            )
+        else:
+            raise KeyError(f"Available keys are - {self.get_object_names()}")
         obj = self._objects.get(name)
         if not obj:
             obj = self._create_child_object(name)
