@@ -459,8 +459,14 @@ class Group(SettingsBase[DictStateType]):
         try:
             return super().__getattribute__(name)
         except AttributeError:
-            attributes = [attribute for attribute in self.__dict__.keys() if not attribute.startswith("_")]
-            print(f"AttributeError: '{self.__class__.__name__}' object has no attribute '{name}'")
+            attributes = [
+                attribute
+                for attribute in self.__dict__.keys()
+                if not attribute.startswith("_")
+            ]
+            print(
+                f"AttributeError: '{self.__class__.__name__}' object has no attribute '{name}'"
+            )
             print(f"Available attributes are - {attributes}")
 
     def __setattr__(self, name: str, value):
