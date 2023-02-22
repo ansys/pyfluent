@@ -478,7 +478,6 @@ class Group(SettingsBase[DictStateType]):
         if type(value) == str:
             values = getattr(self, name).allowed_values()
             if value not in values:
-                print(f"ValueError: '{value}' is not allowed")
                 if len(values) > 3:
                     raise ValueError(allowed_name_error_message(name, value, values))
                 else:
