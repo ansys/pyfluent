@@ -55,7 +55,7 @@ def find_remoting_ip() -> str:
     from ansys.fluent.core import INFER_REMOTING_IP_TIMEOUT_PER_IP
 
     for addrinfo in socket.getaddrinfo(
-        socket.gethostname(),
+        "localhost",
         0,
         family=socket.AF_INET,
         type=socket.SOCK_STREAM,
