@@ -435,7 +435,6 @@ def launch_fluent(
     topy: Union[str, list] = None,
     **kwargs,
 ) -> Union[Meshing, PureMeshing, Solver]:
-
     """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
 
