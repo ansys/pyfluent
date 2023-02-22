@@ -23,6 +23,7 @@ from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.logging import LOG
+from ansys.fluent.core.utils.networking import get_remoting_ip
 import ansys.platform.instancemanagement as pypim
 
 _THIS_DIR = os.path.dirname(__file__)
@@ -134,6 +135,9 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
     fluent_env = os.environ.copy()
     fluent_env.update({k: str(v) for k, v in env.items()})
     fluent_env["REMOTING_THROW_LAST_TUI_ERROR"] = "1"
+    remoting_ip = get_remoting_ip()
+    if remoting_ip:
+        fluent_env["REMOTING_SERVER_ADDRESS"] = remoting_ip
     kwargs.update(env=fluent_env)
     return kwargs
 
