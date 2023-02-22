@@ -52,6 +52,8 @@ def find_remoting_ip() -> str:
     str
         remoting ip address
     """
+    from ansys.fluent.core import INFER_REMOTING_IP_TIMEOUT_PER_IP
+
     for addrinfo in socket.getaddrinfo(
         socket.gethostname(),
         0,
@@ -67,7 +69,10 @@ def find_remoting_ip() -> str:
                 stub = health_pb2_grpc.HealthStub(channel)
                 try:
                     if (
-                        stub.Check(health_pb2.HealthCheckRequest()).status
+                        stub.Check(
+                            health_pb2.HealthCheckRequest(),
+                            timeout=INFER_REMOTING_IP_TIMEOUT_PER_IP,
+                        ).status
                         == health_pb2.HealthCheckResponse.ServingStatus.SERVING
                     ):
                         LOG.debug(f"Can use {ip} as remoting ip")

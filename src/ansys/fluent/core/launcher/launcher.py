@@ -14,7 +14,6 @@ import time
 from typing import Any, Dict, Union
 import warnings
 
-from ansys.fluent.core import INFER_REMOTING_IP
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
@@ -136,6 +135,8 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
     fluent_env = os.environ.copy()
     fluent_env.update({k: str(v) for k, v in env.items()})
     fluent_env["REMOTING_THROW_LAST_TUI_ERROR"] = "1"
+    from ansys.fluent.core import INFER_REMOTING_IP
+
     if INFER_REMOTING_IP:
         remoting_ip = find_remoting_ip()
         if remoting_ip:
