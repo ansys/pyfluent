@@ -116,7 +116,7 @@ class _BaseSession:
                 password=password,
                 cleanup_on_exit=cleanup_on_exit,
                 start_transcript=start_transcript,
-                launcher_args=launcher_args
+                launcher_args=launcher_args,
             )
         )
         return session

@@ -5,7 +5,9 @@ from ansys.fluent.core.meta import PyLocalContainer
 
 
 class Container:
-    def __init__(self, session, child, module, post_api_helper, local_surfaces_provider=None):
+    def __init__(
+        self, session, child, module, post_api_helper, local_surfaces_provider=None
+    ):
         """Instantiate Plots, container of plot objects.
 
         Parameters
@@ -33,7 +35,6 @@ class Container:
 
     def _init_module(self, obj, mod, post_api_helper):
         for name, cls in mod.__dict__.items():
-
             if cls.__class__.__name__ in (
                 "PyLocalNamedObjectMetaAbstract",
             ) and not inspect.isabstract(cls):
@@ -69,7 +70,9 @@ class Plots(Container):
     _sessions_state = {}
 
     def __init__(self, session, module, post_api_helper, local_surfaces_provider=None):
-        super().__init__(session, self.__class__, module, post_api_helper, local_surfaces_provider)
+        super().__init__(
+            session, self.__class__, module, post_api_helper, local_surfaces_provider
+        )
 
 
 class Graphics(Container):
@@ -101,7 +104,9 @@ class Graphics(Container):
     _sessions_state = {}
 
     def __init__(self, session, module, post_api_helper, local_surfaces_provider=None):
-        super().__init__(session, self.__class__, module, post_api_helper, local_surfaces_provider)
+        super().__init__(
+            session, self.__class__, module, post_api_helper, local_surfaces_provider
+        )
 
     def add_outline_mesh(self):
         """Add a mesh outline.

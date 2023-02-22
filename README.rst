@@ -117,9 +117,9 @@ You can use the ``solver_session.tui`` interface to run all Fluent TUI commands:
 
 You can also install and use these PyFluent libraries:
 
-- `PyFluent Parametric <https://fluentparametric.docs.pyansys.com/>`_, which provides
+- `PyFluent Parametric <https://parametric.fluent.docs.pyansys.com/>`_, which provides
   access to Fluent's parametric workflows.
-- `PyFluent Visualization <https://fluentvisualization.docs.pyansys.com/>`_, which
+- `PyFluent Visualization <https://visualization.fluent.docs.pyansys.com/>`_, which
   provides postprocessing and visualization capabilities using the `pyvista <https://docs.pyvista.org/>`_
   and `matplotlib <https://matplotlib.org/>`_ packages.
 
