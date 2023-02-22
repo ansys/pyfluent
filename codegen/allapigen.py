@@ -27,7 +27,10 @@ if __name__ == "__main__":
         args = parser.parse_args()
 
         if args.ansys_version:
-            awp_root = os.environ["AWP_ROOT" + "".join(str(FluentVersion(args.ansys_version)).split("."))[:-1]]
+            awp_root = os.environ[
+                "AWP_ROOT"
+                + "".join(str(FluentVersion(args.ansys_version)).split("."))[:-1]
+            ]
             os.environ["PYFLUENT_FLUENT_ROOT"] = str(Path(awp_root) / "fluent")
         if args.fluent_path:
             os.environ["PYFLUENT_FLUENT_ROOT"] = args.fluent_path

@@ -27,7 +27,9 @@ class HealthCheckService:
         SERVICE_UNKNOWN = 3
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
-        intercept_channel = grpc.intercept_channel(channel, TracingInterceptor(), BatchInterceptor())
+        intercept_channel = grpc.intercept_channel(
+            channel, TracingInterceptor(), BatchInterceptor()
+        )
         self._stub = HealthCheckGrpcModule.HealthStub(intercept_channel)
         self._metadata = metadata
         self._channel = channel
