@@ -86,8 +86,8 @@ class ArgumentWrapper(PyCallableStateObject):
 
 
 class BasicTask:
-    """Wrap a Workflow TaskObject instance, adding methods to discover
-    more about the relationships between TaskObjects.
+    """Base class Task representation for wrapping a Workflow TaskObject instance,
+    adding methods to discover more about the relationships between TaskObjects.
 
     Methods
     -------
@@ -183,17 +183,7 @@ class BasicTask:
         ]
 
     def inactive_ordered_children(self) -> list:
-        """Get the inactive ordered task list held by this task.
-
-        Returns
-        -------
-        children : list
-            Inactive ordered children.
-        """
-        return [
-            self._command_source._task_by_id(task_id)
-            for task_id in self._task.InactiveTaskList()
-        ]
+        return []
 
     def get_id(self) -> str:
         """Get the unique string identifier of this task, as it is in the
@@ -273,6 +263,10 @@ class BasicTask:
 
 
 class CommandTask(BasicTask):
+    """Intermediate base class task representation for wrapping a Workflow TaskObject instance,
+    adding attributes related to commanding. Classes without these attributes cannot be commanded.
+    """
+
     def __init__(self, command_source, task) -> None:
         super().__init__(command_source, task)
 
@@ -305,21 +299,62 @@ class CommandTask(BasicTask):
 
 
 class SimpleTask(CommandTask):
+    """Simple task representation for wrapping a Workflow TaskObject
+    instance of TaskType Simple or Compound Child.
+    """
+
     def __init__(self, command_source, task) -> None:
         super().__init__(command_source, task)
+
+    def ordered_children(self) -> list:
+        """Get the ordered task list held by the workflow. SimpleTasks have no TaskList"""
+        return []
 
 
 class CompositeTask(BasicTask):
+    """Composite task representation for wrapping a Workflow TaskObject
+    instance of TaskType Composite.
+    """
+
     def __init__(self, command_source, task) -> None:
         super().__init__(command_source, task)
+
+    @property
+    def CommandArguments(self):
+        return {}
+
+    @property
+    def arguments(self):
+        return {}
 
 
 class ConditionalTask(CommandTask):
+    """Conditional task representation for wrapping a Workflow TaskObject
+    instance of TaskType Conditional.
+    """
+
     def __init__(self, command_source, task) -> None:
         super().__init__(command_source, task)
 
+    def inactive_ordered_children(self) -> list:
+        """Get the inactive ordered task list held by this task.
+
+        Returns
+        -------
+        children : list
+            Inactive ordered children.
+        """
+        return [
+            self._command_source._task_by_id(task_id)
+            for task_id in self._task.InactiveTaskList()
+        ]
+
 
 class CompoundTask(CommandTask):
+    """Compound task representation for wrapping a Workflow TaskObject
+    instance of TaskType Compound.
+    """
+
     def __init__(self, command_source, task) -> None:
         super().__init__(command_source, task)
 
@@ -410,7 +445,7 @@ class WorkflowWrapper:
         workflow:
 
         o Workflow
-        |
+        |c
         |--o A
         |
         |--o B
@@ -429,6 +464,16 @@ class WorkflowWrapper:
         for task_id in task_list_state:
             tasks.append(self._task_by_id_impl(task_id, workflow_state))
         return tasks
+
+    def inactive_ordered_children(self) -> list:
+        """Get the inactive ordered task list held by this task.
+
+        Returns
+        -------
+        children : list
+            Inactive ordered children.
+        """
+        return []
 
     def __getattr__(self, attr):
         """Delegate attribute lookup to the wrapped workflow object
