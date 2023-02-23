@@ -469,8 +469,8 @@ class Group(SettingsBase[DictStateType]):
         try:
             return getattr(self, name).set_state(value)
         except BaseException as ex:
-            allowed = getattr(getattr(self, name), "allowed_values", None)
-            if allowed and value not in allowed():
+            allowed = getattr(self, name).allowed_values()
+            if allowed and value not in allowed:
                 raise allowed_values_error(name, value, allowed) from ex
 
 
