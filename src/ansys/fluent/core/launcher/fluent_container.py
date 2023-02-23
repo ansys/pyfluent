@@ -7,7 +7,7 @@ import time
 from typing import List
 
 from ansys.fluent.core.session import parse_server_info_file
-
+from ansys.fluent.core.utils.networking import get_free_port
 
 def _get_free_port() -> int:
     sock = socket.socket()

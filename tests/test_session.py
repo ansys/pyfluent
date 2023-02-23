@@ -20,6 +20,7 @@ from ansys.fluent.core import launch_fluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.session import _BaseSession
+from ansys.fluent.core.utils.networking import get_free_port
 
 
 class MockHealthServicer(health_pb2_grpc.HealthServicer):
