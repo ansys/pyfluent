@@ -354,6 +354,25 @@ class WorkflowWrapper:
         """
         return self._workflow.add_on_child_created(child_type, cb)
 
+    def add_on_affected_at_type_path(
+        self, child_type: str, cb: Callable
+    ) -> EventSubscription:
+        """Register a callback for when the object is affected at child type
+
+        Parameters
+        ----------
+        child_type : str
+            child type
+        cb : Callable
+            Callback function
+
+        Returns
+        -------
+        EventSubscription
+            EventSubscription instance which can be used to unregister the callback
+        """
+        return self._workflow.add_on_affected_at_type_path(child_type, cb)
+
 
 class _MakeReadOnly:
     """Removes 'set_state()' attribute to implement read-only behaviour."""

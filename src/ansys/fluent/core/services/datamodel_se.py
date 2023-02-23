@@ -534,6 +534,31 @@ class PyMenu(PyStateContainer):
         self.service.event_streaming.register_callback(subscription.tag, self, cb)
         return subscription
 
+    def add_on_affected_at_type_path(
+        self, child_type: str, cb: Callable
+    ) -> EventSubscription:
+        """Register a callback for when the object is affected at child type
+
+        Parameters
+        ----------
+        child_type : str
+            child type
+        cb : Callable
+            Callback function
+
+        Returns
+        -------
+        EventSubscription
+            EventSubscription instance which can be used to unregister the callback
+        """
+        request = DataModelProtoModule.SubscribeEventsRequest()
+        e = request.eventrequest.add(rules=self.rules)
+        e.affectedEventRequest.path = convert_path_to_se_path(self.path)
+        e.affectedEventRequest.subtype = child_type
+        subscription = EventSubscription(self.service, request)
+        self.service.event_streaming.register_callback(subscription.tag, self, cb)
+        return subscription
+
 
 class PyParameter(PyStateContainer):
     """Object class using StateEngine based DatamodelService as backend.

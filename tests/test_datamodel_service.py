@@ -120,3 +120,23 @@ def test_add_on_affected(new_mesh_session):
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
     sleep(5)
     assert data == []
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_232
+def test_add_on_affected_at_type_path(new_mesh_session):
+    meshing = new_mesh_session
+    data = []
+    subscription = meshing.workflow.add_on_affected_at_type_path(
+        "TaskObject", lambda obj: data.append(True)
+    )
+    assert data == []
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    sleep(5)
+    assert len(data) > 0
+    assert data[0] == True
+    data.clear()
+    subscription.unsubscribe()
+    meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
+    sleep(5)
+    assert data == []
