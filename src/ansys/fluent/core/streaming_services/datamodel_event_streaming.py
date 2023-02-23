@@ -43,5 +43,7 @@ class DatamodelEvents(StreamingService):
                                 childname = response.createdEventResponse.childname
                                 child = getattr(cb[0], childtype)[childname]
                                 cb[1](child)
+                            elif response.HasField("modifiedEventResponse"):
+                                cb[1](cb[0])
             except StopIteration:
                 break

@@ -91,3 +91,21 @@ def test_add_on_child_created(new_mesh_session):
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
     sleep(5)
     assert child_paths == []
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_232
+def test_add_on_changed(new_mesh_session):
+    meshing = new_mesh_session
+    task_list = meshing.workflow.Workflow.TaskList
+    assert isinstance(task_list(), list)
+    assert len(task_list()) == 0
+    data = []
+    meshing.workflow.Workflow.TaskList.add_on_changed(
+        lambda obj: data.append(len(obj()))
+    )
+    assert data == []
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    sleep(5)
+    assert len(data) > 0
+    assert data[0] > 0

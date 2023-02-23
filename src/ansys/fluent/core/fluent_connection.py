@@ -229,9 +229,6 @@ class _FluentConnection:
 
         self._cleanup_on_exit = cleanup_on_exit
 
-        self.callback_id1 = None
-        self.callback_id2 = None
-
         if start_transcript:
             self.transcript.start()
 
