@@ -604,23 +604,22 @@ def test_meshing_workflow_structure(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_231
-def test_extended_wrapper(
-    new_mesh_session,
-    mixing_elbow_geometry
-):
+def test_extended_wrapper(new_mesh_session, mixing_elbow_geometry):
     watertight_workflow = new_mesh_session.watertight()
     import_geometry = watertight_workflow.import_geometry
     assert import_geometry.Arguments() == {}
-    import_geometry.Arguments = dict(
-        FileName=mixing_elbow_geometry
-    )
+    import_geometry.Arguments = dict(FileName=mixing_elbow_geometry)
     assert 12 < len(import_geometry.arguments.get_state()) < 15
     assert len(import_geometry.arguments.get_state(explicit_only=True)) == 1
     import_geometry.arguments.set_state(dict(FileName=None))
-    assert import_geometry.arguments.get_state(explicit_only=True) == dict(FileName=None)
+    assert import_geometry.arguments.get_state(explicit_only=True) == dict(
+        FileName=None
+    )
     assert import_geometry.arguments.get_state()["FileName"] is None
     import_geometry.arguments.set_state(dict(FileName=mixing_elbow_geometry))
-    assert import_geometry.arguments.get_state(explicit_only=True) == dict(FileName=mixing_elbow_geometry)
+    assert import_geometry.arguments.get_state(explicit_only=True) == dict(
+        FileName=mixing_elbow_geometry
+    )
     assert import_geometry.FileName() == mixing_elbow_geometry
     import_geometry.FileName.set_state("bob")
     assert import_geometry.FileName() == "bob"
@@ -628,9 +627,7 @@ def test_extended_wrapper(
     import_geometry.Execute()
     add_local_sizing = watertight_workflow.add_local_sizing
     assert not add_local_sizing.ordered_children()
-    add_local_sizing.add_child(
-        state={"BOIFaceLabelList": ["cold-inlet"]}
-    )
+    add_local_sizing.add_child(state={"BOIFaceLabelList": ["cold-inlet"]})
     assert not add_local_sizing.ordered_children()
 
     added_sizing = add_local_sizing.add_child_and_update(
@@ -638,15 +635,12 @@ def test_extended_wrapper(
     )
     assert len(add_local_sizing.ordered_children()) == 1
     assert added_sizing
-    assert added_sizing.CommandArguments.BOIFaceLabelList() == [
-        "elbow-fluid"
-    ]
-    #restart
+    assert added_sizing.CommandArguments.BOIFaceLabelList() == ["elbow-fluid"]
+    # restart
     watertight_workflow = new_mesh_session.watertight()
     assert watertight_workflow.import_geometry.State() == "Out-of-date"
     watertight_workflow.import_geometry(
-        FileName=mixing_elbow_geometry,
-        AppendMesh=False
+        FileName=mixing_elbow_geometry, AppendMesh=False
     )
     assert watertight_workflow.import_geometry.State() == "Up-to-date"
     import_geometry_state = watertight_workflow.import_geometry.arguments()

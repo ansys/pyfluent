@@ -88,7 +88,6 @@ class ArgumentWrapper(PyCallableStateObject):
 class BasicTask:
     """Base class Task representation for wrapping a Workflow TaskObject instance,
     adding methods to discover more about the relationships between TaskObjects.
-
     Methods
     -------
     get_direct_upstream_tasks()
