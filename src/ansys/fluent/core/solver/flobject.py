@@ -25,8 +25,7 @@ import sys
 from typing import Any, Dict, Generic, List, NewType, Tuple, TypeVar, Union
 import weakref
 
-from .allowed_name_error_msg import allowed_name_error_message, allowed_values_error
-from .logging import LOG
+from .allowed_name_error_message import allowed_name_error_message, allowed_values_error
 
 # Type hints
 RealType = NewType("real", Union[float, str])  # constant or expression
@@ -460,23 +459,19 @@ class Group(SettingsBase[DictStateType]):
         try:
             return super().__getattribute__(name)
         except AttributeError as ex:
-            attributes = [
-                attribute
-                for attribute in self.__dict__.keys()
-                if not attribute.startswith("_")
-            ]
             raise AttributeError(
-                allowed_name_error_message("Settings objects", name, attributes)
+                allowed_name_error_message(
+                    "Settings objects", name, super().__getattribute__("child_names")
+                )
             ) from ex
 
     def __setattr__(self, name: str, value):
         try:
             return getattr(self, name).set_state(value)
         except BaseException as ex:
-            if hasattr(getattr(self, name), "allowed_values"):
-                values = getattr(self, name).allowed_values()
-                if value not in values:
-                    raise allowed_values_error(name, value, values) from ex
+            allowed = getattr(getattr(self, name), "allowed_values", None)
+            if allowed and value not in allowed():
+                raise allowed_values_error(name, value, allowed) from ex
 
 
 class WildcardPath(Group):
