@@ -459,11 +459,11 @@ class Group(SettingsBase[DictStateType]):
         try:
             return super().__getattribute__(name)
         except AttributeError as ex:
-            parents = []
+            parents = ""
             for parent in self.get_active_child_names():
                 try:
                     if hasattr(getattr(self, parent), str(name)):
-                        parents.append(parent)
+                        parents += parent
                 except AttributeError:
                     pass
             if len(parents):
