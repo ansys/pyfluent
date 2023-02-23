@@ -459,6 +459,15 @@ class Group(SettingsBase[DictStateType]):
         try:
             return super().__getattribute__(name)
         except AttributeError as ex:
+            parents = []
+            for parent in self.get_active_child_names():
+                try:
+                    if hasattr(getattr(self, parent), str(name)):
+                        parents.append(parent)
+                except AttributeError:
+                    pass
+            if len(parents):
+                print(f"\n {name} is a child of {parents} \n")
             raise AttributeError(
                 allowed_name_error_message(
                     "Settings objects", name, super().__getattribute__("child_names")
