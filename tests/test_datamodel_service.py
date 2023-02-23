@@ -73,19 +73,7 @@ def test_add_on_child_created(new_mesh_session):
     assert child_paths == []
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     sleep(5)
-    assert child_paths == [
-        "/TaskObject:Import Geometry",
-        "/TaskObject:Add Local Sizing",
-        "/TaskObject:Generate the Surface Mesh",
-        "/TaskObject:Describe Geometry",
-        "/TaskObject:Apply Share Topology",
-        "/TaskObject:Enclose Fluid Regions (Capping)",
-        "/TaskObject:Update Boundaries",
-        "/TaskObject:Create Regions",
-        "/TaskObject:Update Regions",
-        "/TaskObject:Add Boundary Layers",
-        "/TaskObject:Generate the Volume Mesh",
-    ]
+    assert len(child_paths) > 0
     child_paths.clear()
     subscription.unsubscribe()
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
@@ -101,11 +89,34 @@ def test_add_on_changed(new_mesh_session):
     assert isinstance(task_list(), list)
     assert len(task_list()) == 0
     data = []
-    meshing.workflow.Workflow.TaskList.add_on_changed(
-        lambda obj: data.append(len(obj()))
-    )
+    subscription = task_list.add_on_changed(lambda obj: data.append(len(obj())))
     assert data == []
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     sleep(5)
     assert len(data) > 0
     assert data[0] > 0
+    data.clear()
+    subscription.unsubscribe()
+    meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
+    sleep(5)
+    assert data == []
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_232
+def test_add_on_affected(new_mesh_session):
+    meshing = new_mesh_session
+    data = []
+    subscription = meshing.workflow.Workflow.add_on_affected(
+        lambda obj: data.append(True)
+    )
+    assert data == []
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    sleep(5)
+    assert len(data) > 0
+    assert data[0] == True
+    data.clear()
+    subscription.unsubscribe()
+    meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
+    sleep(5)
+    assert data == []

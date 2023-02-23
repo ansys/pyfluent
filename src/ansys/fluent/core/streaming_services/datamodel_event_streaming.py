@@ -45,5 +45,9 @@ class DatamodelEvents(StreamingService):
                                 cb[1](child)
                             elif response.HasField("modifiedEventResponse"):
                                 cb[1](cb[0])
+                            elif response.HasField("deletedEventResponse"):
+                                cb[1](cb[0])
+                            elif response.HasField("affectedEventResponse"):
+                                cb[1](cb[0])
             except StopIteration:
                 break
