@@ -85,7 +85,7 @@ class ArgumentWrapper(PyCallableStateObject):
         return getattr(self._arg, attr)
 
 
-class Task:
+class BasicTask:
     """Wrap a Workflow TaskObject instance, adding methods to discover
     more about the relationships between TaskObjects.
 
@@ -223,14 +223,6 @@ class Task:
         """
         return int(self.get_id()[len("TaskObject") :])
 
-    @property
-    def CommandArguments(self):
-        return self._refreshed_command()
-
-    @property
-    def arguments(self):
-        return ArgumentsWrapper(self)
-
     def __getattr__(self, attr):
         try:
             result = getattr(self._task, attr)
@@ -279,6 +271,19 @@ class Task:
                 matches.append(task)
         return matches
 
+
+class CommandTask(BasicTask):
+    def __init__(self, command_source, task) -> None:
+        super().__init__(command_source, task)
+
+    @property
+    def CommandArguments(self):
+        return self._refreshed_command()
+
+    @property
+    def arguments(self):
+        return ArgumentsWrapper(self)
+
     def _refreshed_command(self):
         task_arg_state = self._task.Arguments.get_state()
         cmd = self._command()
@@ -299,19 +304,22 @@ class Task:
         return self._cmd
 
 
-class SimpleTask(Task):
-    pass
+class SimpleTask(CommandTask):
+    def __init__(self, command_source, task) -> None:
+        super().__init__(command_source, task)
 
 
-class CompositeTask(Task):
-    pass
+class CompositeTask(BasicTask):
+    def __init__(self, command_source, task) -> None:
+        super().__init__(command_source, task)
 
 
-class ConditionalTask(Task):
-    pass
+class ConditionalTask(CommandTask):
+    def __init__(self, command_source, task) -> None:
+        super().__init__(command_source, task)
 
 
-class CompoundTask(Task):
+class CompoundTask(CommandTask):
     def __init__(self, command_source, task) -> None:
         super().__init__(command_source, task)
 
@@ -331,7 +339,7 @@ class CompoundTask(Task):
             return children[-1]
 
 
-def makeTask(command_source, name: str) -> Task:
+def makeTask(command_source, name: str) -> BasicTask:
     task = command_source._workflow.TaskObject[name]
     task_type = task.TaskType()
     kinds = {
@@ -369,8 +377,8 @@ class WorkflowWrapper:
         self._workflow = workflow
         self._command_source = command_source
 
-    def task(self, name: str) -> Task:
-        """Get a TaskObject by name, in a Task wrapper. The wrapper adds extra
+    def task(self, name: str) -> BasicTask:
+        """Get a TaskObject by name, in a BasicTask wrapper. The wrapper adds extra
         functionality.
 
         Parameters
@@ -380,7 +388,7 @@ class WorkflowWrapper:
 
         Returns
         -------
-        task : Task
+        task : BasicTask
             wrapped task object.
         """
         return makeTask(self, name)
