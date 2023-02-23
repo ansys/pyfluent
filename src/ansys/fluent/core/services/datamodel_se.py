@@ -559,6 +559,59 @@ class PyMenu(PyStateContainer):
         self.service.event_streaming.register_callback(subscription.tag, self, cb)
         return subscription
 
+    def add_on_attribute_changed(
+        self, attribute: str, cb: Callable
+    ) -> EventSubscription:
+        """Register a callback for when an attribute is changed
+
+        Parameters
+        ----------
+        attribute : str
+            attribute name
+        cb : Callable
+            Callback function
+
+        Returns
+        -------
+        EventSubscription
+            EventSubscription instance which can be used to unregister the callback
+        """
+        request = DataModelProtoModule.SubscribeEventsRequest()
+        e = request.eventrequest.add(rules=self.rules)
+        e.attributeChangedEventRequest.path = convert_path_to_se_path(self.path)
+        e.attributeChangedEventRequest.attribute = attribute
+        subscription = EventSubscription(self.service, request)
+        self.service.event_streaming.register_callback(subscription.tag, self, cb)
+        return subscription
+
+    def add_on_command_attribute_changed(
+        self, command: str, attribute: str, cb: Callable
+    ) -> EventSubscription:
+        """Register a callback for when an attribute is changed
+
+        Parameters
+        ----------
+        command : str
+            command name
+        attribute : str
+            attribute name
+        cb : Callable
+            Callback function
+
+        Returns
+        -------
+        EventSubscription
+            EventSubscription instance which can be used to unregister the callback
+        """
+        request = DataModelProtoModule.SubscribeEventsRequest()
+        e = request.eventrequest.add(rules=self.rules)
+        e.commandAttributeChangedEventRequest.path = convert_path_to_se_path(self.path)
+        e.commandAttributeChangedEventRequest.command = command
+        e.commandAttributeChangedEventRequest.attribute = attribute
+        subscription = EventSubscription(self.service, request)
+        self.service.event_streaming.register_callback(subscription.tag, self, cb)
+        return subscription
+
 
 class PyParameter(PyStateContainer):
     """Object class using StateEngine based DatamodelService as backend.
@@ -590,6 +643,31 @@ class PyParameter(PyStateContainer):
         request = DataModelProtoModule.SubscribeEventsRequest()
         e = request.eventrequest.add(rules=self.rules)
         e.modifiedEventRequest.path = convert_path_to_se_path(self.path)
+        subscription = EventSubscription(self.service, request)
+        self.service.event_streaming.register_callback(subscription.tag, self, cb)
+        return subscription
+
+    def add_on_attribute_changed(
+        self, attribute: str, cb: Callable
+    ) -> EventSubscription:
+        """Register a callback for when an attribute is changed
+
+        Parameters
+        ----------
+        attribute : str
+            attribute name
+        cb : Callable
+            Callback function
+
+        Returns
+        -------
+        EventSubscription
+            EventSubscription instance which can be used to unregister the callback
+        """
+        request = DataModelProtoModule.SubscribeEventsRequest()
+        e = request.eventrequest.add(rules=self.rules)
+        e.attributeChangedEventRequest.path = convert_path_to_se_path(self.path)
+        e.attributeChangedEventRequest.attribute = attribute
         subscription = EventSubscription(self.service, request)
         self.service.event_streaming.register_callback(subscription.tag, self, cb)
         return subscription
