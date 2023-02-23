@@ -26,6 +26,7 @@ from typing import Any, Dict, Generic, List, NewType, Tuple, TypeVar, Union
 import weakref
 
 from .allowed_name_error_message import allowed_name_error_message, allowed_values_error
+from .logging import LOG
 
 # Type hints
 RealType = NewType("real", Union[float, str])  # constant or expression
