@@ -40,8 +40,6 @@ extensions = [
     "sphinxemoji.sphinxemoji",
 ]
 
-autosummary_generate = True
-
 autodoc_default_options = {
     "members": True,
     "inherited-members": True,
