@@ -21,9 +21,9 @@ class PureMeshing:
     def transfer_mesh_to_solvers(
         self,
         solvers,
-        file_type: str = "case",
-        file_name_stem: str = None,
-        num_files_to_try: int = 1,
-        clean_up_mesh_file: bool = True,
-        overwrite_previous: bool = True,
+        file_type: str = ...,
+        file_name_stem: str = ...,
+        num_files_to_try: int = ...,
+        clean_up_mesh_file: bool = ...,
+        overwrite_previous: bool = ...,
     ): ...

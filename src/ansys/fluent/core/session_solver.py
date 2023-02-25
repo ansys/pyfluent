@@ -178,7 +178,7 @@ class Solver(_BaseSession):
         ----------
         file_name : str
             Case file name
-        lightweight_mode : bool
+        lightweight_mode : bool, default False
             Whether to use light io
         """
         import ansys.fluent.core as pyfluent
