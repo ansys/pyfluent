@@ -1,0 +1,13 @@
+.. _ref_meshing_tui_file_import_cad_options:
+
+meshing.tui.file.import\_.cad\_options
+======================================
+
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.file.import_.cad_options
+   :members: modify_all_duplicate_names, derive_zone_name_from_object_scope, one_object_per, create_cad_assemblies, strip_file_name_extension_from_naming, continue_on_error, separate_features_by_type, merge_nodes, create_label_per_body_during_cad_faceting, double_connected_face_label, name_separator_character, named_selections, import_part_names, named_selection_tessellation_failure, merge_objects_per_body_named_selection, import_body_names, read_all_cad_in_subdirectories, replacement_character, tessellation, object_type, strip_path_prefix_from_names, reconstruct_topology, single_connected_edge_label, one_face_zone_per, enclosure_symm_processing, use_part_names, use_collection_names, import_label_for_body_named_selection, extract_features, save_PMDB, use_body_names, use_part_or_body_names_as_suffix_to_named_selections, import_curvature_data_from_CAD, use_component_names
+

@@ -1,0 +1,19 @@
+.. _ref_meshing_tui_preferences_appearance:
+
+meshing.tui.preferences.appearance
+==================================
+
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.appearance
+   :members: graphics_edge_color, application_font_size, titles_border_offset, graphics_view, quick_property_view, ruler, pastel_color_value, graphics_color_theme, completer, graphics_background_color2, model_color_scheme, number_of_pastel_colors, custom_title_bar, show_enabled_models, pastel_color_saturation, solution_mode_edge_color_in_meshing_mode, default_view, graphics_foreground_color, graphics_partition_boundary_color, surface_emissivity, color_theme, graphics_default_manual_node_color, show_model_edges, graphics_background_style, group_by_tree_view, surface_specularity, graphics_wall_face_color, axis_triad, graphics_title_window_framecolor, number_of_files_recently_used, show_interface_children_zone, graphics_default_manual_face_color, titles, graphics_surface_color, surface_specularity_for_contours, graphics_background_color1
+
+.. toctree::
+   :hidden:
+
+   selections/index
+   ansys_logo/index
+   charts/index

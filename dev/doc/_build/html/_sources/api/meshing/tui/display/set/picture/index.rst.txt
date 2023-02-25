@@ -1,0 +1,18 @@
+.. _ref_meshing_tui_display_set_picture:
+
+meshing.tui.display.set.picture
+===============================
+
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.set.picture
+   :members: invert_background, x_resolution, jpeg_hardcopy_quality, preview, set_standard_resolution, dpi, landscape, use_window_resolution, y_resolution
+
+.. toctree::
+   :hidden:
+
+   color_mode/index
+   driver/index

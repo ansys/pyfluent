@@ -1,0 +1,17 @@
+.. _ref_solver_tui_preferences_meshing_workflow:
+
+solver.tui.preferences.meshing\_workflow
+========================================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.meshing_workflow
+   :members: save_checkpoint_files, checkpointing_option, temp_folder, verbosity, templates_folder
+
+.. toctree::
+   :hidden:
+
+   draw_settings/index

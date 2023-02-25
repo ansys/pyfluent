@@ -1,0 +1,13 @@
+.. _ref_meshing_tui_report:
+
+meshing.tui.report
+==================
+
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.report
+   :members: memory_usage, number_meshed, spy_level, face_node_degree_distribution, quality_method, edge_size_limits, boundary_cell_quality, meshing_time, face_quality_limits, cell_quality_limits, face_zone_at_location, cell_zone_volume, mesh_size, face_zone_area, update_bounding_box, face_size_limits, enhanced_orthogonal_quality, cell_distribution, cell_zone_at_location, print_info, face_distribution, mesh_statistics, cell_size_limits, list_cell_quality, unrefined_cells, verbosity_level, neighborhood_quality
+

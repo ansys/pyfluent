@@ -1,0 +1,17 @@
+.. _ref_solver_tui_define_models_dpm_numerics:
+
+solver.tui.define.models.dpm.numerics
+=====================================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.dpm.numerics
+   :members: coupled_heat_mass_update, tracking_parameters, gaussian_factor, granular_stress_tensor, predictor_corrector, tracking_statistics, automated_scheme_selection, mppic_settings, vaporization_limiting_factors, underrelax_film_height, average_kernel, average_source_terms, drag_law, minimum_liquid_fraction, error_control, tracking_scheme, enable_node_based_averaging, dynamic_interaction, enhanced_packing_limit_numerics, average_each_step, verbosity, average_DDPM_variables
+
+.. toctree::
+   :hidden:
+
+   high_resolution_tracking/index

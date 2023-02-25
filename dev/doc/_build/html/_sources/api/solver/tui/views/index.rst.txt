@@ -1,0 +1,18 @@
+.. _ref_solver_tui_views:
+
+solver.tui.views
+================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.views
+   :members: read_views, restore_view, auto_scale, list_views, delete_view, write_views, save_view, next_view, default_view, last_view
+
+.. toctree::
+   :hidden:
+
+   camera/index
+   display_states/index

@@ -1,0 +1,19 @@
+.. _ref_solver_tui_plot:
+
+solver.tui.plot
+===============
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.plot
+   :members: solution, label_alignment, file_set, histogram_set, solution_set, circum_avg_axial, change_fft_ref_pressure, display_profile_data, fft, residuals, file_list, datasources, set_boundary_val_off, plot, histogram, circum_avg_radial, plot_direction, residuals_set, fft_set, file
+
+.. toctree::
+   :hidden:
+
+   ansys_sound_analysis/index
+   flamelet_curves/index
+   cumulative_plot/index

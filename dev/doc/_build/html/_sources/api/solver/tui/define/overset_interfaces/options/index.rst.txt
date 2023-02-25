@@ -1,0 +1,13 @@
+.. _ref_solver_tui_define_overset_interfaces_options:
+
+solver.tui.define.overset\_interfaces.options
+=============================================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.overset_interfaces.options
+   :members: modified_donor_search, parallel, donor_priority_method, transient_caching, expert, render_receptor_cells, overlap_boundaries, auto_create, dead_cell_update, update_before_case_write, node_connected_donors, partial_cut_faces, modified_hole_cutting, verbosity, minimize_overlap, solve_island_removal, mesh_interfaces
+

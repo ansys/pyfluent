@@ -1,0 +1,13 @@
+.. _ref_solver_tui_mesh_adapt_set:
+
+solver.tui.mesh.adapt.set
+=========================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.mesh.adapt.set
+   :members: anisotropic_boundary_zones, anisotropic_split_ratio, cell_zones, anisotropic_adaption, display_settings, minimum_edge_length, minimum_cell_quality, verbosity, dynamic_adaption_frequency, dynamic_adaption, additional_refinement_layers, method, maximum_refinement_level, encapsulate_children, overset_adapt_dead_cells, maximum_cell_count
+

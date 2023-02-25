@@ -1,0 +1,13 @@
+.. _ref_solver_tui_preferences_general:
+
+solver.tui.preferences.general
+==============================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.general
+   :members: advanced_partition, utlmode, qaservice_message, dock_editor, default_ioformat, automatic_transcript, key_behavioral_changes_message, enable_parametric_study, utlcreate_physics_on_mode_change, laplace_auto_partition_default, initial_physics_volume_definitions, flow_model, idle_timeout
+

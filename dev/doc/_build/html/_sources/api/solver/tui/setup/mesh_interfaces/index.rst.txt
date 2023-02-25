@@ -1,0 +1,19 @@
+.. _ref_solver_tui_setup_mesh_interfaces:
+
+solver.tui.setup.mesh\_interfaces
+=================================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.mesh_interfaces
+   :members: remove_left_handed_interface_faces, auto_pairing, enable_si_with_nodes, list, enable_visualization_of_interfaces, delete_all, verbosity, transfer_motion_across_interfaces, display, make_phaselag_from_boundaries, create, make_periodic, make_phaselag_from_periodic, one_to_one_pairing, edit, improve_quality, enforce_coupled_wall_between_solids, delete, enforce_continuity_after_bc, turbo_create, non_overlapping_zone_name
+
+.. toctree::
+   :hidden:
+
+   mapped_interface_options/index
+   non_conformal_interface_numerics/index
+   auto_options/index

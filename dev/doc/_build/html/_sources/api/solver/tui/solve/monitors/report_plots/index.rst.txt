@@ -1,0 +1,13 @@
+.. _ref_solver_tui_solve_monitors_report_plots:
+
+solver.tui.solve.monitors.report\_plots
+=======================================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.monitors.report_plots
+   :members: clear_data, list, plot, axes, add, list_properties, edit, delete_all, delete, curves
+

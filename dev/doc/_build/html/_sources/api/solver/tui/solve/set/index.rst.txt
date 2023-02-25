@@ -1,0 +1,35 @@
+.. _ref_solver_tui_solve_set:
+
+solver.tui.solve.set
+====================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set
+   :members: data_sampling, accelerated_non_iterative_time_marching, flow_warnings, relaxation_factor, relaxation_method, number_of_iterations, multi_grid_controls, multi_grid_amg, convergence_acceleration_for_stretched_meshes, heterogeneous_stiff_chemistry, multi_stage, max_corrections, surface_tension_expert, material_property_warnings, equations, set_all_species_together, correction_tolerance, reduced_rank_extrapolation, residual_verbosity, solution_steering, phase_based_vof_discretization, set_solution_steering, residual_smoothing, reduced_rank_extrapolation_options, enable_output_dp_dt, second_order_time_options, residual_tolerance, vof_explicit_controls, numerics, multi_grid_fas, limiter_warnings, p_v_coupling, lock_solid_temperature, courant_number, limits, adaptive_time_stepping, equation_ordering, cfl_based_adaptive_time_stepping, time_step, expert, surface_tension, set_controls_to_default, slope_limiter_set, reactions, set_solution_methods_to_default, discretization_scheme, nb_gradient_boundary_option, bc_pressure_extrapolations, open_channel_controls, flux_type, p_v_controls, numerical_beach_controls, under_relaxation, p_v_controls_advanced, mp_reference_density, mp_mfluid_aniso_drag, disable_reconstruction, variable_time_stepping, stiff_chemistry, reporting_interval, gradient_scheme, vof_numerics, moving_mesh_numerics
+
+.. toctree::
+   :hidden:
+
+   high_order_term_relaxation/index
+   warped_face_gradient_correction/index
+   divergence_prevention/index
+   enhanced_les_numerics/index
+   poor_mesh_numerics/index
+   open_channel_wave_options/index
+   previous_defaults/index
+   contact_solution_controls/index
+   data_sampling_options/index
+   nita_expert_controls/index
+   pseudo_time_method/index
+   amg_options/index
+   fast_transient_settings/index
+   overset/index
+   high_speed_numerics/index
+   transient_controls/index
+   multiphase_numerics/index
+   advanced/index
+   acoustics_wave_equation_controls/index

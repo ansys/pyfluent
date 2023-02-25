@@ -1,0 +1,13 @@
+.. _ref_meshing_tui_mesh_manage:
+
+meshing.tui.mesh.manage
+=======================
+
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.manage
+   :members: delete, id, scale_model, copy, revolve_face_zone, list, change_suffix, rotate_model, auto_set_active, change_prefix, type, rotate, adjacent_face_zones, name, translate, merge_dead_zones, active_list, get_material_point, merge, scale, translate_model, set_active, origin
+

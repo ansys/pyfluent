@@ -1,0 +1,13 @@
+.. _ref_meshing_tui_boundary_feature:
+
+meshing.tui.boundary.feature
+============================
+
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.boundary.feature
+   :members: separate_edge_zones, separate_delete_small_edges, project_edge_zones, remesh_edge_zones, intersect_edge_zones, orient_edge_direction, reverse_edge_direction, create_edge_zones, copy_edge_zones, list_edge_zones, toggle_edge_type, separate_edge_zones_by_seed, merge_edge_zones, ungroup, delete_edge_zones, group, delete_degenerated_edges, edge_size_limits
+
