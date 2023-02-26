@@ -1,0 +1,13 @@
+.. _ref_meshing_tui_preferences_graphics_graphics_effects:
+
+meshing.tui.preferences.graphics.graphics\_effects
+==================================================
+
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.graphics.graphics_effects
+   :members: grid_color, bloom_strength, simple_shadows_enabled, grid_plane_count, ambient_occlusion_quality, show_edge_reflections, bloom_enabled, anti_aliasing, plane_direction, ambient_occlusion_strength, grid_plane_size_factor, ambient_occlusion_enabled, show_marker_reflections, grid_plane_offset, update_after_mouse_release, bloom_blur, shadow_map_enabled, reflections_enabled, grid_plane_enabled
+

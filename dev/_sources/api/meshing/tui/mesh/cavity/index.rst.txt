@@ -1,0 +1,13 @@
+.. _ref_meshing_tui_mesh_cavity:
+
+meshing.tui.mesh.cavity
+=======================
+
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.cavity
+   :members: remesh_hexcore_cavity, region, replace_zones, remove_zones, create_hexcore_cavity_by_region, add_zones, create_hexcore_cavity_by_scale, merge_cavity
+

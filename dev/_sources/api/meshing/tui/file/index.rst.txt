@@ -1,0 +1,20 @@
+.. _ref_meshing_tui_file:
+
+meshing.tui.file
+================
+
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.file
+   :members: read_boundary_mesh, write_case, write_mesh_vars, show_configuration, read_multiple_mesh, read_options, read_case, stop_transcript, read_mesh, read_journal, file_format, hdf_files, read_multi_bound_mesh, load_act_tool, read_domains, set_idle_timeout, confirm_overwrite, start_journal, write_mesh, append_meshes_by_tmerge, set_tui_version, filter_list, read_size_field, filter_options, read_mesh_vars, stop_journal, start_transcript, cff_files, write_size_field, write_options, append_mesh, read_meshes_by_tmerge, write_domains, write_boundaries
+
+.. toctree::
+   :hidden:
+
+   checkpoint/index
+   export/index
+   project/index
+   import_/index
