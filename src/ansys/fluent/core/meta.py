@@ -9,7 +9,7 @@ from pprint import pformat
 
 
 class Attribute:
-    VALID_NAMES = ["range", "allowed_values"]
+    VALID_NAMES = ["range", "allowed_values", "help_str", "is_valid", "help_context", "display_text", "layout"]
 
     def __init__(self, function):
         self.function = function
@@ -417,6 +417,8 @@ class PyLocalContainer(MutableMapping):
         self.__collection: dict = {}
         self.__api_helper = api_helper
         self.type = "named-object"
+        if hasattr(object_class, "LAYOUT"):
+            self.layout = object_class.LAYOUT
 
     def __iter__(self):
         return iter(self.__collection)
