@@ -275,7 +275,7 @@ class TUIGenerator:
                 v.name for _, v in menu.children.items() if not v.is_command
             ]
 
-            f.write(f"   {class_name}\n\n")
+            f.write(f"   {self._tui_module}.{class_name}\n\n")
 
             if child_menu_names:
                 f.write(".. toctree::\n")
