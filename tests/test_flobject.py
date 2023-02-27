@@ -732,6 +732,14 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
         "The most similar names are: models."
     )
 
+    with pytest.raises(ValueError) as msg:
+        solver.setup.models.viscous.model = "k_epsilon"
+
+    assert (
+        msg.value.args[0] == "k_epsilon is not an allowed model name.\n"
+        "The most similar names are: k-epsilon."
+    )
+
     energy_parent = solver.setup._get_parent_of_active_child_names("energy")
 
     assert energy_parent == "\n energy is a child of models \n"
