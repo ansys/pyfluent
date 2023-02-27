@@ -27,7 +27,6 @@ extensions = [
     "jupyter_sphinx",
     "notfound.extension",
     "numpydoc",
-    "autodocsumm",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.coverage",
@@ -39,15 +38,6 @@ extensions = [
     "sphinx_gallery.gen_gallery",
     "sphinxemoji.sphinxemoji",
 ]
-
-autodoc_default_options = {
-    "members": True,
-    "inherited-members": True,
-    "show-inheritance": True,
-    "exclude-members": "__weakref__, __dict__",
-    "special-members": "__init__",
-    "undoc-members": True,
-}
 
 # Intersphinx mapping
 intersphinx_mapping = {
