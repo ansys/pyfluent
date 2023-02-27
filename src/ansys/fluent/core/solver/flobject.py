@@ -453,6 +453,21 @@ class Group(SettingsBase[DictStateType]):
                 ret.append(query)
         return ret
 
+    def _get_parent_of_active_child_names(self, name):
+        parents = ""
+        for parent in self.get_active_child_names():
+            try:
+                if hasattr(getattr(self, parent), str(name)):
+                    if len(parents) != 0:
+                        parents += ", " + parent
+                    else:
+                        parents += parent
+            except AttributeError:
+                pass
+        if len(parents):
+            print(f"\n {name} is a child of {parents} \n")
+            return f"\n {name} is a child of {parents} \n"
+
     def __getattribute__(self, name):
         if name in super().__getattribute__("child_names"):
             if not self.is_active():
@@ -460,15 +475,7 @@ class Group(SettingsBase[DictStateType]):
         try:
             return super().__getattribute__(name)
         except AttributeError as ex:
-            parents = []
-            for parent in self.get_active_child_names():
-                try:
-                    if hasattr(getattr(self, parent), str(name)):
-                        parents.append(parent)
-                except AttributeError:
-                    pass
-            if len(parents):
-                print(f"\n {name} is a child of {parents} \n")
+            self._get_parent_of_active_child_names(name)
             raise AttributeError(
                 allowed_name_error_message(
                     "Settings objects", name, super().__getattribute__("child_names")
