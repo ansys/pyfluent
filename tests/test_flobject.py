@@ -727,8 +727,6 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     with pytest.raises(AttributeError) as msg:
         solver.setup.mod
 
-    print(msg.value.args[0])
-
     assert (
         msg.value.args[0] == "mod is not an allowed Settings objects name.\n"
         "The most similar names are: models."
