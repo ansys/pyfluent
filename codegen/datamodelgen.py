@@ -297,6 +297,7 @@ class DataModelGenerator:
             f.write(f".. currentmodule:: {module_name}\n\n")
             f.write(".. autosummary::\n")
             f.write("   :toctree: _autosummary\n")
+            f.write("   :nosignatures:\n")
 
             named_objects = sorted(info.namedobjects)
             singletons = sorted(info.singletons)
