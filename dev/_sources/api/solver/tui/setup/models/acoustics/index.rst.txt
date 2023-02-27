@@ -9,12 +9,12 @@ solver.tui.setup.models.acoustics
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.acoustics
-   :members: off, ffowcs_williams, broad_band_noise, modal_analysis, wave_equation, receivers, export_source_data, export_source_data_cgns, sources, read_compute_write, write_acoustic_signals, compute_write, write_centroid_info, acoustic_modal_analysis, export_volumetric_sources, export_volumetric_sources_cgns, display_flow_time, cylindrical_export, auto_prune, moving_receiver, convective_effects, display_frequencies
+   :members: export_volumetric_sources_cgns, cylindrical_export, compute_write, ffowcs_williams, export_source_data_cgns, convective_effects, display_frequencies, sources, export_source_data, off, acoustic_modal_analysis, receivers, broad_band_noise, auto_prune, moving_receiver, modal_analysis, display_flow_time, write_centroid_info, write_acoustic_signals, export_volumetric_sources, read_compute_write, wave_equation
 
 .. toctree::
    :hidden:
 
    far_field_parameters/index
-   wave_equation_options/index
-   sources_fft/index
    sponge_layers/index
+   sources_fft/index
+   wave_equation_options/index

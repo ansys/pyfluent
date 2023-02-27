@@ -9,21 +9,5 @@ solver.tui.results.graphics.expert.set.colors.by\_type.type\_name
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.colors.by_type.type_name
-.. toctree::
-   :hidden:
+   :members: traction, far_field, outlet, interior, symmetry, rans_les_interface, free_surface, inlet, surface, wall, periodic, axis, internal, overset, interface
 
-   axis/index
-   far_field/index
-   free_surface/index
-   inlet/index
-   interface/index
-   interior/index
-   internal/index
-   outlet/index
-   overset/index
-   periodic/index
-   rans_les_interface/index
-   surface/index
-   symmetry/index
-   traction/index
-   wall/index

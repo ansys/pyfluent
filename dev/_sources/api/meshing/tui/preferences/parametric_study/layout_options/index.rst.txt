@@ -9,5 +9,5 @@ meshing.tui.preferences.parametric\_study.layout\_options
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.parametric_study.layout_options
-   :members: current_case_parameters, parametric_study_tree
+   :members: parametric_study_tree, current_case_parameters
 

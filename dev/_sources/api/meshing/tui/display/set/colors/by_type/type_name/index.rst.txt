@@ -9,5 +9,5 @@ meshing.tui.display.set.colors.by\_type.type\_name
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.set.colors.by_type.type_name
-   :members: overset, surface, inlet, axis, traction, interior, periodic, free_surface, wall, rans_les_interface, internal, outlet, interface, far_field, symmetry
+   :members: interior, outlet, rans_les_interface, traction, far_field, symmetry, inlet, axis, periodic, wall, interface, overset, internal, free_surface, surface
 

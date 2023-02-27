@@ -9,8 +9,9 @@ solver.tui.define.turbo\_model.general\_turbo\_interface\_settings
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.turbo_model.general_turbo_interface_settings
+   :members: expert
+
 .. toctree::
    :hidden:
 
    mixing_plane_model_settings/index
-   expert/index

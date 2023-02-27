@@ -9,7 +9,7 @@ meshing.tui.file.import\_
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.file.import_
-   :members: hypermesh_surf_mesh, patran_surf_mesh, ideas_vol_mesh, cgns_surf_mesh, fluent_2d_mesh, gambit_surf_mesh, ansys_vol_mesh, hypermesh_vol_mesh, nastran_vol_mesh, patran_vol_mesh, fidap_vol_mesh, ideas_surf_mesh, reimport_last_with_cfd_surface_mesh, cad, ansys_surf_mesh, gambit_vol_mesh, fluent_3d_mesh, stl, cgns_vol_mesh, fl_uns2_mesh, nastran_surf_mesh, fidap_surf_mesh, cad_geometry
+   :members: reimport_last_with_cfd_surface_mesh, ansys_surf_mesh, cgns_surf_mesh, cad_geometry, gambit_surf_mesh, hypermesh_surf_mesh, fl_uns2_mesh, patran_surf_mesh, nastran_surf_mesh, cgns_vol_mesh, stl, fidap_vol_mesh, fluent_2d_mesh, gambit_vol_mesh, patran_vol_mesh, hypermesh_vol_mesh, nastran_vol_mesh, ideas_vol_mesh, ansys_vol_mesh, fidap_surf_mesh, ideas_surf_mesh, fluent_3d_mesh, cad
 
 .. toctree::
    :hidden:

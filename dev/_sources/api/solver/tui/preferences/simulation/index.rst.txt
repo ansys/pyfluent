@@ -9,7 +9,7 @@ solver.tui.preferences.simulation
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.simulation
-   :members: flow_model, local_residual_scaling
+   :members: local_residual_scaling, flow_model
 
 .. toctree::
    :hidden:

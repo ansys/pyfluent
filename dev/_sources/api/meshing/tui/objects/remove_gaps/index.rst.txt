@@ -9,5 +9,5 @@ meshing.tui.objects.remove\_gaps
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects.remove_gaps
-   :members: show_gaps, remove_gaps, ignore_orientation
+   :members: show_gaps, ignore_orientation, remove_gaps
 

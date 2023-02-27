@@ -9,5 +9,5 @@ solver.tui.solve.set.warped\_face\_gradient\_correction
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.warped_face_gradient_correction
-   :members: enable, turbulence_options
+   :members: turbulence_options, enable
 

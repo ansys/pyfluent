@@ -9,28 +9,27 @@ solver.tui.solve.set
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set
-   :members: correction_tolerance, discretization_scheme, equations, max_corrections, multi_grid_controls, relaxation_factor, residual_tolerance, slope_limiter_set, under_relaxation, convergence_acceleration_for_stretched_meshes, adaptive_time_stepping, cfl_based_adaptive_time_stepping, variable_time_stepping, bc_pressure_extrapolations, courant_number, data_sampling, disable_reconstruction, flux_type, expert, flow_warnings, gradient_scheme, nb_gradient_boundary_option, limits, limiter_warnings, mp_mfluid_aniso_drag, material_property_warnings, mp_reference_density, multi_grid_amg, multi_grid_fas, multi_stage, number_of_iterations, numerics, second_order_time_options, solution_steering, set_solution_steering, p_v_coupling, p_v_controls, phase_based_vof_discretization, accelerated_non_iterative_time_marching, relaxation_method, reactions, reporting_interval, residual_smoothing, residual_verbosity, set_solution_methods_to_default, set_controls_to_default, set_all_species_together, vof_numerics, vof_explicit_controls, surface_tension, surface_tension_expert, open_channel_controls, numerical_beach_controls, heterogeneous_stiff_chemistry, stiff_chemistry, time_step, reduced_rank_extrapolation, reduced_rank_extrapolation_options, moving_mesh_numerics, lock_solid_temperature, enable_output_dp_dt, equation_ordering
+   :members: reactions, p_v_coupling, multi_grid_controls, enable_output_dp_dt, relaxation_method, stiff_chemistry, flux_type, moving_mesh_numerics, surface_tension_expert, limits, convergence_acceleration_for_stretched_meshes, gradient_scheme, mp_reference_density, courant_number, under_relaxation, set_solution_steering, residual_smoothing, solution_steering, relaxation_factor, accelerated_non_iterative_time_marching, nb_gradient_boundary_option, p_v_controls_advanced, correction_tolerance, heterogeneous_stiff_chemistry, time_step, adaptive_time_stepping, discretization_scheme, slope_limiter_set, second_order_time_options, numerical_beach_controls, numerics, variable_time_stepping, mp_mfluid_aniso_drag, bc_pressure_extrapolations, phase_based_vof_discretization, open_channel_controls, limiter_warnings, max_corrections, set_controls_to_default, p_v_controls, vof_numerics, reporting_interval, multi_stage, residual_verbosity, reduced_rank_extrapolation_options, equations, residual_tolerance, cfl_based_adaptive_time_stepping, vof_explicit_controls, disable_reconstruction, number_of_iterations, set_solution_methods_to_default, multi_grid_fas, surface_tension, equation_ordering, flow_warnings, set_all_species_together, reduced_rank_extrapolation, expert, lock_solid_temperature, multi_grid_amg, data_sampling, material_property_warnings
 
 .. toctree::
    :hidden:
 
-   contact_solution_controls/index
-   transient_controls/index
-   data_sampling_options/index
-   pseudo_time_method/index
-   nita_expert_controls/index
-   multiphase_numerics/index
    open_channel_wave_options/index
-   high_order_term_relaxation/index
+   data_sampling_options/index
    poor_mesh_numerics/index
-   amg_options/index
-   warped_face_gradient_correction/index
-   fast_transient_settings/index
+   multiphase_numerics/index
+   contact_solution_controls/index
    divergence_prevention/index
-   advanced/index
-   high_speed_numerics/index
-   previous_defaults/index
+   fast_transient_settings/index
    enhanced_les_numerics/index
-   overset/index
+   amg_options/index
+   pseudo_time_method/index
+   advanced/index
+   transient_controls/index
    acoustics_wave_equation_controls/index
-   p_v_controls_advanced/index
+   overset/index
+   warped_face_gradient_correction/index
+   high_speed_numerics/index
+   nita_expert_controls/index
+   high_order_term_relaxation/index
+   previous_defaults/index

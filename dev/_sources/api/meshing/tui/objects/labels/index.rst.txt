@@ -9,7 +9,7 @@ meshing.tui.objects.labels
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects.labels
-   :members: merge, create, remove_zones, rename, create_label_per_zone, add_zones, remove_all_labels_on_zones, label_unlabeled_zones, create_label_per_object, delete
+   :members: add_zones, label_unlabeled_zones, merge, create, remove_zones, remove_all_labels_on_zones, rename, delete, create_label_per_object, create_label_per_zone
 
 .. toctree::
    :hidden:

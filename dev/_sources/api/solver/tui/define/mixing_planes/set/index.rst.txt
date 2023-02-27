@@ -9,7 +9,7 @@ solver.tui.define.mixing\_planes.set
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.mixing_planes.set
-   :members: under_relaxation, averaging_method, fix_pressure_level
+   :members: averaging_method, fix_pressure_level, under_relaxation
 
 .. toctree::
    :hidden:

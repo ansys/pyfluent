@@ -9,5 +9,5 @@ solver.tui.define.models.multiphase.population\_balance.expert.qmom
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.multiphase.population_balance.expert.qmom
-   :members: retain_qmom_sources_for_low_vof, realizable_moments, print_realizable_moment_warning, inversion_algorithm
+   :members: print_realizable_moment_warning, realizable_moments, inversion_algorithm, retain_qmom_sources_for_low_vof
 

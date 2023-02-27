@@ -9,5 +9,5 @@ solver.tui.mesh.adapt.multi\_layer\_refinement
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.mesh.adapt.multi_layer_refinement
-   :members: parameters, refine_mesh, boundary_zones, layer_count
+   :members: boundary_zones, refine_mesh, parameters, layer_count
 

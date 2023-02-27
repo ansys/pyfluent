@@ -9,5 +9,5 @@ solver.tui.solution.monitors.residual
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.monitors.residual
-   :members: check_convergence, convergence_criteria, criterion_type, monitor, enhanced_continuity_residual, n_display, n_maximize_norms, normalization_factors, normalize, n_save, plot, print, relative_conv_criteria, re_normalize, reset, scale_by_coefficient
+   :members: normalize, n_maximize_norms, n_save, monitor, re_normalize, plot, enhanced_continuity_residual, relative_conv_criteria, print, criterion_type, check_convergence, n_display, normalization_factors, convergence_criteria, reset, scale_by_coefficient
 

@@ -12,13 +12,13 @@ solver.tui.preferences
 .. toctree::
    :hidden:
 
-   appearance/index
-   general/index
    gpuapp/index
-   graphics/index
-   mat_pro_app/index
-   meshing_workflow/index
+   general/index
+   turbo_workflow/index
+   appearance/index
    navigation/index
    parametric_study/index
+   graphics/index
+   mat_pro_app/index
    simulation/index
-   turbo_workflow/index
+   meshing_workflow/index

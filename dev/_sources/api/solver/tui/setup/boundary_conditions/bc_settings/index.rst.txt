@@ -9,7 +9,7 @@ solver.tui.setup.boundary\_conditions.bc\_settings
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.boundary_conditions.bc_settings
-   :members: mass_flow, pressure_outlet
+   :members: pressure_outlet, mass_flow
 
 .. toctree::
    :hidden:

@@ -9,7 +9,7 @@ solver.tui.display.set.colors.by\_type
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.colors.by_type
-   :members: only_list_case_boundaries, reset
+   :members: reset, only_list_case_boundaries
 
 .. toctree::
    :hidden:

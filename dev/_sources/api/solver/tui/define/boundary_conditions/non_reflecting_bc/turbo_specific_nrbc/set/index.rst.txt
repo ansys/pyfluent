@@ -9,5 +9,5 @@ solver.tui.define.boundary\_conditions.non\_reflecting\_bc.turbo\_specific\_nrbc
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.boundary_conditions.non_reflecting_bc.turbo_specific_nrbc.set
-   :members: discretization, under_relaxation, verbosity
+   :members: under_relaxation, discretization, verbosity
 

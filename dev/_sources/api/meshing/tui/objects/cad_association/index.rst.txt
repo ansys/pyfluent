@@ -9,5 +9,5 @@ meshing.tui.objects.cad\_association
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects.cad_association
-   :members: restore_cad, unlock_cad, query_object_association, detach_all_objects, attach_cad, detach_objects, update_objects, update_all_objects
+   :members: query_object_association, detach_objects, restore_cad, attach_cad, update_objects, update_all_objects, unlock_cad, detach_all_objects
 

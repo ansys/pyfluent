@@ -9,5 +9,5 @@ meshing.tui.display.update\_scene
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.update_scene
-   :members: overlays, delete, select_geometry, transform, pathline, iso_sweep, draw_frame, set_frame, time, display
+   :members: time, iso_sweep, overlays, select_geometry, display, transform, delete, draw_frame, pathline, set_frame
 

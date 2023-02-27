@@ -13,7 +13,7 @@ solver.tui.solution.calculation\_activities
    :hidden:
 
    animate/index
-   auto_save/index
    cell_register_operations/index
+   auto_save/index
    execute_commands/index
    solution_strategy/index

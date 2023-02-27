@@ -9,5 +9,5 @@ solver.tui.parametric\_study.update.concurrent.print\_to\_console
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.parametric_study.update.concurrent.print_to_console
-   :members: number_of_concurrent_dps, number_of_cores_per_dp, current_endpoint, current_queue, registered_endpoints
+   :members: registered_endpoints, current_endpoint, current_queue, number_of_cores_per_dp, number_of_concurrent_dps
 

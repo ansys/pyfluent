@@ -9,5 +9,5 @@ solver.tui.report.heat\_exchanger
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.report.heat_exchanger
-   :members: computed_heat_rejection, inlet_temperature, outlet_temperature, mass_flow_rate, specific_heat
+   :members: computed_heat_rejection, specific_heat, inlet_temperature, mass_flow_rate, outlet_temperature
 
