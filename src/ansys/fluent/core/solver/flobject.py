@@ -459,7 +459,7 @@ class Group(SettingsBase[DictStateType]):
             try:
                 if hasattr(getattr(self, parent), str(name)):
                     if len(parents) != 0:
-                        parents += ", " + parent
+                        parents += "." + parent
                     else:
                         parents += parent
             except AttributeError:
