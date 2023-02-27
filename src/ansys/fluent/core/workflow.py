@@ -1,6 +1,9 @@
-from typing import Tuple
+from typing import Callable, Tuple
 
-from ansys.fluent.core.services.datamodel_se import PyCallableStateObject
+from ansys.fluent.core.services.datamodel_se import (
+    EventSubscription,
+    PyCallableStateObject,
+)
 
 
 def _new_command_for_task(task, session):
@@ -333,6 +336,42 @@ class WorkflowWrapper:
     def _task_by_id(self, task_id):
         workflow_state = self._workflow_state()
         return self._task_by_id_impl(task_id, workflow_state)
+
+    def add_on_child_created(self, child_type: str, cb: Callable) -> EventSubscription:
+        """Register a callback for when a child object is created.
+
+        Parameters
+        ----------
+        child_type : str
+            Type of the child object
+        cb : Callable
+            Callback function
+
+        Returns
+        -------
+        EventSubscription
+            EventSubscription instance which can be used to unregister the callback
+        """
+        return self._workflow.add_on_child_created(child_type, cb)
+
+    def add_on_affected_at_type_path(
+        self, child_type: str, cb: Callable
+    ) -> EventSubscription:
+        """Register a callback for when the object is affected at child type
+
+        Parameters
+        ----------
+        child_type : str
+            child type
+        cb : Callable
+            Callback function
+
+        Returns
+        -------
+        EventSubscription
+            EventSubscription instance which can be used to unregister the callback
+        """
+        return self._workflow.add_on_affected_at_type_path(child_type, cb)
 
 
 class _MakeReadOnly:

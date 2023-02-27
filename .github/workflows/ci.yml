@@ -186,13 +186,15 @@ jobs:
       - name: Zip HTML Documentation before upload
         run: |
           sudo apt install zip -y
-          zip -r doc.zip doc/_build/html
+          pushd doc/_build/html
+          zip -r ../../../HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip .
+          popd
 
       - name: Upload HTML Documentation
         uses: actions/upload-artifact@v3
         with:
           name: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
-          path: doc.zip
+          path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
           retention-days: 7
 
       - name: Deploy stable documentation
