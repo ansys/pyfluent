@@ -296,14 +296,14 @@ class DataModelGenerator:
             f.write(f".. currentmodule:: {module_name}\n\n")
             f.write(".. autosummary::\n")
             f.write("   :toctree: _autosummary\n")
+            f.write("   :template: flobject-class-template.rst\n")
             f.write("   :recursive:\n\n")
+            f.write(f"   {module_name}.{class_name}\n\n")
 
             named_objects = sorted(info.namedobjects)
             singletons = sorted(info.singletons)
             parameters = sorted(info.parameters)
             commands = sorted(info.commands)
-
-            f.write(f"   {class_name}\n\n")
 
             if singletons or named_objects:
                 f.write(".. toctree::\n")
