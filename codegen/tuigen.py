@@ -264,14 +264,17 @@ class TUIGenerator:
             if desc:
                 f.write(desc)
             f.write("\n")
-
-            f.write(f".. autoclass:: {self._tui_module}::{class_name}\n")
-            f.write("    :autosummary:\n\n")
+            f.write(f".. currentmodule:: {self._tui_module}\n\n")
+            f.write(".. autosummary::\n")
+            f.write("   :toctree: _autosummary\n")
+            f.write("   :recursive:\n\n")
 
             command_names = [v.name for _, v in menu.children.items() if v.is_command]
             child_menu_names = [
                 v.name for _, v in menu.children.items() if not v.is_command
             ]
+
+            f.write(f"   {class_name}\n\n")
 
             if child_menu_names:
                 f.write(".. toctree::\n")
