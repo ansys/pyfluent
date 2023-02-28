@@ -36,6 +36,7 @@ class SchemeEvalService:
     """
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
+        """__init__ method of SchemeEvalService class."""
         intercept_channel = grpc.intercept_channel(
             channel, TracingInterceptor(), BatchInterceptor()
         )
@@ -43,21 +44,25 @@ class SchemeEvalService:
         self.__metadata = metadata
 
     def eval(self, request: SchemePointer) -> SchemePointer:
+        """Eval rpc of SchemeEval service."""
         return self.__stub.Eval(request, metadata=self.__metadata)
 
     def exec(
         self, request: SchemeEvalProtoModule.ExecRequest
     ) -> SchemeEvalProtoModule.ExecResponse:
+        """Exec rpc of SchemeEval service."""
         return self.__stub.Exec(request, metadata=self.__metadata)
 
     def string_eval(
         self, request: SchemeEvalProtoModule.StringEvalRequest
     ) -> SchemeEvalProtoModule.StringEvalResponse:
+        """StringEval rpc of SchemeEval service."""
         return self.__stub.StringEval(request, metadata=self.__metadata)
 
     def scheme_eval(
         self, request: SchemeEvalProtoModule.SchemeEvalRequest
     ) -> SchemeEvalProtoModule.SchemeEvalResponse:
+        """SchemeEval rpc of SchemeEval service."""
         return self.__stub.SchemeEval(request, metadata=self.__metadata)
 
 
@@ -71,6 +76,7 @@ class Symbol:
     """
 
     def __init__(self, str: str):
+        """__init__ method of Symbol class."""
         self.str = str
 
     def __repr__(self) -> str:
@@ -221,6 +227,7 @@ class SchemeEval:
     """
 
     def __init__(self, service: SchemeEvalService):
+        """__init__ method of SchemeEval class."""
         self.service = service
         try:
             version = self.string_eval("(cx-version)")
