@@ -266,7 +266,7 @@ class TUIGenerator:
             f.write("\n")
 
             f.write(f".. autoclass:: {self._tui_module}::{class_name}\n")
-            f.write("    :autosummary:\n")
+            f.write("    :autosummary:\n\n")
 
             command_names = [v.name for _, v in menu.children.items() if v.is_command]
             child_menu_names = [

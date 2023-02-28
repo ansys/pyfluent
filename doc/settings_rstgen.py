@@ -130,7 +130,8 @@ def _populate_rst_from_settings(rst_dir, cls, version):
         )
         r.write(".. autosummary::\n")
         r.write("   :toctree: _autosummary\n")
-        r.write("   :nosignatures:\n")
+        r.write("   :recursive:\n\n")
+
         r.write(f"   {cls_name}\n\n")
 
     if not rstpath in rst_list:

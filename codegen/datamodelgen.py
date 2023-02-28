@@ -295,7 +295,7 @@ class DataModelGenerator:
             f.write("\n")
 
             f.write(f".. autoclass:: {module_name}::{class_name}\n")
-            f.write("    :autosummary:\n")
+            f.write("    :autosummary:\n\n")
 
             named_objects = sorted(info.namedobjects)
             singletons = sorted(info.singletons)

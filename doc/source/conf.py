@@ -161,6 +161,7 @@ html_theme_options = {
     "github_url": "https://github.com/pyansys/pyfluent",
     "show_prev_next": False,
     "show_breadcrumbs": True,
+    "collapse_navigation": True,
     "additional_breadcrumbs": [
         ("PyAnsys", "https://docs.pyansys.com/"),
     ],
