@@ -9,5 +9,5 @@ solver.tui.file.em\_mapping
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file.em_mapping
-   :members: surface_energy_source, volumetric_energy_source, maintain_loss_on_initialization, remove_loss_only
+   :members: volumetric_energy_source, maintain_loss_on_initialization, remove_loss_only, surface_energy_source
 

@@ -13,6 +13,6 @@ solver.tui.solve.animate
    :hidden:
 
    objects/index
-   pulse/index
    playback/index
    define/index
+   pulse/index

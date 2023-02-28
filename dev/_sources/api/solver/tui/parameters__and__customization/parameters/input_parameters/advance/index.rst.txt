@@ -9,5 +9,5 @@ solver.tui.parameters\_\_and\_\_customization.parameters.input\_parameters.advan
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.parameters__and__customization.parameters.input_parameters.advance
-   :members: delete, list, use_in
+   :members: use_in, delete, list
 

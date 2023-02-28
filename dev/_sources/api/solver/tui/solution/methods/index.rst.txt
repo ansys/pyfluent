@@ -9,16 +9,16 @@ solver.tui.solution.methods
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.methods
-   :members: phase_based_vof_discretization, noniterative_time_advance, set_solution_methods_to_default, reduced_rank_extrapolation, discretization_scheme, frozen_flux, vof_numerics, unsteady_2nd_order_bounded, flux_type, reduced_rank_extrapolation_options, residual_smoothing, convergence_acceleration_for_stretched_meshes, unsteady_2nd_order, gradient_scheme, nb_gradient_boundary_option, accelerated_non_iterative_time_marching, unsteady_global_time, unsteady_1st_order, p_v_coupling
+   :members: flux_type, convergence_acceleration_for_stretched_meshes, reduced_rank_extrapolation, frozen_flux, accelerated_non_iterative_time_marching, p_v_coupling, unsteady_1st_order, set_solution_methods_to_default, unsteady_global_time, noniterative_time_advance, reduced_rank_extrapolation_options, residual_smoothing, nb_gradient_boundary_option, vof_numerics, unsteady_2nd_order, unsteady_2nd_order_bounded, discretization_scheme, phase_based_vof_discretization, gradient_scheme
 
 .. toctree::
    :hidden:
 
-   nita_expert_controls/index
-   multiphase_numerics/index
    query/index
+   high_order_term_relaxation/index
+   multiphase_numerics/index
+   nita_expert_controls/index
+   expert/index
+   overset/index
    warped_face_gradient_correction/index
    pseudo_time_method/index
-   overset/index
-   high_order_term_relaxation/index
-   expert/index

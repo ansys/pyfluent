@@ -9,14 +9,14 @@ solver.tui.results.graphics\_window.windows
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics_window.windows
-   :members: ruler, logo_color, logo, aspect_ratio
+   :members: ruler, logo, logo_color, aspect_ratio
 
 .. toctree::
    :hidden:
 
    text/index
-   main/index
-   scale/index
    xy/index
    axes/index
    video/index
+   scale/index
+   main/index

@@ -9,5 +9,5 @@ meshing.tui.preferences.navigation.mouse\_mapping.basic
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.navigation.mouse_mapping.basic
-   :members: rmb, mmbclick, rmbclick, lmbclick, mmb, lmb
+   :members: rmb, rmbclick, lmbclick, lmb, mmbclick, mmb
 

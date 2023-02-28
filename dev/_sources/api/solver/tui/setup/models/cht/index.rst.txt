@@ -9,7 +9,7 @@ solver.tui.setup.models.cht
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.cht
-   :members: implicit_coupling, read_mi_type_wall, write_mi_type_wall
+   :members: implicit_coupling, write_mi_type_wall, read_mi_type_wall
 
 .. toctree::
    :hidden:

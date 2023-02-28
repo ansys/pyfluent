@@ -9,5 +9,5 @@ meshing.tui.mesh.cell\_zone\_conditions
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.cell_zone_conditions
-   :members: clear, clear_all, copy
+   :members: copy, clear, clear_all
 

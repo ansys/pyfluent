@@ -9,5 +9,5 @@ solver.tui.display.surface.query
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.surface.query
-   :members: delete_query, list_queries, list_named_selection, named_surface_list, list_surfaces
+   :members: list_surfaces, list_named_selection, named_surface_list, list_queries, delete_query
 

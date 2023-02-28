@@ -15,7 +15,7 @@ solver.tui.setup.dynamic\_mesh
    :hidden:
 
    events/index
+   actions/index
    transient_settings/index
    controls/index
    zones/index
-   actions/index

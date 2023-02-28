@@ -9,5 +9,5 @@ solver.tui.setup.models.multiphase.population\_balance.phenomena
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.multiphase.population_balance.phenomena
-   :members: breakage_factor, growth, breakage_aggregation_vof_cutoff, nucleation, breakage, aggregation_factor, aggregation
+   :members: aggregation, nucleation, breakage, breakage_aggregation_vof_cutoff, breakage_factor, growth, aggregation_factor
 

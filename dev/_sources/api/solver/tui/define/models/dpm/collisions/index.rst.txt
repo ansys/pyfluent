@@ -9,7 +9,7 @@ solver.tui.define.models.dpm.collisions
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.dpm.collisions
-   :members: collision_mesh, list_all_pair_settings, collision_pair_settings, dem_collisions, max_particle_velocity
+   :members: collision_pair_settings, list_all_pair_settings, collision_mesh, dem_collisions, max_particle_velocity
 
 .. toctree::
    :hidden:

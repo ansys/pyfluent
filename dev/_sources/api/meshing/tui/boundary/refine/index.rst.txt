@@ -9,7 +9,7 @@ meshing.tui.boundary.refine
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.boundary.refine
-   :members: mark, count, clear, auto_refine, limits, refine
+   :members: auto_refine, count, refine, mark, limits, clear
 
 .. toctree::
    :hidden:

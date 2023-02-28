@@ -9,5 +9,5 @@ solver.tui.solve.set.multiphase\_numerics.advanced\_stability\_controls.anti\_di
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.multiphase_numerics.advanced_stability_controls.anti_diffusion
-   :members: enable_dynamic_strength, set_maximum_dynamic_strength, set_dynamic_strength_exponent
+   :members: set_maximum_dynamic_strength, enable_dynamic_strength, set_dynamic_strength_exponent
 

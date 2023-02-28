@@ -12,8 +12,8 @@ solver.tui.define.models.multiphase.phases.set\_domain\_properties.interaction\_
 .. toctree::
    :hidden:
 
-   interfacial_area/index
+   forces/index
    model_transition/index
    heat_mass_reactions/index
    numerics/index
-   forces/index
+   interfacial_area/index

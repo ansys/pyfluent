@@ -9,5 +9,5 @@ solver.tui.solution.expert.open\_channel\_wave\_options
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.expert.open_channel_wave_options
-   :members: set_buffer_layer_ht, stokes_wave_variants, set_verbosity
+   :members: stokes_wave_variants, set_buffer_layer_ht, set_verbosity
 

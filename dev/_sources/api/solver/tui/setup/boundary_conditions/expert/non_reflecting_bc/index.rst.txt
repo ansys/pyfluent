@@ -12,5 +12,5 @@ solver.tui.setup.boundary\_conditions.expert.non\_reflecting\_bc
 .. toctree::
    :hidden:
 
-   turbo_specific_nrbc/index
    general_nrbc/index
+   turbo_specific_nrbc/index

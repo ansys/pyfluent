@@ -9,5 +9,5 @@ solver.tui.mesh.adapt.manage\_criteria
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.mesh.adapt.manage_criteria
-   :members: list_properties, add, list, edit, delete
+   :members: list, add, delete, list_properties, edit
 

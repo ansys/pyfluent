@@ -9,5 +9,5 @@ meshing.tui.cad\_assemblies.update\_options
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.cad_assemblies.update_options
-   :members: tessellation, one_object_per, import_edge_zones, one_zone_per
+   :members: tessellation, import_edge_zones, one_object_per, one_zone_per
 

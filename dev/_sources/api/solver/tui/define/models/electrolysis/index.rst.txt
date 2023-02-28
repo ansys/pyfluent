@@ -9,7 +9,7 @@ solver.tui.define.models.electrolysis
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.electrolysis
-   :members: parameters, electrical_tabs_setup, model_options
+   :members: model_options, parameters, electrical_tabs_setup
 
 .. toctree::
    :hidden:

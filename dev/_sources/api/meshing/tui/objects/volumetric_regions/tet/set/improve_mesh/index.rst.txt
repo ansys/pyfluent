@@ -9,5 +9,5 @@ meshing.tui.objects.volumetric\_regions.tet.set.improve\_mesh
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects.volumetric_regions.tet.set.improve_mesh
-   :members: laplace_smooth, swap, skewness_smooth, improve
+   :members: laplace_smooth, improve, swap, skewness_smooth
 

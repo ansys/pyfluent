@@ -9,5 +9,5 @@ solver.tui.display.set.particle\_tracks.sphere\_settings
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.particle_tracks.sphere_settings
-   :members: minimum, smooth_parameter, diameter, scale_factor, maximum, vary_diameter, auto_range, size_variable
+   :members: maximum, size_variable, minimum, scale_factor, auto_range, smooth_parameter, diameter, vary_diameter
 

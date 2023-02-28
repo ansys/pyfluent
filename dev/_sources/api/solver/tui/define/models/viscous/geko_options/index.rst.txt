@@ -9,5 +9,5 @@ solver.tui.define.models.viscous.geko\_options
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.viscous.geko_options
-   :members: cmix, cbf_lam, cnw_sub, geko_defaults, csep, cjet_aux, wall_distance_free, creal, cbf_tur, blending_function, cnw, cjet
+   :members: cjet, blending_function, wall_distance_free, geko_defaults, cmix, creal, csep, cbf_tur, cnw, cnw_sub, cbf_lam, cjet_aux
 

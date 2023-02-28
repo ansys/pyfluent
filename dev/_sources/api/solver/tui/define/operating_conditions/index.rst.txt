@@ -9,5 +9,5 @@ solver.tui.define.operating\_conditions
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.operating_conditions
-   :members: operating_density, use_inlet_temperature_for_operating_density, reference_pressure_location, gravity_mrf_behavior, operating_temperature, operating_pressure, used_ref_pressure_location, reference_pressure_method, gravity, set_state
+   :members: operating_density, reference_pressure_location, set_state, operating_pressure, used_ref_pressure_location, gravity_mrf_behavior, gravity, operating_temperature, use_inlet_temperature_for_operating_density, reference_pressure_method
 

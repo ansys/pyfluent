@@ -9,5 +9,5 @@ solver.tui.results.graphics.expert.set.particle\_tracks.filter\_settings
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.particle_tracks.filter_settings
-   :members: filter_variable, maximum, minimum, inside, enable_filtering
+   :members: enable_filtering, maximum, inside, minimum, filter_variable
 

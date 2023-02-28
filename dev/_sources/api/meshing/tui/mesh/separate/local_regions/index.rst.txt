@@ -9,5 +9,5 @@ meshing.tui.mesh.separate.local\_regions
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.separate.local_regions
-   :members: init, delete, define, list_all_regions
+   :members: list_all_regions, define, delete, init
 

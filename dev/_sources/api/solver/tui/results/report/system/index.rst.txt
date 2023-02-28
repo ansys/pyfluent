@@ -9,5 +9,5 @@ solver.tui.results.report.system
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.report.system
-   :members: sys_stats, proc_stats, gpgpu_stats, time_stats
+   :members: gpgpu_stats, time_stats, proc_stats, sys_stats
 

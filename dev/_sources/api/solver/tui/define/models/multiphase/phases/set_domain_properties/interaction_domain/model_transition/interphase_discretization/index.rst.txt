@@ -9,5 +9,5 @@ solver.tui.define.models.multiphase.phases.set\_domain\_properties.interaction\_
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.multiphase.phases.set_domain_properties.interaction_domain.model_transition.interphase_discretization
-   :members: visc_disp_factor, interphase_visc_disp, sfc_modeling, lift, sfc_tension_coeff, jump_adhesion, interphase_discr, vmass_implicit, wall_adhesion, cavitation, vmass_coeff, lift_montoya, lift_shaver_podowski, sfc_model_type, virtual_mass, slope_limiter, vmass_implicit_options
+   :members: slope_limiter, lift_montoya, interphase_visc_disp, virtual_mass, interphase_discr, vmass_implicit, wall_adhesion, visc_disp_factor, lift_shaver_podowski, jump_adhesion, lift, vmass_implicit_options, sfc_modeling, sfc_model_type, cavitation, sfc_tension_coeff, vmass_coeff
 

@@ -9,5 +9,5 @@ meshing.tui.mesh.prism.controls.normal
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.prism.controls.normal
-   :members: direction_method, max_angle_change, orthogonal_layers, bisect_angle, orient_mesh_object_face_normals, direction_vector, ignore_invalid_normals, compute_normal
+   :members: orient_mesh_object_face_normals, direction_vector, max_angle_change, compute_normal, ignore_invalid_normals, direction_method, bisect_angle, orthogonal_layers
 

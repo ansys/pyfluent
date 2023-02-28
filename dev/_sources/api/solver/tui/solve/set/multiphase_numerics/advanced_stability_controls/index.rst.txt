@@ -12,9 +12,9 @@ solver.tui.solve.set.multiphase\_numerics.advanced\_stability\_controls
 .. toctree::
    :hidden:
 
-   num_ventilation/index
-   pseudo_time/index
-   p_v_coupling/index
-   hybrid_nita/index
    equation_order/index
    anti_diffusion/index
+   hybrid_nita/index
+   num_ventilation/index
+   p_v_coupling/index
+   pseudo_time/index

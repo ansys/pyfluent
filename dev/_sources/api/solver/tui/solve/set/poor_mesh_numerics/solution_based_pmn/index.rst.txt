@@ -9,5 +9,5 @@ solver.tui.solve.set.poor\_mesh\_numerics.solution\_based\_pmn
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.poor_mesh_numerics.solution_based_pmn
-   :members: mark_cfl_jump, mark_primary_solution_limits, mark_cfl_limit, mark_velocity_limit, enable
+   :members: mark_primary_solution_limits, enable, mark_cfl_jump, mark_cfl_limit, mark_velocity_limit
 

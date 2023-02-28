@@ -9,7 +9,7 @@ solver.tui.solution.run\_calculation.data\_sampling\_options
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.run_calculation.data_sampling_options
-   :members: list_datasets, remove_dataset, add_datasets, add_rtdft_datasets
+   :members: add_rtdft_datasets, remove_dataset, list_datasets, add_datasets
 
 .. toctree::
    :hidden:

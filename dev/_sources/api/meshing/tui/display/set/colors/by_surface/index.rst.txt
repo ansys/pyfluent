@@ -9,5 +9,5 @@ meshing.tui.display.set.colors.by\_surface
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.set.colors.by_surface
-   :members: surfaces, list_surfaces_by_color, reset, list_surfaces_by_material
+   :members: reset, list_surfaces_by_material, list_surfaces_by_color, surfaces
 

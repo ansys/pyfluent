@@ -9,7 +9,7 @@ solver.tui.solution.expert.poor\_mesh\_numerics
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.expert.poor_mesh_numerics
-   :members: gradient_quality_based, set_quality_threshold, user_defined_on_register_auto, enable, reset_poor_elements, user_defined_on_register, print_poor_elements_count, enhanced_pmn, orthogonality_enhancing_cell_centroids, cell_quality_based, solution_and_quality_based
+   :members: reset_poor_elements, gradient_quality_based, cell_quality_based, print_poor_elements_count, enhanced_pmn, user_defined_on_register, solution_and_quality_based, orthogonality_enhancing_cell_centroids, set_quality_threshold, enable, user_defined_on_register_auto
 
 .. toctree::
    :hidden:

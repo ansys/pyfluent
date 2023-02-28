@@ -9,5 +9,5 @@ solver.tui.solve.set.multiphase\_numerics.advanced\_stability\_controls.num\_ven
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.multiphase_numerics.advanced_stability_controls.num_ventilation
-   :members: trapped_phase_vof_min, tau_estimation_options, near_wall_treatment_options, enable, trapped_phase_vof_max
+   :members: trapped_phase_vof_max, enable, near_wall_treatment_options, tau_estimation_options, trapped_phase_vof_min
 
