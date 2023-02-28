@@ -294,17 +294,13 @@ class DataModelGenerator:
             f.write(f"{'=' * len(heading_)}\n")
             f.write("\n")
 
-            f.write(f".. currentmodule:: {module_name}\n\n")
-            f.write(".. autosummary::\n")
-            f.write("   :toctree: _autosummary\n")
-            f.write("   :nosignatures:\n")
+            f.write(f".. autoclass:: {module_name}::{class_name}\n")
+            f.write("    :autosummary:\n")
 
             named_objects = sorted(info.namedobjects)
             singletons = sorted(info.singletons)
             parameters = sorted(info.parameters)
             commands = sorted(info.commands)
-
-            f.write(f"    {class_name}\n\n")
 
             if singletons or named_objects:
                 f.write(".. toctree::\n")
