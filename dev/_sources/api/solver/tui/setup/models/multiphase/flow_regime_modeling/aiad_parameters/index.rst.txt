@@ -9,5 +9,5 @@ solver.tui.setup.models.multiphase.flow\_regime\_modeling.aiad\_parameters
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.multiphase.flow_regime_modeling.aiad_parameters
-   :members: critical_vf, delta_vf, delta_grad, ncells_fs
+   :members: delta_grad, delta_vf, ncells_fs, critical_vf
 

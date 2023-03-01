@@ -9,5 +9,5 @@ solver.tui.mesh.geometry
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.mesh.geometry
-   :members: list, list_properties, display, edit, delete, add
+   :members: list_properties, edit, list, display, add, delete
 

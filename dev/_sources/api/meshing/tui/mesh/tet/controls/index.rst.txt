@@ -9,12 +9,12 @@ meshing.tui.mesh.tet.controls
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.tet.controls
-   :members: max_cell_length, refine_method, use_max_cell_size, print_region_based_sizing, set_region_based_sizing, set_zone_growth_rate, clear_zone_growth_rate, non_fluid_type, max_cell_volume, cell_sizing, skewness_method, delete_dead_zones, compute_max_cell_volume
+   :members: print_region_based_sizing, set_zone_growth_rate, non_fluid_type, cell_sizing, max_cell_volume, refine_method, delete_dead_zones, compute_max_cell_volume, max_cell_length, set_region_based_sizing, skewness_method, use_max_cell_size, clear_zone_growth_rate
 
 .. toctree::
    :hidden:
 
-   tet_improve/index
-   adv_front_method/index
    improve_mesh/index
+   adv_front_method/index
    remove_slivers/index
+   tet_improve/index

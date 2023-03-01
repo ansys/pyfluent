@@ -9,5 +9,5 @@ solver.tui.define.curvilinear\_coordinate\_system
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.curvilinear_coordinate_system
-   :members: delete, display, edit, display_settings, new, calculation_settings
+   :members: new, calculation_settings, edit, display_settings, delete, display
 

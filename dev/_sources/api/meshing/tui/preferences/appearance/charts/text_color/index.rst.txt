@@ -9,5 +9,5 @@ meshing.tui.preferences.appearance.charts.text\_color
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.appearance.charts.text_color
-   :members: axes_titles, axes, legend, title
+   :members: axes, axes_titles, legend, title
 

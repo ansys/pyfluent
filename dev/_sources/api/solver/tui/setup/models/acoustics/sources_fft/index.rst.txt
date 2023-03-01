@@ -9,7 +9,7 @@ solver.tui.setup.models.acoustics.sources\_fft
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.acoustics.sources_fft
-   :members: compute_fft_fields, read_asd_files, write_cgns_files, clean_up_storage_area
+   :members: compute_fft_fields, clean_up_storage_area, write_cgns_files, read_asd_files
 
 .. toctree::
    :hidden:

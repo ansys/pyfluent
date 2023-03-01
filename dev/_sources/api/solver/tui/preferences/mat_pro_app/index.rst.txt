@@ -9,5 +9,5 @@ solver.tui.preferences.mat\_pro\_app
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.mat_pro_app
-   :members: beta_features, focus, warning
+   :members: warning, focus, beta_features
 

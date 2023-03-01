@@ -9,5 +9,5 @@ solver.tui.define.boundary\_conditions.advanced
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.boundary_conditions.advanced
-   :members: delay_model_change_update, batch_thread_update
+   :members: batch_thread_update, delay_model_change_update
 

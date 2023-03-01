@@ -9,7 +9,7 @@ solver.tui.parametric\_study.update
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.parametric_study.update
-   :members: update_all, print_update_method, update_current, update_selected_design_points, set_update_method
+   :members: print_update_method, update_current, update_all, set_update_method, update_selected_design_points
 
 .. toctree::
    :hidden:

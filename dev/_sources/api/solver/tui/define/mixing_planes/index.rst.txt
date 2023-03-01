@@ -9,7 +9,7 @@ solver.tui.define.mixing\_planes
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.mixing_planes
-   :members: list, create, delete
+   :members: list, delete, create
 
 .. toctree::
    :hidden:

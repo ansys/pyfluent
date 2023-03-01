@@ -9,21 +9,21 @@ solver.tui.preferences.graphics
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.graphics
-   :members: show_hidden_surfaces, switch_to_open_glfor_remote_visualization, show_hidden_lines, text_window_line_width, plot_legend_margin, lower_resolution_graphics_window_line_width, event_poll_timeout, double_buffering, marker_drawing_mode, enable_non_object_based_workflow, remove_partition_lines, rotation_centerpoint_visible, graphics_window_point_symbol, set_camera_normal_to_surface_increments, scroll_wheel_event_end_timer, remove_partition_lines_tolerance, hidden_surface_removal_method, animation_option, max_graphics_text_size, test_use_external_function, higher_resolution_graphics_window_line_width, force_key_frame_animation_markers_to_off, event_poll_interval, graphics_window_line_width, point_tool_size, min_graphics_text_size
+   :members: force_key_frame_animation_markers_to_off, marker_drawing_mode, event_poll_timeout, remove_partition_lines, rotation_centerpoint_visible, graphics_window_point_symbol, switch_to_open_glfor_remote_visualization, scroll_wheel_event_end_timer, text_window_line_width, double_buffering, point_tool_size, min_graphics_text_size, lower_resolution_graphics_window_line_width, show_hidden_lines, test_use_external_function, remove_partition_lines_tolerance, max_graphics_text_size, enable_non_object_based_workflow, higher_resolution_graphics_window_line_width, show_hidden_surfaces, animation_option, event_poll_interval, hidden_surface_removal_method, set_camera_normal_to_surface_increments, graphics_window_line_width, plot_legend_margin
 
 .. toctree::
    :hidden:
 
+   graphics_effects/index
+   export_video_settings/index
    vector_settings/index
-   hardcopy_settings/index
+   colormap_settings/index
    meshing_mode/index
+   boundary_markers/index
    performance/index
+   transparency/index
+   hardcopy_settings/index
    manage_hoops_memory/index
    material_effects/index
-   lighting/index
-   colormap_settings/index
-   transparency/index
-   boundary_markers/index
    embedded_windows/index
-   export_video_settings/index
-   graphics_effects/index
+   lighting/index

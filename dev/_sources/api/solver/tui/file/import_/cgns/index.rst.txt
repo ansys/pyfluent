@@ -9,5 +9,5 @@ solver.tui.file.import\_.cgns
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file.import_.cgns
-   :members: mesh, data, mesh_data
+   :members: mesh_data, mesh, data
 

@@ -9,7 +9,7 @@ meshing.tui.mesh.poly
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.poly
-   :members: collapse, quality_method, improve, remesh
+   :members: quality_method, collapse, remesh, improve
 
 .. toctree::
    :hidden:

@@ -9,13 +9,13 @@ solver.tui.results.graphics
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics
-   :members: annotate, color_map, clear_annotations, hsf_file
+   :members: color_map, hsf_file, annotate, clear_annotations
 
 .. toctree::
    :hidden:
 
+   update_scene/index
+   lights/index
+   objects/index
    rendering_options/index
    expert/index
-   lights/index
-   update_scene/index
-   objects/index

@@ -9,10 +9,10 @@ meshing.tui.preferences.appearance.charts
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.appearance.charts
-   :members: enable_open_glfor_modern_plots, print_plot_data, modern_plots_points_threshold, modern_plots_enabled, plots_behavior, tooltip_interpolation, legend_alignment, print_residuals_data, curve_colors, threshold, legend_visibility
+   :members: legend_alignment, modern_plots_points_threshold, legend_visibility, plots_behavior, threshold, print_residuals_data, curve_colors, enable_open_glfor_modern_plots, print_plot_data, tooltip_interpolation, modern_plots_enabled
 
 .. toctree::
    :hidden:
 
-   text_color/index
    font/index
+   text_color/index

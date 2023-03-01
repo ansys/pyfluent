@@ -9,5 +9,5 @@ solver.tui.file.cffio\_options
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file.cffio_options
-   :members: single_precision_data, io_mode, compression_level
+   :members: io_mode, single_precision_data, compression_level
 

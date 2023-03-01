@@ -9,7 +9,7 @@ solver.tui.parametric\_study
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.parametric_study
-   :members: import_design_table, initialize, delete_study, set_as_current_study, export_design_table, duplicate_study, case_settings_changed, rename_study, list_studies, use_base_data
+   :members: use_base_data, duplicate_study, import_design_table, case_settings_changed, export_design_table, delete_study, list_studies, set_as_current_study, initialize, rename_study
 
 .. toctree::
    :hidden:

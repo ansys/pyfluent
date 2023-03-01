@@ -9,5 +9,5 @@ solver.tui.define.parameters.output\_parameters
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.parameters.output_parameters
-   :members: create, print_to_console, edit, write_to_file, rename, delete, write_all_to_file, print_all_to_console
+   :members: write_to_file, rename, print_all_to_console, write_all_to_file, delete, edit, create, print_to_console
 

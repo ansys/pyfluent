@@ -9,5 +9,5 @@ solver.tui.plot.ansys\_sound\_analysis
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.plot.ansys_sound_analysis
-   :members: print_indicators, write_files
+   :members: write_files, print_indicators
 

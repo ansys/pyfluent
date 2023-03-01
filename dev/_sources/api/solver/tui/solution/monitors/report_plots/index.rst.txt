@@ -9,5 +9,5 @@ solver.tui.solution.monitors.report\_plots
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.monitors.report_plots
-   :members: add, plot, clear_data, delete_all, axes, list_properties, edit, list, curves, delete
+   :members: curves, clear_data, axes, edit, add, delete_all, list, list_properties, delete, plot
 

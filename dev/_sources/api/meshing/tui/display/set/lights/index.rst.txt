@@ -9,5 +9,5 @@ meshing.tui.display.set.lights
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.set.lights
-   :members: lighting_interpolation, set_ambient_color, headlight_on, lights_on, set_light
+   :members: set_light, headlight_on, set_ambient_color, lighting_interpolation, lights_on
 

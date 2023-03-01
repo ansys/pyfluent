@@ -9,7 +9,7 @@ solver.tui.solve.set.acoustics\_wave\_equation\_controls
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.acoustics_wave_equation_controls
-   :members: relative_convergence_criterion, max_iterations_per_timestep
+   :members: max_iterations_per_timestep, relative_convergence_criterion
 
 .. toctree::
    :hidden:

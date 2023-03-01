@@ -9,5 +9,5 @@ solver.tui.parametric\_study.study
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.parametric_study.study
-   :members: initialize, use_base_data, delete, duplicate, set_as_current, rename, list
+   :members: list, initialize, delete, set_as_current, use_base_data, duplicate, rename
 

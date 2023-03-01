@@ -9,5 +9,5 @@ solver.tui.setup.models.eulerian\_wallfilm.coupled\_solution
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.eulerian_wallfilm.coupled_solution
-   :members: enable_coupled_solution, enable_curvature_smoothing
+   :members: enable_curvature_smoothing, enable_coupled_solution
 

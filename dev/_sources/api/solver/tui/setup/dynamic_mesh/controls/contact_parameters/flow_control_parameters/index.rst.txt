@@ -9,5 +9,5 @@ solver.tui.setup.dynamic\_mesh.controls.contact\_parameters.flow\_control\_param
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.dynamic_mesh.controls.contact_parameters.flow_control_parameters
-   :members: delete_flow_control_zone, solution_stabilization, create_flow_control_zone
+   :members: create_flow_control_zone, delete_flow_control_zone, solution_stabilization
 
