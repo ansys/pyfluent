@@ -58,6 +58,7 @@ class DatamodelService(StreamingService):
     """
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
+        """__init__ method of DatamodelService class."""
         intercept_channel = grpc.intercept_channel(
             channel, TracingInterceptor(), BatchInterceptor()
         )
@@ -75,78 +76,91 @@ class DatamodelService(StreamingService):
     def initialize_datamodel(
         self, request: DataModelProtoModule.InitDatamodelRequest
     ) -> DataModelProtoModule.InitDatamodelResponse:
+        """initDatamodel rpc of DataModel service."""
         return self._stub.initDatamodel(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_attribute_value(
         self, request: DataModelProtoModule.GetAttributeValueRequest
     ) -> DataModelProtoModule.GetAttributeValueResponse:
+        """getAttributeValue rpc of DataModel service."""
         return self._stub.getAttributeValue(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_state(
         self, request: DataModelProtoModule.GetStateRequest
     ) -> DataModelProtoModule.GetStateResponse:
+        """getState rpc of DataModel service."""
         return self._stub.getState(request, metadata=self._metadata)
 
     @catch_grpc_error
     def set_state(
         self, request: DataModelProtoModule.SetStateRequest
     ) -> DataModelProtoModule.SetStateResponse:
+        """setState rpc of DataModel service."""
         return self._stub.setState(request, metadata=self._metadata)
 
     @catch_grpc_error
     def update_dict(
         self, request: DataModelProtoModule.UpdateDictRequest
     ) -> DataModelProtoModule.UpdateDictResponse:
+        """updateDict rpc of DataModel service."""
         return self._stub.updateDict(request, metadata=self._metadata)
 
     @catch_grpc_error
     def delete_object(
         self, request: DataModelProtoModule.DeleteObjectRequest
     ) -> DataModelProtoModule.DeleteObjectResponse:
+        """deleteObject rpc of DataModel service."""
         return self._stub.deleteObject(request, metadata=self._metadata)
 
     @catch_grpc_error
     def execute_command(
         self, request: DataModelProtoModule.ExecuteCommandRequest
     ) -> DataModelProtoModule.ExecuteCommandResponse:
+        """executeCommand rpc of DataModel service."""
         return self._stub.executeCommand(request, metadata=self._metadata)
 
     @catch_grpc_error
     def create_command_arguments(
         self, request: DataModelProtoModule.CreateCommandArgumentsRequest
     ) -> DataModelProtoModule.CreateCommandArgumentsResponse:
+        """createCommandArguments rpc of DataModel service."""
         return self._stub.createCommandArguments(request, metadata=self._metadata)
 
     @catch_grpc_error
     def delete_command_arguments(
         self, request: DataModelProtoModule.DeleteCommandArgumentsRequest
     ) -> DataModelProtoModule.DeleteCommandArgumentsResponse:
+        """deleteCommandArguments rpc of DataModel service."""
         return self._stub.deleteCommandArguments(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_specs(
         self, request: DataModelProtoModule.GetSpecsRequest
     ) -> DataModelProtoModule.GetSpecsResponse:
+        """getSpecs rpc of DataModel service."""
         return self._stub.getSpecs(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_static_info(
         self, request: DataModelProtoModule.GetStaticInfoRequest
     ) -> DataModelProtoModule.GetStaticInfoResponse:
+        """getStaticInfo rpc of DataModel service."""
         return self._stub.getStaticInfo(request, metadata=self._metadata)
 
     @catch_grpc_error
     def subscribe_events(
         self, request: DataModelProtoModule.SubscribeEventsRequest
     ) -> DataModelProtoModule.SubscribeEventsResponse:
+        """subscribeEvents rpc of DataModel service."""
         return self._stub.subscribeEvents(request, metadata=self._metadata)
 
     @catch_grpc_error
     def unsubscribe_events(
         self, request: DataModelProtoModule.UnsubscribeEventsRequest
     ) -> DataModelProtoModule.UnsubscribeEventsResponse:
+        """unsubscribeEvents rpc of DataModel service."""
         return self._stub.unsubscribeEvents(request, metadata=self._metadata)
 
     def begin_event_streaming(self, started_evt):
@@ -279,6 +293,7 @@ class PyStateContainer(PyCallableStateObject):
     """
 
     def __init__(self, service: DatamodelService, rules: str, path: Path = None):
+        """__init__ method of PyStateContainer class."""
         super().__init__()
         self.service = service
         self.rules = rules
@@ -290,6 +305,7 @@ class PyStateContainer(PyCallableStateObject):
     docstring = None
 
     def get_state(self) -> Any:
+        """Get state of the current object."""
         request = DataModelProtoModule.GetStateRequest()
         request.rules = self.rules
         request.path = convert_path_to_se_path(self.path)
@@ -299,6 +315,7 @@ class PyStateContainer(PyCallableStateObject):
     getState = get_state
 
     def set_state(self, state: Any = None, **kwargs) -> None:
+        """Set state of the current object."""
         request = DataModelProtoModule.SetStateRequest()
         request.rules = self.rules
         request.path = convert_path_to_se_path(self.path)
@@ -407,6 +424,7 @@ class PyMenu(PyStateContainer):
     """
 
     def __init__(self, service: DatamodelService, rules: str, path: Path = None):
+        """__init__ method of PyMenu class."""
         super().__init__(service, rules, path)
 
     def __setattr__(self, name: str, value: Any):
@@ -463,7 +481,19 @@ class PyMenu(PyStateContainer):
     def fix_state(self):
         self._raise_method_not_yet_implemented_exception()
 
-    def create_command_arguments(self, command):
+    def create_command_arguments(self, command: str) -> str:
+        """Create command arguments.
+
+        Parameters
+        ----------
+        command : str
+            Command name
+
+        Returns
+        -------
+        str
+            Command id
+        """
         request = DataModelProtoModule.CreateCommandArgumentsRequest()
         request.rules = self.rules
         request.path = convert_path_to_se_path(self.path)
@@ -625,6 +655,7 @@ class PyParameter(PyStateContainer):
         return self.get_attr(Attribute.DEFAULT.value)
 
     def is_read_only(self):
+        """Checks whether the parameter is read only."""
         return true_if_none(self.get_attr(Attribute.IS_READ_ONLY.value))
 
     def add_on_changed(self, cb: Callable) -> EventSubscription:
@@ -692,29 +723,42 @@ class PyNumerical(PyParameter):
     """Provides interface for numerical parameters."""
 
     def min(self):
+        """Minimum value of the numerical parameter."""
         return self.get_attr(Attribute.MIN.value)
 
     def max(self):
+        """Maximum value of the numerical parameter."""
         return self.get_attr(Attribute.MAX.value)
 
 
 class PyDictionary(PyParameter):
     """Provides interface for dictionaries.
+
     Methods
-        -------
-        update_dict(dict_state)
-            Update the state of the current object if the current object
-            is a Dict in the data model, else throws RuntimeError
-            (currently not showing up in Python). Update is executed according
-            to dict.update semantics
-        updateDict(dict_state)
-            Update the state of the current object if the current object
-            is a Dict in the data model, else throws RuntimeError
-            (currently not showing up in Python). Update is executed according
-            to dict.update semantics (same as update_dict(dict_state))
+    -------
+    update_dict(dict_state)
+        Update the state of the current object if the current object
+        is a Dict in the data model, else throws RuntimeError
+        (currently not showing up in Python). Update is executed according
+        to dict.update semantics
+    updateDict(dict_state)
+        Update the state of the current object if the current object
+        is a Dict in the data model, else throws RuntimeError
+        (currently not showing up in Python). Update is executed according
+        to dict.update semantics (same as update_dict(dict_state))]
     """
 
     def update_dict(self, dict_state: Dict[str, Any]) -> None:
+        """Update the state of the current object if the current object
+        is a Dict in the data model, else throws RuntimeError
+        (currently not showing up in Python). Update is executed according
+        to dict.update semantics.
+
+        Parameters
+        ----------
+        dict_state : Dict[str, Any]
+            Incoming dict state
+        """
         request = DataModelProtoModule.UpdateDictRequest()
         request.rules = self.rules
         request.path = convert_path_to_se_path(self.path)
@@ -744,6 +788,7 @@ class PyNamedObjectContainer:
     """
 
     def __init__(self, service: DatamodelService, rules: str, path: Path = None):
+        """__init__ method of PyNamedObjectContainer class."""
         self.service = service
         self.rules = rules
         if path is None:
@@ -888,6 +933,7 @@ class PyCommand:
     def __init__(
         self, service: DatamodelService, rules: str, command: str, path: Path = None
     ):
+        """__init__ method of PyCommand class."""
         self.service = service
         self.rules = rules
         self.command = command
@@ -944,6 +990,7 @@ class PyCommand:
         return PyCommand._stored_static_info[self.rules]
 
     def create_instance(self):
+        """Create a command instance."""
         try:
             static_info = self._get_static_info()
             id = self._create_command_arguments()
@@ -963,6 +1010,8 @@ class PyCommand:
 
 
 class PyCommandArgumentsSubItem(PyCallableStateObject):
+    """Class representing command argument in datamodel."""
+
     def __init__(
         self,
         parent,
@@ -972,6 +1021,7 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         path: Path,
         parent_arg,
     ):
+        """__init__ method of PyCommandArgumentsSubItem class."""
         self.parent = parent
         self.name = name
 
@@ -981,6 +1031,7 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         self.parent_arg = parent_arg
 
     def get_state(self) -> Any:
+        """Get state of the command argument."""
         parent_state = self.parent.get_state()
         try:
             return parent_state[self.name]
@@ -990,6 +1041,18 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
     getState = get_state
 
     def get_attr(self, attrib: str) -> Any:
+        """Get attribute value of the command argument.
+
+        Parameters
+        ----------
+        attrib : str
+            attribute name
+
+        Returns
+        -------
+        Any
+            attribute value
+        """
         attrib_path = f"{self.name}/{attrib}"
         return self.parent.get_attr(attrib_path)
 
@@ -1000,6 +1063,8 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
 
 
 class PyCommandArguments(PyStateContainer):
+    """Class representing command arguments in datamodel."""
+
     def __init__(
         self,
         service: DatamodelService,
@@ -1009,6 +1074,7 @@ class PyCommandArguments(PyStateContainer):
         id: str,
         static_info,
     ):
+        """__init__ method of PyCommandArguments class."""
         self.static_info = static_info
         super().__init__(service, rules, path)
         self.path.append((command, id))
@@ -1036,6 +1102,8 @@ class PyCommandArguments(PyStateContainer):
 
 
 class PyTextualCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyTextual):
+    """Class representing textual command argument in datamodel."""
+
     def __init__(
         self,
         parent,
@@ -1045,6 +1113,7 @@ class PyTextualCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyTextual):
         path: Path,
         arg,
     ):
+        """__init__ method of PyTextualCommandArgumentsSubItem class."""
         PyCommandArgumentsSubItem.__init__(
             self, parent, attr, service, rules, path, arg
         )
@@ -1052,6 +1121,8 @@ class PyTextualCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyTextual):
 
 
 class PyNumericalCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyNumerical):
+    """Class representing numerical command argument in datamodel."""
+
     def __init__(
         self,
         parent,
@@ -1061,6 +1132,7 @@ class PyNumericalCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyNumerical)
         path: Path,
         arg,
     ):
+        """__init__ method of PyNumericalCommandArgumentsSubItem class."""
         PyCommandArgumentsSubItem.__init__(
             self, parent, attr, service, rules, path, arg
         )
@@ -1068,6 +1140,8 @@ class PyNumericalCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyNumerical)
 
 
 class PyDictionaryCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyDictionary):
+    """Class representing dictionary-like command argument in datamodel."""
+
     def __init__(
         self,
         parent,
@@ -1077,6 +1151,7 @@ class PyDictionaryCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyDictionar
         path: Path,
         arg,
     ):
+        """__init__ method of PyDictionaryCommandArgumentsSubItem class."""
         PyCommandArgumentsSubItem.__init__(
             self, parent, attr, service, rules, path, arg
         )
@@ -1084,6 +1159,8 @@ class PyDictionaryCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyDictionar
 
 
 class PyParameterCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyParameter):
+    """Class representing generic parameter-like command argument in datamodel."""
+
     def __init__(
         self,
         parent,
@@ -1093,6 +1170,7 @@ class PyParameterCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyParameter)
         path: Path,
         arg,
     ):
+        """__init__ method of PyParameterCommandArgumentsSubItem class."""
         PyCommandArgumentsSubItem.__init__(
             self, parent, attr, service, rules, path, arg
         )
@@ -1100,6 +1178,8 @@ class PyParameterCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyParameter)
 
 
 class PySingletonCommandArgumentsSubItem(PyCommandArgumentsSubItem):
+    """Class representing singleton-like command argument in datamodel."""
+
     def __init__(
         self,
         parent,
@@ -1109,6 +1189,7 @@ class PySingletonCommandArgumentsSubItem(PyCommandArgumentsSubItem):
         path: Path,
         arg,
     ):
+        """__init__ method of PySingletonCommandArgumentsSubItem class."""
         PyCommandArgumentsSubItem.__init__(
             self, parent, attr, service, rules, path, arg
         )
@@ -1148,6 +1229,8 @@ class AccessorModes(Enum):
 
 
 class PyMenuGeneric(PyMenu):
+    """Generic PyMenu class for when generated API code is not available."""
+
     attrs = ("service", "rules", "path")
 
     def _get_child_names(self):
@@ -1214,6 +1297,8 @@ class PySimpleMenuGeneric(PyMenu, PyDictionary):
 
 
 class PyNamedObjectContainerGeneric(PyNamedObjectContainer):
+    """Generic PyNamedObjectContainer class for when generated API code is not available."""
+
     def __iter__(self):
         for name in self._get_child_object_display_names():
             child_path = self.path[:-1]

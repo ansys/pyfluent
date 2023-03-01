@@ -15,12 +15,13 @@ class BatchOpsService:
     """Class wrapping methods in batch rpc service."""
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
+        """__init__ method of BatchOpsService class."""
         self._stub = batch_ops_pb2_grpc.BatchOpsStub(channel)
         self._metadata = metadata
 
     @catch_grpc_error
     def execute(self, request):
-        """Call execute rpc."""
+        """Execute rpc of BatchOps service."""
         return self._stub.Execute(request, metadata=self._metadata)
 
 
@@ -60,6 +61,7 @@ class BatchOps:
         def __init__(
             self, package: str, service: str, method: str, request_body: bytes
         ):
+            """__init__ method of Op class."""
             self._request = batch_ops_pb2.ExecuteRequest(
                 package=package,
                 service=service,
