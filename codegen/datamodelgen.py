@@ -293,12 +293,13 @@ class DataModelGenerator:
             f.write(f"{heading_}\n")
             f.write(f"{'=' * len(heading_)}\n")
             f.write("\n")
-            f.write(f".. autoclass:: {module_name}::{class_name}\n\n")
 
             named_objects = sorted(info.namedobjects)
             singletons = sorted(info.singletons)
             parameters = sorted(info.parameters)
             commands = sorted(info.commands)
+
+            f.write(f".. autoclass:: {module_name}::{class_name}\n\n")
 
             if singletons or named_objects:
                 f.write(".. toctree::\n")

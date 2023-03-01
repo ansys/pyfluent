@@ -38,11 +38,8 @@ extensions = [
     "sphinx_copybutton",
     "sphinx_gallery.gen_gallery",
     "sphinxemoji.sphinxemoji",
+    "sphinx.ext.autosectionlabel",
 ]
-
-autodoc_default_options = {
-    "autosummary": True,
-}
 
 # Intersphinx mapping
 intersphinx_mapping = {
@@ -74,6 +71,19 @@ numpydoc_validation_checks = {
 numpydoc_validation_exclude = {
     "ansys.fluent.core.solver.settings_231.",
     "ansys.fluent.core.solver.settings_232.",
+}
+
+autodoc_default_options = {
+    "members": True,
+    "member-order": "alphabetical",
+    "inherited-members": True,
+    "show-inheritance": True,
+    "imported-members": False,
+    "private-members": False,
+    "exclude-members": "__weakref__, __dict__",
+    "special-members": "__init__",
+    "undoc-members": True,
+    "autosummary": True,
 }
 
 # Favicon
