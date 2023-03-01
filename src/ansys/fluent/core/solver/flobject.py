@@ -483,10 +483,19 @@ class Group(SettingsBase[DictStateType]):
             ) from ex
 
     def __setattr__(self, name: str, value):
+        attr = None
         try:
-            return getattr(self, name).set_state(value)
+            attr = getattr(self, name)
         except BaseException as ex:
-            allowed = getattr(self, name).allowed_values()
+            raise AttributeError(
+                allowed_name_error_message(
+                    "Settings objects", name, super().__getattribute__("child_names")
+                )
+            ) from ex
+        try:
+            return attr.set_state(value)
+        except BaseException as ex:
+            allowed = attr.allowed_values()
             if allowed and value not in allowed:
                 raise allowed_values_error(name, value, allowed) from ex
 
