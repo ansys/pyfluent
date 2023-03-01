@@ -1,4 +1,4 @@
-name: Nightly Test Run
+name: Nightly Test Run (No Codegen)
 
 on:
   schedule:  # UTC at 0400 on Monday and Thursday
