@@ -264,12 +264,7 @@ class TUIGenerator:
             if desc:
                 f.write(desc)
             f.write("\n")
-            f.write(f".. currentmodule:: {self._tui_module}\n\n")
-            f.write(".. autosummary::\n")
-            f.write("   :toctree: _autosummary\n")
-            f.write("   :template: flobject-class-template.rst\n")
-            f.write("   :recursive:\n\n")
-            f.write(f"   {self._tui_module}.{class_name}\n\n")
+            f.write(f".. autoclass:: {self._tui_module}::{class_name}\n\n")
 
             command_names = [v.name for _, v in menu.children.items() if v.is_command]
             child_menu_names = [
