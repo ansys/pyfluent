@@ -14,6 +14,7 @@ class AppendToFile:
 
     def __call__(self, transcript):
         self.f.write(transcript)
+        self.f.flush()
 
     def __del__(self):
         self.f.close()
