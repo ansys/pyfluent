@@ -1,11 +1,8 @@
 """Provide a module to generate the documentation classes for Fluent settings
 tree.
-
 Running this module generates a .rst files for the Fluent
 settings classes. The out is placed at:
-
 - doc/source/api/solver/_autosummary/settings
-
 Process
 -------
     - From the settings API classes recursively generate the list of parents for the current class.
@@ -125,12 +122,58 @@ def _populate_rst_from_settings(rst_dir, cls, version):
         r.write(f".. _{file_name}:\n\n")
         r.write(f"{cls_name}\n")
         r.write(f'{"="*(len(cls_name))}\n\n')
-        r.write(
-            f".. currentmodule:: ansys.fluent.core.solver.settings_{version}.{file_name}\n\n"
-        )
-        r.write(f".. autosummary::\n")
-        r.write(f"   :recursive:\n\n")
-        r.write(f"   {cls_name}\n\n")
+        r.write(f".. autoclass:: ansys.fluent.core.solver.settings_{version}.{file_name}.{cls_name}\n")
+        r.write(f"   :autosummary:\n\n")
+
+        if has_children:
+            r.write(f".. rubric:: Attributes\n\n")
+            data_dict = {}
+            data_dict["Attribute"] = "Summary"
+            for child in cls.child_names:
+                child_cls = getattr(cls, child)
+                ref_string = f":ref:`{child} <{child_cls.__module__.split('.')[-1]}>`"
+                data_dict[ref_string] = child_cls.__doc__.strip("\n").split("\n")[0]
+            _generate_table_for_rst(r, data_dict)
+
+        if has_commands:
+            r.write(f".. rubric:: Methods\n\n")
+            data_dict = {}
+            data_dict["Method"] = "Summary"
+            for child in cls.command_names:
+                child_cls = getattr(cls, child)
+                ref_string = f":ref:`{child} <{child_cls.__module__.split('.')[-1]}>`"
+                data_dict[ref_string] = child_cls.__doc__.strip("\n").split("\n")[0]
+            _generate_table_for_rst(r, data_dict)
+
+        if has_arguments:
+            r.write(f".. rubric:: Arguments\n\n")
+            data_dict = {}
+            data_dict["Argument"] = "Summary"
+            for child in cls.argument_names:
+                child_cls = getattr(cls, child)
+                ref_string = f":ref:`{child} <{child_cls.__module__.split('.')[-1]}>`"
+                data_dict[ref_string] = child_cls.__doc__.strip("\n").split("\n")[0]
+            _generate_table_for_rst(r, data_dict)
+
+        if has_named_object:
+            child_cls = getattr(cls, "child_object_type")
+            ref_string = (
+                f":ref:`{child_cls.__name__} <{child_cls.__module__.split('.')[-1]}>`"
+            )
+            data_dict = {}
+            data_dict[ref_string] = child_cls.__doc__.strip("\n").split("\n")[0]
+            r.write(f".. rubric:: Named object type\n\n")
+            r.write(f"{ref_string}\n\n\n")
+
+        if parents_dict.get(file_name):
+            r.write(f".. rubric:: Included in:\n\n")
+            data_dict = {}
+            data_dict["Parent"] = "Summary"
+            for parent in parents_dict.get(file_name):
+                parent_file = parent.__module__.split(".")[-1]
+                ref_string = f":ref:`{parent.__name__} <{parent_file}>`"
+                data_dict[ref_string] = parent.__doc__.strip("\n").split("\n")[0]
+            _generate_table_for_rst(r, data_dict)
 
     if not rstpath in rst_list:
         rst_list.append(rstpath)

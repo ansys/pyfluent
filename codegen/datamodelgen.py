@@ -299,10 +299,8 @@ class DataModelGenerator:
             parameters = sorted(info.parameters)
             commands = sorted(info.commands)
 
-            f.write(f".. currentmodule:: {module_name}\n\n")
-            f.write(".. autosummary::\n")
-            f.write("   :recursive:\n\n")
-            f.write(f"   {class_name}\n\n")
+            f.write(f".. autoclass:: {module_name}.{class_name}\n")
+            f.write("   :autosummary:\n\n")
 
             if singletons or named_objects:
                 f.write(".. toctree::\n")
