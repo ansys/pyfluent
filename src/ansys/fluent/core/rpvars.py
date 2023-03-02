@@ -7,7 +7,7 @@ interfaces: solver settings objects and task-based meshing workflow.
 from typing import Any, List
 
 import ansys.fluent.core.filereader.lispy as lispy
-from ansys.fluent.core.solver.error_msg import allowed_name_error_message
+from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 
 class RPVars:
