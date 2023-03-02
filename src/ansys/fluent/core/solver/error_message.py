@@ -19,3 +19,9 @@ def allowed_name_error_message(
     if matches:
         message += f"The most similar names are: {', '.join(matches)}."
     return message
+
+
+def allowed_values_error(
+    context: str, trial_name: str, allowed_values: List[str]
+) -> str:
+    return ValueError(allowed_name_error_message(context, trial_name, allowed_values))

@@ -25,6 +25,7 @@ import sys
 from typing import Any, Dict, Generic, List, NewType, Tuple, TypeVar, Union
 import weakref
 
+from .error_message import allowed_name_error_message, allowed_values_error
 from .logging import LOG
 
 # Type hints
@@ -452,14 +453,51 @@ class Group(SettingsBase[DictStateType]):
                 ret.append(query)
         return ret
 
+    def _get_parent_of_active_child_names(self, name):
+        parents = ""
+        for parent in self.get_active_child_names():
+            try:
+                if hasattr(getattr(self, parent), str(name)):
+                    if len(parents) != 0:
+                        parents += "." + parent
+                    else:
+                        parents += parent
+            except AttributeError:
+                pass
+        if len(parents):
+            print(f"\n {name} is a child of {parents} \n")
+            return f"\n {name} is a child of {parents} \n"
+
     def __getattribute__(self, name):
         if name in super().__getattribute__("child_names"):
             if not self.is_active():
                 raise RuntimeError(f"'{self.path}' is currently not active")
-        return super().__getattribute__(name)
+        try:
+            return super().__getattribute__(name)
+        except AttributeError as ex:
+            self._get_parent_of_active_child_names(name)
+            raise AttributeError(
+                allowed_name_error_message(
+                    "Settings objects", name, super().__getattribute__("child_names")
+                )
+            ) from ex
 
     def __setattr__(self, name: str, value):
-        return getattr(self, name).set_state(value)
+        attr = None
+        try:
+            attr = getattr(self, name)
+        except BaseException as ex:
+            raise AttributeError(
+                allowed_name_error_message(
+                    "Settings objects", name, super().__getattribute__("child_names")
+                )
+            ) from ex
+        try:
+            return attr.set_state(value)
+        except BaseException as ex:
+            allowed = attr.allowed_values()
+            if allowed and value not in allowed:
+                raise allowed_values_error(name, value, allowed) from ex
 
 
 class WildcardPath(Group):
@@ -661,7 +699,12 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
                 return WildcardPath(
                     self.flproxy, self.path + "/" + name, self.__class__, child_cls
                 )
-            raise KeyError(name)
+            raise KeyError(
+                allowed_name_error_message(
+                    "Settings objects", name, self.get_object_names()
+                )
+            )
+
         obj = self._objects.get(name)
         if not obj:
             obj = self._create_child_object(name)
