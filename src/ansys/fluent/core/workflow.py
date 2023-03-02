@@ -85,7 +85,7 @@ class ArgumentWrapper(PyCallableStateObject):
         return getattr(self._arg, attr)
 
 
-class BasicTask:
+class BaseTask:
     """Base class Task representation for wrapping a Workflow TaskObject instance,
     adding methods to discover more about the relationships between TaskObjects.
     Methods
@@ -261,7 +261,7 @@ class BasicTask:
         return matches
 
 
-class CommandTask(BasicTask):
+class CommandTask(BaseTask):
     """Intermediate base class task representation for wrapping a Workflow TaskObject instance,
     adding attributes related to commanding. Classes without these attributes cannot be commanded.
     """
@@ -310,7 +310,7 @@ class SimpleTask(CommandTask):
         return []
 
 
-class CompositeTask(BasicTask):
+class CompositeTask(BaseTask):
     """Composite task representation for wrapping a Workflow TaskObject
     instance of TaskType Composite.
     """
@@ -373,7 +373,7 @@ class CompoundTask(CommandTask):
             return children[-1]
 
 
-def makeTask(command_source, name: str) -> BasicTask:
+def makeTask(command_source, name: str) -> BaseTask:
     task = command_source._workflow.TaskObject[name]
     task_type = task.TaskType()
     kinds = {
@@ -411,8 +411,8 @@ class WorkflowWrapper:
         self._workflow = workflow
         self._command_source = command_source
 
-    def task(self, name: str) -> BasicTask:
-        """Get a TaskObject by name, in a BasicTask wrapper. The wrapper adds extra
+    def task(self, name: str) -> BaseTask:
+        """Get a TaskObject by name, in a BaseTask wrapper. The wrapper adds extra
         functionality.
 
         Parameters
@@ -422,7 +422,7 @@ class WorkflowWrapper:
 
         Returns
         -------
-        task : BasicTask
+        task : BaseTask
             wrapped task object.
         """
         return makeTask(self, name)
