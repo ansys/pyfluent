@@ -8,9 +8,9 @@ import numpy as np
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
-from ansys.fluent.core.allowed_name_error_msg import allowed_name_error_message
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
+from ansys.fluent.core.solver.error_msg import allowed_name_error_message
 
 
 def override_help_text(func, func_to_be_wrapped):
