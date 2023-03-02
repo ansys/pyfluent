@@ -41,15 +41,15 @@ extensions = [
 ]
 
 autodoc_default_options = {
-    'members': True,
-    'inherited-members': True,
-    'show-inheritance': True,
-    'exclude-members': '__weakref__, __dict__',
-    'special-members': '__init__',
-    'undoc-members': True,
+    "members": True,
+    "inherited-members": True,
+    "show-inheritance": True,
+    "exclude-members": "__weakref__, __dict__",
+    "special-members": "__init__",
+    "undoc-members": True,
 }
 
-autodoc_class_signature = 'separated'
+autodoc_class_signature = "separated"
 toc_object_entries_show_parents = "hide"
 
 # Intersphinx mapping
@@ -261,6 +261,7 @@ epub_title = project
 # A unique identification for the text.
 #
 # epub_uid = ''
+
 
 # A list of files that should not be packed into the epub file.
 epub_exclude_files = ["search.html"]

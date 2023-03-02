@@ -122,7 +122,9 @@ def _populate_rst_from_settings(rst_dir, cls, version):
         r.write(f".. _{file_name}:\n\n")
         r.write(f"{cls_name}\n")
         r.write(f'{"="*(len(cls_name))}\n\n')
-        r.write(f".. autoclass:: ansys.fluent.core.solver.settings_{version}.{file_name}.{cls_name}\n")
+        r.write(
+            f".. autoclass:: ansys.fluent.core.solver.settings_{version}.{file_name}.{cls_name}\n"
+        )
         r.write(f"   :autosummary:\n\n")
 
         if has_children:
