@@ -9,5 +9,5 @@ solver.tui.mesh.repair\_improve
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.mesh.repair_improve
-   :members: repair_face_handedness, repair_periodic, repair, report_poor_elements, include_local_polyhedra_conversion_in_repair, repair_face_node_order, improve_quality, allow_repair_at_boundaries, repair_wall_distance
+   :members: report_poor_elements, repair_face_node_order, include_local_polyhedra_conversion_in_repair, improve_quality, allow_repair_at_boundaries, repair_periodic, repair, repair_face_handedness, repair_wall_distance
 

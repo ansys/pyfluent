@@ -9,15 +9,15 @@ solver.tui.mesh
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.mesh
-   :members: translate, redistribute_boundary_layer, check, smooth_mesh, quality, scale, rotate, mesh_info, replace, size_info, check_verbosity, enhanced_orthogonal_quality, units, memory_usage, swap_mesh_faces, show_periodic_shadow_zones, check_before_solve, adjacency, set_unit_system
+   :members: replace, mesh_info, units, quality, show_periodic_shadow_zones, enhanced_orthogonal_quality, check, check_verbosity, check_before_solve, redistribute_boundary_layer, rotate, translate, memory_usage, smooth_mesh, adjacency, scale, size_info, set_unit_system, swap_mesh_faces
 
 .. toctree::
    :hidden:
 
-   surface_mesh/index
-   repair_improve/index
+   modify_zones/index
    geometry/index
+   repair_improve/index
    polyhedra/index
    adapt/index
+   surface_mesh/index
    reorder/index
-   modify_zones/index

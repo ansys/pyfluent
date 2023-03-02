@@ -9,7 +9,7 @@ solver.tui.define.phases.set\_domain\_properties
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.phases.set_domain_properties
-   :members: change_phases_names, phase_domains
+   :members: phase_domains, change_phases_names
 
 .. toctree::
    :hidden:

@@ -9,16 +9,16 @@ solver.tui.define.dynamic\_mesh.controls
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.dynamic_mesh.controls
-   :members: layering, smoothing, in_cylinder_output, steady_pseudo_time_control, remeshing
+   :members: steady_pseudo_time_control, in_cylinder_output, smoothing, layering, remeshing
 
 .. toctree::
    :hidden:
 
-   contact_parameters/index
-   six_dof_parameters/index
    remeshing_parameters/index
-   implicit_update_parameters/index
    in_cylinder_parameters/index
-   layering_parameters/index
-   smoothing_parameters/index
+   implicit_update_parameters/index
    periodic_displacement_parameters/index
+   six_dof_parameters/index
+   smoothing_parameters/index
+   layering_parameters/index
+   contact_parameters/index

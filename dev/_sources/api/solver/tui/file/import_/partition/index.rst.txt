@@ -9,5 +9,5 @@ solver.tui.file.import\_.partition
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file.import_.partition
-   :members: metis, metis_zone
+   :members: metis_zone, metis
 

@@ -9,5 +9,5 @@ solver.tui.solution.calculation\_activities.execute\_commands
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.calculation_activities.execute_commands
-   :members: delete, copy, enable, disable, export, add_edit, import_
+   :members: import_, add_edit, delete, disable, export, enable, copy
 

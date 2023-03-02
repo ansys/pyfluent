@@ -9,5 +9,5 @@ solver.tui.setup.boundary\_conditions.expert.non\_reflecting\_bc.general\_nrbc.s
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set
-   :members: sigma, tangential_source, verbosity, sigma2, relax
+   :members: relax, sigma2, sigma, verbosity, tangential_source
 

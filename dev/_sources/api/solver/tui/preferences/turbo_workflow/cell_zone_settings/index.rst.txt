@@ -9,5 +9,5 @@ solver.tui.preferences.turbo\_workflow.cell\_zone\_settings
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.turbo_workflow.cell_zone_settings
-   :members: rotating, stationary, czsearch_order
+   :members: stationary, rotating, czsearch_order
 

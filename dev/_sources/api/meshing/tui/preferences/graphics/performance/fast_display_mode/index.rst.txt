@@ -9,5 +9,5 @@ meshing.tui.preferences.graphics.performance.fast\_display\_mode
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.graphics.performance.fast_display_mode
-   :members: perimeter_edges_shown, culling, transparency, status, silhouette_shown, markers_decimation, nodes_shown, faces_shown
+   :members: culling, markers_decimation, status, silhouette_shown, nodes_shown, perimeter_edges_shown, transparency, faces_shown
 

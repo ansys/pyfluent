@@ -9,5 +9,5 @@ meshing.tui.boundary.boundary\_conditions
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.boundary.boundary_conditions
-   :members: copy, clear, clear_all
+   :members: clear, copy, clear_all
 

@@ -9,5 +9,5 @@ meshing.tui.objects.wrap.set
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects.wrap.set
-   :members: minimum_relative_topo_count, include_thin_cut_edges_and_faces, relative_feature_tolerance, resolution_factor, delete_far_edges, zone_name_prefix, minimum_relative_topo_area, use_smooth_folded_faces, max_free_edges_for_hole_patching, shrink_wrap_rezone_parameters, use_ray_tracing, report_holes, add_geometry_recovery_level_to_zones, minimum_topo_area, minimum_topo_count, list_zones_geometry_recovery_levels
+   :members: resolution_factor, add_geometry_recovery_level_to_zones, list_zones_geometry_recovery_levels, include_thin_cut_edges_and_faces, use_smooth_folded_faces, minimum_topo_area, use_ray_tracing, minimum_relative_topo_count, zone_name_prefix, relative_feature_tolerance, minimum_topo_count, max_free_edges_for_hole_patching, minimum_relative_topo_area, shrink_wrap_rezone_parameters, delete_far_edges, report_holes
 

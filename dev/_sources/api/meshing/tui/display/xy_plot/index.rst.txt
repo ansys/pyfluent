@@ -9,5 +9,5 @@ meshing.tui.display.xy\_plot
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.xy_plot
-   :members: face_distribution, set, cell_distribution, file
+   :members: cell_distribution, face_distribution, set, file
 

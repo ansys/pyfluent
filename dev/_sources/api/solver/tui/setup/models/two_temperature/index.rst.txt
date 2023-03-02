@@ -9,5 +9,5 @@ solver.tui.setup.models.two\_temperature
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.two_temperature
-   :members: enable, nasa9_enhancement, weak_ionization, set_verbosity, robustness_enhancement
+   :members: enable, robustness_enhancement, set_verbosity, weak_ionization, nasa9_enhancement
 

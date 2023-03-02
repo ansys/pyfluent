@@ -14,6 +14,6 @@ solver.tui.define.parameters
 .. toctree::
    :hidden:
 
-   output_parameters/index
    input_parameters/index
    list_parameters/index
+   output_parameters/index

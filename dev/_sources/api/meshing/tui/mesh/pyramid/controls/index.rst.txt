@@ -9,5 +9,5 @@ meshing.tui.mesh.pyramid.controls
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.pyramid.controls
-   :members: offset_factor, neighbor_angle, offset_scaling, vertex_method
+   :members: vertex_method, neighbor_angle, offset_scaling, offset_factor
 

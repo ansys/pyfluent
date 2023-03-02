@@ -9,5 +9,5 @@ solver.tui.setup.models.shell\_conduction
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.shell_conduction
-   :members: multi_layer_shell, enhanced_encapsulation, write_csv, save_shell_zones, settings, read_csv
+   :members: enhanced_encapsulation, multi_layer_shell, save_shell_zones, read_csv, write_csv, settings
 

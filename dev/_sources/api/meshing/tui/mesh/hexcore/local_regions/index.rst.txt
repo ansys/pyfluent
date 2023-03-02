@@ -9,5 +9,5 @@ meshing.tui.mesh.hexcore.local\_regions
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.hexcore.local_regions
-   :members: delete, init, list_all_regions, ideal_hex_vol, ideal_quad_area, deactivate, activate, define
+   :members: activate, define, ideal_hex_vol, list_all_regions, deactivate, delete, init, ideal_quad_area
 

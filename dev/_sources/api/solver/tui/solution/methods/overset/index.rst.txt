@@ -9,7 +9,7 @@ solver.tui.solution.methods.overset
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.methods.overset
-   :members: high_order_pressure, interpolation_method, orphan_cell_treatment
+   :members: orphan_cell_treatment, high_order_pressure, interpolation_method
 
 .. toctree::
    :hidden:

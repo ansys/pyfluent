@@ -9,5 +9,5 @@ solver.tui.display.view\_sync
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.view_sync
-   :members: list, remove_all, stop, start, add, remove, add_all
+   :members: remove, add_all, remove_all, start, list, stop, add
 

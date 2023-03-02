@@ -9,7 +9,7 @@ solver.tui.setup.models.structure
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.structure
-   :members: structure_off, nonlinear_elasticity, thermal_effects, linear_elasticity
+   :members: nonlinear_elasticity, thermal_effects, linear_elasticity, structure_off
 
 .. toctree::
    :hidden:

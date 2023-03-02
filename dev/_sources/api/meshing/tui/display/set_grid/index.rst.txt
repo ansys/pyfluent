@@ -9,5 +9,5 @@ meshing.tui.display.set\_grid
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.set_grid
-   :members: list, refine, label_scale, neighborhood, tagged, label_font, cell_quality, node_size, labels, default, all_cells, face_quality, label_alignment, all_nodes, y_range, z_range, unmeshed, multi, all_faces, marked, x_range, normals, normal_scale, left_handed, free, unused, node_symbol
+   :members: z_range, all_faces, neighborhood, unused, normals, normal_scale, label_font, default, cell_quality, node_size, tagged, marked, unmeshed, node_symbol, x_range, labels, all_nodes, face_quality, multi, label_alignment, free, y_range, label_scale, all_cells, list, refine, left_handed
 

@@ -9,5 +9,5 @@ meshing.tui.mesh.rapid\_octree.boundary\_layer\_mesh\_configuration
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.rapid_octree.boundary_layer_mesh_configuration
-   :members: list, add, delete, delete_all, edit
+   :members: add, list, delete, edit, delete_all
 

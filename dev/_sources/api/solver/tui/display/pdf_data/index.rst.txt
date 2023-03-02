@@ -9,5 +9,5 @@ solver.tui.display.pdf\_data
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.pdf_data
-   :members: write_to_file, draw_number_box, carpet_plot, plot_1d_slice
+   :members: carpet_plot, write_to_file, draw_number_box, plot_1d_slice
 

@@ -9,7 +9,7 @@ meshing.tui.objects.wrap
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects.wrap
-   :members: debug, check_holes, object_zone_separate, wrap
+   :members: object_zone_separate, debug, wrap, check_holes
 
 .. toctree::
    :hidden:

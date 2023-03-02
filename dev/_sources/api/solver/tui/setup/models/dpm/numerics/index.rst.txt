@@ -9,7 +9,7 @@ solver.tui.setup.models.dpm.numerics
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.dpm.numerics
-   :members: coupled_heat_mass_update, dynamic_interaction, enhanced_packing_limit_numerics, tracking_scheme, tracking_parameters, minimum_liquid_fraction, drag_law, vaporization_limiting_factors, granular_stress_tensor, error_control, tracking_statistics, predictor_corrector, gaussian_factor, mppic_settings, average_each_step, average_kernel, average_DDPM_variables, verbosity, automated_scheme_selection, average_source_terms, underrelax_film_height, enable_node_based_averaging
+   :members: coupled_heat_mass_update, predictor_corrector, drag_law, average_kernel, minimum_liquid_fraction, mppic_settings, tracking_parameters, granular_stress_tensor, tracking_statistics, gaussian_factor, underrelax_film_height, automated_scheme_selection, dynamic_interaction, average_source_terms, average_each_step, average_DDPM_variables, tracking_scheme, error_control, enhanced_packing_limit_numerics, enable_node_based_averaging, vaporization_limiting_factors, verbosity
 
 .. toctree::
    :hidden:

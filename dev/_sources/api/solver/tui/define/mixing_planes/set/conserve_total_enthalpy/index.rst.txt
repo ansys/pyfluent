@@ -9,5 +9,5 @@ solver.tui.define.mixing\_planes.set.conserve\_total\_enthalpy
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.mixing_planes.set.conserve_total_enthalpy
-   :members: verbosity, enable
+   :members: enable, verbosity
 

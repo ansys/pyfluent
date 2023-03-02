@@ -9,10 +9,10 @@ meshing.tui.display.set.picture
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.set.picture
-   :members: jpeg_hardcopy_quality, preview, invert_background, use_window_resolution, dpi, landscape, set_standard_resolution, y_resolution, x_resolution
+   :members: x_resolution, invert_background, use_window_resolution, preview, set_standard_resolution, landscape, jpeg_hardcopy_quality, dpi, y_resolution
 
 .. toctree::
    :hidden:
 
-   color_mode/index
    driver/index
+   color_mode/index

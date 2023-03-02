@@ -9,5 +9,5 @@ solver.tui.solution.controls.contact\_solution\_controls.spatial
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.controls.contact_solution_controls.spatial
-   :members: scheme, rhie_chow_method, first_to_second_order_blending_list, first_to_second_order_blending, flow_skew_diffusion_exclude, rhie_chow_flux_specify, scalars_skew_diffusion_exclude
+   :members: flow_skew_diffusion_exclude, first_to_second_order_blending_list, scheme, rhie_chow_method, first_to_second_order_blending, rhie_chow_flux_specify, scalars_skew_diffusion_exclude
 

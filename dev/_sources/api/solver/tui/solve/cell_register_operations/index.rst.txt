@@ -9,5 +9,5 @@ solver.tui.solve.cell\_register\_operations
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.cell_register_operations
-   :members: add, delete, edit, list_properties, list
+   :members: add, delete, list, edit, list_properties
 

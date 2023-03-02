@@ -9,5 +9,5 @@ solver.tui.preferences.parametric\_study.update\_options
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.parametric_study.update_options
-   :members: enable_auto_refresh, auto_refresh_time, write_data, capture_sim_report_data, save_project_after_dpupdate
+   :members: auto_refresh_time, write_data, capture_sim_report_data, save_project_after_dpupdate, enable_auto_refresh
 

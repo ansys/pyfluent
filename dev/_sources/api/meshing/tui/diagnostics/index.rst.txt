@@ -9,7 +9,7 @@ meshing.tui.diagnostics
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.diagnostics
-   :members: manage_summary, perform_summary, set_scope, modify_defaults
+   :members: set_scope, modify_defaults, perform_summary, manage_summary
 
 .. toctree::
    :hidden:

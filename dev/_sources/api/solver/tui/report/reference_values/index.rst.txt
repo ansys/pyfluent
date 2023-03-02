@@ -9,7 +9,7 @@ solver.tui.report.reference\_values
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.report.reference_values
-   :members: area, list, viscosity, enthalpy, pressure, velocity, temperature, depth, zone, length, density, yplus
+   :members: pressure, area, length, zone, velocity, depth, enthalpy, density, list, yplus, viscosity, temperature
 
 .. toctree::
    :hidden:
