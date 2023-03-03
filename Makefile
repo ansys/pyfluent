@@ -67,7 +67,7 @@ build-doc-source:
 	@xvfb-run make -C doc html
 
 build-doc-no-settings:
-	@sudo rm -rf doc/source/api/solver/_autosummary
+	@sudo rm -rf doc/source/api/solver/_autosummary/settings
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@pip install -r requirements/requirements_doc.txt
 	@xvfb-run make -C doc html
