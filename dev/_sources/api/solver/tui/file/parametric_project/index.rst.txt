@@ -9,5 +9,5 @@ solver.tui.file.parametric\_project
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file.parametric_project
-   :members: archive, save_a_copy, open, save_as, save
+   :members: open, save, save_as, archive, save_a_copy
 

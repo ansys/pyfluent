@@ -9,5 +9,5 @@ meshing.tui.reference\_frames
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.reference_frames
-   :members: delete, edit, display, display_edit, hide, list_properties, list, add
+   :members: add, delete, list_properties, display, list, display_edit, hide, edit
 

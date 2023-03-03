@@ -9,5 +9,5 @@ solver.tui.define.models.multiphase.explicit\_expert\_options.volume\_fraction\_
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.multiphase.explicit_expert_options.volume_fraction_filtering
-   :members: filtering_options, vol_frac_cutoff, enable
+   :members: vol_frac_cutoff, enable, filtering_options
 

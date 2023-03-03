@@ -9,5 +9,5 @@ meshing.tui.mesh.poly.controls.prism
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.poly.controls.prism
-   :members: apply_growth, clear_growth, list_growth
+   :members: clear_growth, apply_growth, list_growth
 

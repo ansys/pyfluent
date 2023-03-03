@@ -9,7 +9,7 @@ solver.tui.setup.gap\_model
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.gap_model
-   :members: list_gap_cell_zones, delete_all, list_gap_regions, create, edit, enable, render_gap_regions, list_gap_face_zones, delete
+   :members: enable, delete, render_gap_regions, delete_all, list_gap_cell_zones, list_gap_face_zones, list_gap_regions, create, edit
 
 .. toctree::
    :hidden:

@@ -9,5 +9,5 @@ solver.tui.define.spectral
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.spectral
-   :members: calculate_harmonic_exports, delete_harmonic_exports, calculate_fourier_coefficients, delete_fourier_coefficients
+   :members: calculate_fourier_coefficients, delete_harmonic_exports, calculate_harmonic_exports, delete_fourier_coefficients
 

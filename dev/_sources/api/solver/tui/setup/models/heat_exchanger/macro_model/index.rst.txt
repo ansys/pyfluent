@@ -9,5 +9,5 @@ solver.tui.setup.models.heat\_exchanger.macro\_model
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.heat_exchanger.macro_model
-   :members: heat_exchanger_group, write_NTU, plot_NTU, heat_exchanger_model, heat_exchanger, heat_exchanger_report, delete_heat_exchanger_group, heat_exchanger_zone, heat_exchanger_macro_report
+   :members: heat_exchanger_group, write_NTU, delete_heat_exchanger_group, heat_exchanger_zone, heat_exchanger_macro_report, heat_exchanger, plot_NTU, heat_exchanger_model, heat_exchanger_report
 

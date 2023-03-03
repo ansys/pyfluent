@@ -14,5 +14,5 @@ solver.tui.setup.models.dpm.erosion\_dynamic\_mesh
 .. toctree::
    :hidden:
 
-   run_parameters/index
    general_parameters/index
+   run_parameters/index

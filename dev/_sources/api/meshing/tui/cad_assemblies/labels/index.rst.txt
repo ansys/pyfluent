@@ -9,5 +9,5 @@ meshing.tui.cad\_assemblies.labels
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.cad_assemblies.labels
-   :members: draw, add_to_graphics, remove_from_graphics, delete, rename
+   :members: add_to_graphics, rename, draw, delete, remove_from_graphics
 

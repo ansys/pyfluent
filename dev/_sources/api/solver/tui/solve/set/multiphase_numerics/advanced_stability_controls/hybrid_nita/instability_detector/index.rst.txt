@@ -9,5 +9,5 @@ solver.tui.solve.set.multiphase\_numerics.advanced\_stability\_controls.hybrid\_
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.multiphase_numerics.advanced_stability_controls.hybrid_nita.instability_detector
-   :members: set_cfl_type, set_cfl_limit, set_velocity_limit, enable_instability_detector, unstable_event_outer_iterations
+   :members: enable_instability_detector, set_velocity_limit, set_cfl_limit, set_cfl_type, unstable_event_outer_iterations
 

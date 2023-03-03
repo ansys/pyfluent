@@ -9,5 +9,5 @@ solver.tui.solution.run\_calculation.transient\_controls.multiphase\_specific\_t
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.run_calculation.transient_controls.multiphase_specific_time_constraints.time_scale_options
-   :members: gravity_scale, acoustic_scale, surface_tension_scale, viscous_scale
+   :members: acoustic_scale, surface_tension_scale, gravity_scale, viscous_scale
 

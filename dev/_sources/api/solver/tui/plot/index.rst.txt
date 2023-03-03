@@ -9,11 +9,11 @@ solver.tui.plot
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.plot
-   :members: histogram, datasources, residuals, solution, file_list, fft_set, fft, residuals_set, set_boundary_val_off, display_profile_data, histogram_set, plot_direction, file, change_fft_ref_pressure, file_set, solution_set, circum_avg_axial, circum_avg_radial, label_alignment, plot
+   :members: solution, display_profile_data, histogram, histogram_set, plot, circum_avg_axial, change_fft_ref_pressure, plot_direction, file_set, set_boundary_val_off, file, residuals, solution_set, residuals_set, fft_set, label_alignment, circum_avg_radial, datasources, fft, file_list
 
 .. toctree::
    :hidden:
 
-   flamelet_curves/index
-   cumulative_plot/index
    ansys_sound_analysis/index
+   cumulative_plot/index
+   flamelet_curves/index

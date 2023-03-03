@@ -9,7 +9,7 @@ solver.tui.report.dpm\_histogram
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.report.dpm_histogram
-   :members: prep_dpm_sample_cont_plot_exprs, write_sample, list_samples, read_sample, pick_sample_to_reduce, delete_sample, compute_sample, reduce_picked_sample, plot_sample
+   :members: compute_sample, plot_sample, list_samples, pick_sample_to_reduce, delete_sample, prep_dpm_sample_cont_plot_exprs, read_sample, reduce_picked_sample, write_sample
 
 .. toctree::
    :hidden:

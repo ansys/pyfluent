@@ -9,10 +9,10 @@ solver.tui.views
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.views
-   :members: last_view, restore_view, default_view, write_views, auto_scale, next_view, delete_view, read_views, save_view, list_views
+   :members: delete_view, list_views, auto_scale, write_views, save_view, next_view, last_view, restore_view, default_view, read_views
 
 .. toctree::
    :hidden:
 
-   display_states/index
    camera/index
+   display_states/index

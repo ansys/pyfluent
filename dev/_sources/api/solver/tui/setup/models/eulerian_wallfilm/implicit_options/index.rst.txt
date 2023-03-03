@@ -9,5 +9,5 @@ solver.tui.setup.models.eulerian\_wallfilm.implicit\_options
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.eulerian_wallfilm.implicit_options
-   :members: new_implicit_scheme, relative_error_residual
+   :members: relative_error_residual, new_implicit_scheme
 

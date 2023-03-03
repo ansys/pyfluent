@@ -9,21 +9,21 @@ solver.tui.preferences.graphics
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.graphics
-   :members: switch_to_open_glfor_remote_visualization, rotation_centerpoint_visible, remove_partition_lines_tolerance, scroll_wheel_event_end_timer, min_graphics_text_size, test_use_external_function, point_tool_size, text_window_line_width, show_hidden_lines, plot_legend_margin, max_graphics_text_size, graphics_window_line_width, double_buffering, enable_non_object_based_workflow, hidden_surface_removal_method, event_poll_timeout, remove_partition_lines, lower_resolution_graphics_window_line_width, set_camera_normal_to_surface_increments, show_hidden_surfaces, higher_resolution_graphics_window_line_width, event_poll_interval, force_key_frame_animation_markers_to_off, marker_drawing_mode, graphics_window_point_symbol, animation_option
+   :members: higher_resolution_graphics_window_line_width, marker_drawing_mode, event_poll_timeout, animation_option, graphics_window_point_symbol, lower_resolution_graphics_window_line_width, rotation_centerpoint_visible, test_use_external_function, remove_partition_lines, min_graphics_text_size, show_hidden_lines, switch_to_open_glfor_remote_visualization, plot_legend_margin, hidden_surface_removal_method, scroll_wheel_event_end_timer, double_buffering, show_hidden_surfaces, enable_non_object_based_workflow, text_window_line_width, force_key_frame_animation_markers_to_off, max_graphics_text_size, remove_partition_lines_tolerance, set_camera_normal_to_surface_increments, point_tool_size, graphics_window_line_width, event_poll_interval
 
 .. toctree::
    :hidden:
 
+   graphics_effects/index
+   material_effects/index
+   meshing_mode/index
+   colormap_settings/index
+   lighting/index
    manage_hoops_memory/index
    transparency/index
-   graphics_effects/index
+   performance/index
+   hardcopy_settings/index
+   boundary_markers/index
    vector_settings/index
    embedded_windows/index
-   material_effects/index
-   hardcopy_settings/index
-   performance/index
-   lighting/index
-   colormap_settings/index
    export_video_settings/index
-   meshing_mode/index
-   boundary_markers/index

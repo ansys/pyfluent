@@ -9,5 +9,5 @@ solver.tui.file.project
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file.project
-   :members: save, save_as, archive, open, save_as_copy, new
+   :members: save_as_copy, save_as, save, open, archive, new
 
