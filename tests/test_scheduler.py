@@ -170,6 +170,12 @@ class TestLoadMachines(unittest.TestCase):
         machineList = load_machines(machine_info = info)
         old_machine_list = _restrict_machines_to_core_count(machineList, ncores= machineList.number_of_cores)
         self.assertEqual(machineList, old_machine_list)
+    
+    def test_lsb_mcpu(self):
+        os.environ['LSB_MCPU_HOSTS'] = 'm1 3 m2 3'
+        machineList = load_machines()
+        os.environ.pop('LSB_MCPU_HOSTS')
+        self.assertEqual(machineList.number_of_cores, 6)
 
     def test_no_environment(self):
         machineList = load_machines()
