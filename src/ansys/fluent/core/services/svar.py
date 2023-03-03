@@ -57,16 +57,11 @@ class SvarInfo:
             def __init__(self, svar_info):
                 self.name = svar_info.name
                 self.dimension = svar_info.dimension
-                self.data_type = self._get_data_type(svar_info.dataType,svar_info.bitSize)
-                
-            def _get_data_type(self, data_type, bit_size):
-                if data_type==SvarProtoModule.DataType.INT: 
-                    return np.int32 if bit_size==4 else np.int64 
-                if data_type==SvarProtoModule.DataType.REAL: 
-                    return np.float32 if bit_size==4 else np.float64
+                self.field_type = _FieldDataConstants.proto_field_type_to_np_data_type[svar_info.fieldType]
+                              
                     
             def __repr__(self):
-              return f"name:{self.name} dimension:{self.dimension} data_type:{self.data_type}"                      
+              return f"name:{self.name} dimension:{self.dimension} field_type:{self.field_type}"                      
                     
         def __init__(self, svars_info):
             self._svars_info = {}
@@ -89,8 +84,8 @@ class SvarInfo:
             class _PartitionInfo:
                 def __init__(self, partition_info):
                     self.count = partition_info.count
-                    self.start_index = partition_info.startIndex
-                    self.end_index = partition_info.endIndex
+                    self.start_index = partition_info.startIndex if self.count > 0 else 0
+                    self.end_index = partition_info.endIndex if self.count > 0 else 0
                 
             def __init__(self, zone_info):
                 self.name = zone_info.name
@@ -99,11 +94,16 @@ class SvarInfo:
                 self.thread_type = zone_info.threadType
                 self.partitions_info = [self._PartitionInfo(partition_info)  for partition_info in zone_info.partitionsInfo]
                 
+            @property
+            def count(self):            
+                return sum([partition_info.count for partition_info in self.partitions_info])
+                
+                
             def __repr__(self):
               partition_str = ""
               for i,partition_info in enumerate(self.partitions_info):
                   partition_str += f"\n\t{i}. {partition_info.count}[{partition_info.start_index}:{partition_info.end_index}]"
-              return f"name:{self.name} zone_id:{self.zone_id} zone_type:{self.zone_type} threadType:{'Cell' if self.thread_type==SvarProtoModule.ThreadType.CELL_THREAD else 'Face'}{partition_str}"            
+              return f"name:{self.name} count: {self.count} zone_id:{self.zone_id} zone_type:{self.zone_type} threadType:{'Cell' if self.thread_type==SvarProtoModule.ThreadType.CELL_THREAD else 'Face'}{partition_str}"            
                    
                     
         def __init__(self, zones_info, domains_info):
@@ -303,12 +303,7 @@ class _FieldDataConstants:
     }      
     chunk_size = 256 
     bytes_stream = True
-    payloadTags = {
-        FieldDataProtoModule.PayloadTag.OVERSET_MESH: 1,
-        FieldDataProtoModule.PayloadTag.ELEMENT_LOCATION: 2,
-        FieldDataProtoModule.PayloadTag.NODE_LOCATION: 4,
-        FieldDataProtoModule.PayloadTag.BOUNDARY_VALUES: 8,
-    }
+
 
 
 def _get_zone_ids(
@@ -457,6 +452,16 @@ class SvarData:
         ), self.get_svar_data)
 
 
+    def get_array(self, svar_name: str, zone_name: str, domain_name: str = "mixture"):
+        zones_info = self._svar_info.get_zones_info()
+        if zone_name not in zones_info.zones:
+            return 
+        svars_info = self._svar_info.get_svars_info(zone_names=[zone_name], domain_name=domain_name)
+        if svar_name not in svars_info.svars:        
+            return
+        return np.zeros(zones_info[zone_name].count*svars_info[svar_name].dimension, dtype=svars_info[svar_name].field_type)             
+            
+    
     def get_svar_data(
         self,
         svar_name: str,               
@@ -540,7 +545,22 @@ class SvarData:
                       floatPayload = FieldDataProtoModule.FloatPayload (
                           payload = svar_data
                       )
-                    )
+                    ) if svar_data.dtype.type == np.float32 else 
+                    SvarProtoModule.Payload (
+                      doublePayload = FieldDataProtoModule.DoublePayload (
+                          payload = svar_data
+                      )
+                    ) if svar_data.dtype.type == np.float64 else                    
+                    SvarProtoModule.Payload (
+                      intPayload = FieldDataProtoModule.IntPayload (
+                          payload = svar_data
+                      )
+                    ) if svar_data.dtype.type == np.int32 else 
+                    SvarProtoModule.Payload (
+                      longPayload = FieldDataProtoModule.LongPayload (
+                          payload = svar_data
+                      )
+                    )                      
                   )
                   for svar_data in svar_data_list if svar_data.size > 0
                 ]
