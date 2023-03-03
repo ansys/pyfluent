@@ -1067,7 +1067,8 @@ def get_unit_from_map(quantity_map_from_settings_api):
 
 class Quantity(float):
     """This class instantiates physical quantities using their real values and
-    units.
+    units. All the instances of this class are converted to base SI units system to have
+    consistency in all arithmetic operations.
 
     Attributes
     ----------
@@ -1091,9 +1092,6 @@ class Quantity(float):
     Returns
     -------
     Quantity instance.
-
-    All the instances of this class are converted to base SI units system to have
-    consistency in all arithmetic operations.
     """
 
     def __init__(self, real_value, unit_str=None, quantity_map=None, dimensions=None):
