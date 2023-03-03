@@ -157,6 +157,10 @@ class TestLoadMachines(unittest.TestCase):
     def tearDown(self):
         self._machineList.reset()
 
+    def test_machine_info(self):
+        machineList = load_machines(machine_info=[{'machine-name' : 1, 'core-count' : 6}, {'machine-name' : 2, 'core-count' : 6}])
+        self.assertEqual(machineList.number_of_cores, 12)
+
     def test_no_environment(self):
         machineList = load_machines()
         self.assertEqual(machineList[0].host_name, socket.gethostname())
