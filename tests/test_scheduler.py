@@ -394,6 +394,12 @@ class TestMachineListCmdLine(unittest.TestCase):
                 self.assertEqual(
                     machine.number_of_cores, self._expectedValues[machine.host_name]
                 )
+    
+    def test_no_machine_name(self):
+        hostList = "M0:2,M1:2,"
+        with self.assertRaises(RuntimeError) as cm:
+            _parse_host_info(hostList)
+        self.assertEqual(str(cm.exception), 'Problem with machine list format.')
 
     def test_host_file(self):
         import os.path
