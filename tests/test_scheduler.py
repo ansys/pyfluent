@@ -11,6 +11,7 @@ from ansys.fluent.core.scheduler.load_machines import (
     _parse_host_info,
     _parse_machine_data,
     load_machines,
+    _restrict_machines_to_core_count,
 )
 from ansys.fluent.core.scheduler.machine_list import Machine, MachineList
 
@@ -158,8 +159,17 @@ class TestLoadMachines(unittest.TestCase):
         self._machineList.reset()
 
     def test_machine_info(self):
-        machineList = load_machines(machine_info=[{'machine-name' : 1, 'core-count' : 6}, {'machine-name' : 2, 'core-count' : 6}])
-        self.assertEqual(machineList.number_of_cores, 12)
+        info = [{'machine-name' : 'M0', 'core-count' : 1},
+                {'machine-name' : 'M1', 'core-count' : 6}]
+        machineList = load_machines(machine_info = info)
+        self.assertEqual(machineList.number_of_cores, 7)
+
+    def test_restrict_machines(self):
+        info = [{'machine-name' : 'M0', 'core-count' : 1},
+                {'machine-name' : 'M1', 'core-count' : 1}]
+        machineList = load_machines(machine_info = info)
+        old_machine_list = _restrict_machines_to_core_count(machineList, ncores= machineList.number_of_cores)
+        self.assertEqual(machineList, old_machine_list)
 
     def test_no_environment(self):
         machineList = load_machines()
