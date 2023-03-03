@@ -60,9 +60,30 @@ api-codegen:
 	@python codegen/allapigen.py
 	@rm -rf env
 
-build-doc:
+build-doc-source:
+	@sudo rm -rf doc/source/api/meshing/datamodel
+	@sudo rm -rf doc/source/api/meshing/tui
+	@sudo rm -rf doc/source/api/solver/datamodel
+	@sudo rm -rf doc/source/api/solver/tui
+	@sudo rm -rf doc/source/api/solver/_autosummary
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@pip install -r requirements/requirements_doc.txt
+	@xvfb-run make -C doc html
+
+build-doc-no-settings:
+	@sudo rm -rf doc/source/api/solver/_autosummary
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
+	@pip install -r requirements/requirements_doc.txt
+	@xvfb-run make -C doc html
+
+build-doc-settings:
+	@sudo rm -rf doc/source/api/meshing/datamodel
+	@sudo rm -rf doc/source/api/meshing/tui
+	@sudo rm -rf doc/source/api/solver/datamodel
+	@sudo rm -rf doc/source/api/solver/tui
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
+	@pip install -r requirements/requirements_doc.txt
+	@git clean -fdx doc
 	@xvfb-run make -C doc html
 
 compare-flobject:
