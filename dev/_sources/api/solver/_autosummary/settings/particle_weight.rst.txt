@@ -7,14 +7,17 @@ particle_weight
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.particle_weight
 
-.. autoclass:: particle_weight
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   particle_weight
+
+.. rubric:: Attributes
 
 ================================================   ================================
 
-Child                                                                       Summary
+Attribute                                                                   Summary
 
 ================================================   ================================
 :ref:`use <use>`                                                       'use' child.

@@ -7,9 +7,12 @@ average_over
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.average_over
 
-.. autoclass:: average_over
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   average_over
+
 .. rubric:: Included in:
 
 ================================================================   =================================================

@@ -7,9 +7,12 @@ cbf_lam
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cbf_lam
 
-.. autoclass:: cbf_lam
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   cbf_lam
+
 .. rubric:: Included in:
 
 ==================================   =========================

@@ -7,14 +7,17 @@ fan_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fan_child
 
-.. autoclass:: fan_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   fan_child
+
+.. rubric:: Attributes
 
 ========================================================================   ============================================
 
-Child                                                                                                           Summary
+Attribute                                                                                                       Summary
 
 ========================================================================   ============================================
 :ref:`phase <phase_4>`                                                                                   'phase' child.

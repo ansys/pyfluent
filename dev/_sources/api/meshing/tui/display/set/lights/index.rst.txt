@@ -3,11 +3,6 @@
 meshing.tui.display.set.lights
 ==============================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.set.lights
-   :members: set_ambient_color, set_light, headlight_on, lights_on, lighting_interpolation
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.display.set.lights
+   :autosummary:
 

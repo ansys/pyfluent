@@ -7,9 +7,12 @@ shell_conduction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.shell_conduction
 
-.. autoclass:: shell_conduction
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   shell_conduction
+
 .. rubric:: Named object type
 
 :ref:`shell_conduction_child <shell_conduction_child>`

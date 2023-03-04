@@ -7,9 +7,12 @@ density_func_expo
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.density_func_expo
 
-.. autoclass:: density_func_expo
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   density_func_expo
+
 .. rubric:: Included in:
 
 ==================================   ==================================================

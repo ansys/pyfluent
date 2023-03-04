@@ -7,9 +7,12 @@ exp_p3
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.exp_p3
 
-.. autoclass:: exp_p3
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   exp_p3
+
 .. rubric:: Included in:
 
 ==================================   =================================

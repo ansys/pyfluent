@@ -7,9 +7,12 @@ radius
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.radius
 
-.. autoclass:: radius
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   radius
+
 .. rubric:: Included in:
 
 ==========================================   ============================

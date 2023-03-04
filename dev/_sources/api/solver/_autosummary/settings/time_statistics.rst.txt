@@ -7,9 +7,12 @@ time_statistics
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.time_statistics
 
-.. autoclass:: time_statistics
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   time_statistics
+
 .. rubric:: Included in:
 
 ======================   ===================

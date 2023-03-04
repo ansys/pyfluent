@@ -7,9 +7,12 @@ bubble_number_density
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.bubble_number_density
 
-.. autoclass:: bubble_number_density
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   bubble_number_density
+
 .. rubric:: Included in:
 
 ==============================   =======================

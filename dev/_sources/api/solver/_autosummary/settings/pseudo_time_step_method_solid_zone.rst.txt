@@ -7,9 +7,12 @@ pseudo_time_step_method_solid_zone
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pseudo_time_step_method_solid_zone
 
-.. autoclass:: pseudo_time_step_method_solid_zone
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   pseudo_time_step_method_solid_zone
+
 .. rubric:: Included in:
 
 ==============================================================================   ===============================================

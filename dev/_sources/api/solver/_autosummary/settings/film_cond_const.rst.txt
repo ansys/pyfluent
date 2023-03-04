@@ -7,9 +7,12 @@ film_cond_const
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.film_cond_const
 
-.. autoclass:: film_cond_const
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   film_cond_const
+
 .. rubric:: Included in:
 
 ===================================   =================================

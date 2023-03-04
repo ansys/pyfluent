@@ -7,9 +7,12 @@ ref_frame
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ref_frame
 
-.. autoclass:: ref_frame
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   ref_frame
+
 .. rubric:: Included in:
 
 ====================================   ==========================

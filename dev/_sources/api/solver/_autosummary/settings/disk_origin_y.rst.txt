@@ -7,9 +7,12 @@ disk_origin_y
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.disk_origin_y
 
-.. autoclass:: disk_origin_y
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   disk_origin_y
+
 .. rubric:: Included in:
 
 ================================   ===============================================

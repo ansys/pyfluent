@@ -7,9 +7,12 @@ kw_vorticity_based_production
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.kw_vorticity_based_production
 
-.. autoclass:: kw_vorticity_based_production
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   kw_vorticity_based_production
+
 .. rubric:: Included in:
 
 ============================================   ==============================

@@ -7,9 +7,12 @@ more_than_std_dev
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.more_than_std_dev
 
-.. autoclass:: more_than_std_dev
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   more_than_std_dev
+
 .. rubric:: Included in:
 
 =========================   ===================

@@ -7,9 +7,12 @@ p_backflow_spec_gen
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.p_backflow_spec_gen
 
-.. autoclass:: p_backflow_spec_gen
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   p_backflow_spec_gen
+
 .. rubric:: Included in:
 
 ====================================================   ===========================================

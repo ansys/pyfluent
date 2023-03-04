@@ -7,14 +7,17 @@ set
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set
 
-.. autoclass:: set
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   set
+
+.. rubric:: Attributes
 
 ==================================================================   =====================================================================================================================
 
-Child                                                                                                                                                                              Summary
+Attribute                                                                                                                                                                          Summary
 
 ==================================================================   =====================================================================================================================
 :ref:`anisotropic_boundary_zones <anisotropic_boundary_zones>`                                                    Set the boundary zones to specify directions for anisotropic refinement.
@@ -45,11 +48,11 @@ Child                                                                           
 
 ==================================================================   =====================================================================================================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ==========================================   ===================================
 
-Command                                                                  Summary
+Method                                                                   Summary
 
 ==========================================   ===================================
 :ref:`dynamic_adaption <dynamic_adaption>`       Adapt the mesh during solution.

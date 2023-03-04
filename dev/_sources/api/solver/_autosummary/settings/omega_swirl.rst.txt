@@ -7,9 +7,12 @@ omega_swirl
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.omega_swirl
 
-.. autoclass:: omega_swirl
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   omega_swirl
+
 .. rubric:: Included in:
 
 ==================================================   ==========================================

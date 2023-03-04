@@ -3,18 +3,13 @@
 solver.tui.setup.boundary\_conditions.expert
 ============================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.boundary_conditions.expert
-   :members: non_overlapping_zone_name, openchannel_threads, open_channel_wave_settings, target_mass_flow_rate_settings
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert
+   :autosummary:
 
 .. toctree::
    :hidden:
 
    perforated_walls/index
+   periodic_conditions/index
    impedance_data_fitting/index
    non_reflecting_bc/index
-   periodic_conditions/index

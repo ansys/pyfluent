@@ -7,9 +7,12 @@ outlet_vent
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.outlet_vent
 
-.. autoclass:: outlet_vent
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   outlet_vent
+
 .. rubric:: Named object type
 
 :ref:`outlet_vent_child <outlet_vent_child>`

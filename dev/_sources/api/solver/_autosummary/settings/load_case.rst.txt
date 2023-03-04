@@ -7,9 +7,12 @@ load_case
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.load_case
 
-.. autoclass:: load_case
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   load_case
+
 .. rubric:: Included in:
 
 ==================   =================

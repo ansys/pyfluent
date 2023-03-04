@@ -3,26 +3,21 @@
 solver.tui.file
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file
-   :members: read_case_data, load_act_tool, read_case_settings, read_viewfactors, confirm_overwrite, read_case_info, single_precision_coordinates, data_file_options, read_isat_table, write_flamelet, write_cleanup_script, set_target_reference_frame_for_write_profiles, set_err_on_inval_cmd, write_data, write_settings, write_profile, read_rays, read_data, read_field_functions, set_tui_version, reload_setup, stop_journal, cff_files, start_transcript, show_configuration, read_macros, set_idle_timeout, write_fan_profile, read_journal, replace_mesh, export_to_cfd_post, read_pdf, stop_macro, write_boundary_mesh, start_journal, write_merge_profiles, write_injections, write_currently_defined_profiles, write_isat_table, execute_macro, read_profile, read_surface_clusters, write_macros, read_transient_table, close_without_save, write_field_functions, read_settings, write_selected_defined_profiles, read_case, stop_transcript, write_case, binary_legacy_files, set_batch_options, sync_workbench, write_pdf, read_injections, write_pdat, write_circumferential_averaged_profile, write_case_data, async_optimize, define_macro
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.file
+   :autosummary:
 
 .. toctree::
    :hidden:
 
-   parametric_project/index
-   fsi/index
-   import_/index
-   auto_save/index
-   table_manager/index
-   cffio_options/index
-   em_mapping/index
    project/index
+   table_manager/index
+   export/index
    interpolate/index
+   auto_save/index
    transient_export/index
    solution_files/index
-   export/index
+   import_/index
+   em_mapping/index
+   parametric_project/index
+   cffio_options/index
+   fsi/index

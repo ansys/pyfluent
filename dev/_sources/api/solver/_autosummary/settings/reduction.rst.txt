@@ -7,25 +7,28 @@ reduction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reduction
 
-.. autoclass:: reduction
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   reduction
+
+.. rubric:: Attributes
 
 ========================================   ==========================================================================================================
 
-Child                                                                                                                                         Summary
+Attribute                                                                                                                                     Summary
 
 ========================================   ==========================================================================================================
 :ref:`setup_reduction <setup_reduction>`       Set up the sample data reduction by specifying all relevant options and setting parameters as desired.
 
 ========================================   ==========================================================================================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ====================================================   ====================================================================================================
 
-Command                                                                                                                                             Summary
+Method                                                                                                                                              Summary
 
 ====================================================   ====================================================================================================
 :ref:`pick_sample_to_reduce <pick_sample_to_reduce>`                           Pick a sample for which to first set-up and then perform the data reduction.

@@ -7,9 +7,12 @@ enable_geko
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.enable_geko
 
-.. autoclass:: enable_geko
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   enable_geko
+
 .. rubric:: Included in:
 
 ==========================   ====================

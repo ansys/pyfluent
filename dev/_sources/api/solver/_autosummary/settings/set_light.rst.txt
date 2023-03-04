@@ -7,9 +7,12 @@ set_light
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_light
 
-.. autoclass:: set_light
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   set_light
+
 .. rubric:: Arguments
 
 ======================================================   ===================================

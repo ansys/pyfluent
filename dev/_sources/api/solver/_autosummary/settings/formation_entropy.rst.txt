@@ -7,14 +7,17 @@ formation_entropy
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.formation_entropy
 
-.. autoclass:: formation_entropy
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   formation_entropy
+
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

@@ -7,14 +7,17 @@ direction_2_y
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.direction_2_y
 
-.. autoclass:: direction_2_y
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   direction_2_y
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

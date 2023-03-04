@@ -7,9 +7,12 @@ reference_direction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reference_direction
 
-.. autoclass:: reference_direction
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   reference_direction
+
 .. rubric:: Named object type
 
 :ref:`child_object_type_child <child_object_type_child_1>`

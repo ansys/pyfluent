@@ -3,11 +3,6 @@
 solver.tui.views.display\_states
 ================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.views.display_states
-   :members: list, new, write, use_active, edit, restore_state, rename, copy, delete, read
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.views.display_states
+   :autosummary:
 

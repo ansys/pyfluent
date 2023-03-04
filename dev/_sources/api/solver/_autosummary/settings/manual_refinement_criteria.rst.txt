@@ -7,9 +7,12 @@ manual_refinement_criteria
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.manual_refinement_criteria
 
-.. autoclass:: manual_refinement_criteria
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   manual_refinement_criteria
+
 .. rubric:: Included in:
 
 ====================   ==================

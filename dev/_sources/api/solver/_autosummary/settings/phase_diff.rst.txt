@@ -7,14 +7,17 @@ phase_diff
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.phase_diff
 
-.. autoclass:: phase_diff
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   phase_diff
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

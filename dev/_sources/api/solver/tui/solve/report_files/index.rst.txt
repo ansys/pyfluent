@@ -3,11 +3,6 @@
 solver.tui.solve.report\_files
 ==============================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.report_files
-   :members: list, add, clear_data, delete_all, edit, list_properties, delete
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solve.report_files
+   :autosummary:
 

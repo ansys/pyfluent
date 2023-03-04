@@ -7,9 +7,12 @@ gaussian_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.gaussian_factor
 
-.. autoclass:: gaussian_factor
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   gaussian_factor
+
 .. rubric:: Included in:
 
 ==========================================   =============================

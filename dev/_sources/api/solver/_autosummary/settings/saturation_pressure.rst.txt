@@ -7,14 +7,17 @@ saturation_pressure
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.saturation_pressure
 
-.. autoclass:: saturation_pressure
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   saturation_pressure
+
+.. rubric:: Attributes
 
 ====================================================   ====================================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

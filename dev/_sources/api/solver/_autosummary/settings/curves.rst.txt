@@ -7,14 +7,17 @@ curves
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.curves
 
-.. autoclass:: curves
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   curves
+
+.. rubric:: Attributes
 
 ========================   ====================
 
-Child                                   Summary
+Attribute                               Summary
 
 ========================   ====================
 :ref:`lines <lines>`             'lines' child.

@@ -7,9 +7,12 @@ mass_flow_outlet
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mass_flow_outlet
 
-.. autoclass:: mass_flow_outlet
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   mass_flow_outlet
+
 .. rubric:: Named object type
 
 :ref:`mass_flow_inlet_child <mass_flow_inlet_child>`

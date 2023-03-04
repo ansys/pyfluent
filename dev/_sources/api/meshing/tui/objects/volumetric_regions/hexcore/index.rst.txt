@@ -3,13 +3,8 @@
 meshing.tui.objects.volumetric\_regions.hexcore
 ===============================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects.volumetric_regions.hexcore
-   :members: generate
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore
+   :autosummary:
 
 .. toctree::
    :hidden:

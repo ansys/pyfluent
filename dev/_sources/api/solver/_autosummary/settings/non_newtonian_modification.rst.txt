@@ -7,9 +7,12 @@ non_newtonian_modification
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.non_newtonian_modification
 
-.. autoclass:: non_newtonian_modification
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   non_newtonian_modification
+
 .. rubric:: Included in:
 
 ============================================   ==============================

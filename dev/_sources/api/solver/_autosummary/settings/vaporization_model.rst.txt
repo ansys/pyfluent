@@ -7,14 +7,17 @@ vaporization_model
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.vaporization_model
 
-.. autoclass:: vaporization_model
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   vaporization_model
+
+.. rubric:: Attributes
 
 ========================================================================   ====================================================
 
-Child                                                                                                                   Summary
+Attribute                                                                                                               Summary
 
 ========================================================================   ====================================================
 :ref:`option <option_9>`                                                       Select method for calculating material property.

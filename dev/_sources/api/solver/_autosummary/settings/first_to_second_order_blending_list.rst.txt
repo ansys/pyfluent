@@ -7,9 +7,12 @@ first_to_second_order_blending_list
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.first_to_second_order_blending_list
 
-.. autoclass:: first_to_second_order_blending_list
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   first_to_second_order_blending_list
+
 .. rubric:: Included in:
 
 ========================   ====================

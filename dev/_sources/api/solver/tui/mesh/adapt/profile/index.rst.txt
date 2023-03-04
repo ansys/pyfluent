@@ -3,11 +3,6 @@
 solver.tui.mesh.adapt.profile
 =============================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.mesh.adapt.profile
-   :members: clear, disable, enable, print
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.profile
+   :autosummary:
 

@@ -7,14 +7,17 @@ blade_flap_angles
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.blade_flap_angles
 
-.. autoclass:: blade_flap_angles
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   blade_flap_angles
+
+.. rubric:: Attributes
 
 ============================================================   =====================================================================
 
-Child                                                                                                                        Summary
+Attribute                                                                                                                    Summary
 
 ============================================================   =====================================================================
 :ref:`blade_flapping_cone <blade_flapping_cone>`                                                     Set blade flapping cone angle:.

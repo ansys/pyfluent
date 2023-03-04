@@ -7,9 +7,12 @@ source_terms
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.source_terms_1
 
-.. autoclass:: source_terms
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   source_terms
+
 .. rubric:: Named object type
 
 :ref:`source_terms_child <source_terms_child>`

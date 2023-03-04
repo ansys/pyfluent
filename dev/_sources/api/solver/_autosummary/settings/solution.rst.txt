@@ -7,14 +7,17 @@ solution
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.solution
 
-.. autoclass:: solution
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   solution
+
+.. rubric:: Attributes
 
 ==================================================   =================================
 
-Child                                                                          Summary
+Attribute                                                                      Summary
 
 ==================================================   =================================
 :ref:`controls <controls>`                                           'controls' child.

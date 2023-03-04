@@ -7,9 +7,12 @@ sdr_prandtl
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.sdr_prandtl
 
-.. autoclass:: sdr_prandtl
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   sdr_prandtl
+
 .. rubric:: Included in:
 
 ==================================   =========================

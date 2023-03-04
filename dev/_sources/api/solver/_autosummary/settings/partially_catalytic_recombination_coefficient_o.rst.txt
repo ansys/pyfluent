@@ -7,14 +7,17 @@ partially_catalytic_recombination_coefficient_o
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.partially_catalytic_recombination_coefficient_o
 
-.. autoclass:: partially_catalytic_recombination_coefficient_o
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   partially_catalytic_recombination_coefficient_o
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

@@ -7,9 +7,12 @@ new_report_name
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.new_report_name
 
-.. autoclass:: new_report_name
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   new_report_name
+
 .. rubric:: Included in:
 
 ==========================================================   =====================================================

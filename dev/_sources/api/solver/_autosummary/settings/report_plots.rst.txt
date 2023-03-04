@@ -7,9 +7,12 @@ report_plots
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.report_plots
 
-.. autoclass:: report_plots
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   report_plots
+
 .. rubric:: Named object type
 
 :ref:`report_plots_child <report_plots_child>`

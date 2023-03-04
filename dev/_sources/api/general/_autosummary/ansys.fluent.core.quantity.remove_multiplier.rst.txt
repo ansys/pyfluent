@@ -1,0 +1,6 @@
+remove\_multiplier
+==================
+
+.. currentmodule:: ansys.fluent.core.quantity
+
+.. autofunction:: remove_multiplier

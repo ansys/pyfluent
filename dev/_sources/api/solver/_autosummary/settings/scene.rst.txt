@@ -7,14 +7,17 @@ scene
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.scene
 
-.. autoclass:: scene
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Commands
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   scene
+
+.. rubric:: Methods
 
 ========================================   =============================================
 
-Command                                                                          Summary
+Method                                                                           Summary
 
 ========================================   =============================================
 :ref:`display <display_1>`                                      Display graphics object.

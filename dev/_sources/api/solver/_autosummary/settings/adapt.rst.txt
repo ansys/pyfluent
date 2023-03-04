@@ -7,14 +7,17 @@ adapt
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.adapt
 
-.. autoclass:: adapt
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   adapt
+
+.. rubric:: Attributes
 
 ==============================================================   ======================================================
 
-Child                                                                                                           Summary
+Attribute                                                                                                       Summary
 
 ==============================================================   ======================================================
 :ref:`refinement_criteria <refinement_criteria>`                                           'refinement_criteria' child.
@@ -37,11 +40,11 @@ Child                                                                           
 
 ==============================================================   ======================================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ======================================================   ================================================================
 
-Command                                                                                                           Summary
+Method                                                                                                            Summary
 
 ======================================================   ================================================================
 :ref:`adapt_mesh <adapt_mesh>`                               Adapt the mesh based on set refinement/coarsening criterion.

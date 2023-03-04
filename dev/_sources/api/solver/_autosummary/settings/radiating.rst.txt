@@ -7,9 +7,12 @@ radiating
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.radiating
 
-.. autoclass:: radiating
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   radiating
+
 .. rubric:: Included in:
 
 ==================================   =================================

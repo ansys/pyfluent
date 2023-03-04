@@ -7,14 +7,17 @@ periodic_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.periodic_child
 
-.. autoclass:: periodic_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   periodic_child
+
+.. rubric:: Attributes
 
 ====================================   ==========================
 
-Child                                                     Summary
+Attribute                                                 Summary
 
 ====================================   ==========================
 :ref:`phase <phase_14>`                            'phase' child.

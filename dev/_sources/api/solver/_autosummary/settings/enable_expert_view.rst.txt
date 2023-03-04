@@ -7,9 +7,12 @@ enable_expert_view
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.enable_expert_view
 
-.. autoclass:: enable_expert_view
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   enable_expert_view
+
 .. rubric:: Included in:
 
 ======================================   ==============================================================================================================================================================================================================

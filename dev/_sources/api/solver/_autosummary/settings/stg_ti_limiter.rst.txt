@@ -7,9 +7,12 @@ stg_ti_limiter
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.stg_ti_limiter
 
-.. autoclass:: stg_ti_limiter
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   stg_ti_limiter
+
 .. rubric:: Included in:
 
 ==================================================   ==========================================

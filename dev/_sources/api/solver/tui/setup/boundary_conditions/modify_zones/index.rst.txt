@@ -3,11 +3,6 @@
 solver.tui.setup.boundary\_conditions.modify\_zones
 ===================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.boundary_conditions.modify_zones
-   :members: copy_mesh_to_mrf_motion, convert_all_solid_mrf_to_solid_motion, zone_type, make_periodic, change_zone_state, mrf_to_sliding_mesh, sep_cell_zone_region, rotate_zone, copy_mrf_to_mesh_motion, translate_zone, create_periodic_interface, extrude_face_zone_para, append_mesh, extrude_face_zone_delta, slit_face_zone, sep_face_zone_angle, deactivate_cell_zone, sep_face_zone_region, orient_face_zone, delete_all_shells, zone_name, recreate_all_shells, matching_tolerance, create_all_shell_threads, slit_interior_between_diff_solids, append_mesh_data, merge_zones, activate_cell_zone, slit_periodic, replace_zone, change_zone_phase, list_zones, sep_face_zone_face, sep_face_zone_mark, fuse_face_zones, copy_move_cell_zone, scale_zone, delete_cell_zone, sep_cell_zone_mark
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.modify_zones
+   :autosummary:
 

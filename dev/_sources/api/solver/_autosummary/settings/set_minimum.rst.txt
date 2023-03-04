@@ -7,9 +7,12 @@ set_minimum
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_minimum
 
-.. autoclass:: set_minimum
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   set_minimum
+
 .. rubric:: Arguments
 
 ==============================   =======================

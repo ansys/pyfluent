@@ -7,9 +7,12 @@ init_acoustics_options
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.init_acoustics_options
 
-.. autoclass:: init_acoustics_options
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   init_acoustics_options
+
 .. rubric:: Arguments
 
 ==============================================   ===========================================================

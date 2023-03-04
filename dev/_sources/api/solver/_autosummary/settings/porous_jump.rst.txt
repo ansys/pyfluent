@@ -7,9 +7,12 @@ porous_jump
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.porous_jump
 
-.. autoclass:: porous_jump
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   porous_jump
+
 .. rubric:: Named object type
 
 :ref:`porous_jump_child <porous_jump_child>`

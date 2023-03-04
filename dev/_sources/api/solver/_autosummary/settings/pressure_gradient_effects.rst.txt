@@ -7,9 +7,12 @@ pressure_gradient_effects
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pressure_gradient_effects
 
-.. autoclass:: pressure_gradient_effects
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   pressure_gradient_effects
+
 .. rubric:: Included in:
 
 ========================================================================   ============================================

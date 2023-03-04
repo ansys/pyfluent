@@ -7,9 +7,12 @@ schnerr_evap_coeff
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.schnerr_evap_coeff
 
-.. autoclass:: schnerr_evap_coeff
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   schnerr_evap_coeff
+
 .. rubric:: Included in:
 
 ==============================   =====================================

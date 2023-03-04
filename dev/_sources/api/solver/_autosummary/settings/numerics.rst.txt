@@ -7,14 +7,17 @@ numerics
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.numerics
 
-.. autoclass:: numerics
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   numerics
+
+.. rubric:: Attributes
 
 ==================================   ==========================================================================================================
 
-Child                                                                                                                                   Summary
+Attribute                                                                                                                               Summary
 
 ==================================   ==========================================================================================================
 :ref:`averaging <averaging>`             Menu containing options to enable/disable node-based averaging of DPM variables and DPM source terms. 

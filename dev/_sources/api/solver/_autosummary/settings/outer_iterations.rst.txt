@@ -7,9 +7,12 @@ outer_iterations
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.outer_iterations
 
-.. autoclass:: outer_iterations
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   outer_iterations
+
 .. rubric:: Included in:
 
 ================================   =======================================================

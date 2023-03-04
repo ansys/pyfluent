@@ -7,9 +7,12 @@ mechanical_apdl
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mechanical_apdl
 
-.. autoclass:: mechanical_apdl
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   mechanical_apdl
+
 .. rubric:: Arguments
 
 ==========================================   =============================

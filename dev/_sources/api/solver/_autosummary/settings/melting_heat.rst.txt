@@ -7,14 +7,17 @@ melting_heat
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.melting_heat
 
-.. autoclass:: melting_heat
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   melting_heat
+
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

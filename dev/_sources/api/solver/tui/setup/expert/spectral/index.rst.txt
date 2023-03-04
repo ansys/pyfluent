@@ -3,11 +3,6 @@
 solver.tui.setup.expert.spectral
 ================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.expert.spectral
-   :members: calculate_harmonic_exports, delete_fourier_coefficients, delete_harmonic_exports, calculate_fourier_coefficients
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral
+   :autosummary:
 

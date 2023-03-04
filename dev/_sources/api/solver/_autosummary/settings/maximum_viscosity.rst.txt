@@ -7,9 +7,12 @@ maximum_viscosity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.maximum_viscosity
 
-.. autoclass:: maximum_viscosity
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   maximum_viscosity
+
 .. rubric:: Included in:
 
 ========================================================   ====================================

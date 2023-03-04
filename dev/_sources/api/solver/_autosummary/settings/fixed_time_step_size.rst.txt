@@ -7,9 +7,12 @@ fixed_time_step_size
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fixed_time_step_size
 
-.. autoclass:: fixed_time_step_size
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   fixed_time_step_size
+
 .. rubric:: Included in:
 
 ============================================================   ======================================

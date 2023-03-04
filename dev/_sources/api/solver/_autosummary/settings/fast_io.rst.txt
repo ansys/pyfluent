@@ -7,9 +7,12 @@ fast_io
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fast_io
 
-.. autoclass:: fast_io
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   fast_io
+
 .. rubric:: Included in:
 
 ==================   ================

@@ -3,11 +3,6 @@
 solver.tui.solution.methods.multiphase\_numerics.advanced\_stability\_controls.equation\_order
 ==============================================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.equation_order
-   :members: solve_exp_vof_at_end, solve_flow_last
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.equation_order
+   :autosummary:
 

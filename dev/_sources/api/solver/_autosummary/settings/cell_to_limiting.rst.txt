@@ -7,9 +7,12 @@ cell_to_limiting
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cell_to_limiting
 
-.. autoclass:: cell_to_limiting
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   cell_to_limiting
+
 .. rubric:: Included in:
 
 ======================================================================   ===========================================

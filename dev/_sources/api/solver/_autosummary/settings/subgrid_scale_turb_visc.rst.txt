@@ -7,9 +7,12 @@ subgrid_scale_turb_visc
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.subgrid_scale_turb_visc
 
-.. autoclass:: subgrid_scale_turb_visc
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   subgrid_scale_turb_visc
+
 .. rubric:: Included in:
 
 ==================================   =========================

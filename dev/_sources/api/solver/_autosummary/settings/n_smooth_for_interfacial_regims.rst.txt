@@ -7,9 +7,12 @@ n_smooth_for_interfacial_regims
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.n_smooth_for_interfacial_regims
 
-.. autoclass:: n_smooth_for_interfacial_regims
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   n_smooth_for_interfacial_regims
+
 .. rubric:: Included in:
 
 ==========================================================================   =============================================

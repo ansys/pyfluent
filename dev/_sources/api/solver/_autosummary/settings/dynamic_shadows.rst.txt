@@ -7,9 +7,12 @@ dynamic_shadows
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dynamic_shadows
 
-.. autoclass:: dynamic_shadows
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   dynamic_shadows
+
 .. rubric:: Included in:
 
 ==================================================   ==========================================

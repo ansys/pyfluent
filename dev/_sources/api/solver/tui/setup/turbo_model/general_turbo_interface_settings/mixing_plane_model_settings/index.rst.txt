@@ -3,11 +3,6 @@
 solver.tui.setup.turbo\_model.general\_turbo\_interface\_settings.mixing\_plane\_model\_settings
 ================================================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings
-   :members: averaging_method, bands_type, mixing_set_constraint, number_of_bands, list_mixing_planes
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings
+   :autosummary:
 

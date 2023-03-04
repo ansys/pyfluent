@@ -7,9 +7,12 @@ roughness_correlation_fcn
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.roughness_correlation_fcn
 
-.. autoclass:: roughness_correlation_fcn
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   roughness_correlation_fcn
+
 .. rubric:: Included in:
 
 ====================================================   ==================================

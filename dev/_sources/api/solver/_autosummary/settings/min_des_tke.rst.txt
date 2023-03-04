@@ -7,9 +7,12 @@ min_des_tke
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.min_des_tke
 
-.. autoclass:: min_des_tke
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   min_des_tke
+
 .. rubric:: Included in:
 
 ======================   ===================

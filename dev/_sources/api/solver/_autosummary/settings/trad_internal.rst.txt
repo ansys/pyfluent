@@ -7,9 +7,12 @@ trad_internal
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.trad_internal
 
-.. autoclass:: trad_internal
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   trad_internal
+
 .. rubric:: Included in:
 
 ===================================   =================================

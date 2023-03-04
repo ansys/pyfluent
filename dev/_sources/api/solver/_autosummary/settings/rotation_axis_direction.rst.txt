@@ -7,9 +7,12 @@ rotation_axis_direction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rotation_axis_direction
 
-.. autoclass:: rotation_axis_direction
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   rotation_axis_direction
+
 .. rubric:: Named object type
 
 :ref:`axis_direction_child <axis_direction_child>`

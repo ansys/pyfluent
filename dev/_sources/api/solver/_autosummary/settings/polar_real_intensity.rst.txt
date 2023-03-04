@@ -7,9 +7,12 @@ polar_real_intensity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.polar_real_intensity
 
-.. autoclass:: polar_real_intensity
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   polar_real_intensity
+
 .. rubric:: Included in:
 
 ====================================================   ===========================================

@@ -7,9 +7,12 @@ interrupt
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.interrupt
 
-.. autoclass:: interrupt
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   interrupt
+
 .. rubric:: Arguments
 
 ========================================   ============================

@@ -7,14 +7,17 @@ premix_critical_strain
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.premix_critical_strain
 
-.. autoclass:: premix_critical_strain
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   premix_critical_strain
+
+.. rubric:: Attributes
 
 ====================================================   ====================================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

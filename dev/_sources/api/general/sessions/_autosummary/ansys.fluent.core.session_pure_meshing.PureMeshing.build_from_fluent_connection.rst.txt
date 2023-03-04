@@ -1,0 +1,6 @@
+build\_from\_fluent\_connection
+===============================
+
+.. currentmodule:: ansys.fluent.core.session_pure_meshing
+
+.. automethod:: PureMeshing.build_from_fluent_connection

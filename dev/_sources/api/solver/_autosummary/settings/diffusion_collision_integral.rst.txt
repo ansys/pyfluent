@@ -7,9 +7,12 @@ diffusion_collision_integral
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.diffusion_collision_integral
 
-.. autoclass:: diffusion_collision_integral
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   diffusion_collision_integral
+
 .. rubric:: Included in:
 
 ==================================================================   =========================================

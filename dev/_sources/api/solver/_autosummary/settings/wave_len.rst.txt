@@ -7,14 +7,17 @@ wave_len
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.wave_len
 
-.. autoclass:: wave_len
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   wave_len
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

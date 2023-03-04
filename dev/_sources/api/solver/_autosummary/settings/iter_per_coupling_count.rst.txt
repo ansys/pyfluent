@@ -7,9 +7,12 @@ iter_per_coupling_count
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.iter_per_coupling_count
 
-.. autoclass:: iter_per_coupling_count
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   iter_per_coupling_count
+
 .. rubric:: Included in:
 
 ==========================   =====================

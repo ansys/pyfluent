@@ -7,9 +7,12 @@ x_label
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.x_label
 
-.. autoclass:: x_label
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   x_label
+
 .. rubric:: Included in:
 
 ============================================================   ===============================================

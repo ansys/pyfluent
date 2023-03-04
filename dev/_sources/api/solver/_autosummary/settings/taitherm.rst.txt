@@ -7,9 +7,12 @@ taitherm
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.taitherm
 
-.. autoclass:: taitherm
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   taitherm
+
 .. rubric:: Arguments
 
 ============================================   ==============================

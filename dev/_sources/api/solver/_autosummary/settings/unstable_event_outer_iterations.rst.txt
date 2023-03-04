@@ -7,9 +7,12 @@ unstable_event_outer_iterations
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.unstable_event_outer_iterations
 
-.. autoclass:: unstable_event_outer_iterations
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   unstable_event_outer_iterations
+
 .. rubric:: Included in:
 
 ==================================================   ==================================================

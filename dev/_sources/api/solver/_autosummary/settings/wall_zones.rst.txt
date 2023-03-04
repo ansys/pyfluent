@@ -7,9 +7,12 @@ wall_zones
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.wall_zones
 
-.. autoclass:: wall_zones
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   wall_zones
+
 .. rubric:: Included in:
 
 ================================   ========================

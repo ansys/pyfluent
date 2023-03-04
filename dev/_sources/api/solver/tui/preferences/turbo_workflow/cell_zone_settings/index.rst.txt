@@ -3,11 +3,6 @@
 solver.tui.preferences.turbo\_workflow.cell\_zone\_settings
 ===========================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.turbo_workflow.cell_zone_settings
-   :members: czsearch_order, rotating, stationary
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.preferences.turbo_workflow.cell_zone_settings
+   :autosummary:
 

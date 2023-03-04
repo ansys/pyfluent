@@ -7,14 +7,17 @@ general
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.general
 
-.. autoclass:: general
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   general
+
+.. rubric:: Attributes
 
 ====================================================================================   ================================================================
 
-Child                                                                                                                                           Summary
+Attribute                                                                                                                                       Summary
 
 ====================================================================================   ================================================================
 :ref:`solver <solver>`                                                                                                                  'solver' child.

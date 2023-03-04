@@ -3,11 +3,6 @@
 solver.tui.setup.models.multiphase.phases.set\_domain\_properties.interaction\_domain.forces.virtual\_mass
 ==========================================================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.forces.virtual_mass
-   :members: lift, vmass_implicit, cavitation, interphase_visc_disp, slope_limiter, interphase_discr, sfc_model_type, sfc_modeling, jump_adhesion, vmass_coeff, vmass_implicit_options, wall_adhesion, virtual_mass, sfc_tension_coeff, visc_disp_factor, lift_shaver_podowski, lift_montoya
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.forces.virtual_mass
+   :autosummary:
 

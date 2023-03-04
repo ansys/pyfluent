@@ -7,14 +7,17 @@ direction_1_z
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.direction_1_z
 
-.. autoclass:: direction_1_z
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   direction_1_z
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

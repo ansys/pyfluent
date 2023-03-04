@@ -7,14 +7,17 @@ radiator_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.radiator_child
 
-.. autoclass:: radiator_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   radiator_child
+
+.. rubric:: Attributes
 
 ========================================================================   ============================================
 
-Child                                                                                                           Summary
+Attribute                                                                                                       Summary
 
 ========================================================================   ============================================
 :ref:`phase <phase_19>`                                                                                  'phase' child.

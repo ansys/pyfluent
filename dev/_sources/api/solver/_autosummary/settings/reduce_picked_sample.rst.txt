@@ -7,9 +7,12 @@ reduce_picked_sample
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reduce_picked_sample
 
-.. autoclass:: reduce_picked_sample
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   reduce_picked_sample
+
 .. rubric:: Arguments
 
 ==============================================   ===============================

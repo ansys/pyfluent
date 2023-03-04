@@ -7,14 +7,17 @@ geometry_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.geometry_child
 
-.. autoclass:: geometry_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   geometry_child
+
+.. rubric:: Attributes
 
 ============================================   ==========================================================================================
 
-Child                                                                                                                             Summary
+Attribute                                                                                                                         Summary
 
 ============================================   ==========================================================================================
 :ref:`radius_ratio <radius_ratio>`                 The span-wise distance of blade section from rotor origin over rotor tip radius (r/R).

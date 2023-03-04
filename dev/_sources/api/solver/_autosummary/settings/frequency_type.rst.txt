@@ -7,9 +7,12 @@ frequency_type
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.frequency_type
 
-.. autoclass:: frequency_type
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   frequency_type
+
 .. rubric:: Included in:
 
 ==================================================   ============================================================================================================

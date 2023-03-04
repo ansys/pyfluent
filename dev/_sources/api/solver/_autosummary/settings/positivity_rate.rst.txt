@@ -7,9 +7,12 @@ positivity_rate
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.positivity_rate
 
-.. autoclass:: positivity_rate
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   positivity_rate
+
 .. rubric:: Included in:
 
 ======================   ===================

@@ -7,9 +7,12 @@ solve_n_phase
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.solve_n_phase
 
-.. autoclass:: solve_n_phase
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   solve_n_phase
+
 .. rubric:: Included in:
 
 ====================================   =================================================

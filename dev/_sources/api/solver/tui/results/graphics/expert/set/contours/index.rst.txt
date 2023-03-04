@@ -3,11 +3,6 @@
 solver.tui.results.graphics.expert.set.contours
 ===============================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.contours
-   :members: coloring, render_mesh, global_range, log_scale, surfaces, auto_range, n_contour, line_contours, filled_contours, clip_to_range, node_values
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.contours
+   :autosummary:
 

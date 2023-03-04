@@ -7,9 +7,12 @@ res_sat_p2
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.res_sat_p2
 
-.. autoclass:: res_sat_p2
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   res_sat_p2
+
 .. rubric:: Included in:
 
 ==================================   =================================

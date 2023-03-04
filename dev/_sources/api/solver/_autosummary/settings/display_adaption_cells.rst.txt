@@ -7,9 +7,12 @@ display_adaption_cells
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.display_adaption_cells
 
-.. autoclass:: display_adaption_cells
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   display_adaption_cells
+
 .. rubric:: Included in:
 
 ====================   ==================

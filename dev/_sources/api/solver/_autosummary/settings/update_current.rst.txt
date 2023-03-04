@@ -7,9 +7,12 @@ update_current
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.update_current
 
-.. autoclass:: update_current
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   update_current
+
 .. rubric:: Included in:
 
 ======================================   ==========================

@@ -7,9 +7,12 @@ temperature_maximum
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.temperature_maximum
 
-.. autoclass:: temperature_maximum
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   temperature_maximum
+
 .. rubric:: Included in:
 
 ====================================================   ==================================

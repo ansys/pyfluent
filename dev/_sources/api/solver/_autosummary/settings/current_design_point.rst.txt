@@ -7,9 +7,12 @@ current_design_point
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.current_design_point
 
-.. autoclass:: current_design_point
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   current_design_point
+
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

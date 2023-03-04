@@ -7,14 +7,17 @@ recirculation_inlet_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.recirculation_inlet_child
 
-.. autoclass:: recirculation_inlet_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   recirculation_inlet_child
+
+.. rubric:: Attributes
 
 ==================================================================   =========================================
 
-Child                                                                                                  Summary
+Attribute                                                                                              Summary
 
 ==================================================================   =========================================
 :ref:`phase <phase_21>`                                                                         'phase' child.

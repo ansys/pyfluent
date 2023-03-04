@@ -7,9 +7,12 @@ gradient_correction_mode
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.gradient_correction_mode
 
-.. autoclass:: gradient_correction_mode
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   gradient_correction_mode
+
 .. rubric:: Included in:
 
 ========================   ===========================================

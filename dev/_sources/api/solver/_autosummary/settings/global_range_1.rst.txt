@@ -7,9 +7,12 @@ global_range
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.global_range_1
 
-.. autoclass:: global_range
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   global_range
+
 .. rubric:: Included in:
 
 ==========================   =====================

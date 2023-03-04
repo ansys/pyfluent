@@ -7,14 +7,17 @@ rules
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rules
 
-.. autoclass:: rules
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   rules
+
+.. rubric:: Attributes
 
 ========================   ===================
 
-Child                                  Summary
+Attribute                              Summary
 
 ========================   ===================
 :ref:`x_axis <x_axis_1>`       'x_axis' child.

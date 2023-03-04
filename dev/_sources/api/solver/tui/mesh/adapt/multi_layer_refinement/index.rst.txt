@@ -3,11 +3,6 @@
 solver.tui.mesh.adapt.multi\_layer\_refinement
 ==============================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.mesh.adapt.multi_layer_refinement
-   :members: layer_count, boundary_zones, parameters, refine_mesh
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.multi_layer_refinement
+   :autosummary:
 

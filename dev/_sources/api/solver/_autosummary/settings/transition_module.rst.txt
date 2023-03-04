@@ -7,9 +7,12 @@ transition_module
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.transition_module
 
-.. autoclass:: transition_module
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   transition_module
+
 .. rubric:: Included in:
 
 ========================   ====================

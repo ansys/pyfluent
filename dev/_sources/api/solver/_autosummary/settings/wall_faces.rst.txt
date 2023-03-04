@@ -7,9 +7,12 @@ wall_faces
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.wall_faces
 
-.. autoclass:: wall_faces
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   wall_faces
+
 .. rubric:: Included in:
 
 ======================   ===================

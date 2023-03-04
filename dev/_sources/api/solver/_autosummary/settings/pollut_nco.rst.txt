@@ -7,14 +7,17 @@ pollut_nco
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pollut_nco
 
-.. autoclass:: pollut_nco
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   pollut_nco
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

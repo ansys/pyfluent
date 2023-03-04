@@ -7,9 +7,12 @@ max_vf_allowed_for_blocking
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.max_vf_allowed_for_blocking
 
-.. autoclass:: max_vf_allowed_for_blocking
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   max_vf_allowed_for_blocking
+
 .. rubric:: Included in:
 
 ==================================================   ==============================================================================================================

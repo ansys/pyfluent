@@ -7,9 +7,12 @@ convert_hanging_node_zones
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.convert_hanging_node_zones
 
-.. autoclass:: convert_hanging_node_zones
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   convert_hanging_node_zones
+
 .. rubric:: Included in:
 
 ============================   =============================

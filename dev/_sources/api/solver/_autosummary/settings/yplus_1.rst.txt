@@ -7,9 +7,12 @@ yplus
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.yplus_1
 
-.. autoclass:: yplus
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   yplus
+
 .. rubric:: Included in:
 
 =========================   ===================

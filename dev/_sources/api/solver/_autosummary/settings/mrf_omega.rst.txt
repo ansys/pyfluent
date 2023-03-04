@@ -7,14 +7,17 @@ mrf_omega
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mrf_omega
 
-.. autoclass:: mrf_omega
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   mrf_omega
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

@@ -7,9 +7,12 @@ les_embedded_fluctuations
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.les_embedded_fluctuations
 
-.. autoclass:: les_embedded_fluctuations
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   les_embedded_fluctuations
+
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

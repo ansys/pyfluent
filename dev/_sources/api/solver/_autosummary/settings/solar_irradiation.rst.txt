@@ -7,9 +7,12 @@ solar_irradiation
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.solar_irradiation
 
-.. autoclass:: solar_irradiation
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   solar_irradiation
+
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

@@ -7,9 +7,12 @@ restore_state
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.restore_state
 
-.. autoclass:: restore_state
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   restore_state
+
 .. rubric:: Arguments
 
 ==============================   =======================

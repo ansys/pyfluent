@@ -7,9 +7,12 @@ random_surface_inj
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.random_surface_inj
 
-.. autoclass:: random_surface_inj
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   random_surface_inj
+
 .. rubric:: Included in:
 
 ==========================   =====================

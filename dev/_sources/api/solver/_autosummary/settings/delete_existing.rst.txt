@@ -7,9 +7,12 @@ delete_existing
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.delete_existing
 
-.. autoclass:: delete_existing
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   delete_existing
+
 .. rubric:: Included in:
 
 ================================================   ==============================

@@ -7,9 +7,12 @@ residual_smoothing_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.residual_smoothing_factor
 
-.. autoclass:: residual_smoothing_factor
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   residual_smoothing_factor
+
 .. rubric:: Included in:
 
 ==============================================   ===========================================================

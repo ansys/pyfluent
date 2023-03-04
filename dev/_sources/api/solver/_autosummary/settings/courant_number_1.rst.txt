@@ -7,9 +7,12 @@ courant_number
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.courant_number_1
 
-.. autoclass:: courant_number
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   courant_number
+
 .. rubric:: Included in:
 
 ========================================================   ====================================

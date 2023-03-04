@@ -7,9 +7,12 @@ kernel
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.kernel
 
-.. autoclass:: kernel
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   kernel
+
 .. rubric:: Included in:
 
 ==========================================   =============================

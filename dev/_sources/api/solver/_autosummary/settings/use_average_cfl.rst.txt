@@ -7,9 +7,12 @@ use_average_cfl
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.use_average_cfl
 
-.. autoclass:: use_average_cfl
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   use_average_cfl
+
 .. rubric:: Included in:
 
 ==============================================   ===============================

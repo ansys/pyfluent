@@ -7,14 +7,17 @@ location
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.location
 
-.. autoclass:: location
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   location
+
+.. rubric:: Attributes
 
 ====================================================   ==================================
 
-Child                                                                             Summary
+Attribute                                                                         Summary
 
 ====================================================   ==================================
 :ref:`x <x>`                                                                   'x' child.

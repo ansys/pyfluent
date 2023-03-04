@@ -7,9 +7,12 @@ pressure_maximum
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pressure_maximum
 
-.. autoclass:: pressure_maximum
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   pressure_maximum
+
 .. rubric:: Included in:
 
 ====================================================   ==================================

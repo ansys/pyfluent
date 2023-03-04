@@ -7,9 +7,12 @@ energy_prandtl
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.energy_prandtl
 
-.. autoclass:: energy_prandtl
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   energy_prandtl
+
 .. rubric:: Included in:
 
 ==================================   =========================

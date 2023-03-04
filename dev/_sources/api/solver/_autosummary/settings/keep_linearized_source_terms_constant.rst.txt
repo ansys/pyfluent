@@ -7,9 +7,12 @@ keep_linearized_source_terms_constant
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.keep_linearized_source_terms_constant
 
-.. autoclass:: keep_linearized_source_terms_constant
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   keep_linearized_source_terms_constant
+
 .. rubric:: Included in:
 
 ====================================   =================================================================================

@@ -3,13 +3,8 @@
 solver.tui.preferences.meshing\_workflow
 ========================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.meshing_workflow
-   :members: temp_folder, checkpointing_option, templates_folder, verbosity, save_checkpoint_files
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow
+   :autosummary:
 
 .. toctree::
    :hidden:

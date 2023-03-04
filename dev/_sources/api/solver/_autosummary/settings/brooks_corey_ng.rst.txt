@@ -7,9 +7,12 @@ brooks_corey_ng
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.brooks_corey_ng
 
-.. autoclass:: brooks_corey_ng
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   brooks_corey_ng
+
 .. rubric:: Included in:
 
 ==================================   =================================

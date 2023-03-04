@@ -7,14 +7,17 @@ tsolidus
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.tsolidus
 
-.. autoclass:: tsolidus
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   tsolidus
+
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

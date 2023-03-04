@@ -7,14 +7,17 @@ stretched_mesh_enhancement
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.stretched_mesh_enhancement
 
-.. autoclass:: stretched_mesh_enhancement
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   stretched_mesh_enhancement
+
+.. rubric:: Attributes
 
 ========================================   ==============================================
 
-Child                                                                             Summary
+Attribute                                                                         Summary
 
 ========================================   ==============================================
 :ref:`use_enhancement <use_enhancement>`       Enhancement for mesh with stretched cells.

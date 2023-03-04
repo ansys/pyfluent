@@ -7,9 +7,12 @@ execute_settings_optimization
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.execute_settings_optimization
 
-.. autoclass:: execute_settings_optimization
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   execute_settings_optimization
+
 .. rubric:: Included in:
 
 ========================================================   ====================================

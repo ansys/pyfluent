@@ -7,14 +7,17 @@ flexible_cycle_parameters
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.flexible_cycle_parameters
 
-.. autoclass:: flexible_cycle_parameters
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   flexible_cycle_parameters
+
+.. rubric:: Attributes
 
 ======================================================   ==================================================================
 
-Child                                                                                                               Summary
+Attribute                                                                                                           Summary
 
 ======================================================   ==================================================================
 :ref:`max_fine_relaxations <max_fine_relaxations>`             Maximum number of fine level relaxations for flexible cycle.

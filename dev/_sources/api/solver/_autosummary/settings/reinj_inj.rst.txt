@@ -7,9 +7,12 @@ reinj_inj
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reinj_inj
 
-.. autoclass:: reinj_inj
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   reinj_inj
+
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

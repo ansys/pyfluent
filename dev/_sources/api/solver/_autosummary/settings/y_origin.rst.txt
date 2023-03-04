@@ -7,9 +7,12 @@ y_origin
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.y_origin
 
-.. autoclass:: y_origin
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   y_origin
+
 .. rubric:: Included in:
 
 ======================================   ====================================

@@ -7,9 +7,12 @@ time_scale_constant
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.time_scale_constant
 
-.. autoclass:: time_scale_constant
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   time_scale_constant
+
 .. rubric:: Included in:
 
 ==================================================   =================================

@@ -7,9 +7,12 @@ pick_injection
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pick_injection
 
-.. autoclass:: pick_injection
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   pick_injection
+
 .. rubric:: Included in:
 
 ==========================================   =================================================================================

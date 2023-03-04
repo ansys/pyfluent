@@ -7,14 +7,17 @@ trimming
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.trimming
 
-.. autoclass:: trimming
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   trimming
+
+.. rubric:: Attributes
 
 ==================================================   ====================================================================
 
-Child                                                                                                             Summary
+Attribute                                                                                                         Summary
 
 ==================================================   ====================================================================
 :ref:`trim_option <trim_option>`                                                                  Select Trimming Option:

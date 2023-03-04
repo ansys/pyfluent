@@ -7,9 +7,12 @@ film_regime_function
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.film_regime_function
 
-.. autoclass:: film_regime_function
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   film_regime_function
+
 .. rubric:: Included in:
 
 ======================================================   ==========================================================================================================================

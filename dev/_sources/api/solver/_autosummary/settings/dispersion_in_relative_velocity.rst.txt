@@ -7,9 +7,12 @@ dispersion_in_relative_velocity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dispersion_in_relative_velocity
 
-.. autoclass:: dispersion_in_relative_velocity
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   dispersion_in_relative_velocity
+
 .. rubric:: Included in:
 
 ==============================================   ===============================

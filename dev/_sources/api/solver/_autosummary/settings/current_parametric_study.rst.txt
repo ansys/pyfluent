@@ -7,9 +7,12 @@ current_parametric_study
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.current_parametric_study
 
-.. autoclass:: current_parametric_study
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   current_parametric_study
+
 .. rubric:: Included in:
 
 ==================   ==================

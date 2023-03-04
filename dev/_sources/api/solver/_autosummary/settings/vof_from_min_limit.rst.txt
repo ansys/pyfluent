@@ -7,9 +7,12 @@ vof_from_min_limit
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.vof_from_min_limit
 
-.. autoclass:: vof_from_min_limit
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   vof_from_min_limit
+
 .. rubric:: Included in:
 
 ==========================================================   ===================================================

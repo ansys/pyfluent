@@ -7,9 +7,12 @@ mgrid_relative_to_thread
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mgrid_relative_to_thread
 
-.. autoclass:: mgrid_relative_to_thread
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   mgrid_relative_to_thread
+
 .. rubric:: Included in:
 
 ==================================   =================================

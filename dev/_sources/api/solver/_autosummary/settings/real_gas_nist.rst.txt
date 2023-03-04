@@ -7,14 +7,17 @@ real_gas_nist
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.real_gas_nist
 
-.. autoclass:: real_gas_nist
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   real_gas_nist
+
+.. rubric:: Attributes
 
 ================================================   ==============================================================
 
-Child                                                                                                     Summary
+Attribute                                                                                                 Summary
 
 ================================================   ==============================================================
 :ref:`nist_fluid <nist_fluid>`                                                            Select NIST fluid data.

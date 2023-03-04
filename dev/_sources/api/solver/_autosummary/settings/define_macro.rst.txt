@@ -7,9 +7,12 @@ define_macro
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.define_macro
 
-.. autoclass:: define_macro
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   define_macro
+
 .. rubric:: Arguments
 
 ==========================   =====================

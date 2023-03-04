@@ -7,14 +7,17 @@ particle_tracks
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.particle_tracks
 
-.. autoclass:: particle_tracks
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   particle_tracks
+
+.. rubric:: Attributes
 
 ====================================================================   ========================================================================
 
-Child                                                                                                                                   Summary
+Attribute                                                                                                                               Summary
 
 ====================================================================   ========================================================================
 :ref:`display <display_3>`                                                 Determine whether particle tracks will be displayed or only tracked.

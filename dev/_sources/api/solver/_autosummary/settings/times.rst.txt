@@ -7,14 +7,17 @@ times
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.times
 
-.. autoclass:: times
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   times
+
+.. rubric:: Attributes
 
 ==============================   =======================
 
-Child                                            Summary
+Attribute                                        Summary
 
 ==============================   =======================
 :ref:`start_time <start_time>`       'start_time' child.

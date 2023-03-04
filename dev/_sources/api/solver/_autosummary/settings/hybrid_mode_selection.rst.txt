@@ -7,9 +7,12 @@ hybrid_mode_selection
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.hybrid_mode_selection
 
-.. autoclass:: hybrid_mode_selection
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   hybrid_mode_selection
+
 .. rubric:: Included in:
 
 ========================   ===================

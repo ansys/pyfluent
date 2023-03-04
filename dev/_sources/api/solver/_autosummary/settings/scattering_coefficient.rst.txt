@@ -7,14 +7,17 @@ scattering_coefficient
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.scattering_coefficient
 
-.. autoclass:: scattering_coefficient
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   scattering_coefficient
+
+.. rubric:: Attributes
 
 ====================================================   ====================================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

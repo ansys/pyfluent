@@ -7,9 +7,12 @@ fan_test_angvel
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fan_test_angvel
 
-.. autoclass:: fan_test_angvel
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   fan_test_angvel
+
 .. rubric:: Included in:
 
 ==================================   =================================

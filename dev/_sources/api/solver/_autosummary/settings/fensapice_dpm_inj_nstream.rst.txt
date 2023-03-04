@@ -7,9 +7,12 @@ fensapice_dpm_inj_nstream
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fensapice_dpm_inj_nstream
 
-.. autoclass:: fensapice_dpm_inj_nstream
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   fensapice_dpm_inj_nstream
+
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

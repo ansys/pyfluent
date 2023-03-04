@@ -7,9 +7,12 @@ exponent_density_func
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.exponent_density_func
 
-.. autoclass:: exponent_density_func
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   exponent_density_func
+
 .. rubric:: Included in:
 
 ==========================================================================   =============================================

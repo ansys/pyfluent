@@ -7,14 +7,17 @@ porous_media
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.porous_media
 
-.. autoclass:: porous_media
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   porous_media
+
+.. rubric:: Attributes
 
 ========================================================================   ================================================
 
-Child                                                                                                               Summary
+Attribute                                                                                                           Summary
 
 ========================================================================   ================================================
 :ref:`relative_permeability <relative_permeability>`                           Multiphase relative permeability fix option.

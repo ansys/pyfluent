@@ -3,11 +3,6 @@
 solver.tui.setup.mixing\_planes.set.conserve\_total\_enthalpy
 =============================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.mixing_planes.set.conserve_total_enthalpy
-   :members: verbosity, enable
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.mixing_planes.set.conserve_total_enthalpy
+   :autosummary:
 

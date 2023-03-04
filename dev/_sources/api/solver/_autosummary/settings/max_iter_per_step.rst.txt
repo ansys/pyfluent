@@ -7,9 +7,12 @@ max_iter_per_step
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.max_iter_per_step
 
-.. autoclass:: max_iter_per_step
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   max_iter_per_step
+
 .. rubric:: Included in:
 
 ============================================   ================================

@@ -7,9 +7,12 @@ font_automatic
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.font_automatic
 
-.. autoclass:: font_automatic
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   font_automatic
+
 .. rubric:: Included in:
 
 ============================   ======================

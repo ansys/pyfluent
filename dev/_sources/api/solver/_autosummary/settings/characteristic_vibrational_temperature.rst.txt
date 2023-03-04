@@ -7,14 +7,17 @@ characteristic_vibrational_temperature
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.characteristic_vibrational_temperature
 
-.. autoclass:: characteristic_vibrational_temperature
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   characteristic_vibrational_temperature
+
+.. rubric:: Attributes
 
 ============================================   ====================================================
 
-Child                                                                                       Summary
+Attribute                                                                                   Summary
 
 ============================================   ====================================================
 :ref:`option <option_9>`                           Select method for calculating material property.

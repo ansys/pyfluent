@@ -7,14 +7,17 @@ ir_st_absorbtivity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ir_st_absorbtivity
 
-.. autoclass:: ir_st_absorbtivity
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   ir_st_absorbtivity
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

@@ -7,14 +7,17 @@ flow_rate
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.flow_rate_1
 
-.. autoclass:: flow_rate
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   flow_rate
+
+.. rubric:: Attributes
 
 ========================================   ============================
 
-Child                                                           Summary
+Attribute                                                       Summary
 
 ========================================   ============================
 :ref:`flow_rate <flow_rate>`                         'flow_rate' child.

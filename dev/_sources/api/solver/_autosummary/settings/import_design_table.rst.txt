@@ -7,9 +7,12 @@ import_design_table
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.import_design_table
 
-.. autoclass:: import_design_table
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   import_design_table
+
 .. rubric:: Arguments
 
 ========================================   ============================

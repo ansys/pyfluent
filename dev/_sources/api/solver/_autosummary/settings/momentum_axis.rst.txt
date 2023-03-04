@@ -7,9 +7,12 @@ momentum_axis
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.momentum_axis
 
-.. autoclass:: momentum_axis
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   momentum_axis
+
 .. rubric:: Included in:
 
 ======================   =====================

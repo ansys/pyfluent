@@ -7,9 +7,12 @@ dpm_wall_heat_exchange
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_wall_heat_exchange
 
-.. autoclass:: dpm_wall_heat_exchange
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   dpm_wall_heat_exchange
+
 .. rubric:: Included in:
 
 ===================================   =================================

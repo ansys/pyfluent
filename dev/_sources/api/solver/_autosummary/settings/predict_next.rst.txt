@@ -7,9 +7,12 @@ predict_next
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.predict_next
 
-.. autoclass:: predict_next
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   predict_next
+
 .. rubric:: Included in:
 
 ==============================================   ===============================

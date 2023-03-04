@@ -3,11 +3,6 @@
 solver.tui.report.dpm\_histogram.setup\_reduction
 =================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.report.dpm_histogram.setup_reduction
-   :members: all_variables_number_of_bins, reset_min_and_max, logarithmic, maximum, use_weighting, number_of_bins, make_steady_from_unsteady_file, list_settings, minimum, weighting_variable
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.setup_reduction
+   :autosummary:
 

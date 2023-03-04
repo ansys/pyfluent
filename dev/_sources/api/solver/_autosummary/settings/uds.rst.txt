@@ -7,9 +7,12 @@ uds
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.uds
 
-.. autoclass:: uds
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   uds
+
 .. rubric:: Named object type
 
 :ref:`child_object_type_child <child_object_type_child_1>`

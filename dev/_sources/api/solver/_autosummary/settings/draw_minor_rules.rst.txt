@@ -7,9 +7,12 @@ draw_minor_rules
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.draw_minor_rules
 
-.. autoclass:: draw_minor_rules
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   draw_minor_rules
+
 .. rubric:: Included in:
 
 ========================   ===================

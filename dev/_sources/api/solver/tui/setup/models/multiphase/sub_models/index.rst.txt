@@ -3,13 +3,8 @@
 solver.tui.setup.models.multiphase.sub\_models
 ==============================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.multiphase.sub_models
-   :members: boiling
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models
+   :autosummary:
 
 .. toctree::
    :hidden:

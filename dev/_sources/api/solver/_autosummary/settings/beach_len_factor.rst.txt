@@ -7,9 +7,12 @@ beach_len_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.beach_len_factor
 
-.. autoclass:: beach_len_factor
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   beach_len_factor
+
 .. rubric:: Included in:
 
 ==================================   =================================

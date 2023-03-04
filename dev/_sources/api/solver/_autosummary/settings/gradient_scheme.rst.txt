@@ -7,9 +7,12 @@ gradient_scheme
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.gradient_scheme
 
-.. autoclass:: gradient_scheme
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   gradient_scheme
+
 .. rubric:: Included in:
 
 ==========================   ====================

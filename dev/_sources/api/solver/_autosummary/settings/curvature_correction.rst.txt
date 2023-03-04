@@ -7,9 +7,12 @@ curvature_correction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.curvature_correction
 
-.. autoclass:: curvature_correction
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   curvature_correction
+
 .. rubric:: Included in:
 
 ==========================   ====================

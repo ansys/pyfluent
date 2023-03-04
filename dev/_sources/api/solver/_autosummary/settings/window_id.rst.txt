@@ -7,9 +7,12 @@ window_id
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.window_id
 
-.. autoclass:: window_id
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   window_id
+
 .. rubric:: Included in:
 
 ============================================================   ===============================================

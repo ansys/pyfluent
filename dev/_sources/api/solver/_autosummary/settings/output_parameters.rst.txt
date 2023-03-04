@@ -7,9 +7,12 @@ output_parameters
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.output_parameters
 
-.. autoclass:: output_parameters
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   output_parameters
+
 .. rubric:: Included in:
 
 ================================================   =========================================

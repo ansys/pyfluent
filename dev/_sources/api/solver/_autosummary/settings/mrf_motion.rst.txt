@@ -7,9 +7,12 @@ mrf_motion
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mrf_motion
 
-.. autoclass:: mrf_motion
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   mrf_motion
+
 .. rubric:: Included in:
 
 ==================================   =================================

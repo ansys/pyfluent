@@ -7,9 +7,12 @@ constant_tb
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.constant_tb
 
-.. autoclass:: constant_tb
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   constant_tb
+
 .. rubric:: Included in:
 
 ========================================   ============================

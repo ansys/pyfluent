@@ -7,9 +7,12 @@ phase_spec
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.phase_spec
 
-.. autoclass:: phase_spec
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   phase_spec
+
 .. rubric:: Included in:
 
 ====================================================   ===========================================

@@ -7,9 +7,12 @@ disk_normal_z
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.disk_normal_z
 
-.. autoclass:: disk_normal_z
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   disk_normal_z
+
 .. rubric:: Included in:
 
 ==========================================   ==============================================

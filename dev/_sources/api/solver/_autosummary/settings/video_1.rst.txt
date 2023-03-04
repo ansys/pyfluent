@@ -7,14 +7,17 @@ video
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.video_1
 
-.. autoclass:: video
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   video
+
+.. rubric:: Attributes
 
 ========================================================   ========================================================
 
-Child                                                                                                       Summary
+Attribute                                                                                                   Summary
 
 ========================================================   ========================================================
 :ref:`fps <fps>`                                               Set the Frame Per Sec(FPS) for exporting video file.

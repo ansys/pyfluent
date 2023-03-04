@@ -7,9 +7,12 @@ y_format
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.y_format
 
-.. autoclass:: y_format
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   y_format
+
 .. rubric:: Included in:
 
 ========================   ====================

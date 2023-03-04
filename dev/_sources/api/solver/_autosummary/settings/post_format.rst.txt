@@ -7,9 +7,12 @@ post_format
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.post_format
 
-.. autoclass:: post_format
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   post_format
+
 .. rubric:: Included in:
 
 ======================================   ===========================

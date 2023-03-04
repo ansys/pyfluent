@@ -7,9 +7,12 @@ rst_spec
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rst_spec
 
-.. autoclass:: rst_spec
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   rst_spec
+
 .. rubric:: Included in:
 
 ============================================================   ===============================================

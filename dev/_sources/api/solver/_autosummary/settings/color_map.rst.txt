@@ -7,14 +7,17 @@ color_map
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.color_map
 
-.. autoclass:: color_map
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   color_map
+
+.. rubric:: Attributes
 
 ======================================   ===========================
 
-Child                                                        Summary
+Attribute                                                    Summary
 
 ======================================   ===========================
 :ref:`visible <visible>`                            'visible' child.

@@ -7,9 +7,12 @@ termination_criteria
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.termination_criteria
 
-.. autoclass:: termination_criteria
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   termination_criteria
+
 .. rubric:: Included in:
 
 ============================================   =======================================

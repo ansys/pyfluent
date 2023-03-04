@@ -7,14 +7,17 @@ solid_diffusion
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.solid_diffusion
 
-.. autoclass:: solid_diffusion
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   solid_diffusion
+
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

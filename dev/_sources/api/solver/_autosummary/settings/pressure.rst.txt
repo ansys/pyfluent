@@ -7,9 +7,12 @@ pressure
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pressure
 
-.. autoclass:: pressure
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   pressure
+
 .. rubric:: Included in:
 
 ==========================================   =============================

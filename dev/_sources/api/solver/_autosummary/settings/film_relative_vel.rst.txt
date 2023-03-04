@@ -7,9 +7,12 @@ film_relative_vel
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.film_relative_vel
 
-.. autoclass:: film_relative_vel
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   film_relative_vel
+
 .. rubric:: Included in:
 
 ===================================   =================================

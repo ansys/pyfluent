@@ -3,11 +3,6 @@
 solver.tui.parameters\_\_and\_\_customization.parameters.input\_parameters.advance
 ==================================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.parameters__and__customization.parameters.input_parameters.advance
-   :members: use_in, list, delete
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.input_parameters.advance
+   :autosummary:
 

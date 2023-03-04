@@ -7,9 +7,12 @@ twist
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.twist
 
-.. autoclass:: twist
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   twist
+
 .. rubric:: Included in:
 
 ======================================   ====================================

@@ -7,9 +7,12 @@ enable_high_res_tracking
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.enable_high_res_tracking
 
-.. autoclass:: enable_high_res_tracking
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   enable_high_res_tracking
+
 .. rubric:: Included in:
 
 ============================   ===================================================================================

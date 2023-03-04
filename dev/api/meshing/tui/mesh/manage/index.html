@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -55,8 +51,8 @@
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
-    <link rel="next" title="meshing.tui.mesh.cavity" href="../cavity/index.html" />
-    <link rel="prev" title="meshing.tui.mesh.scoped_prisms" href="../scoped_prisms/index.html" />
+    <link rel="next" title="meshing.tui.preferences" href="../../preferences/index.html" />
+    <link rel="prev" title="meshing.tui.mesh.prism.controls.normal" href="../prism/controls/normal/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -303,13 +293,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -322,6 +307,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -333,140 +323,8 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../diagnostics/index.html">
-       meshing.tui.diagnostics
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../preferences/index.html">
-       meshing.tui.preferences
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../objects/index.html">
-       meshing.tui.objects
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../../scoped_sizing/index.html">
        meshing.tui.scoped_sizing
-      </a>
-     </li>
-     <li class="toctree-l3 current active has-children">
-      <a class="reference internal" href="../index.html">
-       meshing.tui.mesh
-      </a>
-      <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-      <label for="toctree-checkbox-3">
-       <i class="fas fa-chevron-down">
-       </i>
-      </label>
-      <ul class="current">
-       <li class="toctree-l4">
-        <a class="reference internal" href="../separate/index.html">
-         meshing.tui.mesh.separate
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../rapid_octree/index.html">
-         meshing.tui.mesh.rapid_octree
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../pyramid/index.html">
-         meshing.tui.mesh.pyramid
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../thin_volume_mesh/index.html">
-         meshing.tui.mesh.thin_volume_mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../modify/index.html">
-         meshing.tui.mesh.modify
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../auto_mesh_controls/index.html">
-         meshing.tui.mesh.auto_mesh_controls
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../poly/index.html">
-         meshing.tui.mesh.poly
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../scoped_prisms/index.html">
-         meshing.tui.mesh.scoped_prisms
-        </a>
-       </li>
-       <li class="toctree-l4 current active">
-        <a class="current reference internal" href="#">
-         meshing.tui.mesh.manage
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../cavity/index.html">
-         meshing.tui.mesh.cavity
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../cartesian/index.html">
-         meshing.tui.mesh.cartesian
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../cell_zone_conditions/index.html">
-         meshing.tui.mesh.cell_zone_conditions
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../tet/index.html">
-         meshing.tui.mesh.tet
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../prism/index.html">
-         meshing.tui.mesh.prism
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../non_conformals/index.html">
-         meshing.tui.mesh.non_conformals
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../poly_hexcore/index.html">
-         meshing.tui.mesh.poly_hexcore
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../hexcore/index.html">
-         meshing.tui.mesh.hexcore
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../domains/index.html">
-         meshing.tui.mesh.domains
-        </a>
-       </li>
-      </ul>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../display/index.html">
-       meshing.tui.display
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../file/index.html">
-       meshing.tui.file
       </a>
      </li>
      <li class="toctree-l3">
@@ -475,13 +333,38 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../boundary/index.html">
-       meshing.tui.boundary
+      <a class="reference internal" href="../../parallel/index.html">
+       meshing.tui.parallel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../objects/index.html">
+       meshing.tui.objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../file/index.html">
+       meshing.tui.file
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../diagnostics/index.html">
+       meshing.tui.diagnostics
       </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../../material_point/index.html">
        meshing.tui.material_point
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../boundary/index.html">
+       meshing.tui.boundary
       </a>
      </li>
      <li class="toctree-l3">
@@ -499,9 +382,116 @@ function checkPageExistsAndRedirect(event) {
        meshing.tui.size_functions
       </a>
      </li>
+     <li class="toctree-l3 current active has-children">
+      <a class="reference internal" href="../index.html">
+       meshing.tui.mesh
+      </a>
+      <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+      <label for="toctree-checkbox-3">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul class="current">
+       <li class="toctree-l4">
+        <a class="reference internal" href="../thin_volume_mesh/index.html">
+         meshing.tui.mesh.thin_volume_mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../separate/index.html">
+         meshing.tui.mesh.separate
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../auto_mesh_controls/index.html">
+         meshing.tui.mesh.auto_mesh_controls
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../pyramid/index.html">
+         meshing.tui.mesh.pyramid
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../cavity/index.html">
+         meshing.tui.mesh.cavity
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../non_conformals/index.html">
+         meshing.tui.mesh.non_conformals
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../cell_zone_conditions/index.html">
+         meshing.tui.mesh.cell_zone_conditions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../modify/index.html">
+         meshing.tui.mesh.modify
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../cartesian/index.html">
+         meshing.tui.mesh.cartesian
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../poly_hexcore/index.html">
+         meshing.tui.mesh.poly_hexcore
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../poly/index.html">
+         meshing.tui.mesh.poly
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../hexcore/index.html">
+         meshing.tui.mesh.hexcore
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../rapid_octree/index.html">
+         meshing.tui.mesh.rapid_octree
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../scoped_prisms/index.html">
+         meshing.tui.mesh.scoped_prisms
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../domains/index.html">
+         meshing.tui.mesh.domains
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../tet/index.html">
+         meshing.tui.mesh.tet
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../prism/index.html">
+         meshing.tui.mesh.prism
+        </a>
+       </li>
+       <li class="toctree-l4 current active">
+        <a class="current reference internal" href="#">
+         meshing.tui.mesh.manage
+        </a>
+       </li>
+      </ul>
+     </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../parallel/index.html">
-       meshing.tui.parallel
+      <a class="reference internal" href="../../preferences/index.html">
+       meshing.tui.preferences
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../display/index.html">
+       meshing.tui.display
       </a>
      </li>
     </ul>
@@ -546,16 +536,25 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.mesh.manage
+     manage
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       __init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.active_list">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.manage.active_list()
+       active_list()
       </span>
      </code>
     </a>
@@ -564,7 +563,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.adjacent_face_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.manage.adjacent_face_zones()
+       adjacent_face_zones()
       </span>
      </code>
     </a>
@@ -573,7 +572,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.auto_set_active">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.manage.auto_set_active()
+       auto_set_active()
       </span>
      </code>
     </a>
@@ -582,7 +581,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.change_prefix">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.manage.change_prefix()
+       change_prefix()
       </span>
      </code>
     </a>
@@ -591,7 +590,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.change_suffix">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.manage.change_suffix()
+       change_suffix()
       </span>
      </code>
     </a>
@@ -600,7 +599,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.copy">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.manage.copy()
+       copy()
       </span>
      </code>
     </a>
@@ -609,7 +608,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.manage.delete()
+       delete()
       </span>
      </code>
     </a>
@@ -618,7 +617,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.get_material_point">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.manage.get_material_point()
+       get_material_point()
       </span>
      </code>
     </a>
@@ -627,7 +626,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.id">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.manage.id()
+       id()
       </span>
      </code>
     </a>
@@ -636,7 +635,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.list">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.manage.list()
+       list()
       </span>
      </code>
     </a>
@@ -645,7 +644,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.merge">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.manage.merge()
+       merge()
       </span>
      </code>
     </a>
@@ -654,7 +653,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.merge_dead_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.manage.merge_dead_zones()
+       merge_dead_zones()
       </span>
      </code>
     </a>
@@ -663,7 +662,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.name">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.manage.name()
+       name()
       </span>
      </code>
     </a>
@@ -672,7 +671,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.origin">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.manage.origin()
+       origin()
       </span>
      </code>
     </a>
@@ -681,7 +680,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.revolve_face_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.manage.revolve_face_zone()
+       revolve_face_zone()
       </span>
      </code>
     </a>
@@ -690,7 +689,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.rotate">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.manage.rotate()
+       rotate()
       </span>
      </code>
     </a>
@@ -699,7 +698,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.rotate_model">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.manage.rotate_model()
+       rotate_model()
       </span>
      </code>
     </a>
@@ -708,7 +707,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.scale">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.manage.scale()
+       scale()
       </span>
      </code>
     </a>
@@ -717,7 +716,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.scale_model">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.manage.scale_model()
+       scale_model()
       </span>
      </code>
     </a>
@@ -726,7 +725,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.set_active">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.manage.set_active()
+       set_active()
       </span>
      </code>
     </a>
@@ -735,7 +734,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.translate">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.manage.translate()
+       translate()
       </span>
      </code>
     </a>
@@ -744,7 +743,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.translate_model">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.manage.translate_model()
+       translate_model()
       </span>
      </code>
     </a>
@@ -753,7 +752,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.type">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.manage.type()
+       type()
       </span>
      </code>
     </a>
@@ -781,14 +780,94 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-mesh-manage">
 <span id="ref-meshing-tui-mesh-manage"></span><h1>meshing.tui.mesh.manage<a class="headerlink" href="#meshing-tui-mesh-manage" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.</span></span><span class="sig-name descname"><span class="pre">manage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage" title="Permalink to this definition">#</a></dt>
-<dd><p>Enters the manage cell zones menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.mesh.</span></span><span class="sig-name descname"><span class="pre">manage</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enters the manage cell zones menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.__init__" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p>__init__ method of TUIMenu class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.active_list" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.active_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">active_list</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Lists all active zones.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.adjacent_face_zones" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.adjacent_face_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adjacent_face_zones</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Lists all face zones that refer to the specified cell zone.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.auto_set_active" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.auto_set_active"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_set_active</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the active zones based on points that are defined in an external file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.change_prefix" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.change_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">change_prefix</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to change the prefix for the cell zone.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.change_suffix" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.change_suffix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">change_suffix</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Change the suffix for specified face zones.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.copy" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Copies all nodes and faces of specified cell zones.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.delete" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Deletes a cell zone, along with its associated nodes and faces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.get_material_point" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.get_material_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_material_point</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints the coordinates of the material point for the specified cell zone.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.id" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies a new cell zone ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.list" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints information on all cell zones.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.merge" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.merge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Merges two or more cell zones.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.merge_dead_zones" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.merge_dead_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_dead_zones</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to merge dead zones having a cell count lower than the specified threshold value, with the adjacent cell zone.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.name" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to rename a cell zone.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.origin" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.origin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">origin</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies a new origin for the mesh, to be used for cell zone rotation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.revolve_face_zone" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.revolve_face_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">revolve_face_zone</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Generates cells by revolving a face thread.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.rotate" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Rotates all nodes of specified cell zones by a specified angle.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.rotate_model" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.rotate_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate_model</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Rotates all nodes of the model by a specified angle.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.scale" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Scales all nodes of specified cell zones by a specified factor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.scale_model" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.scale_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale_model</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Scales all nodes of the model by a specified factor.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.set_active" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.set_active"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_active</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the specified cell zones to be active.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.translate" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Translates all nodes of specified cell zones by a specified vector.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.translate_model" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.translate_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate_model</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Translates all nodes of the model by a specified vector.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.type" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">type</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Changes the type and name of a cell zone.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>__init__ method of TUIMenu class.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.active_list">
 <span class="sig-name descname"><span class="pre">active_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.manage.active_list" title="Permalink to this definition">#</a></dt>

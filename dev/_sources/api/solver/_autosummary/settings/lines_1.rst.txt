@@ -7,9 +7,12 @@ lines
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.lines_1
 
-.. autoclass:: lines
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   lines
+
 .. rubric:: Included in:
 
 ========================   =====================

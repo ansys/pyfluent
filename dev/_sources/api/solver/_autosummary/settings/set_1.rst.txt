@@ -7,14 +7,17 @@ set
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_1
 
-.. autoclass:: set
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   set
+
+.. rubric:: Attributes
 
 ==============================   ==================================================================================================================
 
-Child                                                                                                                                       Summary
+Attribute                                                                                                                                   Summary
 
 ==============================   ==================================================================================================================
 :ref:`name <name_2>`                                                                            Specify the name of the dynamic poor mesh register.

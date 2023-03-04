@@ -7,9 +7,12 @@ aeromechanics
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.aeromechanics
 
-.. autoclass:: aeromechanics
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   aeromechanics
+
 .. rubric:: Named object type
 
 :ref:`aeromechanics_child <aeromechanics_child>`

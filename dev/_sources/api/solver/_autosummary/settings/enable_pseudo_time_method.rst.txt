@@ -7,9 +7,12 @@ enable_pseudo_time_method
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.enable_pseudo_time_method
 
-.. autoclass:: enable_pseudo_time_method
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   enable_pseudo_time_method
+
 .. rubric:: Included in:
 
 ======================================   ====================================

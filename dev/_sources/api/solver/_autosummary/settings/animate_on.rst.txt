@@ -7,9 +7,12 @@ animate_on
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.animate_on
 
-.. autoclass:: animate_on
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   animate_on
+
 .. rubric:: Included in:
 
 ============================================================   ===============================================

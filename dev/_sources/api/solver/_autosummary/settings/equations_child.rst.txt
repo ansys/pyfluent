@@ -7,9 +7,12 @@ equations_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.equations_child
 
-.. autoclass:: equations_child
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   equations_child
+
 .. rubric:: Included in:
 
 ==================================================   =================================

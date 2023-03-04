@@ -7,9 +7,12 @@ first_to_second_order_blending_dbns
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.first_to_second_order_blending_dbns
 
-.. autoclass:: first_to_second_order_blending_dbns
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   first_to_second_order_blending_dbns
+
 .. rubric:: Included in:
 
 ====================================   ==========================

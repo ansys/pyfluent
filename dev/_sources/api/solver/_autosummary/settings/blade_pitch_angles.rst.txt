@@ -7,14 +7,17 @@ blade_pitch_angles
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.blade_pitch_angles
 
-.. autoclass:: blade_pitch_angles
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   blade_pitch_angles
+
+.. rubric:: Attributes
 
 ======================================================   ==================================================================
 
-Child                                                                                                               Summary
+Attribute                                                                                                           Summary
 
 ======================================================   ==================================================================
 :ref:`blade_pitch_collective <blade_pitch_collective>`                                   Set blade collective pitch angle:.

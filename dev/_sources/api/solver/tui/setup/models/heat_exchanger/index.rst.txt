@@ -3,12 +3,9 @@
 solver.tui.setup.models.heat\_exchanger
 =======================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger
+   :autosummary:
 
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.heat_exchanger
 .. toctree::
    :hidden:
 

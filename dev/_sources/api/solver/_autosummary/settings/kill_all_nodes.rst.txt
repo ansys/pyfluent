@@ -7,9 +7,12 @@ kill_all_nodes
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.kill_all_nodes
 
-.. autoclass:: kill_all_nodes
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   kill_all_nodes
+
 .. rubric:: Arguments
 
 ==========================================================   =====================================

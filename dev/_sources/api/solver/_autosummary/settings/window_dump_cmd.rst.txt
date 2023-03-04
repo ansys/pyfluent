@@ -7,9 +7,12 @@ window_dump_cmd
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.window_dump_cmd
 
-.. autoclass:: window_dump_cmd
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   window_dump_cmd
+
 .. rubric:: Included in:
 
 ======================================   ===========================

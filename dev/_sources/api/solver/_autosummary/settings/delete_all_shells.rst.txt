@@ -7,9 +7,12 @@ delete_all_shells
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.delete_all_shells
 
-.. autoclass:: delete_all_shells
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   delete_all_shells
+
 .. rubric:: Included in:
 
 ================================================   ================================

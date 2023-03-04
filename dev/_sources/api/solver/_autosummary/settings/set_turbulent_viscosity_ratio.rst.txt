@@ -7,9 +7,12 @@ set_turbulent_viscosity_ratio
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_turbulent_viscosity_ratio
 
-.. autoclass:: set_turbulent_viscosity_ratio
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   set_turbulent_viscosity_ratio
+
 .. rubric:: Included in:
 
 ================================   =========================================

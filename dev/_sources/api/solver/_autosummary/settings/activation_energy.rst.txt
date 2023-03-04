@@ -7,9 +7,12 @@ activation_energy
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.activation_energy
 
-.. autoclass:: activation_energy
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   activation_energy
+
 .. rubric:: Included in:
 
 ==============================================================   =======================================

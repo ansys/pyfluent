@@ -7,9 +7,12 @@ re_randomize_every_iteration
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.re_randomize_every_iteration
 
-.. autoclass:: re_randomize_every_iteration
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   re_randomize_every_iteration
+
 .. rubric:: Included in:
 
 ========================================   ================================================================

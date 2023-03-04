@@ -7,9 +7,12 @@ thrust_coefficient
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.thrust_coefficient
 
-.. autoclass:: thrust_coefficient
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   thrust_coefficient
+
 .. rubric:: Included in:
 
 ==========================   =========================================

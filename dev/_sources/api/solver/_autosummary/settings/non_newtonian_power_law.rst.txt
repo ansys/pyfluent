@@ -7,14 +7,17 @@ non_newtonian_power_law
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.non_newtonian_power_law
 
-.. autoclass:: non_newtonian_power_law
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   non_newtonian_power_law
+
+.. rubric:: Attributes
 
 ====================================================   ==================================
 
-Child                                                                             Summary
+Attribute                                                                         Summary
 
 ====================================================   ==================================
 :ref:`option <option_2>`                                                  'option' child.

@@ -7,9 +7,12 @@ blade_flapping_cyclic_sin
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.blade_flapping_cyclic_sin
 
-.. autoclass:: blade_flapping_cyclic_sin
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   blade_flapping_cyclic_sin
+
 .. rubric:: Included in:
 
 ============================================   ==========================================

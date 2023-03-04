@@ -7,9 +7,12 @@ compression_method
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.compression_method
 
-.. autoclass:: compression_method
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   compression_method
+
 .. rubric:: Included in:
 
 ========================================   ============================

@@ -7,9 +7,12 @@ outline
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.outline
 
-.. autoclass:: outline
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   outline
+
 .. rubric:: Included in:
 
 ============================   ======================

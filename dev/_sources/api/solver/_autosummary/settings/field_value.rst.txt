@@ -7,14 +7,17 @@ field_value
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.field_value
 
-.. autoclass:: field_value
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   field_value
+
+.. rubric:: Attributes
 
 ====================================================   ==================================
 
-Child                                                                             Summary
+Attribute                                                                         Summary
 
 ====================================================   ==================================
 :ref:`field <field>`                                                       'field' child.

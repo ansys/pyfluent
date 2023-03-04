@@ -7,9 +7,12 @@ new
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.new
 
-.. autoclass:: new
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   new
+
 .. rubric:: Arguments
 
 ==========================================   =============================

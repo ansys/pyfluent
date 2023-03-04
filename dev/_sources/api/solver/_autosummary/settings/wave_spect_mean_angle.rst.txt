@@ -7,14 +7,17 @@ wave_spect_mean_angle
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.wave_spect_mean_angle
 
-.. autoclass:: wave_spect_mean_angle
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   wave_spect_mean_angle
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

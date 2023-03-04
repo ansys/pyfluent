@@ -7,9 +7,12 @@ thermal_effects
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.thermal_effects
 
-.. autoclass:: thermal_effects
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   thermal_effects
+
 .. rubric:: Included in:
 
 ========================================================================   ============================================

@@ -7,9 +7,12 @@ film_vof_trans_high
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.film_vof_trans_high
 
-.. autoclass:: film_vof_trans_high
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   film_vof_trans_high
+
 .. rubric:: Included in:
 
 ===================================   =================================

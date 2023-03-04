@@ -7,9 +7,12 @@ custom_heat_flux
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.custom_heat_flux
 
-.. autoclass:: custom_heat_flux
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   custom_heat_flux
+
 .. rubric:: Arguments
 
 ============================================   ==============================

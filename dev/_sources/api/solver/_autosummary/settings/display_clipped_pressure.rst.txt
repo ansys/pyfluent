@@ -7,9 +7,12 @@ display_clipped_pressure
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.display_clipped_pressure
 
-.. autoclass:: display_clipped_pressure
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   display_clipped_pressure
+
 .. rubric:: Included in:
 
 ==============================   =====================================

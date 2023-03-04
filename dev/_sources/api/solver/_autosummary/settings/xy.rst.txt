@@ -7,14 +7,17 @@ xy
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.xy
 
-.. autoclass:: xy
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   xy
+
+.. rubric:: Attributes
 
 ==========================   ====================================================================
 
-Child                                                                                     Summary
+Attribute                                                                                 Summary
 
 ==========================   ====================================================================
 :ref:`border <border_4>`         Enable/disable drawing of borders around the X-Y plotter window.

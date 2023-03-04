@@ -3,13 +3,8 @@
 solver.tui.solution.controls.query
 ==================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.controls.query
-   :members: p_v_controls, equations, courant_number, limits, relaxation_factor, under_relaxation
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.controls.query
+   :autosummary:
 
 .. toctree::
    :hidden:

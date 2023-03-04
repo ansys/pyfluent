@@ -7,14 +7,17 @@ principal_axes_values
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.principal_axes_values
 
-.. autoclass:: principal_axes_values
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   principal_axes_values
+
+.. rubric:: Attributes
 
 ==========================================   =============================
 
-Child                                                              Summary
+Attribute                                                          Summary
 
 ==========================================   =============================
 :ref:`principal_axes <principal_axes>`             'principal_axes' child.

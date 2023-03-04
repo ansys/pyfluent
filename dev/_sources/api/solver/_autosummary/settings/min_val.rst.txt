@@ -7,9 +7,12 @@ min_val
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.min_val
 
-.. autoclass:: min_val
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   min_val
+
 .. rubric:: Included in:
 
 ========================================   ======================================================================================================

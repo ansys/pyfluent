@@ -7,9 +7,12 @@ elec_potential_mechs
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.elec_potential_mechs
 
-.. autoclass:: elec_potential_mechs
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   elec_potential_mechs
+
 .. rubric:: Included in:
 
 ===================================   =================================

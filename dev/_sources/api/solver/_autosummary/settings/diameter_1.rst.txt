@@ -7,14 +7,17 @@ diameter
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.diameter_1
 
-.. autoclass:: diameter
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   diameter
+
+.. rubric:: Attributes
 
 ========================================================   ====================================
 
-Child                                                                                   Summary
+Attribute                                                                               Summary
 
 ========================================================   ====================================
 :ref:`diameter <diameter>`                                                    'diameter' child.

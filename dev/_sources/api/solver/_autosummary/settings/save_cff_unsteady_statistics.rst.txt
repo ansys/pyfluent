@@ -7,9 +7,12 @@ save_cff_unsteady_statistics
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.save_cff_unsteady_statistics
 
-.. autoclass:: save_cff_unsteady_statistics
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   save_cff_unsteady_statistics
+
 .. rubric:: Included in:
 
 ======================================   ==========================

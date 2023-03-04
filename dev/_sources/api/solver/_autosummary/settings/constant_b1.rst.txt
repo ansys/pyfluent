@@ -7,9 +7,12 @@ constant_b1
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.constant_b1
 
-.. autoclass:: constant_b1
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   constant_b1
+
 .. rubric:: Included in:
 
 ========================================   ============================

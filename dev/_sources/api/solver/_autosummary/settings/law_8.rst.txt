@@ -7,9 +7,12 @@ law_8
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.law_8
 
-.. autoclass:: law_8
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   law_8
+
 .. rubric:: Included in:
 
 ================================   ========================

@@ -7,9 +7,12 @@ direction_vector
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.direction_vector_1
 
-.. autoclass:: direction_vector
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   direction_vector
+
 .. rubric:: Included in:
 
 ============================   ========================

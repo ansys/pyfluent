@@ -7,9 +7,12 @@ scale_by_zone_average
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.scale_by_zone_average
 
-.. autoclass:: scale_by_zone_average
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   scale_by_zone_average
+
 .. rubric:: Included in:
 
 ========================   ====================

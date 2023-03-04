@@ -7,9 +7,12 @@ coll_dtheta
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.coll_dtheta
 
-.. autoclass:: coll_dtheta
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   coll_dtheta
+
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

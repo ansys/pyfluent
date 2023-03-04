@@ -7,9 +7,12 @@ border
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.border_2
 
-.. autoclass:: border
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   border
+
 .. rubric:: Included in:
 
 ======================   ==============================================

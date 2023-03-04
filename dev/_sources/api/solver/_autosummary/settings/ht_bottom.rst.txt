@@ -7,14 +7,17 @@ ht_bottom
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ht_bottom
 
-.. autoclass:: ht_bottom
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   ht_bottom
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

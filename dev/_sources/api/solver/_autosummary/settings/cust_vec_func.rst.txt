@@ -7,9 +7,12 @@ cust_vec_func
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cust_vec_func
 
-.. autoclass:: cust_vec_func
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   cust_vec_func
+
 .. rubric:: Included in:
 
 ============================================   ================================

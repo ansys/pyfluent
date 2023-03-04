@@ -7,14 +7,17 @@ conductivity_2
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.conductivity_2
 
-.. autoclass:: conductivity_2
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   conductivity_2
+
+.. rubric:: Attributes
 
 ====================================================   ====================================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

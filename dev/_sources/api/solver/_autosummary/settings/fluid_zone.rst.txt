@@ -7,9 +7,12 @@ fluid_zone
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fluid_zone
 
-.. autoclass:: fluid_zone
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   fluid_zone
+
 .. rubric:: Included in:
 
 ========================================================   ======================================

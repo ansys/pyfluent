@@ -7,9 +7,12 @@ constant_k2
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.constant_k2
 
-.. autoclass:: constant_k2
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   constant_k2
+
 .. rubric:: Included in:
 
 ========================================   ============================

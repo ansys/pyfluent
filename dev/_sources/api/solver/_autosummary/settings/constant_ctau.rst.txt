@@ -7,9 +7,12 @@ constant_ctau
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.constant_ctau
 
-.. autoclass:: constant_ctau
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   constant_ctau
+
 .. rubric:: Included in:
 
 ========================================   ============================

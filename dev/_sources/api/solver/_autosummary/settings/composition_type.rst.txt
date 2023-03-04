@@ -7,9 +7,12 @@ composition_type
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.composition_type
 
-.. autoclass:: composition_type
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   composition_type
+
 .. rubric:: Included in:
 
 ====================================================   ==================================

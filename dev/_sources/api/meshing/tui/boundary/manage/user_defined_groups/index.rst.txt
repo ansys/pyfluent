@@ -3,11 +3,6 @@
 meshing.tui.boundary.manage.user\_defined\_groups
 =================================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.boundary.manage.user_defined_groups
-   :members: create, list, activate, update, delete
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.boundary.manage.user_defined_groups
+   :autosummary:
 

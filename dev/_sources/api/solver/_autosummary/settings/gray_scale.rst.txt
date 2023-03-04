@@ -7,9 +7,12 @@ gray_scale
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.gray_scale
 
-.. autoclass:: gray_scale
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   gray_scale
+
 .. rubric:: Included in:
 
 ============================   ===============================

@@ -7,9 +7,12 @@ viscous_heating
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.viscous_heating
 
-.. autoclass:: viscous_heating
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   viscous_heating
+
 .. rubric:: Included in:
 
 ==========================   ====================

@@ -7,14 +7,17 @@ thermolysis_model
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.thermolysis_model
 
-.. autoclass:: thermolysis_model
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   thermolysis_model
+
+.. rubric:: Attributes
 
 ======================================   ====================================================
 
-Child                                                                                 Summary
+Attribute                                                                             Summary
 
 ======================================   ====================================================
 :ref:`option <option_9>`                     Select method for calculating material property.

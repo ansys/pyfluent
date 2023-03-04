@@ -7,9 +7,12 @@ outlet_number
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.outlet_number
 
-.. autoclass:: outlet_number
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   outlet_number
+
 .. rubric:: Included in:
 
 ====================================================   ===========================================

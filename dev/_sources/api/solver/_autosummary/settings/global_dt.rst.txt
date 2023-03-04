@@ -7,9 +7,12 @@ global_dt
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.global_dt
 
-.. autoclass:: global_dt
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   global_dt
+
 .. rubric:: Named object type
 
 :ref:`local_dt_child <local_dt_child>`

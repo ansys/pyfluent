@@ -7,9 +7,12 @@ dpm_bc_erosion_mclaury_transition_angle
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_bc_erosion_mclaury_transition_angle
 
-.. autoclass:: dpm_bc_erosion_mclaury_transition_angle
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   dpm_bc_erosion_mclaury_transition_angle
+
 .. rubric:: Included in:
 
 ===================================   =================================

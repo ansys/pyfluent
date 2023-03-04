@@ -7,14 +7,17 @@ heat_transfer_coeff
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.heat_transfer_coeff
 
-.. autoclass:: heat_transfer_coeff
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   heat_transfer_coeff
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

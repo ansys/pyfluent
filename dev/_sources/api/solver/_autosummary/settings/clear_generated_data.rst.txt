@@ -7,9 +7,12 @@ clear_generated_data
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.clear_generated_data
 
-.. autoclass:: clear_generated_data
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   clear_generated_data
+
 .. rubric:: Arguments
 
 ====================================   ==========================

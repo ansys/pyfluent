@@ -7,9 +7,12 @@ k_epsilon_model
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.k_epsilon_model
 
-.. autoclass:: k_epsilon_model
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   k_epsilon_model
+
 .. rubric:: Included in:
 
 ========================   ====================

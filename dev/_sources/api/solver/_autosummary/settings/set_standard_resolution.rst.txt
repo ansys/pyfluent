@@ -7,9 +7,12 @@ set_standard_resolution
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_standard_resolution
 
-.. autoclass:: set_standard_resolution
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   set_standard_resolution
+
 .. rubric:: Included in:
 
 ======================   ==================

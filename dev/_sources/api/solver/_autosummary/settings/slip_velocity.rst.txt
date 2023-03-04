@@ -7,9 +7,12 @@ slip_velocity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.slip_velocity
 
-.. autoclass:: slip_velocity
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   slip_velocity
+
 .. rubric:: Included in:
 
 ====================================================   ===========================================

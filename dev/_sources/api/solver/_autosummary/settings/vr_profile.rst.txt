@@ -7,14 +7,17 @@ vr_profile
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.vr_profile
 
-.. autoclass:: vr_profile
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   vr_profile
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

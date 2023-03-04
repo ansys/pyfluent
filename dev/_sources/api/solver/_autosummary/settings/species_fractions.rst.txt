@@ -7,9 +7,12 @@ species_fractions
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.species_fractions
 
-.. autoclass:: species_fractions
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   species_fractions
+
 .. rubric:: Included in:
 
 ====================================================   ==================================

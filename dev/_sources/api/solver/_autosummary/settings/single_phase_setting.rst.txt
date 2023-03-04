@@ -7,9 +7,12 @@ single_phase_setting
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.single_phase_setting
 
-.. autoclass:: single_phase_setting
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   single_phase_setting
+
 .. rubric:: Included in:
 
 ==================================================   ======================================================================================

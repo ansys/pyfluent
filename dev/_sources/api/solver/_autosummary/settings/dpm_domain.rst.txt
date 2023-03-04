@@ -7,14 +7,17 @@ dpm_domain
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_domain
 
-.. autoclass:: dpm_domain
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   dpm_domain
+
+.. rubric:: Attributes
 
 ==============================================================================   ==================================================
 
-Child                                                                                                                       Summary
+Attribute                                                                                                                   Summary
 
 ==============================================================================   ==================================================
 :ref:`option <option_5>`                                                             Enable/disable DPM domain for hybrid tracking.

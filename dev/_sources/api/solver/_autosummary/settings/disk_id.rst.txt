@@ -7,14 +7,17 @@ disk_id
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.disk_id
 
-.. autoclass:: disk_id
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   disk_id
+
+.. rubric:: Attributes
 
 ==============================================   ===============================
 
-Child                                                                    Summary
+Attribute                                                                Summary
 
 ==============================================   ===============================
 :ref:`embedded_face_zone <embedded_face_zone>`          Set Embedded face zone:.

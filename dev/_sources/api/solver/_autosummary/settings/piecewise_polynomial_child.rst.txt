@@ -7,14 +7,17 @@ piecewise_polynomial_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.piecewise_polynomial_child
 
-.. autoclass:: piecewise_polynomial_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   piecewise_polynomial_child
+
+.. rubric:: Attributes
 
 ======================================================   ==========================================================================
 
-Child                                                                                                                       Summary
+Attribute                                                                                                                   Summary
 
 ======================================================   ==========================================================================
 :ref:`minimum <minimum>`                                                        Minimum argument range for this polynomial segment.

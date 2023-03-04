@@ -7,9 +7,12 @@ film_momentum_coupling
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.film_momentum_coupling
 
-.. autoclass:: film_momentum_coupling
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   film_momentum_coupling
+
 .. rubric:: Included in:
 
 ===================================   =================================

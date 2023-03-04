@@ -7,9 +7,12 @@ number_of_coefficients
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.number_of_coefficients
 
-.. autoclass:: number_of_coefficients
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   number_of_coefficients
+
 .. rubric:: Included in:
 
 ==============================================================   ================================================

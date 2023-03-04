@@ -7,9 +7,12 @@ skewness_neighbor_coupling
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.skewness_neighbor_coupling
 
-.. autoclass:: skewness_neighbor_coupling
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   skewness_neighbor_coupling
+
 .. rubric:: Included in:
 
 ==================================   =========================

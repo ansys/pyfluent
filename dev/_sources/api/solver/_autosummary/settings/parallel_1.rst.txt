@@ -7,14 +7,17 @@ parallel
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.parallel_1
 
-.. autoclass:: parallel
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   parallel
+
+.. rubric:: Attributes
 
 ====================================================   ======================================================================================================
 
-Child                                                                                                                                                 Summary
+Attribute                                                                                                                                             Summary
 
 ====================================================   ======================================================================================================
 :ref:`thread_number_control <thread_number_control>`                                                                                   Thread number control.
@@ -35,11 +38,11 @@ Child                                                                           
 
 ====================================================   ======================================================================================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ============================================   ==============================
 
-Command                                                               Summary
+Method                                                                Summary
 
 ============================================   ==============================
 :ref:`check <check_1>`                                        Parallel check.

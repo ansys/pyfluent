@@ -7,14 +7,17 @@ convergence_acceleration_for_stretched_meshes
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.convergence_acceleration_for_stretched_meshes
 
-.. autoclass:: convergence_acceleration_for_stretched_meshes
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   convergence_acceleration_for_stretched_meshes
+
+.. rubric:: Attributes
 
 ====================================================================   ==========================================
 
-Child                                                                                                     Summary
+Attribute                                                                                                 Summary
 
 ====================================================================   ==========================================
 :ref:`convergence_acceleration_type <convergence_acceleration_type>`       'convergence_acceleration_type' child.

@@ -7,9 +7,12 @@ coll_dphi
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.coll_dphi
 
-.. autoclass:: coll_dphi
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   coll_dphi
+
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

@@ -7,14 +7,17 @@ reference_values
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reference_values
 
-.. autoclass:: reference_values
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   reference_values
+
+.. rubric:: Attributes
 
 ==================================   ==================================================================
 
-Child                                                                                           Summary
+Attribute                                                                                       Summary
 
 ==================================   ==================================================================
 :ref:`area <area>`                                                Set reference area for normalization.
@@ -41,11 +44,11 @@ Child                                                                           
 
 ==================================   ==================================================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ==========================   =======================
 
-Command                                      Summary
+Method                                       Summary
 
 ==========================   =======================
 :ref:`compute <compute>`          'compute' command.

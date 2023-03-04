@@ -7,9 +7,12 @@ lic_intensity_alpha
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.lic_intensity_alpha
 
-.. autoclass:: lic_intensity_alpha
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   lic_intensity_alpha
+
 .. rubric:: Included in:
 
 ============================   ===============================

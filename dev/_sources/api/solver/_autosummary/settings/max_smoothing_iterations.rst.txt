@@ -7,9 +7,12 @@ max_smoothing_iterations
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.max_smoothing_iterations
 
-.. autoclass:: max_smoothing_iterations
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   max_smoothing_iterations
+
 .. rubric:: Included in:
 
 ========================   =========================================

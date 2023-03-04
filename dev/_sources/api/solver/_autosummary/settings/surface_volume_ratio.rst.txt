@@ -7,9 +7,12 @@ surface_volume_ratio
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.surface_volume_ratio
 
-.. autoclass:: surface_volume_ratio
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   surface_volume_ratio
+
 .. rubric:: Included in:
 
 ==================================   =================================

@@ -7,14 +7,17 @@ fvar
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fvar
 
-.. autoclass:: fvar
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   fvar
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

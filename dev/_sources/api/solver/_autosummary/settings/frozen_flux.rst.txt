@@ -7,9 +7,12 @@ frozen_flux
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.frozen_flux
 
-.. autoclass:: frozen_flux
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   frozen_flux
+
 .. rubric:: Included in:
 
 ==========================   ====================

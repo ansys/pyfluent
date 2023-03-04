@@ -7,9 +7,12 @@ film_crit_temp_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.film_crit_temp_factor
 
-.. autoclass:: film_crit_temp_factor
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   film_crit_temp_factor
+
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -7,9 +7,12 @@ min_max
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.min_max
 
-.. autoclass:: min_max
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   min_max
+
 .. rubric:: Included in:
 
 =========================   ===================

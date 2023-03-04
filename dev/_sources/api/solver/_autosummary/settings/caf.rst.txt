@@ -7,14 +7,17 @@ caf
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.caf
 
-.. autoclass:: caf
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   caf
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

@@ -7,14 +7,17 @@ population_balance
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.population_balance
 
-.. autoclass:: population_balance
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Commands
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   population_balance
+
+.. rubric:: Methods
 
 ======================================   =======================================
 
-Command                                                                  Summary
+Method                                                                   Summary
 
 ======================================   =======================================
 :ref:`moments <moments>`                     Set moments for population balance.

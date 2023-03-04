@@ -3,11 +3,6 @@
 solver.tui.setup.dynamic\_mesh.transient\_settings
 ==================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.dynamic_mesh.transient_settings
-   :members: verbosity, allow_second_order
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.transient_settings
+   :autosummary:
 

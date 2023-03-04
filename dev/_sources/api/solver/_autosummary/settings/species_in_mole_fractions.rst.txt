@@ -7,9 +7,12 @@ species_in_mole_fractions
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.species_in_mole_fractions
 
-.. autoclass:: species_in_mole_fractions
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   species_in_mole_fractions
+
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

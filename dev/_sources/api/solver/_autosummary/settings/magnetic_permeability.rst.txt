@@ -7,14 +7,17 @@ magnetic_permeability
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.magnetic_permeability
 
-.. autoclass:: magnetic_permeability
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   magnetic_permeability
+
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

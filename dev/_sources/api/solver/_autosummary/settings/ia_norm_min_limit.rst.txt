@@ -7,9 +7,12 @@ ia_norm_min_limit
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ia_norm_min_limit
 
-.. autoclass:: ia_norm_min_limit
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   ia_norm_min_limit
+
 .. rubric:: Included in:
 
 ==========================================================   ===================================================

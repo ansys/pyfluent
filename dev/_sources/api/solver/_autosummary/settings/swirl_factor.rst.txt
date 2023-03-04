@@ -7,9 +7,12 @@ swirl_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.swirl_factor
 
-.. autoclass:: swirl_factor
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   swirl_factor
+
 .. rubric:: Included in:
 
 ====================================================   ===========================================

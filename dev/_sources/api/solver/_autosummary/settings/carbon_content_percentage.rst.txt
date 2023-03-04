@@ -7,9 +7,12 @@ carbon_content_percentage
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.carbon_content_percentage
 
-.. autoclass:: carbon_content_percentage
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   carbon_content_percentage
+
 .. rubric:: Included in:
 
 ================   ================

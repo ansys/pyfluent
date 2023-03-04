@@ -7,14 +7,17 @@ g_temperature
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.g_temperature
 
-.. autoclass:: g_temperature
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   g_temperature
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

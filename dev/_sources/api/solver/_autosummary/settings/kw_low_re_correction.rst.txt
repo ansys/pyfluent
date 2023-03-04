@@ -7,9 +7,12 @@ kw_low_re_correction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.kw_low_re_correction
 
-.. autoclass:: kw_low_re_correction
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   kw_low_re_correction
+
 .. rubric:: Included in:
 
 ========================================   ============================

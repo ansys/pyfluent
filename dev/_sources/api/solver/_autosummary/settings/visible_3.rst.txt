@@ -7,9 +7,12 @@ visible
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.visible_3
 
-.. autoclass:: visible
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   visible
+
 .. rubric:: Included in:
 
 ======================   ==============================================

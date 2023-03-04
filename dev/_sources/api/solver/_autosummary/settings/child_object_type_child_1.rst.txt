@@ -7,14 +7,17 @@ child_object_type_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.child_object_type_child_1
 
-.. autoclass:: child_object_type_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   child_object_type_child
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

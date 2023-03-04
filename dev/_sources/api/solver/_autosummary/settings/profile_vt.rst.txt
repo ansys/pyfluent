@@ -7,9 +7,12 @@ profile_vt
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.profile_vt
 
-.. autoclass:: profile_vt
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   profile_vt
+
 .. rubric:: Included in:
 
 ==================================   =================================

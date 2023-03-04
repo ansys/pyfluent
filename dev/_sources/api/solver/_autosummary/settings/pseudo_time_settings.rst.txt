@@ -7,14 +7,17 @@ pseudo_time_settings
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pseudo_time_settings
 
-.. autoclass:: pseudo_time_settings
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   pseudo_time_settings
+
+.. rubric:: Attributes
 
 ============================================   =============================
 
-Child                                                                Summary
+Attribute                                                            Summary
 
 ============================================   =============================
 :ref:`verbosity <verbosity_8>`                            'verbosity' child.

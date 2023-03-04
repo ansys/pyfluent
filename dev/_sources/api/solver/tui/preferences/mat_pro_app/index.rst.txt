@@ -3,11 +3,6 @@
 solver.tui.preferences.mat\_pro\_app
 ====================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.mat_pro_app
-   :members: warning, beta_features, focus
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.preferences.mat_pro_app
+   :autosummary:
 

@@ -3,11 +3,6 @@
 solver.tui.define.models.solver
 ===============================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.solver
-   :members: adjust_solver_defaults_based_on_setup, density_based_explicit, density_based_implicit, pressure_based
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.models.solver
+   :autosummary:
 

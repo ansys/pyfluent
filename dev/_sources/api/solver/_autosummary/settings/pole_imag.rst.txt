@@ -7,9 +7,12 @@ pole_imag
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pole_imag
 
-.. autoclass:: pole_imag
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   pole_imag
+
 .. rubric:: Included in:
 
 ============================================   =======================================

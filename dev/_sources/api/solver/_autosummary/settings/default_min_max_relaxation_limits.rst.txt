@@ -7,9 +7,12 @@ default_min_max_relaxation_limits
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.default_min_max_relaxation_limits
 
-.. autoclass:: default_min_max_relaxation_limits
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   default_min_max_relaxation_limits
+
 .. rubric:: Included in:
 
 ============================================   =============================================================

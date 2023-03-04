@@ -7,9 +7,12 @@ flow_spec
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.flow_spec
 
-.. autoclass:: flow_spec
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   flow_spec
+
 .. rubric:: Included in:
 
 ==============================================================   ================================================

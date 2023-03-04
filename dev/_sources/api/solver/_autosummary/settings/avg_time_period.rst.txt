@@ -7,9 +7,12 @@ avg_time_period
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.avg_time_period
 
-.. autoclass:: avg_time_period
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   avg_time_period
+
 .. rubric:: Included in:
 
 ================================================   ==================================

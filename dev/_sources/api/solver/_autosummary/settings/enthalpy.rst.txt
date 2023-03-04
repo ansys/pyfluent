@@ -7,9 +7,12 @@ enthalpy
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.enthalpy
 
-.. autoclass:: enthalpy
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   enthalpy
+
 .. rubric:: Included in:
 
 ==========================================   =============================

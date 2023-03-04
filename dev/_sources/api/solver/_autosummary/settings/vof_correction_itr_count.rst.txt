@@ -7,9 +7,12 @@ vof_correction_itr_count
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.vof_correction_itr_count
 
-.. autoclass:: vof_correction_itr_count
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   vof_correction_itr_count
+
 .. rubric:: Included in:
 
 ==================================   =========================

@@ -7,9 +7,12 @@ continue_strategy_execution
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.continue_strategy_execution
 
-.. autoclass:: continue_strategy_execution
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   continue_strategy_execution
+
 .. rubric:: Included in:
 
 ==================================================   =================================

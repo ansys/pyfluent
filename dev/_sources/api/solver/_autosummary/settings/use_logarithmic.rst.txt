@@ -7,9 +7,12 @@ use_logarithmic
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.use_logarithmic
 
-.. autoclass:: use_logarithmic
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   use_logarithmic
+
 .. rubric:: Arguments
 
 ==============================   =======================

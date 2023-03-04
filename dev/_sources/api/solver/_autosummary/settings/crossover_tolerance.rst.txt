@@ -7,9 +7,12 @@ crossover_tolerance
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.crossover_tolerance
 
-.. autoclass:: crossover_tolerance
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   crossover_tolerance
+
 .. rubric:: Included in:
 
 ======================================   ===========================

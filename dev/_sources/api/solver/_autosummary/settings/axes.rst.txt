@@ -7,14 +7,17 @@ axes
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.axes
 
-.. autoclass:: axes
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   axes
+
+.. rubric:: Attributes
 
 ================================   =======================
 
-Child                                              Summary
+Attribute                                          Summary
 
 ================================   =======================
 :ref:`numbers <numbers>`                  'numbers' child.

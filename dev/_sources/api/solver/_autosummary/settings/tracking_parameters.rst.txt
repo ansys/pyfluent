@@ -7,14 +7,17 @@ tracking_parameters
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.tracking_parameters
 
-.. autoclass:: tracking_parameters
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   tracking_parameters
+
+.. rubric:: Attributes
 
 ================================================   ====================================================================
 
-Child                                                                                                           Summary
+Attribute                                                                                                       Summary
 
 ================================================   ====================================================================
 :ref:`control_by <control_by>`                         Select the option to determine the initial tracking step length.

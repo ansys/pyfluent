@@ -7,14 +7,17 @@ prob_mode_1
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.prob_mode_1
 
-.. autoclass:: prob_mode_1
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   prob_mode_1
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

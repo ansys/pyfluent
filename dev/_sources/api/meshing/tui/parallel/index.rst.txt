@@ -3,11 +3,6 @@
 meshing.tui.parallel
 ====================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.parallel
-   :members: auto_partition, spawn_solver_processes, agglomerate, print_partition_info, thread_number_control
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.parallel
+   :autosummary:
 

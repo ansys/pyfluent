@@ -3,11 +3,6 @@
 meshing.tui.mesh.poly.local\_regions
 ====================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.poly.local_regions
-   :members: delete, define, init, deactivate, ideal_vol, ideal_area, list_all_regions, refine, activate
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.local_regions
+   :autosummary:
 

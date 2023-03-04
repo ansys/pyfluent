@@ -7,14 +7,17 @@ speed_of_sound
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.speed_of_sound
 
-.. autoclass:: speed_of_sound
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   speed_of_sound
+
+.. rubric:: Attributes
 
 ====================================================   ====================================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

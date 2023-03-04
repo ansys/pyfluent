@@ -7,9 +7,12 @@ rows
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rows
 
-.. autoclass:: rows
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   rows
+
 .. rubric:: Included in:
 
 ====================================   ==========================

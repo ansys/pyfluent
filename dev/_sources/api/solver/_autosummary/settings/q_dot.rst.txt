@@ -7,14 +7,17 @@ q_dot
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.q_dot
 
-.. autoclass:: q_dot
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   q_dot
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

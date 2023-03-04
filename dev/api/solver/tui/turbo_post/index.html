@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -55,8 +51,8 @@
     <link rel="shortcut icon" href="../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="solver.tui.display" href="../display/index.html" />
-    <link rel="prev" title="solver.tui.report.forces" href="../report/forces/index.html" />
+    <link rel="next" title="solver.tui.server" href="../server/index.html" />
+    <link rel="prev" title="solver.tui" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -303,13 +293,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -352,14 +337,9 @@ function checkPageExistsAndRedirect(event) {
        </i>
       </label>
       <ul class="current">
-       <li class="toctree-l4">
-        <a class="reference internal" href="../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../solve/index.html">
-         solver.tui.solve
+       <li class="toctree-l4 current active">
+        <a class="current reference internal" href="#">
+         solver.tui.turbo_post
         </a>
        </li>
        <li class="toctree-l4">
@@ -368,88 +348,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../define/index.html">
-         solver.tui.define
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4 current active">
-        <a class="current reference internal" href="#">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../display/index.html">
          solver.tui.display
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../setup/index.html">
-         solver.tui.setup
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../surface/index.html">
-         solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../preferences/index.html">
-         solver.tui.preferences
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../solution/index.html">
-         solver.tui.solution
         </a>
        </li>
        <li class="toctree-l4">
@@ -458,8 +358,93 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../define/index.html">
+         solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../parallel/index.html">
+         solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../results/index.html">
          solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../views/index.html">
+         solver.tui.views
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
       </ul>
@@ -531,16 +516,25 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.turbo_post">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.turbo_post
+     turbo_post
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.turbo_post.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       __init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.turbo_post.avg_contours">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.turbo_post.avg_contours()
+       avg_contours()
       </span>
      </code>
     </a>
@@ -549,7 +543,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.turbo_post.compute_report">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.turbo_post.compute_report()
+       compute_report()
       </span>
      </code>
     </a>
@@ -558,7 +552,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.turbo_post.current_topology">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.turbo_post.current_topology()
+       current_topology()
       </span>
      </code>
     </a>
@@ -567,7 +561,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.turbo_post.two_d_contours">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.turbo_post.two_d_contours()
+       two_d_contours()
       </span>
      </code>
     </a>
@@ -576,7 +570,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.turbo_post.write_report">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.turbo_post.write_report()
+       write_report()
       </span>
      </code>
     </a>
@@ -585,7 +579,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.turbo_post.xy_plot_avg">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.turbo_post.xy_plot_avg()
+       xy_plot_avg()
       </span>
      </code>
     </a>
@@ -613,14 +607,43 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-turbo-post">
 <span id="ref-solver-tui-turbo-post"></span><h1>solver.tui.turbo_post<a class="headerlink" href="#solver-tui-turbo-post" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.turbo_post">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.</span></span><span class="sig-name descname"><span class="pre">turbo_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.turbo_post" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the turbo menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.</span></span><span class="sig-name descname"><span class="pre">turbo_post</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.turbo_post" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the turbo menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.turbo_post.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.turbo_post.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p>__init__ method of TUIMenu class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.turbo_post.avg_contours" title="ansys.fluent.core.solver.tui_231.main_menu.turbo_post.avg_contours"><code class="xref py py-obj docutils literal notranslate"><span class="pre">avg_contours</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Displays average contours.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.turbo_post.compute_report" title="ansys.fluent.core.solver.tui_231.main_menu.turbo_post.compute_report"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_report</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Computes turbomachinery quantities.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.turbo_post.current_topology" title="ansys.fluent.core.solver.tui_231.main_menu.turbo_post.current_topology"><code class="xref py py-obj docutils literal notranslate"><span class="pre">current_topology</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the current turbo topology for global use.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.turbo_post.two_d_contours" title="ansys.fluent.core.solver.tui_231.main_menu.turbo_post.two_d_contours"><code class="xref py py-obj docutils literal notranslate"><span class="pre">two_d_contours</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Display 2d contours.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.turbo_post.write_report" title="ansys.fluent.core.solver.tui_231.main_menu.turbo_post.write_report"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_report</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Writes the turbo report to file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.turbo_post.xy_plot_avg" title="ansys.fluent.core.solver.tui_231.main_menu.turbo_post.xy_plot_avg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xy_plot_avg</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Displays average XY plots.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.turbo_post.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.turbo_post.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>__init__ method of TUIMenu class.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.turbo_post.avg_contours">
 <span class="sig-name descname"><span class="pre">avg_contours</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.turbo_post.avg_contours" title="Permalink to this definition">#</a></dt>

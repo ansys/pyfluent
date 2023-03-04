@@ -7,9 +7,12 @@ rel_perm_limit_p1
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rel_perm_limit_p1
 
-.. autoclass:: rel_perm_limit_p1
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   rel_perm_limit_p1
+
 .. rubric:: Included in:
 
 ==================================   =================================

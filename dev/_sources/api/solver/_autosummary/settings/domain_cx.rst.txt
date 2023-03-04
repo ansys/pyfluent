@@ -7,9 +7,12 @@ domain_cx
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.domain_cx
 
-.. autoclass:: domain_cx
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   domain_cx
+
 .. rubric:: Included in:
 
 ============================================   ================================

@@ -7,9 +7,12 @@ solve_flow_last
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.solve_flow_last
 
-.. autoclass:: solve_flow_last
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   solve_flow_last
+
 .. rubric:: Included in:
 
 ======================================   ===============================================================

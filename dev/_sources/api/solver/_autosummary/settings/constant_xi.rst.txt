@@ -7,9 +7,12 @@ constant_xi
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.constant_xi
 
-.. autoclass:: constant_xi
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   constant_xi
+
 .. rubric:: Included in:
 
 ========================================   ============================

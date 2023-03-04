@@ -7,14 +7,17 @@ p_v_controls
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.p_v_controls
 
-.. autoclass:: p_v_controls
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   p_v_controls
+
+.. rubric:: Attributes
 
 ============================================================================================   ==================================================
 
-Child                                                                                                                                     Summary
+Attribute                                                                                                                                 Summary
 
 ============================================================================================   ==================================================
 :ref:`skewness_correction_itr_count <skewness_correction_itr_count>`                                      Set iterations for skewness correction.

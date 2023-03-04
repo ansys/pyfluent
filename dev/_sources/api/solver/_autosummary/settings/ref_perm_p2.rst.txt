@@ -7,9 +7,12 @@ ref_perm_p2
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ref_perm_p2
 
-.. autoclass:: ref_perm_p2
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   ref_perm_p2
+
 .. rubric:: Included in:
 
 ==================================   =================================

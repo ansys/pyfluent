@@ -7,9 +7,12 @@ outflow
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.outflow
 
-.. autoclass:: outflow
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   outflow
+
 .. rubric:: Named object type
 
 :ref:`outflow_child <outflow_child>`

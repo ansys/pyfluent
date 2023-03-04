@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -305,13 +295,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -324,6 +309,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../../../tui/index.html">
      meshing.tui
@@ -497,7 +487,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor">
    <code class="docutils literal notranslate">
     <span class="pre">
-     Root.Appearance.Charts.TextColor
+     TextColor
     </span>
    </code>
   </a>
@@ -506,34 +496,789 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.Charts.TextColor.Axes
+       Axes
       </span>
      </code>
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.__init__">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         __init__()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.add_on_attribute_changed">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         add_on_attribute_changed()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.add_on_changed">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         add_on_changed()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.allowed_values">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         allowed_values()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.default_value">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         default_value()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.docstring">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         docstring
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.getAttribValue">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         getAttribValue()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.getState">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         getState()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.get_attr">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         get_attr()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.get_state">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         get_state()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.help">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         help()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.is_active">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         is_active()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.is_read_only">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         is_read_only()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.setState">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         setState()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.set_state">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         set_state()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.Charts.TextColor.AxesTitles
+       AxesTitles
       </span>
      </code>
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.__init__">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         __init__()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.add_on_attribute_changed">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         add_on_attribute_changed()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.add_on_changed">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         add_on_changed()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.allowed_values">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         allowed_values()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.default_value">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         default_value()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.docstring">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         docstring
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.getAttribValue">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         getAttribValue()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.getState">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         getState()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.get_attr">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         get_attr()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.get_state">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         get_state()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.help">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         help()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.is_active">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         is_active()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.is_read_only">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         is_read_only()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.setState">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         setState()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.set_state">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         set_state()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.Charts.TextColor.Legend
+       Legend
       </span>
      </code>
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.__init__">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         __init__()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.add_on_attribute_changed">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         add_on_attribute_changed()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.add_on_changed">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         add_on_changed()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.allowed_values">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         allowed_values()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.default_value">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         default_value()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.docstring">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         docstring
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.getAttribValue">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         getAttribValue()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.getState">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         getState()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.get_attr">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         get_attr()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.get_state">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         get_state()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.help">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         help()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.is_active">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         is_active()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.is_read_only">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         is_read_only()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.setState">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         setState()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.set_state">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         set_state()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.Charts.TextColor.Title
+       Title
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.__init__">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         __init__()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.add_on_attribute_changed">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         add_on_attribute_changed()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.add_on_changed">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         add_on_changed()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.allowed_values">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         allowed_values()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.default_value">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         default_value()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.docstring">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         docstring
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.getAttribValue">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         getAttribValue()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.getState">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         getState()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.get_attr">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         get_attr()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.get_state">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         get_state()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.help">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         help()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.is_active">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         is_active()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.is_read_only">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         is_read_only()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.setState">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         setState()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.set_state">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         set_state()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       __init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_affected">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       add_on_affected()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_affected_at_type_path">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       add_on_affected_at_type_path()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_attribute_changed">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       add_on_attribute_changed()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_changed">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       add_on_changed()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_child_created">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       add_on_child_created()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_command_attribute_changed">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       add_on_command_attribute_changed()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.create_command_arguments">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       create_command_arguments()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.delete_all_child_objects">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       delete_all_child_objects()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.delete_child">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       delete_child()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.delete_child_objects">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       delete_child_objects()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.docstring">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       docstring
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.fix_state">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       fix_state()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.getAttribValue">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       getAttribValue()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.getState">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       getState()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.get_attr">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       get_attr()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.get_state">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       get_state()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.help">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       help()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.is_active">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       is_active()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.name">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       name()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.rename">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       rename()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.setState">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       setState()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.set_state">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       set_state()
       </span>
      </code>
     </a>
@@ -561,36 +1306,1417 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-datamodel-preferences-appearance-charts-textcolor">
 <span id="ref-meshing-datamodel-preferences-appearance-charts-textcolor"></span><h1>meshing.datamodel.preferences.Appearance.Charts.TextColor<a class="headerlink" href="#meshing-datamodel-preferences-appearance-charts-textcolor" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.</span></span><span class="sig-name descname"><span class="pre">TextColor</span></span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
+<p>Singleton TextColor.</p>
+<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Axes</span></code></a></p></td>
+<td><p>Parameter Axes of value type str.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AxesTitles</span></code></a></p></td>
+<td><p>Parameter AxesTitles of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Legend</span></code></a></p></td>
+<td><p>Parameter Legend of value type str.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Title</span></code></a></p></td>
+<td><p>Parameter Title of value type str.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.__init__" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(service, rules, path)</p></td>
+<td><p>__init__ method of PyMenu class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_affected" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_affected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_on_affected</span></code></a>(cb)</p></td>
+<td><p>Register a callback for when the object is affected.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_affected_at_type_path" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_affected_at_type_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_on_affected_at_type_path</span></code></a>(child_type, cb)</p></td>
+<td><p>Register a callback for when the object is affected at child type</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_attribute_changed" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_attribute_changed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_on_attribute_changed</span></code></a>(attribute, cb)</p></td>
+<td><p>Register a callback for when an attribute is changed</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_changed" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_changed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_on_changed</span></code></a>(cb)</p></td>
+<td><p>Register a callback for when the object is modified.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_child_created" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_child_created"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_on_child_created</span></code></a>(child_type, cb)</p></td>
+<td><p>Register a callback for when a child object is created.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_command_attribute_changed" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_command_attribute_changed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_on_command_attribute_changed</span></code></a>(command, ...)</p></td>
+<td><p>Register a callback for when an attribute is changed</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.create_command_arguments" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.create_command_arguments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_command_arguments</span></code></a>(command)</p></td>
+<td><p>Create command arguments.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.delete_all_child_objects" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.delete_all_child_objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_all_child_objects</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.delete_child" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.delete_child"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_child</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.delete_child_objects" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.delete_child_objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_child_objects</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.fix_state" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.fix_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fix_state</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.getAttribValue" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.getAttribValue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getAttribValue</span></code></a>(attrib)</p></td>
+<td><p>Get attribute value of the current object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.getState" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.getState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getState</span></code></a>()</p></td>
+<td><p>Get state of the current object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.get_attr" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.get_attr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_attr</span></code></a>(attrib)</p></td>
+<td><p>Get attribute value of the current object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.get_state" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.get_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_state</span></code></a>()</p></td>
+<td><p>Get state of the current object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.help" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.help"><code class="xref py py-obj docutils literal notranslate"><span class="pre">help</span></code></a>()</p></td>
+<td><p>Print help string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.is_active" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.is_active"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_active</span></code></a>()</p></td>
+<td><p>Returns true if the parameter is active.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.name" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a>()</p></td>
+<td><p>Get the name of the named object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.rename" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.rename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rename</span></code></a>(new_name)</p></td>
+<td><p>Rename the named object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.setState" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.setState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setState</span></code></a>([state])</p></td>
+<td><p>Set state of the current object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.set_state" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.set_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_state</span></code></a>([state])</p></td>
+<td><p>Set state of the current object.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.docstring" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.docstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">docstring</span></code></a></p></td>
+<td><p></p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Root.Appearance.Charts.</span></span><span class="sig-name descname"><span class="pre">TextColor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor" title="Permalink to this definition">#</a></dt>
-<dd><p>Singleton TextColor.</p>
-<dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Axes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter Axes of value type str.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Axes</span></span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter Axes of value type str.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.__init__" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(service, rules[, path])</p></td>
+<td><p>__init__ method of PyStateContainer class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.add_on_attribute_changed" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.add_on_attribute_changed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_on_attribute_changed</span></code></a>(attribute, cb)</p></td>
+<td><p>Register a callback for when an attribute is changed</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.add_on_changed" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.add_on_changed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_on_changed</span></code></a>(cb)</p></td>
+<td><p>Register a callback for when the object is modified.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.allowed_values" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.allowed_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">allowed_values</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.default_value" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.default_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_value</span></code></a>()</p></td>
+<td><p>Get default value of the parameter.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.getAttribValue" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.getAttribValue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getAttribValue</span></code></a>(attrib)</p></td>
+<td><p>Get attribute value of the current object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.getState" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.getState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getState</span></code></a>()</p></td>
+<td><p>Get state of the current object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.get_attr" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.get_attr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_attr</span></code></a>(attrib)</p></td>
+<td><p>Get attribute value of the current object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.get_state" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.get_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_state</span></code></a>()</p></td>
+<td><p>Get state of the current object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.help" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.help"><code class="xref py py-obj docutils literal notranslate"><span class="pre">help</span></code></a>()</p></td>
+<td><p>Print help string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.is_active" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.is_active"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_active</span></code></a>()</p></td>
+<td><p>Returns true if the parameter is active.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.is_read_only" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.is_read_only"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_read_only</span></code></a>()</p></td>
+<td><p>Checks whether the parameter is read only.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.setState" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.setState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setState</span></code></a>([state])</p></td>
+<td><p>Set state of the current object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.set_state" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.set_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_state</span></code></a>([state])</p></td>
+<td><p>Set state of the current object.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.docstring" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.docstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">docstring</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>__init__ method of PyStateContainer class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.add_on_attribute_changed">
+<span class="sig-name descname"><span class="pre">add_on_attribute_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attribute</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.add_on_attribute_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Register a callback for when an attribute is changed</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>attribute</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>attribute name</p>
+</dd>
+<dt><strong>cb</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Callable</span></code></span></dt><dd><p>Callback function</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">EventSubscription</span></code></dt><dd><p>EventSubscription instance which can be used to unregister the callback</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">EventSubscription</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.add_on_changed">
+<span class="sig-name descname"><span class="pre">add_on_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.add_on_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Register a callback for when the object is modified.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>cb</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Callable</span></code></span></dt><dd><p>Callback function</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">EventSubscription</span></code></dt><dd><p>EventSubscription instance which can be used to unregister the callback</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">EventSubscription</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.allowed_values">
+<span class="sig-name descname"><span class="pre">allowed_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.allowed_values" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.default_value">
+<span class="sig-name descname"><span class="pre">default_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.default_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Get default value of the parameter.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.docstring">
+<span class="sig-name descname"><span class="pre">docstring</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.docstring" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.getAttribValue">
+<span class="sig-name descname"><span class="pre">getAttribValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attrib</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.getAttribValue" title="Permalink to this definition">#</a></dt>
+<dd><p>Get attribute value of the current object.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>attrib</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></dt><dd><p>Value of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.getState">
+<span class="sig-name descname"><span class="pre">getState</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.getState" title="Permalink to this definition">#</a></dt>
+<dd><p>Get state of the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.get_attr">
+<span class="sig-name descname"><span class="pre">get_attr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attrib</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.get_attr" title="Permalink to this definition">#</a></dt>
+<dd><p>Get attribute value of the current object.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>attrib</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></dt><dd><p>Value of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.get_state">
+<span class="sig-name descname"><span class="pre">get_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.get_state" title="Permalink to this definition">#</a></dt>
+<dd><p>Get state of the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.help">
+<span class="sig-name descname"><span class="pre">help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.help" title="Permalink to this definition">#</a></dt>
+<dd><p>Print help string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.is_active">
+<span class="sig-name descname"><span class="pre">is_active</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.is_active" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns true if the parameter is active.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.is_read_only">
+<span class="sig-name descname"><span class="pre">is_read_only</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.is_read_only" title="Permalink to this definition">#</a></dt>
+<dd><p>Checks whether the parameter is read only.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.setState">
+<span class="sig-name descname"><span class="pre">setState</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.setState" title="Permalink to this definition">#</a></dt>
+<dd><p>Set state of the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.set_state">
+<span class="sig-name descname"><span class="pre">set_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes.set_state" title="Permalink to this definition">#</a></dt>
+<dd><p>Set state of the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AxesTitles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter AxesTitles of value type str.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AxesTitles</span></span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter AxesTitles of value type str.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.__init__" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(service, rules[, path])</p></td>
+<td><p>__init__ method of PyStateContainer class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.add_on_attribute_changed" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.add_on_attribute_changed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_on_attribute_changed</span></code></a>(attribute, cb)</p></td>
+<td><p>Register a callback for when an attribute is changed</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.add_on_changed" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.add_on_changed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_on_changed</span></code></a>(cb)</p></td>
+<td><p>Register a callback for when the object is modified.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.allowed_values" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.allowed_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">allowed_values</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.default_value" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.default_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_value</span></code></a>()</p></td>
+<td><p>Get default value of the parameter.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.getAttribValue" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.getAttribValue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getAttribValue</span></code></a>(attrib)</p></td>
+<td><p>Get attribute value of the current object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.getState" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.getState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getState</span></code></a>()</p></td>
+<td><p>Get state of the current object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.get_attr" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.get_attr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_attr</span></code></a>(attrib)</p></td>
+<td><p>Get attribute value of the current object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.get_state" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.get_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_state</span></code></a>()</p></td>
+<td><p>Get state of the current object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.help" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.help"><code class="xref py py-obj docutils literal notranslate"><span class="pre">help</span></code></a>()</p></td>
+<td><p>Print help string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.is_active" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.is_active"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_active</span></code></a>()</p></td>
+<td><p>Returns true if the parameter is active.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.is_read_only" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.is_read_only"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_read_only</span></code></a>()</p></td>
+<td><p>Checks whether the parameter is read only.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.setState" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.setState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setState</span></code></a>([state])</p></td>
+<td><p>Set state of the current object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.set_state" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.set_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_state</span></code></a>([state])</p></td>
+<td><p>Set state of the current object.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.docstring" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.docstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">docstring</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>__init__ method of PyStateContainer class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.add_on_attribute_changed">
+<span class="sig-name descname"><span class="pre">add_on_attribute_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attribute</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.add_on_attribute_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Register a callback for when an attribute is changed</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>attribute</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>attribute name</p>
+</dd>
+<dt><strong>cb</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Callable</span></code></span></dt><dd><p>Callback function</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">EventSubscription</span></code></dt><dd><p>EventSubscription instance which can be used to unregister the callback</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">EventSubscription</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.add_on_changed">
+<span class="sig-name descname"><span class="pre">add_on_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.add_on_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Register a callback for when the object is modified.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>cb</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Callable</span></code></span></dt><dd><p>Callback function</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">EventSubscription</span></code></dt><dd><p>EventSubscription instance which can be used to unregister the callback</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">EventSubscription</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.allowed_values">
+<span class="sig-name descname"><span class="pre">allowed_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.allowed_values" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.default_value">
+<span class="sig-name descname"><span class="pre">default_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.default_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Get default value of the parameter.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.docstring">
+<span class="sig-name descname"><span class="pre">docstring</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.docstring" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.getAttribValue">
+<span class="sig-name descname"><span class="pre">getAttribValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attrib</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.getAttribValue" title="Permalink to this definition">#</a></dt>
+<dd><p>Get attribute value of the current object.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>attrib</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></dt><dd><p>Value of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.getState">
+<span class="sig-name descname"><span class="pre">getState</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.getState" title="Permalink to this definition">#</a></dt>
+<dd><p>Get state of the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.get_attr">
+<span class="sig-name descname"><span class="pre">get_attr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attrib</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.get_attr" title="Permalink to this definition">#</a></dt>
+<dd><p>Get attribute value of the current object.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>attrib</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></dt><dd><p>Value of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.get_state">
+<span class="sig-name descname"><span class="pre">get_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.get_state" title="Permalink to this definition">#</a></dt>
+<dd><p>Get state of the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.help">
+<span class="sig-name descname"><span class="pre">help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.help" title="Permalink to this definition">#</a></dt>
+<dd><p>Print help string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.is_active">
+<span class="sig-name descname"><span class="pre">is_active</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.is_active" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns true if the parameter is active.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.is_read_only">
+<span class="sig-name descname"><span class="pre">is_read_only</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.is_read_only" title="Permalink to this definition">#</a></dt>
+<dd><p>Checks whether the parameter is read only.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.setState">
+<span class="sig-name descname"><span class="pre">setState</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.setState" title="Permalink to this definition">#</a></dt>
+<dd><p>Set state of the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.set_state">
+<span class="sig-name descname"><span class="pre">set_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles.set_state" title="Permalink to this definition">#</a></dt>
+<dd><p>Set state of the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Legend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter Legend of value type str.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Legend</span></span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter Legend of value type str.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.__init__" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(service, rules[, path])</p></td>
+<td><p>__init__ method of PyStateContainer class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.add_on_attribute_changed" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.add_on_attribute_changed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_on_attribute_changed</span></code></a>(attribute, cb)</p></td>
+<td><p>Register a callback for when an attribute is changed</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.add_on_changed" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.add_on_changed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_on_changed</span></code></a>(cb)</p></td>
+<td><p>Register a callback for when the object is modified.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.allowed_values" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.allowed_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">allowed_values</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.default_value" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.default_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_value</span></code></a>()</p></td>
+<td><p>Get default value of the parameter.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.getAttribValue" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.getAttribValue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getAttribValue</span></code></a>(attrib)</p></td>
+<td><p>Get attribute value of the current object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.getState" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.getState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getState</span></code></a>()</p></td>
+<td><p>Get state of the current object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.get_attr" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.get_attr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_attr</span></code></a>(attrib)</p></td>
+<td><p>Get attribute value of the current object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.get_state" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.get_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_state</span></code></a>()</p></td>
+<td><p>Get state of the current object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.help" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.help"><code class="xref py py-obj docutils literal notranslate"><span class="pre">help</span></code></a>()</p></td>
+<td><p>Print help string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.is_active" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.is_active"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_active</span></code></a>()</p></td>
+<td><p>Returns true if the parameter is active.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.is_read_only" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.is_read_only"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_read_only</span></code></a>()</p></td>
+<td><p>Checks whether the parameter is read only.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.setState" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.setState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setState</span></code></a>([state])</p></td>
+<td><p>Set state of the current object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.set_state" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.set_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_state</span></code></a>([state])</p></td>
+<td><p>Set state of the current object.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.docstring" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.docstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">docstring</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>__init__ method of PyStateContainer class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.add_on_attribute_changed">
+<span class="sig-name descname"><span class="pre">add_on_attribute_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attribute</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.add_on_attribute_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Register a callback for when an attribute is changed</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>attribute</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>attribute name</p>
+</dd>
+<dt><strong>cb</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Callable</span></code></span></dt><dd><p>Callback function</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">EventSubscription</span></code></dt><dd><p>EventSubscription instance which can be used to unregister the callback</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">EventSubscription</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.add_on_changed">
+<span class="sig-name descname"><span class="pre">add_on_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.add_on_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Register a callback for when the object is modified.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>cb</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Callable</span></code></span></dt><dd><p>Callback function</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">EventSubscription</span></code></dt><dd><p>EventSubscription instance which can be used to unregister the callback</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">EventSubscription</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.allowed_values">
+<span class="sig-name descname"><span class="pre">allowed_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.allowed_values" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.default_value">
+<span class="sig-name descname"><span class="pre">default_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.default_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Get default value of the parameter.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.docstring">
+<span class="sig-name descname"><span class="pre">docstring</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.docstring" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.getAttribValue">
+<span class="sig-name descname"><span class="pre">getAttribValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attrib</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.getAttribValue" title="Permalink to this definition">#</a></dt>
+<dd><p>Get attribute value of the current object.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>attrib</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></dt><dd><p>Value of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.getState">
+<span class="sig-name descname"><span class="pre">getState</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.getState" title="Permalink to this definition">#</a></dt>
+<dd><p>Get state of the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.get_attr">
+<span class="sig-name descname"><span class="pre">get_attr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attrib</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.get_attr" title="Permalink to this definition">#</a></dt>
+<dd><p>Get attribute value of the current object.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>attrib</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></dt><dd><p>Value of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.get_state">
+<span class="sig-name descname"><span class="pre">get_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.get_state" title="Permalink to this definition">#</a></dt>
+<dd><p>Get state of the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.help">
+<span class="sig-name descname"><span class="pre">help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.help" title="Permalink to this definition">#</a></dt>
+<dd><p>Print help string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.is_active">
+<span class="sig-name descname"><span class="pre">is_active</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.is_active" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns true if the parameter is active.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.is_read_only">
+<span class="sig-name descname"><span class="pre">is_read_only</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.is_read_only" title="Permalink to this definition">#</a></dt>
+<dd><p>Checks whether the parameter is read only.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.setState">
+<span class="sig-name descname"><span class="pre">setState</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.setState" title="Permalink to this definition">#</a></dt>
+<dd><p>Set state of the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.set_state">
+<span class="sig-name descname"><span class="pre">set_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend.set_state" title="Permalink to this definition">#</a></dt>
+<dd><p>Set state of the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Title</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter Title of value type str.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Title</span></span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter Title of value type str.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.__init__" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(service, rules[, path])</p></td>
+<td><p>__init__ method of PyStateContainer class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.add_on_attribute_changed" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.add_on_attribute_changed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_on_attribute_changed</span></code></a>(attribute, cb)</p></td>
+<td><p>Register a callback for when an attribute is changed</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.add_on_changed" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.add_on_changed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_on_changed</span></code></a>(cb)</p></td>
+<td><p>Register a callback for when the object is modified.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.allowed_values" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.allowed_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">allowed_values</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.default_value" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.default_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_value</span></code></a>()</p></td>
+<td><p>Get default value of the parameter.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.getAttribValue" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.getAttribValue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getAttribValue</span></code></a>(attrib)</p></td>
+<td><p>Get attribute value of the current object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.getState" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.getState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getState</span></code></a>()</p></td>
+<td><p>Get state of the current object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.get_attr" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.get_attr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_attr</span></code></a>(attrib)</p></td>
+<td><p>Get attribute value of the current object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.get_state" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.get_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_state</span></code></a>()</p></td>
+<td><p>Get state of the current object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.help" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.help"><code class="xref py py-obj docutils literal notranslate"><span class="pre">help</span></code></a>()</p></td>
+<td><p>Print help string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.is_active" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.is_active"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_active</span></code></a>()</p></td>
+<td><p>Returns true if the parameter is active.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.is_read_only" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.is_read_only"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_read_only</span></code></a>()</p></td>
+<td><p>Checks whether the parameter is read only.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.setState" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.setState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setState</span></code></a>([state])</p></td>
+<td><p>Set state of the current object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.set_state" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.set_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_state</span></code></a>([state])</p></td>
+<td><p>Set state of the current object.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.docstring" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.docstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">docstring</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>__init__ method of PyStateContainer class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.add_on_attribute_changed">
+<span class="sig-name descname"><span class="pre">add_on_attribute_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attribute</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.add_on_attribute_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Register a callback for when an attribute is changed</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>attribute</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>attribute name</p>
+</dd>
+<dt><strong>cb</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Callable</span></code></span></dt><dd><p>Callback function</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">EventSubscription</span></code></dt><dd><p>EventSubscription instance which can be used to unregister the callback</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">EventSubscription</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.add_on_changed">
+<span class="sig-name descname"><span class="pre">add_on_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.add_on_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Register a callback for when the object is modified.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>cb</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Callable</span></code></span></dt><dd><p>Callback function</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">EventSubscription</span></code></dt><dd><p>EventSubscription instance which can be used to unregister the callback</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">EventSubscription</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.allowed_values">
+<span class="sig-name descname"><span class="pre">allowed_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.allowed_values" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.default_value">
+<span class="sig-name descname"><span class="pre">default_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.default_value" title="Permalink to this definition">#</a></dt>
+<dd><p>Get default value of the parameter.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.docstring">
+<span class="sig-name descname"><span class="pre">docstring</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.docstring" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.getAttribValue">
+<span class="sig-name descname"><span class="pre">getAttribValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attrib</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.getAttribValue" title="Permalink to this definition">#</a></dt>
+<dd><p>Get attribute value of the current object.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>attrib</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></dt><dd><p>Value of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.getState">
+<span class="sig-name descname"><span class="pre">getState</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.getState" title="Permalink to this definition">#</a></dt>
+<dd><p>Get state of the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.get_attr">
+<span class="sig-name descname"><span class="pre">get_attr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attrib</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.get_attr" title="Permalink to this definition">#</a></dt>
+<dd><p>Get attribute value of the current object.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>attrib</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></dt><dd><p>Value of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.get_state">
+<span class="sig-name descname"><span class="pre">get_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.get_state" title="Permalink to this definition">#</a></dt>
+<dd><p>Get state of the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.help">
+<span class="sig-name descname"><span class="pre">help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.help" title="Permalink to this definition">#</a></dt>
+<dd><p>Print help string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.is_active">
+<span class="sig-name descname"><span class="pre">is_active</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.is_active" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns true if the parameter is active.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.is_read_only">
+<span class="sig-name descname"><span class="pre">is_read_only</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.is_read_only" title="Permalink to this definition">#</a></dt>
+<dd><p>Checks whether the parameter is read only.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.setState">
+<span class="sig-name descname"><span class="pre">setState</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.setState" title="Permalink to this definition">#</a></dt>
+<dd><p>Set state of the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.set_state">
+<span class="sig-name descname"><span class="pre">set_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title.set_state" title="Permalink to this definition">#</a></dt>
+<dd><p>Set state of the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>__init__ method of PyMenu class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_affected">
+<span class="sig-name descname"><span class="pre">add_on_affected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_affected" title="Permalink to this definition">#</a></dt>
+<dd><p>Register a callback for when the object is affected.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>cb</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Callable</span></code></span></dt><dd><p>Callback function</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">EventSubscription</span></code></dt><dd><p>EventSubscription instance which can be used to unregister the callback</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">EventSubscription</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_affected_at_type_path">
+<span class="sig-name descname"><span class="pre">add_on_affected_at_type_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_affected_at_type_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Register a callback for when the object is affected at child type</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>child_type</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>child type</p>
+</dd>
+<dt><strong>cb</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Callable</span></code></span></dt><dd><p>Callback function</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">EventSubscription</span></code></dt><dd><p>EventSubscription instance which can be used to unregister the callback</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">EventSubscription</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_attribute_changed">
+<span class="sig-name descname"><span class="pre">add_on_attribute_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attribute</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_attribute_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Register a callback for when an attribute is changed</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>attribute</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>attribute name</p>
+</dd>
+<dt><strong>cb</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Callable</span></code></span></dt><dd><p>Callback function</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">EventSubscription</span></code></dt><dd><p>EventSubscription instance which can be used to unregister the callback</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">EventSubscription</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_changed">
+<span class="sig-name descname"><span class="pre">add_on_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Register a callback for when the object is modified.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>cb</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Callable</span></code></span></dt><dd><p>Callback function</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">EventSubscription</span></code></dt><dd><p>EventSubscription instance which can be used to unregister the callback</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">EventSubscription</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_child_created">
+<span class="sig-name descname"><span class="pre">add_on_child_created</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_child_created" title="Permalink to this definition">#</a></dt>
+<dd><p>Register a callback for when a child object is created.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>child_type</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Type of the child object</p>
+</dd>
+<dt><strong>cb</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Callable</span></code></span></dt><dd><p>Callback function</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">EventSubscription</span></code></dt><dd><p>EventSubscription instance which can be used to unregister the callback</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">EventSubscription</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_command_attribute_changed">
+<span class="sig-name descname"><span class="pre">add_on_command_attribute_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.add_on_command_attribute_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Register a callback for when an attribute is changed</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>command</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>command name</p>
+</dd>
+<dt><strong>attribute</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>attribute name</p>
+</dd>
+<dt><strong>cb</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Callable</span></code></span></dt><dd><p>Callback function</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">EventSubscription</span></code></dt><dd><p>EventSubscription instance which can be used to unregister the callback</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">EventSubscription</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.create_command_arguments">
+<span class="sig-name descname"><span class="pre">create_command_arguments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.create_command_arguments" title="Permalink to this definition">#</a></dt>
+<dd><p>Create command arguments.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>command</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Command name</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></dt><dd><p>Command id</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.delete_all_child_objects">
+<span class="sig-name descname"><span class="pre">delete_all_child_objects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.delete_all_child_objects" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.delete_child">
+<span class="sig-name descname"><span class="pre">delete_child</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.delete_child" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.delete_child_objects">
+<span class="sig-name descname"><span class="pre">delete_child_objects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.delete_child_objects" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.docstring">
+<span class="sig-name descname"><span class="pre">docstring</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.docstring" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.fix_state">
+<span class="sig-name descname"><span class="pre">fix_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.fix_state" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.getAttribValue">
+<span class="sig-name descname"><span class="pre">getAttribValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attrib</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.getAttribValue" title="Permalink to this definition">#</a></dt>
+<dd><p>Get attribute value of the current object.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>attrib</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></dt><dd><p>Value of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.getState">
+<span class="sig-name descname"><span class="pre">getState</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.getState" title="Permalink to this definition">#</a></dt>
+<dd><p>Get state of the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.get_attr">
+<span class="sig-name descname"><span class="pre">get_attr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attrib</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.get_attr" title="Permalink to this definition">#</a></dt>
+<dd><p>Get attribute value of the current object.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>attrib</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></dt><dd><p>Value of the attribute.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.get_state">
+<span class="sig-name descname"><span class="pre">get_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.get_state" title="Permalink to this definition">#</a></dt>
+<dd><p>Get state of the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.help">
+<span class="sig-name descname"><span class="pre">help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.help" title="Permalink to this definition">#</a></dt>
+<dd><p>Print help string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.is_active">
+<span class="sig-name descname"><span class="pre">is_active</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.is_active" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns true if the parameter is active.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the name of the named object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.rename">
+<span class="sig-name descname"><span class="pre">rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.rename" title="Permalink to this definition">#</a></dt>
+<dd><p>Rename the named object.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>new_name</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>New name for the object.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.setState">
+<span class="sig-name descname"><span class="pre">setState</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.setState" title="Permalink to this definition">#</a></dt>
+<dd><p>Set state of the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.set_state">
+<span class="sig-name descname"><span class="pre">set_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.set_state" title="Permalink to this definition">#</a></dt>
+<dd><p>Set state of the current object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

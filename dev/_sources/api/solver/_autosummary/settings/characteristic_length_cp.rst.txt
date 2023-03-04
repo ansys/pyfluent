@@ -7,9 +7,12 @@ characteristic_length_cp
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.characteristic_length_cp
 
-.. autoclass:: characteristic_length_cp
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   characteristic_length_cp
+
 .. rubric:: Included in:
 
 ===================================   =================================

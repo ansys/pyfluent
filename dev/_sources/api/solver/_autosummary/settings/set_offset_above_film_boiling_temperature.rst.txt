@@ -7,9 +7,12 @@ set_offset_above_film_boiling_temperature
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_offset_above_film_boiling_temperature
 
-.. autoclass:: set_offset_above_film_boiling_temperature
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   set_offset_above_film_boiling_temperature
+
 .. rubric:: Included in:
 
 ====================================================================   ==========================================

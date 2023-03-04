@@ -3,13 +3,8 @@
 solver.tui.setup.mixing\_planes
 ===============================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.mixing_planes
-   :members: create, list, delete
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.mixing_planes
+   :autosummary:
 
 .. toctree::
    :hidden:

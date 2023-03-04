@@ -7,14 +7,17 @@ display_options
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.display_options
 
-.. autoclass:: display_options
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   display_options
+
+.. rubric:: Attributes
 
 ====================================   ==========================
 
-Child                                                     Summary
+Attribute                                                 Summary
 
 ====================================   ==========================
 :ref:`draw_mesh <draw_mesh>`                   'draw_mesh' child.

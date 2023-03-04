@@ -7,9 +7,12 @@ x_origin
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.x_origin
 
-.. autoclass:: x_origin
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   x_origin
+
 .. rubric:: Included in:
 
 ======================================   ====================================

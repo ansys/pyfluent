@@ -3,13 +3,8 @@
 solver.tui.solution.expert.poor\_mesh\_numerics
 ===============================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.expert.poor_mesh_numerics
-   :members: gradient_quality_based, user_defined_on_register, reset_poor_elements, user_defined_on_register_auto, orthogonality_enhancing_cell_centroids, enable, cell_quality_based, enhanced_pmn, print_poor_elements_count, solution_and_quality_based, set_quality_threshold
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.expert.poor_mesh_numerics
+   :autosummary:
 
 .. toctree::
    :hidden:

@@ -3,24 +3,19 @@
 solver.tui.file.import\_
 ========================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file.import_
-   :members: ptc_mechanica, gambit, prebfc_structured, flamelet, chemkin_report_each_line, ideas_universal, chemkin_mechanism, fidap, fmu_file, fluent4_case, marc_post, hypermesh, ensight
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.file.import_
+   :autosummary:
 
 .. toctree::
    :hidden:
 
-   tecplot/index
-   nastran/index
-   cgns/index
-   cfx/index
    abaqus/index
-   lstc/index
    plot3d/index
-   partition/index
+   cfx/index
    patran/index
+   partition/index
+   tecplot/index
+   cgns/index
    mechanical_apdl/index
+   lstc/index
+   nastran/index

@@ -3,11 +3,6 @@
 solver.tui.parametric\_study.design\_points.table
 =================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.parametric_study.design_points.table
-   :members: import_design_table, export_design_table
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.table
+   :autosummary:
 

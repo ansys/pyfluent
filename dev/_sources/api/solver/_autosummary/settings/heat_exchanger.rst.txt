@@ -7,9 +7,12 @@ heat_exchanger
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.heat_exchanger
 
-.. autoclass:: heat_exchanger
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   heat_exchanger
+
 .. rubric:: Included in:
 
 ========================================================   ======================================

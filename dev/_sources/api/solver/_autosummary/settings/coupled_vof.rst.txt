@@ -7,14 +7,17 @@ coupled_vof
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.coupled_vof
 
-.. autoclass:: coupled_vof
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   coupled_vof
+
+.. rubric:: Attributes
 
 ====================================================================================   ================================================================
 
-Child                                                                                                                                           Summary
+Attribute                                                                                                                                       Summary
 
 ====================================================================================   ================================================================
 :ref:`buoyancy_force_linearization <buoyancy_force_linearization>`                                            Enable/disable linearized buoyancy force.

@@ -7,9 +7,12 @@ create_particles_every_particle_step
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.create_particles_every_particle_step
 
-.. autoclass:: create_particles_every_particle_step
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   create_particles_every_particle_step
+
 .. rubric:: Included in:
 
 ============================================   ==============================

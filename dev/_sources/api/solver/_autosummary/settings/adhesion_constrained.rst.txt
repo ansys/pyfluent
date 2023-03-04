@@ -7,9 +7,12 @@ adhesion_constrained
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.adhesion_constrained
 
-.. autoclass:: adhesion_constrained
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   adhesion_constrained
+
 .. rubric:: Included in:
 
 ============================================   =======================================

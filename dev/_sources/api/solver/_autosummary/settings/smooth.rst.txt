@@ -7,9 +7,12 @@ smooth
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.smooth
 
-.. autoclass:: smooth
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   smooth
+
 .. rubric:: Included in:
 
 ==========================   =====================

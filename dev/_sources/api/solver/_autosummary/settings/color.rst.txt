@@ -7,9 +7,12 @@ color
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.color
 
-.. autoclass:: color
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   color
+
 .. rubric:: Included in:
 
 ========================================   ===================================

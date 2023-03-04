@@ -7,9 +7,12 @@ switch
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.switch
 
-.. autoclass:: switch
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   switch
+
 .. rubric:: Included in:
 
 ================================   ========================

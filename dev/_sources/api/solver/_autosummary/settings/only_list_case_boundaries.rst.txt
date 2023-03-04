@@ -7,9 +7,12 @@ only_list_case_boundaries
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.only_list_case_boundaries
 
-.. autoclass:: only_list_case_boundaries
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   only_list_case_boundaries
+
 .. rubric:: Included in:
 
 ========================   ====================

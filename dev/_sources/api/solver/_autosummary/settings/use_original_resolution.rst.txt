@@ -7,9 +7,12 @@ use_original_resolution
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.use_original_resolution
 
-.. autoclass:: use_original_resolution
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   use_original_resolution
+
 .. rubric:: Included in:
 
 ======================   ==================

@@ -7,9 +7,12 @@ trim_option
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.trim_option
 
-.. autoclass:: trim_option
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   trim_option
+
 .. rubric:: Included in:
 
 ==========================   =========================================

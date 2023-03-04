@@ -7,14 +7,17 @@ reaction_model
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reaction_model
 
-.. autoclass:: reaction_model
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   reaction_model
+
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

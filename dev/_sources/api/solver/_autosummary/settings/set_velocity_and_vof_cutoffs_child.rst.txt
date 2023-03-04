@@ -7,14 +7,17 @@ set_velocity_and_vof_cutoffs_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_velocity_and_vof_cutoffs_child
 
-.. autoclass:: set_velocity_and_vof_cutoffs_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   set_velocity_and_vof_cutoffs_child
+
+.. rubric:: Attributes
 
 ========================================   ============================
 
-Child                                                           Summary
+Attribute                                                       Summary
 
 ========================================   ============================
 :ref:`max_vol_mag <max_vol_mag>`                   'max_vol_mag' child.

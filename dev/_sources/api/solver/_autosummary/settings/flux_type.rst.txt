@@ -7,9 +7,12 @@ flux_type
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.flux_type
 
-.. autoclass:: flux_type
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   flux_type
+
 .. rubric:: Included in:
 
 ==============================   =======================

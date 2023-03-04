@@ -7,9 +7,12 @@ shrink_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.shrink_factor
 
-.. autoclass:: shrink_factor
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   shrink_factor
+
 .. rubric:: Included in:
 
 ================================   ================================

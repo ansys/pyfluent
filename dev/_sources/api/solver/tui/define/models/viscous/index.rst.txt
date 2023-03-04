@@ -3,19 +3,14 @@
 solver.tui.define.models.viscous
 ================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.viscous
-   :members: rsm_omega_based, reynolds_stress_model, spalart_allmaras, detached_eddy_simulation, kw_low_re_correction, transition_sst, inviscid, corner_flow_correction_ccorner, les_subgrid_smagorinsky, sa_enhanced_wall_treatment, sas, sa_alternate_prod, mixing_length, les_subgrid_wale, kw_easm, les_subgrid_rng, rsm_wall_echo, turb_buoyancy_effects, kw_wj_bsl_earsm, trans_sst_roughness_correlation, low_pressure_boundary_slip, corner_flow_correction, ke_realizable, les_subgrid_wmles, laminar, curvature_correction_ccurv, les_dynamic_scalar_flux, rsm_linear_pressure_strain, les_subgrid_tke, v2f, kw_bsl, turb_compressibility, kw_sst, ke1e, rng_swirl_model, add_transition_model, ke_easm, curvature_correction, k_kl_w, ke_rng, large_eddy_simulation, zero_equation_hvac, user_defined, kw_shear_correction, rsm_solve_tke, les_subgrid_wmles_s_minus_omega, ke_standard, kw_geko, des_limiter_option, rsm_bsl_based, rsm_ssg_pressure_strain, rng_differential_visc, les_dynamic_energy_flux, rsm_or_earsm_geko_option, user_defined_transition, les_subgrid_dynamic_fvar, kw_standard, sa_damping
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous
+   :autosummary:
 
 .. toctree::
    :hidden:
 
-   transition_model_options/index
+   turbulence_expert/index
    near_wall_treatment/index
    geko_options/index
    multiphase_turbulence/index
-   turbulence_expert/index
+   transition_model_options/index

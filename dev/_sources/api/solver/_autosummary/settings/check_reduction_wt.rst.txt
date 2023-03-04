@@ -7,9 +7,12 @@ check_reduction_wt
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.check_reduction_wt
 
-.. autoclass:: check_reduction_wt
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   check_reduction_wt
+
 .. rubric:: Included in:
 
 ==================================================   ====================================================================================================

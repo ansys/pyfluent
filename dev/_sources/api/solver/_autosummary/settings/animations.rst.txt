@@ -7,14 +7,17 @@ animations
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.animations
 
-.. autoclass:: animations
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   animations
+
+.. rubric:: Attributes
 
 ==========================   =====================
 
-Child                                      Summary
+Attribute                                  Summary
 
 ==========================   =====================
 :ref:`playback <playback>`       'playback' child.

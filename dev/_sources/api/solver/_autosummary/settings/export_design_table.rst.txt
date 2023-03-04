@@ -7,9 +7,12 @@ export_design_table
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.export_design_table
 
-.. autoclass:: export_design_table
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   export_design_table
+
 .. rubric:: Arguments
 
 ==========================   =====================

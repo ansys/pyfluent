@@ -7,9 +7,12 @@ terminology
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.terminology
 
-.. autoclass:: terminology
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   terminology
+
 .. rubric:: Included in:
 
 ==========================================   ==============================================

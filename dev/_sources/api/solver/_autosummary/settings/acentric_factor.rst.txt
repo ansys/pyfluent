@@ -7,14 +7,17 @@ acentric_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.acentric_factor
 
-.. autoclass:: acentric_factor
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   acentric_factor
+
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

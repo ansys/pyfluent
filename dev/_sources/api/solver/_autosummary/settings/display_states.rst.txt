@@ -7,14 +7,17 @@ display_states
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.display_states
 
-.. autoclass:: display_states
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Commands
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   display_states
+
+.. rubric:: Methods
 
 ====================================   ===================================================================================
 
-Command                                                                                                            Summary
+Method                                                                                                             Summary
 
 ====================================   ===================================================================================
 :ref:`list <list>`                                                                                         'list' command.

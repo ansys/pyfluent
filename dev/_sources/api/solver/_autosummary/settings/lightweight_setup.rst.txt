@@ -7,9 +7,12 @@ lightweight_setup
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.lightweight_setup
 
-.. autoclass:: lightweight_setup
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   lightweight_setup
+
 .. rubric:: Included in:
 
 ============================================   ================================

@@ -7,9 +7,12 @@ min_temperature
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.min_temperature
 
-.. autoclass:: min_temperature
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   min_temperature
+
 .. rubric:: Included in:
 
 ======================   ===================

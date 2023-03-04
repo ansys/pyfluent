@@ -7,14 +7,17 @@ transition_model_options
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.transition_model_options
 
-.. autoclass:: transition_model_options
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   transition_model_options
+
+.. rubric:: Attributes
 
 ==================================================================================   ===============================================================================
 
-Child                                                                                                                                                        Summary
+Attribute                                                                                                                                                    Summary
 
 ==================================================================================   ===============================================================================
 :ref:`crossflow_transition <crossflow_transition>`                                       Enable/disable crossflow transition for the intermittency transition model.

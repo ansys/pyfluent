@@ -7,9 +7,12 @@ x_resolution
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.x_resolution
 
-.. autoclass:: x_resolution
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   x_resolution
+
 .. rubric:: Included in:
 
 ========================   =================================================

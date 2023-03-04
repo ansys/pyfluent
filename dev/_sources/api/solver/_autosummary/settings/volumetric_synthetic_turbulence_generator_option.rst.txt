@@ -7,9 +7,12 @@ volumetric_synthetic_turbulence_generator_option
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.volumetric_synthetic_turbulence_generator_option
 
-.. autoclass:: volumetric_synthetic_turbulence_generator_option
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   volumetric_synthetic_turbulence_generator_option
+
 .. rubric:: Included in:
 
 ==================================================   ==========================================

@@ -7,9 +7,12 @@ erosion_accretion_function
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.erosion_accretion_function
 
-.. autoclass:: erosion_accretion_function
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   erosion_accretion_function
+
 .. rubric:: Included in:
 
 ======================================================   ==========================================================================================================================

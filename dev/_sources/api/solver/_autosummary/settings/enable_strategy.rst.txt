@@ -7,9 +7,12 @@ enable_strategy
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.enable_strategy
 
-.. autoclass:: enable_strategy
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   enable_strategy
+
 .. rubric:: Arguments
 
 ======================   ===================

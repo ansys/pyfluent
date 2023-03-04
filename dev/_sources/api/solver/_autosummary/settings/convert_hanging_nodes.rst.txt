@@ -7,9 +7,12 @@ convert_hanging_nodes
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.convert_hanging_nodes
 
-.. autoclass:: convert_hanging_nodes
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   convert_hanging_nodes
+
 .. rubric:: Included in:
 
 ============================   =============================

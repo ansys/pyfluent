@@ -7,9 +7,12 @@ reaction_mechs
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reaction_mechs_1
 
-.. autoclass:: reaction_mechs
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   reaction_mechs
+
 .. rubric:: Included in:
 
 ===================================   =================================

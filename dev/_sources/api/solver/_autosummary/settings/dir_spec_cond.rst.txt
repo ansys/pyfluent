@@ -7,9 +7,12 @@ dir_spec_cond
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dir_spec_cond
 
-.. autoclass:: dir_spec_cond
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   dir_spec_cond
+
 .. rubric:: Included in:
 
 ==================================   =================================

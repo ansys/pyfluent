@@ -7,9 +7,12 @@ k_omega_model
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.k_omega_model
 
-.. autoclass:: k_omega_model
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   k_omega_model
+
 .. rubric:: Included in:
 
 ========================   ====================

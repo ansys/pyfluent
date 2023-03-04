@@ -7,9 +7,12 @@ dpm_film_separation_angle
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_film_separation_angle
 
-.. autoclass:: dpm_film_separation_angle
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   dpm_film_separation_angle
+
 .. rubric:: Included in:
 
 ===================================   =================================

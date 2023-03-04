@@ -7,9 +7,12 @@ remove_dataset
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.remove_dataset
 
-.. autoclass:: remove_dataset
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   remove_dataset
+
 .. rubric:: Arguments
 
 ====================   =================

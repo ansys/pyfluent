@@ -7,14 +7,17 @@ refractive_index
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.refractive_index
 
-.. autoclass:: refractive_index
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   refractive_index
+
+.. rubric:: Attributes
 
 ======================================================   ====================================================
 
-Child                                                                                                 Summary
+Attribute                                                                                             Summary
 
 ======================================================   ====================================================
 :ref:`option <option_9>`                                     Select method for calculating material property.

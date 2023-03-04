@@ -3,11 +3,6 @@
 solver.tui.setup.models.optics.beams
 ====================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.optics.beams
-   :members: copy, delete, list_beam_parameters, edit, add, rename
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.optics.beams
+   :autosummary:
 

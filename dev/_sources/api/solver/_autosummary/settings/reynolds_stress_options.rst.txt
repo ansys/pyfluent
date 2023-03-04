@@ -7,14 +7,17 @@ reynolds_stress_options
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reynolds_stress_options
 
-.. autoclass:: reynolds_stress_options
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   reynolds_stress_options
+
+.. rubric:: Attributes
 
 ============================   =======================================================
 
-Child                                                                          Summary
+Attribute                                                                      Summary
 
 ============================   =======================================================
 :ref:`solve_tke <solve_tke>`       Enable/disable the solution of T.K.E. in RSM model.

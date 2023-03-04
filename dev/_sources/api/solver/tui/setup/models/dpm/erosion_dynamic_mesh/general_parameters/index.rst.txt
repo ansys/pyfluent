@@ -3,11 +3,6 @@
 solver.tui.setup.models.dpm.erosion\_dynamic\_mesh.general\_parameters
 ======================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.dpm.erosion_dynamic_mesh.general_parameters
-   :members: participating_walls, erosion_settings, dynamic_mesh_settings
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.general_parameters
+   :autosummary:
 

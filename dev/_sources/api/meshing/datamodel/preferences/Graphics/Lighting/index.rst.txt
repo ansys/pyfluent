@@ -3,11 +3,6 @@
 meshing.datamodel.preferences.Graphics.Lighting
 ===============================================
 
-.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.Graphics.Lighting
-   :members: AmbientLightIntensity, Headlight, HeadlightIntensity, LightingMethod
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting
+   :autosummary:
 

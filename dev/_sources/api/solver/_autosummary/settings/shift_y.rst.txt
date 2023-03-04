@@ -7,9 +7,12 @@ shift_y
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.shift_y
 
-.. autoclass:: shift_y
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   shift_y
+
 .. rubric:: Included in:
 
 ======================================   ====================================

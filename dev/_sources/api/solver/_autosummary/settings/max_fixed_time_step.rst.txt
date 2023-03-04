@@ -7,9 +7,12 @@ max_fixed_time_step
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.max_fixed_time_step
 
-.. autoclass:: max_fixed_time_step
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   max_fixed_time_step
+
 .. rubric:: Included in:
 
 ==========================================================================   =============================================

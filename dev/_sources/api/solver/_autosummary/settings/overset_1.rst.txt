@@ -7,14 +7,17 @@ overset
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.overset_1
 
-.. autoclass:: overset
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   overset
+
+.. rubric:: Attributes
 
 ====================================================   =============================================================
 
-Child                                                                                                        Summary
+Attribute                                                                                                    Summary
 
 ====================================================   =============================================================
 :ref:`high_order_pressure <high_order_pressure>`             High order pressure extrapolation at overset interface.

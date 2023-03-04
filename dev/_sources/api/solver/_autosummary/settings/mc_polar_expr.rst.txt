@@ -7,9 +7,12 @@ mc_polar_expr
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mc_polar_expr
 
-.. autoclass:: mc_polar_expr
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   mc_polar_expr
+
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -7,9 +7,12 @@ mass_criterion
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mass_criterion
 
-.. autoclass:: mass_criterion
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   mass_criterion
+
 .. rubric:: Included in:
 
 ========================================   =====================================

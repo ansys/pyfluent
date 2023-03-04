@@ -7,9 +7,12 @@ stop_time
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.stop_time
 
-.. autoclass:: stop_time
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   stop_time
+
 .. rubric:: Included in:
 
 ====================   ==================

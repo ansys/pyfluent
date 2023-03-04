@@ -7,9 +7,12 @@ zone_summaries_per_injection
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.zone_summaries_per_injection
 
-.. autoclass:: zone_summaries_per_injection
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   zone_summaries_per_injection
+
 .. rubric:: Arguments
 
 ================================================   ================================

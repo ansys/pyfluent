@@ -3,13 +3,8 @@
 solver.tui.results.surface
 ==========================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.surface
-   :members: circle_slice, partition_surface, plane_surface, list_surfaces, ungroup_surface, surface_cells, create_imprint_surface, multiple_zone_surfaces, group_surfaces, reset_zone_surfaces, plane_slice, mouse_rake, iso_surface, zone_surface, delete_surface, point_surface, ellipsoid_slice, closest_point_search, plane, rake_surface, point_array, mouse_plane, multiple_iso_surfaces, quadric_slice, transform_surface, rename_surface, structural_point_surface, mouse_line, cone_slice, line_surface, expression_volume, edit_surface, iso_clip, line_slice, multiple_plane_surfaces, sphere_slice
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.surface
+   :autosummary:
 
 .. toctree::
    :hidden:

@@ -7,9 +7,12 @@ planes
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.planes
 
-.. autoclass:: planes
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   planes
+
 .. rubric:: Included in:
 
 ========================   =====================

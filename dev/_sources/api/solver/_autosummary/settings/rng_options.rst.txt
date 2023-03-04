@@ -7,14 +7,17 @@ rng_options
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rng_options
 
-.. autoclass:: rng_options
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   rng_options
+
+.. rubric:: Attributes
 
 ==================================================================   ====================================================
 
-Child                                                                                                             Summary
+Attribute                                                                                                         Summary
 
 ==================================================================   ====================================================
 :ref:`differential_viscosity_model <differential_viscosity_model>`       Enable/disable the differential-viscosity model.

@@ -7,9 +7,12 @@ porous_structure
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.porous_structure
 
-.. autoclass:: porous_structure
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   porous_structure
+
 .. rubric:: Included in:
 
 ==================================   =================================

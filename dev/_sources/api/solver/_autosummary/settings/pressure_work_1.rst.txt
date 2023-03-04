@@ -7,9 +7,12 @@ pressure_work
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pressure_work_1
 
-.. autoclass:: pressure_work
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   pressure_work
+
 .. rubric:: Arguments
 
 ========================================   ===========================================

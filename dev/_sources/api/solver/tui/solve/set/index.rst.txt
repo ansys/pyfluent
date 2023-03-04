@@ -3,33 +3,28 @@
 solver.tui.solve.set
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set
-   :members: multi_grid_amg, equations, disable_reconstruction, set_all_species_together, surface_tension_expert, p_v_coupling, adaptive_time_stepping, relaxation_factor, set_controls_to_default, slope_limiter_set, vof_explicit_controls, set_solution_steering, lock_solid_temperature, heterogeneous_stiff_chemistry, multi_stage, data_sampling, numerics, surface_tension, limiter_warnings, correction_tolerance, phase_based_vof_discretization, reduced_rank_extrapolation, variable_time_stepping, time_step, vof_numerics, limits, p_v_controls_advanced, mp_mfluid_aniso_drag, cfl_based_adaptive_time_stepping, expert, second_order_time_options, multi_grid_fas, number_of_iterations, open_channel_controls, courant_number, reactions, discretization_scheme, residual_verbosity, enable_output_dp_dt, relaxation_method, material_property_warnings, under_relaxation, bc_pressure_extrapolations, stiff_chemistry, reduced_rank_extrapolation_options, residual_tolerance, nb_gradient_boundary_option, set_solution_methods_to_default, gradient_scheme, accelerated_non_iterative_time_marching, p_v_controls, equation_ordering, convergence_acceleration_for_stretched_meshes, flux_type, flow_warnings, multi_grid_controls, mp_reference_density, reporting_interval, numerical_beach_controls, moving_mesh_numerics, max_corrections, solution_steering, residual_smoothing
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solve.set
+   :autosummary:
 
 .. toctree::
    :hidden:
 
-   amg_options/index
-   open_channel_wave_options/index
+   data_sampling_options/index
+   nita_expert_controls/index
+   divergence_prevention/index
+   poor_mesh_numerics/index
+   warped_face_gradient_correction/index
+   multiphase_numerics/index
+   previous_defaults/index
+   pseudo_time_method/index
    advanced/index
    high_speed_numerics/index
-   previous_defaults/index
-   overset/index
-   nita_expert_controls/index
-   transient_controls/index
-   warped_face_gradient_correction/index
-   pseudo_time_method/index
-   data_sampling_options/index
-   poor_mesh_numerics/index
-   acoustics_wave_equation_controls/index
-   contact_solution_controls/index
    enhanced_les_numerics/index
+   amg_options/index
    fast_transient_settings/index
-   multiphase_numerics/index
+   contact_solution_controls/index
+   acoustics_wave_equation_controls/index
+   overset/index
    high_order_term_relaxation/index
-   divergence_prevention/index
+   open_channel_wave_options/index
+   transient_controls/index

@@ -7,9 +7,12 @@ uds_bc
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.uds_bc
 
-.. autoclass:: uds_bc
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   uds_bc
+
 .. rubric:: Named object type
 
 :ref:`turb_visc_func_mf_child <turb_visc_func_mf_child>`

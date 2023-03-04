@@ -7,9 +7,12 @@ enable_turb_damping
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.enable_turb_damping
 
-.. autoclass:: enable_turb_damping
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   enable_turb_damping
+
 .. rubric:: Included in:
 
 ==============================================   ===============================

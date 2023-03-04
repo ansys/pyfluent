@@ -7,9 +7,12 @@ echem_reaction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.echem_reaction
 
-.. autoclass:: echem_reaction
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   echem_reaction
+
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -7,9 +7,12 @@ projected_surface_area
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.projected_surface_area
 
-.. autoclass:: projected_surface_area
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   projected_surface_area
+
 .. rubric:: Arguments
 
 ==================================================   =================================

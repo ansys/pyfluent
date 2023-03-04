@@ -7,9 +7,12 @@ rotor_speed
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rotor_speed
 
-.. autoclass:: rotor_speed
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   rotor_speed
+
 .. rubric:: Included in:
 
 ==============================   ================================================

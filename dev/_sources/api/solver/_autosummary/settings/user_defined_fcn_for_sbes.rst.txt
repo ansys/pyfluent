@@ -7,9 +7,12 @@ user_defined_fcn_for_sbes
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.user_defined_fcn_for_sbes
 
-.. autoclass:: user_defined_fcn_for_sbes
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   user_defined_fcn_for_sbes
+
 .. rubric:: Included in:
 
 ======================================================   ===================================

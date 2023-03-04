@@ -7,9 +7,12 @@ targeted_mf_boundary
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.targeted_mf_boundary
 
-.. autoclass:: targeted_mf_boundary
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   targeted_mf_boundary
+
 .. rubric:: Included in:
 
 ====================================================   ===========================================

@@ -7,9 +7,12 @@ pold_pair_list_rad
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pold_pair_list_rad
 
-.. autoclass:: pold_pair_list_rad
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   pold_pair_list_rad
+
 .. rubric:: Included in:
 
 ===================================   =================================

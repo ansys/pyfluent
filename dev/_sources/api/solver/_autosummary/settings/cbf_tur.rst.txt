@@ -7,9 +7,12 @@ cbf_tur
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cbf_tur
 
-.. autoclass:: cbf_tur
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   cbf_tur
+
 .. rubric:: Included in:
 
 ==================================   =========================

@@ -7,9 +7,12 @@ center
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.center
 
-.. autoclass:: center
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   center
+
 .. rubric:: Included in:
 
 ======================   ===================

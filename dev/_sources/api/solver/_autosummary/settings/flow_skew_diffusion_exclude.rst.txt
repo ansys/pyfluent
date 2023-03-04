@@ -7,9 +7,12 @@ flow_skew_diffusion_exclude
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.flow_skew_diffusion_exclude
 
-.. autoclass:: flow_skew_diffusion_exclude
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   flow_skew_diffusion_exclude
+
 .. rubric:: Included in:
 
 ========================   ====================

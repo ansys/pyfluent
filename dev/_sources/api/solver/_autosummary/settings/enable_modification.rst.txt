@@ -7,9 +7,12 @@ enable_modification
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.enable_modification
 
-.. autoclass:: enable_modification
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   enable_modification
+
 .. rubric:: Arguments
 
 ==========================   =====================

@@ -7,9 +7,12 @@ register_id
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.register_id
 
-.. autoclass:: register_id
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   register_id
+
 .. rubric:: Included in:
 
 ========================================   ====================================================

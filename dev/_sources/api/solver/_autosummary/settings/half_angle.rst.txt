@@ -7,9 +7,12 @@ half_angle
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.half_angle
 
-.. autoclass:: half_angle
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   half_angle
+
 .. rubric:: Included in:
 
 ====================================   ==========================

@@ -7,14 +7,17 @@ mesh_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mesh_child
 
-.. autoclass:: mesh_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   mesh_child
+
+.. rubric:: Attributes
 
 ================================================================   ========================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ================================================================   ========================================
 :ref:`zone_ids <zone_ids>`                                                                'zone_ids' child.

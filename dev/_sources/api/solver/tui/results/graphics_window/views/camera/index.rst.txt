@@ -3,11 +3,6 @@
 solver.tui.results.graphics\_window.views.camera
 ================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics_window.views.camera
-   :members: pan_camera, target, roll_camera, position, dolly_camera, field, projection, zoom_camera, up_vector, orbit_camera
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.views.camera
+   :autosummary:
 

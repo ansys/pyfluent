@@ -7,9 +7,12 @@ dt_factor_min
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dt_factor_min
 
-.. autoclass:: dt_factor_min
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   dt_factor_min
+
 .. rubric:: Included in:
 
 ============================================================   =======================================================================

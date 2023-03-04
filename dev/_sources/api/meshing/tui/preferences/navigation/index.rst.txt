@@ -3,12 +3,9 @@
 meshing.tui.preferences.navigation
 ==================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.preferences.navigation
+   :autosummary:
 
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.navigation
 .. toctree::
    :hidden:
 

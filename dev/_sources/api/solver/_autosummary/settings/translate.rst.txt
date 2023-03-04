@@ -7,9 +7,12 @@ translate
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.translate
 
-.. autoclass:: translate
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   translate
+
 .. rubric:: Arguments
 
 ======================   ===================

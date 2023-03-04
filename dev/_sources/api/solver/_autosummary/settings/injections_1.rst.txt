@@ -7,9 +7,12 @@ injections
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.injections_1
 
-.. autoclass:: injections
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   injections
+
 .. rubric:: Included in:
 
 ========================   =====================

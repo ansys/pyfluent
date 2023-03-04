@@ -7,14 +7,17 @@ amg
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.amg
 
-.. autoclass:: amg
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   amg
+
+.. rubric:: Attributes
 
 ==============================================================   ========================================================
 
-Child                                                                                                             Summary
+Attribute                                                                                                         Summary
 
 ==============================================================   ========================================================
 :ref:`enforce_laplace_coarsening <enforce_laplace_coarsening>`       Enable/disable the use of laplace coarsening in AMG.

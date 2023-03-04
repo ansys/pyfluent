@@ -3,11 +3,6 @@
 solver.tui.report.system
 ========================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.report.system
-   :members: proc_stats, gpgpu_stats, time_stats, sys_stats
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.report.system
+   :autosummary:
 

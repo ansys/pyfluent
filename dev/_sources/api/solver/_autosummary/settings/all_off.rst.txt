@@ -7,9 +7,12 @@ all_off
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.all_off
 
-.. autoclass:: all_off
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   all_off
+
 .. rubric:: Included in:
 
 ==================   ===============================================

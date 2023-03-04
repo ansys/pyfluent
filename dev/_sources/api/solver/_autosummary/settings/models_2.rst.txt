@@ -7,14 +7,17 @@ models
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.models_2
 
-.. autoclass:: models
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   models
+
+.. rubric:: Attributes
 
 ========================================   =========================================================================================
 
-Child                                                                                                                        Summary
+Attribute                                                                                                                    Summary
 
 ========================================   =========================================================================================
 :ref:`model_ramping <model_ramping>`                                 Enable/disable model ramping for solver stability and accuracy.

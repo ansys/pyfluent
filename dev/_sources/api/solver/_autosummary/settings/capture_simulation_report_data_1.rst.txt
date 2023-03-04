@@ -7,9 +7,12 @@ capture_simulation_report_data
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.capture_simulation_report_data_1
 
-.. autoclass:: capture_simulation_report_data
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   capture_simulation_report_data
+
 .. rubric:: Included in:
 
 ================================================   =========================================

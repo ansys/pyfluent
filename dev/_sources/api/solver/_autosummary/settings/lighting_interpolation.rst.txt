@@ -7,9 +7,12 @@ lighting_interpolation
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.lighting_interpolation
 
-.. autoclass:: lighting_interpolation
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   lighting_interpolation
+
 .. rubric:: Included in:
 
 ======================   ===================

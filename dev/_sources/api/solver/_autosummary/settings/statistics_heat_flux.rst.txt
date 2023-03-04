@@ -7,9 +7,12 @@ statistics_heat_flux
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.statistics_heat_flux
 
-.. autoclass:: statistics_heat_flux
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   statistics_heat_flux
+
 .. rubric:: Included in:
 
 ======================================   ==========================

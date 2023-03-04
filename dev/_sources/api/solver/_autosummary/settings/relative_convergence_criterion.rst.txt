@@ -7,9 +7,12 @@ relative_convergence_criterion
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.relative_convergence_criterion
 
-.. autoclass:: relative_convergence_criterion
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   relative_convergence_criterion
+
 .. rubric:: Included in:
 
 ================================================================   ===========================================================

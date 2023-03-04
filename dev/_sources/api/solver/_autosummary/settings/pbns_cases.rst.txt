@@ -7,14 +7,17 @@ pbns_cases
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pbns_cases
 
-.. autoclass:: pbns_cases
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   pbns_cases
+
+.. rubric:: Attributes
 
 ==========================================   ================================
 
-Child                                                                 Summary
+Attribute                                                             Summary
 
 ==========================================   ================================
 :ref:`flux_auto_select <flux_auto_select>`       Enable/disable Auto Select .

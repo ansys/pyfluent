@@ -7,9 +7,12 @@ ligament_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ligament_factor
 
-.. autoclass:: ligament_factor
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   ligament_factor
+
 .. rubric:: Included in:
 
 ========================================   ============================

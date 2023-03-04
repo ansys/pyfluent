@@ -7,9 +7,12 @@ sys_statistics
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.sys_statistics
 
-.. autoclass:: sys_statistics
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   sys_statistics
+
 .. rubric:: Included in:
 
 ======================   ===================

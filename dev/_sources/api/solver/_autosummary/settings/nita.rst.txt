@@ -7,9 +7,12 @@ nita
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.nita
 
-.. autoclass:: nita
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   nita
+
 .. rubric:: Included in:
 
 ==========================   ====================

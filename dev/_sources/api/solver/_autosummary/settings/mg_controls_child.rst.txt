@@ -7,14 +7,17 @@ mg_controls_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mg_controls_child
 
-.. autoclass:: mg_controls_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   mg_controls_child
+
+.. rubric:: Attributes
 
 ==================================================================   =========================================
 
-Child                                                                                                  Summary
+Attribute                                                                                              Summary
 
 ==================================================================   =========================================
 :ref:`cycle_type <cycle_type>`                                                             'cycle_type' child.

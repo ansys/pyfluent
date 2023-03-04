@@ -7,9 +7,12 @@ print_histogram
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.print_histogram
 
-.. autoclass:: print_histogram
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   print_histogram
+
 .. rubric:: Arguments
 
 ====================================   ==========================

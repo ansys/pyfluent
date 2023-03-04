@@ -7,14 +7,17 @@ fixed_cycle_parameters
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fixed_cycle_parameters
 
-.. autoclass:: fixed_cycle_parameters
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   fixed_cycle_parameters
+
+.. rubric:: Attributes
 
 ================================   ================================================
 
-Child                                                                       Summary
+Attribute                                                                   Summary
 
 ================================   ================================================
 :ref:`pre_sweeps <pre_sweeps>`          Number of pre-relaxations for fixed cycles.

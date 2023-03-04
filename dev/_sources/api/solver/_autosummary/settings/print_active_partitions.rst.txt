@@ -7,9 +7,12 @@ print_active_partitions
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.print_active_partitions
 
-.. autoclass:: print_active_partitions
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   print_active_partitions
+
 .. rubric:: Included in:
 
 ==============================   ====================================

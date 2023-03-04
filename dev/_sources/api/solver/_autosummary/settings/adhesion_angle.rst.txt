@@ -7,9 +7,12 @@ adhesion_angle
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.adhesion_angle
 
-.. autoclass:: adhesion_angle
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   adhesion_angle
+
 .. rubric:: Named object type
 
 :ref:`child_object_type_child <child_object_type_child_1>`

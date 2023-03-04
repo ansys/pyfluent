@@ -7,9 +7,12 @@ pressure_minimum
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pressure_minimum
 
-.. autoclass:: pressure_minimum
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   pressure_minimum
+
 .. rubric:: Included in:
 
 ====================================================   ==================================

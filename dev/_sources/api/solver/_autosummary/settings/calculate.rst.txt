@@ -7,9 +7,12 @@ calculate
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.calculate
 
-.. autoclass:: calculate
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   calculate
+
 .. rubric:: Included in:
 
 ========================================   ============================

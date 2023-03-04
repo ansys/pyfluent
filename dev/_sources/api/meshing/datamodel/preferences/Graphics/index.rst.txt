@@ -3,13 +3,8 @@
 meshing.datamodel.preferences.Graphics
 ======================================
 
-.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.Graphics
-   :members: AnimationOption, DoubleBuffering, EnableNonObjectBasedWorkflow, EventPollInterval, EventPollTimeout, ForceKeyFrameAnimationMarkersToOff, GraphicsWindowLineWidth, GraphicsWindowPointSymbol, HiddenSurfaceRemovalMethod, HigherResolutionGraphicsWindowLineWidth, LowerResolutionGraphicsWindowLineWidth, MarkerDrawingMode, MaxGraphicsTextSize, MinGraphicsTextSize, PlotLegendMargin, PointToolSize, RemovePartitionLines, RemovePartitionLinesTolerance, RotationCenterpointVisible, ScrollWheelEventEndTimer, SetCameraNormalToSurfaceIncrements, ShowHiddenLines, ShowHiddenSurfaces, SwitchToOpenGLForRemoteVisualization, TestUseExternalFunction, TextWindowLineWidth
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences.Root.Graphics
+   :autosummary:
 
 .. toctree::
    :hidden:

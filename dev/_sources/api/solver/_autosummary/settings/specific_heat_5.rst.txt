@@ -7,9 +7,12 @@ specific_heat
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.specific_heat_5
 
-.. autoclass:: specific_heat
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   specific_heat
+
 .. rubric:: Arguments
 
 ======================================   ===========================

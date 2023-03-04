@@ -7,9 +7,12 @@ beach_id
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.beach_id
 
-.. autoclass:: beach_id
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   beach_id
+
 .. rubric:: Included in:
 
 ==================================   =================================

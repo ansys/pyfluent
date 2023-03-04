@@ -7,9 +7,12 @@ prevent_reverse_flow
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.prevent_reverse_flow
 
-.. autoclass:: prevent_reverse_flow
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   prevent_reverse_flow
+
 .. rubric:: Included in:
 
 ====================================================   ===========================================

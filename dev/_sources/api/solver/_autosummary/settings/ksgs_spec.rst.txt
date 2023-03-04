@@ -7,9 +7,12 @@ ksgs_spec
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ksgs_spec
 
-.. autoclass:: ksgs_spec
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   ksgs_spec
+
 .. rubric:: Included in:
 
 ============================================================   ===============================================

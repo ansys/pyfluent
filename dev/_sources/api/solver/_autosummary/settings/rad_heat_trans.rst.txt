@@ -7,9 +7,12 @@ rad_heat_trans
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rad_heat_trans
 
-.. autoclass:: rad_heat_trans
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   rad_heat_trans
+
 .. rubric:: Arguments
 
 ========================================   ===========================================

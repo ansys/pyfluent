@@ -7,9 +7,12 @@ fensapice_drop_cx
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fensapice_drop_cx
 
-.. autoclass:: fensapice_drop_cx
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   fensapice_drop_cx
+
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

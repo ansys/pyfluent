@@ -7,9 +7,12 @@ axis_begin
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.axis_begin
 
-.. autoclass:: axis_begin
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   axis_begin
+
 .. rubric:: Included in:
 
 ==========================   =====================

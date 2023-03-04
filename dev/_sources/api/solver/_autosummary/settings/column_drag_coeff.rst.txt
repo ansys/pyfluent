@@ -7,9 +7,12 @@ column_drag_coeff
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.column_drag_coeff
 
-.. autoclass:: column_drag_coeff
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   column_drag_coeff
+
 .. rubric:: Included in:
 
 ========================================   ============================

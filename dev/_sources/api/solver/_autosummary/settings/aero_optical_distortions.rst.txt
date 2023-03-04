@@ -7,9 +7,12 @@ aero_optical_distortions
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.aero_optical_distortions
 
-.. autoclass:: aero_optical_distortions
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   aero_optical_distortions
+
 .. rubric:: Included in:
 
 ========================   ===================

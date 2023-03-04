@@ -3,11 +3,6 @@
 meshing.tui.display.display\_states
 ===================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.display_states
-   :members: read, copy, write, list, edit, use_active, create, apply, delete
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.display.display_states
+   :autosummary:
 

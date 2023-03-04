@@ -7,14 +7,17 @@ local_dt_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.local_dt_child
 
-.. autoclass:: local_dt_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   local_dt_child
+
+.. rubric:: Attributes
 
 ==========================================================================   =============================================
 
-Child                                                                                                              Summary
+Attribute                                                                                                          Summary
 
 ==========================================================================   =============================================
 :ref:`enable_pseudo_time_method <enable_pseudo_time_method>`                            'enable_pseudo_time_method' child.

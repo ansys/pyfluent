@@ -7,9 +7,12 @@ delete_modification
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.delete_modification
 
-.. autoclass:: delete_modification
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   delete_modification
+
 .. rubric:: Arguments
 
 ==========================   =====================

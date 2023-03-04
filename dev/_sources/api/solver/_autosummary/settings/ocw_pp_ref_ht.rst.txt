@@ -7,9 +7,12 @@ ocw_pp_ref_ht
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ocw_pp_ref_ht
 
-.. autoclass:: ocw_pp_ref_ht
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   ocw_pp_ref_ht
+
 .. rubric:: Included in:
 
 ==================================================   ==========================================

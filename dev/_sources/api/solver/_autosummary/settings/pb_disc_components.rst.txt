@@ -7,9 +7,12 @@ pb_disc_components
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pb_disc_components
 
-.. autoclass:: pb_disc_components
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   pb_disc_components
+
 .. rubric:: Named object type
 
 :ref:`child_object_type_child <child_object_type_child_1>`

@@ -7,14 +7,17 @@ filter_settings
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.filter_settings
 
-.. autoclass:: filter_settings
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   filter_settings
+
+.. rubric:: Attributes
 
 ======================================   ===========================
 
-Child                                                        Summary
+Attribute                                                    Summary
 
 ======================================   ===========================
 :ref:`field <field>`                                  'field' child.

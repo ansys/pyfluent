@@ -7,9 +7,12 @@ norm
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.norm
 
-.. autoclass:: norm
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   norm
+
 .. rubric:: Included in:
 
 ===================================   =================================

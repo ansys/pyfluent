@@ -7,9 +7,12 @@ track_pdf_particles
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.track_pdf_particles
 
-.. autoclass:: track_pdf_particles
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   track_pdf_particles
+
 .. rubric:: Included in:
 
 ==================================================   ==========================================

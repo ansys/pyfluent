@@ -7,14 +7,17 @@ default_controls
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.default_controls
 
-.. autoclass:: default_controls
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   default_controls
+
+.. rubric:: Attributes
 
 ========================================================================================   =========================================================
 
-Child                                                                                                                                        Summary
+Attribute                                                                                                                                    Summary
 
 ========================================================================================   =========================================================
 :ref:`recommended_defaults_for_existing_cases <recommended_defaults_for_existing_cases>`               Activate multiphase defaults for loaded case.

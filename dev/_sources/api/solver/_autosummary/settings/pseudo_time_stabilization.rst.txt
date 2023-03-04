@@ -7,9 +7,12 @@ pseudo_time_stabilization
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pseudo_time_stabilization
 
-.. autoclass:: pseudo_time_stabilization
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   pseudo_time_stabilization
+
 .. rubric:: Included in:
 
 ============================================================================   ===================================================

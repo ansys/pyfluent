@@ -3,11 +3,6 @@
 solver.tui.solution.controls.contact\_solution\_controls.miscellaneous
 ======================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.controls.contact_solution_controls.miscellaneous
-   :members: statistics_level, compute_statistics
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.controls.contact_solution_controls.miscellaneous
+   :autosummary:
 

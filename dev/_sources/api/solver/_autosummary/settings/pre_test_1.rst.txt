@@ -7,9 +7,12 @@ pre_test
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pre_test_1
 
-.. autoclass:: pre_test
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   pre_test
+
 .. rubric:: Included in:
 
 ==================   ===============================================

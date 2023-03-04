@@ -7,9 +7,12 @@ memory_usage
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.memory_usage
 
-.. autoclass:: memory_usage
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   memory_usage
+
 .. rubric:: Included in:
 
 ==================   =================

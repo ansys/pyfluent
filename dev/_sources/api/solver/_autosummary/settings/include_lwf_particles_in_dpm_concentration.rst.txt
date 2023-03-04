@@ -7,9 +7,12 @@ include_lwf_particles_in_dpm_concentration
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.include_lwf_particles_in_dpm_concentration
 
-.. autoclass:: include_lwf_particles_in_dpm_concentration
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   include_lwf_particles_in_dpm_concentration
+
 .. rubric:: Included in:
 
 ============================   ======================

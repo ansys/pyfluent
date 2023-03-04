@@ -7,9 +7,12 @@ increase_pre_sweeps
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.increase_pre_sweeps
 
-.. autoclass:: increase_pre_sweeps
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   increase_pre_sweeps
+
 .. rubric:: Included in:
 
 ================   ================

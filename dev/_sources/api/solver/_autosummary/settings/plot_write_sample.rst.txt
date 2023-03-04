@@ -7,14 +7,17 @@ plot_write_sample
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.plot_write_sample
 
-.. autoclass:: plot_write_sample
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Commands
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   plot_write_sample
+
+.. rubric:: Methods
 
 ==================================   ===========================
 
-Command                                                  Summary
+Method                                                   Summary
 
 ==================================   ===========================
 :ref:`plot_sample <plot_sample>`          'plot_sample' command.

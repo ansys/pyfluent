@@ -7,9 +7,12 @@ copy_by_formula
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.copy_by_formula
 
-.. autoclass:: copy_by_formula
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   copy_by_formula
+
 .. rubric:: Arguments
 
 ========================   ====================

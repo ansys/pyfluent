@@ -7,9 +7,12 @@ cone_axis_pt_z
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cone_axis_pt_z
 
-.. autoclass:: cone_axis_pt_z
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   cone_axis_pt_z
+
 .. rubric:: Included in:
 
 ==================================   =================================

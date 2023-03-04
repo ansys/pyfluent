@@ -7,9 +7,12 @@ display_state_name
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.display_state_name
 
-.. autoclass:: display_state_name
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   display_state_name
+
 .. rubric:: Included in:
 
 ==================================================   ==========================================

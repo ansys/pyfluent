@@ -7,9 +7,12 @@ mom_axis
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mom_axis
 
-.. autoclass:: mom_axis
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   mom_axis
+
 .. rubric:: Included in:
 
 ==================================   ==================================

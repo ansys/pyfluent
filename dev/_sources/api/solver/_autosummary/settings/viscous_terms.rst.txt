@@ -7,9 +7,12 @@ viscous_terms
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.viscous_terms
 
-.. autoclass:: viscous_terms
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   viscous_terms
+
 .. rubric:: Included in:
 
 ================================   =========================================

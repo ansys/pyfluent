@@ -3,11 +3,6 @@
 solver.tui.mesh.geometry
 ========================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.mesh.geometry
-   :members: list, display, delete, list_properties, add, edit
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry
+   :autosummary:
 

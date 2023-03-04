@@ -1,0 +1,6 @@
+upload
+======
+
+.. currentmodule:: ansys.fluent.core.session_meshing
+
+.. automethod:: Meshing.upload

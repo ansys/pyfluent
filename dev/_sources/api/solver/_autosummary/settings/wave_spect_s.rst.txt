@@ -7,9 +7,12 @@ wave_spect_s
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.wave_spect_s
 
-.. autoclass:: wave_spect_s
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   wave_spect_s
+
 .. rubric:: Included in:
 
 ==================================================   ==========================================

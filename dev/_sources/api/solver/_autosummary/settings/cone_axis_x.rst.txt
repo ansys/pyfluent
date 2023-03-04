@@ -7,9 +7,12 @@ cone_axis_x
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cone_axis_x
 
-.. autoclass:: cone_axis_x
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   cone_axis_x
+
 .. rubric:: Included in:
 
 ==================================   =================================

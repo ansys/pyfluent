@@ -7,9 +7,12 @@ polar_pair_list
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.polar_pair_list
 
-.. autoclass:: polar_pair_list
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   polar_pair_list
+
 .. rubric:: Named object type
 
 :ref:`polar_pair_list_child <polar_pair_list_child>`

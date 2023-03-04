@@ -7,9 +7,12 @@ number_of_bins
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.number_of_bins
 
-.. autoclass:: number_of_bins
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   number_of_bins
+
 .. rubric:: Arguments
 
 ==============================   =======================

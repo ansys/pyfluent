@@ -7,9 +7,12 @@ vol_frac_cutoff
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.vol_frac_cutoff
 
-.. autoclass:: vol_frac_cutoff
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   vol_frac_cutoff
+
 .. rubric:: Included in:
 
 ==============================================================================   ========================================================

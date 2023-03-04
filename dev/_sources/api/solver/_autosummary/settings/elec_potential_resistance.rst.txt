@@ -7,14 +7,17 @@ elec_potential_resistance
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.elec_potential_resistance
 
-.. autoclass:: elec_potential_resistance
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   elec_potential_resistance
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

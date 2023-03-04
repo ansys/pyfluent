@@ -7,9 +7,12 @@ local_dt
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.local_dt
 
-.. autoclass:: local_dt
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   local_dt
+
 .. rubric:: Named object type
 
 :ref:`local_dt_child <local_dt_child>`

@@ -7,9 +7,12 @@ constant_y0
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.constant_y0
 
-.. autoclass:: constant_y0
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   constant_y0
+
 .. rubric:: Included in:
 
 ========================================   ============================

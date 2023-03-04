@@ -7,9 +7,12 @@ user_defined
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.user_defined_1
 
-.. autoclass:: user_defined
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   user_defined
+
 .. rubric:: Named object type
 
 :ref:`user_defined_child <user_defined_child>`

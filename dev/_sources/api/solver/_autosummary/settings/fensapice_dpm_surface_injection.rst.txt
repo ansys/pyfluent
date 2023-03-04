@@ -7,9 +7,12 @@ fensapice_dpm_surface_injection
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fensapice_dpm_surface_injection
 
-.. autoclass:: fensapice_dpm_surface_injection
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   fensapice_dpm_surface_injection
+
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

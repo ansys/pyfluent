@@ -3,11 +3,6 @@
 meshing.tui.mesh.rapid\_octree.mesh\_sizing
 ===========================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.rapid_octree.mesh_sizing
-   :members: list_surface_sizings, boundary_layers, surface_coarsening_layers, boundary_cell_size, change_surface_sizing, delete_surface_sizing, add_surface_sizing, max_cell_size, buffer_layers, mesh_coarsening_exponent, clear_all_surface_sizings, feature_angle_refinement
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.mesh.rapid_octree.mesh_sizing
+   :autosummary:
 

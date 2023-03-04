@@ -7,14 +7,17 @@ by_type
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.by_type
 
-.. autoclass:: by_type
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   by_type
+
+.. rubric:: Attributes
 
 ================================================================   ================================================================
 
-Child                                                                                                                       Summary
+Attribute                                                                                                                   Summary
 
 ================================================================   ================================================================
 :ref:`only_list_case_boundaries <only_list_case_boundaries>`           Only list the boundary types that are assigned in this case.
@@ -23,11 +26,11 @@ Child                                                                           
 
 ================================================================   ================================================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ====================   =====================================================
 
-Command                                                              Summary
+Method                                                               Summary
 
 ====================   =====================================================
 :ref:`reset <reset>`       To reset colors and/or materials to the defaults.

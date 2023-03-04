@@ -7,9 +7,12 @@ quality
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.quality_1
 
-.. autoclass:: quality
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   quality
+
 .. rubric:: Included in:
 
 ======================   ==================

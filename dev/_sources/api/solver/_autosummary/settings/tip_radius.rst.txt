@@ -7,9 +7,12 @@ tip_radius
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.tip_radius
 
-.. autoclass:: tip_radius
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   tip_radius
+
 .. rubric:: Included in:
 
 ==============================   ================================================

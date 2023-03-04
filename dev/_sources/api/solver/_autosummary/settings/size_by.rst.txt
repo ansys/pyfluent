@@ -7,9 +7,12 @@ size_by
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.size_by
 
-.. autoclass:: size_by
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   size_by
+
 .. rubric:: Included in:
 
 ============================   =====================

@@ -7,14 +7,17 @@ y_axis
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.y_axis_1
 
-.. autoclass:: y_axis
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   y_axis
+
+.. rubric:: Attributes
 
 ====================================================   ==================================
 
-Child                                                                             Summary
+Attribute                                                                         Summary
 
 ====================================================   ==================================
 :ref:`draw_major_rules <draw_major_rules>`                      'draw_major_rules' child.

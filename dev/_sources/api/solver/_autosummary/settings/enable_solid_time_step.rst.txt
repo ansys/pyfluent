@@ -7,9 +7,12 @@ enable_solid_time_step
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.enable_solid_time_step
 
-.. autoclass:: enable_solid_time_step
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   enable_solid_time_step
+
 .. rubric:: Included in:
 
 ==================================================   =================================

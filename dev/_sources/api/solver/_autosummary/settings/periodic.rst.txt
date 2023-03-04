@@ -7,9 +7,12 @@ periodic
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.periodic
 
-.. autoclass:: periodic
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   periodic
+
 .. rubric:: Named object type
 
 :ref:`periodic_child <periodic_child>`

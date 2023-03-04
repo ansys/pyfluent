@@ -7,9 +7,12 @@ mechanical_apdl_input
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mechanical_apdl_input
 
-.. autoclass:: mechanical_apdl_input
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   mechanical_apdl_input
+
 .. rubric:: Arguments
 
 ================================================   ================================

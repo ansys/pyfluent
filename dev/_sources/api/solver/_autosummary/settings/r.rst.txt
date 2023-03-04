@@ -7,14 +7,17 @@ r
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.r
 
-.. autoclass:: r
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   r
+
+.. rubric:: Attributes
 
 ============   ==============
 
-Child                 Summary
+Attribute             Summary
 
 ============   ==============
 :ref:`x <x>`       'x' child.

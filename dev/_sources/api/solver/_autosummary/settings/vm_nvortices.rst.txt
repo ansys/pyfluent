@@ -7,9 +7,12 @@ vm_nvortices
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.vm_nvortices
 
-.. autoclass:: vm_nvortices
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   vm_nvortices
+
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

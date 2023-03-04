@@ -7,9 +7,12 @@ beach_bottom_level
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.beach_bottom_level
 
-.. autoclass:: beach_bottom_level
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   beach_bottom_level
+
 .. rubric:: Included in:
 
 ==================================   =================================

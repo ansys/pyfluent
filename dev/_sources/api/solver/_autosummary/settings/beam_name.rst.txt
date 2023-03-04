@@ -7,9 +7,12 @@ beam_name
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.beam_name
 
-.. autoclass:: beam_name
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   beam_name
+
 .. rubric:: Included in:
 
 ==================   ===========================

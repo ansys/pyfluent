@@ -7,14 +7,17 @@ mgrid_omega
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mgrid_omega
 
-.. autoclass:: mgrid_omega
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   mgrid_omega
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

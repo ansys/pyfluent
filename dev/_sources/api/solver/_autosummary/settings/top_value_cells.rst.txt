@@ -7,9 +7,12 @@ top_value_cells
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.top_value_cells
 
-.. autoclass:: top_value_cells
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   top_value_cells
+
 .. rubric:: Included in:
 
 =========================   ===================

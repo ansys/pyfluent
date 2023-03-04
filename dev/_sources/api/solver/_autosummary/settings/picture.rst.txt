@@ -7,14 +7,17 @@ picture
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.picture
 
-.. autoclass:: picture
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   picture
+
+.. rubric:: Attributes
 
 ====================================================   =======================================================================================================================
 
-Child                                                                                                                                                                  Summary
+Attribute                                                                                                                                                              Summary
 
 ====================================================   =======================================================================================================================
 :ref:`color_mode <color_mode>`                                                                                                                             'color_mode' child.
@@ -39,11 +42,11 @@ Child                                                                           
 
 ====================================================   =======================================================================================================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ========================================   ==========================================
 
-Command                                                                       Summary
+Method                                                                        Summary
 
 ========================================   ==========================================
 :ref:`preview <preview>`                       Display a preview image of a hardcopy.

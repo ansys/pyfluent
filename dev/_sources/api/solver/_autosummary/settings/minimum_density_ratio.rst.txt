@@ -7,9 +7,12 @@ minimum_density_ratio
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.minimum_density_ratio
 
-.. autoclass:: minimum_density_ratio
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   minimum_density_ratio
+
 .. rubric:: Included in:
 
 ================================================   ================================

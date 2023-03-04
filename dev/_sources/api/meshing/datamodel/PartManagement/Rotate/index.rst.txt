@@ -3,11 +3,6 @@
 meshing.datamodel.PartManagement.Rotate
 =======================================
 
-.. currentmodule:: ansys.fluent.core.datamodel_231.PartManagement
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.datamodel_231.PartManagement::Root.Rotate._Rotate
-   :members: Applied, Children, Context, Global, Name, RotateX, RotateY, RotateZ, Type, _name_, Add, Apply, Remove, Rename, Undo, Update
+.. autoclass:: ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate
+   :autosummary:
 

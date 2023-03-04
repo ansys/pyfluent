@@ -7,9 +7,12 @@ x_component
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.x_component
 
-.. autoclass:: x_component
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   x_component
+
 .. rubric:: Included in:
 
 ============================================   =============================

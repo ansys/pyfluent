@@ -7,9 +7,12 @@ mg_controls
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mg_controls
 
-.. autoclass:: mg_controls
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   mg_controls
+
 .. rubric:: Named object type
 
 :ref:`mg_controls_child <mg_controls_child>`

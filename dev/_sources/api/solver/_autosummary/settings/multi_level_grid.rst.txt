@@ -7,9 +7,12 @@ multi_level_grid
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.multi_level_grid
 
-.. autoclass:: multi_level_grid
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   multi_level_grid
+
 .. rubric:: Included in:
 
 ==================================================================   ===========================================

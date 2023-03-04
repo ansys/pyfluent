@@ -3,11 +3,6 @@
 solver.tui.results.graphics\_window.titles
 ==========================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics_window.titles
-   :members: right_bottom, left_bottom, right_middle, right_top, left_top
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.titles
+   :autosummary:
 

@@ -7,14 +7,17 @@ expression_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.expression_child
 
-.. autoclass:: expression_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   expression_child
+
+.. rubric:: Attributes
 
 ========================================================   ====================================
 
-Child                                                                                   Summary
+Attribute                                                                               Summary
 
 ========================================================   ====================================
 :ref:`list_valid_report_names <list_valid_report_names>`       'list_valid_report_names' child.

@@ -7,9 +7,12 @@ enable_auto_creation_of_scp_file
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.enable_auto_creation_of_scp_file
 
-.. autoclass:: enable_auto_creation_of_scp_file
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   enable_auto_creation_of_scp_file
+
 .. rubric:: Included in:
 
 ==================================================   ==============

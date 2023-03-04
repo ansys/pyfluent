@@ -7,14 +7,17 @@ contact_solution_controls
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.contact_solution_controls
 
-.. autoclass:: contact_solution_controls
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   contact_solution_controls
+
+.. rubric:: Attributes
 
 ======================================================   ===========================================================================================
 
-Child                                                                                                                                        Summary
+Attribute                                                                                                                                    Summary
 
 ======================================================   ===========================================================================================
 :ref:`solution_stabilization <solution_stabilization>`       Automatic solver settings adjustment for solution stabilization during contact process.
@@ -37,11 +40,11 @@ Child                                                                           
 
 ======================================================   ===========================================================================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ========================================================   ==================================================
 
-Command                                                                                               Summary
+Method                                                                                                Summary
 
 ========================================================   ==================================================
 :ref:`set_settings_to_default <set_settings_to_default>`       Set contact solution stabilization to default.

@@ -7,9 +7,12 @@ crossflow_transition
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.crossflow_transition
 
-.. autoclass:: crossflow_transition
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   crossflow_transition
+
 .. rubric:: Included in:
 
 ==========================================================   =====================================

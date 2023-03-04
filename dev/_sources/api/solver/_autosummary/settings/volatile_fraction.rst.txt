@@ -7,14 +7,17 @@ volatile_fraction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.volatile_fraction
 
-.. autoclass:: volatile_fraction
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   volatile_fraction
+
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

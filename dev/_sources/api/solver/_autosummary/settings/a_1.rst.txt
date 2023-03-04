@@ -7,14 +7,17 @@ a
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.a_1
 
-.. autoclass:: a
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   a
+
+.. rubric:: Attributes
 
 ====================================================   =================================
 
-Child                                                                            Summary
+Attribute                                                                        Summary
 
 ====================================================   =================================
 :ref:`method <method_1>`                                                 'method' child.

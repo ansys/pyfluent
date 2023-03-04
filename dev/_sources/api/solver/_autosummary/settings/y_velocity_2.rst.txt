@@ -7,9 +7,12 @@ y_velocity_2
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.y_velocity_2
 
-.. autoclass:: y_velocity_2
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   y_velocity_2
+
 .. rubric:: Included in:
 
 ==========================   =====================

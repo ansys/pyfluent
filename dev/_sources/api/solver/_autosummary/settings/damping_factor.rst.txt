@@ -7,9 +7,12 @@ damping_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.damping_factor
 
-.. autoclass:: damping_factor
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   damping_factor
+
 .. rubric:: Included in:
 
 ==========================   =========================================

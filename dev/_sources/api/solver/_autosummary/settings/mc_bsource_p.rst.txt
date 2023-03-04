@@ -7,9 +7,12 @@ mc_bsource_p
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mc_bsource_p
 
-.. autoclass:: mc_bsource_p
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   mc_bsource_p
+
 .. rubric:: Included in:
 
 ===================================   =================================

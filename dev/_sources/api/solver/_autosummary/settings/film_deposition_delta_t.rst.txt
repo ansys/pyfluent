@@ -7,9 +7,12 @@ film_deposition_delta_t
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.film_deposition_delta_t
 
-.. autoclass:: film_deposition_delta_t
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   film_deposition_delta_t
+
 .. rubric:: Included in:
 
 ===================================   =================================

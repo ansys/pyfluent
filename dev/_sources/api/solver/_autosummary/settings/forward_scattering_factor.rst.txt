@@ -7,9 +7,12 @@ forward_scattering_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.forward_scattering_factor
 
-.. autoclass:: forward_scattering_factor
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   forward_scattering_factor
+
 .. rubric:: Included in:
 
 ========================================   ============================

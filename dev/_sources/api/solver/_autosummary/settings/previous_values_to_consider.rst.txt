@@ -7,9 +7,12 @@ previous_values_to_consider
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.previous_values_to_consider
 
-.. autoclass:: previous_values_to_consider
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   previous_values_to_consider
+
 .. rubric:: Included in:
 
 ============================================================   ===============================================

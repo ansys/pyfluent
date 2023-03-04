@@ -7,14 +7,17 @@ cavitation
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cavitation
 
-.. autoclass:: cavitation
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   cavitation
+
+.. rubric:: Attributes
 
 ====================================================================================   ==================================================================================================================
 
-Child                                                                                                                                                                                             Summary
+Attribute                                                                                                                                                                                         Summary
 
 ====================================================================================   ==================================================================================================================
 :ref:`schnerr_evap_coeff <schnerr_evap_coeff>`                                                                                                           Evaporation coefficient for Schnerr-Sauer model.

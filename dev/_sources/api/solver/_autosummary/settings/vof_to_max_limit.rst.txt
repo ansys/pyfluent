@@ -7,9 +7,12 @@ vof_to_max_limit
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.vof_to_max_limit
 
-.. autoclass:: vof_to_max_limit
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   vof_to_max_limit
+
 .. rubric:: Included in:
 
 ==========================================================   ===================================================

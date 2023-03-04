@@ -7,9 +7,12 @@ dpm_time_step_function
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_time_step_function
 
-.. autoclass:: dpm_time_step_function
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   dpm_time_step_function
+
 .. rubric:: Included in:
 
 ======================================================   ==========================================================================================================================

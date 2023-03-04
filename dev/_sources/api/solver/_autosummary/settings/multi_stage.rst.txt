@@ -7,9 +7,12 @@ multi_stage
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.multi_stage
 
-.. autoclass:: multi_stage
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   multi_stage
+
 .. rubric:: Named object type
 
 :ref:`multi_stage_child <multi_stage_child>`

@@ -7,14 +7,17 @@ targeted_mf_pmin
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.targeted_mf_pmin
 
-.. autoclass:: targeted_mf_pmin
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   targeted_mf_pmin
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

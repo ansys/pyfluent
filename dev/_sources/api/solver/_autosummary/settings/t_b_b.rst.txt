@@ -7,9 +7,12 @@ t_b_b
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.t_b_b
 
-.. autoclass:: t_b_b
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   t_b_b
+
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

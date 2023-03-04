@@ -7,9 +7,12 @@ adjust_solver_defaults_based_on_setup
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.adjust_solver_defaults_based_on_setup
 
-.. autoclass:: adjust_solver_defaults_based_on_setup
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   adjust_solver_defaults_based_on_setup
+
 .. rubric:: Included in:
 
 ========================   ====================

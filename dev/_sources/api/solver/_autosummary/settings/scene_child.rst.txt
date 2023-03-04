@@ -7,14 +7,17 @@ scene_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.scene_child
 
-.. autoclass:: scene_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   scene_child
+
+.. rubric:: Attributes
 
 ==============================================   ===============================
 
-Child                                                                    Summary
+Attribute                                                                Summary
 
 ==============================================   ===============================
 :ref:`name <name_1>`                                               'name' child.
@@ -29,11 +32,11 @@ Child                                                                    Summary
 
 ==============================================   ===============================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ==========================   ======================
 
-Command                                     Summary
+Method                                      Summary
 
 ==========================   ======================
 :ref:`display <display_2>`       'display' command.

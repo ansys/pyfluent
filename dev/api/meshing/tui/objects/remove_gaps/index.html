@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -55,8 +51,8 @@
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
-    <link rel="next" title="meshing.tui.scoped_sizing" href="../../scoped_sizing/index.html" />
-    <link rel="prev" title="meshing.tui.objects.cad_association" href="../cad_association/index.html" />
+    <link rel="next" title="meshing.tui.objects.create_new_mesh_object" href="../create_new_mesh_object/index.html" />
+    <link rel="prev" title="meshing.tui.objects.fix_holes.advanced" href="../fix_holes/advanced/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -303,13 +293,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -322,6 +307,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -333,13 +323,18 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../diagnostics/index.html">
-       meshing.tui.diagnostics
+      <a class="reference internal" href="../../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../preferences/index.html">
-       meshing.tui.preferences
+      <a class="reference internal" href="../../reference_frames/index.html">
+       meshing.tui.reference_frames
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../parallel/index.html">
+       meshing.tui.parallel
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -353,23 +348,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../deprecated/index.html">
-         meshing.tui.objects.deprecated
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../set/index.html">
-         meshing.tui.objects.set
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../labels/index.html">
-         meshing.tui.objects.labels
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../volumetric_regions/index.html">
-         meshing.tui.objects.volumetric_regions
+        <a class="reference internal" href="../join_intersect/index.html">
+         meshing.tui.objects.join_intersect
         </a>
        </li>
        <li class="toctree-l4">
@@ -378,13 +358,23 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../create_new_mesh_object/index.html">
-         meshing.tui.objects.create_new_mesh_object
+        <a class="reference internal" href="../cad_association/index.html">
+         meshing.tui.objects.cad_association
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../join_intersect/index.html">
-         meshing.tui.objects.join_intersect
+        <a class="reference internal" href="../set/index.html">
+         meshing.tui.objects.set
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../volumetric_regions/index.html">
+         meshing.tui.objects.volumetric_regions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../labels/index.html">
+         meshing.tui.objects.labels
         </a>
        </li>
        <li class="toctree-l4">
@@ -392,26 +382,36 @@ function checkPageExistsAndRedirect(event) {
          meshing.tui.objects.fix_holes
         </a>
        </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../cad_association/index.html">
-         meshing.tui.objects.cad_association
-        </a>
-       </li>
        <li class="toctree-l4 current active">
         <a class="current reference internal" href="#">
          meshing.tui.objects.remove_gaps
         </a>
        </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../create_new_mesh_object/index.html">
+         meshing.tui.objects.create_new_mesh_object
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../deprecated/index.html">
+         meshing.tui.objects.deprecated
+        </a>
+       </li>
       </ul>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
+      <a class="reference internal" href="../../file/index.html">
+       meshing.tui.file
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../mesh/index.html">
-       meshing.tui.mesh
+      <a class="reference internal" href="../../diagnostics/index.html">
+       meshing.tui.diagnostics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../material_point/index.html">
+       meshing.tui.material_point
       </a>
      </li>
      <li class="toctree-l3">
@@ -420,28 +420,8 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../display/index.html">
-       meshing.tui.display
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../file/index.html">
-       meshing.tui.file
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../reference_frames/index.html">
-       meshing.tui.reference_frames
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../../boundary/index.html">
        meshing.tui.boundary
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../material_point/index.html">
-       meshing.tui.material_point
       </a>
      </li>
      <li class="toctree-l3">
@@ -460,8 +440,18 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../parallel/index.html">
-       meshing.tui.parallel
+      <a class="reference internal" href="../../mesh/index.html">
+       meshing.tui.mesh
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../preferences/index.html">
+       meshing.tui.preferences
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../display/index.html">
+       meshing.tui.display
       </a>
      </li>
     </ul>
@@ -506,16 +496,25 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.remove_gaps">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.objects.remove_gaps
+     remove_gaps
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.remove_gaps.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       __init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.remove_gaps.ignore_orientation">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.objects.remove_gaps.ignore_orientation()
+       ignore_orientation()
       </span>
      </code>
     </a>
@@ -524,7 +523,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.remove_gaps.remove_gaps">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.objects.remove_gaps.remove_gaps()
+       remove_gaps()
       </span>
      </code>
     </a>
@@ -533,7 +532,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.remove_gaps.show_gaps">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.objects.remove_gaps.show_gaps()
+       show_gaps()
       </span>
      </code>
     </a>
@@ -561,14 +560,34 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-objects-remove-gaps">
 <span id="ref-meshing-tui-objects-remove-gaps"></span><h1>meshing.tui.objects.remove_gaps<a class="headerlink" href="#meshing-tui-objects-remove-gaps" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.objects.remove_gaps">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.objects.</span></span><span class="sig-name descname"><span class="pre">remove_gaps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.remove_gaps" title="Permalink to this definition">#</a></dt>
-<dd><p>Contains options for removing gaps between the mesh objects specified or removing the thickness in the mesh objects specified.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.objects.</span></span><span class="sig-name descname"><span class="pre">remove_gaps</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.remove_gaps" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Contains options for removing gaps between the mesh objects specified or removing the thickness in the mesh objects specified.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(*args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.remove_gaps.ignore_orientation" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.remove_gaps.ignore_orientation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ignore_orientation</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Allows you to set whether the orientation of the normals should be taken into account while identifying the gap to be removed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.remove_gaps.remove_gaps" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.remove_gaps.remove_gaps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_gaps</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Allows you to remove gaps between the mesh objects specified or remove the thickness in the mesh objects specified.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.remove_gaps.show_gaps" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.remove_gaps.show_gaps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_gaps</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Marks the faces at the gap between mesh objects based on the gap distance and percentage margin specified.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.objects.remove_gaps.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.remove_gaps.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>__init__ method of TUIMenu class.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.objects.remove_gaps.ignore_orientation">
 <span class="sig-name descname"><span class="pre">ignore_orientation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.remove_gaps.ignore_orientation" title="Permalink to this definition">#</a></dt>

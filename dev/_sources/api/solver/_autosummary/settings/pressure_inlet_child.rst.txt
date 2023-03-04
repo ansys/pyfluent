@@ -7,14 +7,17 @@ pressure_inlet_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pressure_inlet_child
 
-.. autoclass:: pressure_inlet_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   pressure_inlet_child
+
+.. rubric:: Attributes
 
 ==============================================================================================================================   =======================================================================
 
-Child                                                                                                                                                                                            Summary
+Attribute                                                                                                                                                                                        Summary
 
 ==============================================================================================================================   =======================================================================
 :ref:`phase <phase_17>`                                                                                                                                                                   'phase' child.

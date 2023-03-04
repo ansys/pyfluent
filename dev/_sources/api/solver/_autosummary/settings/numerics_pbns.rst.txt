@@ -7,14 +7,17 @@ numerics_pbns
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.numerics_pbns
 
-.. autoclass:: numerics_pbns
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   numerics_pbns
+
+.. rubric:: Attributes
 
 ==================================================================================================   =========================================================================
 
-Child                                                                                                                                                                  Summary
+Attribute                                                                                                                                                              Summary
 
 ==================================================================================================   =========================================================================
 :ref:`implicit_bodyforce_treatment <implicit_bodyforce_treatment>`                                                               Enable/disable implicit body force treatment.

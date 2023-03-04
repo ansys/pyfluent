@@ -3,11 +3,6 @@
 solver.tui.define.models.viscous.turbulence\_expert
 ===================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.viscous.turbulence_expert
-   :members: kw_vorticity_based_production, kw_add_sas, low_re_ke, sbes_sgs_option, thermal_p_function, turb_non_newtonian, sbes_sdes_hybrid_model, low_re_ke_index, restore_sst_v61, non_newtonian_modification, rke_cmu_rotation_term, turbulence_damping, turb_pk_compressible, kato_launder_model, kw_add_des, sbes_update_interval_k_omega, production_limiter, sbes_les_subgrid_dynamic_fvar, turb_add_sbes_sdes
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.turbulence_expert
+   :autosummary:
 

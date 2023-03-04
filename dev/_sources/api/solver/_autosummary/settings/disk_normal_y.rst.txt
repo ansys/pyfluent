@@ -7,9 +7,12 @@ disk_normal_y
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.disk_normal_y
 
-.. autoclass:: disk_normal_y
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   disk_normal_y
+
 .. rubric:: Included in:
 
 ==========================================   ==============================================

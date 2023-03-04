@@ -7,9 +7,12 @@ turb_pk_compressible
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.turb_pk_compressible
 
-.. autoclass:: turb_pk_compressible
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   turb_pk_compressible
+
 .. rubric:: Included in:
 
 ============================================   ==============================

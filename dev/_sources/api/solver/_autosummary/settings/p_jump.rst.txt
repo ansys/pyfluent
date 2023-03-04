@@ -7,9 +7,12 @@ p_jump
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.p_jump
 
-.. autoclass:: p_jump
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   p_jump
+
 .. rubric:: Included in:
 
 ======================================   ====================================

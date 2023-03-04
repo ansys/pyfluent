@@ -7,14 +7,17 @@ solut_exp_coeff
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.solut_exp_coeff
 
-.. autoclass:: solut_exp_coeff
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   solut_exp_coeff
+
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

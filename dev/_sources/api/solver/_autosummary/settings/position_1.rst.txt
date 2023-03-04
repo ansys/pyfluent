@@ -7,9 +7,12 @@ position
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.position_1
 
-.. autoclass:: position
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   position
+
 .. rubric:: Arguments
 
 ================   ================

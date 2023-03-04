@@ -7,9 +7,12 @@ embedded_face_zone
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.embedded_face_zone
 
-.. autoclass:: embedded_face_zone
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   embedded_face_zone
+
 .. rubric:: Included in:
 
 ========================   ==============================================

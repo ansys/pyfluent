@@ -3,11 +3,6 @@
 meshing.tui.mesh.prism.controls.normal
 ======================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.prism.controls.normal
-   :members: ignore_invalid_normals, orthogonal_layers, bisect_angle, max_angle_change, orient_mesh_object_face_normals, direction_method, compute_normal, direction_vector
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.controls.normal
+   :autosummary:
 

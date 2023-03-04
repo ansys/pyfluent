@@ -7,9 +7,12 @@ skip_iter_count
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.skip_iter_count
 
-.. autoclass:: skip_iter_count
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   skip_iter_count
+
 .. rubric:: Included in:
 
 ==============================================================================   =======================================

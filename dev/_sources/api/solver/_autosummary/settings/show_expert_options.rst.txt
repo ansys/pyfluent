@@ -7,9 +7,12 @@ show_expert_options
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.show_expert_options
 
-.. autoclass:: show_expert_options
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   show_expert_options
+
 .. rubric:: Included in:
 
 ========================   ==================================

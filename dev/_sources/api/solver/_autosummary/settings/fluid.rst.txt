@@ -7,9 +7,12 @@ fluid
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fluid
 
-.. autoclass:: fluid
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   fluid
+
 .. rubric:: Named object type
 
 :ref:`fluid_child <fluid_child>`

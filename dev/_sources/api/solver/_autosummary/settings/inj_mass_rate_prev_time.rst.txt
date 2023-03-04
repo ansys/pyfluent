@@ -7,9 +7,12 @@ inj_mass_rate_prev_time
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.inj_mass_rate_prev_time
 
-.. autoclass:: inj_mass_rate_prev_time
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   inj_mass_rate_prev_time
+
 .. rubric:: Included in:
 
 ========================================   =====================================

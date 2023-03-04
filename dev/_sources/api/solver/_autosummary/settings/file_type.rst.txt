@@ -7,9 +7,12 @@ file_type
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.file_type
 
-.. autoclass:: file_type
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   file_type
+
 .. rubric:: Included in:
 
 ============================================   ================================

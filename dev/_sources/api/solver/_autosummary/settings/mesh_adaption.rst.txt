@@ -7,14 +7,17 @@ mesh_adaption
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mesh_adaption
 
-.. autoclass:: mesh_adaption
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   mesh_adaption
+
+.. rubric:: Attributes
 
 ============================   ======================
 
-Child                                         Summary
+Attribute                                     Summary
 
 ============================   ======================
 :ref:`use <use>`                         'use' child.

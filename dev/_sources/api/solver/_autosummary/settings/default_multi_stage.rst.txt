@@ -7,9 +7,12 @@ default_multi_stage
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.default_multi_stage
 
-.. autoclass:: default_multi_stage
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   default_multi_stage
+
 .. rubric:: Included in:
 
 ================================   ========================

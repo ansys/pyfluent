@@ -7,14 +7,17 @@ averaging
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.averaging
 
-.. autoclass:: averaging
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   averaging
+
+.. rubric:: Attributes
 
 ================================================================   ======================================================================================
 
-Child                                                                                                                                             Summary
+Attribute                                                                                                                                         Summary
 
 ================================================================   ======================================================================================
 :ref:`enable_node_based_averaging <enable_node_based_averaging>`                                    Enable/disable node-based averaging of DPM variables.

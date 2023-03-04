@@ -7,9 +7,12 @@ min_flow_rate
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.min_flow_rate
 
-.. autoclass:: min_flow_rate
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   min_flow_rate
+
 .. rubric:: Included in:
 
 ==================================   =================================

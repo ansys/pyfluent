@@ -7,9 +7,12 @@ critical_zone
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.critical_zone
 
-.. autoclass:: critical_zone
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   critical_zone
+
 .. rubric:: Included in:
 
 ===================================   =================================

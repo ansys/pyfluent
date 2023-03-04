@@ -3,11 +3,6 @@
 solver.tui.solution.methods.multiphase\_numerics.solution\_stabilization.velocity\_limiting\_treatment
 ======================================================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment
-   :members: set_velocity_cutoff, set_damping_strength, set_velocity_and_vof_cutoffs, enable_velocity_limiting, set_damping_strengths, verbosity
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment
+   :autosummary:
 

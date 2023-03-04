@@ -7,9 +7,12 @@ use_quad_face_centroid
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.use_quad_face_centroid
 
-.. autoclass:: use_quad_face_centroid
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   use_quad_face_centroid
+
 .. rubric:: Included in:
 
 ============================================================   ============================================================================

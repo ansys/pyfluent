@@ -7,14 +7,17 @@ custom_laws
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.custom_laws
 
-.. autoclass:: custom_laws
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   custom_laws
+
+.. rubric:: Attributes
 
 ======================   ===================
 
-Child                                Summary
+Attribute                            Summary
 
 ======================   ===================
 :ref:`law_1 <law_1>`          'law_1' child.

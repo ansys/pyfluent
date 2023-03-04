@@ -7,9 +7,12 @@ less_than
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.less_than
 
-.. autoclass:: less_than
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   less_than
+
 .. rubric:: Included in:
 
 =========================   ===================

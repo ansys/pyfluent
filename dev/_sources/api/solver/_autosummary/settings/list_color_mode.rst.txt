@@ -7,9 +7,12 @@ list_color_mode
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.list_color_mode
 
-.. autoclass:: list_color_mode
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   list_color_mode
+
 .. rubric:: Included in:
 
 ========================   =================================================

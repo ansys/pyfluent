@@ -7,14 +7,17 @@ save_data_file_every
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.save_data_file_every
 
-.. autoclass:: save_data_file_every
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   save_data_file_every
+
+.. rubric:: Attributes
 
 ======================================   ============================================================================================================
 
-Child                                                                                                                                         Summary
+Attribute                                                                                                                                     Summary
 
 ======================================   ============================================================================================================
 :ref:`frequency_type <frequency_type>`       Set the auto save frequency type to either time-step or crank-angle and set the corresponding frequency.

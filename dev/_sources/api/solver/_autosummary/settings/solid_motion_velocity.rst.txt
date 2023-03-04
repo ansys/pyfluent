@@ -7,9 +7,12 @@ solid_motion_velocity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.solid_motion_velocity
 
-.. autoclass:: solid_motion_velocity
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   solid_motion_velocity
+
 .. rubric:: Named object type
 
 :ref:`child_object_type_child <child_object_type_child_1>`

@@ -7,9 +7,12 @@ edges
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.edges_2
 
-.. autoclass:: edges
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   edges
+
 .. rubric:: Included in:
 
 ================================================   =========================================

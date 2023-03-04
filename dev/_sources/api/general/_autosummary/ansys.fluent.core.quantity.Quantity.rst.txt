@@ -1,0 +1,42 @@
+ansys.fluent.core.quantity.Quantity
+===================================
+
+.. currentmodule:: ansys.fluent.core.quantity
+
+.. autoclass:: Quantity
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      ~Quantity.__init__
+      ~Quantity.as_integer_ratio
+      ~Quantity.conjugate
+      ~Quantity.fromhex
+      ~Quantity.get_dimensions_list
+      ~Quantity.hex
+      ~Quantity.is_dimensionless
+      ~Quantity.is_integer
+      ~Quantity.to
+      ~Quantity.validate_matching_dimensions
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Quantity.dimension
+      ~Quantity.imag
+      ~Quantity.real
+      ~Quantity.type
+      ~Quantity.unit
+      ~Quantity.value
+   
+   

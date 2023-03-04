@@ -7,9 +7,12 @@ write_sample
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.write_sample
 
-.. autoclass:: write_sample
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   write_sample
+
 .. rubric:: Arguments
 
 ================================================   ================================

@@ -7,9 +7,12 @@ expr_value
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.expr_value
 
-.. autoclass:: expr_value
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   expr_value
+
 .. rubric:: Included in:
 
 ==========================================   ======================================

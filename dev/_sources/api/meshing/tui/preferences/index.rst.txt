@@ -3,22 +3,19 @@
 meshing.tui.preferences
 =======================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.preferences
+   :autosummary:
 
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences
 .. toctree::
    :hidden:
 
+   gpuapp/index
    simulation/index
+   graphics/index
+   turbo_workflow/index
+   appearance/index
+   navigation/index
    parametric_study/index
    general/index
-   mat_pro_app/index
-   graphics/index
    meshing_workflow/index
-   appearance/index
-   gpuapp/index
-   navigation/index
-   turbo_workflow/index
+   mat_pro_app/index

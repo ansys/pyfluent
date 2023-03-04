@@ -7,9 +7,12 @@ char_porosity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.char_porosity
 
-.. autoclass:: char_porosity
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   char_porosity
+
 .. rubric:: Included in:
 
 ========================================   ============================

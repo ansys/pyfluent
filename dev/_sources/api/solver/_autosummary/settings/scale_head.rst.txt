@@ -7,9 +7,12 @@ scale_head
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.scale_head
 
-.. autoclass:: scale_head
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   scale_head
+
 .. rubric:: Included in:
 
 ==============================   =======================

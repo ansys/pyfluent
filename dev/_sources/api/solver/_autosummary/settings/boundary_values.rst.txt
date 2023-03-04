@@ -7,9 +7,12 @@ boundary_values
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.boundary_values
 
-.. autoclass:: boundary_values
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   boundary_values
+
 .. rubric:: Included in:
 
 ====================================   ===================================

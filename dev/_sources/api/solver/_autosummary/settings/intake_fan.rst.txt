@@ -7,9 +7,12 @@ intake_fan
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.intake_fan
 
-.. autoclass:: intake_fan
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   intake_fan
+
 .. rubric:: Named object type
 
 :ref:`intake_fan_child <intake_fan_child>`

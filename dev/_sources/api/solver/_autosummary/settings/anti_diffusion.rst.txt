@@ -7,14 +7,17 @@ anti_diffusion
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.anti_diffusion
 
-.. autoclass:: anti_diffusion
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   anti_diffusion
+
+.. rubric:: Attributes
 
 ====================================================================   ===============================================================================================
 
-Child                                                                                                                                                          Summary
+Attribute                                                                                                                                                      Summary
 
 ====================================================================   ===============================================================================================
 :ref:`enable_dynamic_strength <enable_dynamic_strength>`                   Enable dynamic strength to reduce compression in the tangential direction to the interface.

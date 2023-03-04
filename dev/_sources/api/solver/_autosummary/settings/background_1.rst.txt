@@ -7,9 +7,12 @@ background
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.background_1
 
-.. autoclass:: background
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   background
+
 .. rubric:: Included in:
 
 ====================   ========================================

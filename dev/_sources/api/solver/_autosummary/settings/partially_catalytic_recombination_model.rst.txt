@@ -7,9 +7,12 @@ partially_catalytic_recombination_model
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.partially_catalytic_recombination_model
 
-.. autoclass:: partially_catalytic_recombination_model
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   partially_catalytic_recombination_model
+
 .. rubric:: Included in:
 
 ===================================   =================================

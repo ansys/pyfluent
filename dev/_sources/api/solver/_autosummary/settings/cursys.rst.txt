@@ -7,9 +7,12 @@ cursys
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cursys
 
-.. autoclass:: cursys
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   cursys
+
 .. rubric:: Included in:
 
 ==================================   =================================

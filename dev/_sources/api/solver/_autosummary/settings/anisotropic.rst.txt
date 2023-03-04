@@ -7,14 +7,17 @@ anisotropic
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.anisotropic
 
-.. autoclass:: anisotropic
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   anisotropic
+
+.. rubric:: Attributes
 
 ==========================================   =============================
 
-Child                                                              Summary
+Attribute                                                          Summary
 
 ==========================================   =============================
 :ref:`matrix_component <matrix_component>`       'matrix_component' child.

@@ -7,9 +7,12 @@ multicomponent_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.multicomponent_child
 
-.. autoclass:: multicomponent_child
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   multicomponent_child
+
 .. rubric:: Named object type
 
 :ref:`species_diffusivity_child <species_diffusivity_child>`

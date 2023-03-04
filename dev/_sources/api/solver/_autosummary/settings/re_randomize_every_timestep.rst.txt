@@ -7,9 +7,12 @@ re_randomize_every_timestep
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.re_randomize_every_timestep
 
-.. autoclass:: re_randomize_every_timestep
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   re_randomize_every_timestep
+
 .. rubric:: Included in:
 
 ========================================   ================================================================

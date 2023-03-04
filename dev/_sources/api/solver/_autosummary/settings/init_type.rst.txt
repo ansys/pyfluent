@@ -7,9 +7,12 @@ init_type
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.init_type
 
-.. autoclass:: init_type
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   init_type
+
 .. rubric:: Included in:
 
 ==============================   =========================

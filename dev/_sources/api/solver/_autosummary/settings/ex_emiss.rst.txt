@@ -7,14 +7,17 @@ ex_emiss
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ex_emiss
 
-.. autoclass:: ex_emiss
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   ex_emiss
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

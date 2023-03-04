@@ -7,9 +7,12 @@ partition
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.partition
 
-.. autoclass:: partition
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   partition
+
 .. rubric:: Included in:
 
 ============================   ======================

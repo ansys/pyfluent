@@ -7,9 +7,12 @@ cycle_type
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cycle_type
 
-.. autoclass:: cycle_type
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   cycle_type
+
 .. rubric:: Included in:
 
 ============================================   =======================================

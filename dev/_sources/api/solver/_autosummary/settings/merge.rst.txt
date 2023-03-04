@@ -7,14 +7,17 @@ merge
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.merge
 
-.. autoclass:: merge
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   merge
+
+.. rubric:: Attributes
 
 ==================================================   =================================
 
-Child                                                                          Summary
+Attribute                                                                      Summary
 
 ==================================================   =================================
 :ref:`merge_small_regions <merge_small_regions>`          'merge_small_regions' child.

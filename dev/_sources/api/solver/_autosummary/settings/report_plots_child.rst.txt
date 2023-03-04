@@ -7,14 +7,17 @@ report_plots_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.report_plots_child
 
-.. autoclass:: report_plots_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   report_plots_child
+
+.. rubric:: Attributes
 
 ============================================================   =======================================================
 
-Child                                                                                                          Summary
+Attribute                                                                                                      Summary
 
 ============================================================   =======================================================
 :ref:`name <name_1>`                                                                                     'name' child.

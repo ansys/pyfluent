@@ -7,14 +7,17 @@ olic
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.olic
 
-.. autoclass:: olic
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Commands
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   olic
+
+.. rubric:: Methods
 
 ========================================   =============================================
 
-Command                                                                          Summary
+Method                                                                           Summary
 
 ========================================   =============================================
 :ref:`display <display_1>`                                      Display graphics object.

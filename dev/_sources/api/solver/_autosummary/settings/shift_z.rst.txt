@@ -7,9 +7,12 @@ shift_z
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.shift_z
 
-.. autoclass:: shift_z
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   shift_z
+
 .. rubric:: Included in:
 
 ======================================   ====================================

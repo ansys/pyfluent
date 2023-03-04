@@ -7,9 +7,12 @@ beam_length
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.beam_length
 
-.. autoclass:: beam_length
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   beam_length
+
 .. rubric:: Included in:
 
 ================================   =================================

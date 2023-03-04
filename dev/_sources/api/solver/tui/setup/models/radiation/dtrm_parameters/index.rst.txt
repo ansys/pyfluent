@@ -3,11 +3,6 @@
 solver.tui.setup.models.radiation.dtrm\_parameters
 ==================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.radiation.dtrm_parameters
-   :members: make_globs, check_ray_file, ray_trace, controls
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.dtrm_parameters
+   :autosummary:
 

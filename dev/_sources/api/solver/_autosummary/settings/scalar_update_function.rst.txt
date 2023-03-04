@@ -7,9 +7,12 @@ scalar_update_function
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.scalar_update_function
 
-.. autoclass:: scalar_update_function
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   scalar_update_function
+
 .. rubric:: Included in:
 
 ======================================================   ==========================================================================================================================

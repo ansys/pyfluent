@@ -7,9 +7,12 @@ equation_for_residual
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.equation_for_residual
 
-.. autoclass:: equation_for_residual
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   equation_for_residual
+
 .. rubric:: Included in:
 
 ==========================   =====================

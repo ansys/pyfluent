@@ -7,9 +7,12 @@ laminar_mut_zero
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.laminar_mut_zero
 
-.. autoclass:: laminar_mut_zero
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   laminar_mut_zero
+
 .. rubric:: Included in:
 
 ==================================   =================================

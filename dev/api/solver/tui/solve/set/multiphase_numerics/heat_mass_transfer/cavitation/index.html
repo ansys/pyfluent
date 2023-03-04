@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -307,13 +297,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -357,8 +342,23 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../plot/index.html">
-         solver.tui.plot
+        <a class="reference internal" href="../../../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -371,36 +371,6 @@ function checkPageExistsAndRedirect(event) {
          </i>
         </label>
         <ul class="current">
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../report_plots/index.html">
-           solver.tui.solve.report_plots
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../animate/index.html">
-           solver.tui.solve.animate
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../monitors/index.html">
-           solver.tui.solve.monitors
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../cell_registers/index.html">
-           solver.tui.solve.cell_registers
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../cell_register_operations/index.html">
-           solver.tui.solve.cell_register_operations
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../initialize/index.html">
-           solver.tui.solve.initialize
-          </a>
-         </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../../../report_definitions/index.html">
            solver.tui.solve.report_definitions
@@ -417,33 +387,8 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul class="current">
            <li class="toctree-l6">
-            <a class="reference internal" href="../../../amg_options/index.html">
-             solver.tui.solve.set.amg_options
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../open_channel_wave_options/index.html">
-             solver.tui.solve.set.open_channel_wave_options
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../advanced/index.html">
-             solver.tui.solve.set.advanced
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../high_speed_numerics/index.html">
-             solver.tui.solve.set.high_speed_numerics
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../previous_defaults/index.html">
-             solver.tui.solve.set.previous_defaults
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../overset/index.html">
-             solver.tui.solve.set.overset
+            <a class="reference internal" href="../../../data_sampling_options/index.html">
+             solver.tui.solve.set.data_sampling_options
             </a>
            </li>
            <li class="toctree-l6">
@@ -452,23 +397,8 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../../transient_controls/index.html">
-             solver.tui.solve.set.transient_controls
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../warped_face_gradient_correction/index.html">
-             solver.tui.solve.set.warped_face_gradient_correction
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../pseudo_time_method/index.html">
-             solver.tui.solve.set.pseudo_time_method
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../data_sampling_options/index.html">
-             solver.tui.solve.set.data_sampling_options
+            <a class="reference internal" href="../../../divergence_prevention/index.html">
+             solver.tui.solve.set.divergence_prevention
             </a>
            </li>
            <li class="toctree-l6">
@@ -477,23 +407,8 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../../acoustics_wave_equation_controls/index.html">
-             solver.tui.solve.set.acoustics_wave_equation_controls
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../contact_solution_controls/index.html">
-             solver.tui.solve.set.contact_solution_controls
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../enhanced_les_numerics/index.html">
-             solver.tui.solve.set.enhanced_les_numerics
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../fast_transient_settings/index.html">
-             solver.tui.solve.set.fast_transient_settings
+            <a class="reference internal" href="../../../warped_face_gradient_correction/index.html">
+             solver.tui.solve.set.warped_face_gradient_correction
             </a>
            </li>
            <li class="toctree-l6 current active has-children">
@@ -507,8 +422,13 @@ function checkPageExistsAndRedirect(event) {
             </label>
             <ul class="current">
              <li class="toctree-l7">
-              <a class="reference internal" href="../../default_controls/index.html">
-               solver.tui.solve.set.multiphase_numerics.default_controls
+              <a class="reference internal" href="../../solution_stabilization/index.html">
+               solver.tui.solve.set.multiphase_numerics.solution_stabilization
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../../face_pressure_controls/index.html">
+               solver.tui.solve.set.multiphase_numerics.face_pressure_controls
               </a>
              </li>
              <li class="toctree-l7 current active has-children">
@@ -532,13 +452,13 @@ function checkPageExistsAndRedirect(event) {
                 </a>
                </li>
                <li class="toctree-l8">
-                <a class="reference internal" href="../evaporation_condensation/index.html">
-                 solver.tui.solve.set.multiphase_numerics.heat_mass_transfer.evaporation_condensation
+                <a class="reference internal" href="../area_density/index.html">
+                 solver.tui.solve.set.multiphase_numerics.heat_mass_transfer.area_density
                 </a>
                </li>
                <li class="toctree-l8">
-                <a class="reference internal" href="../area_density/index.html">
-                 solver.tui.solve.set.multiphase_numerics.heat_mass_transfer.area_density
+                <a class="reference internal" href="../evaporation_condensation/index.html">
+                 solver.tui.solve.set.multiphase_numerics.heat_mass_transfer.evaporation_condensation
                 </a>
                </li>
               </ul>
@@ -549,18 +469,8 @@ function checkPageExistsAndRedirect(event) {
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../../porous_media/index.html">
-               solver.tui.solve.set.multiphase_numerics.porous_media
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../../advanced_stability_controls/index.html">
-               solver.tui.solve.set.multiphase_numerics.advanced_stability_controls
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../../face_pressure_controls/index.html">
-               solver.tui.solve.set.multiphase_numerics.face_pressure_controls
+              <a class="reference internal" href="../../default_controls/index.html">
+               solver.tui.solve.set.multiphase_numerics.default_controls
               </a>
              </li>
              <li class="toctree-l7">
@@ -569,8 +479,8 @@ function checkPageExistsAndRedirect(event) {
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../../solution_stabilization/index.html">
-               solver.tui.solve.set.multiphase_numerics.solution_stabilization
+              <a class="reference internal" href="../../porous_media/index.html">
+               solver.tui.solve.set.multiphase_numerics.porous_media
               </a>
              </li>
              <li class="toctree-l7">
@@ -578,7 +488,62 @@ function checkPageExistsAndRedirect(event) {
                solver.tui.solve.set.multiphase_numerics.boiling_parameters
               </a>
              </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../../advanced_stability_controls/index.html">
+               solver.tui.solve.set.multiphase_numerics.advanced_stability_controls
+              </a>
+             </li>
             </ul>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../previous_defaults/index.html">
+             solver.tui.solve.set.previous_defaults
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../pseudo_time_method/index.html">
+             solver.tui.solve.set.pseudo_time_method
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../advanced/index.html">
+             solver.tui.solve.set.advanced
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../high_speed_numerics/index.html">
+             solver.tui.solve.set.high_speed_numerics
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../enhanced_les_numerics/index.html">
+             solver.tui.solve.set.enhanced_les_numerics
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../amg_options/index.html">
+             solver.tui.solve.set.amg_options
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../fast_transient_settings/index.html">
+             solver.tui.solve.set.fast_transient_settings
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../contact_solution_controls/index.html">
+             solver.tui.solve.set.contact_solution_controls
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../acoustics_wave_equation_controls/index.html">
+             solver.tui.solve.set.acoustics_wave_equation_controls
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../overset/index.html">
+             solver.tui.solve.set.overset
+            </a>
            </li>
            <li class="toctree-l6">
             <a class="reference internal" href="../../../high_order_term_relaxation/index.html">
@@ -586,11 +551,26 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../../divergence_prevention/index.html">
-             solver.tui.solve.set.divergence_prevention
+            <a class="reference internal" href="../../../open_channel_wave_options/index.html">
+             solver.tui.solve.set.open_channel_wave_options
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../transient_controls/index.html">
+             solver.tui.solve.set.transient_controls
             </a>
            </li>
           </ul>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../cell_registers/index.html">
+           solver.tui.solve.cell_registers
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../report_plots/index.html">
+           solver.tui.solve.report_plots
+          </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../../../execute_commands/index.html">
@@ -602,66 +582,31 @@ function checkPageExistsAndRedirect(event) {
            solver.tui.solve.report_files
           </a>
          </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../animate/index.html">
+           solver.tui.solve.animate
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../cell_register_operations/index.html">
+           solver.tui.solve.cell_register_operations
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../initialize/index.html">
+           solver.tui.solve.initialize
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../monitors/index.html">
+           solver.tui.solve.monitors
+          </a>
+         </li>
         </ul>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../../../define/index.html">
          solver.tui.define
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../display/index.html">
-         solver.tui.display
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../setup/index.html">
-         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4">
@@ -670,8 +615,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../adjoint/index.html">
-         solver.tui.adjoint
+        <a class="reference internal" href="../../../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
        <li class="toctree-l4">
@@ -680,13 +630,33 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../preferences/index.html">
-         solver.tui.preferences
+        <a class="reference internal" href="../../../../../setup/index.html">
+         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../views/index.html">
-         solver.tui.views
+        <a class="reference internal" href="../../../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../mesh/index.html">
+         solver.tui.mesh
         </a>
        </li>
        <li class="toctree-l4">
@@ -695,13 +665,28 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
+        <a class="reference internal" href="../../../../../file/index.html">
+         solver.tui.file
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../results/index.html">
-         solver.tui.results
+        <a class="reference internal" href="../../../../../views/index.html">
+         solver.tui.views
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
       </ul>
@@ -773,16 +758,25 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation
+     cavitation
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       __init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.display_clipped_pressure">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.display_clipped_pressure()
+       display_clipped_pressure()
       </span>
      </code>
     </a>
@@ -791,7 +785,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.max_vapor_pressure_ratio">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.max_vapor_pressure_ratio()
+       max_vapor_pressure_ratio()
       </span>
      </code>
     </a>
@@ -800,7 +794,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.min_vapor_pressure">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.min_vapor_pressure()
+       min_vapor_pressure()
       </span>
      </code>
     </a>
@@ -809,7 +803,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.schnerr_cond_coeff">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.schnerr_cond_coeff()
+       schnerr_cond_coeff()
       </span>
      </code>
     </a>
@@ -818,7 +812,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.schnerr_evap_coeff">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.schnerr_evap_coeff()
+       schnerr_evap_coeff()
       </span>
      </code>
     </a>
@@ -827,7 +821,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.turbulent_diffusion">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.turbulent_diffusion()
+       turbulent_diffusion()
       </span>
      </code>
     </a>
@@ -855,14 +849,43 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solve-set-multiphase-numerics-heat-mass-transfer-cavitation">
 <span id="ref-solver-tui-solve-set-multiphase-numerics-heat-mass-transfer-cavitation"></span><h1>solver.tui.solve.set.multiphase_numerics.heat_mass_transfer.cavitation<a class="headerlink" href="#solver-tui-solve-set-multiphase-numerics-heat-mass-transfer-cavitation" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solve.set.multiphase_numerics.heat_mass_transfer.</span></span><span class="sig-name descname"><span class="pre">cavitation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation" title="Permalink to this definition">#</a></dt>
-<dd><p>Enters the cavitation heat mass transfer menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.</span></span><span class="sig-name descname"><span class="pre">cavitation</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enters the cavitation heat mass transfer menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p>__init__ method of TUIMenu class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.display_clipped_pressure" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.display_clipped_pressure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display_clipped_pressure</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Clipped pressure is just used for the properties evaluation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.max_vapor_pressure_ratio" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.max_vapor_pressure_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_vapor_pressure_ratio</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the maximum limit on the vapor pressure after the turbulence and thermal correction.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.min_vapor_pressure" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.min_vapor_pressure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_vapor_pressure</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the minimum vapor pressure limit for the cavitation mass-transfer model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.schnerr_cond_coeff" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.schnerr_cond_coeff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schnerr_cond_coeff</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the condensation coefficient for the Schnerr-Sauer model (  in ).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.schnerr_evap_coeff" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.schnerr_evap_coeff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schnerr_evap_coeff</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the evaporation coefficient for the Schnerr-Sauer model (  in ).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.turbulent_diffusion" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.turbulent_diffusion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">turbulent_diffusion</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables/disables the turbulent diffusion treatment for a cavitating turbulent flow.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>__init__ method of TUIMenu class.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.display_clipped_pressure">
 <span class="sig-name descname"><span class="pre">display_clipped_pressure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation.display_clipped_pressure" title="Permalink to this definition">#</a></dt>

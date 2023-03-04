@@ -7,9 +7,12 @@ char_intrinsic_reactivity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.char_intrinsic_reactivity
 
-.. autoclass:: char_intrinsic_reactivity
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   char_intrinsic_reactivity
+
 .. rubric:: Included in:
 
 ================   ================

@@ -7,9 +7,12 @@ stabilization
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.stabilization
 
-.. autoclass:: stabilization
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   stabilization
+
 .. rubric:: Included in:
 
 ============================================   =======================================

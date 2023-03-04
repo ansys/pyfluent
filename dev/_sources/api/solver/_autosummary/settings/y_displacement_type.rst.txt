@@ -7,9 +7,12 @@ y_displacement_type
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.y_displacement_type
 
-.. autoclass:: y_displacement_type
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   y_displacement_type
+
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

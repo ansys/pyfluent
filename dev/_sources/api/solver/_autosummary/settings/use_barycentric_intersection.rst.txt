@@ -7,9 +7,12 @@ use_barycentric_intersection
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.use_barycentric_intersection
 
-.. autoclass:: use_barycentric_intersection
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   use_barycentric_intersection
+
 .. rubric:: Included in:
 
 ============================================================   ============================================================================

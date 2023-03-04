@@ -7,14 +7,17 @@ inlet_vent_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.inlet_vent_child
 
-.. autoclass:: inlet_vent_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   inlet_vent_child
+
+.. rubric:: Attributes
 
 ==============================================================================================================================   =======================================================================
 
-Child                                                                                                                                                                                            Summary
+Attribute                                                                                                                                                                                        Summary
 
 ==============================================================================================================================   =======================================================================
 :ref:`phase <phase_5>`                                                                                                                                                                    'phase' child.

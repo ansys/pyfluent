@@ -7,9 +7,12 @@ wall_thread_list
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.wall_thread_list
 
-.. autoclass:: wall_thread_list
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   wall_thread_list
+
 .. rubric:: Included in:
 
 ======================   =====================

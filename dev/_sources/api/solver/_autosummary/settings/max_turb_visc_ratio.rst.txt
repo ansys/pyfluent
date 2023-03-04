@@ -7,9 +7,12 @@ max_turb_visc_ratio
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.max_turb_visc_ratio
 
-.. autoclass:: max_turb_visc_ratio
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   max_turb_visc_ratio
+
 .. rubric:: Included in:
 
 ======================   ===================

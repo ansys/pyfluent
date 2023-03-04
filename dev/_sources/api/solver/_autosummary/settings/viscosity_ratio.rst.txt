@@ -7,14 +7,17 @@ viscosity_ratio
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.viscosity_ratio
 
-.. autoclass:: viscosity_ratio
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   viscosity_ratio
+
+.. rubric:: Attributes
 
 ====================================================   =================================
 
-Child                                                                            Summary
+Attribute                                                                        Summary
 
 ====================================================   =================================
 :ref:`method <method_1>`                                                 'method' child.

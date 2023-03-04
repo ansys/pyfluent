@@ -7,9 +7,12 @@ analytical_thermodynamic_derivatives
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.analytical_thermodynamic_derivatives
 
-.. autoclass:: analytical_thermodynamic_derivatives
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   analytical_thermodynamic_derivatives
+
 .. rubric:: Included in:
 
 ============================================   ==================================================

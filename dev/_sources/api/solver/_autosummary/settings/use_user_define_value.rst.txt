@@ -7,9 +7,12 @@ use_user_define_value
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.use_user_define_value
 
-.. autoclass:: use_user_define_value
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   use_user_define_value
+
 .. rubric:: Included in:
 
 ================================================   =============================

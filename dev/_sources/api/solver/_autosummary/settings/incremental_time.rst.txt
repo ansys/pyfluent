@@ -7,9 +7,12 @@ incremental_time
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.incremental_time
 
-.. autoclass:: incremental_time
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   incremental_time
+
 .. rubric:: Included in:
 
 ==============================================   ================================

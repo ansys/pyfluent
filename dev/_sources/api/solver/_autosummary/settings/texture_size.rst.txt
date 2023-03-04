@@ -7,9 +7,12 @@ texture_size
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.texture_size
 
-.. autoclass:: texture_size
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   texture_size
+
 .. rubric:: Included in:
 
 ============================   ===============================

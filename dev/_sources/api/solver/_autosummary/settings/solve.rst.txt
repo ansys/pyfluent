@@ -7,14 +7,17 @@ solve
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.solve
 
-.. autoclass:: solve
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Commands
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   solve
+
+.. rubric:: Methods
 
 ==============================================   ==============================================================
 
-Command                                                                                                 Summary
+Method                                                                                                  Summary
 
 ==============================================   ==============================================================
 :ref:`iterate <iterate_1>`                                   Iteration the multidomain conjugate heat transfer.

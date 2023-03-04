@@ -7,9 +7,12 @@ charged_particle_interaction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.charged_particle_interaction
 
-.. autoclass:: charged_particle_interaction
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   charged_particle_interaction
+
 .. rubric:: Included in:
 
 ========================================================   =============================================

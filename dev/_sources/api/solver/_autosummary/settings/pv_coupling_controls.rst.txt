@@ -7,9 +7,12 @@ pv_coupling_controls
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pv_coupling_controls
 
-.. autoclass:: pv_coupling_controls
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   pv_coupling_controls
+
 .. rubric:: Included in:
 
 ========================   ====================

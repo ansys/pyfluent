@@ -7,9 +7,12 @@ fensapice_ice_icing_mode
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fensapice_ice_icing_mode
 
-.. autoclass:: fensapice_ice_icing_mode
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   fensapice_ice_icing_mode
+
 .. rubric:: Included in:
 
 ===================================   =================================

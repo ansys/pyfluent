@@ -7,9 +7,12 @@ reset_colors
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reset_colors
 
-.. autoclass:: reset_colors
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   reset_colors
+
 .. rubric:: Included in:
 
 ======================   ===================

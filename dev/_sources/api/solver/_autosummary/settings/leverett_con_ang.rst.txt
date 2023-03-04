@@ -7,9 +7,12 @@ leverett_con_ang
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.leverett_con_ang
 
-.. autoclass:: leverett_con_ang
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   leverett_con_ang
+
 .. rubric:: Included in:
 
 ==================================   =================================

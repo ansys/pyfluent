@@ -7,14 +7,17 @@ struct_damping_beta
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.struct_damping_beta
 
-.. autoclass:: struct_damping_beta
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   struct_damping_beta
+
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

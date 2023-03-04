@@ -7,14 +7,17 @@ helper_session_setup
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.helper_session_setup
 
-.. autoclass:: helper_session_setup
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   helper_session_setup
+
+.. rubric:: Attributes
 
 ====================================   ==========================
 
-Child                                                     Summary
+Attribute                                                 Summary
 
 ====================================   ==========================
 :ref:`process_count <process_count>`       'process_count' child.

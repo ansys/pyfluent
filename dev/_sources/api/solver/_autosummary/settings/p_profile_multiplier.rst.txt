@@ -7,9 +7,12 @@ p_profile_multiplier
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.p_profile_multiplier
 
-.. autoclass:: p_profile_multiplier
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   p_profile_multiplier
+
 .. rubric:: Included in:
 
 ====================================================   ===========================================

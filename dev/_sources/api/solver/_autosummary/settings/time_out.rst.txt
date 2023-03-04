@@ -7,9 +7,12 @@ time_out
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.time_out
 
-.. autoclass:: time_out
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   time_out
+
 .. rubric:: Included in:
 
 ==================   ================

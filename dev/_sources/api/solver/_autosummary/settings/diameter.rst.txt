@@ -7,9 +7,12 @@ diameter
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.diameter
 
-.. autoclass:: diameter
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   diameter
+
 .. rubric:: Included in:
 
 ============================   =====================

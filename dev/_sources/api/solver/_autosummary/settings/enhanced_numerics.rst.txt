@@ -7,9 +7,12 @@ enhanced_numerics
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.enhanced_numerics
 
-.. autoclass:: enhanced_numerics
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   enhanced_numerics
+
 .. rubric:: Included in:
 
 ============================================   ==================================================

@@ -7,9 +7,12 @@ min_v2f_tke
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.min_v2f_tke
 
-.. autoclass:: min_v2f_tke
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   min_v2f_tke
+
 .. rubric:: Included in:
 
 ======================   ===================

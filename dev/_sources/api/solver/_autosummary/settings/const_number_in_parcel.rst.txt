@@ -7,9 +7,12 @@ const_number_in_parcel
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.const_number_in_parcel
 
-.. autoclass:: const_number_in_parcel
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   const_number_in_parcel
+
 .. rubric:: Included in:
 
 ====================================   ==========================

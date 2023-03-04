@@ -7,14 +7,17 @@ droplet_diameter
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.droplet_diameter
 
-.. autoclass:: droplet_diameter
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   droplet_diameter
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

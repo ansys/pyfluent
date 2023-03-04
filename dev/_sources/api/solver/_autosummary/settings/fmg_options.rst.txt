@@ -7,14 +7,17 @@ fmg_options
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fmg_options
 
-.. autoclass:: fmg_options
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   fmg_options
+
+.. rubric:: Attributes
 
 ====================================================================   ==================================================================
 
-Child                                                                                                                             Summary
+Attribute                                                                                                                         Summary
 
 ====================================================================   ==================================================================
 :ref:`viscous_terms <viscous_terms>`                                                      Enable viscous terms during FMG initialization.

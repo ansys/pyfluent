@@ -7,14 +7,17 @@ monitor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.monitor
 
-.. autoclass:: monitor
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   monitor
+
+.. rubric:: Attributes
 
 ======================================================   ===================================
 
-Child                                                                                Summary
+Attribute                                                                            Summary
 
 ======================================================   ===================================
 :ref:`report_files <report_files>`                                     'report_files' child.

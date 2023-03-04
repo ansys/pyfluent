@@ -3,13 +3,8 @@
 solver.tui.results.graphics.expert.set.colors
 =============================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.colors
-   :members: rans_les_interface_faces, overset_faces, automatic_skip, periodic_faces, free_surface_faces, internal_faces, far_field_faces, reset_user_colors, traction_faces, axis_faces, color_by_type, background, show_user_colors, inlet_faces, graphics_color_theme, foreground, surface, reset_colors, wall_faces, user_color, outlet_faces, interior_faces, list, symmetry_faces, interface_faces, skip_label
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.colors
+   :autosummary:
 
 .. toctree::
    :hidden:

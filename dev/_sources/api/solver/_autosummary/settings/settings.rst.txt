@@ -7,14 +7,17 @@ settings
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.settings
 
-.. autoclass:: settings
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Commands
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   settings
+
+.. rubric:: Methods
 
 ==========================================================   ===============================================
 
-Command                                                                                              Summary
+Method                                                                                               Summary
 
 ==========================================================   ===============================================
 :ref:`set_cgns_export_filetype <set_cgns_export_filetype>`       Select HDF5 or ADF as file format for CGNS.

@@ -7,9 +7,12 @@ column_with_diameters
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.column_with_diameters
 
-.. autoclass:: column_with_diameters
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   column_with_diameters
+
 .. rubric:: Included in:
 
 ========================================================   ====================================

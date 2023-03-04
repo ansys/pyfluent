@@ -7,9 +7,12 @@ matching_tolerance
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.matching_tolerance
 
-.. autoclass:: matching_tolerance
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   matching_tolerance
+
 .. rubric:: Included in:
 
 ==================   =================

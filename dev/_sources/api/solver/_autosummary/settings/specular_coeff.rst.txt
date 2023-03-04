@@ -7,9 +7,12 @@ specular_coeff
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.specular_coeff
 
-.. autoclass:: specular_coeff
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   specular_coeff
+
 .. rubric:: Included in:
 
 ===================================   =================================

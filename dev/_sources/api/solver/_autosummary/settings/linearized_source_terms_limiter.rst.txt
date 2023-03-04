@@ -7,9 +7,12 @@ linearized_source_terms_limiter
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.linearized_source_terms_limiter
 
-.. autoclass:: linearized_source_terms_limiter
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   linearized_source_terms_limiter
+
 .. rubric:: Included in:
 
 ====================================   =================================================================================

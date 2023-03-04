@@ -7,9 +7,12 @@ fixed_length
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fixed_length
 
-.. autoclass:: fixed_length
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   fixed_length
+
 .. rubric:: Included in:
 
 ==============================   =======================

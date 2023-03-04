@@ -7,9 +7,12 @@ mgrid_udf_zmotion_name
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mgrid_udf_zmotion_name
 
-.. autoclass:: mgrid_udf_zmotion_name
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   mgrid_udf_zmotion_name
+
 .. rubric:: Included in:
 
 ==================================   =================================

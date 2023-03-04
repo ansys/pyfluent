@@ -7,14 +7,17 @@ flux_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.flux_child
 
-.. autoclass:: flux_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   flux_child
+
+.. rubric:: Attributes
 
 ================================================================   ========================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ================================================================   ========================================
 :ref:`report_type <report_type>`                                                       'report_type' child.

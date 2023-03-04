@@ -7,9 +7,12 @@ reset
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reset_1
 
-.. autoclass:: reset
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   reset
+
 .. rubric:: Included in:
 
 ====================   ==================

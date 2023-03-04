@@ -7,9 +7,12 @@ linear_growth_of_dpm_source_terms
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.linear_growth_of_dpm_source_terms
 
-.. autoclass:: linear_growth_of_dpm_source_terms
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   linear_growth_of_dpm_source_terms
+
 .. rubric:: Included in:
 
 ==================================   =========================

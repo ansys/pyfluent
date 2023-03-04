@@ -7,9 +7,12 @@ axis_direction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.axis_direction
 
-.. autoclass:: axis_direction
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   axis_direction
+
 .. rubric:: Included in:
 
 ==========================================   ============================

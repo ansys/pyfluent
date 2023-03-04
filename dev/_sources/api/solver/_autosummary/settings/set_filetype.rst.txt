@@ -7,9 +7,12 @@ set_filetype
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_filetype
 
-.. autoclass:: set_filetype
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   set_filetype
+
 .. rubric:: Included in:
 
 ==========================================================   ===============================================

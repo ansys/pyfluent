@@ -7,9 +7,12 @@ fmg_initialize
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fmg_initialize
 
-.. autoclass:: fmg_initialize
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   fmg_initialize
+
 .. rubric:: Included in:
 
 ======================================   ===========================

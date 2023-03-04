@@ -7,9 +7,12 @@ reference_temperature
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reference_temperature
 
-.. autoclass:: reference_temperature
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   reference_temperature
+
 .. rubric:: Included in:
 
 ========================================================   ====================================

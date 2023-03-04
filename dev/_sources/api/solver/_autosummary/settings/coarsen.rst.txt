@@ -7,9 +7,12 @@ coarsen
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.coarsen
 
-.. autoclass:: coarsen
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   coarsen
+
 .. rubric:: Included in:
 
 ==================================================   ==========================================

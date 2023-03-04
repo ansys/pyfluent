@@ -7,9 +7,12 @@ jpeg_hardcopy_quality
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.jpeg_hardcopy_quality
 
-.. autoclass:: jpeg_hardcopy_quality
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   jpeg_hardcopy_quality
+
 .. rubric:: Included in:
 
 ========================   =================================================

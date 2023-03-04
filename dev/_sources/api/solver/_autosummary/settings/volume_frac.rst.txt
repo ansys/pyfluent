@@ -7,14 +7,17 @@ volume_frac
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.volume_frac
 
-.. autoclass:: volume_frac
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   volume_frac
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

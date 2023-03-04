@@ -7,9 +7,12 @@ under_relaxation
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.under_relaxation
 
-.. autoclass:: under_relaxation
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   under_relaxation
+
 .. rubric:: Named object type
 
 :ref:`axis_direction_child <axis_direction_child>`

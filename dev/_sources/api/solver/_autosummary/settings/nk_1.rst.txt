@@ -7,14 +7,17 @@ nk
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.nk_1
 
-.. autoclass:: nk
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   nk
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

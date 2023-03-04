@@ -7,9 +7,12 @@ dpm_bc_erosion_shear_v
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_bc_erosion_shear_v
 
-.. autoclass:: dpm_bc_erosion_shear_v
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   dpm_bc_erosion_shear_v
+
 .. rubric:: Included in:
 
 ===================================   =================================

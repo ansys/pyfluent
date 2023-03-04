@@ -7,14 +7,17 @@ reduced_rank_extrapolation_options
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reduced_rank_extrapolation_options
 
-.. autoclass:: reduced_rank_extrapolation_options
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   reduced_rank_extrapolation_options
+
+.. rubric:: Attributes
 
 ========================================   ============================
 
-Child                                                           Summary
+Attribute                                                       Summary
 
 ========================================   ============================
 :ref:`subspace_size <subspace_size>`                 Set subspace size.

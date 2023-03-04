@@ -1,0 +1,6 @@
+\_\_init\_\_
+============
+
+.. currentmodule:: ansys.fluent.core.fluent_connection
+
+.. automethod:: MonitorThread.__init__

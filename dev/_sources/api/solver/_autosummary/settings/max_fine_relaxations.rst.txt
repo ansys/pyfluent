@@ -7,9 +7,12 @@ max_fine_relaxations
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.max_fine_relaxations
 
-.. autoclass:: max_fine_relaxations
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   max_fine_relaxations
+
 .. rubric:: Included in:
 
 ============================================================   ======================================

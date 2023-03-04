@@ -7,14 +7,17 @@ residual
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.residual
 
-.. autoclass:: residual
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   residual
+
+.. rubric:: Attributes
 
 ====================================================   ==================================
 
-Child                                                                             Summary
+Attribute                                                                         Summary
 
 ====================================================   ==================================
 :ref:`equation_for_residual <equation_for_residual>`       'equation_for_residual' child.

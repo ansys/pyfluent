@@ -7,14 +7,17 @@ particle_mixture_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.particle_mixture_child
 
-.. autoclass:: particle_mixture_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   particle_mixture_child
+
+.. rubric:: Attributes
 
 ========================================================   ====================================
 
-Child                                                                                   Summary
+Attribute                                                                               Summary
 
 ========================================================   ====================================
 :ref:`density <density_5>`                                                     'density' child.

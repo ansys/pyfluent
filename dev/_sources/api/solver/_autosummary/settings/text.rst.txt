@@ -7,14 +7,17 @@ text
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.text
 
-.. autoclass:: text
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   text
+
+.. rubric:: Attributes
 
 ================================   =========================================================
 
-Child                                                                                Summary
+Attribute                                                                            Summary
 
 ================================   =========================================================
 :ref:`application <application>`              Show/hide the application name in the picture.

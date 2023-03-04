@@ -7,9 +7,12 @@ species_reactions
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.species_reactions
 
-.. autoclass:: species_reactions
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   species_reactions
+
 .. rubric:: Included in:
 
 ================================   =========================================

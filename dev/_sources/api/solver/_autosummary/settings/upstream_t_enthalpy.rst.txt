@@ -7,9 +7,12 @@ upstream_t_enthalpy
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.upstream_t_enthalpy
 
-.. autoclass:: upstream_t_enthalpy
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   upstream_t_enthalpy
+
 .. rubric:: Included in:
 
 ====================================================   ===========================================

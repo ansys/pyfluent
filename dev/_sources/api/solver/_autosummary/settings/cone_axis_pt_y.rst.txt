@@ -7,9 +7,12 @@ cone_axis_pt_y
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cone_axis_pt_y
 
-.. autoclass:: cone_axis_pt_y
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   cone_axis_pt_y
+
 .. rubric:: Included in:
 
 ==================================   =================================

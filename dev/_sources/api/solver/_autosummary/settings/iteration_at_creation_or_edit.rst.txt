@@ -7,9 +7,12 @@ iteration_at_creation_or_edit
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.iteration_at_creation_or_edit
 
-.. autoclass:: iteration_at_creation_or_edit
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   iteration_at_creation_or_edit
+
 .. rubric:: Included in:
 
 ============================================================   ===============================================

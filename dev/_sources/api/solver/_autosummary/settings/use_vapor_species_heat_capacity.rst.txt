@@ -7,9 +7,12 @@ use_vapor_species_heat_capacity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.use_vapor_species_heat_capacity
 
-.. autoclass:: use_vapor_species_heat_capacity
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   use_vapor_species_heat_capacity
+
 .. rubric:: Included in:
 
 ========================================================================   ============================================

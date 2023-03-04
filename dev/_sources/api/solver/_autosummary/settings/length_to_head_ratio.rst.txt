@@ -7,9 +7,12 @@ length_to_head_ratio
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.length_to_head_ratio
 
-.. autoclass:: length_to_head_ratio
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   length_to_head_ratio
+
 .. rubric:: Included in:
 
 ========================================   ============================

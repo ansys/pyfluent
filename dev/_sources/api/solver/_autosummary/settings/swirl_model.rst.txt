@@ -7,9 +7,12 @@ swirl_model
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.swirl_model
 
-.. autoclass:: swirl_model
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   swirl_model
+
 .. rubric:: Included in:
 
 ====================================================   ===========================================

@@ -7,9 +7,12 @@ zero_shear_viscosity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.zero_shear_viscosity
 
-.. autoclass:: zero_shear_viscosity
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   zero_shear_viscosity
+
 .. rubric:: Included in:
 
 ========================   ====================

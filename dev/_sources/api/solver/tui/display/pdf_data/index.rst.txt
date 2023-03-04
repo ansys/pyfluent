@@ -3,11 +3,6 @@
 solver.tui.display.pdf\_data
 ============================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.pdf_data
-   :members: draw_number_box, carpet_plot, plot_1d_slice, write_to_file
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.display.pdf_data
+   :autosummary:
 

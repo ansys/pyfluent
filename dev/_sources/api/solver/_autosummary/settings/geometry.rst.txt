@@ -7,14 +7,17 @@ geometry
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.geometry
 
-.. autoclass:: geometry
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   geometry
+
+.. rubric:: Attributes
 
 ==================================================   ===========================================
 
-Child                                                                                    Summary
+Attribute                                                                                Summary
 
 ==================================================   ===========================================
 :ref:`reconstruct_geometry <reconstruct_geometry>`       Enable/Disable geometry based adaption.

@@ -3,11 +3,6 @@
 solver.tui.results.graphics\_window.picture.color\_mode
 =======================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics_window.picture.color_mode
-   :members: mono_chrome, gray_scale, list, color
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.picture.color_mode
+   :autosummary:
 

@@ -7,14 +7,17 @@ outlet_vent_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.outlet_vent_child
 
-.. autoclass:: outlet_vent_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   outlet_vent_child
+
+.. rubric:: Attributes
 
 ==================================================================   =========================================
 
-Child                                                                                                  Summary
+Attribute                                                                                              Summary
 
 ==================================================================   =========================================
 :ref:`phase <phase_13>`                                                                         'phase' child.

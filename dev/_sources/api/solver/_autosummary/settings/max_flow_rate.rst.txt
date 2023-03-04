@@ -7,9 +7,12 @@ max_flow_rate
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.max_flow_rate
 
-.. autoclass:: max_flow_rate
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   max_flow_rate
+
 .. rubric:: Included in:
 
 ==================================   =================================

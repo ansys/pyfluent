@@ -7,9 +7,12 @@ foreground
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.foreground_1
 
-.. autoclass:: foreground
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   foreground
+
 .. rubric:: Included in:
 
 ====================   ========================================

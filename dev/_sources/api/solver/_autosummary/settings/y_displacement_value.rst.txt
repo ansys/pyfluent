@@ -7,14 +7,17 @@ y_displacement_value
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.y_displacement_value
 
-.. autoclass:: y_displacement_value
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   y_displacement_value
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

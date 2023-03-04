@@ -7,9 +7,12 @@ levelset_auto_init
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.levelset_auto_init
 
-.. autoclass:: levelset_auto_init
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   levelset_auto_init
+
 .. rubric:: Included in:
 
 ======================================   ===========================

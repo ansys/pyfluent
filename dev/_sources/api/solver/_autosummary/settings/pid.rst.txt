@@ -7,14 +7,17 @@ pid
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pid
 
-.. autoclass:: pid
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   pid
+
+.. rubric:: Attributes
 
 ====================================================   =================================
 
-Child                                                                            Summary
+Attribute                                                                        Summary
 
 ====================================================   =================================
 :ref:`method <method_1>`                                                 'method' child.

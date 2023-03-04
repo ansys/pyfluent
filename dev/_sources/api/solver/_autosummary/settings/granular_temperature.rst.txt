@@ -7,14 +7,17 @@ granular_temperature
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.granular_temperature
 
-.. autoclass:: granular_temperature
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   granular_temperature
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

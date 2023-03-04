@@ -7,9 +7,12 @@ dpm_crit_temp_option
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_crit_temp_option
 
-.. autoclass:: dpm_crit_temp_option
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   dpm_crit_temp_option
+
 .. rubric:: Included in:
 
 ===================================   =================================

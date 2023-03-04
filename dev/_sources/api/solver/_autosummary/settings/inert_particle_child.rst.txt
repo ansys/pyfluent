@@ -7,14 +7,17 @@ inert_particle_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.inert_particle_child
 
-.. autoclass:: inert_particle_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   inert_particle_child
+
+.. rubric:: Attributes
 
 ================================================================   =======================================
 
-Child                                                                                              Summary
+Attribute                                                                                          Summary
 
 ================================================================   =======================================
 :ref:`density <density_3>`                                                                'density' child.

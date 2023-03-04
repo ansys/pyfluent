@@ -7,9 +7,12 @@ principal_axes
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.principal_axes
 
-.. autoclass:: principal_axes
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   principal_axes
+
 .. rubric:: Included in:
 
 ====================================================   ==================================

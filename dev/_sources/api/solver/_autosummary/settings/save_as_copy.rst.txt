@@ -7,9 +7,12 @@ save_as_copy
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.save_as_copy
 
-.. autoclass:: save_as_copy
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   save_as_copy
+
 .. rubric:: Arguments
 
 ==============================================   ===============================

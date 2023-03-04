@@ -7,9 +7,12 @@ y_axis_max
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.y_axis_max
 
-.. autoclass:: y_axis_max
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   y_axis_max
+
 .. rubric:: Included in:
 
 ================================   =======================

@@ -3,11 +3,6 @@
 solver.tui.display.define.material
 ==================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.define.material
-   :members: copy, new, edit, delete
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.display.define.material
+   :autosummary:
 

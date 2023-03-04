@@ -7,9 +7,12 @@ keyframe
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.keyframe
 
-.. autoclass:: keyframe
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   keyframe
+
 .. rubric:: Included in:
 
 ========================================   ============================

@@ -7,14 +7,17 @@ initial_props
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.initial_props
 
-.. autoclass:: initial_props
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   initial_props
+
+.. rubric:: Attributes
 
 ==========================================   =============================
 
-Child                                                              Summary
+Attribute                                                          Summary
 
 ==========================================   =============================
 :ref:`location <location>`                               'location' child.

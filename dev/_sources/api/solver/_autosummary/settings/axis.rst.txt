@@ -7,9 +7,12 @@ axis
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.axis
 
-.. autoclass:: axis
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   axis
+
 .. rubric:: Named object type
 
 :ref:`axis_child <axis_child>`

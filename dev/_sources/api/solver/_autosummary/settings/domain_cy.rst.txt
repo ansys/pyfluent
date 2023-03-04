@@ -7,9 +7,12 @@ domain_cy
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.domain_cy
 
-.. autoclass:: domain_cy
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   domain_cy
+
 .. rubric:: Included in:
 
 ============================================   ================================

@@ -7,9 +7,12 @@ kw_add_des
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.kw_add_des
 
-.. autoclass:: kw_add_des
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   kw_add_des
+
 .. rubric:: Included in:
 
 ============================================   ==============================

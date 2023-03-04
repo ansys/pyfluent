@@ -7,14 +7,17 @@ li_ion_value
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.li_ion_value
 
-.. autoclass:: li_ion_value
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   li_ion_value
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

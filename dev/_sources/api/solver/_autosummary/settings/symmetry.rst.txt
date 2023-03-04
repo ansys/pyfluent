@@ -7,9 +7,12 @@ symmetry
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.symmetry
 
-.. autoclass:: symmetry
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   symmetry
+
 .. rubric:: Named object type
 
 :ref:`axis_child <axis_child>`

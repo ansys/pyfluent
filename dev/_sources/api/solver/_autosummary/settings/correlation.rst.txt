@@ -7,9 +7,12 @@ correlation
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.correlation
 
-.. autoclass:: correlation
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   correlation
+
 .. rubric:: Included in:
 
 ============================================   ==============================================

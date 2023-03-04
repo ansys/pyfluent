@@ -7,9 +7,12 @@ particle_summary
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.particle_summary
 
-.. autoclass:: particle_summary
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   particle_summary
+
 .. rubric:: Arguments
 
 ========================================   ============================

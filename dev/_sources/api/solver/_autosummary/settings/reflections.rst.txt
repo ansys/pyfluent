@@ -7,9 +7,12 @@ reflections
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reflections
 
-.. autoclass:: reflections
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   reflections
+
 .. rubric:: Included in:
 
 ==================================================   ==========================================

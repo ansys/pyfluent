@@ -7,9 +7,12 @@ airfoil_data_file
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.airfoil_data_file
 
-.. autoclass:: airfoil_data_file
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   airfoil_data_file
+
 .. rubric:: Included in:
 
 ======================================   ====================================

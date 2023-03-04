@@ -7,9 +7,12 @@ max_number_of_refinements
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.max_number_of_refinements
 
-.. autoclass:: max_number_of_refinements
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   max_number_of_refinements
+
 .. rubric:: Included in:
 
 ==========================================   =============================

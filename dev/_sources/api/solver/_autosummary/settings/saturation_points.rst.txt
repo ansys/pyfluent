@@ -7,9 +7,12 @@ saturation_points
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.saturation_points
 
-.. autoclass:: saturation_points
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   saturation_points
+
 .. rubric:: Included in:
 
 ====================================   ==========================

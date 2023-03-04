@@ -7,9 +7,12 @@ in_plane
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.in_plane
 
-.. autoclass:: in_plane
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   in_plane
+
 .. rubric:: Included in:
 
 ==============================   =======================

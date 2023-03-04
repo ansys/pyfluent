@@ -7,9 +7,12 @@ axial_source_term
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.axial_source_term
 
-.. autoclass:: axial_source_term
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   axial_source_term
+
 .. rubric:: Included in:
 
 ==================================   =================================

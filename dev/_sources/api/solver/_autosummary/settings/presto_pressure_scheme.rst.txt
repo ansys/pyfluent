@@ -7,9 +7,12 @@ presto_pressure_scheme
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.presto_pressure_scheme
 
-.. autoclass:: presto_pressure_scheme
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   presto_pressure_scheme
+
 .. rubric:: Included in:
 
 ====================================   ========================

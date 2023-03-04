@@ -7,14 +7,17 @@ heat_of_pyrolysis
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.heat_of_pyrolysis
 
-.. autoclass:: heat_of_pyrolysis
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   heat_of_pyrolysis
+
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

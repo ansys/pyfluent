@@ -7,14 +7,17 @@ critical_pressure
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.critical_pressure
 
-.. autoclass:: critical_pressure
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   critical_pressure
+
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

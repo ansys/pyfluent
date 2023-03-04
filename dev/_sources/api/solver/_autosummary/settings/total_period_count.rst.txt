@@ -7,9 +7,12 @@ total_period_count
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.total_period_count
 
-.. autoclass:: total_period_count
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   total_period_count
+
 .. rubric:: Included in:
 
 ============================================   ================================

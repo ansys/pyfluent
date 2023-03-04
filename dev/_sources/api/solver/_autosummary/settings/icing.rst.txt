@@ -7,9 +7,12 @@ icing
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.icing
 
-.. autoclass:: icing
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   icing
+
 .. rubric:: Named object type
 
 :ref:`icing_child <icing_child>`

@@ -7,9 +7,12 @@ zoom
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.zoom
 
-.. autoclass:: zoom
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   zoom
+
 .. rubric:: Arguments
 
 ======================   ===================

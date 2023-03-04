@@ -7,9 +7,12 @@ aero
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.aero
 
-.. autoclass:: aero
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   aero
+
 .. rubric:: Included in:
 
 ===================================   =================================

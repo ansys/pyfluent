@@ -7,9 +7,12 @@ dt_init_limit
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dt_init_limit
 
-.. autoclass:: dt_init_limit
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   dt_init_limit
+
 .. rubric:: Included in:
 
 ============================================================   =======================================================================

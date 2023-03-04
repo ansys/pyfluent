@@ -7,14 +7,17 @@ binary_diffusivity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.binary_diffusivity
 
-.. autoclass:: binary_diffusivity
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   binary_diffusivity
+
+.. rubric:: Attributes
 
 ====================================================   ====================================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

@@ -7,9 +7,12 @@ amplitude_real
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.amplitude_real
 
-.. autoclass:: amplitude_real
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   amplitude_real
+
 .. rubric:: Included in:
 
 ============================================   =======================================

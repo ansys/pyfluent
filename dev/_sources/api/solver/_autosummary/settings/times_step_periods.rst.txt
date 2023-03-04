@@ -7,9 +7,12 @@ times_step_periods
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.times_step_periods
 
-.. autoclass:: times_step_periods
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   times_step_periods
+
 .. rubric:: Included in:
 
 ========================================   ===========================

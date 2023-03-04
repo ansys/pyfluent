@@ -7,9 +7,12 @@ scale_f
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.scale_f
 
-.. autoclass:: scale_f
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   scale_f
+
 .. rubric:: Included in:
 
 ======================   ==================

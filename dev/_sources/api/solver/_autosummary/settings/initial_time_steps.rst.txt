@@ -7,9 +7,12 @@ initial_time_steps
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.initial_time_steps
 
-.. autoclass:: initial_time_steps
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   initial_time_steps
+
 .. rubric:: Included in:
 
 ==========================================================   ======================================

@@ -7,9 +7,12 @@ remove_limiter
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.remove_limiter
 
-.. autoclass:: remove_limiter
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   remove_limiter
+
 .. rubric:: Included in:
 
 ====================================================================   ==========================================

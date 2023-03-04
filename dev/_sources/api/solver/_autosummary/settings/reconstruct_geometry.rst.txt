@@ -7,9 +7,12 @@ reconstruct_geometry
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reconstruct_geometry
 
-.. autoclass:: reconstruct_geometry
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   reconstruct_geometry
+
 .. rubric:: Included in:
 
 ==========================   =====================================

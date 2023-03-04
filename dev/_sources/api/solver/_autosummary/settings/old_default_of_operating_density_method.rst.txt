@@ -7,9 +7,12 @@ old_default_of_operating_density_method
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.old_default_of_operating_density_method
 
-.. autoclass:: old_default_of_operating_density_method
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   old_default_of_operating_density_method
+
 .. rubric:: Included in:
 
 ==================================================================================   =========================================================

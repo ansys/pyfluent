@@ -7,9 +7,12 @@ wave_velocity_spec
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.wave_velocity_spec
 
-.. autoclass:: wave_velocity_spec
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   wave_velocity_spec
+
 .. rubric:: Included in:
 
 ==================================================   ==========================================

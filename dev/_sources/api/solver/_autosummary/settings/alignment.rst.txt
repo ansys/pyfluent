@@ -7,9 +7,12 @@ alignment
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.alignment
 
-.. autoclass:: alignment
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   alignment
+
 .. rubric:: Included in:
 
 ==================   =======================================

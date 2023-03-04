@@ -7,14 +7,17 @@ flux_type
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.flux_type_2
 
-.. autoclass:: flux_type
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   flux_type
+
+.. rubric:: Attributes
 
 ==============================   =======================
 
-Child                                            Summary
+Attribute                                        Summary
 
 ==============================   =======================
 :ref:`dbns_cases <dbns_cases>`       'dbns_cases' child.

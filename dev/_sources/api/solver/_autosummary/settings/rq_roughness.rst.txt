@@ -7,9 +7,12 @@ rq_roughness
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rq_roughness
 
-.. autoclass:: rq_roughness
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   rq_roughness
+
 .. rubric:: Included in:
 
 ===================================   =================================

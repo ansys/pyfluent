@@ -7,9 +7,12 @@ inlet_number
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.inlet_number
 
-.. autoclass:: inlet_number
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   inlet_number
+
 .. rubric:: Included in:
 
 ====================================================   ===========================================

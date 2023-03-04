@@ -7,14 +7,17 @@ burn_hreact_fraction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.burn_hreact_fraction
 
-.. autoclass:: burn_hreact_fraction
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   burn_hreact_fraction
+
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

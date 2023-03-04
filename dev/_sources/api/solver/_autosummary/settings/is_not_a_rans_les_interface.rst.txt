@@ -7,9 +7,12 @@ is_not_a_rans_les_interface
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.is_not_a_rans_les_interface
 
-.. autoclass:: is_not_a_rans_les_interface
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   is_not_a_rans_les_interface
+
 .. rubric:: Included in:
 
 ======================================   ====================================

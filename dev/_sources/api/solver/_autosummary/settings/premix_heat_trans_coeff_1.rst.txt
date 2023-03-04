@@ -7,14 +7,17 @@ premix_heat_trans_coeff
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.premix_heat_trans_coeff_1
 
-.. autoclass:: premix_heat_trans_coeff
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   premix_heat_trans_coeff
+
+.. rubric:: Attributes
 
 ====================================================   ====================================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

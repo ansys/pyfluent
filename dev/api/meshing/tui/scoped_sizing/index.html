@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -55,8 +51,8 @@
     <link rel="shortcut icon" href="../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="meshing.tui.mesh" href="../mesh/index.html" />
-    <link rel="prev" title="meshing.tui.objects.remove_gaps" href="../objects/remove_gaps/index.html" />
+    <link rel="next" title="meshing.tui.reference_frames" href="../reference_frames/index.html" />
+    <link rel="prev" title="meshing.tui" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -302,13 +292,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -321,6 +306,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../index.html">
      meshing.tui
@@ -331,44 +321,9 @@ function checkPageExistsAndRedirect(event) {
      </i>
     </label>
     <ul class="current">
-     <li class="toctree-l3">
-      <a class="reference internal" href="../diagnostics/index.html">
-       meshing.tui.diagnostics
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../preferences/index.html">
-       meshing.tui.preferences
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../objects/index.html">
-       meshing.tui.objects
-      </a>
-     </li>
      <li class="toctree-l3 current active">
       <a class="current reference internal" href="#">
        meshing.tui.scoped_sizing
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../mesh/index.html">
-       meshing.tui.mesh
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../openmp_controls/index.html">
-       meshing.tui.openmp_controls
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../display/index.html">
-       meshing.tui.display
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../file/index.html">
-       meshing.tui.file
       </a>
      </li>
      <li class="toctree-l3">
@@ -377,13 +332,38 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../boundary/index.html">
-       meshing.tui.boundary
+      <a class="reference internal" href="../parallel/index.html">
+       meshing.tui.parallel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../objects/index.html">
+       meshing.tui.objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../file/index.html">
+       meshing.tui.file
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../diagnostics/index.html">
+       meshing.tui.diagnostics
       </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../material_point/index.html">
        meshing.tui.material_point
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../openmp_controls/index.html">
+       meshing.tui.openmp_controls
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../boundary/index.html">
+       meshing.tui.boundary
       </a>
      </li>
      <li class="toctree-l3">
@@ -402,8 +382,18 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../parallel/index.html">
-       meshing.tui.parallel
+      <a class="reference internal" href="../mesh/index.html">
+       meshing.tui.mesh
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../preferences/index.html">
+       meshing.tui.preferences
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../display/index.html">
+       meshing.tui.display
       </a>
      </li>
     </ul>
@@ -448,16 +438,25 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.scoped_sizing
+     scoped_sizing
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       __init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.compute">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.scoped_sizing.compute()
+       compute()
       </span>
      </code>
     </a>
@@ -466,7 +465,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.create">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.scoped_sizing.create()
+       create()
       </span>
      </code>
     </a>
@@ -475,7 +474,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.scoped_sizing.delete()
+       delete()
       </span>
      </code>
     </a>
@@ -484,7 +483,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.delete_all">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.scoped_sizing.delete_all()
+       delete_all()
       </span>
      </code>
     </a>
@@ -493,7 +492,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.delete_size_field">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.scoped_sizing.delete_size_field()
+       delete_size_field()
       </span>
      </code>
     </a>
@@ -502,7 +501,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.list">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.scoped_sizing.list()
+       list()
       </span>
      </code>
     </a>
@@ -511,7 +510,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.list_zones_uncovered_by_controls">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.scoped_sizing.list_zones_uncovered_by_controls()
+       list_zones_uncovered_by_controls()
       </span>
      </code>
     </a>
@@ -520,7 +519,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.modify">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.scoped_sizing.modify()
+       modify()
       </span>
      </code>
     </a>
@@ -529,7 +528,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.read">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.scoped_sizing.read()
+       read()
       </span>
      </code>
     </a>
@@ -538,7 +537,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.validate">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.scoped_sizing.validate()
+       validate()
       </span>
      </code>
     </a>
@@ -547,7 +546,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.write">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.scoped_sizing.write()
+       write()
       </span>
      </code>
     </a>
@@ -575,14 +574,58 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-scoped-sizing">
 <span id="ref-meshing-tui-scoped-sizing"></span><h1>meshing.tui.scoped_sizing<a class="headerlink" href="#meshing-tui-scoped-sizing" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.</span></span><span class="sig-name descname"><span class="pre">scoped_sizing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing" title="Permalink to this definition">#</a></dt>
-<dd><p>Manage scoped sizing.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.</span></span><span class="sig-name descname"><span class="pre">scoped_sizing</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Manage scoped sizing.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.__init__" title="ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p>__init__ method of TUIMenu class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.compute" title="ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.compute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Computes the size field based on the defined size functions and/or scoped size controls.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.create" title="ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Defines the scoped size based on the specified parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.delete" title="ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Deletes the specified scoped size controls.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.delete_all" title="ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.delete_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_all</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Deletes all the defined scoped size controls.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.delete_size_field" title="ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.delete_size_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_size_field</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Deletes the current size field.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.list" title="ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Lists all the defined scoped size controls and the corresponding parameter values defined.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.list_zones_uncovered_by_controls" title="ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.list_zones_uncovered_by_controls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_zones_uncovered_by_controls</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Lists the zones for which no scoped sizing controls have been defined.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.modify" title="ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.modify"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Modifies the scoped size control definition.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.read" title="ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to read in a scoped sizing file (*.szcontrol).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.validate" title="ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.validate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Validates the scoped sizing controls defined.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.write" title="ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to write a scoped sizing file (*.szcontrol).</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>__init__ method of TUIMenu class.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.compute">
 <span class="sig-name descname"><span class="pre">compute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.scoped_sizing.compute" title="Permalink to this definition">#</a></dt>

@@ -7,9 +7,12 @@ length_scale_methods
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.length_scale_methods
 
-.. autoclass:: length_scale_methods
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   length_scale_methods
+
 .. rubric:: Included in:
 
 ============================================   =============================

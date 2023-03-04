@@ -7,9 +7,12 @@ use_barycentric_sampling
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.use_barycentric_sampling
 
-.. autoclass:: use_barycentric_sampling
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   use_barycentric_sampling
+
 .. rubric:: Included in:
 
 ============================================================   ============================================================================

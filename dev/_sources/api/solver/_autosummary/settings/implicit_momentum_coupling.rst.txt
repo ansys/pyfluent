@@ -7,9 +7,12 @@ implicit_momentum_coupling
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.implicit_momentum_coupling
 
-.. autoclass:: implicit_momentum_coupling
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   implicit_momentum_coupling
+
 .. rubric:: Included in:
 
 ==================================   =========================

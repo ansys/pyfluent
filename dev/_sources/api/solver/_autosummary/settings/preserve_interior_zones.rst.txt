@@ -7,9 +7,12 @@ preserve_interior_zones
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.preserve_interior_zones
 
-.. autoclass:: preserve_interior_zones
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   preserve_interior_zones
+
 .. rubric:: Included in:
 
 ========================   =======================

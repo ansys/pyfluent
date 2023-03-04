@@ -7,9 +7,12 @@ target_number_in_parcel
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.target_number_in_parcel
 
-.. autoclass:: target_number_in_parcel
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   target_number_in_parcel
+
 .. rubric:: Included in:
 
 ========================================   ============================

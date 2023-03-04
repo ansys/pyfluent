@@ -7,9 +7,12 @@ asymmetry_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.asymmetry_factor
 
-.. autoclass:: asymmetry_factor
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   asymmetry_factor
+
 .. rubric:: Included in:
 
 ========================================   ============================

@@ -7,14 +7,17 @@ particle_drag
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.particle_drag
 
-.. autoclass:: particle_drag
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   particle_drag
+
+.. rubric:: Attributes
 
 ============================================   ==============================
 
-Child                                                                 Summary
+Attribute                                                             Summary
 
 ============================================   ==============================
 :ref:`option <option_2>`                                      'option' child.

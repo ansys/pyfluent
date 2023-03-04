@@ -3,13 +3,8 @@
 solver.tui.define.solution\_strategy
 ====================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.solution_strategy
-   :members: execute_strategy, disable_modification, add_edit_modification, delete_modification, export_modifications, import_modifications, copy_modification, enable_modification, automatic_initialization, continue_strategy_execution, enable_strategy
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.solution_strategy
+   :autosummary:
 
 .. toctree::
    :hidden:

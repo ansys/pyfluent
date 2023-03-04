@@ -7,9 +7,12 @@ check
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.check_1
 
-.. autoclass:: check
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   check
+
 .. rubric:: Included in:
 
 ============================   =====================

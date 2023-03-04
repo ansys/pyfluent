@@ -7,14 +7,17 @@ area_density
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.area_density_1
 
-.. autoclass:: area_density
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   area_density
+
+.. rubric:: Attributes
 
 ========================================   ============================================================================
 
-Child                                                                                                           Summary
+Attribute                                                                                                       Summary
 
 ========================================   ============================================================================
 :ref:`vof_min_seeding <vof_min_seeding>`       Minimum vof seeding for non-zero area density in heat and mass transfer.

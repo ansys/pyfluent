@@ -7,9 +7,12 @@ mesh_courant_number
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mesh_courant_number
 
-.. autoclass:: mesh_courant_number
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   mesh_courant_number
+
 .. rubric:: Included in:
 
 ==============================================================   =======================================

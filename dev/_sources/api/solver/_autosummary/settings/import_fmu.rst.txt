@@ -7,9 +7,12 @@ import_fmu
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.import_fmu
 
-.. autoclass:: import_fmu
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   import_fmu
+
 .. rubric:: Arguments
 
 ==============================   ======================

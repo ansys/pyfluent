@@ -7,14 +7,17 @@ relaxation_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.relaxation_factor
 
-.. autoclass:: relaxation_factor
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   relaxation_factor
+
+.. rubric:: Attributes
 
 ==================================================================   ================================================
 
-Child                                                                                                         Summary
+Attribute                                                                                                     Summary
 
 ==================================================================   ================================================
 :ref:`courant_number_reduction <courant_number_reduction>`               Coarse-grid Courant number reduction factor.

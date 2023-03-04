@@ -7,9 +7,12 @@ rec_max
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rec_max
 
-.. autoclass:: rec_max
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   rec_max
+
 .. rubric:: Included in:
 
 ==========================================================   =====================================

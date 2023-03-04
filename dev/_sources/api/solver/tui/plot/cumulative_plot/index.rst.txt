@@ -3,11 +3,6 @@
 solver.tui.plot.cumulative\_plot
 ================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.plot.cumulative_plot
-   :members: edit, write, delete, list, print, list_properties, axes, add, plot, curves
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.plot.cumulative_plot
+   :autosummary:
 

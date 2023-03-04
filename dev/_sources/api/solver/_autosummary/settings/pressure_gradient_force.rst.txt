@@ -7,14 +7,17 @@ pressure_gradient_force
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pressure_gradient_force
 
-.. autoclass:: pressure_gradient_force
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   pressure_gradient_force
+
+.. rubric:: Attributes
 
 ========================   ===================================================================================
 
-Child                                                                                                  Summary
+Attribute                                                                                              Summary
 
 ========================   ===================================================================================
 :ref:`option <option_6>`       Enable/disable pressure gradient force acting on particles in non-uniform flow.

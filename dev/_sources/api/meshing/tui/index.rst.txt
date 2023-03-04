@@ -3,29 +3,24 @@
 meshing.tui
 ===========
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu
-   :members: switch_to_solution_mode, close_fluent, exit, print_license_usage, beta_feature_access
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu
+   :autosummary:
 
 .. toctree::
    :hidden:
 
-   diagnostics/index
-   preferences/index
-   objects/index
    scoped_sizing/index
-   mesh/index
-   openmp_controls/index
-   display/index
-   file/index
    reference_frames/index
-   boundary/index
+   parallel/index
+   objects/index
+   file/index
+   diagnostics/index
    material_point/index
+   openmp_controls/index
+   boundary/index
    report/index
    cad_assemblies/index
    size_functions/index
-   parallel/index
+   mesh/index
+   preferences/index
+   display/index

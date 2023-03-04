@@ -7,9 +7,12 @@ velocity_spec
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.velocity_spec
 
-.. autoclass:: velocity_spec
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   velocity_spec
+
 .. rubric:: Included in:
 
 ==================================================   ==========================================

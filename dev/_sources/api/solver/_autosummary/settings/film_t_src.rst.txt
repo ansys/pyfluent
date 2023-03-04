@@ -7,14 +7,17 @@ film_t_src
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.film_t_src
 
-.. autoclass:: film_t_src
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   film_t_src
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

@@ -7,9 +7,12 @@ inlet_faces
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.inlet_faces
 
-.. autoclass:: inlet_faces
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   inlet_faces
+
 .. rubric:: Included in:
 
 ======================   ===================

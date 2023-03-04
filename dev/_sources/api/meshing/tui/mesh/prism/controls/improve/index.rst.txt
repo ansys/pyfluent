@@ -3,11 +3,6 @@
 meshing.tui.mesh.prism.controls.improve
 =======================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.prism.controls.improve
-   :members: corner_height_weight, edge_swap_cap_angle, improve_warp, max_allowable_cell_skew, smooth_improve_prism_cells, face_smooth_skew, check_allowable_skew, max_allowable_cap_skew, edge_swap_base_angle, left_hand_check
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.controls.improve
+   :autosummary:
 

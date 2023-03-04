@@ -7,9 +7,12 @@ min_omega
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.min_omega
 
-.. autoclass:: min_omega
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   min_omega
+
 .. rubric:: Included in:
 
 ======================   ===================

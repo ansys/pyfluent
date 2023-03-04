@@ -7,9 +7,12 @@ custom
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.custom
 
-.. autoclass:: custom
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   custom
+
 .. rubric:: Named object type
 
 :ref:`phase_child <phase_child_10>`

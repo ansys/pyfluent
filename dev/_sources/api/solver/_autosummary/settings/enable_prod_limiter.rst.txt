@@ -7,9 +7,12 @@ enable_prod_limiter
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.enable_prod_limiter
 
-.. autoclass:: enable_prod_limiter
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   enable_prod_limiter
+
 .. rubric:: Included in:
 
 ==============================================   ===============================

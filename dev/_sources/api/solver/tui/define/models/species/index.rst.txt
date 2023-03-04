@@ -3,13 +3,8 @@
 solver.tui.define.models.species
 ================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.species
-   :members: partially_premixed_combustion_parameters, diffusion_energy_source, decoupled_detailed_chemistry, combustion_numerics, combustion_expert, multicomponent_diffusion, mass_deposition_source, flamelet_expert, volumetric_reactions, coal_calculator, re_calc_par_premix_props, reaction_diffusion_balance, mixing_model, species_transport, ignition_model, set_multi_regime_fgm, off, liquid_micro_mixing, spark_model, thermal_diffusion, pdf_transport_expert, premixed_model, liquid_energy_diffusion, premixed_combustion, clear_isat_table, import_flamelet_for_restart, partially_premixed_combustion_grids, inert_transport_model, full_tabulation, inert_transport_controls, partially_premixed_properties, particle_surface_reactions, ignition_model_controls, set_turb_chem_interaction, stiff_chemistry, init_unsteady_flamelet_prob, surf_reaction_netm_params, species_transport_expert, non_premixed_combustion, wall_surface_reactions, partially_premixed_combustion_expert, integration_parameters, reactor_network_model, save_gradients, thickened_flame_model, reacting_channel_model_options, CHEMKIN_CFD, set_premixed_combustion, non_premixed_combustion_expert, non_premixed_combustion_parameters, heat_of_surface_reactions, inlet_diffusion, surf_reaction_aggressiveness_factor, partially_premixed_combustion, pdf_transport, species_migration, relax_to_equil, epdf_energy, electro_chemical_surface_reactions, reacting_channel_model
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.models.species
+   :autosummary:
 
 .. toctree::
    :hidden:

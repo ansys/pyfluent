@@ -7,9 +7,12 @@ y_scale
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.y_scale
 
-.. autoclass:: y_scale
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   y_scale
+
 .. rubric:: Included in:
 
 ====================   ====================

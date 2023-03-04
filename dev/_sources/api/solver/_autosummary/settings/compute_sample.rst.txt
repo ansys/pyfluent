@@ -7,9 +7,12 @@ compute_sample
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.compute_sample
 
-.. autoclass:: compute_sample
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   compute_sample
+
 .. rubric:: Arguments
 
 ==========================   =====================

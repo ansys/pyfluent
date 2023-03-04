@@ -7,14 +7,17 @@ multidomain
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.multidomain
 
-.. autoclass:: multidomain
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   multidomain
+
+.. rubric:: Attributes
 
 ========================================================   ====================================
 
-Child                                                                                   Summary
+Attribute                                                                               Summary
 
 ========================================================   ====================================
 :ref:`conjugate_heat_transfer <conjugate_heat_transfer>`       'conjugate_heat_transfer' child.

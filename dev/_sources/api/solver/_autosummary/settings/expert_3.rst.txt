@@ -7,14 +7,17 @@ expert
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.expert_3
 
-.. autoclass:: expert
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   expert
+
+.. rubric:: Attributes
 
 ================================================================   ============================================================
 
-Child                                                                                                                   Summary
+Attribute                                                                                                               Summary
 
 ================================================================   ============================================================
 :ref:`mass_flux_correction_method <mass_flux_correction_method>`       Enter mass flux correction option at overset interfaces.

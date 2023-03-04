@@ -7,9 +7,12 @@ per_surface
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.per_surface
 
-.. autoclass:: per_surface
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   per_surface
+
 .. rubric:: Included in:
 
 ====================================   ===================================

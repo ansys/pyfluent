@@ -7,9 +7,12 @@ species
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.species_1
 
-.. autoclass:: species
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   species
+
 .. rubric:: Named object type
 
 :ref:`species_child <species_child>`

@@ -7,9 +7,12 @@ y_comp
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.y_comp
 
-.. autoclass:: y_comp
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   y_comp
+
 .. rubric:: Included in:
 
 ==============================   =======================

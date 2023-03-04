@@ -7,14 +7,17 @@ dual_potential_value
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dual_potential_value
 
-.. autoclass:: dual_potential_value
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   dual_potential_value
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

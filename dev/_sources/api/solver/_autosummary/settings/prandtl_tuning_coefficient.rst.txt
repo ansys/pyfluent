@@ -7,9 +7,12 @@ prandtl_tuning_coefficient
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.prandtl_tuning_coefficient
 
-.. autoclass:: prandtl_tuning_coefficient
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   prandtl_tuning_coefficient
+
 .. rubric:: Included in:
 
 ==========================   ============================================

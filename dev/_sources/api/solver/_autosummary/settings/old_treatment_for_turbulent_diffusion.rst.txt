@@ -7,9 +7,12 @@ old_treatment_for_turbulent_diffusion
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.old_treatment_for_turbulent_diffusion
 
-.. autoclass:: old_treatment_for_turbulent_diffusion
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   old_treatment_for_turbulent_diffusion
+
 .. rubric:: Included in:
 
 ==============================   =====================================

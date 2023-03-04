@@ -7,9 +7,12 @@ axis_faces
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.axis_faces
 
-.. autoclass:: axis_faces
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   axis_faces
+
 .. rubric:: Included in:
 
 ======================   ===================

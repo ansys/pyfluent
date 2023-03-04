@@ -7,9 +7,12 @@ cunningham_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cunningham_factor
 
-.. autoclass:: cunningham_factor
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   cunningham_factor
+
 .. rubric:: Included in:
 
 ====================================   ==========================

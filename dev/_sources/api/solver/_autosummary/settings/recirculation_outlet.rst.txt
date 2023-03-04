@@ -7,9 +7,12 @@ recirculation_outlet
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.recirculation_outlet
 
-.. autoclass:: recirculation_outlet
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   recirculation_outlet
+
 .. rubric:: Named object type
 
 :ref:`recirculation_outlet_child <recirculation_outlet_child>`

@@ -7,9 +7,12 @@ create_volume_surface
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.create_volume_surface
 
-.. autoclass:: create_volume_surface
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   create_volume_surface
+
 .. rubric:: Included in:
 
 ================================   ========================

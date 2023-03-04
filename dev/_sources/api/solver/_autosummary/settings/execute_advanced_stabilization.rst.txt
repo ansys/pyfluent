@@ -7,9 +7,12 @@ execute_advanced_stabilization
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.execute_advanced_stabilization
 
-.. autoclass:: execute_advanced_stabilization
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   execute_advanced_stabilization
+
 .. rubric:: Included in:
 
 ========================================================   ====================================

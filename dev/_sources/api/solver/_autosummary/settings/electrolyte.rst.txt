@@ -7,9 +7,12 @@ electrolyte
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.electrolyte
 
-.. autoclass:: electrolyte
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   electrolyte
+
 .. rubric:: Included in:
 
 ==================================   =================================

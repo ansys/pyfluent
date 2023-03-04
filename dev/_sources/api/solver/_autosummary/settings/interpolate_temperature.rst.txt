@@ -7,9 +7,12 @@ interpolate_temperature
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.interpolate_temperature
 
-.. autoclass:: interpolate_temperature
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   interpolate_temperature
+
 .. rubric:: Included in:
 
 ====================================   ====================================================================================================

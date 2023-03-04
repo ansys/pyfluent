@@ -7,14 +7,17 @@ rosin_rammler_settings
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rosin_rammler_settings
 
-.. autoclass:: rosin_rammler_settings
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   rosin_rammler_settings
+
+.. rubric:: Attributes
 
 ================================================   ================================
 
-Child                                                                       Summary
+Attribute                                                                   Summary
 
 ================================================   ================================
 :ref:`min_diam <min_diam>`                                        'min_diam' child.

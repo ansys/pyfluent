@@ -7,9 +7,12 @@ fan_poly_order
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fan_poly_order
 
-.. autoclass:: fan_poly_order
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   fan_poly_order
+
 .. rubric:: Included in:
 
 ==================================   =================================

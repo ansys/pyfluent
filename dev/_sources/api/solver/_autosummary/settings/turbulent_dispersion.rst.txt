@@ -7,14 +7,17 @@ turbulent_dispersion
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.turbulent_dispersion
 
-.. autoclass:: turbulent_dispersion
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   turbulent_dispersion
+
+.. rubric:: Attributes
 
 ==================================================   =================================
 
-Child                                                                          Summary
+Attribute                                                                      Summary
 
 ==================================================   =================================
 :ref:`option <option_2>`                                               'option' child.

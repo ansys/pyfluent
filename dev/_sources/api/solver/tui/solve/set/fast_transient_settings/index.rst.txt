@@ -3,11 +3,6 @@
 solver.tui.solve.set.fast\_transient\_settings
 ==============================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.fast_transient_settings
-   :members: rk2
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solve.set.fast_transient_settings
+   :autosummary:
 

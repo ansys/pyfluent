@@ -7,9 +7,12 @@ vibrational_temperature_mode_1
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.vibrational_temperature_mode_1
 
-.. autoclass:: vibrational_temperature_mode_1
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   vibrational_temperature_mode_1
+
 .. rubric:: Included in:
 
 ============================================   ==============================

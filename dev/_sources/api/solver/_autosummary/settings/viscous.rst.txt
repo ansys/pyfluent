@@ -7,14 +7,17 @@ viscous
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.viscous
 
-.. autoclass:: viscous
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   viscous
+
+.. rubric:: Attributes
 
 ================================================================   ==========================================================================
 
-Child                                                                                                                                 Summary
+Attribute                                                                                                                             Summary
 
 ================================================================   ==========================================================================
 :ref:`model <model>`                                                                                                           'model' child.

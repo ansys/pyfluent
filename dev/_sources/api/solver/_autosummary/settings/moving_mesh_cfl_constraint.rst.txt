@@ -7,14 +7,17 @@ moving_mesh_cfl_constraint
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.moving_mesh_cfl_constraint
 
-.. autoclass:: moving_mesh_cfl_constraint
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   moving_mesh_cfl_constraint
+
+.. rubric:: Attributes
 
 ======================================================   =====================================
 
-Child                                                                                  Summary
+Attribute                                                                              Summary
 
 ======================================================   =====================================
 :ref:`moving_mesh_constraint <moving_mesh_constraint>`          Enable Moving Mesh Constraint.

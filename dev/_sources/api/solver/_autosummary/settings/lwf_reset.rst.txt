@@ -7,9 +7,12 @@ lwf_reset
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.lwf_reset
 
-.. autoclass:: lwf_reset
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   lwf_reset
+
 .. rubric:: Included in:
 
 ======================================   ===========================

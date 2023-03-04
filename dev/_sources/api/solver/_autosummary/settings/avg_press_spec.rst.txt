@@ -7,9 +7,12 @@ avg_press_spec
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.avg_press_spec
 
-.. autoclass:: avg_press_spec
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   avg_press_spec
+
 .. rubric:: Included in:
 
 ====================================================   ===========================================

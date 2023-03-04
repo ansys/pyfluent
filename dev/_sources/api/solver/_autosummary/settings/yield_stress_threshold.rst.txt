@@ -7,9 +7,12 @@ yield_stress_threshold
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.yield_stress_threshold
 
-.. autoclass:: yield_stress_threshold
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   yield_stress_threshold
+
 .. rubric:: Included in:
 
 ==========================================   =============================

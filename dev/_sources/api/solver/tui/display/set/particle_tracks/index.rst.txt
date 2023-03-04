@@ -3,13 +3,8 @@
 solver.tui.display.set.particle\_tracks
 =======================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.particle_tracks
-   :members: marker_size, twist_factor, particle_skip, arrow_scale, report_to, report_type, line_width, arrow_space, style, radius, report_variables, sphere_attrib, history_filename, coarsen_factor, report_default_variables, display, track_single_particle_stream
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.display.set.particle_tracks
+   :autosummary:
 
 .. toctree::
    :hidden:

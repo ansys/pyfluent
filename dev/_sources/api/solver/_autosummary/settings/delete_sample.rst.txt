@@ -7,9 +7,12 @@ delete_sample
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.delete_sample
 
-.. autoclass:: delete_sample
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   delete_sample
+
 .. rubric:: Arguments
 
 ======================   ===================

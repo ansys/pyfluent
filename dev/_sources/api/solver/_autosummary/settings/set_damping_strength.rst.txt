@@ -7,9 +7,12 @@ set_damping_strength
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_damping_strength
 
-.. autoclass:: set_damping_strength
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   set_damping_strength
+
 .. rubric:: Included in:
 
 ================================================================   ========================================================

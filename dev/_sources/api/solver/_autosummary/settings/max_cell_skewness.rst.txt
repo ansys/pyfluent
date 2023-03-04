@@ -7,9 +7,12 @@ max_cell_skewness
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.max_cell_skewness
 
-.. autoclass:: max_cell_skewness
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   max_cell_skewness
+
 .. rubric:: Included in:
 
 ====================================================   ===================================

@@ -7,9 +7,12 @@ cross_section_multicomponent_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cross_section_multicomponent_child
 
-.. autoclass:: cross_section_multicomponent_child
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   cross_section_multicomponent_child
+
 .. rubric:: Named object type
 
 :ref:`child_object_type_child <child_object_type_child>`

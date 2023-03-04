@@ -7,14 +7,17 @@ surface_mesh
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.surface_mesh
 
-.. autoclass:: surface_mesh
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Commands
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   surface_mesh
+
+.. rubric:: Methods
 
 ========================   ===========================
 
-Command                                        Summary
+Method                                         Summary
 
 ========================   ===========================
 :ref:`delete <delete>`            Delete surface mesh.

@@ -7,9 +7,12 @@ write
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.write_1
 
-.. autoclass:: write
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   write
+
 .. rubric:: Arguments
 
 ================================   =======================

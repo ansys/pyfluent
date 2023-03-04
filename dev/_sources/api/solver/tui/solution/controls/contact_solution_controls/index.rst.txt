@@ -3,21 +3,16 @@
 solver.tui.solution.controls.contact\_solution\_controls
 ========================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.controls.contact_solution_controls
-   :members: set_settings_to_default, verbosity, solution_stabilization
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.controls.contact_solution_controls
+   :autosummary:
 
 .. toctree::
    :hidden:
 
-   spatial/index
+   transient/index
+   miscellaneous/index
+   models/index
    amg/index
    parameters/index
-   miscellaneous/index
    methods/index
-   models/index
-   transient/index
+   spatial/index

@@ -7,14 +7,17 @@ axes
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.axes_2
 
-.. autoclass:: axes
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   axes
+
+.. rubric:: Attributes
 
 ==========================   ==============================================================
 
-Child                                                                               Summary
+Attribute                                                                           Summary
 
 ==========================   ==============================================================
 :ref:`border <border>`           Enable/disable drawing of a border around the axes window.

@@ -7,9 +7,12 @@ inert_particle
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.inert_particle
 
-.. autoclass:: inert_particle
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   inert_particle
+
 .. rubric:: Named object type
 
 :ref:`inert_particle_child <inert_particle_child>`

@@ -7,9 +7,12 @@ enable_instability_detector
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.enable_instability_detector
 
-.. autoclass:: enable_instability_detector
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   enable_instability_detector
+
 .. rubric:: Included in:
 
 ==================================================   ==================================================

@@ -7,14 +7,17 @@ multiphase
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.multiphase
 
-.. autoclass:: multiphase
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   multiphase
+
+.. rubric:: Attributes
 
 ==============================================================================   ========================================================================
 
-Child                                                                                                                                             Summary
+Attribute                                                                                                                                         Summary
 
 ==============================================================================   ========================================================================
 :ref:`models <models>`                                                                                                          Specify multiphase model.

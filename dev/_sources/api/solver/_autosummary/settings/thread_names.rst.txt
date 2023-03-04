@@ -7,9 +7,12 @@ thread_names
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.thread_names
 
-.. autoclass:: thread_names
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   thread_names
+
 .. rubric:: Included in:
 
 ================================================   =========================================

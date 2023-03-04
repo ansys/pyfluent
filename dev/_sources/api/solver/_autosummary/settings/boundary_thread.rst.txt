@@ -7,9 +7,12 @@ boundary_thread
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.boundary_thread
 
-.. autoclass:: boundary_thread
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   boundary_thread
+
 .. rubric:: Included in:
 
 ======================================================   ==========================================

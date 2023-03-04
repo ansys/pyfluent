@@ -7,9 +7,12 @@ open_channel_wave_bc
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.open_channel_wave_bc
 
-.. autoclass:: open_channel_wave_bc
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   open_channel_wave_bc
+
 .. rubric:: Included in:
 
 ==================================================   ==========================================

@@ -7,9 +7,12 @@ turb_add_sbes_sdes
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.turb_add_sbes_sdes
 
-.. autoclass:: turb_add_sbes_sdes
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   turb_add_sbes_sdes
+
 .. rubric:: Included in:
 
 ============================================   ==============================

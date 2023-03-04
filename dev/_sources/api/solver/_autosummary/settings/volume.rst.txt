@@ -7,9 +7,12 @@ volume
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.volume
 
-.. autoclass:: volume
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   volume
+
 .. rubric:: Named object type
 
 :ref:`volume_child <volume_child>`

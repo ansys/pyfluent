@@ -7,25 +7,28 @@ patch
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.patch
 
-.. autoclass:: patch
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   patch
+
+.. rubric:: Attributes
 
 ==============================================   ============================================
 
-Child                                                                                 Summary
+Attribute                                                                             Summary
 
 ==============================================   ============================================
 :ref:`vof_smooth_options <vof_smooth_options>`       Enter the vof patch/smooth options menu.
 
 ==============================================   ============================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ========================================   ====================================================
 
-Command                                                                                 Summary
+Method                                                                                  Summary
 
 ========================================   ====================================================
 :ref:`calculate_patch <calculate_patch>`       Patch a value for a flow variable in the domain.

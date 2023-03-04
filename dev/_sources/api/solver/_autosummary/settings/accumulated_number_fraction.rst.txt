@@ -7,9 +7,12 @@ accumulated_number_fraction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.accumulated_number_fraction
 
-.. autoclass:: accumulated_number_fraction
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   accumulated_number_fraction
+
 .. rubric:: Included in:
 
 ========================================================   ====================================

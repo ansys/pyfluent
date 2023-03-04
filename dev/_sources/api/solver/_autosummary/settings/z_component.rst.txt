@@ -7,9 +7,12 @@ z_component
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.z_component
 
-.. autoclass:: z_component
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   z_component
+
 .. rubric:: Included in:
 
 ============================================   =============================

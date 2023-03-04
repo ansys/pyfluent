@@ -7,9 +7,12 @@ equ_required
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.equ_required
 
-.. autoclass:: equ_required
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   equ_required
+
 .. rubric:: Included in:
 
 ====================================================   ===========================================

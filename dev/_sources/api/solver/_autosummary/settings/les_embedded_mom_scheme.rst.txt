@@ -7,9 +7,12 @@ les_embedded_mom_scheme
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.les_embedded_mom_scheme
 
-.. autoclass:: les_embedded_mom_scheme
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   les_embedded_mom_scheme
+
 .. rubric:: Included in:
 
 ==================================   =================================

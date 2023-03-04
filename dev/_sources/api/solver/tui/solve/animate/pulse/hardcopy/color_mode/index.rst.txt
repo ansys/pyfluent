@@ -3,11 +3,6 @@
 solver.tui.solve.animate.pulse.hardcopy.color\_mode
 ===================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.animate.pulse.hardcopy.color_mode
-   :members: gray_scale, color, mono_chrome, list
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solve.animate.pulse.hardcopy.color_mode
+   :autosummary:
 

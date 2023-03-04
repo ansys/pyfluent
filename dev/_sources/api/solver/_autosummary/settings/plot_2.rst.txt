@@ -7,14 +7,17 @@ plot
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.plot_2
 
-.. autoclass:: plot
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   plot
+
+.. rubric:: Attributes
 
 ========================   ====================
 
-Child                                   Summary
+Attribute                               Summary
 
 ========================   ====================
 :ref:`xy_plot <xy_plot>`       'xy_plot' child.

@@ -7,9 +7,12 @@ skjaeveland_wet_pc_pwr
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.skjaeveland_wet_pc_pwr
 
-.. autoclass:: skjaeveland_wet_pc_pwr
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   skjaeveland_wet_pc_pwr
+
 .. rubric:: Included in:
 
 ==================================   =================================

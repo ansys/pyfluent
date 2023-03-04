@@ -7,9 +7,12 @@ acoustic_scale
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.acoustic_scale
 
-.. autoclass:: acoustic_scale
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   acoustic_scale
+
 .. rubric:: Included in:
 
 ==============================================   ===============================

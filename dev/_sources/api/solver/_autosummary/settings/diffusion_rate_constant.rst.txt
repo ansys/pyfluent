@@ -7,9 +7,12 @@ diffusion_rate_constant
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.diffusion_rate_constant
 
-.. autoclass:: diffusion_rate_constant
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   diffusion_rate_constant
+
 .. rubric:: Included in:
 
 ==============================================================   =======================================

@@ -7,9 +7,12 @@ viscous_work
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.viscous_work
 
-.. autoclass:: viscous_work
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   viscous_work
+
 .. rubric:: Arguments
 
 ========================================   ===========================================

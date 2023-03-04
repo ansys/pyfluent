@@ -7,14 +7,17 @@ struct_thermal_expansion
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.struct_thermal_expansion
 
-.. autoclass:: struct_thermal_expansion
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   struct_thermal_expansion
+
+.. rubric:: Attributes
 
 ==========================================================   ====================================================
 
-Child                                                                                                     Summary
+Attribute                                                                                                 Summary
 
 ==========================================================   ====================================================
 :ref:`option <option_9>`                                         Select method for calculating material property.

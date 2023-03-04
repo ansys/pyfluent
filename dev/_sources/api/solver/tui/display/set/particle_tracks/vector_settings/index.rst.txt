@@ -3,11 +3,6 @@
 solver.tui.display.set.particle\_tracks.vector\_settings
 ========================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.particle_tracks.vector_settings
-   :members: vector_length_variable, style, vector_length, length_to_head_ratio, length_variable, scale_factor, vector_variable, constant_color, color_variable
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.display.set.particle_tracks.vector_settings
+   :autosummary:
 

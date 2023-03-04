@@ -7,14 +7,17 @@ trad
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.trad
 
-.. autoclass:: trad
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   trad
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

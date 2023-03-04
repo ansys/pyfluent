@@ -7,14 +7,17 @@ yplus_ystar
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.yplus_ystar
 
-.. autoclass:: yplus_ystar
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   yplus_ystar
+
+.. rubric:: Attributes
 
 ================================   ========================
 
-Child                                               Summary
+Attribute                                           Summary
 
 ================================   ========================
 :ref:`option <option_11>`                   'option' child.

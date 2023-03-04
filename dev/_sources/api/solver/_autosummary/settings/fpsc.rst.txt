@@ -7,9 +7,12 @@ fpsc
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fpsc
 
-.. autoclass:: fpsc
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   fpsc
+
 .. rubric:: Included in:
 
 ===================================   =================================

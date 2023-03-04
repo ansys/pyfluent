@@ -7,9 +7,12 @@ specified_time_step
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.specified_time_step
 
-.. autoclass:: specified_time_step
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   specified_time_step
+
 .. rubric:: Included in:
 
 ==============================================   ===============================

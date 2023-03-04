@@ -7,9 +7,12 @@ repair
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.repair
 
-.. autoclass:: repair
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   repair
+
 .. rubric:: Included in:
 
 ======================================   ==============================================

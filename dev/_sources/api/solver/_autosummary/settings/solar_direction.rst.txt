@@ -7,9 +7,12 @@ solar_direction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.solar_direction
 
-.. autoclass:: solar_direction
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   solar_direction
+
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

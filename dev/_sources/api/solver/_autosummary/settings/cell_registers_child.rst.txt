@@ -7,14 +7,17 @@ cell_registers_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cell_registers_child
 
-.. autoclass:: cell_registers_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   cell_registers_child
+
+.. rubric:: Attributes
 
 ========================================   ============================
 
-Child                                                           Summary
+Attribute                                                       Summary
 
 ========================================   ============================
 :ref:`name <name_1>`                                      'name' child.

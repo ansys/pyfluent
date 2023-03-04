@@ -7,14 +7,17 @@ vector_opt
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.vector_opt
 
-.. autoclass:: vector_opt
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   vector_opt
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`in_plane <in_plane>`                   'in_plane' child.

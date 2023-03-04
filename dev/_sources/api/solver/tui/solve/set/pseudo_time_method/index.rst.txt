@@ -3,11 +3,6 @@
 solver.tui.solve.set.pseudo\_time\_method
 =========================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.pseudo_time_method
-   :members: convergence_acceleration_for_stretched_meshes, relaxation_method, formulation, verbosity, global_time_step_settings, advanced_options, relaxation_bounds, local_time_step_settings, relaxation_factors
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solve.set.pseudo_time_method
+   :autosummary:
 

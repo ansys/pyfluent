@@ -7,9 +7,12 @@ dpi
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpi
 
-.. autoclass:: dpi
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   dpi
+
 .. rubric:: Included in:
 
 ========================   =================================================

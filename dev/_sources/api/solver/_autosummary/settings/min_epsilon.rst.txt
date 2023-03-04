@@ -7,9 +7,12 @@ min_epsilon
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.min_epsilon
 
-.. autoclass:: min_epsilon
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   min_epsilon
+
 .. rubric:: Included in:
 
 ======================   ===================

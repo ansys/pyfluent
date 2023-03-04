@@ -7,9 +7,12 @@ liquid_surface_tension
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.liquid_surface_tension
 
-.. autoclass:: liquid_surface_tension
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   liquid_surface_tension
+
 .. rubric:: Included in:
 
 ==============================   =======================

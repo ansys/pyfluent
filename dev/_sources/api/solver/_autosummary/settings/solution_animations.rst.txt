@@ -7,14 +7,17 @@ solution_animations
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.solution_animations
 
-.. autoclass:: solution_animations
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Commands
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   solution_animations
+
+.. rubric:: Methods
 
 ========================================   =============================================
 
-Command                                                                          Summary
+Method                                                                           Summary
 
 ========================================   =============================================
 :ref:`display <display_1>`                                      Display graphics object.

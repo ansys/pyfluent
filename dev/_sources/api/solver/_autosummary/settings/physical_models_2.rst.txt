@@ -7,14 +7,17 @@ physical_models
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.physical_models_2
 
-.. autoclass:: physical_models
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   physical_models
+
+.. rubric:: Attributes
 
 ============================================   ==============================
 
-Child                                                                 Summary
+Attribute                                                             Summary
 
 ============================================   ==============================
 :ref:`use_multi_physics <use_multi_physics>`       'use_multi_physics' child.

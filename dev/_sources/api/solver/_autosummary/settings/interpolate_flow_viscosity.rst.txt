@@ -7,9 +7,12 @@ interpolate_flow_viscosity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.interpolate_flow_viscosity
 
-.. autoclass:: interpolate_flow_viscosity
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   interpolate_flow_viscosity
+
 .. rubric:: Included in:
 
 ====================================   ====================================================================================================

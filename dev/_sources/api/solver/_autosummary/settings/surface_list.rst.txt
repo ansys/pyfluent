@@ -7,9 +7,12 @@ surface_list
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.surface_list
 
-.. autoclass:: surface_list
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   surface_list
+
 .. rubric:: Included in:
 
 ======================================   =======================================

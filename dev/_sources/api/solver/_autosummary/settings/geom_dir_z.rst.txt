@@ -7,9 +7,12 @@ geom_dir_z
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.geom_dir_z
 
-.. autoclass:: geom_dir_z
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   geom_dir_z
+
 .. rubric:: Included in:
 
 ==============================================================   ================================================

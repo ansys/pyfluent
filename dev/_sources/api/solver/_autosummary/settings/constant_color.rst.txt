@@ -7,14 +7,17 @@ constant_color
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.constant_color
 
-.. autoclass:: constant_color
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   constant_color
+
+.. rubric:: Attributes
 
 ==========================   ====================
 
-Child                                     Summary
+Attribute                                 Summary
 
 ==========================   ====================
 :ref:`enabled <enabled_2>`       'enabled' child.

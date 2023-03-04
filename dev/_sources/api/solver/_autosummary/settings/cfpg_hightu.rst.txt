@@ -7,9 +7,12 @@ cfpg_hightu
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cfpg_hightu
 
-.. autoclass:: cfpg_hightu
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   cfpg_hightu
+
 .. rubric:: Included in:
 
 ==========================================================   =====================================

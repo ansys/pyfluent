@@ -7,14 +7,17 @@ parallel
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.parallel
 
-.. autoclass:: parallel
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   parallel
+
+.. rubric:: Attributes
 
 ======================================   ==========================================
 
-Child                                                                       Summary
+Attribute                                                                   Summary
 
 ======================================   ==========================================
 :ref:`option <option_4>`                     Select a parallel scheme used for DPM.

@@ -3,11 +3,6 @@
 solver.tui.setup.models.species.CHEMKIN\_CFD\_parameters
 ========================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.species.CHEMKIN_CFD_parameters
-   :members: advanced_options, list_cell_monitors, add_cell_monitor, basic_options, delete_cell_monitors
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.species.CHEMKIN_CFD_parameters
+   :autosummary:
 

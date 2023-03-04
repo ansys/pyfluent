@@ -7,9 +7,12 @@ coefficient
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.coefficient
 
-.. autoclass:: coefficient
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   coefficient
+
 .. rubric:: Included in:
 
 ============================================   =======================================

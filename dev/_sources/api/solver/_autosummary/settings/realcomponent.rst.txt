@@ -7,9 +7,12 @@ realcomponent
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.realcomponent
 
-.. autoclass:: realcomponent
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   realcomponent
+
 .. rubric:: Included in:
 
 ================================================   =========================================

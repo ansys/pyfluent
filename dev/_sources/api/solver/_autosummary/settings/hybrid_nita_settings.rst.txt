@@ -7,14 +7,17 @@ hybrid_nita_settings
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.hybrid_nita_settings
 
-.. autoclass:: hybrid_nita_settings
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   hybrid_nita_settings
+
+.. rubric:: Attributes
 
 ==================================================   ================================
 
-Child                                                                         Summary
+Attribute                                                                     Summary
 
 ==================================================   ================================
 :ref:`multi_phase_setting <multi_phase_setting>`         'multi_phase_setting' child.

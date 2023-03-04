@@ -7,9 +7,12 @@ geometry
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.geometry_2
 
-.. autoclass:: geometry
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   geometry
+
 .. rubric:: Named object type
 
 :ref:`axis_child <axis_child>`

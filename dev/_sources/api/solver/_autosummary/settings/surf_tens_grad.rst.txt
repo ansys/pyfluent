@@ -7,9 +7,12 @@ surf_tens_grad
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.surf_tens_grad
 
-.. autoclass:: surf_tens_grad
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   surf_tens_grad
+
 .. rubric:: Included in:
 
 ===================================   =================================

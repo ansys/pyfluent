@@ -3,11 +3,6 @@
 solver.tui.setup.models.multiphase.flow\_regime\_modeling.aiad\_parameters
 ==========================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.multiphase.flow_regime_modeling.aiad_parameters
-   :members: ncells_fs, critical_vf, delta_vf, delta_grad
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.flow_regime_modeling.aiad_parameters
+   :autosummary:
 

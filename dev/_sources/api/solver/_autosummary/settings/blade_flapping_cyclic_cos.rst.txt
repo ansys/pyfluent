@@ -7,9 +7,12 @@ blade_flapping_cyclic_cos
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.blade_flapping_cyclic_cos
 
-.. autoclass:: blade_flapping_cyclic_cos
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   blade_flapping_cyclic_cos
+
 .. rubric:: Included in:
 
 ============================================   ==========================================

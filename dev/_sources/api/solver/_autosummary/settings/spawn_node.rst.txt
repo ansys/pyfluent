@@ -7,9 +7,12 @@ spawn_node
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.spawn_node
 
-.. autoclass:: spawn_node
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   spawn_node
+
 .. rubric:: Arguments
 
 ==========================   =====================

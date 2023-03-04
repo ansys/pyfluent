@@ -7,9 +7,12 @@ path_length
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.path_length
 
-.. autoclass:: path_length
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   path_length
+
 .. rubric:: Included in:
 
 ========================================================   ===================================

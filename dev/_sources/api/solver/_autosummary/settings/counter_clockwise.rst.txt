@@ -7,9 +7,12 @@ counter_clockwise
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.counter_clockwise
 
-.. autoclass:: counter_clockwise
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   counter_clockwise
+
 .. rubric:: Included in:
 
 ==================   ================================

@@ -7,9 +7,12 @@ kato_launder_model
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.kato_launder_model
 
-.. autoclass:: kato_launder_model
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   kato_launder_model
+
 .. rubric:: Included in:
 
 ============================================   ==============================

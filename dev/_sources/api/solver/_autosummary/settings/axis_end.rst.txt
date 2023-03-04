@@ -7,9 +7,12 @@ axis_end
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.axis_end
 
-.. autoclass:: axis_end
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   axis_end
+
 .. rubric:: Included in:
 
 ==========================   =====================

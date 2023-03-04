@@ -7,9 +7,12 @@ orphan_cell_treatment
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.orphan_cell_treatment
 
-.. autoclass:: orphan_cell_treatment
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   orphan_cell_treatment
+
 .. rubric:: Included in:
 
 ==========================   ======================================

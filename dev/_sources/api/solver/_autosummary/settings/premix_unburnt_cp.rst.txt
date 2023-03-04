@@ -7,14 +7,17 @@ premix_unburnt_cp
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.premix_unburnt_cp
 
-.. autoclass:: premix_unburnt_cp
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   premix_unburnt_cp
+
+.. rubric:: Attributes
 
 ====================================================   ====================================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

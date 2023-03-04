@@ -7,9 +7,12 @@ num_division
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.num_division
 
-.. autoclass:: num_division
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   num_division
+
 .. rubric:: Included in:
 
 ========================================   =====================================================

@@ -7,9 +7,12 @@ track_in_absolute_frame
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.track_in_absolute_frame
 
-.. autoclass:: track_in_absolute_frame
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   track_in_absolute_frame
+
 .. rubric:: Included in:
 
 ============================   ===================================================================================

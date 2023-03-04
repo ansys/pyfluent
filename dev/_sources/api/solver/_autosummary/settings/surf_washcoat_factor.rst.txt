@@ -7,9 +7,12 @@ surf_washcoat_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.surf_washcoat_factor
 
-.. autoclass:: surf_washcoat_factor
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   surf_washcoat_factor
+
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -7,9 +7,12 @@ fluid_solid_rebalance_after_read_case
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fluid_solid_rebalance_after_read_case
 
-.. autoclass:: fluid_solid_rebalance_after_read_case
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   fluid_solid_rebalance_after_read_case
+
 .. rubric:: Included in:
 
 ==================   ===============================================

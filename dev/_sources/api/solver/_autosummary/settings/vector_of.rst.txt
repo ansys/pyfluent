@@ -7,9 +7,12 @@ vector_of
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.vector_of
 
-.. autoclass:: vector_of
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   vector_of
+
 .. rubric:: Included in:
 
 ========================================   ============================

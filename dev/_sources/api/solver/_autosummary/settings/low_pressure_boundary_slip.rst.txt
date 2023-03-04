@@ -7,9 +7,12 @@ low_pressure_boundary_slip
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.low_pressure_boundary_slip
 
-.. autoclass:: low_pressure_boundary_slip
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   low_pressure_boundary_slip
+
 .. rubric:: Included in:
 
 ==========================   ====================

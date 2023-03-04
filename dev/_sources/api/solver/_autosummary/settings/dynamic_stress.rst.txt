@@ -7,9 +7,12 @@ dynamic_stress
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dynamic_stress
 
-.. autoclass:: dynamic_stress
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   dynamic_stress
+
 .. rubric:: Included in:
 
 ============================================   ==============================

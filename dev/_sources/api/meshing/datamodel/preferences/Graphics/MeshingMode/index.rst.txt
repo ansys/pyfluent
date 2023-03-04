@@ -3,11 +3,6 @@
 meshing.datamodel.preferences.Graphics.MeshingMode
 ==================================================
 
-.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.Graphics.MeshingMode
-   :members: GraphicsWindowDisplayTimeout, GraphicsWindowDisplayTimeoutValue
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences.Root.Graphics.MeshingMode
+   :autosummary:
 

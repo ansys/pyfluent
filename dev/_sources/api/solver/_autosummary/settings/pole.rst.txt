@@ -7,9 +7,12 @@ pole
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pole
 
-.. autoclass:: pole
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   pole
+
 .. rubric:: Included in:
 
 ============================================   =======================================

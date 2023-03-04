@@ -7,9 +7,12 @@ rename_simulation_report
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rename_simulation_report
 
-.. autoclass:: rename_simulation_report
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   rename_simulation_report
+
 .. rubric:: Arguments
 
 ========================================   ============================

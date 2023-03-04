@@ -3,11 +3,6 @@
 solver.tui.setup.operating\_conditions
 ======================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.operating_conditions
-   :members: operating_density, gravity_mrf_behavior, reference_pressure_location, used_ref_pressure_location, operating_pressure, set_state, use_inlet_temperature_for_operating_density, reference_pressure_method, operating_temperature, gravity
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.operating_conditions
+   :autosummary:
 

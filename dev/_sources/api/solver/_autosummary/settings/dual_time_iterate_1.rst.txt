@@ -7,9 +7,12 @@ dual_time_iterate
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dual_time_iterate_1
 
-.. autoclass:: dual_time_iterate
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   dual_time_iterate
+
 .. rubric:: Arguments
 
 ==========================================================   =====================================

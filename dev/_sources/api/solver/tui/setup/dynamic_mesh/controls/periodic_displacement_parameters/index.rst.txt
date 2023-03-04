@@ -3,11 +3,6 @@
 solver.tui.setup.dynamic\_mesh.controls.periodic\_displacement\_parameters
 ==========================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.dynamic_mesh.controls.periodic_displacement_parameters
-   :members: list_displacements, edit_displacement, delete_all_groups, delete_displacement, create_displacement, edit_group, set_active_displacement, create_group, delete_all_displacements, copy_displacement, delete_group, list_groups
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.periodic_displacement_parameters
+   :autosummary:
 

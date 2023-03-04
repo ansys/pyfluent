@@ -7,9 +7,12 @@ samp_time_steps
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.samp_time_steps
 
-.. autoclass:: samp_time_steps
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   samp_time_steps
+
 .. rubric:: Included in:
 
 ================================================   ==================================

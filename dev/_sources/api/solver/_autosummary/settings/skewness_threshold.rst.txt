@@ -7,9 +7,12 @@ skewness_threshold
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.skewness_threshold
 
-.. autoclass:: skewness_threshold
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   skewness_threshold
+
 .. rubric:: Included in:
 
 ================================   =====================================================================

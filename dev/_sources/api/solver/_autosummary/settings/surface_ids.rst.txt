@@ -7,9 +7,12 @@ surface_ids
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.surface_ids
 
-.. autoclass:: surface_ids
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   surface_ids
+
 .. rubric:: Included in:
 
 ====================================   ===================================

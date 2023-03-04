@@ -7,9 +7,12 @@ dpm_film_condensation
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_film_condensation
 
-.. autoclass:: dpm_film_condensation
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   dpm_film_condensation
+
 .. rubric:: Included in:
 
 ===================================   =================================

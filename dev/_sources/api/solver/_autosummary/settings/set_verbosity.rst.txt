@@ -7,9 +7,12 @@ set_verbosity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_verbosity
 
-.. autoclass:: set_verbosity
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   set_verbosity
+
 .. rubric:: Included in:
 
 ==================================================   ========================================

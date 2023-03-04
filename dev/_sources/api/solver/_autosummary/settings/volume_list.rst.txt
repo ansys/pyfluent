@@ -7,9 +7,12 @@ volume_list
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.volume_list
 
-.. autoclass:: volume_list
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   volume_list
+
 .. rubric:: Included in:
 
 ======================================   =======================================

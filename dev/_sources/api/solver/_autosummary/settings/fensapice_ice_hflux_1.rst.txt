@@ -7,9 +7,12 @@ fensapice_ice_hflux_1
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fensapice_ice_hflux_1
 
-.. autoclass:: fensapice_ice_hflux_1
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   fensapice_ice_hflux_1
+
 .. rubric:: Included in:
 
 ===================================   =================================

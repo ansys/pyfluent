@@ -7,14 +7,17 @@ parametric_studies
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.parametric_studies
 
-.. autoclass:: parametric_studies
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Commands
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   parametric_studies
+
+.. rubric:: Methods
 
 ================================================   ===============================
 
-Command                                                                    Summary
+Method                                                                     Summary
 
 ================================================   ===============================
 :ref:`initialize <initialize_1>`                           Start Parametric Study.

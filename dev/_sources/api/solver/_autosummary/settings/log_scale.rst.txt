@@ -7,9 +7,12 @@ log_scale
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.log_scale
 
-.. autoclass:: log_scale
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   log_scale
+
 .. rubric:: Included in:
 
 ============================   ======================

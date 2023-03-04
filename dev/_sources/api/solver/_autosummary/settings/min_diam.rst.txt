@@ -7,9 +7,12 @@ min_diam
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.min_diam
 
-.. autoclass:: min_diam
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   min_diam
+
 .. rubric:: Included in:
 
 ======================================================   ===================================

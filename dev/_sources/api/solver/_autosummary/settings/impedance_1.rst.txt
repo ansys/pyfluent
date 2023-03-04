@@ -7,9 +7,12 @@ impedance_1
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.impedance_1
 
-.. autoclass:: impedance_1
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   impedance_1
+
 .. rubric:: Named object type
 
 :ref:`impedance_1_child <impedance_1_child>`

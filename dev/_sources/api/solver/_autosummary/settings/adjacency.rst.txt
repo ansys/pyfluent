@@ -7,9 +7,12 @@ adjacency
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.adjacency
 
-.. autoclass:: adjacency
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   adjacency
+
 .. rubric:: Included in:
 
 ==================   =================

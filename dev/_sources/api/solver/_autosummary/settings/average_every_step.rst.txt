@@ -7,9 +7,12 @@ average_every_step
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.average_every_step
 
-.. autoclass:: average_every_step
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   average_every_step
+
 .. rubric:: Included in:
 
 ============================   ==========================================================================================================

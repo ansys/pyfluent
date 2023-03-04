@@ -7,14 +7,17 @@ curve_length
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.curve_length
 
-.. autoclass:: curve_length
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   curve_length
+
+.. rubric:: Attributes
 
 ========================   ====================
 
-Child                                   Summary
+Attribute                               Summary
 
 ========================   ====================
 :ref:`option <option_2>`        'option' child.

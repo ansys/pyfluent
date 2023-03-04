@@ -7,9 +7,12 @@ critical_shear_rate
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.critical_shear_rate
 
-.. autoclass:: critical_shear_rate
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   critical_shear_rate
+
 .. rubric:: Included in:
 
 ==========================================   =============================

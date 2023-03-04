@@ -7,9 +7,12 @@ face_pressure_calculation_method
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.face_pressure_calculation_method
 
-.. autoclass:: face_pressure_calculation_method
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   face_pressure_calculation_method
+
 .. rubric:: Included in:
 
 ====================================================   ==============================

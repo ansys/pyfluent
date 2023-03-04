@@ -7,9 +7,12 @@ skjaeveland_nw_pc_coef
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.skjaeveland_nw_pc_coef
 
-.. autoclass:: skjaeveland_nw_pc_coef
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   skjaeveland_nw_pc_coef
+
 .. rubric:: Included in:
 
 ==================================   =================================

@@ -7,9 +7,12 @@ average_dp
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.average_dp
 
-.. autoclass:: average_dp
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   average_dp
+
 .. rubric:: Included in:
 
 ==================================   =================================

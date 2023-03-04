@@ -7,14 +7,17 @@ radial_diffusivity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.radial_diffusivity
 
-.. autoclass:: radial_diffusivity
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   radial_diffusivity
+
+.. rubric:: Attributes
 
 ====================================================   ====================================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

@@ -3,11 +3,6 @@
 solver.tui.results.graphics\_window.windows.scale
 =================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics_window.windows.scale
-   :members: left, font_size, border, clear, right, visible, top, margin, bottom, format
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.windows.scale
+   :autosummary:
 

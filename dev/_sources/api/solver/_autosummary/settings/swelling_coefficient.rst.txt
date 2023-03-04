@@ -7,14 +7,17 @@ swelling_coefficient
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.swelling_coefficient
 
-.. autoclass:: swelling_coefficient
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   swelling_coefficient
+
+.. rubric:: Attributes
 
 ====================================================   ====================================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

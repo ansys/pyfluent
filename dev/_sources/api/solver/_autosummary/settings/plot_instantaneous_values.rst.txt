@@ -7,9 +7,12 @@ plot_instantaneous_values
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.plot_instantaneous_values
 
-.. autoclass:: plot_instantaneous_values
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   plot_instantaneous_values
+
 .. rubric:: Included in:
 
 ==============================================   ========================================

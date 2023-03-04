@@ -7,9 +7,12 @@ mixture_species
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mixture_species
 
-.. autoclass:: mixture_species
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   mixture_species
+
 .. rubric:: Named object type
 
 :ref:`fluid_child <fluid_child>`

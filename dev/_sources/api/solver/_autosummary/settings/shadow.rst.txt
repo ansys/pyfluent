@@ -7,9 +7,12 @@ shadow
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.shadow
 
-.. autoclass:: shadow
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   shadow
+
 .. rubric:: Named object type
 
 :ref:`axis_child <axis_child>`

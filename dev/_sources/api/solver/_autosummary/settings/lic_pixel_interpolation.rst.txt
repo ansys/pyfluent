@@ -7,9 +7,12 @@ lic_pixel_interpolation
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.lic_pixel_interpolation
 
-.. autoclass:: lic_pixel_interpolation
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   lic_pixel_interpolation
+
 .. rubric:: Included in:
 
 ============================   ===============================

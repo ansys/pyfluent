@@ -7,9 +7,12 @@ film_mass_flow
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.film_mass_flow
 
-.. autoclass:: film_mass_flow
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   film_mass_flow
+
 .. rubric:: Arguments
 
 ========================================   ===========================================

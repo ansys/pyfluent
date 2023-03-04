@@ -7,9 +7,12 @@ pressure_spec_method
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pressure_spec_method
 
-.. autoclass:: pressure_spec_method
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   pressure_spec_method
+
 .. rubric:: Included in:
 
 ====================================================   ===========================================

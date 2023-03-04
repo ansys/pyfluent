@@ -7,9 +7,12 @@ unstructured_var_presto_scheme
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.unstructured_var_presto_scheme
 
-.. autoclass:: unstructured_var_presto_scheme
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   unstructured_var_presto_scheme
+
 .. rubric:: Included in:
 
 ==================================   ============================

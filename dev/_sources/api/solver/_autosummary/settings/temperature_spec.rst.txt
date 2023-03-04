@@ -7,9 +7,12 @@ temperature_spec
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.temperature_spec
 
-.. autoclass:: temperature_spec
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   temperature_spec
+
 .. rubric:: Included in:
 
 ============================================================   ===============================================

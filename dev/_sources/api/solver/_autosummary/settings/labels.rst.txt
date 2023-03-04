@@ -7,14 +7,17 @@ labels
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.labels
 
-.. autoclass:: labels
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   labels
+
+.. rubric:: Attributes
 
 ========================   ===================
 
-Child                                  Summary
+Attribute                              Summary
 
 ========================   ===================
 :ref:`x_axis <x_axis_3>`       'x_axis' child.

@@ -7,14 +7,17 @@ methods
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.methods
 
-.. autoclass:: methods
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   methods
+
+.. rubric:: Attributes
 
 ========================================================   ==============================================================================================
 
-Child                                                                                                                                             Summary
+Attribute                                                                                                                                         Summary
 
 ========================================================   ==============================================================================================
 :ref:`pv_coupling_controls <pv_coupling_controls>`             Enable/disable pressure-velocity coupling method change for solver stability and accuracy.

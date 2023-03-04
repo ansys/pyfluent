@@ -7,9 +7,12 @@ custom_field_function_name
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.custom_field_function_name
 
-.. autoclass:: custom_field_function_name
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   custom_field_function_name
+
 .. rubric:: Included in:
 
 ========================================   ====================================================

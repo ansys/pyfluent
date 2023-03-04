@@ -7,9 +7,12 @@ critical_weber_number
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.critical_weber_number
 
-.. autoclass:: critical_weber_number
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   critical_weber_number
+
 .. rubric:: Included in:
 
 ========================================   ============================

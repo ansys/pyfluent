@@ -7,9 +7,12 @@ turb_damping_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.turb_damping_factor
 
-.. autoclass:: turb_damping_factor
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   turb_damping_factor
+
 .. rubric:: Included in:
 
 ==============================================   ===============================

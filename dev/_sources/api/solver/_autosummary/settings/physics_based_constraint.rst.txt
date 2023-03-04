@@ -7,9 +7,12 @@ physics_based_constraint
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.physics_based_constraint
 
-.. autoclass:: physics_based_constraint
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   physics_based_constraint
+
 .. rubric:: Included in:
 
 ==================================================================================   =================================================

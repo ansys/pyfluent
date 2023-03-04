@@ -7,14 +7,17 @@ thermal_conductivity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.thermal_conductivity_3
 
-.. autoclass:: thermal_conductivity
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   thermal_conductivity
+
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

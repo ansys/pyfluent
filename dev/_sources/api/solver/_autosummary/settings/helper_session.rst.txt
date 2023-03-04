@@ -7,9 +7,12 @@ helper_session
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.helper_session
 
-.. autoclass:: helper_session
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   helper_session
+
 .. rubric:: Included in:
 
 ==================   ================

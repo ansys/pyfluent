@@ -7,9 +7,12 @@ azimuthal_start_angle
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.azimuthal_start_angle
 
-.. autoclass:: azimuthal_start_angle
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   azimuthal_start_angle
+
 .. rubric:: Included in:
 
 ==========================   =====================

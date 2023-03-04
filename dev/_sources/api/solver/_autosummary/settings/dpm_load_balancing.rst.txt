@@ -7,14 +7,17 @@ dpm_load_balancing
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_load_balancing
 
-.. autoclass:: dpm_load_balancing
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   dpm_load_balancing
+
+.. rubric:: Attributes
 
 ======================================   ===========================
 
-Child                                                        Summary
+Attribute                                                    Summary
 
 ======================================   ===========================
 :ref:`load_balancing <load_balancing>`       'load_balancing' child.

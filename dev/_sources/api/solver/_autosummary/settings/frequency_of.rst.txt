@@ -7,9 +7,12 @@ frequency_of
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.frequency_of
 
-.. autoclass:: frequency_of
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   frequency_of
+
 .. rubric:: Included in:
 
 ============================================================   ===============================================

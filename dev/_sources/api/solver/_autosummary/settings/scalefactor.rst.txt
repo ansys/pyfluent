@@ -7,9 +7,12 @@ scalefactor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.scalefactor
 
-.. autoclass:: scalefactor
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   scalefactor
+
 .. rubric:: Included in:
 
 ========================================   ============================

@@ -7,14 +7,17 @@ materials
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.materials
 
-.. autoclass:: materials
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   materials
+
+.. rubric:: Attributes
 
 ================================================   ================================
 
-Child                                                                       Summary
+Attribute                                                                   Summary
 
 ================================================   ================================
 :ref:`database <database>`                                        'database' child.
@@ -35,11 +38,11 @@ Child                                                                       Summ
 
 ================================================   ================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ==========================================   =====================================================
 
-Command                                                                                    Summary
+Method                                                                                     Summary
 
 ==========================================   =====================================================
 :ref:`list_materials <list_materials_1>`                        List all locally-stored materials.

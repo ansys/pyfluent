@@ -7,9 +7,12 @@ sources
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.sources
 
-.. autoclass:: sources
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   sources
+
 .. rubric:: Included in:
 
 ==================================   =================================

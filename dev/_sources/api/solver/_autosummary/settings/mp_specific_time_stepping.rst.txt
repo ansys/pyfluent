@@ -7,14 +7,17 @@ mp_specific_time_stepping
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mp_specific_time_stepping
 
-.. autoclass:: mp_specific_time_stepping
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   mp_specific_time_stepping
+
+.. rubric:: Attributes
 
 ======================================================   =======================================
 
-Child                                                                                    Summary
+Attribute                                                                                Summary
 
 ======================================================   =======================================
 :ref:`enabled <enabled_2>`                                                      'enabled' child.

@@ -7,9 +7,12 @@ neighbor_correction_itr_count
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.neighbor_correction_itr_count
 
-.. autoclass:: neighbor_correction_itr_count
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   neighbor_correction_itr_count
+
 .. rubric:: Included in:
 
 ==================================   =========================

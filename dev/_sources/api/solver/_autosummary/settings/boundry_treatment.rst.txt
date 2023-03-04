@@ -7,9 +7,12 @@ boundry_treatment
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.boundry_treatment
 
-.. autoclass:: boundry_treatment
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   boundry_treatment
+
 .. rubric:: Included in:
 
 ==========================================================================   =============================================

@@ -7,9 +7,12 @@ spe_diff_zx
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.spe_diff_zx
 
-.. autoclass:: spe_diff_zx
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   spe_diff_zx
+
 .. rubric:: Included in:
 
 ==================================   =================================

@@ -7,14 +7,17 @@ exhaust_fan_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.exhaust_fan_child
 
-.. autoclass:: exhaust_fan_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   exhaust_fan_child
+
+.. rubric:: Attributes
 
 ==================================================================   =========================================
 
-Child                                                                                                  Summary
+Attribute                                                                                              Summary
 
 ==================================================================   =========================================
 :ref:`phase <phase_3>`                                                                          'phase' child.

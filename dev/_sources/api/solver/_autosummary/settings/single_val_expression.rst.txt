@@ -7,9 +7,12 @@ single_val_expression
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.single_val_expression
 
-.. autoclass:: single_val_expression
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   single_val_expression
+
 .. rubric:: Named object type
 
 :ref:`single_val_expression_child <single_val_expression_child>`

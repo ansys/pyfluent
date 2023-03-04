@@ -7,9 +7,12 @@ rgp_table
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rgp_table
 
-.. autoclass:: rgp_table
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   rgp_table
+
 .. rubric:: Included in:
 
 ==================================================   =================================

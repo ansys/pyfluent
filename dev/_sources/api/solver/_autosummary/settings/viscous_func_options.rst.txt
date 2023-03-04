@@ -7,9 +7,12 @@ viscous_func_options
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.viscous_func_options
 
-.. autoclass:: viscous_func_options
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   viscous_func_options
+
 .. rubric:: Included in:
 
 ==========================================================================   =============================================

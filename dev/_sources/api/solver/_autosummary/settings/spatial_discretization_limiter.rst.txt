@@ -7,14 +7,17 @@ spatial_discretization_limiter
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.spatial_discretization_limiter
 
-.. autoclass:: spatial_discretization_limiter
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   spatial_discretization_limiter
+
+.. rubric:: Attributes
 
 ==========================================   ============================================================
 
-Child                                                                                             Summary
+Attribute                                                                                         Summary
 
 ==========================================   ============================================================
 :ref:`limiter_type <limiter_type>`                                                     New slope limiter.

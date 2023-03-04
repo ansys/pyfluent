@@ -7,14 +7,17 @@ vapor_pressure
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.vapor_pressure
 
-.. autoclass:: vapor_pressure
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   vapor_pressure
+
+.. rubric:: Attributes
 
 ====================================================   ====================================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

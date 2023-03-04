@@ -7,9 +7,12 @@ min_des_epsilon
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.min_des_epsilon
 
-.. autoclass:: min_des_epsilon
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   min_des_epsilon
+
 .. rubric:: Included in:
 
 ======================   ===================

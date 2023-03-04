@@ -7,14 +7,17 @@ surfaces
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.surfaces_2
 
-.. autoclass:: surfaces
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   surfaces
+
+.. rubric:: Attributes
 
 ====================================   ==========================
 
-Child                                                     Summary
+Attribute                                                 Summary
 
 ====================================   ==========================
 :ref:`plane_surface <plane_surface>`       'plane_surface' child.

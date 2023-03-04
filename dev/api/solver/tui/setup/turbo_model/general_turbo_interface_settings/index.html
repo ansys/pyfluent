@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -56,7 +52,7 @@
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
     <link rel="next" title="solver.tui.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings" href="mixing_plane_model_settings/index.html" />
-    <link rel="prev" title="solver.tui.setup.turbo_model" href="../index.html" />
+    <link rel="prev" title="solver.tui.setup.turbo_model.blade_flutter_harmonics" href="../blade_flutter_harmonics/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -305,13 +295,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -355,13 +340,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../solve/index.html">
-         solver.tui.solve
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
         </a>
        </li>
        <li class="toctree-l4">
@@ -370,23 +350,18 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../mesh/index.html">
-         solver.tui.mesh
+        <a class="reference internal" href="../../../display/index.html">
+         solver.tui.display
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parametric_study/index.html">
-         solver.tui.parametric_study
+        <a class="reference internal" href="../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
+        <a class="reference internal" href="../../../solve/index.html">
+         solver.tui.solve
         </a>
        </li>
        <li class="toctree-l4">
@@ -395,13 +370,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../surface/index.html">
+         solver.tui.surface
         </a>
        </li>
        <li class="toctree-l4">
@@ -410,13 +380,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
+        <a class="reference internal" href="../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../icing/index.html">
+         solver.tui.icing
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -430,8 +400,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../boundary_conditions/index.html">
-           solver.tui.setup.boundary_conditions
+          <a class="reference internal" href="../../dynamic_mesh/index.html">
+           solver.tui.setup.dynamic_mesh
           </a>
          </li>
          <li class="toctree-l5">
@@ -440,18 +410,28 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../mesh_interfaces/index.html">
-           solver.tui.setup.mesh_interfaces
+          <a class="reference internal" href="../../named_expressions/index.html">
+           solver.tui.setup.named_expressions
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../models/index.html">
-           solver.tui.setup.models
+          <a class="reference internal" href="../../operating_conditions/index.html">
+           solver.tui.setup.operating_conditions
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../gap_model/index.html">
-           solver.tui.setup.gap_model
+          <a class="reference internal" href="../../boundary_conditions/index.html">
+           solver.tui.setup.boundary_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../expert/index.html">
+           solver.tui.setup.expert
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../reference_values/index.html">
+           solver.tui.setup.reference_values
           </a>
          </li>
          <li class="toctree-l5">
@@ -460,13 +440,8 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../named_expressions/index.html">
-           solver.tui.setup.named_expressions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../reference_values/index.html">
-           solver.tui.setup.reference_values
+          <a class="reference internal" href="../../models/index.html">
+           solver.tui.setup.models
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -479,6 +454,11 @@ function checkPageExistsAndRedirect(event) {
            </i>
           </label>
           <ul class="current">
+           <li class="toctree-l6">
+            <a class="reference internal" href="../blade_flutter_harmonics/index.html">
+             solver.tui.setup.turbo_model.blade_flutter_harmonics
+            </a>
+           </li>
            <li class="toctree-l6 current active has-children">
             <a class="current reference internal" href="#">
              solver.tui.setup.turbo_model.general_turbo_interface_settings
@@ -501,21 +481,16 @@ function checkPageExistsAndRedirect(event) {
              solver.tui.setup.turbo_model.turbo_topology
             </a>
            </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../blade_flutter_harmonics/index.html">
-             solver.tui.setup.turbo_model.blade_flutter_harmonics
-            </a>
-           </li>
           </ul>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../mesh_interfaces/index.html">
+           solver.tui.setup.mesh_interfaces
+          </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../materials/index.html">
            solver.tui.setup.materials
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../expert/index.html">
-           solver.tui.setup.expert
           </a>
          </li>
          <li class="toctree-l5">
@@ -524,40 +499,35 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../operating_conditions/index.html">
-           solver.tui.setup.operating_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../dynamic_mesh/index.html">
-           solver.tui.setup.dynamic_mesh
+          <a class="reference internal" href="../../gap_model/index.html">
+           solver.tui.setup.gap_model
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../../parametric_study/index.html">
+         solver.tui.parametric_study
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../adjoint/index.html">
-         solver.tui.adjoint
+        <a class="reference internal" href="../../../results/index.html">
+         solver.tui.results
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../icing/index.html">
-         solver.tui.icing
+        <a class="reference internal" href="../../../plot/index.html">
+         solver.tui.plot
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../preferences/index.html">
-         solver.tui.preferences
+        <a class="reference internal" href="../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../views/index.html">
-         solver.tui.views
+        <a class="reference internal" href="../../../mesh/index.html">
+         solver.tui.mesh
         </a>
        </li>
        <li class="toctree-l4">
@@ -566,13 +536,28 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
+        <a class="reference internal" href="../../../file/index.html">
+         solver.tui.file
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../results/index.html">
-         solver.tui.results
+        <a class="reference internal" href="../../../views/index.html">
+         solver.tui.views
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
       </ul>
@@ -644,19 +629,93 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.setup.turbo_model.general_turbo_interface_settings
+     general_turbo_interface_settings
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.expert">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.__init__">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.turbo_model.general_turbo_interface_settings.expert()
+       __init__()
       </span>
      </code>
     </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.expert">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       expert()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       mixing_plane_model_settings
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.__init__">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         __init__()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.averaging_method">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         averaging_method()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.bands_type">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         bands_type()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.list_mixing_planes">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         list_mixing_planes()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.mixing_set_constraint">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         mixing_set_constraint()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.number_of_bands">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         number_of_bands()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
@@ -681,18 +740,106 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-turbo-model-general-turbo-interface-settings">
 <span id="ref-solver-tui-setup-turbo-model-general-turbo-interface-settings"></span><h1>solver.tui.setup.turbo_model.general_turbo_interface_settings<a class="headerlink" href="#solver-tui-setup-turbo-model-general-turbo-interface-settings" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.turbo_model.</span></span><span class="sig-name descname"><span class="pre">general_turbo_interface_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings" title="Permalink to this definition">#</a></dt>
-<dd><p>Set General Turbo Interface options.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.</span></span><span class="sig-name descname"><span class="pre">general_turbo_interface_settings</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Set General Turbo Interface options.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p>__init__ method of TUIMenu class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.expert" title="ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.expert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expert</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the expert parameters for turbo interfaces.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings" title="ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixing_plane_model_settings</span></code></a></p></td>
+<td><p>Set the mixing plane model settings.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>__init__ method of TUIMenu class.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.expert">
 <span class="sig-name descname"><span class="pre">expert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.expert" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the expert parameters for turbo interfaces.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mixing_plane_model_settings</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Set the mixing plane model settings.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p>__init__ method of TUIMenu class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.averaging_method" title="ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.averaging_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">averaging_method</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the averaging method for the mixing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.bands_type" title="ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.bands_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bands_type</span></code></a>(*args, **kwargs)</p></td>
+<td><p>To set the mixing plane bands type.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.list_mixing_planes" title="ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.list_mixing_planes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_mixing_planes</span></code></a>(*args, **kwargs)</p></td>
+<td><p>List the settings of mixing planes in the case.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.mixing_set_constraint" title="ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.mixing_set_constraint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixing_set_constraint</span></code></a>(*args, **kwargs)</p></td>
+<td><p>To set the mixing of primitive or total variable approach.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.number_of_bands" title="ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.number_of_bands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_bands</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the maximum number of bands to be used for mixing.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>__init__ method of TUIMenu class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.averaging_method">
+<span class="sig-name descname"><span class="pre">averaging_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.averaging_method" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the averaging method for the mixing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.bands_type">
+<span class="sig-name descname"><span class="pre">bands_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.bands_type" title="Permalink to this definition">#</a></dt>
+<dd><p>To set the mixing plane bands type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.list_mixing_planes">
+<span class="sig-name descname"><span class="pre">list_mixing_planes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.list_mixing_planes" title="Permalink to this definition">#</a></dt>
+<dd><p>List the settings of mixing planes in the case.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.mixing_set_constraint">
+<span class="sig-name descname"><span class="pre">mixing_set_constraint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.mixing_set_constraint" title="Permalink to this definition">#</a></dt>
+<dd><p>To set the mixing of primitive or total variable approach.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.number_of_bands">
+<span class="sig-name descname"><span class="pre">number_of_bands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.turbo_model.general_turbo_interface_settings.mixing_plane_model_settings.number_of_bands" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the maximum number of bands to be used for mixing.</p>
+</dd></dl>
+
 </dd></dl>
 
 </dd></dl>

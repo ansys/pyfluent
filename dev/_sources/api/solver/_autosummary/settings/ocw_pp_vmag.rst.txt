@@ -7,14 +7,17 @@ ocw_pp_vmag
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ocw_pp_vmag
 
-.. autoclass:: ocw_pp_vmag
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   ocw_pp_vmag
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

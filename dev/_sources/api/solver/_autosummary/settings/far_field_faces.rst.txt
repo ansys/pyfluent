@@ -7,9 +7,12 @@ far_field_faces
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.far_field_faces
 
-.. autoclass:: far_field_faces
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   far_field_faces
+
 .. rubric:: Included in:
 
 ======================   ===================

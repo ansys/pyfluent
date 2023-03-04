@@ -7,9 +7,12 @@ hostname
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.hostname
 
-.. autoclass:: hostname
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   hostname
+
 .. rubric:: Included in:
 
 ==============================   ========================================================

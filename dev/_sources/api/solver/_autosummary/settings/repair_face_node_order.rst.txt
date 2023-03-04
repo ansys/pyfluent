@@ -7,9 +7,12 @@ repair_face_node_order
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.repair_face_node_order
 
-.. autoclass:: repair_face_node_order
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   repair_face_node_order
+
 .. rubric:: Included in:
 
 ======================================   ==============================================

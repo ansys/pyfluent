@@ -7,9 +7,12 @@ alt_inertial_form
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.alt_inertial_form
 
-.. autoclass:: alt_inertial_form
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   alt_inertial_form
+
 .. rubric:: Included in:
 
 ==================================   =================================

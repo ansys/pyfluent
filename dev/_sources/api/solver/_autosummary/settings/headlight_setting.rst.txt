@@ -7,9 +7,12 @@ headlight_setting
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.headlight_setting
 
-.. autoclass:: headlight_setting
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   headlight_setting
+
 .. rubric:: Included in:
 
 ======================   ===================

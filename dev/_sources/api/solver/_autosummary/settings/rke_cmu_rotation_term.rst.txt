@@ -7,9 +7,12 @@ rke_cmu_rotation_term
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rke_cmu_rotation_term
 
-.. autoclass:: rke_cmu_rotation_term
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   rke_cmu_rotation_term
+
 .. rubric:: Included in:
 
 ============================================   ==============================

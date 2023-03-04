@@ -7,9 +7,12 @@ enable_roughness_correlation
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.enable_roughness_correlation
 
-.. autoclass:: enable_roughness_correlation
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   enable_roughness_correlation
+
 .. rubric:: Included in:
 
 ====================================================   ==================================

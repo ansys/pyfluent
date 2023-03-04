@@ -7,9 +7,12 @@ chemkin_report_each_line
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.chemkin_report_each_line
 
-.. autoclass:: chemkin_report_each_line
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   chemkin_report_each_line
+
 .. rubric:: Arguments
 
 ==========================================   =====================================================

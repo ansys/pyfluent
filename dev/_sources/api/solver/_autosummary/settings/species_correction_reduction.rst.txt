@@ -7,9 +7,12 @@ species_correction_reduction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.species_correction_reduction
 
-.. autoclass:: species_correction_reduction
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   species_correction_reduction
+
 .. rubric:: Included in:
 
 ============================================   ==============================

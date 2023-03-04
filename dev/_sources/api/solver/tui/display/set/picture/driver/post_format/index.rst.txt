@@ -3,11 +3,6 @@
 solver.tui.display.set.picture.driver.post\_format
 ==================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.picture.driver.post_format
-   :members: fast_raster, vector, rle_raster, raster
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format
+   :autosummary:
 

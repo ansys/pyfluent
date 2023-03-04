@@ -7,14 +7,17 @@ g_qflux
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.g_qflux
 
-.. autoclass:: g_qflux
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   g_qflux
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

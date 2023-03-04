@@ -7,9 +7,12 @@ corner_flow_correction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.corner_flow_correction
 
-.. autoclass:: corner_flow_correction
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   corner_flow_correction
+
 .. rubric:: Included in:
 
 ==========================   ====================

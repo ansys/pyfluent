@@ -7,9 +7,12 @@ new_fan_definition
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.new_fan_definition
 
-.. autoclass:: new_fan_definition
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   new_fan_definition
+
 .. rubric:: Included in:
 
 ============================================   =======================================

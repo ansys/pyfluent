@@ -7,9 +7,12 @@ ia_grad_sym
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ia_grad_sym
 
-.. autoclass:: ia_grad_sym
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   ia_grad_sym
+
 .. rubric:: Included in:
 
 ====================================   ==================================

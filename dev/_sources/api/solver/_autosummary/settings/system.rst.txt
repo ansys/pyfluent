@@ -7,14 +7,17 @@ system
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.system
 
-.. autoclass:: system
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Commands
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   system
+
+.. rubric:: Methods
 
 ==========================================   ===============================
 
-Command                                                              Summary
+Method                                                               Summary
 
 ==========================================   ===============================
 :ref:`proc_statistics <proc_statistics>`         Fluent process information.

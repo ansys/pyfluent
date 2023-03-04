@@ -3,11 +3,6 @@
 meshing.tui.objects.cad\_association
 ====================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects.cad_association
-   :members: query_object_association, detach_objects, detach_all_objects, update_all_objects, unlock_cad, attach_cad, update_objects, restore_cad
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.objects.cad_association
+   :autosummary:
 

@@ -7,9 +7,12 @@ direction_0
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.direction_0
 
-.. autoclass:: direction_0
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   direction_0
+
 .. rubric:: Included in:
 
 ==========================================================   =====================================

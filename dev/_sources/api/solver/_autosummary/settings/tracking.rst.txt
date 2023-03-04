@@ -7,14 +7,17 @@ tracking
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.tracking
 
-.. autoclass:: tracking
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   tracking
+
+.. rubric:: Attributes
 
 ============================================   =====================================================================================
 
-Child                                                                                                                        Summary
+Attribute                                                                                                                    Summary
 
 ============================================   =====================================================================================
 :ref:`scheme <scheme>`                                                                        Select a tracking scheme used for DPM.

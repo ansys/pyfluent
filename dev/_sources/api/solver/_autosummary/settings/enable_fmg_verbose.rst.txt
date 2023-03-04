@@ -7,9 +7,12 @@ enable_fmg_verbose
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.enable_fmg_verbose
 
-.. autoclass:: enable_fmg_verbose
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   enable_fmg_verbose
+
 .. rubric:: Included in:
 
 ==============================================   =========================================================

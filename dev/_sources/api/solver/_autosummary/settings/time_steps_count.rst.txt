@@ -7,9 +7,12 @@ time_steps_count
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.time_steps_count
 
-.. autoclass:: time_steps_count
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   time_steps_count
+
 .. rubric:: Included in:
 
 ==============================================   ==============================================================

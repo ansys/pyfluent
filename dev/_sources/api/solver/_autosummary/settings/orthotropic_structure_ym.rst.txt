@@ -7,14 +7,17 @@ orthotropic_structure_ym
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.orthotropic_structure_ym
 
-.. autoclass:: orthotropic_structure_ym
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   orthotropic_structure_ym
+
+.. rubric:: Attributes
 
 ==========================================   =============================
 
-Child                                                              Summary
+Attribute                                                          Summary
 
 ==========================================   =============================
 :ref:`direction_0 <direction_0>`                      'direction_0' child.

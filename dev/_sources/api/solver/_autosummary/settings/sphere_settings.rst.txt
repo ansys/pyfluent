@@ -7,14 +7,17 @@ sphere_settings
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.sphere_settings
 
-.. autoclass:: sphere_settings
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   sphere_settings
+
+.. rubric:: Attributes
 
 ==============================   =======================
 
-Child                                            Summary
+Attribute                                        Summary
 
 ==============================   =======================
 :ref:`scale <scale_2>`                    'scale' child.

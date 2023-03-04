@@ -7,9 +7,12 @@ linearize_source_terms
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.linearize_source_terms
 
-.. autoclass:: linearize_source_terms
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   linearize_source_terms
+
 .. rubric:: Included in:
 
 ====================================   =================================================================================

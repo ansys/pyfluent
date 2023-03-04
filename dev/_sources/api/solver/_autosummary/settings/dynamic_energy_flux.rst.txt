@@ -7,9 +7,12 @@ dynamic_energy_flux
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dynamic_energy_flux
 
-.. autoclass:: dynamic_energy_flux
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   dynamic_energy_flux
+
 .. rubric:: Included in:
 
 ============================================   ==============================

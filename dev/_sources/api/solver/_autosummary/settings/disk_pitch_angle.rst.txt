@@ -7,9 +7,12 @@ disk_pitch_angle
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.disk_pitch_angle
 
-.. autoclass:: disk_pitch_angle
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   disk_pitch_angle
+
 .. rubric:: Included in:
 
 ==========================================   ==============================================

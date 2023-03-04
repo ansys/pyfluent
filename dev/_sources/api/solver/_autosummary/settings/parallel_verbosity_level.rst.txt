@@ -7,9 +7,12 @@ parallel_verbosity_level
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.parallel_verbosity_level
 
-.. autoclass:: parallel_verbosity_level
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   parallel_verbosity_level
+
 .. rubric:: Included in:
 
 ======================================   ===========================

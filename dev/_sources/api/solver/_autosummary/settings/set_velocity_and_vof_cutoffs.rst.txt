@@ -7,9 +7,12 @@ set_velocity_and_vof_cutoffs
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_velocity_and_vof_cutoffs
 
-.. autoclass:: set_velocity_and_vof_cutoffs
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   set_velocity_and_vof_cutoffs
+
 .. rubric:: Named object type
 
 :ref:`set_velocity_and_vof_cutoffs_child <set_velocity_and_vof_cutoffs_child>`

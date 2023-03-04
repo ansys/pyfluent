@@ -7,9 +7,12 @@ volume_magnitude
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.volume_magnitude
 
-.. autoclass:: volume_magnitude
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   volume_magnitude
+
 .. rubric:: Included in:
 
 ========================   ===================

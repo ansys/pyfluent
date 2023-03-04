@@ -7,9 +7,12 @@ effective_temperature
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.effective_temperature
 
-.. autoclass:: effective_temperature
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   effective_temperature
+
 .. rubric:: Included in:
 
 ==============================   =======================

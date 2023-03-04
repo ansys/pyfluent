@@ -3,13 +3,8 @@
 meshing.tui.objects.labels
 ==========================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects.labels
-   :members: create, remove_zones, remove_all_labels_on_zones, merge, label_unlabeled_zones, delete, create_label_per_zone, create_label_per_object, rename, add_zones
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.objects.labels
+   :autosummary:
 
 .. toctree::
    :hidden:

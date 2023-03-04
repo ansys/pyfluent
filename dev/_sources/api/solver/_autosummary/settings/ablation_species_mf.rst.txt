@@ -7,9 +7,12 @@ ablation_species_mf
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ablation_species_mf
 
-.. autoclass:: ablation_species_mf
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   ablation_species_mf
+
 .. rubric:: Named object type
 
 :ref:`child_object_type_child <child_object_type_child_1>`

@@ -7,9 +7,12 @@ impingement_model_function
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.impingement_model_function
 
-.. autoclass:: impingement_model_function
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   impingement_model_function
+
 .. rubric:: Included in:
 
 ======================================================   ==========================================================================================================================

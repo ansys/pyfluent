@@ -7,9 +7,12 @@ diameter_statistics
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.diameter_statistics
 
-.. autoclass:: diameter_statistics
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   diameter_statistics
+
 .. rubric:: Included in:
 
 ============================================   ==============================================

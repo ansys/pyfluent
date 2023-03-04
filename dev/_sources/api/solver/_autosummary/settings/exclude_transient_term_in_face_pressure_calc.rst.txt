@@ -7,9 +7,12 @@ exclude_transient_term_in_face_pressure_calc
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.exclude_transient_term_in_face_pressure_calc
 
-.. autoclass:: exclude_transient_term_in_face_pressure_calc
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   exclude_transient_term_in_face_pressure_calc
+
 .. rubric:: Included in:
 
 ====================================================   ==============================

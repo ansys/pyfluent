@@ -3,11 +3,6 @@
 solver.tui.results.report.population\_balance
 =============================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.report.population_balance
-   :members: number_density, moments
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.report.population_balance
+   :autosummary:
 

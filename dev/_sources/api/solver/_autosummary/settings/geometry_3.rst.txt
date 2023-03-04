@@ -7,9 +7,12 @@ geometry
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.geometry_3
 
-.. autoclass:: geometry
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   geometry
+
 .. rubric:: Included in:
 
 ======================================   ====================================

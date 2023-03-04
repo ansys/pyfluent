@@ -7,9 +7,12 @@ multicomponent
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.multicomponent
 
-.. autoclass:: multicomponent
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   multicomponent
+
 .. rubric:: Named object type
 
 :ref:`multicomponent_child <multicomponent_child>`

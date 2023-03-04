@@ -7,9 +7,12 @@ fan_test_temp
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fan_test_temp
 
-.. autoclass:: fan_test_temp
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   fan_test_temp
+
 .. rubric:: Included in:
 
 ==================================   =================================

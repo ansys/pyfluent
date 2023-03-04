@@ -7,9 +7,12 @@ gravity_scale
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.gravity_scale
 
-.. autoclass:: gravity_scale
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   gravity_scale
+
 .. rubric:: Included in:
 
 ==============================================   ===============================

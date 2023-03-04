@@ -7,9 +7,12 @@ lic_max_steps
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.lic_max_steps
 
-.. autoclass:: lic_max_steps
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   lic_max_steps
+
 .. rubric:: Included in:
 
 ============================   ===============================

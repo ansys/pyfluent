@@ -7,9 +7,12 @@ include_in_domains_particles
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.include_in_domains_particles
 
-.. autoclass:: include_in_domains_particles
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   include_in_domains_particles
+
 .. rubric:: Included in:
 
 ==========================================   =================================================================================

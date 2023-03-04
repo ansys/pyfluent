@@ -7,9 +7,12 @@ free_surface_faces
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.free_surface_faces
 
-.. autoclass:: free_surface_faces
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   free_surface_faces
+
 .. rubric:: Included in:
 
 ======================   ===================

@@ -7,14 +7,17 @@ uu
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.uu
 
-.. autoclass:: uu
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   uu
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

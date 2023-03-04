@@ -7,9 +7,12 @@ implicit_bodyforce_treatment
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.implicit_bodyforce_treatment
 
-.. autoclass:: implicit_bodyforce_treatment
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   implicit_bodyforce_treatment
+
 .. rubric:: Included in:
 
 ====================================   ========================

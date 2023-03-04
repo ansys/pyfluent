@@ -7,14 +7,17 @@ boundary
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.boundary
 
-.. autoclass:: boundary
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   boundary
+
+.. rubric:: Attributes
 
 ====================================================   ==================================
 
-Child                                                                             Summary
+Attribute                                                                         Summary
 
 ====================================================   ==================================
 :ref:`distance_option <distance_option>`                         'distance_option' child.

@@ -7,9 +7,12 @@ turbulent_intensity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.turbulent_intensity
 
-.. autoclass:: turbulent_intensity
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   turbulent_intensity
+
 .. rubric:: Included in:
 
 ================================================   ================================================================================================

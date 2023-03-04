@@ -3,13 +3,8 @@
 solver.tui.results.graphics\_window.picture.driver
 ==================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics_window.picture.driver
-   :members: dump_window, jpeg, png, list, tiff, eps, glb, options, avz, vrml, hsf, ppm, post_script
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.picture.driver
+   :autosummary:
 
 .. toctree::
    :hidden:

@@ -7,9 +7,12 @@ int_rad
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.int_rad
 
-.. autoclass:: int_rad
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   int_rad
+
 .. rubric:: Included in:
 
 ===================================   =================================

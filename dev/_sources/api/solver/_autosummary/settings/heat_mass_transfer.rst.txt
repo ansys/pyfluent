@@ -7,14 +7,17 @@ heat_mass_transfer
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.heat_mass_transfer
 
-.. autoclass:: heat_mass_transfer
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   heat_mass_transfer
+
+.. rubric:: Attributes
 
 ==================================================================   =====================================================================
 
-Child                                                                                                                              Summary
+Attribute                                                                                                                          Summary
 
 ==================================================================   =====================================================================
 :ref:`cavitation <cavitation>`                                                                           Cavitation numerics options menu.

@@ -7,9 +7,12 @@ dpm_initialize_lwf
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_initialize_lwf
 
-.. autoclass:: dpm_initialize_lwf
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   dpm_initialize_lwf
+
 .. rubric:: Included in:
 
 ===================================   =================================

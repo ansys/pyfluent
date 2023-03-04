@@ -7,9 +7,12 @@ stop_journal
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.stop_journal
 
-.. autoclass:: stop_journal
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   stop_journal
+
 .. rubric:: Included in:
 
 ==================   =================

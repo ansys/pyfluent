@@ -7,9 +7,12 @@ select_sample
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.select_sample
 
-.. autoclass:: select_sample
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   select_sample
+
 .. rubric:: Included in:
 
 ==========================================================   =====================================

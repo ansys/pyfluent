@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -55,8 +51,8 @@
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
-    <link rel="next" title="solver.tui.preferences.navigation" href="../navigation/index.html" />
-    <link rel="prev" title="solver.tui.preferences.turbo_workflow.graphics_settings" href="../turbo_workflow/graphics_settings/index.html" />
+    <link rel="next" title="solver.tui.preferences.appearance" href="../appearance/index.html" />
+    <link rel="prev" title="solver.tui.preferences.parametric_study.layout_options" href="../parametric_study/layout_options/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -304,13 +294,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -354,13 +339,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../solve/index.html">
-         solver.tui.solve
+        <a class="reference internal" href="../../turbo_post/index.html">
+         solver.tui.turbo_post
         </a>
        </li>
        <li class="toctree-l4">
@@ -369,23 +349,18 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../mesh/index.html">
-         solver.tui.mesh
+        <a class="reference internal" href="../../display/index.html">
+         solver.tui.display
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../parametric_study/index.html">
-         solver.tui.parametric_study
+        <a class="reference internal" href="../../simulation_reports/index.html">
+         solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
+        <a class="reference internal" href="../../solve/index.html">
+         solver.tui.solve
         </a>
        </li>
        <li class="toctree-l4">
@@ -394,13 +369,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../surface/index.html">
+         solver.tui.surface
         </a>
        </li>
        <li class="toctree-l4">
@@ -409,13 +379,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../turbo_post/index.html">
-         solver.tui.turbo_post
+        <a class="reference internal" href="../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../icing/index.html">
+         solver.tui.icing
         </a>
        </li>
        <li class="toctree-l4">
@@ -424,8 +394,43 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../views/index.html">
+         solver.tui.views
         </a>
        </li>
        <li class="toctree-l4">
@@ -434,8 +439,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../icing/index.html">
-         solver.tui.icing
+        <a class="reference internal" href="../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -449,28 +454,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../appearance/index.html">
-           solver.tui.preferences.appearance
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="../turbo_workflow/index.html">
            solver.tui.preferences.turbo_workflow
-          </a>
-         </li>
-         <li class="toctree-l5 current active">
-          <a class="current reference internal" href="#">
-           solver.tui.preferences.general
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../navigation/index.html">
-           solver.tui.preferences.navigation
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../mat_pro_app/index.html">
-           solver.tui.preferences.mat_pro_app
           </a>
          </li>
          <li class="toctree-l5">
@@ -484,8 +469,28 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
+          <a class="reference internal" href="../navigation/index.html">
+           solver.tui.preferences.navigation
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../mat_pro_app/index.html">
+           solver.tui.preferences.mat_pro_app
+          </a>
+         </li>
+         <li class="toctree-l5">
           <a class="reference internal" href="../parametric_study/index.html">
            solver.tui.preferences.parametric_study
+          </a>
+         </li>
+         <li class="toctree-l5 current active">
+          <a class="current reference internal" href="#">
+           solver.tui.preferences.general
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../appearance/index.html">
+           solver.tui.preferences.appearance
           </a>
          </li>
          <li class="toctree-l5">
@@ -499,26 +504,6 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
         </ul>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../solution/index.html">
-         solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../results/index.html">
-         solver.tui.results
-        </a>
        </li>
       </ul>
      </li>
@@ -589,16 +574,25 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.preferences.general
+     general
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       __init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.advanced_partition">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.general.advanced_partition()
+       advanced_partition()
       </span>
      </code>
     </a>
@@ -607,7 +601,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.automatic_transcript">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.general.automatic_transcript()
+       automatic_transcript()
       </span>
      </code>
     </a>
@@ -616,7 +610,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.default_ioformat">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.general.default_ioformat()
+       default_ioformat()
       </span>
      </code>
     </a>
@@ -625,7 +619,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.dock_editor">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.general.dock_editor()
+       dock_editor()
       </span>
      </code>
     </a>
@@ -634,7 +628,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.enable_parametric_study">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.general.enable_parametric_study()
+       enable_parametric_study()
       </span>
      </code>
     </a>
@@ -643,7 +637,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.flow_model">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.general.flow_model()
+       flow_model()
       </span>
      </code>
     </a>
@@ -652,7 +646,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.idle_timeout">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.general.idle_timeout()
+       idle_timeout()
       </span>
      </code>
     </a>
@@ -661,7 +655,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.initial_physics_volume_definitions">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.general.initial_physics_volume_definitions()
+       initial_physics_volume_definitions()
       </span>
      </code>
     </a>
@@ -670,7 +664,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.key_behavioral_changes_message">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.general.key_behavioral_changes_message()
+       key_behavioral_changes_message()
       </span>
      </code>
     </a>
@@ -679,7 +673,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.laplace_auto_partition_default">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.general.laplace_auto_partition_default()
+       laplace_auto_partition_default()
       </span>
      </code>
     </a>
@@ -688,7 +682,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.qaservice_message">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.general.qaservice_message()
+       qaservice_message()
       </span>
      </code>
     </a>
@@ -697,7 +691,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.utlcreate_physics_on_mode_change">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.general.utlcreate_physics_on_mode_change()
+       utlcreate_physics_on_mode_change()
       </span>
      </code>
     </a>
@@ -706,7 +700,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.utlmode">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.general.utlmode()
+       utlmode()
       </span>
      </code>
     </a>
@@ -734,14 +728,77 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-preferences-general">
 <span id="ref-solver-tui-preferences-general"></span><h1>solver.tui.preferences.general<a class="headerlink" href="#solver-tui-preferences-general" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.general">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.preferences.</span></span><span class="sig-name descname"><span class="pre">general</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general" title="Permalink to this definition">#</a></dt>
-<dd><p>.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.preferences.</span></span><span class="sig-name descname"><span class="pre">general</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p>__init__ method of TUIMenu class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.advanced_partition" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.advanced_partition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">advanced_partition</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.automatic_transcript" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.automatic_transcript"><code class="xref py py-obj docutils literal notranslate"><span class="pre">automatic_transcript</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.default_ioformat" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.default_ioformat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_ioformat</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.dock_editor" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.dock_editor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dock_editor</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.enable_parametric_study" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.enable_parametric_study"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_parametric_study</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.flow_model" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.flow_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flow_model</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.idle_timeout" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.idle_timeout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">idle_timeout</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.initial_physics_volume_definitions" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.initial_physics_volume_definitions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initial_physics_volume_definitions</span></code></a>(*args, ...)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.key_behavioral_changes_message" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.key_behavioral_changes_message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_behavioral_changes_message</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.laplace_auto_partition_default" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.laplace_auto_partition_default"><code class="xref py py-obj docutils literal notranslate"><span class="pre">laplace_auto_partition_default</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.qaservice_message" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.qaservice_message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">qaservice_message</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.utlcreate_physics_on_mode_change" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.utlcreate_physics_on_mode_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utlcreate_physics_on_mode_change</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.utlmode" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.utlmode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utlmode</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>__init__ method of TUIMenu class.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.advanced_partition">
 <span class="sig-name descname"><span class="pre">advanced_partition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.advanced_partition" title="Permalink to this definition">#</a></dt>

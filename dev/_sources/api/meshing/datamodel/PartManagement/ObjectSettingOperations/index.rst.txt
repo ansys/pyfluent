@@ -3,11 +3,6 @@
 meshing.datamodel.PartManagement.ObjectSettingOperations
 ========================================================
 
-.. currentmodule:: ansys.fluent.core.datamodel_231.PartManagement
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.datamodel_231.PartManagement::Root.ObjectSettingOperations
-   :members: Children, Name, CreateObjectSetting, DeleteAllObjectSetting, DeleteObjectSetting
+.. autoclass:: ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations
+   :autosummary:
 

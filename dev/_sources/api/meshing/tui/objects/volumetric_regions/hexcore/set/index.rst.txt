@@ -3,13 +3,8 @@
 meshing.tui.objects.volumetric\_regions.hexcore.set
 ===================================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects.volumetric_regions.hexcore.set
-   :members: octree_hexcore, avoid_1_by_8_cell_jump_in_hexcore, delete_dead_zones, non_fluid_type, maximum_cell_length, define_hexcore_extents, merge_tets_to_pyramids, compute_max_cell_length, set_region_based_sizing, print_region_based_sizing, buffer_layers, peel_layers, skip_tet_refinement, maximum_initial_cells
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set
+   :autosummary:
 
 .. toctree::
    :hidden:

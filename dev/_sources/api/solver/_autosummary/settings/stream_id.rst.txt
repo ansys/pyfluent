@@ -7,9 +7,12 @@ stream_id
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.stream_id
 
-.. autoclass:: stream_id
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   stream_id
+
 .. rubric:: Included in:
 
 ==================================================================   =========================================

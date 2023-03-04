@@ -7,14 +7,17 @@ heat_exchange
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.heat_exchange
 
-.. autoclass:: heat_exchange
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Commands
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   heat_exchange
+
+.. rubric:: Methods
 
 ========================================================   ======================================
 
-Command                                                                                   Summary
+Method                                                                                    Summary
 
 ========================================================   ======================================
 :ref:`computed_heat_rejection <computed_heat_rejection>`       'computed_heat_rejection' command.

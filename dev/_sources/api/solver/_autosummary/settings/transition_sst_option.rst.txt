@@ -7,14 +7,17 @@ transition_sst_option
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.transition_sst_option
 
-.. autoclass:: transition_sst_option
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   transition_sst_option
+
+.. rubric:: Attributes
 
 ==================================================================   =========================================================
 
-Child                                                                                                                  Summary
+Attribute                                                                                                              Summary
 
 ==================================================================   =========================================================
 :ref:`enable_roughness_correlation <enable_roughness_correlation>`       Enable/Disable Transition-SST roughness correlation?.

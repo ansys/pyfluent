@@ -7,9 +7,12 @@ thermal_ctk
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.thermal_ctk
 
-.. autoclass:: thermal_ctk
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   thermal_ctk
+
 .. rubric:: Included in:
 
 ============================================   =======================================

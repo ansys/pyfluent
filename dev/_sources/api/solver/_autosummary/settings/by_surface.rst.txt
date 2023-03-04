@@ -7,25 +7,28 @@ by_surface
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.by_surface
 
-.. autoclass:: by_surface
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   by_surface
+
+.. rubric:: Attributes
 
 ==================================================================   =============================================
 
-Child                                                                                                      Summary
+Attribute                                                                                                  Summary
 
 ==================================================================   =============================================
 :ref:`use_inherent_material_color <use_inherent_material_color_1>`       Use inherent material color for surfaces.
 
 ==================================================================   =============================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ============================================================   =====================================================
 
-Command                                                                                                      Summary
+Method                                                                                                       Summary
 
 ============================================================   =====================================================
 :ref:`reset <reset>`                                               To reset colors and/or materials to the defaults.

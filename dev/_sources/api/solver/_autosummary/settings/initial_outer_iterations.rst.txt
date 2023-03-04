@@ -7,14 +7,17 @@ initial_outer_iterations
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.initial_outer_iterations
 
-.. autoclass:: initial_outer_iterations
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   initial_outer_iterations
+
+.. rubric:: Attributes
 
 ==============================================   ===========================================
 
-Child                                                                                Summary
+Attribute                                                                            Summary
 
 ==============================================   ===========================================
 :ref:`initial_time_steps <initial_time_steps>`             Set number of initial time-steps.

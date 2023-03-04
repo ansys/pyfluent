@@ -7,9 +7,12 @@ prepare_expressions
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.prepare_expressions
 
-.. autoclass:: prepare_expressions
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   prepare_expressions
+
 .. rubric:: Included in:
 
 ==========================================================   =====================================

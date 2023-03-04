@@ -7,9 +7,12 @@ duration_specification_method
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.duration_specification_method
 
-.. autoclass:: duration_specification_method
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   duration_specification_method
+
 .. rubric:: Included in:
 
 ==============================================   ===============================

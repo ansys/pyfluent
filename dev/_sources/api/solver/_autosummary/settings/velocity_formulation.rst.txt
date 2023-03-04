@@ -7,9 +7,12 @@ velocity_formulation
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.velocity_formulation
 
-.. autoclass:: velocity_formulation
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   velocity_formulation
+
 .. rubric:: Included in:
 
 ====================================   ========================

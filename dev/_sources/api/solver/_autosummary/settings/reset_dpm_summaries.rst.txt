@@ -7,9 +7,12 @@ reset_dpm_summaries
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reset_dpm_summaries
 
-.. autoclass:: reset_dpm_summaries
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   reset_dpm_summaries
+
 .. rubric:: Included in:
 
 ==================================================================   ============================================

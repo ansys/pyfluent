@@ -7,9 +7,12 @@ time_end
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.time_end
 
-.. autoclass:: time_end
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   time_end
+
 .. rubric:: Included in:
 
 ==========================================================================   =============================================

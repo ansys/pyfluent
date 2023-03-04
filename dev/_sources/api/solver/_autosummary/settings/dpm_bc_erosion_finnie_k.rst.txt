@@ -7,9 +7,12 @@ dpm_bc_erosion_finnie_k
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_bc_erosion_finnie_k
 
-.. autoclass:: dpm_bc_erosion_finnie_k
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   dpm_bc_erosion_finnie_k
+
 .. rubric:: Included in:
 
 ===================================   =================================

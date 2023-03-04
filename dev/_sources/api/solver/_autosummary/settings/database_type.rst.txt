@@ -7,9 +7,12 @@ database_type
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.database_type
 
-.. autoclass:: database_type
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   database_type
+
 .. rubric:: Included in:
 
 ==========================   =====================

@@ -7,9 +7,12 @@ solution_controls
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.solution_controls
 
-.. autoclass:: solution_controls
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   solution_controls
+
 .. rubric:: Included in:
 
 ========================================================   ====================================

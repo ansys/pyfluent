@@ -7,9 +7,12 @@ geom_levels
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.geom_levels
 
-.. autoclass:: geom_levels
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   geom_levels
+
 .. rubric:: Included in:
 
 ==============================================================   ================================================

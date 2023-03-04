@@ -7,9 +7,12 @@ wall_echo
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.wall_echo
 
-.. autoclass:: wall_echo
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   wall_echo
+
 .. rubric:: Included in:
 
 ========================================================   ====================================

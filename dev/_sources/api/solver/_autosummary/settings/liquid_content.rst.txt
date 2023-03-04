@@ -7,14 +7,17 @@ liquid_content
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.liquid_content
 
-.. autoclass:: liquid_content
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   liquid_content
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

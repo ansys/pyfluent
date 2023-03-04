@@ -7,9 +7,12 @@ report_files
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.report_files
 
-.. autoclass:: report_files
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   report_files
+
 .. rubric:: Named object type
 
 :ref:`report_files_child <report_files_child>`

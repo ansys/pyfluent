@@ -7,14 +7,17 @@ single_rate
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.single_rate
 
-.. autoclass:: single_rate
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   single_rate
+
+.. rubric:: Attributes
 
 ======================================================   ===================================
 
-Child                                                                                Summary
+Attribute                                                                            Summary
 
 ======================================================   ===================================
 :ref:`pre_exponential_factor <pre_exponential_factor>`       'pre_exponential_factor' child.

@@ -7,9 +7,12 @@ nodal_diameters
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.nodal_diameters
 
-.. autoclass:: nodal_diameters
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   nodal_diameters
+
 .. rubric:: Included in:
 
 ================================================   =========================================

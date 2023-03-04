@@ -7,9 +7,12 @@ reorder_zones
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reorder_zones
 
-.. autoclass:: reorder_zones
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   reorder_zones
+
 .. rubric:: Included in:
 
 ========================   ==================================

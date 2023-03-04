@@ -7,14 +7,17 @@ set_custom_frames
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_custom_frames
 
-.. autoclass:: set_custom_frames
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   set_custom_frames
+
+.. rubric:: Attributes
 
 ================================   ========================
 
-Child                                               Summary
+Attribute                                           Summary
 
 ================================   ========================
 :ref:`start_frame <start_frame>`       'start_frame' child.

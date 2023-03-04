@@ -7,9 +7,12 @@ repair_poor_elements
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.repair_poor_elements
 
-.. autoclass:: repair_poor_elements
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   repair_poor_elements
+
 .. rubric:: Included in:
 
 ======================================   ==============================================

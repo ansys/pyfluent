@@ -3,11 +3,6 @@
 solver.tui.define.models.radiation.s2s\_parameters
 ==================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.radiation.s2s_parameters
-   :members: compute_write_vf, print_thread_clusters, set_vf_parameters, compute_fpsc_values, compute_vf_accelerated, split_angle, use_new_cluster_algorithm, read_vf_file, print_zonewise_radiation, enable_mesh_interface_clustering, set_global_faces_per_surface_cluster, compute_clusters_and_vf_accelerated, non_participating_boundary_zones_temperature, use_old_cluster_algorithm, compute_vf_only
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.models.radiation.s2s_parameters
+   :autosummary:
 

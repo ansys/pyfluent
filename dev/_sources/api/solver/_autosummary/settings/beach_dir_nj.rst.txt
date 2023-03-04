@@ -7,9 +7,12 @@ beach_dir_nj
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.beach_dir_nj
 
-.. autoclass:: beach_dir_nj
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   beach_dir_nj
+
 .. rubric:: Included in:
 
 ==================================   =================================

@@ -7,9 +7,12 @@ dpm_bc_erosion_dnv_k
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_bc_erosion_dnv_k
 
-.. autoclass:: dpm_bc_erosion_dnv_k
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   dpm_bc_erosion_dnv_k
+
 .. rubric:: Included in:
 
 ===================================   =================================

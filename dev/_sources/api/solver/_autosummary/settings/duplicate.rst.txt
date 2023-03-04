@@ -7,9 +7,12 @@ duplicate
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.duplicate
 
-.. autoclass:: duplicate
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   duplicate
+
 .. rubric:: Arguments
 
 ==============================================   ===============================

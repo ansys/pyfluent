@@ -7,14 +7,17 @@ face_pressure_options
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.face_pressure_options
 
-.. autoclass:: face_pressure_options
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   face_pressure_options
+
+.. rubric:: Attributes
 
 ==================================================================================================   ===========================================================================
 
-Child                                                                                                                                                                    Summary
+Attribute                                                                                                                                                                Summary
 
 ==================================================================================================   ===========================================================================
 :ref:`pressure_corr_grad <pressure_corr_grad>`                                                           Enable/disable pressure correction gradient limiting in corrector step.

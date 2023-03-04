@@ -3,11 +3,6 @@
 solver.tui.setup.dynamic\_mesh.zones
 ====================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.dynamic_mesh.zones
-   :members: delete, list, insert_interior_layer, remove_boundary_layer, create, remove_interior_layer, insert_boundary_layer
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones
+   :autosummary:
 

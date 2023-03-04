@@ -7,14 +7,17 @@ limits
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.limits
 
-.. autoclass:: limits
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   limits
+
+.. rubric:: Attributes
 
 ================================================================   ============================================================
 
-Child                                                                                                                   Summary
+Attribute                                                                                                               Summary
 
 ================================================================   ============================================================
 :ref:`min_pressure <min_pressure>`                                           Minimum vapor pressure limit for cavitation model.

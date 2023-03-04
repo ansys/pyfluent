@@ -7,14 +7,17 @@ accuracy_control
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.accuracy_control
 
-.. autoclass:: accuracy_control
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   accuracy_control
+
+.. rubric:: Attributes
 
 ============================================================   ===============================================================================
 
-Child                                                                                                                                  Summary
+Attribute                                                                                                                              Summary
 
 ============================================================   ===============================================================================
 :ref:`option <option_3>`                                                                         Enable/disable error control during tracking.

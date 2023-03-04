@@ -7,14 +7,17 @@ user_defined_functions
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.user_defined_functions
 
-.. autoclass:: user_defined_functions
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   user_defined_functions
+
+.. rubric:: Attributes
 
 ========================================================================   =======================================================================
 
-Child                                                                                                                                      Summary
+Attribute                                                                                                                                  Summary
 
 ========================================================================   =======================================================================
 :ref:`body_force_function <body_force_function>`                                                  Specify the name of the DPM body force function.

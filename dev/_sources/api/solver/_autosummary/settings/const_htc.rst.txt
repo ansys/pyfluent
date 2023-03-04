@@ -7,9 +7,12 @@ const_htc
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.const_htc
 
-.. autoclass:: const_htc
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   const_htc
+
 .. rubric:: Included in:
 
 ====================================   ==========================

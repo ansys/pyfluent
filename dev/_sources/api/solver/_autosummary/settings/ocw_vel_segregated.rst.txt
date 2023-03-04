@@ -7,9 +7,12 @@ ocw_vel_segregated
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ocw_vel_segregated
 
-.. autoclass:: ocw_vel_segregated
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   ocw_vel_segregated
+
 .. rubric:: Included in:
 
 ==================================================   ==========================================

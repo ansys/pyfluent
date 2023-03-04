@@ -7,9 +7,12 @@ smoother_type
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.smoother_type
 
-.. autoclass:: smoother_type
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   smoother_type
+
 .. rubric:: Included in:
 
 ============================================   ==============================

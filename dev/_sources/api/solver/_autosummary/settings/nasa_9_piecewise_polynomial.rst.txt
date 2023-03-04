@@ -7,9 +7,12 @@ nasa_9_piecewise_polynomial
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.nasa_9_piecewise_polynomial
 
-.. autoclass:: nasa_9_piecewise_polynomial
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   nasa_9_piecewise_polynomial
+
 .. rubric:: Named object type
 
 :ref:`piecewise_polynomial_child <piecewise_polynomial_child>`

@@ -7,9 +7,12 @@ geko_defaults
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.geko_defaults
 
-.. autoclass:: geko_defaults
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   geko_defaults
+
 .. rubric:: Included in:
 
 ==================================   =========================

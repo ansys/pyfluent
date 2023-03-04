@@ -7,9 +7,12 @@ nj
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.nj
 
-.. autoclass:: nj
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   nj
+
 .. rubric:: Included in:
 
 ==================================================   ==========================================

@@ -7,9 +7,12 @@ local_dt_dualts_relax
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.local_dt_dualts_relax
 
-.. autoclass:: local_dt_dualts_relax
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   local_dt_dualts_relax
+
 .. rubric:: Named object type
 
 :ref:`axis_direction_child <axis_direction_child>`

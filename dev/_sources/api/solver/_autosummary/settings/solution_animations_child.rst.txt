@@ -7,14 +7,17 @@ solution_animations_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.solution_animations_child
 
-.. autoclass:: solution_animations_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   solution_animations_child
+
+.. rubric:: Attributes
 
 ================================================   ================================
 
-Child                                                                       Summary
+Attribute                                                                   Summary
 
 ================================================   ================================
 :ref:`name <name_1>`                                                  'name' child.
@@ -39,11 +42,11 @@ Child                                                                       Summ
 
 ================================================   ================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ==========================   ======================
 
-Command                                     Summary
+Method                                      Summary
 
 ==========================   ======================
 :ref:`display <display_2>`       'display' command.

@@ -3,11 +3,6 @@
 solver.tui.setup.models.dpm.stripping\_options
 ==============================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.dpm.stripping_options
-   :members: diameter_coefficient, mass_coefficient
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.stripping_options
+   :autosummary:
 

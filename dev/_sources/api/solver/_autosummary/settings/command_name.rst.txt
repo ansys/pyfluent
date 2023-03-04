@@ -7,9 +7,12 @@ command_name
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.command_name
 
-.. autoclass:: command_name
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   command_name
+
 .. rubric:: Included in:
 
 ==========================   ===============================

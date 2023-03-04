@@ -7,9 +7,12 @@ minimum_cell_quality
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.minimum_cell_quality
 
-.. autoclass:: minimum_cell_quality
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   minimum_cell_quality
+
 .. rubric:: Included in:
 
 ================   ================================

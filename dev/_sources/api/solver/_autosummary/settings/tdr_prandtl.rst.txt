@@ -7,9 +7,12 @@ tdr_prandtl
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.tdr_prandtl
 
-.. autoclass:: tdr_prandtl
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   tdr_prandtl
+
 .. rubric:: Included in:
 
 ==================================   =========================

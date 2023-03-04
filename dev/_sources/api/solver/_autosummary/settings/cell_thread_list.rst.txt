@@ -7,9 +7,12 @@ cell_thread_list
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cell_thread_list
 
-.. autoclass:: cell_thread_list
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   cell_thread_list
+
 .. rubric:: Included in:
 
 ====================================================   ===================================

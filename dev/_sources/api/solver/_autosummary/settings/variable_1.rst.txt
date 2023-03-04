@@ -7,14 +7,17 @@ variable
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.variable_1
 
-.. autoclass:: variable
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   variable
+
+.. rubric:: Attributes
 
 ========================   ====================
 
-Child                                   Summary
+Attribute                               Summary
 
 ========================   ====================
 :ref:`size_by <size_by>`       'size_by' child.

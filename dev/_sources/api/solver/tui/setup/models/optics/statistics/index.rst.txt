@@ -3,11 +3,6 @@
 solver.tui.setup.models.optics.statistics
 =========================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.optics.statistics
-   :members: reset_statistics, statistics_controls
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.optics.statistics
+   :autosummary:
 

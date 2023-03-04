@@ -7,14 +7,17 @@ boiling_point
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.boiling_point
 
-.. autoclass:: boiling_point
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   boiling_point
+
+.. rubric:: Attributes
 
 ====================================================   ====================================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

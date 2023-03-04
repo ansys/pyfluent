@@ -3,11 +3,6 @@
 meshing.tui.display.update\_scene
 =================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.update_scene
-   :members: transform, overlays, time, select_geometry, delete, draw_frame, pathline, set_frame, display, iso_sweep
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.display.update_scene
+   :autosummary:
 

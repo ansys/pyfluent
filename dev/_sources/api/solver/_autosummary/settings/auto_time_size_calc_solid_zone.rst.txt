@@ -7,9 +7,12 @@ auto_time_size_calc_solid_zone
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.auto_time_size_calc_solid_zone
 
-.. autoclass:: auto_time_size_calc_solid_zone
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   auto_time_size_calc_solid_zone
+
 .. rubric:: Included in:
 
 ============================================   =============================

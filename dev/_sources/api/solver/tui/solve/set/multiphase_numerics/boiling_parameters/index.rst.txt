@@ -3,11 +3,6 @@
 solver.tui.solve.set.multiphase\_numerics.boiling\_parameters
 =============================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.multiphase_numerics.boiling_parameters
-   :members: liquid_vof_factor, thin_film
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.boiling_parameters
+   :autosummary:
 

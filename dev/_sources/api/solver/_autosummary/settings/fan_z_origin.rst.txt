@@ -7,9 +7,12 @@ fan_z_origin
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fan_z_origin
 
-.. autoclass:: fan_z_origin
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   fan_z_origin
+
 .. rubric:: Included in:
 
 ==================================   =================================

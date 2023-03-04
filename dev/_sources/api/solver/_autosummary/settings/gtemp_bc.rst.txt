@@ -7,9 +7,12 @@ gtemp_bc
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.gtemp_bc
 
-.. autoclass:: gtemp_bc
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   gtemp_bc
+
 .. rubric:: Included in:
 
 ===================================   =================================

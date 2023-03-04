@@ -7,9 +7,12 @@ start_time
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.start_time
 
-.. autoclass:: start_time
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   start_time
+
 .. rubric:: Included in:
 
 ====================   ==================

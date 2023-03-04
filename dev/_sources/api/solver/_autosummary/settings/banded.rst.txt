@@ -7,9 +7,12 @@ banded
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.banded
 
-.. autoclass:: banded
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   banded
+
 .. rubric:: Included in:
 
 ==========================   =====================

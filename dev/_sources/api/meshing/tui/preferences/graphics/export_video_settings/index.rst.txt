@@ -3,13 +3,8 @@
 meshing.tui.preferences.graphics.export\_video\_settings
 ========================================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.graphics.export_video_settings
-   :members: video_scale, video_quality, video_resoution_y, video_fps, video_resoution_x, video_use_frame_resolution, video_format, video_smooth_scaling
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.export_video_settings
+   :autosummary:
 
 .. toctree::
    :hidden:

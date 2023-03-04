@@ -7,9 +7,12 @@ list_surfaces_by_material
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.list_surfaces_by_material
 
-.. autoclass:: list_surfaces_by_material
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   list_surfaces_by_material
+
 .. rubric:: Included in:
 
 ==============================   =======================

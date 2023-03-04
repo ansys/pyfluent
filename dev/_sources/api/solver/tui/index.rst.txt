@@ -3,36 +3,31 @@
 solver.tui
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu
-   :members: print_license_usage, switch_to_meshing_mode, exit, close_fluent
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu
+   :autosummary:
 
 .. toctree::
    :hidden:
 
-   plot/index
-   solve/index
-   server/index
-   mesh/index
-   parametric_study/index
-   file/index
-   turbo_workflow/index
-   define/index
-   parallel/index
-   parameters__and__customization/index
-   report/index
    turbo_post/index
+   server/index
    display/index
-   setup/index
-   surface/index
-   adjoint/index
-   icing/index
-   preferences/index
-   views/index
-   solution/index
    simulation_reports/index
+   solve/index
+   define/index
+   surface/index
+   report/index
+   parallel/index
+   icing/index
+   setup/index
+   parametric_study/index
    results/index
+   plot/index
+   parameters__and__customization/index
+   mesh/index
+   solution/index
+   file/index
+   views/index
+   adjoint/index
+   turbo_workflow/index
+   preferences/index

@@ -7,14 +7,17 @@ pass_number
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pass_number
 
-.. autoclass:: pass_number
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   pass_number
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

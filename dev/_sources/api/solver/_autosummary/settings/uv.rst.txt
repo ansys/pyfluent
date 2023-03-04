@@ -7,14 +7,17 @@ uv
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.uv
 
-.. autoclass:: uv
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   uv
+
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

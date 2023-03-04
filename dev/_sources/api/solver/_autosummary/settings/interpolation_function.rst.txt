@@ -7,9 +7,12 @@ interpolation_function
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.interpolation_function
 
-.. autoclass:: interpolation_function
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   interpolation_function
+
 .. rubric:: Included in:
 
 ======================================================   ==========================================================================================================================

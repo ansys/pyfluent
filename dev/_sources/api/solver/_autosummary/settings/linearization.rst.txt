@@ -7,14 +7,17 @@ linearization
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.linearization
 
-.. autoclass:: linearization
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   linearization
+
+.. rubric:: Attributes
 
 ====================================================================================   =================================================================================================
 
-Child                                                                                                                                                                            Summary
+Attribute                                                                                                                                                                        Summary
 
 ====================================================================================   =================================================================================================
 :ref:`keep_linearized_source_terms_constant <keep_linearized_source_terms_constant>`              Enable/disable keeping linearized DPM source terms constant until the next DPM Update.

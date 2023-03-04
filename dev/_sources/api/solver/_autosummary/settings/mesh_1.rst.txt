@@ -7,9 +7,12 @@ mesh
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mesh_1
 
-.. autoclass:: mesh
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   mesh
+
 .. rubric:: Named object type
 
 :ref:`mesh_child <mesh_child>`

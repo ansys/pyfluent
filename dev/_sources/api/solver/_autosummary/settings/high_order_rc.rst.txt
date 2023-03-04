@@ -7,9 +7,12 @@ high_order_rc
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.high_order_rc
 
-.. autoclass:: high_order_rc
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   high_order_rc
+
 .. rubric:: Included in:
 
 ==================================   ============================

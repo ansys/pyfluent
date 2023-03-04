@@ -7,9 +7,12 @@ append_sample
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.append_sample
 
-.. autoclass:: append_sample
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   append_sample
+
 .. rubric:: Included in:
 
 ========================   =====================

@@ -7,9 +7,12 @@ delete
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.delete_1
 
-.. autoclass:: delete
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   delete
+
 .. rubric:: Arguments
 
 ==================================   =========================

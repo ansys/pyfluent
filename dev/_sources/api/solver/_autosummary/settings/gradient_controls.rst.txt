@@ -7,9 +7,12 @@ gradient_controls
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.gradient_controls
 
-.. autoclass:: gradient_controls
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   gradient_controls
+
 .. rubric:: Included in:
 
 ========================   ====================

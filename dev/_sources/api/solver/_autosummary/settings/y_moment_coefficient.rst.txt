@@ -7,9 +7,12 @@ y_moment_coefficient
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.y_moment_coefficient
 
-.. autoclass:: y_moment_coefficient
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   y_moment_coefficient
+
 .. rubric:: Included in:
 
 ==========================   =========================================

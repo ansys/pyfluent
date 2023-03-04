@@ -7,9 +7,12 @@ production_kato_launder
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.production_kato_launder
 
-.. autoclass:: production_kato_launder
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   production_kato_launder
+
 .. rubric:: Included in:
 
 ==========================   ====================

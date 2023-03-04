@@ -7,9 +7,12 @@ polar_real_angle
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.polar_real_angle
 
-.. autoclass:: polar_real_angle
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   polar_real_angle
+
 .. rubric:: Included in:
 
 ====================================================   ===========================================

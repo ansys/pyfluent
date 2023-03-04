@@ -7,9 +7,12 @@ convergence_reports
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.convergence_reports
 
-.. autoclass:: convergence_reports
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   convergence_reports
+
 .. rubric:: Named object type
 
 :ref:`convergence_reports_child <convergence_reports_child>`

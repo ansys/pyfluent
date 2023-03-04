@@ -7,9 +7,12 @@ species_list
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.species_list
 
-.. autoclass:: species_list
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   species_list
+
 .. rubric:: Included in:
 
 ======================================   ==========================

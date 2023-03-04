@@ -7,14 +7,17 @@ ribbon
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ribbon
 
-.. autoclass:: ribbon
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   ribbon
+
+.. rubric:: Attributes
 
 ================================   ========================
 
-Child                                               Summary
+Attribute                                           Summary
 
 ================================   ========================
 :ref:`field <field>`                         'field' child.

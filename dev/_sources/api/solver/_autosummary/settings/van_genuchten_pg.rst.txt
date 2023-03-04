@@ -7,9 +7,12 @@ van_genuchten_pg
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.van_genuchten_pg
 
-.. autoclass:: van_genuchten_pg
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   van_genuchten_pg
+
 .. rubric:: Included in:
 
 ==================================   =================================

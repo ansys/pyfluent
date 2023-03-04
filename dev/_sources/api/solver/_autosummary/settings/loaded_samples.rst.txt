@@ -7,9 +7,12 @@ loaded_samples
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.loaded_samples
 
-.. autoclass:: loaded_samples
-    :show-inheritance:
-    :undoc-members:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   loaded_samples
+
 .. rubric:: Included in:
 
 ==================================   ===========================

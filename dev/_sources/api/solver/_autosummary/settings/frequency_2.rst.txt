@@ -7,14 +7,17 @@ frequency
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.frequency_2
 
-.. autoclass:: frequency
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
+
+   frequency
+
+.. rubric:: Attributes
 
 ==============================   ===============================================================================================================================
 
-Child                                                                                                                                                    Summary
+Attribute                                                                                                                                                Summary
 
 ==============================   ===============================================================================================================================
 :ref:`option <option_12>`                          Select the frequency unit used for automatic marking of cells in a register for poor mesh numerics treatment.
