@@ -7,12 +7,9 @@ non_equil_boundary
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.non_equil_boundary
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   non_equil_boundary
-
+.. autoclass:: non_equil_boundary
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

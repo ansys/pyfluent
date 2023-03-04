@@ -7,12 +7,9 @@ re_theta_t
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.re_theta_t
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   re_theta_t
-
+.. autoclass:: re_theta_t
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   =============================================

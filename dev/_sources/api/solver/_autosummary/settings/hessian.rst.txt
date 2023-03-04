@@ -7,12 +7,9 @@ hessian
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.hessian
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   hessian
-
+.. autoclass:: hessian
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =======================

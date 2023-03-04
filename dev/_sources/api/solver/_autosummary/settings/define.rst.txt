@@ -7,12 +7,9 @@ define
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.define
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   define
-
+.. autoclass:: define
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================================   =================================================

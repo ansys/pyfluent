@@ -7,12 +7,9 @@ load_vector
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.load_vector
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   load_vector
-
+.. autoclass:: load_vector
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   ====================================================

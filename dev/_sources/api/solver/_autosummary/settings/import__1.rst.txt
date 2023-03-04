@@ -7,12 +7,9 @@ import_
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.import__1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   import_
-
+.. autoclass:: import_
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ====================================   ==========================

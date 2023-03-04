@@ -7,12 +7,9 @@ porous_jump_turb_wall_treatment
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.porous_jump_turb_wall_treatment
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   porous_jump_turb_wall_treatment
-
+.. autoclass:: porous_jump_turb_wall_treatment
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =======================================

@@ -7,12 +7,9 @@ non_overlap_zone_name
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.non_overlap_zone_name
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   non_overlap_zone_name
-
+.. autoclass:: non_overlap_zone_name
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   =====================================

@@ -7,12 +7,9 @@ restore_view
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.restore_view
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   restore_view
-
+.. autoclass:: restore_view
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ============================   ======================

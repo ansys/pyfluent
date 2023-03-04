@@ -7,12 +7,9 @@ count
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.count
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   count
-
+.. autoclass:: count
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   =========================

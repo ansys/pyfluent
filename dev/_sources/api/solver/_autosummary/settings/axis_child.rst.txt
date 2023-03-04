@@ -7,17 +7,14 @@ axis_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.axis_child
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   axis_child
-
-.. rubric:: Attributes
+.. autoclass:: axis_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================   ==========================
 
-Attribute                                                 Summary
+Child                                                     Summary
 
 ====================================   ==========================
 :ref:`phase <phase_2>`                             'phase' child.

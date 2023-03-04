@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -51,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../search.html" />
-    <link rel="next" title="meshing.tui.mesh.prism.controls.post_ignore" href="../post_ignore/index.html" />
-    <link rel="prev" title="meshing.tui.mesh.prism.controls" href="../index.html" />
+    <link rel="next" title="meshing.tui.mesh.prism.controls.normal" href="../normal/index.html" />
+    <link rel="prev" title="meshing.tui.mesh.prism.controls.adjacent_zone" href="../adjacent_zone/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -295,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -309,11 +324,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../../../index.html">
      meshing.tui
@@ -325,48 +335,8 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../reference_frames/index.html">
-       meshing.tui.reference_frames
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../parallel/index.html">
-       meshing.tui.parallel
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../../../../objects/index.html">
        meshing.tui.objects
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../file/index.html">
-       meshing.tui.file
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../diagnostics/index.html">
-       meshing.tui.diagnostics
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../material_point/index.html">
-       meshing.tui.material_point
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../boundary/index.html">
-       meshing.tui.boundary
       </a>
      </li>
      <li class="toctree-l3">
@@ -375,13 +345,48 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
+      <a class="reference internal" href="../../../../reference_frames/index.html">
+       meshing.tui.reference_frames
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../preferences/index.html">
+       meshing.tui.preferences
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../boundary/index.html">
+       meshing.tui.boundary
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../material_point/index.html">
+       meshing.tui.material_point
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../file/index.html">
+       meshing.tui.file
       </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../../../../size_functions/index.html">
        meshing.tui.size_functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../parallel/index.html">
+       meshing.tui.parallel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../diagnostics/index.html">
+       meshing.tui.diagnostics
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -395,48 +400,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../thin_volume_mesh/index.html">
-         meshing.tui.mesh.thin_volume_mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../separate/index.html">
          meshing.tui.mesh.separate
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../auto_mesh_controls/index.html">
-         meshing.tui.mesh.auto_mesh_controls
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../pyramid/index.html">
-         meshing.tui.mesh.pyramid
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../cavity/index.html">
-         meshing.tui.mesh.cavity
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../non_conformals/index.html">
-         meshing.tui.mesh.non_conformals
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../cell_zone_conditions/index.html">
-         meshing.tui.mesh.cell_zone_conditions
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../modify/index.html">
-         meshing.tui.mesh.modify
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../cartesian/index.html">
-         meshing.tui.mesh.cartesian
         </a>
        </li>
        <li class="toctree-l4">
@@ -445,8 +410,102 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../poly/index.html">
-         meshing.tui.mesh.poly
+        <a class="reference internal" href="../../../modify/index.html">
+         meshing.tui.mesh.modify
+        </a>
+       </li>
+       <li class="toctree-l4 current active has-children">
+        <a class="reference internal" href="../../index.html">
+         meshing.tui.mesh.prism
+        </a>
+        <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+        <label for="toctree-checkbox-4">
+         <i class="fas fa-chevron-down">
+         </i>
+        </label>
+        <ul class="current">
+         <li class="toctree-l5 current active has-children">
+          <a class="reference internal" href="../index.html">
+           meshing.tui.mesh.prism.controls
+          </a>
+          <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+          <label for="toctree-checkbox-5">
+           <i class="fas fa-chevron-down">
+           </i>
+          </label>
+          <ul class="current">
+           <li class="toctree-l6">
+            <a class="reference internal" href="../adjacent_zone/index.html">
+             meshing.tui.mesh.prism.controls.adjacent_zone
+            </a>
+           </li>
+           <li class="toctree-l6 current active">
+            <a class="current reference internal" href="#">
+             meshing.tui.mesh.prism.controls.offset
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../normal/index.html">
+             meshing.tui.mesh.prism.controls.normal
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../post_ignore/index.html">
+             meshing.tui.mesh.prism.controls.post_ignore
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../morph/index.html">
+             meshing.tui.mesh.prism.controls.morph
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../improve/index.html">
+             meshing.tui.mesh.prism.controls.improve
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../proximity/index.html">
+             meshing.tui.mesh.prism.controls.proximity
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../zone_specific_growth/index.html">
+             meshing.tui.mesh.prism.controls.zone_specific_growth
+            </a>
+           </li>
+          </ul>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../post_ignore/index.html">
+           meshing.tui.mesh.prism.post_ignore
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../split/index.html">
+           meshing.tui.mesh.prism.split
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../improve/index.html">
+           meshing.tui.mesh.prism.improve
+          </a>
+         </li>
+        </ul>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../cartesian/index.html">
+         meshing.tui.mesh.cartesian
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../pyramid/index.html">
+         meshing.tui.mesh.pyramid
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../manage/index.html">
+         meshing.tui.mesh.manage
         </a>
        </li>
        <li class="toctree-l4">
@@ -460,8 +519,28 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../scoped_prisms/index.html">
-         meshing.tui.mesh.scoped_prisms
+        <a class="reference internal" href="../../../non_conformals/index.html">
+         meshing.tui.mesh.non_conformals
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../thin_volume_mesh/index.html">
+         meshing.tui.mesh.thin_volume_mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../cell_zone_conditions/index.html">
+         meshing.tui.mesh.cell_zone_conditions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../poly/index.html">
+         meshing.tui.mesh.poly
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../auto_mesh_controls/index.html">
+         meshing.tui.mesh.auto_mesh_controls
         </a>
        </li>
        <li class="toctree-l4">
@@ -474,100 +553,31 @@ function checkPageExistsAndRedirect(event) {
          meshing.tui.mesh.tet
         </a>
        </li>
-       <li class="toctree-l4 current active has-children">
-        <a class="reference internal" href="../../index.html">
-         meshing.tui.mesh.prism
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../cavity/index.html">
+         meshing.tui.mesh.cavity
         </a>
-        <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-        <label for="toctree-checkbox-4">
-         <i class="fas fa-chevron-down">
-         </i>
-        </label>
-        <ul class="current">
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../split/index.html">
-           meshing.tui.mesh.prism.split
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../post_ignore/index.html">
-           meshing.tui.mesh.prism.post_ignore
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../improve/index.html">
-           meshing.tui.mesh.prism.improve
-          </a>
-         </li>
-         <li class="toctree-l5 current active has-children">
-          <a class="reference internal" href="../index.html">
-           meshing.tui.mesh.prism.controls
-          </a>
-          <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-          <label for="toctree-checkbox-5">
-           <i class="fas fa-chevron-down">
-           </i>
-          </label>
-          <ul class="current">
-           <li class="toctree-l6 current active">
-            <a class="current reference internal" href="#">
-             meshing.tui.mesh.prism.controls.offset
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../post_ignore/index.html">
-             meshing.tui.mesh.prism.controls.post_ignore
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../proximity/index.html">
-             meshing.tui.mesh.prism.controls.proximity
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../morph/index.html">
-             meshing.tui.mesh.prism.controls.morph
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../adjacent_zone/index.html">
-             meshing.tui.mesh.prism.controls.adjacent_zone
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../zone_specific_growth/index.html">
-             meshing.tui.mesh.prism.controls.zone_specific_growth
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../improve/index.html">
-             meshing.tui.mesh.prism.controls.improve
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../normal/index.html">
-             meshing.tui.mesh.prism.controls.normal
-            </a>
-           </li>
-          </ul>
-         </li>
-        </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../manage/index.html">
-         meshing.tui.mesh.manage
+        <a class="reference internal" href="../../../scoped_prisms/index.html">
+         meshing.tui.mesh.scoped_prisms
         </a>
        </li>
       </ul>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../preferences/index.html">
-       meshing.tui.preferences
+      <a class="reference internal" href="../../../../display/index.html">
+       meshing.tui.display
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../display/index.html">
-       meshing.tui.display
+      <a class="reference internal" href="../../../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
       </a>
      </li>
     </ul>
@@ -612,25 +622,16 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.controls.offset">
    <code class="docutils literal notranslate">
     <span class="pre">
-     offset
+     main_menu.mesh.prism.controls.offset
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.controls.offset.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       __init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.controls.offset.first_aspect_ratio_min">
      <code class="docutils literal notranslate">
       <span class="pre">
-       first_aspect_ratio_min()
+       main_menu.mesh.prism.controls.offset.first_aspect_ratio_min()
       </span>
      </code>
     </a>
@@ -639,7 +640,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.controls.offset.min_aspect_ratio">
      <code class="docutils literal notranslate">
       <span class="pre">
-       min_aspect_ratio()
+       main_menu.mesh.prism.controls.offset.min_aspect_ratio()
       </span>
      </code>
     </a>
@@ -667,31 +668,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-mesh-prism-controls-offset">
 <span id="ref-meshing-tui-mesh-prism-controls-offset"></span><h1>meshing.tui.mesh.prism.controls.offset<a class="headerlink" href="#meshing-tui-mesh-prism-controls-offset" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.controls.offset">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.controls.</span></span><span class="sig-name descname"><span class="pre">offset</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.controls.offset" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the prism offset controls menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.controls.offset.__init__" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.controls.offset.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p>__init__ method of TUIMenu class.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.controls.offset.first_aspect_ratio_min" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.controls.offset.first_aspect_ratio_min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">first_aspect_ratio_min</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the minimum first aspect ratio (ratio of prism base length to prism layer height) for the prism cells.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.controls.offset.min_aspect_ratio" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.controls.offset.min_aspect_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_aspect_ratio</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the minimum aspect ratio (ratio of prism base length to prism layer height) for the prism cells.</p></td>
-</tr>
 </tbody>
 </table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.controls.offset.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.controls.offset.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>__init__ method of TUIMenu class.</p>
-</dd></dl>
-
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.controls.offset">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.prism.controls.</span></span><span class="sig-name descname"><span class="pre">offset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.controls.offset" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the prism offset controls menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.controls.offset.first_aspect_ratio_min">
 <span class="sig-name descname"><span class="pre">first_aspect_ratio_min</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.controls.offset.first_aspect_ratio_min" title="Permalink to this definition">#</a></dt>

@@ -7,12 +7,9 @@ percentage_of_cells
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.percentage_of_cells
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   percentage_of_cells
-
+.. autoclass:: percentage_of_cells
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   =====================================================================

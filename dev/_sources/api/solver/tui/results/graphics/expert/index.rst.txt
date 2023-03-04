@@ -3,14 +3,19 @@
 solver.tui.results.graphics.expert
 ==================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert
+   :members: profile, zone_mesh, velocity_vector, mesh_outline, re_scale, re_render, graphics_window_layout, multigrid_coarsening, mesh, vector, contour, surface_cells, mesh_partition_boundary, display_custom_vector, surface_mesh, set_list_tree_separator, add_custom_vector, reacting_channel_curves
 
 .. toctree::
    :hidden:
 
    set/index
+   path_lines/index
    pdf_data/index
    flamelet_data/index
-   path_lines/index
    particle_tracks/index

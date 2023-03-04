@@ -7,12 +7,9 @@ dpm_deposition_delta_t
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_deposition_delta_t
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   dpm_deposition_delta_t
-
+.. autoclass:: dpm_deposition_delta_t
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -7,12 +7,9 @@ characteristic_length
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.characteristic_length
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   characteristic_length
-
+.. autoclass:: characteristic_length
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

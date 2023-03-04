@@ -7,12 +7,9 @@ filter_maximum
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.filter_maximum
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   filter_maximum
-
+.. autoclass:: filter_maximum
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

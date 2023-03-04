@@ -3,9 +3,12 @@
 solver.tui.parameters\_\_and\_\_customization
 =============================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
 
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.parameters__and__customization
 .. toctree::
    :hidden:
 

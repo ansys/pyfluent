@@ -7,12 +7,9 @@ time_step_size_for_acoustic_export
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.time_step_size_for_acoustic_export
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   time_step_size_for_acoustic_export
-
+.. autoclass:: time_step_size_for_acoustic_export
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===============================

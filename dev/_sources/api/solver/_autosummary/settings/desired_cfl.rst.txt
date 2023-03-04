@@ -7,12 +7,9 @@ desired_cfl
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.desired_cfl
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   desired_cfl
-
+.. autoclass:: desired_cfl
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================================   =============================================

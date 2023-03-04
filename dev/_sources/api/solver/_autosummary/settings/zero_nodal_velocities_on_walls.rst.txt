@@ -7,12 +7,9 @@ zero_nodal_velocities_on_walls
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.zero_nodal_velocities_on_walls
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   zero_nodal_velocities_on_walls
-
+.. autoclass:: zero_nodal_velocities_on_walls
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ====================================================================================================

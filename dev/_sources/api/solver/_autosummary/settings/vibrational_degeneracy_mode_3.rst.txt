@@ -7,12 +7,9 @@ vibrational_degeneracy_mode_3
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.vibrational_degeneracy_mode_3
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   vibrational_degeneracy_mode_3
-
+.. autoclass:: vibrational_degeneracy_mode_3
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================

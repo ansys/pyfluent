@@ -7,12 +7,9 @@ radiating_s2s_surface
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.radiating_s2s_surface
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   radiating_s2s_surface
-
+.. autoclass:: radiating_s2s_surface
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

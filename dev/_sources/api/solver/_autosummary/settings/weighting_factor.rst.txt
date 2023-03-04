@@ -7,12 +7,9 @@ weighting_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.weighting_factor
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   weighting_factor
-
+.. autoclass:: weighting_factor
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   ========================

@@ -7,17 +7,14 @@ runge_kutta
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.runge_kutta
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   runge_kutta
-
-.. rubric:: Attributes
+.. autoclass:: runge_kutta
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================================   ================================
 
-Attribute                                                                   Summary
+Child                                                                       Summary
 
 ================================================   ================================
 :ref:`two_stage <two_stage>`                                     'two_stage' child.

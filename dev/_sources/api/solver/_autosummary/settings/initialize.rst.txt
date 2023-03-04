@@ -7,12 +7,9 @@ initialize
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.initialize
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   initialize
-
+.. autoclass:: initialize
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ============================   ======================

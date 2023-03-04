@@ -7,12 +7,9 @@ blade_pitch_cyclic_cos
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.blade_pitch_cyclic_cos
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   blade_pitch_cyclic_cos
-
+.. autoclass:: blade_pitch_cyclic_cos
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   =======================================================

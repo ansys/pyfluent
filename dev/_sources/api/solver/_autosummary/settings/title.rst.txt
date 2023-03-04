@@ -7,12 +7,9 @@ title
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.title
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   title
-
+.. autoclass:: title
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

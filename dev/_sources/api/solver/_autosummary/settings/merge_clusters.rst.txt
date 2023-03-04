@@ -7,12 +7,9 @@ merge_clusters
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.merge_clusters
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   merge_clusters
-
+.. autoclass:: merge_clusters
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==========================================   =============================

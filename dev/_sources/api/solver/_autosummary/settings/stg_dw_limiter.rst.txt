@@ -7,12 +7,9 @@ stg_dw_limiter
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.stg_dw_limiter
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   stg_dw_limiter
-
+.. autoclass:: stg_dw_limiter
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

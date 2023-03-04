@@ -7,17 +7,14 @@ fast_transient_settings
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fast_transient_settings
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fast_transient_settings
-
-.. rubric:: Attributes
+.. autoclass:: fast_transient_settings
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================   ========================
 
-Attribute                                           Summary
+Child                                               Summary
 
 ================================   ========================
 :ref:`runge_kutta <runge_kutta>`       'runge_kutta' child.

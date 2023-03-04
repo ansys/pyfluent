@@ -7,12 +7,9 @@ max_flow_time
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.max_flow_time
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   max_flow_time
-
+.. autoclass:: max_flow_time
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===============================

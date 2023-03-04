@@ -7,12 +7,9 @@ restore_sst_v61
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.restore_sst_v61
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   restore_sst_v61
-
+.. autoclass:: restore_sst_v61
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================

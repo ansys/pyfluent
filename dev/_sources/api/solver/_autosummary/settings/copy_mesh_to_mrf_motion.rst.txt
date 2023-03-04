@@ -7,12 +7,9 @@ copy_mesh_to_mrf_motion
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.copy_mesh_to_mrf_motion
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   copy_mesh_to_mrf_motion
-
+.. autoclass:: copy_mesh_to_mrf_motion
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ============================   ======================

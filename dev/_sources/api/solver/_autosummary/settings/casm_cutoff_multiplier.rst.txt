@@ -7,12 +7,9 @@ casm_cutoff_multiplier
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.casm_cutoff_multiplier
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   casm_cutoff_multiplier
-
+.. autoclass:: casm_cutoff_multiplier
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================================================================   =============================================================================================================================================================

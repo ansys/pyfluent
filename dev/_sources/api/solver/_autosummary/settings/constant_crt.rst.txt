@@ -7,12 +7,9 @@ constant_crt
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.constant_crt
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   constant_crt
-
+.. autoclass:: constant_crt
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

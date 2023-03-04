@@ -7,17 +7,14 @@ expert
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.expert
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   expert
-
-.. rubric:: Attributes
+.. autoclass:: expert
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================================================   =======================================================
 
-Attribute                                                                                                        Summary
+Child                                                                                                            Summary
 
 ==============================================================   =======================================================
 :ref:`under_relaxation_factor <under_relaxation_factor>`                  Specify under-relaxation factor to be used in 

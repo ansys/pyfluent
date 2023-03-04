@@ -7,12 +7,9 @@ storage_dir
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.storage_dir
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   storage_dir
-
+.. autoclass:: storage_dir
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

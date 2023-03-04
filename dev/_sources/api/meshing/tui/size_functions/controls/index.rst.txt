@@ -3,6 +3,11 @@
 meshing.tui.size\_functions.controls
 ====================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.size_functions.controls
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.size_functions.controls
+   :members: meshed_sf_behavior, curvature_method
 

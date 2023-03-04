@@ -7,12 +7,9 @@ rotate
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rotate
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   rotate
-
+.. autoclass:: rotate
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ========================================   ============================

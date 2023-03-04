@@ -7,12 +7,9 @@ xe
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.xe
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   xe
-
+.. autoclass:: xe
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

@@ -7,12 +7,9 @@ force
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.force
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   force
-
+.. autoclass:: force
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`force_child <force_child>`

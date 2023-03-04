@@ -7,17 +7,14 @@ boundary_conditions
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.boundary_conditions
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   boundary_conditions
-
-.. rubric:: Attributes
+.. autoclass:: boundary_conditions
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================================   =================================
 
-Attribute                                                                      Summary
+Child                                                                          Summary
 
 ==================================================   =================================
 :ref:`axis <axis>`                                                       'axis' child.
@@ -80,11 +77,11 @@ Attribute                                                                      S
 
 ==================================================   =================================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ============================================================================   ==============================================================================================================
 
-Method                                                                                                                                                                                Summary
+Command                                                                                                                                                                               Summary
 
 ============================================================================   ==============================================================================================================
 :ref:`change_type <change_type>`                                                                                                                                       'change_type' command.

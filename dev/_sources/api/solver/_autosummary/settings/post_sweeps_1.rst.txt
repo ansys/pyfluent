@@ -7,12 +7,9 @@ post_sweeps
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.post_sweeps_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   post_sweeps
-
+.. autoclass:: post_sweeps
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   ===================================

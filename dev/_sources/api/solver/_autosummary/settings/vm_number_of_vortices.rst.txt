@@ -7,12 +7,9 @@ vm_number_of_vortices
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.vm_number_of_vortices
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   vm_number_of_vortices
-
+.. autoclass:: vm_number_of_vortices
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

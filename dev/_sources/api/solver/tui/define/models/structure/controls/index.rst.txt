@@ -3,6 +3,11 @@
 solver.tui.define.models.structure.controls
 ===========================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.models.structure.controls
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.structure.controls
+   :members: numerical_damping_factor, unsteady_damping_rayleigh, amg_stabilization, enhanced_strain, max_iter
 

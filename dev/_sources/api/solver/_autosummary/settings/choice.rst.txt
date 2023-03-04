@@ -7,12 +7,9 @@ choice
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.choice
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   choice
-
+.. autoclass:: choice
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

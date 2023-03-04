@@ -7,12 +7,9 @@ alternate_diffusion_for_porous_region_solids
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.alternate_diffusion_for_porous_region_solids
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   alternate_diffusion_for_porous_region_solids
-
+.. autoclass:: alternate_diffusion_for_porous_region_solids
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ========================

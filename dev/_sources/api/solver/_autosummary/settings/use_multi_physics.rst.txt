@@ -7,12 +7,9 @@ use_multi_physics
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.use_multi_physics
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   use_multi_physics
-
+.. autoclass:: use_multi_physics
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   ========================================

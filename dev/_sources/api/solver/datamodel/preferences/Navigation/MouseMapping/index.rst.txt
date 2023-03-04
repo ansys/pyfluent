@@ -3,8 +3,14 @@
 solver.datamodel.preferences.Navigation.MouseMapping
 ====================================================
 
-.. autoclass:: ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.Navigation.MouseMapping
+   :members: MOUSEMAPTHEME
+   :noindex:
 
 .. toctree::
    :hidden:

@@ -7,12 +7,9 @@ step
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.step
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   step
-
+.. autoclass:: step
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

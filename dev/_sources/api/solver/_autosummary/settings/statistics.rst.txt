@@ -7,28 +7,25 @@ statistics
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.statistics
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   statistics
-
-.. rubric:: Attributes
+.. autoclass:: statistics
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==========================================   =====================================================================
 
-Attribute                                                                                                  Summary
+Child                                                                                                      Summary
 
 ==========================================   =====================================================================
 :ref:`reset_statistics <reset_statistics>`       Reset the statistics of averaging of flow and optical quantities.
 
 ==========================================   =====================================================================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ================================================   ==================================
 
-Method                                                                        Summary
+Command                                                                       Summary
 
 ================================================   ==================================
 :ref:`statistics_controls <statistics_controls>`       'statistics_controls' command.

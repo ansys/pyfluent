@@ -7,17 +7,14 @@ orthotropic
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.orthotropic
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   orthotropic
-
-.. rubric:: Attributes
+.. autoclass:: orthotropic
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================   ==========================
 
-Attribute                                                 Summary
+Child                                                     Summary
 
 ====================================   ==========================
 :ref:`direction_0 <direction_0>`             'direction_0' child.

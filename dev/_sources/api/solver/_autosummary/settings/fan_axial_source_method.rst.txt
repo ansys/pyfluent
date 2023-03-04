@@ -7,12 +7,9 @@ fan_axial_source_method
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fan_axial_source_method
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fan_axial_source_method
-
+.. autoclass:: fan_axial_source_method
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

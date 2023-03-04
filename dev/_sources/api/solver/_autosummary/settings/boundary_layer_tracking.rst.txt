@@ -7,12 +7,9 @@ boundary_layer_tracking
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.boundary_layer_tracking
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   boundary_layer_tracking
-
+.. autoclass:: boundary_layer_tracking
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ============================================================================

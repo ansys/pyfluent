@@ -7,12 +7,9 @@ constant_c0
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.constant_c0
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   constant_c0
-
+.. autoclass:: constant_c0
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

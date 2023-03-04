@@ -7,12 +7,9 @@ beach_multi_dir
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.beach_multi_dir
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   beach_multi_dir
-
+.. autoclass:: beach_multi_dir
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

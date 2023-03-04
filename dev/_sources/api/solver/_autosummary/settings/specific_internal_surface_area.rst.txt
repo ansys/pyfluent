@@ -7,12 +7,9 @@ specific_internal_surface_area
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.specific_internal_surface_area
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   specific_internal_surface_area
-
+.. autoclass:: specific_internal_surface_area
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

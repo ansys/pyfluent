@@ -3,6 +3,11 @@
 meshing.tui.display.set.picture.color\_mode
 ===========================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.display.set.picture.color_mode
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.set.picture.color_mode
+   :members: list, mono_chrome, gray_scale, color
 

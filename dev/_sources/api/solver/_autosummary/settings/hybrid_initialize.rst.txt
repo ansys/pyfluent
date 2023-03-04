@@ -7,12 +7,9 @@ hybrid_initialize
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.hybrid_initialize
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   hybrid_initialize
-
+.. autoclass:: hybrid_initialize
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ===========================

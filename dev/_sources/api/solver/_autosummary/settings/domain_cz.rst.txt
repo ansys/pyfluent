@@ -7,12 +7,9 @@ domain_cz
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.domain_cz
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   domain_cz
-
+.. autoclass:: domain_cz
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ================================

@@ -7,12 +7,9 @@ dpm_particle_stripping
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_particle_stripping
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   dpm_particle_stripping
-
+.. autoclass:: dpm_particle_stripping
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

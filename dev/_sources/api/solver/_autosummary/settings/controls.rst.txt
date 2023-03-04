@@ -7,17 +7,14 @@ controls
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.controls
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   controls
-
-.. rubric:: Attributes
+.. autoclass:: controls
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================================================================================   ===========================================================
 
-Attribute                                                                                                                                    Summary
+Child                                                                                                                                        Summary
 
 ======================================================================================   ===========================================================
 :ref:`acoustics_wave_eqn_controls <acoustics_wave_eqn_controls>`                             Enter menu for acoustics wave equation solver controls.

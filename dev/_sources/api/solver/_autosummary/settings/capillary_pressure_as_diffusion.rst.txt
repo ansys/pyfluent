@@ -7,12 +7,9 @@ capillary_pressure_as_diffusion
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.capillary_pressure_as_diffusion
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   capillary_pressure_as_diffusion
-
+.. autoclass:: capillary_pressure_as_diffusion
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ========================================================

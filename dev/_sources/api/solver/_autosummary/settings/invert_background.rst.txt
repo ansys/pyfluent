@@ -7,12 +7,9 @@ invert_background
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.invert_background
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   invert_background
-
+.. autoclass:: invert_background
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   =================================================

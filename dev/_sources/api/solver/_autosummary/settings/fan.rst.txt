@@ -7,12 +7,9 @@ fan
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fan
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fan
-
+.. autoclass:: fan
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`fan_child <fan_child>`

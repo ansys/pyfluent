@@ -7,12 +7,9 @@ pref
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pref
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   pref
-
+.. autoclass:: pref
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

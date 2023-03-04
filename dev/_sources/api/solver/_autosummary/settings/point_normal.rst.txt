@@ -7,12 +7,9 @@ point_normal
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.point_normal
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   point_normal
-
+.. autoclass:: point_normal
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================

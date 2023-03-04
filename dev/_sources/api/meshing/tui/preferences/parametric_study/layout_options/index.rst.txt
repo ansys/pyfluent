@@ -3,6 +3,11 @@
 meshing.tui.preferences.parametric\_study.layout\_options
 =========================================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.layout_options
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.parametric_study.layout_options
+   :members: parametric_study_tree, current_case_parameters
 

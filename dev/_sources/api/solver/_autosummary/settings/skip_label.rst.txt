@@ -7,12 +7,9 @@ skip_label
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.skip_label
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   skip_label
-
+.. autoclass:: skip_label
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

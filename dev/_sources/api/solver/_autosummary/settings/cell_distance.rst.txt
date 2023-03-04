@@ -7,12 +7,9 @@ cell_distance
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cell_distance
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   cell_distance
-
+.. autoclass:: cell_distance
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

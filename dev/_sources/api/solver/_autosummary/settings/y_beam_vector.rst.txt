@@ -7,12 +7,9 @@ y_beam_vector
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.y_beam_vector
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   y_beam_vector
-
+.. autoclass:: y_beam_vector
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   ===========================

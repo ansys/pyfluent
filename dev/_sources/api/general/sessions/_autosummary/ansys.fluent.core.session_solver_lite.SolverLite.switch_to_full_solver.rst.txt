@@ -1,6 +1,0 @@
-switch\_to\_full\_solver
-========================
-
-.. currentmodule:: ansys.fluent.core.session_solver_lite
-
-.. automethod:: SolverLite.switch_to_full_solver

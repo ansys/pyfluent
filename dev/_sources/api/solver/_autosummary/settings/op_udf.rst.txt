@@ -7,12 +7,9 @@ op_udf
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.op_udf
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   op_udf
-
+.. autoclass:: op_udf
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   =====================

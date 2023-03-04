@@ -7,12 +7,9 @@ async_optimize
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.async_optimize
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   async_optimize
-
+.. autoclass:: async_optimize
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   =================

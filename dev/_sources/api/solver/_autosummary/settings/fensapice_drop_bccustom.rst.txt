@@ -7,12 +7,9 @@ fensapice_drop_bccustom
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fensapice_drop_bccustom
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fensapice_drop_bccustom
-
+.. autoclass:: fensapice_drop_bccustom
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

@@ -7,12 +7,9 @@ interface
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.interface
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   interface
-
+.. autoclass:: interface
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`interface_child <interface_child>`

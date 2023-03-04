@@ -7,12 +7,9 @@ open_channel
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.open_channel
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   open_channel
-
+.. autoclass:: open_channel
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

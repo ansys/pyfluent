@@ -7,17 +7,14 @@ tip_loss
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.tip_loss
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   tip_loss
-
-.. rubric:: Attributes
+.. autoclass:: tip_loss
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================================================   ===================================================================
 
-Attribute                                                                                                                    Summary
+Child                                                                                                                        Summary
 
 ==============================================================   ===================================================================
 :ref:`model_tip_loss <model_tip_loss>`                                                                        Select Tip Loss Model:

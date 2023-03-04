@@ -7,12 +7,9 @@ report_default_variables
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.report_default_variables
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   report_default_variables
-
+.. autoclass:: report_default_variables
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

@@ -7,12 +7,9 @@ beach_end_point
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.beach_end_point
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   beach_end_point
-
+.. autoclass:: beach_end_point
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

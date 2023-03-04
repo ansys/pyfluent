@@ -7,12 +7,9 @@ preview
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.preview
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   preview
-
+.. autoclass:: preview
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   =================================================

@@ -7,12 +7,9 @@ v_min
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.v_min
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   v_min
-
+.. autoclass:: v_min
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

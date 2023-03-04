@@ -7,12 +7,9 @@ differential_viscosity_model
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.differential_viscosity_model
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   differential_viscosity_model
-
+.. autoclass:: differential_viscosity_model
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   ========================

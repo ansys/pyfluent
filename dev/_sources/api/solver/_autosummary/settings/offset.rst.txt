@@ -7,12 +7,9 @@ offset
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.offset
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   offset
-
+.. autoclass:: offset
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   =======================

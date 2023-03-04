@@ -7,12 +7,9 @@ high_order_pressure
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.high_order_pressure
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   high_order_pressure
-
+.. autoclass:: high_order_pressure
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   ======================================

@@ -7,17 +7,14 @@ contours
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.contours
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   contours
-
-.. rubric:: Attributes
+.. autoclass:: contours
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================   =================================================================================
 
-Attribute                                                                                                            Summary
+Child                                                                                                                Summary
 
 ========================================   =================================================================================
 :ref:`auto_scale <auto_scale_2>`                                      Enable/disable auto-computation of range for contours.

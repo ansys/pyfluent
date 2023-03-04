@@ -7,12 +7,9 @@ retain_instantaneous_values
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.retain_instantaneous_values
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   retain_instantaneous_values
-
+.. autoclass:: retain_instantaneous_values
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================================   =================================================

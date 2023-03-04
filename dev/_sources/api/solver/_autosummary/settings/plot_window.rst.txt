@@ -7,12 +7,9 @@ plot_window
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.plot_window
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   plot_window
-
+.. autoclass:: plot_window
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ========================================

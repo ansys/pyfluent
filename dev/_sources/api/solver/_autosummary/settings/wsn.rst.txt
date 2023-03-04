@@ -7,17 +7,14 @@ wsn
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.wsn
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   wsn
-
-.. rubric:: Attributes
+.. autoclass:: wsn
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

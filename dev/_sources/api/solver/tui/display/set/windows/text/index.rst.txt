@@ -3,6 +3,11 @@
 solver.tui.display.set.windows.text
 ===================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.text
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.windows.text
+   :members: clear, top, company, application, border, right, alignment, left, date, bottom, visible
 

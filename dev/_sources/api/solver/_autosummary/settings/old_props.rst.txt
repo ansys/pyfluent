@@ -7,12 +7,9 @@ old_props
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.old_props
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   old_props
-
+.. autoclass:: old_props
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================================   =================================================

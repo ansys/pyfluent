@@ -7,12 +7,9 @@ sbes_sgs_option
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.sbes_sgs_option
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   sbes_sgs_option
-
+.. autoclass:: sbes_sgs_option
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================

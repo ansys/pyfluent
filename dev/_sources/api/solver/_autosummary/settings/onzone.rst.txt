@@ -7,12 +7,9 @@ onzone
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.onzone
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   onzone
-
+.. autoclass:: onzone
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

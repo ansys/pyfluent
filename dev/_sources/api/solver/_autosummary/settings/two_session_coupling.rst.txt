@@ -7,17 +7,14 @@ two_session_coupling
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.two_session_coupling
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   two_session_coupling
-
-.. rubric:: Attributes
+.. autoclass:: two_session_coupling
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================   =========================================================
 
-Attribute                                                                          Summary
+Child                                                                              Summary
 
 ==============================   =========================================================
 :ref:`method <method_4>`             Specify the method for fluid and solid zone coupling.

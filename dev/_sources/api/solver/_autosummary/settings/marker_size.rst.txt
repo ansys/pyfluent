@@ -7,12 +7,9 @@ marker_size
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.marker_size
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   marker_size
-
+.. autoclass:: marker_size
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   ============================

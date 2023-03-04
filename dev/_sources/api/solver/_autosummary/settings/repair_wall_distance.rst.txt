@@ -7,12 +7,9 @@ repair_wall_distance
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.repair_wall_distance
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   repair_wall_distance
-
+.. autoclass:: repair_wall_distance
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ========================   ===================

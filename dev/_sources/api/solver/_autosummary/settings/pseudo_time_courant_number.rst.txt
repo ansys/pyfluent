@@ -7,12 +7,9 @@ pseudo_time_courant_number
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pseudo_time_courant_number
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   pseudo_time_courant_number
-
+.. autoclass:: pseudo_time_courant_number
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================================================   ===============================================

@@ -7,12 +7,9 @@ blended_treatment_for_buoyancy_forces
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.blended_treatment_for_buoyancy_forces
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   blended_treatment_for_buoyancy_forces
-
+.. autoclass:: blended_treatment_for_buoyancy_forces
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   =======================================

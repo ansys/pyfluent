@@ -7,17 +7,14 @@ dpm_bc_norm_coeff
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_bc_norm_coeff
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   dpm_bc_norm_coeff
-
-.. rubric:: Attributes
+.. autoclass:: dpm_bc_norm_coeff
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   =================================
 
-Attribute                                                                        Summary
+Child                                                                            Summary
 
 ====================================================   =================================
 :ref:`method <method_1>`                                                 'method' child.

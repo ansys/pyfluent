@@ -7,12 +7,9 @@ material
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.material
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   material
-
+.. autoclass:: material
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ============================================

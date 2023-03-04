@@ -7,17 +7,14 @@ volume_distance
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.volume_distance
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   volume_distance
-
-.. rubric:: Attributes
+.. autoclass:: volume_distance
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================   ============================
 
-Attribute                                                       Summary
+Child                                                           Summary
 
 ========================================   ============================
 :ref:`boundary_volume <boundary_volume>`       'boundary_volume' child.

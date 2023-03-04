@@ -7,12 +7,9 @@ x_scale
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.x_scale
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   x_scale
-
+.. autoclass:: x_scale
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ====================

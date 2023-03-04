@@ -7,12 +7,9 @@ len
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.len
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   len
-
+.. autoclass:: len
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

@@ -7,12 +7,9 @@ eslip
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.eslip
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   eslip
-
+.. autoclass:: eslip
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -7,17 +7,14 @@ optics
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.optics
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   optics
-
-.. rubric:: Attributes
+.. autoclass:: optics
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================================   =========================================================================================
 
-Attribute                                                                                                                            Summary
+Child                                                                                                                                Summary
 
 ================================================   =========================================================================================
 :ref:`enable <enable_3>`                                                                                  Enable/disable aero-optical model.

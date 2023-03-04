@@ -7,12 +7,9 @@ ramp_flow
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ramp_flow
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   ramp_flow
-
+.. autoclass:: ramp_flow
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ===================

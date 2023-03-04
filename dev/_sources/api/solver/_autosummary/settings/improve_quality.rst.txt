@@ -7,12 +7,9 @@ improve_quality
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.improve_quality
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   improve_quality
-
+.. autoclass:: improve_quality
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ==============================================

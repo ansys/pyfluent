@@ -7,12 +7,9 @@ residual_verbosity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.residual_verbosity
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   residual_verbosity
-
+.. autoclass:: residual_verbosity
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

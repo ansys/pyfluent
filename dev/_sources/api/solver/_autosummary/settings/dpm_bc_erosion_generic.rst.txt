@@ -7,12 +7,9 @@ dpm_bc_erosion_generic
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_bc_erosion_generic
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   dpm_bc_erosion_generic
-
+.. autoclass:: dpm_bc_erosion_generic
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

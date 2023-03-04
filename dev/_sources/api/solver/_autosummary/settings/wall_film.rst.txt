@@ -7,17 +7,14 @@ wall_film
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.wall_film
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   wall_film
-
-.. rubric:: Attributes
+.. autoclass:: wall_film
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================================================================================   =================================================================================
 
-Attribute                                                                                                                                                                  Summary
+Child                                                                                                                                                                      Summary
 
 ==============================================================================================   =================================================================================
 :ref:`include_convective_heat_transfer <include_convective_heat_transfer>`                           Enable/disable convection/conduction in the film-to-wall heat transfer model.

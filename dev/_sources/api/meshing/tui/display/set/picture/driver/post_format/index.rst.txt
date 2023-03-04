@@ -3,6 +3,11 @@
 meshing.tui.display.set.picture.driver.post\_format
 ===================================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.display.set.picture.driver.post_format
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.set.picture.driver.post_format
+   :members: fast_raster, raster, rle_raster, vector
 

@@ -7,12 +7,9 @@ mass_flux_correction_method
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mass_flux_correction_method
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   mass_flux_correction_method
-
+.. autoclass:: mass_flux_correction_method
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ===================

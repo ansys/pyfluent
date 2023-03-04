@@ -7,12 +7,9 @@ min_tke
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.min_tke
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   min_tke
-
+.. autoclass:: min_tke
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

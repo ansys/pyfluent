@@ -7,12 +7,9 @@ light_on
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.light_on
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   light_on
-
+.. autoclass:: light_on
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ========================

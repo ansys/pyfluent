@@ -7,17 +7,14 @@ interfacial_artificial_viscosity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.interfacial_artificial_viscosity
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   interfacial_artificial_viscosity
-
-.. rubric:: Attributes
+.. autoclass:: interfacial_artificial_viscosity
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================================   ================================================
 
-Attribute                                                                                                           Summary
+Child                                                                                                               Summary
 
 ========================================================================   ================================================
 :ref:`n_smooth_for_interfacial_regims <n_smooth_for_interfacial_regims>`       Number of smoothings for interfacial regime.

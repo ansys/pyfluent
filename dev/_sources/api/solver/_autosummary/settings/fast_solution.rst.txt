@@ -7,12 +7,9 @@ fast_solution
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fast_solution
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fast_solution
-
+.. autoclass:: fast_solution
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==================   =================

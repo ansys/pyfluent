@@ -7,17 +7,14 @@ gravity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.gravity
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   gravity
-
-.. rubric:: Attributes
+.. autoclass:: gravity
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================   ===================================
 
-Attribute                                                    Summary
+Child                                                        Summary
 
 ==============================   ===================================
 :ref:`enable <enable_2>`             Set gravitational acceleration.

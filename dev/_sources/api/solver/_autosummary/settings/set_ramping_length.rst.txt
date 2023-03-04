@@ -7,12 +7,9 @@ set_ramping_length
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_ramping_length
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   set_ramping_length
-
+.. autoclass:: set_ramping_length
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   =====================================

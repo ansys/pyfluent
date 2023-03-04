@@ -7,17 +7,14 @@ ecfm_sigma
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ecfm_sigma
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   ecfm_sigma
-
-.. rubric:: Attributes
+.. autoclass:: ecfm_sigma
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

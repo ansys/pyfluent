@@ -7,12 +7,9 @@ next_view
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.next_view
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   next_view
-
+.. autoclass:: next_view
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ==================

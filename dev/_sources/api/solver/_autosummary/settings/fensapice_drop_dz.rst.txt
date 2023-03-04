@@ -7,12 +7,9 @@ fensapice_drop_dz
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fensapice_drop_dz
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fensapice_drop_dz
-
+.. autoclass:: fensapice_drop_dz
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

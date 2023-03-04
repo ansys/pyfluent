@@ -7,12 +7,9 @@ rotating_mesh_flow_predictor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rotating_mesh_flow_predictor
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   rotating_mesh_flow_predictor
-
+.. autoclass:: rotating_mesh_flow_predictor
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===============================

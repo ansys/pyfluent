@@ -7,12 +7,9 @@ area
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.area
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   area
-
+.. autoclass:: area
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =============================

@@ -7,12 +7,9 @@ cone_angle
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cone_angle
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   cone_angle
-
+.. autoclass:: cone_angle
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

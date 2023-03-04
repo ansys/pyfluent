@@ -7,12 +7,9 @@ flux
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.flux
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   flux
-
+.. autoclass:: flux
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================================   ============================================

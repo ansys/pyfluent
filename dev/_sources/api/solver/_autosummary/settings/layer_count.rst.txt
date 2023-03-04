@@ -7,12 +7,9 @@ layer_count
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.layer_count
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   layer_count
-
+.. autoclass:: layer_count
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ======================================================

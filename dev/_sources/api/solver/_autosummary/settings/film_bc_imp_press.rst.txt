@@ -7,12 +7,9 @@ film_bc_imp_press
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.film_bc_imp_press
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   film_bc_imp_press
-
+.. autoclass:: film_bc_imp_press
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

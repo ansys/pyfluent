@@ -7,12 +7,9 @@ active_wetsteam_zone
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.active_wetsteam_zone
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   active_wetsteam_zone
-
+.. autoclass:: active_wetsteam_zone
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

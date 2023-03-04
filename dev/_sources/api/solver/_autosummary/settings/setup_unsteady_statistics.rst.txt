@@ -7,12 +7,9 @@ setup_unsteady_statistics
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.setup_unsteady_statistics
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   setup_unsteady_statistics
-
+.. autoclass:: setup_unsteady_statistics
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==================================   =========================

@@ -3,13 +3,18 @@
 solver.tui.solution.methods.multiphase\_numerics.heat\_mass\_transfer
 =====================================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.methods.multiphase_numerics.heat_mass_transfer
+   :members: alternative_energy_treatment
 
 .. toctree::
    :hidden:
 
-   evaporation_condensation/index
-   cavitation/index
    boiling/index
+   cavitation/index
+   evaporation_condensation/index
    area_density/index

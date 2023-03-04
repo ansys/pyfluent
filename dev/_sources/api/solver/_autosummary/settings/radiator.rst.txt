@@ -7,12 +7,9 @@ radiator
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.radiator
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   radiator
-
+.. autoclass:: radiator
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`radiator_child <radiator_child>`

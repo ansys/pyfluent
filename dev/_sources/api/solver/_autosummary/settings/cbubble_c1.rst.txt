@@ -7,12 +7,9 @@ cbubble_c1
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cbubble_c1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   cbubble_c1
-
+.. autoclass:: cbubble_c1
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   =====================================

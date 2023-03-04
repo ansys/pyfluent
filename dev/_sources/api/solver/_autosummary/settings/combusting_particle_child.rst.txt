@@ -7,17 +7,14 @@ combusting_particle_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.combusting_particle_child
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   combusting_particle_child
-
-.. rubric:: Attributes
+.. autoclass:: combusting_particle_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================================================================   ===========================================
 
-Attribute                                                                                                    Summary
+Child                                                                                                        Summary
 
 ======================================================================   ===========================================
 :ref:`density <density_4>`                                                                          'density' child.

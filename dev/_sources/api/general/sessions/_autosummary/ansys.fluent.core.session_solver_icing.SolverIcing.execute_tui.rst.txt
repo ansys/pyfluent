@@ -1,6 +1,0 @@
-execute\_tui
-============
-
-.. currentmodule:: ansys.fluent.core.session_solver_icing
-
-.. automethod:: SolverIcing.execute_tui

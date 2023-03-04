@@ -7,12 +7,9 @@ faradaic_heat
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.faradaic_heat
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   faradaic_heat
-
+.. autoclass:: faradaic_heat
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -7,12 +7,9 @@ clear
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.clear_3
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   clear
-
+.. autoclass:: clear
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   =======================================

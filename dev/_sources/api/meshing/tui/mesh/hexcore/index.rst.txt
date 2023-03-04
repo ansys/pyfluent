@@ -3,11 +3,16 @@
 meshing.tui.mesh.hexcore
 ========================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.hexcore
+   :members: create, merge_tets_to_pyramids
 
 .. toctree::
    :hidden:
 
-   local_regions/index
    controls/index
+   local_regions/index

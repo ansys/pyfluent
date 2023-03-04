@@ -7,12 +7,9 @@ pwr_names
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pwr_names
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   pwr_names
-
+.. autoclass:: pwr_names
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

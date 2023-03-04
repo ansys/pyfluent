@@ -7,12 +7,9 @@ implicit_source_term_coupling
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.implicit_source_term_coupling
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   implicit_source_term_coupling
-
+.. autoclass:: implicit_source_term_coupling
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =========================

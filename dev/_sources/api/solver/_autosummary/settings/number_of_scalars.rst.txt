@@ -7,12 +7,9 @@ number_of_scalars
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.number_of_scalars
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   number_of_scalars
-
+.. autoclass:: number_of_scalars
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ==========================================================================================================================

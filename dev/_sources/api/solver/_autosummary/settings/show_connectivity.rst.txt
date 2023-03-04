@@ -7,12 +7,9 @@ show_connectivity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.show_connectivity
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   show_connectivity
-
+.. autoclass:: show_connectivity
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==================================   =========================

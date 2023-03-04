@@ -7,12 +7,9 @@ statistics_shear_stress
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.statistics_shear_stress
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   statistics_shear_stress
-
+.. autoclass:: statistics_shear_stress
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ==========================

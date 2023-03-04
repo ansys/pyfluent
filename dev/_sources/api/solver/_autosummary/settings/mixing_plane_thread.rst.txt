@@ -7,12 +7,9 @@ mixing_plane_thread
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mixing_plane_thread
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   mixing_plane_thread
-
+.. autoclass:: mixing_plane_thread
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

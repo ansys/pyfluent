@@ -7,17 +7,14 @@ struct_damping_alpha
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.struct_damping_alpha
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   struct_damping_alpha
-
-.. rubric:: Attributes
+.. autoclass:: struct_damping_alpha
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================   ====================================================
 
-Attribute                                                               Summary
+Child                                                                   Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

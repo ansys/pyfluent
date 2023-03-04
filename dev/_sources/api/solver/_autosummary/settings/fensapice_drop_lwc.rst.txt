@@ -7,12 +7,9 @@ fensapice_drop_lwc
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fensapice_drop_lwc
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fensapice_drop_lwc
-
+.. autoclass:: fensapice_drop_lwc
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

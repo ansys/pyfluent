@@ -7,12 +7,9 @@ ystar
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ystar
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   ystar
-
+.. autoclass:: ystar
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 =========================   ===================

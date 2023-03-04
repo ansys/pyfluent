@@ -3,6 +3,11 @@
 solver.tui.results.graphics\_window.display\_states
 ===================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.display_states
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics_window.display_states
+   :members: copy, write, read, use_active, list, apply, edit, delete, create
 

@@ -7,17 +7,14 @@ manual
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.manual
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   manual
-
-.. rubric:: Attributes
+.. autoclass:: manual
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================================   ===========================
 
-Attribute                                                    Summary
+Child                                                        Summary
 
 ======================================   ===========================
 :ref:`faces <faces_1>`                                'faces' child.

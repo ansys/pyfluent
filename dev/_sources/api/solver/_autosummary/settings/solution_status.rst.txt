@@ -7,12 +7,9 @@ solution_status
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.solution_status
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   solution_status
-
+.. autoclass:: solution_status
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===============================

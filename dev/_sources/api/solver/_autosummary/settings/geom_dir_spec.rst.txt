@@ -7,12 +7,9 @@ geom_dir_spec
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.geom_dir_spec
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   geom_dir_spec
-
+.. autoclass:: geom_dir_spec
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================================   ================================================

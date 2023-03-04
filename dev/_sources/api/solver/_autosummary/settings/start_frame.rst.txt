@@ -7,12 +7,9 @@ start_frame
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.start_frame
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   start_frame
-
+.. autoclass:: start_frame
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ===============================================================

@@ -7,12 +7,9 @@ data_sampling
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.data_sampling
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   data_sampling
-
+.. autoclass:: data_sampling
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ==========================

@@ -7,17 +7,14 @@ modified_setting_options
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.modified_setting_options
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   modified_setting_options
-
-.. rubric:: Methods
+.. autoclass:: modified_setting_options
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ==============================================   =====================================================================================================================
 
-Method                                                                                                                                                         Summary
+Command                                                                                                                                                        Summary
 
 ==============================================   =====================================================================================================================
 :ref:`modified_setting <modified_setting>`           Specify which settings will be checked for non-default status for generating the Modified Settings Summary table.

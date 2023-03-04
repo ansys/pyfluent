@@ -7,12 +7,9 @@ min_vel_var_scale
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.min_vel_var_scale
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   min_vel_var_scale
-
+.. autoclass:: min_vel_var_scale
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

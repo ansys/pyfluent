@@ -7,17 +7,14 @@ miscellaneous
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.miscellaneous
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   miscellaneous
-
-.. rubric:: Attributes
+.. autoclass:: miscellaneous
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================================   ===========================================================
 
-Attribute                                                                                            Summary
+Child                                                                                                Summary
 
 ==============================================   ===========================================================
 :ref:`compute_statistics <compute_statistics>`       Enable/disable solution statistics for contact updates.

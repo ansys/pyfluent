@@ -7,12 +7,9 @@ cell_cz
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cell_cz
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   cell_cz
-
+.. autoclass:: cell_cz
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ================================

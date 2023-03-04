@@ -7,12 +7,9 @@ weight
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.weight
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   weight
-
+.. autoclass:: weight
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   =================================

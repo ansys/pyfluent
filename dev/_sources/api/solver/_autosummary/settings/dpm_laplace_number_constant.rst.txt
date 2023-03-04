@@ -7,12 +7,9 @@ dpm_laplace_number_constant
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_laplace_number_constant
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   dpm_laplace_number_constant
-
+.. autoclass:: dpm_laplace_number_constant
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

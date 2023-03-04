@@ -7,12 +7,9 @@ moving
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.moving
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   moving
-
+.. autoclass:: moving
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -7,12 +7,9 @@ boundaries
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.boundaries
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   boundaries
-
+.. autoclass:: boundaries
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   =====================

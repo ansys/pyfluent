@@ -7,12 +7,9 @@ external_aero
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.external_aero
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   external_aero
-
+.. autoclass:: external_aero
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ====================================

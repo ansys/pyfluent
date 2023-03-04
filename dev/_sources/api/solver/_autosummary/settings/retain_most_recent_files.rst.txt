@@ -7,12 +7,9 @@ retain_most_recent_files
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.retain_most_recent_files
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   retain_most_recent_files
-
+.. autoclass:: retain_most_recent_files
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

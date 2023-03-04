@@ -7,12 +7,9 @@ residual_smoothing_iter_count
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.residual_smoothing_iter_count
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   residual_smoothing_iter_count
-
+.. autoclass:: residual_smoothing_iter_count
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===========================================================

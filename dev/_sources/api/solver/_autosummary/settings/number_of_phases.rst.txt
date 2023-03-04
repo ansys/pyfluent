@@ -7,12 +7,9 @@ number_of_phases
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.number_of_phases
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   number_of_phases
-
+.. autoclass:: number_of_phases
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =======================

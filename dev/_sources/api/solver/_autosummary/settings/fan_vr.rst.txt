@@ -7,12 +7,9 @@ fan_vr
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fan_vr
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fan_vr
-
+.. autoclass:: fan_vr
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

@@ -7,12 +7,9 @@ logo
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.logo
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   logo
-
+.. autoclass:: logo
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ====================

@@ -7,12 +7,9 @@ average_source_terms
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.average_source_terms
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   average_source_terms
-
+.. autoclass:: average_source_terms
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ==========================================================================================================

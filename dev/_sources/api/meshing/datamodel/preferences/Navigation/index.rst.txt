@@ -3,8 +3,12 @@
 meshing.datamodel.preferences.Navigation
 ========================================
 
-.. autoclass:: ansys.fluent.core.datamodel_231.preferences.Root.Navigation
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.Navigation
 
 .. toctree::
    :hidden:

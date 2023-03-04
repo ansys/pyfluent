@@ -7,12 +7,9 @@ rfg_number_of_modes
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rfg_number_of_modes
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   rfg_number_of_modes
-
+.. autoclass:: rfg_number_of_modes
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

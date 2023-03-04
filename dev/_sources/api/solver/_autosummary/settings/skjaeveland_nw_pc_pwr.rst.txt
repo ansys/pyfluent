@@ -7,12 +7,9 @@ skjaeveland_nw_pc_pwr
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.skjaeveland_nw_pc_pwr
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   skjaeveland_nw_pc_pwr
-
+.. autoclass:: skjaeveland_nw_pc_pwr
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

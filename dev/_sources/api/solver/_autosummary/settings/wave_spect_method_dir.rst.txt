@@ -7,12 +7,9 @@ wave_spect_method_dir
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.wave_spect_method_dir
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   wave_spect_method_dir
-
+.. autoclass:: wave_spect_method_dir
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

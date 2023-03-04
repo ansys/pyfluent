@@ -7,12 +7,9 @@ show_time_sampled
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.show_time_sampled
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   show_time_sampled
-
+.. autoclass:: show_time_sampled
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ===========================

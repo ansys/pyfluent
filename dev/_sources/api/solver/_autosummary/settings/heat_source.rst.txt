@@ -7,17 +7,14 @@ heat_source
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.heat_source
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   heat_source
-
-.. rubric:: Attributes
+.. autoclass:: heat_source
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

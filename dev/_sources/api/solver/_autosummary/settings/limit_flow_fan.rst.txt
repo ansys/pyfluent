@@ -7,12 +7,9 @@ limit_flow_fan
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.limit_flow_fan
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   limit_flow_fan
-
+.. autoclass:: limit_flow_fan
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

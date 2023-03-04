@@ -7,12 +7,9 @@ iter_count
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.iter_count_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   iter_count
-
+.. autoclass:: iter_count
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ====================================

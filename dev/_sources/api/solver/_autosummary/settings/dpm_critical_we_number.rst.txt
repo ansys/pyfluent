@@ -7,12 +7,9 @@ dpm_critical_we_number
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_critical_we_number
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   dpm_critical_we_number
-
+.. autoclass:: dpm_critical_we_number
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

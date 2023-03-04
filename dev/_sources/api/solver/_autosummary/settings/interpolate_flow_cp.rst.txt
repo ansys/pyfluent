@@ -7,12 +7,9 @@ interpolate_flow_cp
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.interpolate_flow_cp
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   interpolate_flow_cp
-
+.. autoclass:: interpolate_flow_cp
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ====================================================================================================

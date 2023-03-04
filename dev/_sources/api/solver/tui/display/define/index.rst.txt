@@ -3,9 +3,12 @@
 solver.tui.display.define
 =========================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.display.define
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
 
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.define
 .. toctree::
    :hidden:
 

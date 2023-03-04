@@ -7,17 +7,14 @@ expert
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.expert_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   expert
-
-.. rubric:: Attributes
+.. autoclass:: expert
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================================================================   ===========================================
 
-Attribute                                                                                                    Summary
+Child                                                                                                        Summary
 
 ======================================================================   ===========================================
 :ref:`spatial_discretization_limiter <spatial_discretization_limiter>`       'spatial_discretization_limiter' child.

@@ -7,17 +7,14 @@ dual_electric_conductivity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dual_electric_conductivity
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   dual_electric_conductivity
-
-.. rubric:: Attributes
+.. autoclass:: dual_electric_conductivity
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   ====================================================
 
-Attribute                                                                                           Summary
+Child                                                                                               Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

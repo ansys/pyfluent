@@ -7,12 +7,9 @@ p0
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.p0
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   p0
-
+.. autoclass:: p0
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================

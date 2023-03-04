@@ -7,12 +7,9 @@ base_face_zone_for_partitioning
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.base_face_zone_for_partitioning
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   base_face_zone_for_partitioning
-
+.. autoclass:: base_face_zone_for_partitioning
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   ==================================

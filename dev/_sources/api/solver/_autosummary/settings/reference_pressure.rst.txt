@@ -7,12 +7,9 @@ reference_pressure
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reference_pressure
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   reference_pressure
-
+.. autoclass:: reference_pressure
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   ================================

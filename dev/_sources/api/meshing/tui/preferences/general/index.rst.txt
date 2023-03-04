@@ -3,6 +3,11 @@
 meshing.tui.preferences.general
 ===============================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.preferences.general
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.general
+   :members: utlmode, enable_parametric_study, laplace_auto_partition_default, dock_editor, key_behavioral_changes_message, default_ioformat, qaservice_message, initial_physics_volume_definitions, advanced_partition, automatic_transcript, utlcreate_physics_on_mode_change, idle_timeout, flow_model
 

@@ -3,6 +3,11 @@
 meshing.datamodel.preferences.Graphics.GraphicsEffects
 ======================================================
 
-.. autoclass:: ansys.fluent.core.datamodel_231.preferences.Root.Graphics.GraphicsEffects
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.Graphics.GraphicsEffects
+   :members: AmbientOcclusionEnabled, AmbientOcclusionQuality, AmbientOcclusionStrength, AntiAliasing, BloomBlur, BloomEnabled, BloomStrength, GridColor, GridPlaneCount, GridPlaneEnabled, GridPlaneOffset, GridPlaneSizeFactor, PlaneDirection, ReflectionsEnabled, ShadowMapEnabled, ShowEdgeReflections, ShowMarkerReflections, SimpleShadowsEnabled, UpdateAfterMouseRelease
 

@@ -7,12 +7,9 @@ convert_to_managed
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.convert_to_managed
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   convert_to_managed
-
+.. autoclass:: convert_to_managed
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ====================

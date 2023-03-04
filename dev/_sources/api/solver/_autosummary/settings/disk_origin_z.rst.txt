@@ -7,12 +7,9 @@ disk_origin_z
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.disk_origin_z
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   disk_origin_z
-
+.. autoclass:: disk_origin_z
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   ===============================================

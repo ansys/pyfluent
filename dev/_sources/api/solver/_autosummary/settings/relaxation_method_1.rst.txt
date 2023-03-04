@@ -7,12 +7,9 @@ relaxation_method
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.relaxation_method_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   relaxation_method
-
+.. autoclass:: relaxation_method
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ======================================

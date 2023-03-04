@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -51,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
-    <link rel="next" title="solver.tui.setup.overset_interfaces" href="../../overset_interfaces/index.html" />
-    <link rel="prev" title="solver.tui.setup.dynamic_mesh.zones" href="../zones/index.html" />
+    <link rel="next" title="solver.tui.setup.dynamic_mesh.transient_settings" href="../transient_settings/index.html" />
+    <link rel="prev" title="solver.tui.setup.dynamic_mesh" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -295,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -340,18 +355,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
        <li class="toctree-l4">
@@ -360,33 +365,53 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../define/index.html">
          solver.tui.define
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../surface/index.html">
          solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../icing/index.html">
-         solver.tui.icing
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -399,42 +424,10 @@ function checkPageExistsAndRedirect(event) {
          </i>
         </label>
         <ul class="current">
-         <li class="toctree-l5 current active has-children">
-          <a class="reference internal" href="../index.html">
-           solver.tui.setup.dynamic_mesh
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../named_expressions/index.html">
+           solver.tui.setup.named_expressions
           </a>
-          <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-          <label for="toctree-checkbox-5">
-           <i class="fas fa-chevron-down">
-           </i>
-          </label>
-          <ul class="current">
-           <li class="toctree-l6">
-            <a class="reference internal" href="../transient_settings/index.html">
-             solver.tui.setup.dynamic_mesh.transient_settings
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../events/index.html">
-             solver.tui.setup.dynamic_mesh.events
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../controls/index.html">
-             solver.tui.setup.dynamic_mesh.controls
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../zones/index.html">
-             solver.tui.setup.dynamic_mesh.zones
-            </a>
-           </li>
-           <li class="toctree-l6 current active">
-            <a class="current reference internal" href="#">
-             solver.tui.setup.dynamic_mesh.actions
-            </a>
-           </li>
-          </ul>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../overset_interfaces/index.html">
@@ -442,28 +435,23 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../named_expressions/index.html">
-           solver.tui.setup.named_expressions
+          <a class="reference internal" href="../../turbo_model/index.html">
+           solver.tui.setup.turbo_model
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../operating_conditions/index.html">
-           solver.tui.setup.operating_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../boundary_conditions/index.html">
-           solver.tui.setup.boundary_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../expert/index.html">
-           solver.tui.setup.expert
+          <a class="reference internal" href="../../gap_model/index.html">
+           solver.tui.setup.gap_model
           </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../reference_values/index.html">
            solver.tui.setup.reference_values
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../reference_frames/index.html">
+           solver.tui.setup.reference_frames
           </a>
          </li>
          <li class="toctree-l5">
@@ -477,13 +465,50 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../turbo_model/index.html">
-           solver.tui.setup.turbo_model
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="../../mesh_interfaces/index.html">
            solver.tui.setup.mesh_interfaces
+          </a>
+         </li>
+         <li class="toctree-l5 current active has-children">
+          <a class="reference internal" href="../index.html">
+           solver.tui.setup.dynamic_mesh
+          </a>
+          <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+          <label for="toctree-checkbox-5">
+           <i class="fas fa-chevron-down">
+           </i>
+          </label>
+          <ul class="current">
+           <li class="toctree-l6 current active">
+            <a class="current reference internal" href="#">
+             solver.tui.setup.dynamic_mesh.actions
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../transient_settings/index.html">
+             solver.tui.setup.dynamic_mesh.transient_settings
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../controls/index.html">
+             solver.tui.setup.dynamic_mesh.controls
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../zones/index.html">
+             solver.tui.setup.dynamic_mesh.zones
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../events/index.html">
+             solver.tui.setup.dynamic_mesh.events
+            </a>
+           </li>
+          </ul>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../boundary_conditions/index.html">
+           solver.tui.setup.boundary_conditions
           </a>
          </li>
          <li class="toctree-l5">
@@ -492,35 +517,25 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../reference_frames/index.html">
-           solver.tui.setup.reference_frames
+          <a class="reference internal" href="../../expert/index.html">
+           solver.tui.setup.expert
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../gap_model/index.html">
-           solver.tui.setup.gap_model
+          <a class="reference internal" href="../../operating_conditions/index.html">
+           solver.tui.setup.operating_conditions
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parametric_study/index.html">
-         solver.tui.parametric_study
+        <a class="reference internal" href="../../../report/index.html">
+         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../server/index.html">
+         solver.tui.server
         </a>
        </li>
        <li class="toctree-l4">
@@ -529,8 +544,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../solution/index.html">
-         solver.tui.solution
+        <a class="reference internal" href="../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
        <li class="toctree-l4">
@@ -539,23 +554,23 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../views/index.html">
          solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../preferences/index.html">
-         solver.tui.preferences
         </a>
        </li>
       </ul>
@@ -627,25 +642,16 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.actions">
    <code class="docutils literal notranslate">
     <span class="pre">
-     actions
+     main_menu.setup.dynamic_mesh.actions
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.actions.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       __init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.actions.remesh_cell_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
-       remesh_cell_zone()
+       main_menu.setup.dynamic_mesh.actions.remesh_cell_zone()
       </span>
      </code>
     </a>
@@ -673,28 +679,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-dynamic-mesh-actions">
 <span id="ref-solver-tui-setup-dynamic-mesh-actions"></span><h1>solver.tui.setup.dynamic_mesh.actions<a class="headerlink" href="#solver-tui-setup-dynamic-mesh-actions" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.actions">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.</span></span><span class="sig-name descname"><span class="pre">actions</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.actions" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the dynamic mesh actions menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.actions.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.actions.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p>__init__ method of TUIMenu class.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.actions.remesh_cell_zone" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.actions.remesh_cell_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remesh_cell_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Manually remesh cell zone with option to remesh adjacent dynamic face zones.</p></td>
-</tr>
 </tbody>
 </table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.actions.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.actions.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>__init__ method of TUIMenu class.</p>
-</dd></dl>
-
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.actions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.dynamic_mesh.</span></span><span class="sig-name descname"><span class="pre">actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.actions" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the dynamic mesh actions menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.actions.remesh_cell_zone">
 <span class="sig-name descname"><span class="pre">remesh_cell_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.actions.remesh_cell_zone" title="Permalink to this definition">#</a></dt>

@@ -7,12 +7,9 @@ dolly
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dolly
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   dolly
-
+.. autoclass:: dolly
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ====================   ==================

@@ -7,12 +7,9 @@ max_number_of_steps
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.max_number_of_steps
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   max_number_of_steps
-
+.. autoclass:: max_number_of_steps
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   ===================================================================================

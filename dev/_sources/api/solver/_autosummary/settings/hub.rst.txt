@@ -7,12 +7,9 @@ hub
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.hub
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   hub
-
+.. autoclass:: hub
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

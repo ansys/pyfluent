@@ -7,12 +7,9 @@ cell_cx
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cell_cx
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   cell_cx
-
+.. autoclass:: cell_cx
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ================================

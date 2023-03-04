@@ -7,12 +7,9 @@ cov
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cov
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   cov
-
+.. autoclass:: cov
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

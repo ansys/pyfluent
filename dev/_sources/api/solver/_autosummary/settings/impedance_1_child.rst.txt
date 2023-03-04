@@ -7,17 +7,14 @@ impedance_1_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.impedance_1_child
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   impedance_1_child
-
-.. rubric:: Attributes
+.. autoclass:: impedance_1_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ============================   ======================
 
-Attribute                                     Summary
+Child                                         Summary
 
 ============================   ======================
 :ref:`pole <pole>`                      'pole' child.

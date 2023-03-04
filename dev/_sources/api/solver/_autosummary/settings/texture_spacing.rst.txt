@@ -7,12 +7,9 @@ texture_spacing
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.texture_spacing
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   texture_spacing
-
+.. autoclass:: texture_spacing
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ===============================

@@ -7,17 +7,14 @@ results
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.results
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   results
-
-.. rubric:: Attributes
+.. autoclass:: results
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================   =======================
 
-Attribute                                        Summary
+Child                                            Summary
 
 ==============================   =======================
 :ref:`graphics <graphics>`             'graphics' child.

@@ -7,12 +7,9 @@ image_to_display
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.image_to_display
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   image_to_display
-
+.. autoclass:: image_to_display
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ===============================

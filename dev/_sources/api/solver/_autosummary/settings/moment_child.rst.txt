@@ -7,17 +7,14 @@ moment_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.moment_child
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   moment_child
-
-.. rubric:: Attributes
+.. autoclass:: moment_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================================================   ========================================
 
-Attribute                                                                                           Summary
+Child                                                                                               Summary
 
 ================================================================   ========================================
 :ref:`report_type <report_type>`                                                       'report_type' child.

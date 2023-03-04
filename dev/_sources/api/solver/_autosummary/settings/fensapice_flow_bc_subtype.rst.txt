@@ -7,12 +7,9 @@ fensapice_flow_bc_subtype
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fensapice_flow_bc_subtype
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fensapice_flow_bc_subtype
-
+.. autoclass:: fensapice_flow_bc_subtype
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

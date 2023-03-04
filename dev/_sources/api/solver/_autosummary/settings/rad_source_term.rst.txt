@@ -7,12 +7,9 @@ rad_source_term
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rad_source_term
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   rad_source_term
-
+.. autoclass:: rad_source_term
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

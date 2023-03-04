@@ -3,6 +3,11 @@
 solver.tui.parametric\_study.study
 ==================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.parametric_study.study
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.parametric_study.study
+   :members: set_as_current, list, delete, use_base_data, initialize, rename, duplicate
 

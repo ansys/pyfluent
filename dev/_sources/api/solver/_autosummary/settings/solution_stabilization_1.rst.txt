@@ -7,17 +7,14 @@ solution_stabilization
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.solution_stabilization_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   solution_stabilization
-
-.. rubric:: Attributes
+.. autoclass:: solution_stabilization
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================================================   ========================================================
 
-Attribute                                                                                                                               Summary
+Child                                                                                                                                   Summary
 
 ====================================================================================   ========================================================
 :ref:`execute_settings_optimization <execute_settings_optimization>`                                        Execute optimized settings for VOF.

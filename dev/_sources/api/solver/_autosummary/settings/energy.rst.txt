@@ -7,17 +7,14 @@ energy
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.energy
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   energy
-
-.. rubric:: Attributes
+.. autoclass:: energy
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================================   ================================
 
-Attribute                                                                   Summary
+Child                                                                       Summary
 
 ================================================   ================================
 :ref:`enabled <enabled>`                                           'enabled' child.

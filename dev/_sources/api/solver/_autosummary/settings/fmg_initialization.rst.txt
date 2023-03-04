@@ -7,17 +7,14 @@ fmg_initialization
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fmg_initialization
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fmg_initialization
-
-.. rubric:: Attributes
+.. autoclass:: fmg_initialization
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================================   ===============================
 
-Attribute                                                                Summary
+Child                                                                    Summary
 
 ==============================================   ===============================
 :ref:`fmg_courant_number <fmg_courant_number>`       'fmg_courant_number' child.
@@ -26,11 +23,11 @@ Attribute                                                                Summary
 
 ==============================================   ===============================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ==================================================================   ===========================================
 
-Method                                                                                                   Summary
+Command                                                                                                  Summary
 
 ==================================================================   ===========================================
 :ref:`customize_fmg_initialization <customize_fmg_initialization>`       'customize_fmg_initialization' command.

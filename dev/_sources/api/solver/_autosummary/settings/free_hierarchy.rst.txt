@@ -7,12 +7,9 @@ free_hierarchy
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.free_hierarchy
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   free_hierarchy
-
+.. autoclass:: free_hierarchy
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ==================

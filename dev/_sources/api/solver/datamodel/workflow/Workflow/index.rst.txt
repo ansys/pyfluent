@@ -3,6 +3,12 @@
 solver.datamodel.workflow.Workflow
 ==================================
 
-.. autoclass:: ansys.fluent.core.datamodel_231.workflow.Root.Workflow
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.datamodel_231.workflow
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.workflow::Root.Workflow
+   :members: CurrentTask, TaskList
+   :noindex:
 

@@ -3,6 +3,11 @@
 meshing.datamodel.PartManagement.RotateAboutAxis
 ================================================
 
-.. autoclass:: ansys.fluent.core.datamodel_231.PartManagement.Root.RotateAboutAxis._RotateAboutAxis
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.datamodel_231.PartManagement
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.PartManagement::Root.RotateAboutAxis._RotateAboutAxis
+   :members: Angle, Applied, AxisX, AxisY, AxisZ, Children, Context, Global, Name, PivotX, PivotY, PivotZ, Type, _name_, Add, Apply, Remove, Rename, Undo, Update
 

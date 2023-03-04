@@ -7,17 +7,14 @@ premix_adiabatic_temp
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.premix_adiabatic_temp
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   premix_adiabatic_temp
-
-.. rubric:: Attributes
+.. autoclass:: premix_adiabatic_temp
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   ====================================================
 
-Attribute                                                                                           Summary
+Child                                                                                               Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

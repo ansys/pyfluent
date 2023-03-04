@@ -7,12 +7,9 @@ correction_reduction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.correction_reduction
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   correction_reduction
-
+.. autoclass:: correction_reduction
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================

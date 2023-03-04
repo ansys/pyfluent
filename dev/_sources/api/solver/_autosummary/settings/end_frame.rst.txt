@@ -7,12 +7,9 @@ end_frame
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.end_frame
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   end_frame
-
+.. autoclass:: end_frame
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ===============================================================

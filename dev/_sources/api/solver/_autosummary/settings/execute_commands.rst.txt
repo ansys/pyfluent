@@ -7,17 +7,14 @@ execute_commands
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.execute_commands
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   execute_commands
-
-.. rubric:: Methods
+.. autoclass:: execute_commands
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ==========================   ============================================
 
-Method                                                            Summary
+Command                                                           Summary
 
 ==========================   ============================================
 :ref:`enable <enable_9>`                       Enable an execute-command.

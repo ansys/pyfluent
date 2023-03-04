@@ -7,12 +7,9 @@ max_vapor_pressure_ratio
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.max_vapor_pressure_ratio
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   max_vapor_pressure_ratio
-
+.. autoclass:: max_vapor_pressure_ratio
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =====================================

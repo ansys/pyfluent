@@ -3,6 +3,11 @@
 solver.tui.solution.methods.multiphase\_numerics.compressible\_flow
 ===================================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.compressible_flow
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.methods.multiphase_numerics.compressible_flow
+   :members: alternate_bc_formulation, enhanced_numerics
 

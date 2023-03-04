@@ -7,12 +7,9 @@ repair_face_handedness
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.repair_face_handedness
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   repair_face_handedness
-
+.. autoclass:: repair_face_handedness
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ======================================   ===========================

@@ -7,12 +7,9 @@ single_precision_coordinates
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.single_precision_coordinates
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   single_precision_coordinates
-
+.. autoclass:: single_precision_coordinates
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   =================

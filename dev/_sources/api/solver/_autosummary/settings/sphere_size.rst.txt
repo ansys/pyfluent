@@ -7,12 +7,9 @@ sphere_size
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.sphere_size
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   sphere_size
-
+.. autoclass:: sphere_size
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   ============================

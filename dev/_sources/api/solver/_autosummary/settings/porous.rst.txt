@@ -7,12 +7,9 @@ porous
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.porous
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   porous
-
+.. autoclass:: porous
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

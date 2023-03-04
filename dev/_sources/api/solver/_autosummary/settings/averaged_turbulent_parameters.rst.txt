@@ -7,12 +7,9 @@ averaged_turbulent_parameters
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.averaged_turbulent_parameters
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   averaged_turbulent_parameters
-
+.. autoclass:: averaged_turbulent_parameters
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ======================================

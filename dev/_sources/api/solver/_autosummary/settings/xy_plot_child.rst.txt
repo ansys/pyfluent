@@ -7,17 +7,14 @@ xy_plot_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.xy_plot_child
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   xy_plot_child
-
-.. rubric:: Attributes
+.. autoclass:: xy_plot_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================   ============================
 
-Attribute                                                       Summary
+Child                                                           Summary
 
 ========================================   ============================
 :ref:`name <name_1>`                                      'name' child.
@@ -46,11 +43,11 @@ Attribute                                                       Summary
 
 ========================================   ============================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ==========================   ======================
 
-Method                                      Summary
+Command                                     Summary
 
 ==========================   ======================
 :ref:`display <display_2>`       'display' command.

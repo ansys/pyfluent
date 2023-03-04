@@ -7,12 +7,9 @@ username
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.username
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   username
-
+.. autoclass:: username
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   ========================================================

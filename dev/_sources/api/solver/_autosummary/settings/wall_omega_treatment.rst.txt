@@ -7,12 +7,9 @@ wall_omega_treatment
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.wall_omega_treatment
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   wall_omega_treatment
-
+.. autoclass:: wall_omega_treatment
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   ================================

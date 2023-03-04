@@ -7,12 +7,9 @@ port
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.port
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   port
-
+.. autoclass:: port
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ====================

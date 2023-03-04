@@ -7,12 +7,9 @@ rsm_multiphase_models
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rsm_multiphase_models
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   rsm_multiphase_models
-
+.. autoclass:: rsm_multiphase_models
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ==================================

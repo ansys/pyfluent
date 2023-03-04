@@ -7,12 +7,9 @@ point_vector
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.point_vector
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   point_vector
-
+.. autoclass:: point_vector
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================

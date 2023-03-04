@@ -7,12 +7,9 @@ law_5
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.law_5
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   law_5
-
+.. autoclass:: law_5
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   ========================

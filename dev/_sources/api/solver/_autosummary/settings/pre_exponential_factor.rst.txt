@@ -7,12 +7,9 @@ pre_exponential_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pre_exponential_factor
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   pre_exponential_factor
-
+.. autoclass:: pre_exponential_factor
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================================   =======================================

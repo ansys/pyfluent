@@ -3,6 +3,11 @@
 meshing.tui.mesh.prism.split
 ============================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.split
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.prism.split
+   :members: split
 

@@ -7,12 +7,9 @@ max_point
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.max_point
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   max_point
-
+.. autoclass:: max_point
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =======================

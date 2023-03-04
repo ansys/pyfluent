@@ -7,12 +7,9 @@ traction_faces
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.traction_faces
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   traction_faces
-
+.. autoclass:: traction_faces
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

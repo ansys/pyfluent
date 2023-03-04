@@ -3,8 +3,13 @@
 solver.tui.views
 ================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.views
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.views
+   :members: default_view, write_views, auto_scale, save_view, delete_view, read_views, list_views, next_view, restore_view, last_view
 
 .. toctree::
    :hidden:

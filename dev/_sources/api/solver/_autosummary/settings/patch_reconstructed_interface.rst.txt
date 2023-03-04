@@ -7,12 +7,9 @@ patch_reconstructed_interface
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.patch_reconstructed_interface
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   patch_reconstructed_interface
-
+.. autoclass:: patch_reconstructed_interface
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ============================================

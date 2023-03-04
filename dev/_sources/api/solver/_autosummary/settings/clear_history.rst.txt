@@ -7,12 +7,9 @@ clear_history
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.clear_history
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   clear_history
-
+.. autoclass:: clear_history
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ================================   ========================

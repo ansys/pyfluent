@@ -7,12 +7,9 @@ les_embedded_spec
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.les_embedded_spec
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   les_embedded_spec
-
+.. autoclass:: les_embedded_spec
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

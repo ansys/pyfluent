@@ -7,12 +7,9 @@ glass
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.glass
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   glass
-
+.. autoclass:: glass
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

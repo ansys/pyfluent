@@ -3,6 +3,11 @@
 solver.tui.solve.animate.objects
 ================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solve.animate.objects
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.animate.objects
+   :members: delete, edit, copy, clear_history, create
 

@@ -7,12 +7,9 @@ disable_repair
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.disable_repair
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   disable_repair
-
+.. autoclass:: disable_repair
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   =============================================================

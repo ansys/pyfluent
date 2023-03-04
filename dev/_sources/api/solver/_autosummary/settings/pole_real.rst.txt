@@ -7,12 +7,9 @@ pole_real
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pole_real
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   pole_real
-
+.. autoclass:: pole_real
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =======================================

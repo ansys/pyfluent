@@ -7,12 +7,9 @@ cone_type
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cone_type
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   cone_type
-
+.. autoclass:: cone_type
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ===========================

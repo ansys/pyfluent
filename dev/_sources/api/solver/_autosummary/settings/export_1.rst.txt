@@ -7,12 +7,9 @@ export
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.export_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   export
-
+.. autoclass:: export
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ====================================   ==========================

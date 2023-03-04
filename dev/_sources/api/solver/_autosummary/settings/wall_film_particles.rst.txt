@@ -7,12 +7,9 @@ wall_film_particles
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.wall_film_particles
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   wall_film_particles
-
+.. autoclass:: wall_film_particles
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

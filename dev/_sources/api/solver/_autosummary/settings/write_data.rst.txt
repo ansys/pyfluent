@@ -7,12 +7,9 @@ write_data
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.write_data
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   write_data
-
+.. autoclass:: write_data
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   =========================

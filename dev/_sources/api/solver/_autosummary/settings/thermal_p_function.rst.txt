@@ -7,12 +7,9 @@ thermal_p_function
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.thermal_p_function
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   thermal_p_function
-
+.. autoclass:: thermal_p_function
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================

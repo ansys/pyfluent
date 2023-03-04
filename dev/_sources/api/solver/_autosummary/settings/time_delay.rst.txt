@@ -7,12 +7,9 @@ time_delay
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.time_delay
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   time_delay
-
+.. autoclass:: time_delay
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   ================================

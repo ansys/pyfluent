@@ -7,12 +7,9 @@ therm_accom_coef
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.therm_accom_coef
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   therm_accom_coef
-
+.. autoclass:: therm_accom_coef
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

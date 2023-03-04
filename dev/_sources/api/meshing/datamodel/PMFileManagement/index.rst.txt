@@ -3,8 +3,12 @@
 meshing.datamodel.PMFileManagement
 ==================================
 
-.. autoclass:: ansys.fluent.core.datamodel_231.PMFileManagement.Root
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.datamodel_231.PMFileManagement
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.PMFileManagement::Root
 
 .. toctree::
    :hidden:

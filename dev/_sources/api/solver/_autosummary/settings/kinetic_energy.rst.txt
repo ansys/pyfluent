@@ -7,12 +7,9 @@ kinetic_energy
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.kinetic_energy
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   kinetic_energy
-
+.. autoclass:: kinetic_energy
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

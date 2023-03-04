@@ -3,8 +3,13 @@
 solver.tui.mesh.polyhedra
 =========================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.mesh.polyhedra
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.mesh.polyhedra
+   :members: convert_domain, convert_hanging_nodes, convert_hanging_nodes_zones, convert_skewed_cells
 
 .. toctree::
    :hidden:

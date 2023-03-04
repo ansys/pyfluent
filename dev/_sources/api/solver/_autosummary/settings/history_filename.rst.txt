@@ -7,12 +7,9 @@ history_filename
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.history_filename
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   history_filename
-
+.. autoclass:: history_filename
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

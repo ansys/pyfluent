@@ -7,12 +7,9 @@ headlights
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.headlights
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   headlights
-
+.. autoclass:: headlights
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

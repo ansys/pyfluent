@@ -7,12 +7,9 @@ fensapice_drop_cv
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fensapice_drop_cv
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fensapice_drop_cv
-
+.. autoclass:: fensapice_drop_cv
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

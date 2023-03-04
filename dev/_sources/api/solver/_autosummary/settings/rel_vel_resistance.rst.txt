@@ -7,12 +7,9 @@ rel_vel_resistance
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rel_vel_resistance
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   rel_vel_resistance
-
+.. autoclass:: rel_vel_resistance
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

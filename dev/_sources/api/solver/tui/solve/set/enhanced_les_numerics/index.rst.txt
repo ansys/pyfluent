@@ -3,6 +3,11 @@
 solver.tui.solve.set.enhanced\_les\_numerics
 ============================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solve.set.enhanced_les_numerics
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.enhanced_les_numerics
+   :members: optimized_advection, optimized_cd, optimized_algorithm
 

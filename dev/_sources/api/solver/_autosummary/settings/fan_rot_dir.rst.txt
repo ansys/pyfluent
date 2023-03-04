@@ -7,12 +7,9 @@ fan_rot_dir
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fan_rot_dir
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fan_rot_dir
-
+.. autoclass:: fan_rot_dir
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

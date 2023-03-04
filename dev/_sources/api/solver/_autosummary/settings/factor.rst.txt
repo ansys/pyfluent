@@ -7,12 +7,9 @@ factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.factor
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   factor
-
+.. autoclass:: factor
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   ====================================

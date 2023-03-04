@@ -7,12 +7,9 @@ rough_data
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rough_data
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   rough_data
-
+.. autoclass:: rough_data
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

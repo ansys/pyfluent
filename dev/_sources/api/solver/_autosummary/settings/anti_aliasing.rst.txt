@@ -7,12 +7,9 @@ anti_aliasing
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.anti_aliasing
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   anti_aliasing
-
+.. autoclass:: anti_aliasing
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

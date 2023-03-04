@@ -7,12 +7,9 @@ outer_radius
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.outer_radius
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   outer_radius
-
+.. autoclass:: outer_radius
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

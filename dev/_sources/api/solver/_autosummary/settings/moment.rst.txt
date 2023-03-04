@@ -7,12 +7,9 @@ moment
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.moment
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   moment
-
+.. autoclass:: moment
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`moment_child <moment_child>`

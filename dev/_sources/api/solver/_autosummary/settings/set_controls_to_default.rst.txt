@@ -7,17 +7,14 @@ set_controls_to_default
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_controls_to_default
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   set_controls_to_default
-
-.. rubric:: Methods
+.. autoclass:: set_controls_to_default
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ======================================================================================   =====================================================
 
-Method                                                                                                                                 Summary
+Command                                                                                                                                Summary
 
 ======================================================================================   =====================================================
 :ref:`solution_controls <solution_controls>`                                                                      'solution_controls' command.

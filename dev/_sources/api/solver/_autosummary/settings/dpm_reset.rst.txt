@@ -7,12 +7,9 @@ dpm_reset
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_reset
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   dpm_reset
-
+.. autoclass:: dpm_reset
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ===========================

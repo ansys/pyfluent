@@ -7,17 +7,14 @@ neutral_involved_interaction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.neutral_involved_interaction
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   neutral_involved_interaction
-
-.. rubric:: Attributes
+.. autoclass:: neutral_involved_interaction
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================================================   =========================================
 
-Attribute                                                                                              Summary
+Child                                                                                                  Summary
 
 ==================================================================   =========================================
 :ref:`diffusion_collision_integral <diffusion_collision_integral>`       'diffusion_collision_integral' child.

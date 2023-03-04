@@ -7,12 +7,9 @@ partition_mask
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.partition_mask
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   partition_mask
-
+.. autoclass:: partition_mask
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   ================

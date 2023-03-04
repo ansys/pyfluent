@@ -7,12 +7,9 @@ beach_wave_len
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.beach_wave_len
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   beach_wave_len
-
+.. autoclass:: beach_wave_len
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

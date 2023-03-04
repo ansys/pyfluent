@@ -7,12 +7,9 @@ lic_image_filter
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.lic_image_filter
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   lic_image_filter
-
+.. autoclass:: lic_image_filter
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ===============================

@@ -7,17 +7,14 @@ equation_order
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.equation_order
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   equation_order
-
-.. rubric:: Attributes
+.. autoclass:: equation_order
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================================   ==================================================================
 
-Attribute                                                                                                       Summary
+Child                                                                                                           Summary
 
 ==================================================   ==================================================================
 :ref:`solve_flow_last <solve_flow_last>`                 Solve flow equation at the end of iteration as an alternative.

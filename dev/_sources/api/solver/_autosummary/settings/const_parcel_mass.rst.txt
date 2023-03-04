@@ -7,12 +7,9 @@ const_parcel_mass
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.const_parcel_mass
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   const_parcel_mass
-
+.. autoclass:: const_parcel_mass
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

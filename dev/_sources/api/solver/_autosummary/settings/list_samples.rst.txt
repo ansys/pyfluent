@@ -7,12 +7,9 @@ list_samples
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.list_samples
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   list_samples
-
+.. autoclass:: list_samples
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

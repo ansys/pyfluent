@@ -7,12 +7,9 @@ laminar
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.laminar
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   laminar
-
+.. autoclass:: laminar
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

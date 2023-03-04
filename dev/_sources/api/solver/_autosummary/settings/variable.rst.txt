@@ -7,12 +7,9 @@ variable
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.variable
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   variable
-
+.. autoclass:: variable
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ====================================================

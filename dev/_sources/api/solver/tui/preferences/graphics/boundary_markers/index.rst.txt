@@ -3,6 +3,11 @@
 solver.tui.preferences.graphics.boundary\_markers
 =================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.boundary_markers
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.graphics.boundary_markers
+   :members: color_option, show_inlet_markers, marker_size_limiting_scale_multiplier, exclude_from_bounding, outlet_color, show_outlet_markers, inlet_color, marker_fraction, enabled, scale_marker, markers_limit
 

@@ -7,12 +7,9 @@ nist_fluid
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.nist_fluid
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   nist_fluid
-
+.. autoclass:: nist_fluid
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

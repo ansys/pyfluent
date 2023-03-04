@@ -7,12 +7,9 @@ extended_summary
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.extended_summary
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   extended_summary
-
+.. autoclass:: extended_summary
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==================================================================   =========================================

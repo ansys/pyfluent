@@ -7,12 +7,9 @@ ke_spec
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ke_spec
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   ke_spec
-
+.. autoclass:: ke_spec
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

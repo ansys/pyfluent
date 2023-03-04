@@ -7,12 +7,9 @@ colormap_height
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.colormap_height
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   colormap_height
-
+.. autoclass:: colormap_height
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ============================================

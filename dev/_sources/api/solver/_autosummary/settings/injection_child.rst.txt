@@ -7,17 +7,14 @@ injection_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.injection_child
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   injection_child
-
-.. rubric:: Attributes
+.. autoclass:: injection_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================================================================   ===========================================
 
-Attribute                                                                                                    Summary
+Child                                                                                                        Summary
 
 ======================================================================   ===========================================
 :ref:`report_type <report_type>`                                                                'report_type' child.

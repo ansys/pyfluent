@@ -7,12 +7,9 @@ two_resistance_boiling_framework
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.two_resistance_boiling_framework
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   two_resistance_boiling_framework
-
+.. autoclass:: two_resistance_boiling_framework
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ==================================

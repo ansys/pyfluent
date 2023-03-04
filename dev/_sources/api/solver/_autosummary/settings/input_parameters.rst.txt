@@ -7,12 +7,9 @@ input_parameters
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.input_parameters
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   input_parameters
-
+.. autoclass:: input_parameters
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================

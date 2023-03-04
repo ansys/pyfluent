@@ -7,12 +7,9 @@ random_eddy_lifetime
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.random_eddy_lifetime
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   random_eddy_lifetime
-
+.. autoclass:: random_eddy_lifetime
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   =================================

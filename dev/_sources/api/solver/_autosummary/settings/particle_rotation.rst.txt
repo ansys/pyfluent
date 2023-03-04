@@ -7,17 +7,14 @@ particle_rotation
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.particle_rotation
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   particle_rotation
-
-.. rubric:: Attributes
+.. autoclass:: particle_rotation
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==========================   =====================
 
-Attribute                                  Summary
+Child                                      Summary
 
 ==========================   =====================
 :ref:`enable <enable>`             'enable' child.

@@ -7,12 +7,9 @@ dpm_film_bl_model
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_film_bl_model
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   dpm_film_bl_model
-
+.. autoclass:: dpm_film_bl_model
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

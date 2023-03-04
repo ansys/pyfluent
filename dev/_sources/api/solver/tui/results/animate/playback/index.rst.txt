@@ -3,8 +3,13 @@
 solver.tui.results.animate.playback
 ===================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.animate.playback
+   :members: write, read, stored_view, delete, play, set_custom_frames
 
 .. toctree::
    :hidden:

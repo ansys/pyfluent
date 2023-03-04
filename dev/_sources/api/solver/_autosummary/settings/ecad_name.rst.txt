@@ -7,12 +7,9 @@ ecad_name
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ecad_name
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   ecad_name
-
+.. autoclass:: ecad_name
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

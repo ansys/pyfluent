@@ -7,12 +7,9 @@ reynolds_stress_model
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reynolds_stress_model
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   reynolds_stress_model
-
+.. autoclass:: reynolds_stress_model
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ====================

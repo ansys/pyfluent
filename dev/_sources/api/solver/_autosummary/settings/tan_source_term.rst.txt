@@ -7,12 +7,9 @@ tan_source_term
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.tan_source_term
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   tan_source_term
-
+.. autoclass:: tan_source_term
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

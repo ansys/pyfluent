@@ -7,12 +7,9 @@ moving_mesh_axis_origin
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.moving_mesh_axis_origin
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   moving_mesh_axis_origin
-
+.. autoclass:: moving_mesh_axis_origin
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`child_object_type_child <child_object_type_child_1>`

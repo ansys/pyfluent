@@ -7,12 +7,9 @@ set_ambient_color
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_ambient_color
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   set_ambient_color
-
+.. autoclass:: set_ambient_color
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==============================   =======================

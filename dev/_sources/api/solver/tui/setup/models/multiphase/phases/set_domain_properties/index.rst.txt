@@ -3,8 +3,13 @@
 solver.tui.setup.models.multiphase.phases.set\_domain\_properties
 =================================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.multiphase.phases.set_domain_properties
+   :members: change_phases_names, phase_domains
 
 .. toctree::
    :hidden:

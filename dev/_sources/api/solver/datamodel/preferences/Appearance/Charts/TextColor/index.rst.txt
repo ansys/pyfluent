@@ -3,6 +3,12 @@
 solver.datamodel.preferences.Appearance.Charts.TextColor
 ========================================================
 
-.. autoclass:: ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.Appearance.Charts.TextColor
+   :members: Axes, AxesTitles, Legend, Title
+   :noindex:
 

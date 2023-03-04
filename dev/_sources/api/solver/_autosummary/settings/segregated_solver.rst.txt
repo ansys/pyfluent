@@ -7,12 +7,9 @@ segregated_solver
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.segregated_solver
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   segregated_solver
-
+.. autoclass:: segregated_solver
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   ============================================================================

@@ -7,12 +7,9 @@ calculate_patch
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.calculate_patch
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   calculate_patch
-
+.. autoclass:: calculate_patch
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==============================================================   =======================================

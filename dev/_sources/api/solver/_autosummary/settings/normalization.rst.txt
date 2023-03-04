@@ -7,12 +7,9 @@ normalization
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.normalization
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   normalization
-
+.. autoclass:: normalization
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================

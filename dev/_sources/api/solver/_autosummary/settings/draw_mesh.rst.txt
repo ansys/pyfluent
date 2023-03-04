@@ -7,12 +7,9 @@ draw_mesh
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.draw_mesh
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   draw_mesh
-
+.. autoclass:: draw_mesh
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

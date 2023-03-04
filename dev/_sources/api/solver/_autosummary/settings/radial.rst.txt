@@ -7,12 +7,9 @@ radial
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.radial
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   radial
-
+.. autoclass:: radial
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

@@ -7,12 +7,9 @@ ray_npoints
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ray_npoints
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   ray_npoints
-
+.. autoclass:: ray_npoints
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   ===========================

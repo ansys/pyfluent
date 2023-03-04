@@ -7,12 +7,9 @@ creal
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.creal
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   creal
-
+.. autoclass:: creal
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =========================

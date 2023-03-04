@@ -7,12 +7,9 @@ python_name
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.python_name
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   python_name
-
+.. autoclass:: python_name
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

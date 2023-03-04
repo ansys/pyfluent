@@ -7,12 +7,9 @@ gen_nrbc_spec
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.gen_nrbc_spec
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   gen_nrbc_spec
-
+.. autoclass:: gen_nrbc_spec
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

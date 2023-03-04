@@ -3,6 +3,11 @@
 meshing.tui.mesh.hexcore.controls.outer\_domain\_params
 =======================================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.hexcore.controls.outer_domain_params
+   :members: delete_old_face_zones, auto_align_boundaries, coordinates, specify_boundaries, boundaries, auto_align, specify_coordinates, list, auto_align_tolerance
 

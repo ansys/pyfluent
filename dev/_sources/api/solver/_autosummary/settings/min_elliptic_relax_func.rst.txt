@@ -7,12 +7,9 @@ min_elliptic_relax_func
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.min_elliptic_relax_func
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   min_elliptic_relax_func
-
+.. autoclass:: min_elliptic_relax_func
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

@@ -7,12 +7,9 @@ press_spec
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.press_spec
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   press_spec
-
+.. autoclass:: press_spec
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

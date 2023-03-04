@@ -7,17 +7,14 @@ anisotropic_solid_heat_transfer
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.anisotropic_solid_heat_transfer
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   anisotropic_solid_heat_transfer
-
-.. rubric:: Attributes
+.. autoclass:: anisotropic_solid_heat_transfer
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==========================   =======================================================================
 
-Attribute                                                                                    Summary
+Child                                                                                        Summary
 
 ==========================   =======================================================================
 :ref:`flux <flux>`                          Select the heat flux calculation method for solid zones.

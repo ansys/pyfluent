@@ -7,12 +7,9 @@ increment
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.increment
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   increment
-
+.. autoclass:: increment
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ===============================================================

@@ -7,17 +7,14 @@ cell_zone_conditions
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cell_zone_conditions
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   cell_zone_conditions
-
-.. rubric:: Attributes
+.. autoclass:: cell_zone_conditions
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================   ==================
 
-Attribute                           Summary
+Child                               Summary
 
 ======================   ==================
 :ref:`fluid <fluid_1>`       'fluid' child.
@@ -26,11 +23,11 @@ Attribute                           Summary
 
 ======================   ==================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ====================================================================================   =================================================================================================
 
-Method                                                                                                                                                                           Summary
+Command                                                                                                                                                                          Summary
 
 ====================================================================================   =================================================================================================
 :ref:`change_type <change_type>`                                                                                                                                  'change_type' command.

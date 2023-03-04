@@ -7,12 +7,9 @@ mass_flux_ave
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mass_flux_ave
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   mass_flux_ave
-
+.. autoclass:: mass_flux_ave
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

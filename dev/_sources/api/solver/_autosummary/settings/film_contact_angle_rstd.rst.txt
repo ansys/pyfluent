@@ -7,12 +7,9 @@ film_contact_angle_rstd
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.film_contact_angle_rstd
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   film_contact_angle_rstd
-
+.. autoclass:: film_contact_angle_rstd
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

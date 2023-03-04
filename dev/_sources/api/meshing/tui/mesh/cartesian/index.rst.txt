@@ -3,6 +3,11 @@
 meshing.tui.mesh.cartesian
 ==========================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.mesh.cartesian
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.cartesian
+   :members: mesh
 

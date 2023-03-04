@@ -7,12 +7,9 @@ end_of_timestep
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.end_of_timestep
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   end_of_timestep
-
+.. autoclass:: end_of_timestep
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   =============================

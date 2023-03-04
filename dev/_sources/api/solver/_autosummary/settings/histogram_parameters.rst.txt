@@ -7,17 +7,14 @@ histogram_parameters
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.histogram_parameters
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   histogram_parameters
-
-.. rubric:: Attributes
+.. autoclass:: histogram_parameters
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =================================================================
 
-Attribute                                                                                      Summary
+Child                                                                                          Summary
 
 ==================================   =================================================================
 :ref:`minimum_val <minimum_val>`         Specify mimimum value of x-axis variable for histogram plots.

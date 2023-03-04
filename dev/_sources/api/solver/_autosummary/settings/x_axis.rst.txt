@@ -7,12 +7,9 @@ x_axis
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.x_axis
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   x_axis
-
+.. autoclass:: x_axis
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

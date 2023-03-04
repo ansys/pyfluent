@@ -7,12 +7,9 @@ vm_streamwise_fluct
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.vm_streamwise_fluct
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   vm_streamwise_fluct
-
+.. autoclass:: vm_streamwise_fluct
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

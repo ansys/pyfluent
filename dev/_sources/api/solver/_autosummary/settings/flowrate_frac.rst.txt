@@ -7,12 +7,9 @@ flowrate_frac
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.flowrate_frac
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   flowrate_frac
-
+.. autoclass:: flowrate_frac
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ===================================

@@ -7,12 +7,9 @@ pcb_model
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pcb_model
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   pcb_model
-
+.. autoclass:: pcb_model
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

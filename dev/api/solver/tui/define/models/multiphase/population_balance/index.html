@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -51,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../search.html" />
-    <link rel="next" title="solver.tui.define.models.multiphase.population_balance.expert" href="expert/index.html" />
-    <link rel="prev" title="solver.tui.define.models.multiphase" href="../index.html" />
+    <link rel="next" title="solver.tui.define.models.multiphase.population_balance.phenomena" href="phenomena/index.html" />
+    <link rel="prev" title="solver.tui.define.models.multiphase.flow_regime_modeling.aiad_parameters" href="../flow_regime_modeling/aiad_parameters/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -296,8 +306,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -341,28 +356,13 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../../simulation_reports/index.html">
          solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solve/index.html">
-         solver.tui.solve
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -376,83 +376,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../turbo_model/index.html">
-           solver.tui.define.turbo_model
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../gap_model/index.html">
-           solver.tui.define.gap_model
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../boundary_conditions/index.html">
-           solver.tui.define.boundary_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../parameters/index.html">
-           solver.tui.define.parameters
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../named_expressions/index.html">
-           solver.tui.define.named_expressions
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="../../../phases/index.html">
            solver.tui.define.phases
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../spectral/index.html">
-           solver.tui.define.spectral
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../user_defined/index.html">
-           solver.tui.define.user_defined
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../materials/index.html">
-           solver.tui.define.materials
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../custom_field_functions/index.html">
-           solver.tui.define.custom_field_functions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../solution_strategy/index.html">
-           solver.tui.define.solution_strategy
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../reference_frames/index.html">
-           solver.tui.define.reference_frames
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../periodic_conditions/index.html">
-           solver.tui.define.periodic_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../mesh_interfaces/index.html">
-           solver.tui.define.mesh_interfaces
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../virtual_boundary/index.html">
-           solver.tui.define.virtual_boundary
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../dynamic_mesh/index.html">
-           solver.tui.define.dynamic_mesh
           </a>
          </li>
          <li class="toctree-l5">
@@ -461,18 +386,33 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../curvilinear_coordinate_system/index.html">
-           solver.tui.define.curvilinear_coordinate_system
+          <a class="reference internal" href="../../../mesh_interfaces/index.html">
+           solver.tui.define.mesh_interfaces
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../operating_conditions/index.html">
-           solver.tui.define.operating_conditions
+          <a class="reference internal" href="../../../reference_frames/index.html">
+           solver.tui.define.reference_frames
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../profiles/index.html">
-           solver.tui.define.profiles
+          <a class="reference internal" href="../../../custom_field_functions/index.html">
+           solver.tui.define.custom_field_functions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../virtual_boundary/index.html">
+           solver.tui.define.virtual_boundary
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../parameters/index.html">
+           solver.tui.define.parameters
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../turbo_model/index.html">
+           solver.tui.define.turbo_model
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -486,112 +426,13 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul class="current">
            <li class="toctree-l6">
-            <a class="reference internal" href="../../two_temperature/index.html">
-             solver.tui.define.models.two_temperature
+            <a class="reference internal" href="../../dpm/index.html">
+             solver.tui.define.models.dpm
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../electrolysis/index.html">
-             solver.tui.define.models.electrolysis
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../acoustics/index.html">
-             solver.tui.define.models.acoustics
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../solver/index.html">
-             solver.tui.define.models.solver
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../species/index.html">
-             solver.tui.define.models.species
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../soot_parameters/index.html">
-             solver.tui.define.models.soot_parameters
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../system_coupling_settings/index.html">
-             solver.tui.define.models.system_coupling_settings
-            </a>
-           </li>
-           <li class="toctree-l6 current active has-children">
-            <a class="reference internal" href="../index.html">
-             solver.tui.define.models.multiphase
-            </a>
-            <input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-            <label for="toctree-checkbox-6">
-             <i class="fas fa-chevron-down">
-             </i>
-            </label>
-            <ul class="current">
-             <li class="toctree-l7 current active has-children">
-              <a class="current reference internal" href="#">
-               solver.tui.define.models.multiphase.population_balance
-              </a>
-              <input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-              <label for="toctree-checkbox-7">
-               <i class="fas fa-chevron-down">
-               </i>
-              </label>
-              <ul>
-               <li class="toctree-l8">
-                <a class="reference internal" href="expert/index.html">
-                 solver.tui.define.models.multiphase.population_balance.expert
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="phenomena/index.html">
-                 solver.tui.define.models.multiphase.population_balance.phenomena
-                </a>
-               </li>
-              </ul>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../phases/index.html">
-               solver.tui.define.models.multiphase.phases
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../explicit_expert_options/index.html">
-               solver.tui.define.models.multiphase.explicit_expert_options
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../hybrid_models/index.html">
-               solver.tui.define.models.multiphase.hybrid_models
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../flow_regime_modeling/index.html">
-               solver.tui.define.models.multiphase.flow_regime_modeling
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../sub_models/index.html">
-               solver.tui.define.models.multiphase.sub_models
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../wet_steam/index.html">
-               solver.tui.define.models.multiphase.wet_steam
-              </a>
-             </li>
-            </ul>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../nox_parameters/index.html">
-             solver.tui.define.models.nox_parameters
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../viscous/index.html">
-             solver.tui.define.models.viscous
+            <a class="reference internal" href="../../structure/index.html">
+             solver.tui.define.models.structure
             </a>
            </li>
            <li class="toctree-l6">
@@ -600,8 +441,33 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../dpm/index.html">
-             solver.tui.define.models.dpm
+            <a class="reference internal" href="../../optics/index.html">
+             solver.tui.define.models.optics
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../shell_conduction/index.html">
+             solver.tui.define.models.shell_conduction
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../electrolysis/index.html">
+             solver.tui.define.models.electrolysis
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../soot_parameters/index.html">
+             solver.tui.define.models.soot_parameters
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../acoustics/index.html">
+             solver.tui.define.models.acoustics
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../viscous/index.html">
+             solver.tui.define.models.viscous
             </a>
            </li>
            <li class="toctree-l6">
@@ -615,8 +481,28 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../structure/index.html">
-             solver.tui.define.models.structure
+            <a class="reference internal" href="../../two_temperature/index.html">
+             solver.tui.define.models.two_temperature
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../nox_parameters/index.html">
+             solver.tui.define.models.nox_parameters
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../species/index.html">
+             solver.tui.define.models.species
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../solver/index.html">
+             solver.tui.define.models.solver
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../system_coupling_settings/index.html">
+             solver.tui.define.models.system_coupling_settings
             </a>
            </li>
            <li class="toctree-l6">
@@ -624,88 +510,142 @@ function checkPageExistsAndRedirect(event) {
              solver.tui.define.models.radiation
             </a>
            </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../optics/index.html">
-             solver.tui.define.models.optics
+           <li class="toctree-l6 current active has-children">
+            <a class="reference internal" href="../index.html">
+             solver.tui.define.models.multiphase
             </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../shell_conduction/index.html">
-             solver.tui.define.models.shell_conduction
-            </a>
+            <input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+            <label for="toctree-checkbox-6">
+             <i class="fas fa-chevron-down">
+             </i>
+            </label>
+            <ul class="current">
+             <li class="toctree-l7">
+              <a class="reference internal" href="../sub_models/index.html">
+               solver.tui.define.models.multiphase.sub_models
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../flow_regime_modeling/index.html">
+               solver.tui.define.models.multiphase.flow_regime_modeling
+              </a>
+             </li>
+             <li class="toctree-l7 current active has-children">
+              <a class="current reference internal" href="#">
+               solver.tui.define.models.multiphase.population_balance
+              </a>
+              <input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+              <label for="toctree-checkbox-7">
+               <i class="fas fa-chevron-down">
+               </i>
+              </label>
+              <ul>
+               <li class="toctree-l8">
+                <a class="reference internal" href="phenomena/index.html">
+                 solver.tui.define.models.multiphase.population_balance.phenomena
+                </a>
+               </li>
+               <li class="toctree-l8">
+                <a class="reference internal" href="expert/index.html">
+                 solver.tui.define.models.multiphase.population_balance.expert
+                </a>
+               </li>
+              </ul>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../wet_steam/index.html">
+               solver.tui.define.models.multiphase.wet_steam
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../hybrid_models/index.html">
+               solver.tui.define.models.multiphase.hybrid_models
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../phases/index.html">
+               solver.tui.define.models.multiphase.phases
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../explicit_expert_options/index.html">
+               solver.tui.define.models.multiphase.explicit_expert_options
+              </a>
+             </li>
+            </ul>
            </li>
           </ul>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../curvilinear_coordinate_system/index.html">
+           solver.tui.define.curvilinear_coordinate_system
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../periodic_conditions/index.html">
+           solver.tui.define.periodic_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../boundary_conditions/index.html">
+           solver.tui.define.boundary_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../gap_model/index.html">
+           solver.tui.define.gap_model
+          </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../../overset_interfaces/index.html">
            solver.tui.define.overset_interfaces
           </a>
          </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../operating_conditions/index.html">
+           solver.tui.define.operating_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../solution_strategy/index.html">
+           solver.tui.define.solution_strategy
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../profiles/index.html">
+           solver.tui.define.profiles
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../user_defined/index.html">
+           solver.tui.define.user_defined
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../spectral/index.html">
+           solver.tui.define.spectral
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../named_expressions/index.html">
+           solver.tui.define.named_expressions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../materials/index.html">
+           solver.tui.define.materials
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../dynamic_mesh/index.html">
+           solver.tui.define.dynamic_mesh
+          </a>
+         </li>
         </ul>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../surface/index.html">
-         solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../setup/index.html">
-         solver.tui.setup
-        </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../../parametric_study/index.html">
          solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solution/index.html">
-         solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../views/index.html">
-         solver.tui.views
         </a>
        </li>
        <li class="toctree-l4">
@@ -714,13 +654,88 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../../turbo_workflow/index.html">
          solver.tui.turbo_workflow
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../preferences/index.html">
-         solver.tui.preferences
+        <a class="reference internal" href="../../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parallel/index.html">
+         solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../views/index.html">
+         solver.tui.views
         </a>
        </li>
       </ul>
@@ -792,101 +807,16 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance">
    <code class="docutils literal notranslate">
     <span class="pre">
-     population_balance
+     main_menu.define.models.multiphase.population_balance
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       __init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       expert
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         __init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         qmom
-        </span>
-       </code>
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.__init__">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           __init__()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.inversion_algorithm">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           inversion_algorithm()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.print_realizable_moment_warning">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           print_realizable_moment_warning()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.realizable_moments">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           realizable_moments()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.retain_qmom_sources_for_low_vof">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           retain_qmom_sources_for_low_vof()
-          </span>
-         </code>
-        </a>
-       </li>
-      </ul>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.include_expansion">
      <code class="docutils literal notranslate">
       <span class="pre">
-       include_expansion()
+       main_menu.define.models.multiphase.population_balance.include_expansion()
       </span>
      </code>
     </a>
@@ -895,99 +825,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.model">
      <code class="docutils literal notranslate">
       <span class="pre">
-       model()
+       main_menu.define.models.multiphase.population_balance.model()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       phenomena
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         __init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.aggregation">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         aggregation()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.aggregation_factor">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         aggregation_factor()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.breakage">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         breakage()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.breakage_aggregation_vof_cutoff">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         breakage_aggregation_vof_cutoff()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.breakage_factor">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         breakage_factor()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.growth">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         growth()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.nucleation">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         nucleation()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.size_calculator">
      <code class="docutils literal notranslate">
       <span class="pre">
-       size_calculator()
+       main_menu.define.models.multiphase.population_balance.size_calculator()
       </span>
      </code>
     </a>
@@ -1015,132 +862,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-define-models-multiphase-population-balance">
 <span id="ref-solver-tui-define-models-multiphase-population-balance"></span><h1>solver.tui.define.models.multiphase.population_balance<a class="headerlink" href="#solver-tui-define-models-multiphase-population-balance" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.</span></span><span class="sig-name descname"><span class="pre">population_balance</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the population balance models menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p>__init__ method of TUIMenu class.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.include_expansion" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.include_expansion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">include_expansion</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set expansion.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.model" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Allows you to select the population balance model and set its parameters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.size_calculator" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.size_calculator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">size_calculator</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Gives you recommendations for appropriate bubble sizes and/or droplet size limits.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expert</span></code></a></p></td>
-<td><p>Enter the expert menu for quadrature-based population balance method.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phenomena</span></code></a></p></td>
-<td><p>Enters the phenomena menu for population balance.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>__init__ method of TUIMenu class.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">expert</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the expert menu for quadrature-based population balance method.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p>__init__ method of TUIMenu class.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">qmom</span></code></a></p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>__init__ method of TUIMenu class.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">qmom</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p>__init__ method of TUIMenu class.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.inversion_algorithm" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.inversion_algorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inversion_algorithm</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Select the inversion algorithm for quadrature-based population balance method.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.print_realizable_moment_warning" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.print_realizable_moment_warning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_realizable_moment_warning</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Print the information for realizable moments in the population balance model.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.realizable_moments" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.realizable_moments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">realizable_moments</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the population balance model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.retain_qmom_sources_for_low_vof" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.retain_qmom_sources_for_low_vof"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retain_qmom_sources_for_low_vof</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Retain qmom source calculation for low secondary phase vof.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>__init__ method of TUIMenu class.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.inversion_algorithm">
-<span class="sig-name descname"><span class="pre">inversion_algorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.inversion_algorithm" title="Permalink to this definition">#</a></dt>
-<dd><p>Select the inversion algorithm for quadrature-based population balance method.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.print_realizable_moment_warning">
-<span class="sig-name descname"><span class="pre">print_realizable_moment_warning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.print_realizable_moment_warning" title="Permalink to this definition">#</a></dt>
-<dd><p>Print the information for realizable moments in the population balance model.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.realizable_moments">
-<span class="sig-name descname"><span class="pre">realizable_moments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.realizable_moments" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the population balance model.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.retain_qmom_sources_for_low_vof">
-<span class="sig-name descname"><span class="pre">retain_qmom_sources_for_low_vof</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.expert.qmom.retain_qmom_sources_for_low_vof" title="Permalink to this definition">#</a></dt>
-<dd><p>Retain qmom source calculation for low secondary phase vof.</p>
-</dd></dl>
-
-</dd></dl>
-
-</dd></dl>
-
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.models.multiphase.</span></span><span class="sig-name descname"><span class="pre">population_balance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the population balance models menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.include_expansion">
 <span class="sig-name descname"><span class="pre">include_expansion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.include_expansion" title="Permalink to this definition">#</a></dt>
@@ -1151,90 +880,6 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.model">
 <span class="sig-name descname"><span class="pre">model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.model" title="Permalink to this definition">#</a></dt>
 <dd><p>Allows you to select the population balance model and set its parameters.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">phenomena</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the phenomena menu for population balance.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p>__init__ method of TUIMenu class.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.aggregation" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.aggregation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aggregation</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets the aggregation kernel.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.aggregation_factor" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.aggregation_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aggregation_factor</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies a factor that controls the intensity of the selected aggregation kernel.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.breakage" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.breakage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">breakage</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the breakage kernel.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.breakage_aggregation_vof_cutoff" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.breakage_aggregation_vof_cutoff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">breakage_aggregation_vof_cutoff</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies a cutoff limit for the volume fraction values for the breakage and aggregation kernels.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.breakage_factor" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.breakage_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">breakage_factor</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies a factor that controls the intensity of the selected breakage kernel.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.growth" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.growth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">growth</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the growth rate.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.nucleation" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.nucleation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nucleation</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the nucleation rate.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>__init__ method of TUIMenu class.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.aggregation">
-<span class="sig-name descname"><span class="pre">aggregation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.aggregation" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets the aggregation kernel.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.aggregation_factor">
-<span class="sig-name descname"><span class="pre">aggregation_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.aggregation_factor" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies a factor that controls the intensity of the selected aggregation kernel.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.breakage">
-<span class="sig-name descname"><span class="pre">breakage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.breakage" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the breakage kernel.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.breakage_aggregation_vof_cutoff">
-<span class="sig-name descname"><span class="pre">breakage_aggregation_vof_cutoff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.breakage_aggregation_vof_cutoff" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies a cutoff limit for the volume fraction values for the breakage and aggregation kernels.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.breakage_factor">
-<span class="sig-name descname"><span class="pre">breakage_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.breakage_factor" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies a factor that controls the intensity of the selected breakage kernel.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.growth">
-<span class="sig-name descname"><span class="pre">growth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.growth" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the growth rate.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.nucleation">
-<span class="sig-name descname"><span class="pre">nucleation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.population_balance.phenomena.nucleation" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the nucleation rate.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">

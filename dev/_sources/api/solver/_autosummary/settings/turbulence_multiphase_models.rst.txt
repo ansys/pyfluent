@@ -7,12 +7,9 @@ turbulence_multiphase_models
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.turbulence_multiphase_models
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   turbulence_multiphase_models
-
+.. autoclass:: turbulence_multiphase_models
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ==================================

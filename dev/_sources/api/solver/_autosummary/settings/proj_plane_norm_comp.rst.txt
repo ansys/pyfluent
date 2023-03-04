@@ -7,12 +7,9 @@ proj_plane_norm_comp
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.proj_plane_norm_comp
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   proj_plane_norm_comp
-
+.. autoclass:: proj_plane_norm_comp
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   =========================================================================

@@ -7,12 +7,9 @@ udf_hook
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.udf_hook
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   udf_hook
-
+.. autoclass:: udf_hook
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===============================

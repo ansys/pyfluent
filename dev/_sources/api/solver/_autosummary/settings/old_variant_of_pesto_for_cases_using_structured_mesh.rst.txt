@@ -7,12 +7,9 @@ old_variant_of_pesto_for_cases_using_structured_mesh
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.old_variant_of_pesto_for_cases_using_structured_mesh
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   old_variant_of_pesto_for_cases_using_structured_mesh
-
+.. autoclass:: old_variant_of_pesto_for_cases_using_structured_mesh
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================================================   =========================================================

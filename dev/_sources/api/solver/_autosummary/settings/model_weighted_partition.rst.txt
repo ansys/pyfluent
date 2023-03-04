@@ -7,12 +7,9 @@ model_weighted_partition
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.model_weighted_partition
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   model_weighted_partition
-
+.. autoclass:: model_weighted_partition
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   ===============================================

@@ -7,12 +7,9 @@ tip_loss_limit
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.tip_loss_limit
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   tip_loss_limit
-
+.. autoclass:: tip_loss_limit
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   ============================================

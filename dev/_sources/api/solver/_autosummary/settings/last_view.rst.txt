@@ -7,12 +7,9 @@ last_view
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.last_view
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   last_view
-
+.. autoclass:: last_view
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ==================

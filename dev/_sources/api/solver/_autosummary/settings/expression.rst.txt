@@ -7,12 +7,9 @@ expression
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.expression
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   expression
-
+.. autoclass:: expression
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================================   =============================================

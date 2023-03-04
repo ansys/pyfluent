@@ -7,12 +7,9 @@ physics
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.physics
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   physics
-
+.. autoclass:: physics
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   =====================================

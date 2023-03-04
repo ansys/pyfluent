@@ -7,12 +7,9 @@ x_format
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.x_format
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   x_format
-
+.. autoclass:: x_format
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ====================

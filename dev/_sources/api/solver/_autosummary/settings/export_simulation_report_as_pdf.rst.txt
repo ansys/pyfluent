@@ -7,12 +7,9 @@ export_simulation_report_as_pdf
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.export_simulation_report_as_pdf
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   export_simulation_report_as_pdf
-
+.. autoclass:: export_simulation_report_as_pdf
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ======================================   ===========================

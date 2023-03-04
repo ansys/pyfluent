@@ -7,12 +7,9 @@ rans_model
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rans_model
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   rans_model
-
+.. autoclass:: rans_model
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ====================

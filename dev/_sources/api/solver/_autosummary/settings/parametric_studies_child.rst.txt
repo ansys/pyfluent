@@ -7,17 +7,14 @@ parametric_studies_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.parametric_studies_child
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   parametric_studies_child
-
-.. rubric:: Attributes
+.. autoclass:: parametric_studies_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================================   =================================
 
-Attribute                                                                      Summary
+Child                                                                          Summary
 
 ==================================================   =================================
 :ref:`design_points <design_points_1>`                          'design_points' child.

@@ -1,6 +1,0 @@
-remote\_surface\_name
-=====================
-
-.. currentmodule:: ansys.fluent.core.post_objects.post_helper
-
-.. automethod:: PostAPIHelper.remote_surface_name

@@ -7,12 +7,9 @@ refinement_criteria
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.refinement_criteria
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   refinement_criteria
-
+.. autoclass:: refinement_criteria
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ==================

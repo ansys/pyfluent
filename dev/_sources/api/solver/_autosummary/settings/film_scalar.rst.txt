@@ -7,17 +7,14 @@ film_scalar
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.film_scalar
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   film_scalar
-
-.. rubric:: Attributes
+.. autoclass:: film_scalar
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

@@ -7,12 +7,9 @@ growth_rate
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.growth_rate
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   growth_rate
-
+.. autoclass:: growth_rate
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================================   ==========================================

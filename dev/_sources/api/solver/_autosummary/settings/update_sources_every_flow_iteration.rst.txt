@@ -7,12 +7,9 @@ update_sources_every_flow_iteration
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.update_sources_every_flow_iteration
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   update_sources_every_flow_iteration
-
+.. autoclass:: update_sources_every_flow_iteration
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   ========================

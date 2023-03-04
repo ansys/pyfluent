@@ -7,12 +7,9 @@ change_curr_sample
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.change_curr_sample
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   change_curr_sample
-
+.. autoclass:: change_curr_sample
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ======================================================================================

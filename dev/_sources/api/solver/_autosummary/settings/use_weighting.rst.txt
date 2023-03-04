@@ -7,12 +7,9 @@ use_weighting
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.use_weighting
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   use_weighting
-
+.. autoclass:: use_weighting
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ==========================================================================================================

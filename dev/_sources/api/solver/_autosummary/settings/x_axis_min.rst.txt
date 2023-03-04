@@ -7,12 +7,9 @@ x_axis_min
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.x_axis_min
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   x_axis_min
-
+.. autoclass:: x_axis_min
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   =======================

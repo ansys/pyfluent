@@ -7,12 +7,9 @@ animation_file_name
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.animation_file_name
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   animation_file_name
-
+.. autoclass:: animation_file_name
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ===============================================================

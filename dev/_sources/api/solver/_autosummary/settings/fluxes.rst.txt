@@ -7,17 +7,14 @@ fluxes
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fluxes
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fluxes
-
-.. rubric:: Methods
+.. autoclass:: fluxes
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ======================================================   =====================================================
 
-Method                                                                                                 Summary
+Command                                                                                                Summary
 
 ======================================================   =====================================================
 :ref:`mass_flow <mass_flow_1>`                                     Print mass flow rate at inlets and outlets.

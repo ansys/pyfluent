@@ -7,17 +7,14 @@ scale
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.scale_3
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   scale
-
-.. rubric:: Attributes
+.. autoclass:: scale
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================   =====================================================================
 
-Attribute                                                                                      Summary
+Child                                                                                          Summary
 
 ==============================   =====================================================================
 :ref:`border <border_2>`             Enable/disable drawing of a border around the color scale window.

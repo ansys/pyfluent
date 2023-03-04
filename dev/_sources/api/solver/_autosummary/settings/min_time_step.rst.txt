@@ -7,12 +7,9 @@ min_time_step
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.min_time_step
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   min_time_step
-
+.. autoclass:: min_time_step
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================================   =============================================

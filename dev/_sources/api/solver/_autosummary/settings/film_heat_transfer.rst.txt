@@ -7,12 +7,9 @@ film_heat_transfer
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.film_heat_transfer
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   film_heat_transfer
-
+.. autoclass:: film_heat_transfer
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ========================================   ===========================================

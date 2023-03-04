@@ -1,6 +1,0 @@
-fromhex
-=======
-
-.. currentmodule:: ansys.fluent.core.quantity
-
-.. automethod:: Quantity.fromhex

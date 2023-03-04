@@ -7,12 +7,9 @@ compute
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.compute
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   compute
-
+.. autoclass:: compute
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ======================================   ===========================

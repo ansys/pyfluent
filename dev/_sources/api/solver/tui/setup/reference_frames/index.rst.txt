@@ -3,6 +3,11 @@
 solver.tui.setup.reference\_frames
 ==================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.reference_frames
+   :members: list_properties, display_edit, display, hide, add, delete, edit, list
 

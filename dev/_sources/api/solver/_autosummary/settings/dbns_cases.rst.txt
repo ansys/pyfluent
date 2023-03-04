@@ -7,17 +7,14 @@ dbns_cases
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dbns_cases
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   dbns_cases
-
-.. rubric:: Attributes
+.. autoclass:: dbns_cases
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ============================   ==================
 
-Attribute                                 Summary
+Child                                     Summary
 
 ============================   ==================
 :ref:`flux_type <flux_type>`       Set Flux Type.

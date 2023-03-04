@@ -3,8 +3,13 @@
 solver.tui.solution.controls.query.advanced
 ===========================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.controls.query.advanced
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.controls.query.advanced
+   :members: multi_grid_amg, correction_tolerance, multi_grid_fas, relaxation_method, multi_stage, multi_grid_controls
 
 .. toctree::
    :hidden:

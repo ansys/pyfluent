@@ -7,12 +7,9 @@ clambda_scale
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.clambda_scale
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   clambda_scale
-
+.. autoclass:: clambda_scale
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   =====================================

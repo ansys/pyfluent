@@ -7,17 +7,14 @@ cylinder
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cylinder
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   cylinder
-
-.. rubric:: Attributes
+.. autoclass:: cylinder
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   ==================================
 
-Attribute                                                                         Summary
+Child                                                                             Summary
 
 ====================================================   ==================================
 :ref:`axis_begin <axis_begin>`                                        'axis_begin' child.

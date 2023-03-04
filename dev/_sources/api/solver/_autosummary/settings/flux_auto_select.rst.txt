@@ -7,12 +7,9 @@ flux_auto_select
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.flux_auto_select
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   flux_auto_select
-
+.. autoclass:: flux_auto_select
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =======================

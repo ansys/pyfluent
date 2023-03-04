@@ -7,12 +7,9 @@ projection
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.projection
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   projection
-
+.. autoclass:: projection
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ====================   =================

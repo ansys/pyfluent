@@ -7,17 +7,14 @@ vp_equilib
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.vp_equilib
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   vp_equilib
-
-.. rubric:: Attributes
+.. autoclass:: vp_equilib
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   ====================================================
 
-Attribute                                                                                           Summary
+Child                                                                                               Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

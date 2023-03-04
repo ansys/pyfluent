@@ -7,12 +7,9 @@ sampling_interval
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.sampling_interval
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   sampling_interval
-
+.. autoclass:: sampling_interval
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ==========================

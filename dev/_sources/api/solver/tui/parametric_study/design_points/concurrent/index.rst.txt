@@ -3,6 +3,11 @@
 solver.tui.parametric\_study.design\_points.concurrent
 ======================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.parametric_study.design_points.concurrent
+   :members: refresh_status, abort_design_point, abort_all_design_points
 

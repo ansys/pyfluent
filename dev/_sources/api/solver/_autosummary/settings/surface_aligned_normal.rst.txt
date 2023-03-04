@@ -7,12 +7,9 @@ surface_aligned_normal
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.surface_aligned_normal
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   surface_aligned_normal
-
+.. autoclass:: surface_aligned_normal
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================

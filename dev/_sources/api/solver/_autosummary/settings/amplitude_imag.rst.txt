@@ -7,12 +7,9 @@ amplitude_imag
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.amplitude_imag
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   amplitude_imag
-
+.. autoclass:: amplitude_imag
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =======================================

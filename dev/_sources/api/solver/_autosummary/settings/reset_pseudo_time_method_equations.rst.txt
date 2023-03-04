@@ -7,12 +7,9 @@ reset_pseudo_time_method_equations
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reset_pseudo_time_method_equations
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   reset_pseudo_time_method_equations
-
+.. autoclass:: reset_pseudo_time_method_equations
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   ====================================

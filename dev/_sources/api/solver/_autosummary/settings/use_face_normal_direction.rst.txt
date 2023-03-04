@@ -7,12 +7,9 @@ use_face_normal_direction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.use_face_normal_direction
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   use_face_normal_direction
-
+.. autoclass:: use_face_normal_direction
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   =====================

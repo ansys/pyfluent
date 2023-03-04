@@ -7,12 +7,9 @@ limit_pressure_correction_gradient
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.limit_pressure_correction_gradient
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   limit_pressure_correction_gradient
-
+.. autoclass:: limit_pressure_correction_gradient
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   ======================================================================

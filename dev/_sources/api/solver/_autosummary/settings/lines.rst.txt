@@ -7,12 +7,9 @@ lines
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.lines
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   lines
-
+.. autoclass:: lines
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`lines_child <lines_child>`

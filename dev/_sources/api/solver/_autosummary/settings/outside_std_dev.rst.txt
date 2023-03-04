@@ -7,17 +7,14 @@ outside_std_dev
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.outside_std_dev
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   outside_std_dev
-
-.. rubric:: Attributes
+.. autoclass:: outside_std_dev
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================   ==================
 
-Attribute                         Summary
+Child                             Summary
 
 ====================   ==================
 :ref:`lower <lower>`       'lower' child.

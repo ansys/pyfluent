@@ -7,17 +7,14 @@ secondary_rate
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.secondary_rate
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   secondary_rate
-
-.. rubric:: Attributes
+.. autoclass:: secondary_rate
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ============================================================   ======================================
 
-Attribute                                                                                     Summary
+Child                                                                                         Summary
 
 ============================================================   ======================================
 :ref:`particle_thermolysis_rate <particle_thermolysis_rate>`       'particle_thermolysis_rate' child.

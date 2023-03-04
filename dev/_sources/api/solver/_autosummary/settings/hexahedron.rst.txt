@@ -7,17 +7,14 @@ hexahedron
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.hexahedron
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   hexahedron
-
-.. rubric:: Attributes
+.. autoclass:: hexahedron
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   ==================================
 
-Attribute                                                                         Summary
+Child                                                                             Summary
 
 ====================================================   ==================================
 :ref:`min_point <min_point>`                                           'min_point' child.

@@ -7,12 +7,9 @@ enable_h264
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.enable_h264
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   enable_h264
-
+.. autoclass:: enable_h264
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

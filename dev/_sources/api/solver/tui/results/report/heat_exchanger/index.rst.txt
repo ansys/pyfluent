@@ -3,6 +3,11 @@
 solver.tui.results.report.heat\_exchanger
 =========================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.report.heat_exchanger
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.report.heat_exchanger
+   :members: computed_heat_rejection, mass_flow_rate, specific_heat, outlet_temperature, inlet_temperature
 

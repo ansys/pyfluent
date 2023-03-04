@@ -3,17 +3,22 @@
 meshing.tui.mesh.prism.controls
 ===============================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.controls
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.prism.controls
+   :members: set_overset_prism_controls, check_quality, split, remove_invalid_layer, set_post_mesh_controls, merge_ignored_threads
 
 .. toctree::
    :hidden:
 
-   offset/index
-   post_ignore/index
-   proximity/index
-   morph/index
    adjacent_zone/index
-   zone_specific_growth/index
-   improve/index
+   offset/index
    normal/index
+   post_ignore/index
+   morph/index
+   improve/index
+   proximity/index
+   zone_specific_growth/index

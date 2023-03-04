@@ -7,12 +7,9 @@ reference_bulk_modulus
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reference_bulk_modulus
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   reference_bulk_modulus
-
+.. autoclass:: reference_bulk_modulus
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   ================================

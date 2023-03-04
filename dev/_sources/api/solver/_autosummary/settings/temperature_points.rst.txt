@@ -7,12 +7,9 @@ temperature_points
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.temperature_points
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   temperature_points
-
+.. autoclass:: temperature_points
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ==================================

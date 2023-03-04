@@ -7,12 +7,9 @@ target
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.target
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   target
-
+.. autoclass:: target
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ================   ================

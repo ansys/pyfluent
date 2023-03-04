@@ -7,12 +7,9 @@ time_statistics_dpm
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.time_statistics_dpm
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   time_statistics_dpm
-
+.. autoclass:: time_statistics_dpm
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ==========================

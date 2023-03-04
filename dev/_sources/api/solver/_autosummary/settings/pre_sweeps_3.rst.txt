@@ -7,12 +7,9 @@ pre_sweeps
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pre_sweeps_3
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   pre_sweeps
-
+.. autoclass:: pre_sweeps
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================   ================

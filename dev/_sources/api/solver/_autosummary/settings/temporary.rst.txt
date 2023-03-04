@@ -7,12 +7,9 @@ temporary
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.temporary
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   temporary
-
+.. autoclass:: temporary
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   =================================

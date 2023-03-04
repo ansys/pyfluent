@@ -7,17 +7,14 @@ potential_value
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.potential_value
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   potential_value
-
-.. rubric:: Attributes
+.. autoclass:: potential_value
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

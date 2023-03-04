@@ -3,6 +3,11 @@
 meshing.tui.display.set.colors.by\_type.type\_name
 ==================================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.set.colors.by_type.type_name
+   :members: rans_les_interface, interface, outlet, wall, periodic, far_field, overset, traction, free_surface, axis, internal, surface, inlet, interior, symmetry
 

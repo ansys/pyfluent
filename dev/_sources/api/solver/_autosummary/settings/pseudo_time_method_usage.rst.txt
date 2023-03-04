@@ -7,17 +7,14 @@ pseudo_time_method_usage
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pseudo_time_method_usage
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   pseudo_time_method_usage
-
-.. rubric:: Attributes
+.. autoclass:: pseudo_time_method_usage
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ============================   ======================
 
-Attribute                                     Summary
+Child                                         Summary
 
 ============================   ======================
 :ref:`local_dt <local_dt>`          'local_dt' child.

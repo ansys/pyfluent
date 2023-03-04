@@ -7,12 +7,9 @@ read_sample_file
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.read_sample_file
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   read_sample_file
-
+.. autoclass:: read_sample_file
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ================================   =================================================

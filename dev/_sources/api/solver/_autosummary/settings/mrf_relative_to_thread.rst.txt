@@ -7,12 +7,9 @@ mrf_relative_to_thread
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mrf_relative_to_thread
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   mrf_relative_to_thread
-
+.. autoclass:: mrf_relative_to_thread
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

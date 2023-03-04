@@ -7,12 +7,9 @@ across_zone_boundaries
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.across_zone_boundaries
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   across_zone_boundaries
-
+.. autoclass:: across_zone_boundaries
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   =============================================

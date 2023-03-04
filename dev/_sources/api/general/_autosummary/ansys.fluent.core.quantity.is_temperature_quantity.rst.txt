@@ -1,6 +1,0 @@
-is\_temperature\_quantity
-=========================
-
-.. currentmodule:: ansys.fluent.core.quantity
-
-.. autofunction:: is_temperature_quantity

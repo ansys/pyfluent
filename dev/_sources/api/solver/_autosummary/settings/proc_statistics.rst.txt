@@ -7,12 +7,9 @@ proc_statistics
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.proc_statistics
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   proc_statistics
-
+.. autoclass:: proc_statistics
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

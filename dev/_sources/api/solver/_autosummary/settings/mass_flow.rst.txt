@@ -7,17 +7,14 @@ mass_flow
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mass_flow
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   mass_flow
-
-.. rubric:: Attributes
+.. autoclass:: mass_flow
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

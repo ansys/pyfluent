@@ -7,12 +7,9 @@ reference_density
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reference_density
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   reference_density
-
+.. autoclass:: reference_density
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   ================================

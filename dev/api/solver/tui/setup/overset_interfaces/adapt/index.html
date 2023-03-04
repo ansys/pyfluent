@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -295,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -340,18 +355,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
        <li class="toctree-l4">
@@ -360,33 +365,53 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../define/index.html">
          solver.tui.define
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../surface/index.html">
          solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../icing/index.html">
-         solver.tui.icing
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -400,8 +425,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../dynamic_mesh/index.html">
-           solver.tui.setup.dynamic_mesh
+          <a class="reference internal" href="../../named_expressions/index.html">
+           solver.tui.setup.named_expressions
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -444,28 +469,23 @@ function checkPageExistsAndRedirect(event) {
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../named_expressions/index.html">
-           solver.tui.setup.named_expressions
+          <a class="reference internal" href="../../turbo_model/index.html">
+           solver.tui.setup.turbo_model
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../operating_conditions/index.html">
-           solver.tui.setup.operating_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../boundary_conditions/index.html">
-           solver.tui.setup.boundary_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../expert/index.html">
-           solver.tui.setup.expert
+          <a class="reference internal" href="../../gap_model/index.html">
+           solver.tui.setup.gap_model
           </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../reference_values/index.html">
            solver.tui.setup.reference_values
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../reference_frames/index.html">
+           solver.tui.setup.reference_frames
           </a>
          </li>
          <li class="toctree-l5">
@@ -479,13 +499,18 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../turbo_model/index.html">
-           solver.tui.setup.turbo_model
+          <a class="reference internal" href="../../mesh_interfaces/index.html">
+           solver.tui.setup.mesh_interfaces
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../mesh_interfaces/index.html">
-           solver.tui.setup.mesh_interfaces
+          <a class="reference internal" href="../../dynamic_mesh/index.html">
+           solver.tui.setup.dynamic_mesh
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../boundary_conditions/index.html">
+           solver.tui.setup.boundary_conditions
           </a>
          </li>
          <li class="toctree-l5">
@@ -494,35 +519,25 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../reference_frames/index.html">
-           solver.tui.setup.reference_frames
+          <a class="reference internal" href="../../expert/index.html">
+           solver.tui.setup.expert
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../gap_model/index.html">
-           solver.tui.setup.gap_model
+          <a class="reference internal" href="../../operating_conditions/index.html">
+           solver.tui.setup.operating_conditions
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parametric_study/index.html">
-         solver.tui.parametric_study
+        <a class="reference internal" href="../../../report/index.html">
+         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../server/index.html">
+         solver.tui.server
         </a>
        </li>
        <li class="toctree-l4">
@@ -531,8 +546,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../solution/index.html">
-         solver.tui.solution
+        <a class="reference internal" href="../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
        <li class="toctree-l4">
@@ -541,23 +556,23 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../views/index.html">
          solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../preferences/index.html">
-         solver.tui.preferences
         </a>
        </li>
       </ul>
@@ -629,25 +644,16 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt">
    <code class="docutils literal notranslate">
     <span class="pre">
-     adapt
+     main_menu.setup.overset_interfaces.adapt
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       __init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.adapt_mesh">
      <code class="docutils literal notranslate">
       <span class="pre">
-       adapt_mesh()
+       main_menu.setup.overset_interfaces.adapt.adapt_mesh()
       </span>
      </code>
     </a>
@@ -656,138 +662,10 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.mark_adaption">
      <code class="docutils literal notranslate">
       <span class="pre">
-       mark_adaption()
+       main_menu.setup.overset_interfaces.adapt.mark_adaption()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       set
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         __init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.adaption_sweeps">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         adaption_sweeps()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.anisotropic">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         anisotropic()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.automatic">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         automatic()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.buffer_layers">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         buffer_layers()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.gap_resolution">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         gap_resolution()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.length_ratio_max">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         length_ratio_max()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_coarsening">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         mark_coarsening()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_fixed_orphans">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         mark_fixed_orphans()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_gaps">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         mark_gaps()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_orphans">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         mark_orphans()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_size">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         mark_size()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.maximum_refinement_level">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         maximum_refinement_level()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -812,39 +690,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-overset-interfaces-adapt">
 <span id="ref-solver-tui-setup-overset-interfaces-adapt"></span><h1>solver.tui.setup.overset_interfaces.adapt<a class="headerlink" href="#solver-tui-setup-overset-interfaces-adapt" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.</span></span><span class="sig-name descname"><span class="pre">adapt</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the overset adaption menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p>__init__ method of TUIMenu class.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.adapt_mesh" title="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.adapt_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adapt_mesh</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Mark and adapt the mesh to remove orphan cells and large donor-receptor cell size differences.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.mark_adaption" title="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.mark_adaption"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mark_adaption</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Mark cells for overset orphan adaption and donor-receptor size differences.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set" title="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a></p></td>
-<td><p>Enter the overset adaption set menu.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>__init__ method of TUIMenu class.</p>
-</dd></dl>
-
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.overset_interfaces.</span></span><span class="sig-name descname"><span class="pre">adapt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the overset adaption menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.adapt_mesh">
 <span class="sig-name descname"><span class="pre">adapt_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.adapt_mesh" title="Permalink to this definition">#</a></dt>
@@ -855,135 +708,6 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.mark_adaption">
 <span class="sig-name descname"><span class="pre">mark_adaption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.mark_adaption" title="Permalink to this definition">#</a></dt>
 <dd><p>Mark cells for overset orphan adaption and donor-receptor size differences.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the overset adaption set menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p>__init__ method of TUIMenu class.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.adaption_sweeps" title="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.adaption_sweeps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adaption_sweeps</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the number of adaption sweeps per overset adaption.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.anisotropic" title="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.anisotropic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">anisotropic</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable the option to use anisotropic adaption in prismatic cells.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.automatic" title="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.automatic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">automatic</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable the option to automatically adapt overset meshes during solution update.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.buffer_layers" title="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.buffer_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">buffer_layers</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the number of cell layers marked in addition to the cells marked for orphan adaption.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.gap_resolution" title="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.gap_resolution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gap_resolution</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the target (minimum) gap resolution used when marking cells for gap adaption.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.length_ratio_max" title="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.length_ratio_max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">length_ratio_max</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the length scale ratio threshold used to determine which cells are marked for adaption based on donor-receptor cell size differences.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_coarsening" title="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_coarsening"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mark_coarsening</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable the option to coarsen the mesh during overset adaption.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_fixed_orphans" title="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_fixed_orphans"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mark_fixed_orphans</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable the option to adapt for orphans which were removed by accepting neighbor donors.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_gaps" title="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_gaps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mark_gaps</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable the option to adapt underresolved gaps.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_orphans" title="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_orphans"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mark_orphans</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable the option to adapt for orphan reduction.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_size" title="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mark_size</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable the option to adapt for donor-receptor cell size differences.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.maximum_refinement_level" title="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.maximum_refinement_level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maximum_refinement_level</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the maximum level of refinement in overset adaption.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>__init__ method of TUIMenu class.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.adaption_sweeps">
-<span class="sig-name descname"><span class="pre">adaption_sweeps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.adaption_sweeps" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the number of adaption sweeps per overset adaption.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.anisotropic">
-<span class="sig-name descname"><span class="pre">anisotropic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.anisotropic" title="Permalink to this definition">#</a></dt>
-<dd><p>Enable the option to use anisotropic adaption in prismatic cells.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.automatic">
-<span class="sig-name descname"><span class="pre">automatic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.automatic" title="Permalink to this definition">#</a></dt>
-<dd><p>Enable the option to automatically adapt overset meshes during solution update.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.buffer_layers">
-<span class="sig-name descname"><span class="pre">buffer_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.buffer_layers" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the number of cell layers marked in addition to the cells marked for orphan adaption.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.gap_resolution">
-<span class="sig-name descname"><span class="pre">gap_resolution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.gap_resolution" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the target (minimum) gap resolution used when marking cells for gap adaption.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.length_ratio_max">
-<span class="sig-name descname"><span class="pre">length_ratio_max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.length_ratio_max" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the length scale ratio threshold used to determine which cells are marked for adaption based on donor-receptor cell size differences.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_coarsening">
-<span class="sig-name descname"><span class="pre">mark_coarsening</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_coarsening" title="Permalink to this definition">#</a></dt>
-<dd><p>Enable the option to coarsen the mesh during overset adaption.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_fixed_orphans">
-<span class="sig-name descname"><span class="pre">mark_fixed_orphans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_fixed_orphans" title="Permalink to this definition">#</a></dt>
-<dd><p>Enable the option to adapt for orphans which were removed by accepting neighbor donors.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_gaps">
-<span class="sig-name descname"><span class="pre">mark_gaps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_gaps" title="Permalink to this definition">#</a></dt>
-<dd><p>Enable the option to adapt underresolved gaps.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_orphans">
-<span class="sig-name descname"><span class="pre">mark_orphans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_orphans" title="Permalink to this definition">#</a></dt>
-<dd><p>Enable the option to adapt for orphan reduction.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_size">
-<span class="sig-name descname"><span class="pre">mark_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.mark_size" title="Permalink to this definition">#</a></dt>
-<dd><p>Enable the option to adapt for donor-receptor cell size differences.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.maximum_refinement_level">
-<span class="sig-name descname"><span class="pre">maximum_refinement_level</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.overset_interfaces.adapt.set.maximum_refinement_level" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the maximum level of refinement in overset adaption.</p>
-</dd></dl>
-
 </dd></dl>
 
 </dd></dl>

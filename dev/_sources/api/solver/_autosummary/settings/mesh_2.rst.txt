@@ -7,17 +7,14 @@ mesh
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mesh_2
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   mesh
-
-.. rubric:: Methods
+.. autoclass:: mesh
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ========================================   =============================================
 
-Method                                                                           Summary
+Command                                                                          Summary
 
 ========================================   =============================================
 :ref:`display <display_1>`                                      Display graphics object.

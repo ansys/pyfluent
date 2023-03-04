@@ -7,12 +7,9 @@ vof_spec
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.vof_spec
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   vof_spec
-
+.. autoclass:: vof_spec
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

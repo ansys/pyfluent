@@ -3,11 +3,16 @@
 solver.tui.display.set.colors
 =============================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.display.set.colors
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.colors
+   :members: inlet_faces, user_color, wall_faces, reset_colors, outlet_faces, show_user_colors, overset_faces, internal_faces, axis_faces, background, foreground, surface, automatic_skip, free_surface_faces, far_field_faces, graphics_color_theme, list, traction_faces, rans_les_interface_faces, interior_faces, skip_label, reset_user_colors, periodic_faces, symmetry_faces, interface_faces, color_by_type
 
 .. toctree::
    :hidden:
 
-   by_surface/index
    by_type/index
+   by_surface/index

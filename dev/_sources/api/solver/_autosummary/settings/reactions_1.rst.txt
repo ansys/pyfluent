@@ -7,12 +7,9 @@ reactions
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reactions_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   reactions
-
+.. autoclass:: reactions
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ======================

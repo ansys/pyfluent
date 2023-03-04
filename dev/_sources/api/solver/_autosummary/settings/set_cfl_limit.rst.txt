@@ -7,12 +7,9 @@ set_cfl_limit
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_cfl_limit
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   set_cfl_limit
-
+.. autoclass:: set_cfl_limit
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==================================================

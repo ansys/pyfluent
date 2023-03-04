@@ -7,17 +7,14 @@ velocity_inlet_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.velocity_inlet_child
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   velocity_inlet_child
-
-.. rubric:: Attributes
+.. autoclass:: velocity_inlet_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================================================================================================================   =======================================================================
 
-Attribute                                                                                                                                                                                        Summary
+Child                                                                                                                                                                                            Summary
 
 ==============================================================================================================================   =======================================================================
 :ref:`phase <phase_23>`                                                                                                                                                                   'phase' child.

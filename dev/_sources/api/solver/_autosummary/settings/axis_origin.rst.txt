@@ -7,12 +7,9 @@ axis_origin
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.axis_origin
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   axis_origin
-
+.. autoclass:: axis_origin
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   ============================

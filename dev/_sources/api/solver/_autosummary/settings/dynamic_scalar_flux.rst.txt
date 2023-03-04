@@ -7,12 +7,9 @@ dynamic_scalar_flux
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dynamic_scalar_flux
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   dynamic_scalar_flux
-
+.. autoclass:: dynamic_scalar_flux
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================

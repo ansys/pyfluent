@@ -7,12 +7,9 @@ min_v2f_epsilon
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.min_v2f_epsilon
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   min_v2f_epsilon
-
+.. autoclass:: min_v2f_epsilon
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

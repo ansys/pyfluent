@@ -7,12 +7,9 @@ root_radius
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.root_radius
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   root_radius
-
+.. autoclass:: root_radius
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   ================================================

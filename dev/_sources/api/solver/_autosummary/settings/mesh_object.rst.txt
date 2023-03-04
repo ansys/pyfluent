@@ -7,12 +7,9 @@ mesh_object
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mesh_object
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   mesh_object
-
+.. autoclass:: mesh_object
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

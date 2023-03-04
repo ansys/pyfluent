@@ -7,17 +7,14 @@ options
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.options_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   options
-
-.. rubric:: Attributes
+.. autoclass:: options
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================================================   ==============================================================================
 
-Attribute                                                                                                                               Summary
+Child                                                                                                                                   Summary
 
 ==============================================================   ==============================================================================
 :ref:`viscous_heating <viscous_heating>`                                                                    Compute viscous energy dissipation.

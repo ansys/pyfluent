@@ -7,12 +7,9 @@ force_statistics
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.force_statistics
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   force_statistics
-
+.. autoclass:: force_statistics
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ==========================

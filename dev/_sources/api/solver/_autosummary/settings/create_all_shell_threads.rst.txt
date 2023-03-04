@@ -7,12 +7,9 @@ create_all_shell_threads
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.create_all_shell_threads
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   create_all_shell_threads
-
+.. autoclass:: create_all_shell_threads
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   ================================

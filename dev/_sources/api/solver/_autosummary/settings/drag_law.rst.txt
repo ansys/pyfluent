@@ -7,12 +7,9 @@ drag_law
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.drag_law
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   drag_law
-
+.. autoclass:: drag_law
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================

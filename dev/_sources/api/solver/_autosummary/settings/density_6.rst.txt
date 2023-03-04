@@ -7,12 +7,9 @@ density
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.density_6
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   density
-
+.. autoclass:: density
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =============================

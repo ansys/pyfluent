@@ -7,12 +7,9 @@ volume_fraction_courant_number
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.volume_fraction_courant_number
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   volume_fraction_courant_number
-
+.. autoclass:: volume_fraction_courant_number
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =========================

@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -51,7 +55,7 @@
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
-    <link rel="next" title="solver.tui.mesh.reorder" href="../reorder/index.html" />
+    <link rel="next" title="solver.tui.mesh.adapt" href="../adapt/index.html" />
     <link rel="prev" title="solver.tui.mesh.polyhedra.options" href="../polyhedra/options/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -294,8 +304,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -339,18 +354,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
        <li class="toctree-l4">
@@ -359,38 +364,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../define/index.html">
          solver.tui.define
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../surface/index.html">
-         solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../setup/index.html">
-         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4">
@@ -399,18 +374,58 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../results/index.html">
          solver.tui.results
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../plot/index.html">
-         solver.tui.plot
+        <a class="reference internal" href="../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../solve/index.html">
+         solver.tui.solve
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../parameters__and__customization/index.html">
          solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../server/index.html">
+         solver.tui.server
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -424,13 +439,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../surface_mesh/index.html">
-           solver.tui.mesh.surface_mesh
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../repair_improve/index.html">
-           solver.tui.mesh.repair_improve
+          <a class="reference internal" href="../geometry/index.html">
+           solver.tui.mesh.geometry
           </a>
          </li>
          <li class="toctree-l5">
@@ -444,25 +454,30 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../reorder/index.html">
-           solver.tui.mesh.reorder
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="../adapt/index.html">
            solver.tui.mesh.adapt
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../geometry/index.html">
-           solver.tui.mesh.geometry
+          <a class="reference internal" href="../repair_improve/index.html">
+           solver.tui.mesh.repair_improve
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../surface_mesh/index.html">
+           solver.tui.mesh.surface_mesh
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../reorder/index.html">
+           solver.tui.mesh.reorder
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../solution/index.html">
-         solver.tui.solution
+        <a class="reference internal" href="../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
        <li class="toctree-l4">
@@ -471,23 +486,23 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../views/index.html">
          solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../preferences/index.html">
-         solver.tui.preferences
         </a>
        </li>
       </ul>
@@ -559,25 +574,16 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones">
    <code class="docutils literal notranslate">
     <span class="pre">
-     modify_zones
+     main_menu.mesh.modify_zones
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       __init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.activate_cell_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
-       activate_cell_zone()
+       main_menu.mesh.modify_zones.activate_cell_zone()
       </span>
      </code>
     </a>
@@ -586,7 +592,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.append_mesh">
      <code class="docutils literal notranslate">
       <span class="pre">
-       append_mesh()
+       main_menu.mesh.modify_zones.append_mesh()
       </span>
      </code>
     </a>
@@ -595,7 +601,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.append_mesh_data">
      <code class="docutils literal notranslate">
       <span class="pre">
-       append_mesh_data()
+       main_menu.mesh.modify_zones.append_mesh_data()
       </span>
      </code>
     </a>
@@ -604,7 +610,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.change_zone_phase">
      <code class="docutils literal notranslate">
       <span class="pre">
-       change_zone_phase()
+       main_menu.mesh.modify_zones.change_zone_phase()
       </span>
      </code>
     </a>
@@ -613,7 +619,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.change_zone_state">
      <code class="docutils literal notranslate">
       <span class="pre">
-       change_zone_state()
+       main_menu.mesh.modify_zones.change_zone_state()
       </span>
      </code>
     </a>
@@ -622,7 +628,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.convert_all_solid_mrf_to_solid_motion">
      <code class="docutils literal notranslate">
       <span class="pre">
-       convert_all_solid_mrf_to_solid_motion()
+       main_menu.mesh.modify_zones.convert_all_solid_mrf_to_solid_motion()
       </span>
      </code>
     </a>
@@ -631,7 +637,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.copy_mesh_to_mrf_motion">
      <code class="docutils literal notranslate">
       <span class="pre">
-       copy_mesh_to_mrf_motion()
+       main_menu.mesh.modify_zones.copy_mesh_to_mrf_motion()
       </span>
      </code>
     </a>
@@ -640,7 +646,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.copy_move_cell_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
-       copy_move_cell_zone()
+       main_menu.mesh.modify_zones.copy_move_cell_zone()
       </span>
      </code>
     </a>
@@ -649,7 +655,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.copy_mrf_to_mesh_motion">
      <code class="docutils literal notranslate">
       <span class="pre">
-       copy_mrf_to_mesh_motion()
+       main_menu.mesh.modify_zones.copy_mrf_to_mesh_motion()
       </span>
      </code>
     </a>
@@ -658,7 +664,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.create_all_shell_threads">
      <code class="docutils literal notranslate">
       <span class="pre">
-       create_all_shell_threads()
+       main_menu.mesh.modify_zones.create_all_shell_threads()
       </span>
      </code>
     </a>
@@ -667,7 +673,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.create_periodic_interface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       create_periodic_interface()
+       main_menu.mesh.modify_zones.create_periodic_interface()
       </span>
      </code>
     </a>
@@ -676,7 +682,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.deactivate_cell_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
-       deactivate_cell_zone()
+       main_menu.mesh.modify_zones.deactivate_cell_zone()
       </span>
      </code>
     </a>
@@ -685,7 +691,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.delete_all_shells">
      <code class="docutils literal notranslate">
       <span class="pre">
-       delete_all_shells()
+       main_menu.mesh.modify_zones.delete_all_shells()
       </span>
      </code>
     </a>
@@ -694,7 +700,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.delete_cell_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
-       delete_cell_zone()
+       main_menu.mesh.modify_zones.delete_cell_zone()
       </span>
      </code>
     </a>
@@ -703,7 +709,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.extrude_face_zone_delta">
      <code class="docutils literal notranslate">
       <span class="pre">
-       extrude_face_zone_delta()
+       main_menu.mesh.modify_zones.extrude_face_zone_delta()
       </span>
      </code>
     </a>
@@ -712,7 +718,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.extrude_face_zone_para">
      <code class="docutils literal notranslate">
       <span class="pre">
-       extrude_face_zone_para()
+       main_menu.mesh.modify_zones.extrude_face_zone_para()
       </span>
      </code>
     </a>
@@ -721,7 +727,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.fuse_face_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
-       fuse_face_zones()
+       main_menu.mesh.modify_zones.fuse_face_zones()
       </span>
      </code>
     </a>
@@ -730,7 +736,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.list_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
-       list_zones()
+       main_menu.mesh.modify_zones.list_zones()
       </span>
      </code>
     </a>
@@ -739,7 +745,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.make_periodic">
      <code class="docutils literal notranslate">
       <span class="pre">
-       make_periodic()
+       main_menu.mesh.modify_zones.make_periodic()
       </span>
      </code>
     </a>
@@ -748,7 +754,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.matching_tolerance">
      <code class="docutils literal notranslate">
       <span class="pre">
-       matching_tolerance()
+       main_menu.mesh.modify_zones.matching_tolerance()
       </span>
      </code>
     </a>
@@ -757,7 +763,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.merge_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
-       merge_zones()
+       main_menu.mesh.modify_zones.merge_zones()
       </span>
      </code>
     </a>
@@ -766,7 +772,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.mrf_to_sliding_mesh">
      <code class="docutils literal notranslate">
       <span class="pre">
-       mrf_to_sliding_mesh()
+       main_menu.mesh.modify_zones.mrf_to_sliding_mesh()
       </span>
      </code>
     </a>
@@ -775,7 +781,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.orient_face_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
-       orient_face_zone()
+       main_menu.mesh.modify_zones.orient_face_zone()
       </span>
      </code>
     </a>
@@ -784,7 +790,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.recreate_all_shells">
      <code class="docutils literal notranslate">
       <span class="pre">
-       recreate_all_shells()
+       main_menu.mesh.modify_zones.recreate_all_shells()
       </span>
      </code>
     </a>
@@ -793,7 +799,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.replace_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
-       replace_zone()
+       main_menu.mesh.modify_zones.replace_zone()
       </span>
      </code>
     </a>
@@ -802,7 +808,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.rotate_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
-       rotate_zone()
+       main_menu.mesh.modify_zones.rotate_zone()
       </span>
      </code>
     </a>
@@ -811,7 +817,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.scale_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
-       scale_zone()
+       main_menu.mesh.modify_zones.scale_zone()
       </span>
      </code>
     </a>
@@ -820,7 +826,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_cell_zone_mark">
      <code class="docutils literal notranslate">
       <span class="pre">
-       sep_cell_zone_mark()
+       main_menu.mesh.modify_zones.sep_cell_zone_mark()
       </span>
      </code>
     </a>
@@ -829,7 +835,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_cell_zone_region">
      <code class="docutils literal notranslate">
       <span class="pre">
-       sep_cell_zone_region()
+       main_menu.mesh.modify_zones.sep_cell_zone_region()
       </span>
      </code>
     </a>
@@ -838,7 +844,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_angle">
      <code class="docutils literal notranslate">
       <span class="pre">
-       sep_face_zone_angle()
+       main_menu.mesh.modify_zones.sep_face_zone_angle()
       </span>
      </code>
     </a>
@@ -847,7 +853,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_face">
      <code class="docutils literal notranslate">
       <span class="pre">
-       sep_face_zone_face()
+       main_menu.mesh.modify_zones.sep_face_zone_face()
       </span>
      </code>
     </a>
@@ -856,7 +862,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_mark">
      <code class="docutils literal notranslate">
       <span class="pre">
-       sep_face_zone_mark()
+       main_menu.mesh.modify_zones.sep_face_zone_mark()
       </span>
      </code>
     </a>
@@ -865,7 +871,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_region">
      <code class="docutils literal notranslate">
       <span class="pre">
-       sep_face_zone_region()
+       main_menu.mesh.modify_zones.sep_face_zone_region()
       </span>
      </code>
     </a>
@@ -874,7 +880,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.slit_face_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
-       slit_face_zone()
+       main_menu.mesh.modify_zones.slit_face_zone()
       </span>
      </code>
     </a>
@@ -883,7 +889,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.slit_interior_between_diff_solids">
      <code class="docutils literal notranslate">
       <span class="pre">
-       slit_interior_between_diff_solids()
+       main_menu.mesh.modify_zones.slit_interior_between_diff_solids()
       </span>
      </code>
     </a>
@@ -892,7 +898,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.slit_periodic">
      <code class="docutils literal notranslate">
       <span class="pre">
-       slit_periodic()
+       main_menu.mesh.modify_zones.slit_periodic()
       </span>
      </code>
     </a>
@@ -901,7 +907,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.translate_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
-       translate_zone()
+       main_menu.mesh.modify_zones.translate_zone()
       </span>
      </code>
     </a>
@@ -910,7 +916,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.zone_name">
      <code class="docutils literal notranslate">
       <span class="pre">
-       zone_name()
+       main_menu.mesh.modify_zones.zone_name()
       </span>
      </code>
     </a>
@@ -919,7 +925,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.zone_type">
      <code class="docutils literal notranslate">
       <span class="pre">
-       zone_type()
+       main_menu.mesh.modify_zones.zone_type()
       </span>
      </code>
     </a>
@@ -947,142 +953,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-mesh-modify-zones">
 <span id="ref-solver-tui-mesh-modify-zones"></span><h1>solver.tui.mesh.modify_zones<a class="headerlink" href="#solver-tui-mesh-modify-zones" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.mesh.</span></span><span class="sig-name descname"><span class="pre">modify_zones</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the zone modification menu. For a description of the items in this menu, see define/boundary-conditions/modify-zones.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p>__init__ method of TUIMenu class.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.activate_cell_zone" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.activate_cell_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">activate_cell_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Activate a cell thread.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.append_mesh" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.append_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_mesh</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Append new mesh.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.append_mesh_data" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.append_mesh_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_mesh_data</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Append new mesh with data.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.change_zone_phase" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.change_zone_phase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">change_zone_phase</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Change the realgas phase for a zone.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.change_zone_state" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.change_zone_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">change_zone_state</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Change the realgas material state for a zone.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.convert_all_solid_mrf_to_solid_motion" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.convert_all_solid_mrf_to_solid_motion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_all_solid_mrf_to_solid_motion</span></code></a>(*args, ...)</p></td>
-<td><p>Change all solid zones motion specification from MRF to solid motion.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.copy_mesh_to_mrf_motion" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.copy_mesh_to_mrf_motion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy_mesh_to_mrf_motion</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Copy motion variable values for origin, axis and velocities from Mesh Motion to Frame Motion.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.copy_move_cell_zone" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.copy_move_cell_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy_move_cell_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Copy and translate or rotate a cell zone.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.copy_mrf_to_mesh_motion" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.copy_mrf_to_mesh_motion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy_mrf_to_mesh_motion</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Copy motion variable values for origin, axis and velocities from Frame Motion to Mesh Motion.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.create_all_shell_threads" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.create_all_shell_threads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_all_shell_threads</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Mark all finite thickness wall for shell creation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.create_periodic_interface" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.create_periodic_interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_periodic_interface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create a conformal or non-conformal periodic interface.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.deactivate_cell_zone" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.deactivate_cell_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deactivate_cell_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Deactivate cell thread.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.delete_all_shells" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.delete_all_shells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_all_shells</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete all shell zones and switch off shell conduction on all the walls.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.delete_cell_zone" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.delete_cell_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_cell_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete a cell thread.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.extrude_face_zone_delta" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.extrude_face_zone_delta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extrude_face_zone_delta</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Extrude a face thread a specified distance based on a list of deltas.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.extrude_face_zone_para" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.extrude_face_zone_para"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extrude_face_zone_para</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Extrude a face thread a specified distance based on a distance and a list of parametric locations between 0 and 1 (eg.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.fuse_face_zones" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.fuse_face_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fuse_face_zones</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Attempt to fuse zones by removing duplicate faces and nodes.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.list_zones" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.list_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_zones</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List zone IDs, types, kinds, and names.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.make_periodic" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.make_periodic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_periodic</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Attempt to establish conformal periodic face zone connectivity.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.matching_tolerance" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.matching_tolerance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matching_tolerance</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the normalized tolerance used for finding coincident nodes.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.merge_zones" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.merge_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_zones</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Merge zones of the same type and condition into one.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.mrf_to_sliding_mesh" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.mrf_to_sliding_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mrf_to_sliding_mesh</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Change motion specification from MRF to moving mesh.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.orient_face_zone" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.orient_face_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orient_face_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Orient the face zone.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.recreate_all_shells" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.recreate_all_shells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">recreate_all_shells</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create shell on all the walls where which were deleted using the command delete-all-shells.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.replace_zone" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.replace_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">replace_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Replace a cell zone.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.rotate_zone" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.rotate_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Rotate nodal coordinates of input cell zones.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.scale_zone" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.scale_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Scale nodal coordinates of input cell zones.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_cell_zone_mark" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_cell_zone_mark"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sep_cell_zone_mark</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Separate a cell zone based on cell marking.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_cell_zone_region" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_cell_zone_region"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sep_cell_zone_region</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Separate a cell zone based on contiguous regions.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_angle" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_angle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sep_face_zone_angle</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Separate a face zone based on significant angle.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_face" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sep_face_zone_face</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Separate each face in a zone into unique zone.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_mark" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_mark"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sep_face_zone_mark</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Separate a face zone based on cell marking.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_region" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_region"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sep_face_zone_region</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Separate a face zone based on contiguous regions.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.slit_face_zone" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.slit_face_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slit_face_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Slit a two-sided wall into two connected wall zones.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.slit_interior_between_diff_solids" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.slit_interior_between_diff_solids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slit_interior_between_diff_solids</span></code></a>(*args, ...)</p></td>
-<td><p>Slit interior created between different solids into coupled walls.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.slit_periodic" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.slit_periodic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slit_periodic</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Slit a periodic zone into two symmetry zones.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.translate_zone" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.translate_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Translate nodal coordinates of input cell zones.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.zone_name" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.zone_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zone_name</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Give a zone a new name.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.zone_type" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.zone_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zone_type</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a zone's type.</p></td>
-</tr>
 </tbody>
 </table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>__init__ method of TUIMenu class.</p>
-</dd></dl>
-
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.</span></span><span class="sig-name descname"><span class="pre">modify_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the zone modification menu. For a description of the items in this menu, see define/boundary-conditions/modify-zones.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.activate_cell_zone">
 <span class="sig-name descname"><span class="pre">activate_cell_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.activate_cell_zone" title="Permalink to this definition">#</a></dt>

@@ -7,12 +7,9 @@ execute_additional_stability_controls
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.execute_additional_stability_controls
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   execute_additional_stability_controls
-
+.. autoclass:: execute_additional_stability_controls
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   ====================================

@@ -7,12 +7,9 @@ output_dir
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.output_dir
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   output_dir
-
+.. autoclass:: output_dir
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================================   ==================================================

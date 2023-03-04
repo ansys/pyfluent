@@ -7,12 +7,9 @@ fensapice_drop_icc
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fensapice_drop_icc
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fensapice_drop_icc
-
+.. autoclass:: fensapice_drop_icc
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

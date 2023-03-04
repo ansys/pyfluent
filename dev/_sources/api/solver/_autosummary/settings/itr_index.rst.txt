@@ -7,12 +7,9 @@ itr_index
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.itr_index
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   itr_index
-
+.. autoclass:: itr_index
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ========================================

@@ -7,12 +7,9 @@ unsteady_1st_order
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.unsteady_1st_order
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   unsteady_1st_order
-
+.. autoclass:: unsteady_1st_order
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   ====================

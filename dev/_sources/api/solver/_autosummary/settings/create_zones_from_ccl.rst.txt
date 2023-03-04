@@ -7,12 +7,9 @@ create_zones_from_ccl
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.create_zones_from_ccl
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   create_zones_from_ccl
-
+.. autoclass:: create_zones_from_ccl
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ===================

@@ -7,12 +7,9 @@ transparency
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.transparency
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   transparency
-
+.. autoclass:: transparency
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ============================================

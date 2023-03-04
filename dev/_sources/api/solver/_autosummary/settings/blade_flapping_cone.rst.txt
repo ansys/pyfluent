@@ -7,12 +7,9 @@ blade_flapping_cone
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.blade_flapping_cone
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   blade_flapping_cone
-
+.. autoclass:: blade_flapping_cone
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==========================================

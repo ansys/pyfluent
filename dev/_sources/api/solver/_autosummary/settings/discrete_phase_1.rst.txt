@@ -7,17 +7,14 @@ discrete_phase
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.discrete_phase_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   discrete_phase
-
-.. rubric:: Attributes
+.. autoclass:: discrete_phase
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================================   ================================
 
-Attribute                                                                   Summary
+Child                                                                       Summary
 
 ================================================   ================================
 :ref:`histogram <histogram>`                                     'histogram' child.
@@ -26,11 +23,11 @@ Attribute                                                                   Summ
 
 ================================================   ================================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ==================================================================   =================================================================================
 
-Method                                                                                                                                         Summary
+Command                                                                                                                                        Summary
 
 ==================================================================   =================================================================================
 :ref:`summary <summary>`                                                                        Print discrete phase summary report of particle fates.

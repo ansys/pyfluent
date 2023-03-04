@@ -3,6 +3,11 @@
 meshing.tui.mesh.prism.controls.adjacent\_zone
 ==============================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.controls.adjacent_zone
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.prism.controls.adjacent_zone
+   :members: project_adjacent_angle, side_feature_angle
 

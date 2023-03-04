@@ -7,12 +7,9 @@ bitrate_scale
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.bitrate_scale
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   bitrate_scale
-
+.. autoclass:: bitrate_scale
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

@@ -7,12 +7,9 @@ convert_skewed_cells
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.convert_skewed_cells
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   convert_skewed_cells
-
+.. autoclass:: convert_skewed_cells
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===================================

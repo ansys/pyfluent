@@ -7,17 +7,14 @@ lsfun
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.lsfun
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   lsfun
-
-.. rubric:: Attributes
+.. autoclass:: lsfun
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

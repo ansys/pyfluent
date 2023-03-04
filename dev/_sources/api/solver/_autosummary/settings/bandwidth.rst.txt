@@ -7,12 +7,9 @@ bandwidth
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.bandwidth
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   bandwidth
-
+.. autoclass:: bandwidth
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   =====================

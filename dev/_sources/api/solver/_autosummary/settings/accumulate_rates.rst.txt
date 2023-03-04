@@ -7,12 +7,9 @@ accumulate_rates
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.accumulate_rates
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   accumulate_rates
-
+.. autoclass:: accumulate_rates
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   =====================

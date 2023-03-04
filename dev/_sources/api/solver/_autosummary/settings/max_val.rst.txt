@@ -7,12 +7,9 @@ max_val
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.max_val
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   max_val
-
+.. autoclass:: max_val
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   =====================================================

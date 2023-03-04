@@ -7,17 +7,14 @@ convergence_reports_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.convergence_reports_child
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   convergence_reports_child
-
-.. rubric:: Attributes
+.. autoclass:: convergence_reports_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================================   =======================================================
 
-Attribute                                                                                                              Summary
+Child                                                                                                                  Summary
 
 ====================================================================   =======================================================
 :ref:`name <name_1>`                                                                                             'name' child.

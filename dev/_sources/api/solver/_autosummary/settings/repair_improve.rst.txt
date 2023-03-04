@@ -7,17 +7,14 @@ repair_improve
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.repair_improve
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   repair_improve
-
-.. rubric:: Attributes
+.. autoclass:: repair_improve
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================================================================================   ====================================================================
 
-Attribute                                                                                                                                                         Summary
+Child                                                                                                                                                             Summary
 
 ==================================================================================================   ====================================================================
 :ref:`allow_repair_at_boundaries <allow_repair_at_boundaries>`                                            Enable/disable adjustment of boundary nodes during mesh repair.
@@ -26,11 +23,11 @@ Attribute                                                                       
 
 ==================================================================================================   ====================================================================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ======================================================   ================================================================================
 
-Method                                                                                                                            Summary
+Command                                                                                                                           Summary
 
 ======================================================   ================================================================================
 :ref:`repair_poor_elements <repair_poor_elements>`                                              Report invalid and poor quality elements.

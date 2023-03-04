@@ -7,12 +7,9 @@ delete_all_compute_nodes
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.delete_all_compute_nodes
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   delete_all_compute_nodes
-
+.. autoclass:: delete_all_compute_nodes
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ==================================================

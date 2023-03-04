@@ -7,12 +7,9 @@ anisotropic_spe_diff
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.anisotropic_spe_diff
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   anisotropic_spe_diff
-
+.. autoclass:: anisotropic_spe_diff
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

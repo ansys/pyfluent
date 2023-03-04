@@ -7,12 +7,9 @@ scheme
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.scheme
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   scheme
-
+.. autoclass:: scheme
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   =====================

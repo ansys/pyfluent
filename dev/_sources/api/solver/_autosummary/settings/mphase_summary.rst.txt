@@ -7,12 +7,9 @@ mphase_summary
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mphase_summary
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   mphase_summary
-
+.. autoclass:: mphase_summary
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==========================================   =============================

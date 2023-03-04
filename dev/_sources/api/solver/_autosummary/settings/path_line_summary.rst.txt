@@ -7,12 +7,9 @@ path_line_summary
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.path_line_summary
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   path_line_summary
-
+.. autoclass:: path_line_summary
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ===================

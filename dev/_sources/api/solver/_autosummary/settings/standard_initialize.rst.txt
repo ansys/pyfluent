@@ -7,12 +7,9 @@ standard_initialize
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.standard_initialize
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   standard_initialize
-
+.. autoclass:: standard_initialize
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ===========================

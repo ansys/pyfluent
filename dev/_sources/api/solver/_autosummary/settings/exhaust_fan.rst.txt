@@ -7,12 +7,9 @@ exhaust_fan
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.exhaust_fan
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   exhaust_fan
-
+.. autoclass:: exhaust_fan
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`exhaust_fan_child <exhaust_fan_child>`

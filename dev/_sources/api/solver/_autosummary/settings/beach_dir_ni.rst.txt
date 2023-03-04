@@ -7,12 +7,9 @@ beach_dir_ni
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.beach_dir_ni
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   beach_dir_ni
-
+.. autoclass:: beach_dir_ni
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

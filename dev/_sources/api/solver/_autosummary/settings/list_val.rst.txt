@@ -7,12 +7,9 @@ list_val
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.list_val
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   list_val
-
+.. autoclass:: list_val
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =============================

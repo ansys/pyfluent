@@ -7,12 +7,9 @@ migrate_and_reorder
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.migrate_and_reorder
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   migrate_and_reorder
-
+.. autoclass:: migrate_and_reorder
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   =======================

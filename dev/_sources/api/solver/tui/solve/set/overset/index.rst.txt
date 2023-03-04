@@ -3,8 +3,13 @@
 solver.tui.solve.set.overset
 ============================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solve.set.overset
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.overset
+   :members: interpolation_method, orphan_cell_treatment, high_order_pressure
 
 .. toctree::
    :hidden:

@@ -7,12 +7,9 @@ set_defaults
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_defaults
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   set_defaults
-
+.. autoclass:: set_defaults
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`set_defaults_child <set_defaults_child>`

@@ -3,6 +3,11 @@
 solver.tui.preferences.appearance.ansys\_logo
 =============================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.ansys_logo
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.appearance.ansys_logo
+   :members: visible, color
 

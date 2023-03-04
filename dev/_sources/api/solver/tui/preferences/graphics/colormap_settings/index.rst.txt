@@ -3,6 +3,11 @@
 solver.tui.preferences.graphics.colormap\_settings
 ==================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.graphics.colormap_settings
+   :members: levels, alignment, use_no_sub_windows, aspect_ratio_when_horizontal, aspect_ratio_when_vertical, preserve_aspect_ratio_for_hardcopy, min_size_scale_factor, text_font_name, text_behavior, text_font_fixed_size, isolines_position_offset, text_font_automatic_vertical_size, major_length_to_screen_ratio_when_horizontal, text_font_fixed_vertical_size, number_format_type, type, number_format_precision, text_font_automatic_size, text_truncation_limit_for_vertical_colormaps, text_font_automatic_units, text_font_automatic_horizontal_size, text_truncation_limit_for_horizontal_colormaps, automatic_resize, text_font_fixed_units, border_style, colormap, major_length_to_screen_ratio_when_vertical, labels, skip_value, log_scale, text_font_fixed_horizontal_size, max_size_scale_factor, show_colormap, auto_refit_on_resize, margin_from_edge_to_screen_ratio
 

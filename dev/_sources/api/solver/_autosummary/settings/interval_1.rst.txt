@@ -7,12 +7,9 @@ interval
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.interval_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   interval
-
+.. autoclass:: interval
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   ====================================

@@ -7,12 +7,9 @@ residual_reduction_tolerance
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.residual_reduction_tolerance
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   residual_reduction_tolerance
-
+.. autoclass:: residual_reduction_tolerance
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =======================================

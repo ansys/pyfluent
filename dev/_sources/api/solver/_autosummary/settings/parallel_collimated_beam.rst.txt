@@ -7,12 +7,9 @@ parallel_collimated_beam
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.parallel_collimated_beam
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   parallel_collimated_beam
-
+.. autoclass:: parallel_collimated_beam
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

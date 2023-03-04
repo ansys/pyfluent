@@ -7,12 +7,9 @@ angular
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.angular
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   angular
-
+.. autoclass:: angular
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

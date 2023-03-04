@@ -7,17 +7,14 @@ plot_direction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.plot_direction
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   plot_direction
-
-.. rubric:: Attributes
+.. autoclass:: plot_direction
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ============================================   =============================
 
-Attribute                                                            Summary
+Child                                                                Summary
 
 ============================================   =============================
 :ref:`option <option_2>`                                     'option' child.

@@ -7,12 +7,9 @@ value1
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.value1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   value1
-
+.. autoclass:: value1
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

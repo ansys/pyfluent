@@ -7,17 +7,14 @@ vmag
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.vmag
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   vmag
-
-.. rubric:: Attributes
+.. autoclass:: vmag
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

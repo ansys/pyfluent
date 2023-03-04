@@ -7,12 +7,9 @@ wall
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.wall
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   wall
-
+.. autoclass:: wall
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`wall_child <wall_child>`

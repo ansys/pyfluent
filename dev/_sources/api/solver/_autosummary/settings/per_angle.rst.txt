@@ -7,12 +7,9 @@ per_angle
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.per_angle
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   per_angle
-
+.. autoclass:: per_angle
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

@@ -7,12 +7,9 @@ enable_velocity_limiting
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.enable_velocity_limiting
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   enable_velocity_limiting
-
+.. autoclass:: enable_velocity_limiting
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================================   ========================================================

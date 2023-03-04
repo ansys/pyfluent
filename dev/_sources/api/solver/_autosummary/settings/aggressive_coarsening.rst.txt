@@ -7,12 +7,9 @@ aggressive_coarsening
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.aggressive_coarsening
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   aggressive_coarsening
-
+.. autoclass:: aggressive_coarsening
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ==================================

@@ -7,12 +7,9 @@ grid_plane
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.grid_plane
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   grid_plane
-
+.. autoclass:: grid_plane
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

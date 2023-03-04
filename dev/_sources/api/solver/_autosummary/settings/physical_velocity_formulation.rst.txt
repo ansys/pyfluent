@@ -7,12 +7,9 @@ physical_velocity_formulation
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.physical_velocity_formulation
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   physical_velocity_formulation
-
+.. autoclass:: physical_velocity_formulation
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ========================

@@ -7,12 +7,9 @@ fslip
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fslip
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fslip
-
+.. autoclass:: fslip
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -7,12 +7,9 @@ use_legacy_particle_location_method
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.use_legacy_particle_location_method
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   use_legacy_particle_location_method
-
+.. autoclass:: use_legacy_particle_location_method
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================================================================================================

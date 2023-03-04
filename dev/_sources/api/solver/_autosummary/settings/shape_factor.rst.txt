@@ -7,12 +7,9 @@ shape_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.shape_factor
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   shape_factor
-
+.. autoclass:: shape_factor
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

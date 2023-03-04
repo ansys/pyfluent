@@ -7,12 +7,9 @@ view_simulation_report
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.view_simulation_report
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   view_simulation_report
-
+.. autoclass:: view_simulation_report
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ================================   ========================

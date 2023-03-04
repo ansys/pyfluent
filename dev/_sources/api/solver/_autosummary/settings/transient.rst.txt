@@ -7,17 +7,14 @@ transient
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.transient
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   transient
-
-.. rubric:: Attributes
+.. autoclass:: transient
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================================================================   ============================================================
 
-Attribute                                                                                                                     Summary
+Child                                                                                                                         Summary
 
 ======================================================================   ============================================================
 :ref:`transient_parameters_specify <transient_parameters_specify>`                  Enable/Disable transient parameter specification.

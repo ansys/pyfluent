@@ -3,6 +3,11 @@
 meshing.tui.display.objects
 ===========================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.display.objects
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.objects
+   :members: isolate_objects, display_neighborhood, make_transparent, select_all_visible, implode, explode, display_similar_area, show_all, toggle_color_mode, toggle_color_palette, hide_objects
 

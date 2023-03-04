@@ -7,12 +7,9 @@ color_by_type
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.color_by_type
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   color_by_type
-
+.. autoclass:: color_by_type
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

@@ -7,12 +7,9 @@ fensapice_drop_ctemp
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fensapice_drop_ctemp
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fensapice_drop_ctemp
-
+.. autoclass:: fensapice_drop_ctemp
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

@@ -7,12 +7,9 @@ output_function
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.output_function
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   output_function
-
+.. autoclass:: output_function
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ==========================================================================================================================

@@ -7,12 +7,9 @@ number_of_tries
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.number_of_tries
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   number_of_tries
-
+.. autoclass:: number_of_tries
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   =================================

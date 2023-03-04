@@ -7,12 +7,9 @@ smoothing_iteration
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.smoothing_iteration
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   smoothing_iteration
-
+.. autoclass:: smoothing_iteration
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   ===============================

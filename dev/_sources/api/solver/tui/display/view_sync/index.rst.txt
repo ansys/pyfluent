@@ -3,6 +3,11 @@
 solver.tui.display.view\_sync
 =============================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.display.view_sync
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.view_sync
+   :members: remove_all, start, list, stop, remove, add, add_all
 

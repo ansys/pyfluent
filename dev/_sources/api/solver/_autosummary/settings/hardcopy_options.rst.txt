@@ -7,12 +7,9 @@ hardcopy_options
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.hardcopy_options
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   hardcopy_options
-
+.. autoclass:: hardcopy_options
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ===========================

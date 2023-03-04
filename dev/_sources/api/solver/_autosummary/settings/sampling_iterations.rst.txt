@@ -7,12 +7,9 @@ sampling_iterations
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.sampling_iterations
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   sampling_iterations
-
+.. autoclass:: sampling_iterations
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ================================

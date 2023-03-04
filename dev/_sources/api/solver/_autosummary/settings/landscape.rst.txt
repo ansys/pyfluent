@@ -7,12 +7,9 @@ landscape
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.landscape
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   landscape
-
+.. autoclass:: landscape
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   =================================================

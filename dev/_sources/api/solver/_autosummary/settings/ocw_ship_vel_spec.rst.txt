@@ -7,12 +7,9 @@ ocw_ship_vel_spec
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ocw_ship_vel_spec
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   ocw_ship_vel_spec
-
+.. autoclass:: ocw_ship_vel_spec
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

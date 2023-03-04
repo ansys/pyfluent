@@ -7,12 +7,9 @@ x_axis_precision
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.x_axis_precision
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   x_axis_precision
-
+.. autoclass:: x_axis_precision
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ====================

@@ -7,12 +7,9 @@ per_injection
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.per_injection
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   per_injection
-
+.. autoclass:: per_injection
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   =====================================

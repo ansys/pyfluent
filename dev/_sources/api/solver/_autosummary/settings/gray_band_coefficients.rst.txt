@@ -7,12 +7,9 @@ gray_band_coefficients
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.gray_band_coefficients
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   gray_band_coefficients
-
+.. autoclass:: gray_band_coefficients
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   ===================================

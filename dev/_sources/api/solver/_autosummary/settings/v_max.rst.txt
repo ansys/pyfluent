@@ -7,12 +7,9 @@ v_max
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.v_max
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   v_max
-
+.. autoclass:: v_max
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

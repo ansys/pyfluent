@@ -7,12 +7,9 @@ parameters
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.parameters
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   parameters
-
+.. autoclass:: parameters
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ======================================================

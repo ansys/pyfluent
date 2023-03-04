@@ -7,12 +7,9 @@ time_scale_modification_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.time_scale_modification_factor
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   time_scale_modification_factor
-
+.. autoclass:: time_scale_modification_factor
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

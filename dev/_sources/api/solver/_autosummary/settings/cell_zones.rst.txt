@@ -7,12 +7,9 @@ cell_zones
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cell_zones
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   cell_zones
-
+.. autoclass:: cell_zones
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================   ================================

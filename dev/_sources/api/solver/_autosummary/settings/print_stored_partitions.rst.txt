@@ -7,12 +7,9 @@ print_stored_partitions
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.print_stored_partitions
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   print_stored_partitions
-
+.. autoclass:: print_stored_partitions
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   ====================================

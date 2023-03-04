@@ -7,12 +7,9 @@ x_velocity_2
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.x_velocity_2
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   x_velocity_2
-
+.. autoclass:: x_velocity_2
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   =====================

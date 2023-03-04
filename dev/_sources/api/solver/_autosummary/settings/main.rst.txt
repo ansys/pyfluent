@@ -7,17 +7,14 @@ main
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.main
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   main
-
-.. rubric:: Attributes
+.. autoclass:: main
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==========================   =====================================================================
 
-Attribute                                                                                  Summary
+Child                                                                                      Summary
 
 ==========================   =====================================================================
 :ref:`border <border_1>`         Enable/disable drawing of borders around the main viewing window.

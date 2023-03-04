@@ -7,12 +7,9 @@ deformation
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.deformation
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   deformation
-
+.. autoclass:: deformation
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ===================================

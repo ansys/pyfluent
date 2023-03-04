@@ -1,6 +1,0 @@
-get\_fluent\_exe\_path
-======================
-
-.. currentmodule:: ansys.fluent.core.launcher.launcher
-
-.. autofunction:: get_fluent_exe_path

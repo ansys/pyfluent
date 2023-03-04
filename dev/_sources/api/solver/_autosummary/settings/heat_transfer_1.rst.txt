@@ -7,12 +7,9 @@ heat_transfer
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.heat_transfer_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   heat_transfer
-
+.. autoclass:: heat_transfer
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ========================================   ===========================================

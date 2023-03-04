@@ -7,12 +7,9 @@ table_name
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.table_name
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   table_name
-
+.. autoclass:: table_name
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   ====================================

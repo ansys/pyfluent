@@ -7,12 +7,9 @@ persistence_fixed_duration
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.persistence_fixed_duration
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   persistence_fixed_duration
-
+.. autoclass:: persistence_fixed_duration
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   =======================

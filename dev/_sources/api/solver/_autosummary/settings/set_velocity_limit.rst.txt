@@ -7,12 +7,9 @@ set_velocity_limit
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_velocity_limit
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   set_velocity_limit
-
+.. autoclass:: set_velocity_limit
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==================================================

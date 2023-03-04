@@ -7,12 +7,9 @@ dpm_bc_erosion_mclaury_c
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_bc_erosion_mclaury_c
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   dpm_bc_erosion_mclaury_c
-
+.. autoclass:: dpm_bc_erosion_mclaury_c
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

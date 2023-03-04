@@ -7,12 +7,9 @@ core_b1
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.core_b1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   core_b1
-
+.. autoclass:: core_b1
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

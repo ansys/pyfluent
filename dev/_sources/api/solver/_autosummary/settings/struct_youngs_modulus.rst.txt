@@ -7,17 +7,14 @@ struct_youngs_modulus
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.struct_youngs_modulus
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   struct_youngs_modulus
-
-.. rubric:: Attributes
+.. autoclass:: struct_youngs_modulus
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==========================================================   ====================================================
 
-Attribute                                                                                                 Summary
+Child                                                                                                     Summary
 
 ==========================================================   ====================================================
 :ref:`option <option_9>`                                         Select method for calculating material property.

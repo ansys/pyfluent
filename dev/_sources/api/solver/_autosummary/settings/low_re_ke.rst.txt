@@ -7,12 +7,9 @@ low_re_ke
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.low_re_ke
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   low_re_ke
-
+.. autoclass:: low_re_ke
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================

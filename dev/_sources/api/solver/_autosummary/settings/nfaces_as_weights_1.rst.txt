@@ -7,17 +7,14 @@ nfaces_as_weights
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.nfaces_as_weights_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   nfaces_as_weights
-
-.. rubric:: Attributes
+.. autoclass:: nfaces_as_weights
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================================   ===============================
 
-Attribute                                                                Summary
+Child                                                                    Summary
 
 ==============================================   ===============================
 :ref:`nfaces_as_weights <nfaces_as_weights>`          'nfaces_as_weights' child.

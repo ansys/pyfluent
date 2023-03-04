@@ -7,17 +7,14 @@ smooth
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.smooth_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   smooth
-
-.. rubric:: Attributes
+.. autoclass:: smooth
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==========================================================   =====================================
 
-Attribute                                                                                  Summary
+Child                                                                                      Summary
 
 ==========================================================   =====================================
 :ref:`smooth_partitioning <smooth_partitioning>`                      'smooth_partitioning' child.

@@ -7,17 +7,14 @@ auto_range_off
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.auto_range_off
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   auto_range_off
-
-.. rubric:: Attributes
+.. autoclass:: auto_range_off
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================   ==========================
 
-Attribute                                                 Summary
+Child                                                     Summary
 
 ====================================   ==========================
 :ref:`clip_to_range <clip_to_range>`       'clip_to_range' child.

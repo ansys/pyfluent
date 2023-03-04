@@ -7,12 +7,9 @@ number_of_child_droplets
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.number_of_child_droplets
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   number_of_child_droplets
-
+.. autoclass:: number_of_child_droplets
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

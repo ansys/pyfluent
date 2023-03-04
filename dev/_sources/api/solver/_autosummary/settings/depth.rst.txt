@@ -7,12 +7,9 @@ depth
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.depth
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   depth
-
+.. autoclass:: depth
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =============================

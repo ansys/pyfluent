@@ -7,12 +7,9 @@ cnw_sub
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cnw_sub
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   cnw_sub
-
+.. autoclass:: cnw_sub
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =========================

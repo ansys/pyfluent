@@ -7,12 +7,9 @@ markers
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.markers
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   markers
-
+.. autoclass:: markers
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`markers_child <markers_child>`

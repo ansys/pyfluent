@@ -7,12 +7,9 @@ near_wall_treatment
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.near_wall_treatment_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   near_wall_treatment
-
+.. autoclass:: near_wall_treatment
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================================   =============================================

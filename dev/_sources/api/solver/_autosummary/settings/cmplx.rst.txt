@@ -7,12 +7,9 @@ cmplx
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cmplx
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   cmplx
-
+.. autoclass:: cmplx
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

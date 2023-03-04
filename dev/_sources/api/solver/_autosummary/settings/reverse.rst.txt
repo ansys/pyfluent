@@ -7,12 +7,9 @@ reverse
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reverse
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   reverse
-
+.. autoclass:: reverse
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =========================

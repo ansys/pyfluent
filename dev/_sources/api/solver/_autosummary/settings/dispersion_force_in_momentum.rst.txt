@@ -7,12 +7,9 @@ dispersion_force_in_momentum
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dispersion_force_in_momentum
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   dispersion_force_in_momentum
-
+.. autoclass:: dispersion_force_in_momentum
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===============================

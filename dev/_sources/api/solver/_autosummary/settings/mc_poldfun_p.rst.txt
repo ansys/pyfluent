@@ -7,12 +7,9 @@ mc_poldfun_p
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mc_poldfun_p
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   mc_poldfun_p
-
+.. autoclass:: mc_poldfun_p
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

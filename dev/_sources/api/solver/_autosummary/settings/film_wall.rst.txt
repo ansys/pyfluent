@@ -7,12 +7,9 @@ film_wall
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.film_wall
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   film_wall
-
+.. autoclass:: film_wall
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

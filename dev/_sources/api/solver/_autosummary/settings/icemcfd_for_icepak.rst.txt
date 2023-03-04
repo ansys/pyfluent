@@ -7,12 +7,9 @@ icemcfd_for_icepak
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.icemcfd_for_icepak
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   icemcfd_for_icepak
-
+.. autoclass:: icemcfd_for_icepak
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==================   =================

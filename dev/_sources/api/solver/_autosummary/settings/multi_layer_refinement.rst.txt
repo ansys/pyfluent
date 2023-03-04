@@ -7,17 +7,14 @@ multi_layer_refinement
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.multi_layer_refinement
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   multi_layer_refinement
-
-.. rubric:: Methods
+.. autoclass:: multi_layer_refinement
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ======================================   ==============================================================
 
-Method                                                                                          Summary
+Command                                                                                         Summary
 
 ======================================   ==============================================================
 :ref:`refine_mesh <refine_mesh>`                          Refine the mesh for multiple boundary layers.

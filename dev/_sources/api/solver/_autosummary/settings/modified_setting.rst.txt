@@ -7,12 +7,9 @@ modified_setting
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.modified_setting
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   modified_setting
-
+.. autoclass:: modified_setting
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==================================   =========================

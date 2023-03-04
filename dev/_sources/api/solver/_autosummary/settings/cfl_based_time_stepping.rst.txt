@@ -7,17 +7,14 @@ cfl_based_time_stepping
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cfl_based_time_stepping
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   cfl_based_time_stepping
-
-.. rubric:: Attributes
+.. autoclass:: cfl_based_time_stepping
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================================================   =======================================
 
-Attribute                                                                                Summary
+Child                                                                                    Summary
 
 ======================================================   =======================================
 :ref:`courant_number <courant_number_1>`                                     Set Courant Number.

@@ -7,12 +7,9 @@ marker_symbol
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.marker_symbol
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   marker_symbol
-
+.. autoclass:: marker_symbol
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

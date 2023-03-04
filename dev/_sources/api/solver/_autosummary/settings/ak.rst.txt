@@ -7,12 +7,9 @@ ak
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ak
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   ak
-
+.. autoclass:: ak
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

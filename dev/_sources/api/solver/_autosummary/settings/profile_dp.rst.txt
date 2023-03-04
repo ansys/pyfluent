@@ -7,12 +7,9 @@ profile_dp
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.profile_dp
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   profile_dp
-
+.. autoclass:: profile_dp
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

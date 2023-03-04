@@ -7,12 +7,9 @@ material_color
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.material_color
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   material_color
-
+.. autoclass:: material_color
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

@@ -7,17 +7,14 @@ pixel_size
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pixel_size
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   pixel_size
-
-.. rubric:: Attributes
+.. autoclass:: pixel_size
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================   ===================
 
-Attribute                              Summary
+Child                                  Summary
 
 ========================   ===================
 :ref:`width <width_1>`          'width' child.

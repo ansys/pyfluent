@@ -7,17 +7,14 @@ vof_smooth_options
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.vof_smooth_options
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   vof_smooth_options
-
-.. rubric:: Attributes
+.. autoclass:: vof_smooth_options
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================================   =======================================================
 
-Attribute                                                                                                              Summary
+Child                                                                                                                  Summary
 
 ====================================================================   =======================================================
 :ref:`patch_reconstructed_interface <patch_reconstructed_interface>`             Enable/Disable patch reconstructed interface.
@@ -28,11 +25,11 @@ Attribute                                                                       
 
 ====================================================================   =======================================================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ============================================   =====================================================
 
-Method                                                                                       Summary
+Command                                                                                      Summary
 
 ============================================   =====================================================
 :ref:`execute_smoothing <execute_smoothing>`       Execute volumetric smoothing for volume fraction.

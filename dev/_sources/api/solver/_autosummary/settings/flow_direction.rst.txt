@@ -7,12 +7,9 @@ flow_direction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.flow_direction
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   flow_direction
-
+.. autoclass:: flow_direction
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`child_object_type_child <child_object_type_child_1>`

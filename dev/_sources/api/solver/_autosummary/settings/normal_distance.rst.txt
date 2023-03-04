@@ -7,12 +7,9 @@ normal_distance
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.normal_distance
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   normal_distance
-
+.. autoclass:: normal_distance
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

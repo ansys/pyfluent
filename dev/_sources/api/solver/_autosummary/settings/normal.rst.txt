@@ -7,12 +7,9 @@ normal
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.normal
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   normal
-
+.. autoclass:: normal
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

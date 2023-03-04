@@ -7,12 +7,9 @@ set_as_current
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_as_current
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   set_as_current
-
+.. autoclass:: set_as_current
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==============================   =======================

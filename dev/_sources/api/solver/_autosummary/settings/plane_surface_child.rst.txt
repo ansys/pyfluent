@@ -7,17 +7,14 @@ plane_surface_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.plane_surface_child
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   plane_surface_child
-
-.. rubric:: Attributes
+.. autoclass:: plane_surface_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================   ====================================
 
-Attribute                                                                               Summary
+Child                                                                                   Summary
 
 ========================================================   ====================================
 :ref:`methods <methods_2>`                                                     'methods' child.

@@ -7,17 +7,14 @@ data_sampling
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.data_sampling_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   data_sampling
-
-.. rubric:: Attributes
+.. autoclass:: data_sampling
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================================================   =========================================================
 
-Attribute                                                                                                              Summary
+Child                                                                                                                  Summary
 
 ==================================================================   =========================================================
 :ref:`data_sampling <data_sampling>`                                                                    'data_sampling' child.
@@ -44,11 +41,11 @@ Attribute                                                                       
 
 ==================================================================   =========================================================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ============================================================   ========================================
 
-Method                                                                                          Summary
+Command                                                                                         Summary
 
 ============================================================   ========================================
 :ref:`setup_unsteady_statistics <setup_unsteady_statistics>`       'setup_unsteady_statistics' command.

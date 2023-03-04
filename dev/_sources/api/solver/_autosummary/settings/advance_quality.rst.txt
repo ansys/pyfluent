@@ -7,17 +7,14 @@ advance_quality
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.advance_quality
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   advance_quality
-
-.. rubric:: Attributes
+.. autoclass:: advance_quality
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================================   ====================================================================
 
-Attribute                                                                                                     Summary
+Child                                                                                                         Summary
 
 ==============================================   ====================================================================
 :ref:`bitrate_scale <bitrate_scale>`                 Mp4 bitrate scale - Best-64000 High-32000 Medium-16000 Low-8000.

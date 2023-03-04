@@ -7,12 +7,9 @@ compute_statistics
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.compute_statistics
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   compute_statistics
-
+.. autoclass:: compute_statistics
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

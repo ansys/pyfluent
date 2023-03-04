@@ -7,12 +7,9 @@ origin
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.origin
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   origin
-
+.. autoclass:: origin
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===============================================

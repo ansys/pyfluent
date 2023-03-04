@@ -7,17 +7,14 @@ kc
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.kc
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   kc
-
-.. rubric:: Attributes
+.. autoclass:: kc
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   =================================
 
-Attribute                                                                        Summary
+Child                                                                            Summary
 
 ====================================================   =================================
 :ref:`method <method_1>`                                                 'method' child.

@@ -7,17 +7,14 @@ web_server
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.web_server
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   web_server
-
-.. rubric:: Methods
+.. autoclass:: web_server
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ====================   ====================
 
-Method                              Summary
+Command                             Summary
 
 ====================   ====================
 :ref:`start <start>`       'start' command.

@@ -7,12 +7,9 @@ p2
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.p2
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   p2
-
+.. autoclass:: p2
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================

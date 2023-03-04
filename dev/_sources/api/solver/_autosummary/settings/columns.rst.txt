@@ -7,12 +7,9 @@ columns
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.columns
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   columns
-
+.. autoclass:: columns
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

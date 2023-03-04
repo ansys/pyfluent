@@ -7,12 +7,9 @@ amplitude
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.amplitude
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   amplitude
-
+.. autoclass:: amplitude
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =======================================

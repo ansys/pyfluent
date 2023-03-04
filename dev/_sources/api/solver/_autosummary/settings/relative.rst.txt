@@ -7,12 +7,9 @@ relative
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.relative
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   relative
-
+.. autoclass:: relative
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -7,12 +7,9 @@ ablation_select_model
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ablation_select_model
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   ablation_select_model
-
+.. autoclass:: ablation_select_model
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

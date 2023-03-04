@@ -7,12 +7,9 @@ const_parcel_diameter
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.const_parcel_diameter
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   const_parcel_diameter
-
+.. autoclass:: const_parcel_diameter
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

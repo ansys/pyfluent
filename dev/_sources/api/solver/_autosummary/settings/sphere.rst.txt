@@ -7,17 +7,14 @@ sphere
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.sphere
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   sphere
-
-.. rubric:: Attributes
+.. autoclass:: sphere
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   ==================================
 
-Attribute                                                                         Summary
+Child                                                                             Summary
 
 ====================================================   ==================================
 :ref:`center <center>`                                                    'center' child.

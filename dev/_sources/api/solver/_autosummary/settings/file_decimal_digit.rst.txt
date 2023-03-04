@@ -7,12 +7,9 @@ file_decimal_digit
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.file_decimal_digit
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   file_decimal_digit
-
+.. autoclass:: file_decimal_digit
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   =============================================================================================================================================

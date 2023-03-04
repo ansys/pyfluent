@@ -7,12 +7,9 @@ skip
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.skip
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   skip
-
+.. autoclass:: skip
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

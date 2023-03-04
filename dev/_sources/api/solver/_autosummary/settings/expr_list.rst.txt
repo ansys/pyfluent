@@ -7,12 +7,9 @@ expr_list
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.expr_list
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   expr_list
-
+.. autoclass:: expr_list
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ==================================

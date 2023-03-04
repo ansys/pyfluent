@@ -7,12 +7,9 @@ relaxation_bounds
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.relaxation_bounds
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   relaxation_bounds
-
+.. autoclass:: relaxation_bounds
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ================================================================================   ================================================

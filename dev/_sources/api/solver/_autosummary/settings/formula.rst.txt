@@ -7,12 +7,9 @@ formula
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.formula
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   formula
-
+.. autoclass:: formula
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ========================================================

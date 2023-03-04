@@ -3,8 +3,13 @@
 solver.tui.solution.run\_calculation.data\_sampling\_options
 ============================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.run_calculation.data_sampling_options
+   :members: remove_dataset, add_datasets, add_rtdft_datasets, list_datasets
 
 .. toctree::
    :hidden:

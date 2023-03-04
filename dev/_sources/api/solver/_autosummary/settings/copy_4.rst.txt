@@ -7,12 +7,9 @@ copy
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.copy_4
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   copy
-
+.. autoclass:: copy
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==============================   =======================

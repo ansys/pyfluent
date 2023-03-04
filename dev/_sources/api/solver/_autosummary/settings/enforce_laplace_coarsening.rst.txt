@@ -7,12 +7,9 @@ enforce_laplace_coarsening
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.enforce_laplace_coarsening
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   enforce_laplace_coarsening
-
+.. autoclass:: enforce_laplace_coarsening
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================   ================

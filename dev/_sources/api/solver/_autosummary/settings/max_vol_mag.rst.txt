@@ -7,12 +7,9 @@ max_vol_mag
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.max_vol_mag
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   max_vol_mag
-
+.. autoclass:: max_vol_mag
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================================================   ========================================================

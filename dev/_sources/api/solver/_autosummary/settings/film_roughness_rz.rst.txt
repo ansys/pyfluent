@@ -7,12 +7,9 @@ film_roughness_rz
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.film_roughness_rz
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   film_roughness_rz
-
+.. autoclass:: film_roughness_rz
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

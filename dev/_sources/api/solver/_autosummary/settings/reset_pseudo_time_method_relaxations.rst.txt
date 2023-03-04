@@ -7,12 +7,9 @@ reset_pseudo_time_method_relaxations
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reset_pseudo_time_method_relaxations
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   reset_pseudo_time_method_relaxations
-
+.. autoclass:: reset_pseudo_time_method_relaxations
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   ====================================

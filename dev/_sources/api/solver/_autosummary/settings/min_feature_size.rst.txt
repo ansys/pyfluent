@@ -7,12 +7,9 @@ min_feature_size
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.min_feature_size
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   min_feature_size
-
+.. autoclass:: min_feature_size
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   =========================================================================

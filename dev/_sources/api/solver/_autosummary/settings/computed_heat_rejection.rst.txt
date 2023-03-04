@@ -7,12 +7,9 @@ computed_heat_rejection
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.computed_heat_rejection
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   computed_heat_rejection
-
+.. autoclass:: computed_heat_rejection
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ======================================   ===========================

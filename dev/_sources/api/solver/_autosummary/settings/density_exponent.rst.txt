@@ -7,12 +7,9 @@ density_exponent
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.density_exponent
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   density_exponent
-
+.. autoclass:: density_exponent
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   ================================

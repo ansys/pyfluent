@@ -7,12 +7,9 @@ mgrid_motion
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mgrid_motion
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   mgrid_motion
-
+.. autoclass:: mgrid_motion
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

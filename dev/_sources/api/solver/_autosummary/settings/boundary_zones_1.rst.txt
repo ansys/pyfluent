@@ -7,12 +7,9 @@ boundary_zones
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.boundary_zones_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   boundary_zones
-
+.. autoclass:: boundary_zones
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   =====================================

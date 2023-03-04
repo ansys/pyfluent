@@ -7,12 +7,9 @@ stone_1
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.stone_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   stone_1
-
+.. autoclass:: stone_1
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

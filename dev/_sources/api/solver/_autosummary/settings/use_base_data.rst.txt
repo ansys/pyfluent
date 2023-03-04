@@ -7,12 +7,9 @@ use_base_data
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.use_base_data
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   use_base_data
-
+.. autoclass:: use_base_data
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===============================

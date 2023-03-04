@@ -7,17 +7,14 @@ temperature_rise
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.temperature_rise
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   temperature_rise
-
-.. rubric:: Attributes
+.. autoclass:: temperature_rise
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

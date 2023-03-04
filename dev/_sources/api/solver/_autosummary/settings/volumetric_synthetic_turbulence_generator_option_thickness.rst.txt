@@ -7,12 +7,9 @@ volumetric_synthetic_turbulence_generator_option_thickness
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.volumetric_synthetic_turbulence_generator_option_thickness
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   volumetric_synthetic_turbulence_generator_option_thickness
-
+.. autoclass:: volumetric_synthetic_turbulence_generator_option_thickness
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

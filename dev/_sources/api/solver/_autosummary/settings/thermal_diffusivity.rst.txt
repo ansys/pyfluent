@@ -7,17 +7,14 @@ thermal_diffusivity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.thermal_diffusivity
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   thermal_diffusivity
-
-.. rubric:: Attributes
+.. autoclass:: thermal_diffusivity
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   ====================================================
 
-Attribute                                                                                           Summary
+Child                                                                                               Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

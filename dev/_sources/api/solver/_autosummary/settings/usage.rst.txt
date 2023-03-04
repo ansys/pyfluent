@@ -7,12 +7,9 @@ usage
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.usage
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   usage
-
+.. autoclass:: usage
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ==================

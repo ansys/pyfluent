@@ -7,12 +7,9 @@ film_phase_change
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.film_phase_change
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   film_phase_change
-
+.. autoclass:: film_phase_change
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

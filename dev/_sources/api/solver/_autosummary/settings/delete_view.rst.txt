@@ -7,12 +7,9 @@ delete_view
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.delete_view
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   delete_view
-
+.. autoclass:: delete_view
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ============================   ======================

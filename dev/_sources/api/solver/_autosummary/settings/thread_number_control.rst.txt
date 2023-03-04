@@ -7,17 +7,14 @@ thread_number_control
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.thread_number_control
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   thread_number_control
-
-.. rubric:: Attributes
+.. autoclass:: thread_number_control
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================================   =================================
 
-Attribute                                                                      Summary
+Child                                                                          Summary
 
 ==================================================   =================================
 :ref:`thread_number_method <thread_number_method>`       'thread_number_method' child.

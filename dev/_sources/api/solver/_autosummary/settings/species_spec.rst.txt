@@ -7,12 +7,9 @@ species_spec
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.species_spec
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   species_spec
-
+.. autoclass:: species_spec
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`turb_visc_func_mf_child <turb_visc_func_mf_child>`

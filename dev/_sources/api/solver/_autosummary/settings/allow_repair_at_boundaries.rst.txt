@@ -7,12 +7,9 @@ allow_repair_at_boundaries
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.allow_repair_at_boundaries
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   allow_repair_at_boundaries
-
+.. autoclass:: allow_repair_at_boundaries
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ==============================================

@@ -7,12 +7,9 @@ geom_disable
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.geom_disable
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   geom_disable
-
+.. autoclass:: geom_disable
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================================   ================================================

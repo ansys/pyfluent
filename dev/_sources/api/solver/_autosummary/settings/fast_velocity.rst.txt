@@ -7,12 +7,9 @@ fast_velocity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fast_velocity
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fast_velocity
-
+.. autoclass:: fast_velocity
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==================   =================

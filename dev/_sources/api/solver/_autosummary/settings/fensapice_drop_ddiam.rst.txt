@@ -7,12 +7,9 @@ fensapice_drop_ddiam
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fensapice_drop_ddiam
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fensapice_drop_ddiam
-
+.. autoclass:: fensapice_drop_ddiam
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

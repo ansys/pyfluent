@@ -7,12 +7,9 @@ read_animation
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.read_animation
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   read_animation
-
+.. autoclass:: read_animation
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ====================================================   ==================================

@@ -7,12 +7,9 @@ initial_deposition_height
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.initial_deposition_height
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   initial_deposition_height
-
+.. autoclass:: initial_deposition_height
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

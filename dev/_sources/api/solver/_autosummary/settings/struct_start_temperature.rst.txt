@@ -7,17 +7,14 @@ struct_start_temperature
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.struct_start_temperature
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   struct_start_temperature
-
-.. rubric:: Attributes
+.. autoclass:: struct_start_temperature
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================   ====================================================
 
-Attribute                                                               Summary
+Child                                                                   Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

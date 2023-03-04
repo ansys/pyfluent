@@ -7,12 +7,9 @@ reorder_partitions
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reorder_partitions
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   reorder_partitions
-
+.. autoclass:: reorder_partitions
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   ====================================

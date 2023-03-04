@@ -3,6 +3,11 @@
 meshing.datamodel.preferences.ParametricStudy.LayoutOptions
 ===========================================================
 
-.. autoclass:: ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.LayoutOptions
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.ParametricStudy.LayoutOptions
+   :members: CurrentCaseParameters, ParametricStudyTree
 

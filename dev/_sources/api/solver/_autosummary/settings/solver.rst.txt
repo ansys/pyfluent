@@ -7,17 +7,14 @@ solver
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.solver
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   solver
-
-.. rubric:: Attributes
+.. autoclass:: solver
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================================   =============================
 
-Attribute                                                                  Summary
+Child                                                                      Summary
 
 ==================================================   =============================
 :ref:`type <type>`                                             Select solver type.

@@ -7,12 +7,9 @@ check_before_solve
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.check_before_solve
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   check_before_solve
-
+.. autoclass:: check_before_solve
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   =================

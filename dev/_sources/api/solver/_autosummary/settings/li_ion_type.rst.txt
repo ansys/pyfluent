@@ -7,12 +7,9 @@ li_ion_type
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.li_ion_type
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   li_ion_type
-
+.. autoclass:: li_ion_type
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

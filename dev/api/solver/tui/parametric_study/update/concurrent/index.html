@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -51,7 +55,7 @@
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
-    <link rel="next" title="solver.tui.parametric_study.update.concurrent.licensing" href="licensing/index.html" />
+    <link rel="next" title="solver.tui.parametric_study.update.concurrent.set" href="set/index.html" />
     <link rel="prev" title="solver.tui.parametric_study.update" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -295,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -340,18 +355,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
        <li class="toctree-l4">
@@ -360,38 +365,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../define/index.html">
          solver.tui.define
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../surface/index.html">
-         solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../setup/index.html">
-         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -435,6 +410,11 @@ function checkPageExistsAndRedirect(event) {
             </label>
             <ul>
              <li class="toctree-l7">
+              <a class="reference internal" href="set/index.html">
+               solver.tui.parametric_study.update.concurrent.set
+              </a>
+             </li>
+             <li class="toctree-l7">
               <a class="reference internal" href="licensing/index.html">
                solver.tui.parametric_study.update.concurrent.licensing
               </a>
@@ -444,11 +424,6 @@ function checkPageExistsAndRedirect(event) {
                solver.tui.parametric_study.update.concurrent.print_to_console
               </a>
              </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="set/index.html">
-               solver.tui.parametric_study.update.concurrent.set
-              </a>
-             </li>
             </ul>
            </li>
           </ul>
@@ -456,23 +431,13 @@ function checkPageExistsAndRedirect(event) {
         </ul>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../results/index.html">
          solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../mesh/index.html">
-         solver.tui.mesh
         </a>
        </li>
        <li class="toctree-l4">
@@ -481,28 +446,78 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../turbo_workflow/index.html">
          solver.tui.turbo_workflow
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../preferences/index.html">
-         solver.tui.preferences
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parallel/index.html">
+         solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../views/index.html">
+         solver.tui.views
         </a>
        </li>
       </ul>
@@ -574,272 +589,28 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent">
    <code class="docutils literal notranslate">
     <span class="pre">
-     concurrent
+     main_menu.parametric_study.update.concurrent
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       __init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.delete_endpoint">
      <code class="docutils literal notranslate">
       <span class="pre">
-       delete_endpoint()
+       main_menu.parametric_study.update.concurrent.delete_endpoint()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       licensing
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         __init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         print_to_console
-        </span>
-       </code>
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.__init__">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           __init__()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.license_type">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           license_type()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.optislang_license_count">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           optislang_license_count()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.optislang_license_type">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           optislang_license_type()
-          </span>
-         </code>
-        </a>
-       </li>
-      </ul>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         set
-        </span>
-       </code>
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.__init__">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           __init__()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.license_type">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           license_type()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.optislang_license_count">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           optislang_license_count()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.optislang_license_type">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           optislang_license_type()
-          </span>
-         </code>
-        </a>
-       </li>
-      </ul>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       print_to_console
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         __init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.current_endpoint">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         current_endpoint()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.current_queue">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         current_queue()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.number_of_concurrent_dps">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         number_of_concurrent_dps()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.number_of_cores_per_dp">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         number_of_cores_per_dp()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.registered_endpoints">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         registered_endpoints()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.register_new_endpoint">
      <code class="docutils literal notranslate">
       <span class="pre">
-       register_new_endpoint()
+       main_menu.parametric_study.update.concurrent.register_new_endpoint()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       set
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         __init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.current_endpoint">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         current_endpoint()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.current_queue">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         current_queue()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.number_of_concurrent_dps">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         number_of_concurrent_dps()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.number_of_cores_per_dp">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         number_of_cores_per_dp()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -864,306 +635,24 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-parametric-study-update-concurrent">
 <span id="ref-solver-tui-parametric-study-update-concurrent"></span><h1>solver.tui.parametric_study.update.concurrent<a class="headerlink" href="#solver-tui-parametric-study-update-concurrent" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.</span></span><span class="sig-name descname"><span class="pre">concurrent</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter Concurrent Update menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p>__init__ method of TUIMenu class.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.delete_endpoint" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.delete_endpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_endpoint</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete endpoint.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.register_new_endpoint" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.register_new_endpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_new_endpoint</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Register a new endpoint.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">licensing</span></code></a></p></td>
-<td><p>Enter Concurrent Licensing menu.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_to_console</span></code></a></p></td>
-<td><p>Print to console concurrent options.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a></p></td>
-<td><p>Set concurrent update options.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>__init__ method of TUIMenu class.</p>
-</dd></dl>
-
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.parametric_study.update.</span></span><span class="sig-name descname"><span class="pre">concurrent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter Concurrent Update menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.delete_endpoint">
 <span class="sig-name descname"><span class="pre">delete_endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.delete_endpoint" title="Permalink to this definition">#</a></dt>
 <dd><p>Delete endpoint.</p>
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">licensing</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter Concurrent Licensing menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p>__init__ method of TUIMenu class.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_to_console</span></code></a></p></td>
-<td><p>Print Concurrent Licensing Settings.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a></p></td>
-<td><p>Enter Concurrent Licensing Menu.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>__init__ method of TUIMenu class.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">print_to_console</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Print Concurrent Licensing Settings.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p>__init__ method of TUIMenu class.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.license_type" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.license_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">license_type</span></code></a>(*args, **kwargs)</p></td>
-<td><p>License Type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.optislang_license_count" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.optislang_license_count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">optislang_license_count</span></code></a>(*args, **kwargs)</p></td>
-<td><p>OptiSLang License Count.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.optislang_license_type" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.optislang_license_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">optislang_license_type</span></code></a>(*args, **kwargs)</p></td>
-<td><p>OptiSLang License Type.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>__init__ method of TUIMenu class.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.license_type">
-<span class="sig-name descname"><span class="pre">license_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.license_type" title="Permalink to this definition">#</a></dt>
-<dd><p>License Type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.optislang_license_count">
-<span class="sig-name descname"><span class="pre">optislang_license_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.optislang_license_count" title="Permalink to this definition">#</a></dt>
-<dd><p>OptiSLang License Count.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.optislang_license_type">
-<span class="sig-name descname"><span class="pre">optislang_license_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.optislang_license_type" title="Permalink to this definition">#</a></dt>
-<dd><p>OptiSLang License Type.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter Concurrent Licensing Menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p>__init__ method of TUIMenu class.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.license_type" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.license_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">license_type</span></code></a>(*args, **kwargs)</p></td>
-<td><p>License Type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.optislang_license_count" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.optislang_license_count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">optislang_license_count</span></code></a>(*args, **kwargs)</p></td>
-<td><p>OptiSLang License Count.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.optislang_license_type" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.optislang_license_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">optislang_license_type</span></code></a>(*args, **kwargs)</p></td>
-<td><p>OptiSLang License Type.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>__init__ method of TUIMenu class.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.license_type">
-<span class="sig-name descname"><span class="pre">license_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.license_type" title="Permalink to this definition">#</a></dt>
-<dd><p>License Type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.optislang_license_count">
-<span class="sig-name descname"><span class="pre">optislang_license_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.optislang_license_count" title="Permalink to this definition">#</a></dt>
-<dd><p>OptiSLang License Count.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.optislang_license_type">
-<span class="sig-name descname"><span class="pre">optislang_license_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.optislang_license_type" title="Permalink to this definition">#</a></dt>
-<dd><p>OptiSLang License Type.</p>
-</dd></dl>
-
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">print_to_console</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Print to console concurrent options.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p>__init__ method of TUIMenu class.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.current_endpoint" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.current_endpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">current_endpoint</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Get the current endpoint.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.current_queue" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.current_queue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">current_queue</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Get the current queue.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.number_of_concurrent_dps" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.number_of_concurrent_dps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_concurrent_dps</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Print Number of Concurrent Design Points.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.number_of_cores_per_dp" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.number_of_cores_per_dp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_cores_per_dp</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Get Number of Cores per Design Point.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.registered_endpoints" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.registered_endpoints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">registered_endpoints</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List registered endpoints.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>__init__ method of TUIMenu class.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.current_endpoint">
-<span class="sig-name descname"><span class="pre">current_endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.current_endpoint" title="Permalink to this definition">#</a></dt>
-<dd><p>Get the current endpoint.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.current_queue">
-<span class="sig-name descname"><span class="pre">current_queue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.current_queue" title="Permalink to this definition">#</a></dt>
-<dd><p>Get the current queue.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.number_of_concurrent_dps">
-<span class="sig-name descname"><span class="pre">number_of_concurrent_dps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.number_of_concurrent_dps" title="Permalink to this definition">#</a></dt>
-<dd><p>Print Number of Concurrent Design Points.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.number_of_cores_per_dp">
-<span class="sig-name descname"><span class="pre">number_of_cores_per_dp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.number_of_cores_per_dp" title="Permalink to this definition">#</a></dt>
-<dd><p>Get Number of Cores per Design Point.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.registered_endpoints">
-<span class="sig-name descname"><span class="pre">registered_endpoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.print_to_console.registered_endpoints" title="Permalink to this definition">#</a></dt>
-<dd><p>List registered endpoints.</p>
-</dd></dl>
-
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.register_new_endpoint">
 <span class="sig-name descname"><span class="pre">register_new_endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.register_new_endpoint" title="Permalink to this definition">#</a></dt>
 <dd><p>Register a new endpoint.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Set concurrent update options.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p>__init__ method of TUIMenu class.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.current_endpoint" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.current_endpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">current_endpoint</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the current endpoint.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.current_queue" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.current_queue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">current_queue</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the current queue.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.number_of_concurrent_dps" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.number_of_concurrent_dps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_concurrent_dps</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set Number of Concurrent Design Points.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.number_of_cores_per_dp" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.number_of_cores_per_dp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_cores_per_dp</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set Number of Cores per Design Point.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>__init__ method of TUIMenu class.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.current_endpoint">
-<span class="sig-name descname"><span class="pre">current_endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.current_endpoint" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the current endpoint.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.current_queue">
-<span class="sig-name descname"><span class="pre">current_queue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.current_queue" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the current queue.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.number_of_concurrent_dps">
-<span class="sig-name descname"><span class="pre">number_of_concurrent_dps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.number_of_concurrent_dps" title="Permalink to this definition">#</a></dt>
-<dd><p>Set Number of Concurrent Design Points.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.number_of_cores_per_dp">
-<span class="sig-name descname"><span class="pre">number_of_cores_per_dp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.set.number_of_cores_per_dp" title="Permalink to this definition">#</a></dt>
-<dd><p>Set Number of Cores per Design Point.</p>
-</dd></dl>
-
 </dd></dl>
 
 </dd></dl>

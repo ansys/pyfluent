@@ -7,12 +7,9 @@ time_step_size_for_solid_zone
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.time_step_size_for_solid_zone
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   time_step_size_for_solid_zone
-
+.. autoclass:: time_step_size_for_solid_zone
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =============================

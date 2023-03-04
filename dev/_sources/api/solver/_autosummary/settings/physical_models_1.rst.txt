@@ -7,17 +7,14 @@ physical_models
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.physical_models_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   physical_models
-
-.. rubric:: Attributes
+.. autoclass:: physical_models
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================   ==============================================================================================================
 
-Attribute                                                                                                                                                         Summary
+Child                                                                                                                                                             Summary
 
 ========================================================   ==============================================================================================================
 :ref:`pressure_gradient_force <pressure_gradient_force>`                                                                                 'pressure_gradient_force' child.

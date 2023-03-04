@@ -7,12 +7,9 @@ low_order_scheme
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.low_order_scheme
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   low_order_scheme
-
+.. autoclass:: low_order_scheme
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   =====================

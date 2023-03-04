@@ -7,12 +7,9 @@ specify_coarsening_rate
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.specify_coarsening_rate
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   specify_coarsening_rate
-
+.. autoclass:: specify_coarsening_rate
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================   ================

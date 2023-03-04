@@ -7,12 +7,9 @@ percentage
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.percentage
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   percentage
-
+.. autoclass:: percentage
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================================

@@ -7,12 +7,9 @@ inlet_vent
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.inlet_vent
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   inlet_vent
-
+.. autoclass:: inlet_vent
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`inlet_vent_child <inlet_vent_child>`

@@ -3,6 +3,11 @@
 solver.tui.setup.models.nox\_parameters
 =======================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.nox_parameters
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.nox_parameters
+   :members: nox_turbulence_interaction, nox_expert, nox_chemistry, inlet_diffusion
 

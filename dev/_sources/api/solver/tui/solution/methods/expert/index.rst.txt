@@ -3,6 +3,11 @@
 solver.tui.solution.methods.expert
 ==================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.methods.expert
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.methods.expert
+   :members: numerics, reactions
 

@@ -3,11 +3,16 @@
 solver.tui.setup.models.optics
 ==============================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.optics
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.optics
+   :members: report, enable, verbosity, sampling_iterations, index_of_refraction
 
 .. toctree::
    :hidden:
 
-   beams/index
    statistics/index
+   beams/index

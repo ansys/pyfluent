@@ -7,12 +7,9 @@ coupled_form
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.coupled_form
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   coupled_form
-
+.. autoclass:: coupled_form
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   =================================================

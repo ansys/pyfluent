@@ -7,12 +7,9 @@ user_specified_species
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.user_specified_species
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   user_specified_species
-
+.. autoclass:: user_specified_species
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ====================================

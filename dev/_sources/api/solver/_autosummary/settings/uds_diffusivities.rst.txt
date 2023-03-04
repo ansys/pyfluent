@@ -7,12 +7,9 @@ uds_diffusivities
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.uds_diffusivities
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   uds_diffusivities
-
+.. autoclass:: uds_diffusivities
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`uds_diffusivities_child <uds_diffusivities_child>`

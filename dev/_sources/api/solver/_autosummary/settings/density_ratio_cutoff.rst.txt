@@ -7,12 +7,9 @@ density_ratio_cutoff
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.density_ratio_cutoff
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   density_ratio_cutoff
-
+.. autoclass:: density_ratio_cutoff
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ==================================================

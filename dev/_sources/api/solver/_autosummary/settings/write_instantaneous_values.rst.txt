@@ -7,12 +7,9 @@ write_instantaneous_values
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.write_instantaneous_values
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   write_instantaneous_values
-
+.. autoclass:: write_instantaneous_values
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ========================================

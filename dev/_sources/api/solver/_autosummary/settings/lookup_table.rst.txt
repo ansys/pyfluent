@@ -7,12 +7,9 @@ lookup_table
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.lookup_table
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   lookup_table
-
+.. autoclass:: lookup_table
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ==================================

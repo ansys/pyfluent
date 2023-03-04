@@ -7,12 +7,9 @@ turb_non_newtonian
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.turb_non_newtonian
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   turb_non_newtonian
-
+.. autoclass:: turb_non_newtonian
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================

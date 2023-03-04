@@ -7,12 +7,9 @@ save_picture
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.save_picture
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   save_picture
-
+.. autoclass:: save_picture
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==============================   ======================

@@ -7,17 +7,14 @@ velocity_ratio
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.velocity_ratio
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   velocity_ratio
-
-.. rubric:: Attributes
+.. autoclass:: velocity_ratio
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

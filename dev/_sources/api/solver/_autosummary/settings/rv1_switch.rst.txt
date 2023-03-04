@@ -7,12 +7,9 @@ rv1_switch
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rv1_switch
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   rv1_switch
-
+.. autoclass:: rv1_switch
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   =====================================

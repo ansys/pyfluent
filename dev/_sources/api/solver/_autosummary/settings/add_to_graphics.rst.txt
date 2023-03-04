@@ -7,12 +7,9 @@ add_to_graphics
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.add_to_graphics
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   add_to_graphics
-
+.. autoclass:: add_to_graphics
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ================================   ========================

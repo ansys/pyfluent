@@ -7,12 +7,9 @@ dt_max
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dt_max
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   dt_max
-
+.. autoclass:: dt_max
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   =======================================================================

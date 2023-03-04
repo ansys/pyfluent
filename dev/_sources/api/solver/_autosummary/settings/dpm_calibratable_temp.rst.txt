@@ -7,12 +7,9 @@ dpm_calibratable_temp
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_calibratable_temp
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   dpm_calibratable_temp
-
+.. autoclass:: dpm_calibratable_temp
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

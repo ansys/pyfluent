@@ -7,12 +7,9 @@ onphysics
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.onphysics
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   onphysics
-
+.. autoclass:: onphysics
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

@@ -7,12 +7,9 @@ alternate_bc_formulation
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.alternate_bc_formulation
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   alternate_bc_formulation
-
+.. autoclass:: alternate_bc_formulation
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==================================================

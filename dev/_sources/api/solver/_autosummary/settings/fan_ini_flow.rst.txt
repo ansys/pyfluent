@@ -7,12 +7,9 @@ fan_ini_flow
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fan_ini_flow
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fan_ini_flow
-
+.. autoclass:: fan_ini_flow
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

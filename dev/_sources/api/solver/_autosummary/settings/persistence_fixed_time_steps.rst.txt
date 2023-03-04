@@ -7,12 +7,9 @@ persistence_fixed_time_steps
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.persistence_fixed_time_steps
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   persistence_fixed_time_steps
-
+.. autoclass:: persistence_fixed_time_steps
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   =======================

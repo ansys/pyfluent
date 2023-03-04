@@ -7,12 +7,9 @@ use_window_resolution
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.use_window_resolution
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   use_window_resolution
-
+.. autoclass:: use_window_resolution
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   =================================================

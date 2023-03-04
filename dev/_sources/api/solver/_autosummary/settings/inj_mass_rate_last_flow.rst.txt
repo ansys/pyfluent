@@ -7,12 +7,9 @@ inj_mass_rate_last_flow
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.inj_mass_rate_last_flow
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   inj_mass_rate_last_flow
-
+.. autoclass:: inj_mass_rate_last_flow
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   =====================================

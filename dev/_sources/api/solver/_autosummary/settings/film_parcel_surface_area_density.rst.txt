@@ -7,12 +7,9 @@ film_parcel_surface_area_density
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.film_parcel_surface_area_density
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   film_parcel_surface_area_density
-
+.. autoclass:: film_parcel_surface_area_density
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

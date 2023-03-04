@@ -7,12 +7,9 @@ from_zone_type
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.from_zone_type
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   from_zone_type
-
+.. autoclass:: from_zone_type
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ======================

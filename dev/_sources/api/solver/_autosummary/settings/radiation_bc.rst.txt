@@ -7,12 +7,9 @@ radiation_bc
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.radiation_bc
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   radiation_bc
-
+.. autoclass:: radiation_bc
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

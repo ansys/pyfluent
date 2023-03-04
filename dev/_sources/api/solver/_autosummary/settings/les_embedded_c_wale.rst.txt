@@ -7,12 +7,9 @@ les_embedded_c_wale
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.les_embedded_c_wale
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   les_embedded_c_wale
-
+.. autoclass:: les_embedded_c_wale
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

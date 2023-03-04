@@ -3,6 +3,11 @@
 solver.tui.solution.controls.query.advanced.amg\_options
 ========================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.controls.query.advanced.amg_options
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.controls.query.advanced.amg_options
+   :members: amg_gpgpu_options, aggressive_amg_coarsening, conservative_amg_coarsening, laplace_coarsening
 

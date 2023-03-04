@@ -7,12 +7,9 @@ nb_gradient_dbns
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.nb_gradient_dbns
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   nb_gradient_dbns
-
+.. autoclass:: nb_gradient_dbns
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================================   =====================

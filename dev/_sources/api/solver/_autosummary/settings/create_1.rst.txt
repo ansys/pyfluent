@@ -7,12 +7,9 @@ create_1
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.create_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   create_1
-
+.. autoclass:: create_1
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ======================================================================   ===========================================

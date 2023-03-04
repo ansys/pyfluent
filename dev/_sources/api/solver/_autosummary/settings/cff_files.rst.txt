@@ -7,12 +7,9 @@ cff_files
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cff_files
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   cff_files
-
+.. autoclass:: cff_files
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   =================

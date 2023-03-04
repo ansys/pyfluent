@@ -7,12 +7,9 @@ error_tolerance
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.error_tolerance
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   error_tolerance
-
+.. autoclass:: error_tolerance
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ===================================

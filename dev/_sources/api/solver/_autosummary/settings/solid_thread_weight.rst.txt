@@ -7,17 +7,14 @@ solid_thread_weight
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.solid_thread_weight
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   solid_thread_weight
-
-.. rubric:: Attributes
+.. autoclass:: solid_thread_weight
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   ==================================
 
-Attribute                                                                         Summary
+Child                                                                             Summary
 
 ====================================================   ==================================
 :ref:`use <use>`                                                             'use' child.

@@ -7,17 +7,14 @@ user_defined_transition
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.user_defined_transition
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   user_defined_transition
-
-.. rubric:: Attributes
+.. autoclass:: user_defined_transition
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================   =============================================
 
-Attribute                                                              Summary
+Child                                                                  Summary
 
 ==============================   =============================================
 :ref:`f_length <f_length>`           Set user-defined transition correlations.

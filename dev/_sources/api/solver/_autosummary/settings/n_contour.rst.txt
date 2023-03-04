@@ -7,12 +7,9 @@ n_contour
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.n_contour
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   n_contour
-
+.. autoclass:: n_contour
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   =====================

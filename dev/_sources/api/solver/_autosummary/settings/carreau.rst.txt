@@ -7,17 +7,14 @@ carreau
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.carreau
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   carreau
-
-.. rubric:: Attributes
+.. autoclass:: carreau
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==========================================================   =====================================
 
-Attribute                                                                                  Summary
+Child                                                                                      Summary
 
 ==========================================================   =====================================
 :ref:`option <option_2>`                                                           'option' child.

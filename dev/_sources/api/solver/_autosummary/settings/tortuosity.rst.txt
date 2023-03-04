@@ -7,12 +7,9 @@ tortuosity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.tortuosity
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   tortuosity
-
+.. autoclass:: tortuosity
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

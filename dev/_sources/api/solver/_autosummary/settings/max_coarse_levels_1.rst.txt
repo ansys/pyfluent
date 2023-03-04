@@ -7,12 +7,9 @@ max_coarse_levels
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.max_coarse_levels_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   max_coarse_levels
-
+.. autoclass:: max_coarse_levels
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ==================================

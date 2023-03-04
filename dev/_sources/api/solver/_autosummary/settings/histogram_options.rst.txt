@@ -7,17 +7,14 @@ histogram_options
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.histogram_options
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   histogram_options
-
-.. rubric:: Attributes
+.. autoclass:: histogram_options
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================================   =============================================================================================================
 
-Attribute                                                                                                                                                Summary
+Child                                                                                                                                                    Summary
 
 ================================================   =============================================================================================================
 :ref:`auto_range <auto_range_1>`                                                           Automatically compute range of sampling variable for histogram plots.

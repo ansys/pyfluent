@@ -3,6 +3,11 @@
 solver.tui.parameters\_\_and\_\_customization.parameters.list\_parameters
 =========================================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.list_parameters
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.parameters__and__customization.parameters.list_parameters
+   :members: input_parameters, output_parameters
 

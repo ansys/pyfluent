@@ -7,12 +7,9 @@ element_mass_flow
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.element_mass_flow
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   element_mass_flow
-
+.. autoclass:: element_mass_flow
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==============================   =======================

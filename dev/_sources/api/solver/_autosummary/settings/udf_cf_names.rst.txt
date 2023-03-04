@@ -7,12 +7,9 @@ udf_cf_names
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.udf_cf_names
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   udf_cf_names
-
+.. autoclass:: udf_cf_names
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ========================================

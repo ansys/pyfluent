@@ -7,12 +7,9 @@ film_impinge_model
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.film_impinge_model
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   film_impinge_model
-
+.. autoclass:: film_impinge_model
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

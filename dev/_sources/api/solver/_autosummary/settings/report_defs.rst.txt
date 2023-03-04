@@ -7,12 +7,9 @@ report_defs
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.report_defs
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   report_defs
-
+.. autoclass:: report_defs
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ========================================

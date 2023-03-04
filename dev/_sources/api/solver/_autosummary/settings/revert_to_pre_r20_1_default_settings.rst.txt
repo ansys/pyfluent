@@ -7,17 +7,14 @@ revert_to_pre_r20_1_default_settings
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.revert_to_pre_r20_1_default_settings
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   revert_to_pre_r20_1_default_settings
-
-.. rubric:: Attributes
+.. autoclass:: revert_to_pre_r20_1_default_settings
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================================================================================================   =================================================================
 
-Attribute                                                                                                                                                                      Summary
+Child                                                                                                                                                                          Summary
 
 ==================================================================================================================   =================================================================
 :ref:`old_default_of_operating_density_method <old_default_of_operating_density_method>`                                              'old_default_of_operating_density_method' child.

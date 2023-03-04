@@ -7,12 +7,9 @@ overwrite
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.overwrite
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   overwrite
-
+.. autoclass:: overwrite
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   ====================================================================================================

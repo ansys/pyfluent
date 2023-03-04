@@ -7,12 +7,9 @@ courant_number_reduction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.courant_number_reduction
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   courant_number_reduction
-
+.. autoclass:: courant_number_reduction
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================

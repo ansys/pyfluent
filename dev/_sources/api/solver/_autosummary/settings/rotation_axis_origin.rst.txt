@@ -7,12 +7,9 @@ rotation_axis_origin
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rotation_axis_origin
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   rotation_axis_origin
-
+.. autoclass:: rotation_axis_origin
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`axis_direction_child <axis_direction_child>`

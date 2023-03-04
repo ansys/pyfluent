@@ -7,17 +7,14 @@ multi_grid
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.multi_grid
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   multi_grid
-
-.. rubric:: Attributes
+.. autoclass:: multi_grid
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ============================================   ==============================
 
-Attribute                                                             Summary
+Child                                                                 Summary
 
 ============================================   ==============================
 :ref:`mg_controls <mg_controls>`                         'mg_controls' child.

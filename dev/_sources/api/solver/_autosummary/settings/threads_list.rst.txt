@@ -7,12 +7,9 @@ threads_list
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.threads_list
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   threads_list
-
+.. autoclass:: threads_list
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   =====================================================

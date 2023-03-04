@@ -7,17 +7,14 @@ flow
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.flow
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   flow
-
-.. rubric:: Methods
+.. autoclass:: flow
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ============================================   ================================
 
-Method                                                                  Summary
+Command                                                                 Summary
 
 ============================================   ================================
 :ref:`species_mass_flow <species_mass_flow>`       'species_mass_flow' command.

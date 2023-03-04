@@ -7,12 +7,9 @@ user_specified_origin_and_axis
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.user_specified_origin_and_axis
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   user_specified_origin_and_axis
-
+.. autoclass:: user_specified_origin_and_axis
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   =====================================

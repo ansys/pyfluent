@@ -7,12 +7,9 @@ dpm_initial_temperature
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_initial_temperature
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   dpm_initial_temperature
-
+.. autoclass:: dpm_initial_temperature
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

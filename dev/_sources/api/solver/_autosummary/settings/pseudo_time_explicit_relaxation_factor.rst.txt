@@ -7,17 +7,14 @@ pseudo_time_explicit_relaxation_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pseudo_time_explicit_relaxation_factor
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   pseudo_time_explicit_relaxation_factor
-
-.. rubric:: Attributes
+.. autoclass:: pseudo_time_explicit_relaxation_factor
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================================================   ===================================
 
-Attribute                                                                            Summary
+Child                                                                                Summary
 
 ======================================================   ===================================
 :ref:`local_dt_dualts_relax <local_dt_dualts_relax>`          'local_dt_dualts_relax' child.

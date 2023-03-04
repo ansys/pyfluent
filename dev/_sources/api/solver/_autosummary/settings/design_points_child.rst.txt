@@ -7,17 +7,14 @@ design_points_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.design_points_child
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   design_points_child
-
-.. rubric:: Attributes
+.. autoclass:: design_points_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================================   ===========================================================
 
-Attribute                                                                                                                      Summary
+Child                                                                                                                          Summary
 
 ========================================================================   ===========================================================
 :ref:`input_parameters <input_parameters>`                                                     Input Parameter Values of Design Point.

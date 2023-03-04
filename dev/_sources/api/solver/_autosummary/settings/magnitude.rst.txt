@@ -7,12 +7,9 @@ magnitude
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.magnitude
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   magnitude
-
+.. autoclass:: magnitude
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =============================

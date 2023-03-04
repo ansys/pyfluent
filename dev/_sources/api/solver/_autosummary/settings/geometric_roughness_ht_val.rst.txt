@@ -7,12 +7,9 @@ geometric_roughness_ht_val
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.geometric_roughness_ht_val
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   geometric_roughness_ht_val
-
+.. autoclass:: geometric_roughness_ht_val
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ==================================

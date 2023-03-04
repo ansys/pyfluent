@@ -3,6 +3,11 @@
 solver.tui.define.gap\_model.advanced\_options
 ==============================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.gap_model.advanced_options
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.gap_model.advanced_options
+   :members: update_gap_regions, extend_gap_regions, render_flow_modeling_gaps, cell_check_distance_factor, reduce_gap_regions, solution_stabilization, clear_gap_regions, verbosity, revert_controls_to_default, alternative_marking, check_cfl_condition, fill_data_in_gap_regions, expert, flow_blocking_stabilization_parameters, include_coupled_walls, sponge_layer, precise_gap_marking, enhanced_data_interpolation, render_gap_interface
 

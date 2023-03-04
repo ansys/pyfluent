@@ -7,12 +7,9 @@ zone_list
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.zone_list
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   zone_list
-
+.. autoclass:: zone_list
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   =====================================================

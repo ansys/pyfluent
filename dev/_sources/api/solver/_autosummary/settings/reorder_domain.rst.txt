@@ -7,12 +7,9 @@ reorder_domain
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reorder_domain
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   reorder_domain
-
+.. autoclass:: reorder_domain
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ==================================

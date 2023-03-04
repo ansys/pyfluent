@@ -7,17 +7,14 @@ partition
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.partition_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   partition
-
-.. rubric:: Attributes
+.. autoclass:: partition
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================   ====================================================
 
-Attribute                                                         Summary
+Child                                                             Summary
 
 ==================   ====================================================
 :ref:`auto <auto>`       Enter the menu to set auto partition parameters.
@@ -26,11 +23,11 @@ Attribute                                                         Summary
 
 ==================   ====================================================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ==============================================================================   =======================================
 
-Method                                                                                                           Summary
+Command                                                                                                          Summary
 
 ==============================================================================   =======================================
 :ref:`combine_partition <combine_partition>`                                                   Merge every N partitions.

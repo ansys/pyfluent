@@ -7,12 +7,9 @@ save_view
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.save_view
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   save_view
-
+.. autoclass:: save_view
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ============================   ======================

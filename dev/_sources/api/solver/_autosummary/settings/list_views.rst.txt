@@ -7,12 +7,9 @@ list_views
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.list_views
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   list_views
-
+.. autoclass:: list_views
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ==================

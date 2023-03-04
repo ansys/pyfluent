@@ -7,17 +7,14 @@ design_points
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.design_points_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   design_points
-
-.. rubric:: Methods
+.. autoclass:: design_points
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ==================================================   ===========================================================
 
-Method                                                                                                   Summary
+Command                                                                                                  Summary
 
 ==================================================   ===========================================================
 :ref:`create_1 <create_1>`                                                                 Add new Design Point.

@@ -7,12 +7,9 @@ fsi_interface
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fsi_interface
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fsi_interface
-
+.. autoclass:: fsi_interface
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -7,12 +7,9 @@ initial_outer_iter
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.initial_outer_iter
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   initial_outer_iter
-
+.. autoclass:: initial_outer_iter
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ======================================

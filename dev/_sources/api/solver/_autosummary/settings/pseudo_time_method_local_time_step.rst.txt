@@ -7,17 +7,14 @@ pseudo_time_method_local_time_step
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pseudo_time_method_local_time_step
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   pseudo_time_method_local_time_step
-
-.. rubric:: Attributes
+.. autoclass:: pseudo_time_method_local_time_step
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================================================================   ===========================================================
 
-Attribute                                                                                                                            Summary
+Child                                                                                                                                Summary
 
 ==============================================================================   ===========================================================
 :ref:`pseudo_time_courant_number <pseudo_time_courant_number>`                          Set courant number for the local pseudo time method.

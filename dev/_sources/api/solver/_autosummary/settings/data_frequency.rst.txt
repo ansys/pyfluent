@@ -7,12 +7,9 @@ data_frequency
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.data_frequency
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   data_frequency
-
+.. autoclass:: data_frequency
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

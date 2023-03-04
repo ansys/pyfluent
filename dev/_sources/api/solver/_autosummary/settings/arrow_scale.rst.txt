@@ -7,12 +7,9 @@ arrow_scale
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.arrow_scale
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   arrow_scale
-
+.. autoclass:: arrow_scale
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   ============================

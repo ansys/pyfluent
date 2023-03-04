@@ -7,12 +7,9 @@ patch_velocity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.patch_velocity
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   patch_velocity
-
+.. autoclass:: patch_velocity
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ====================================================

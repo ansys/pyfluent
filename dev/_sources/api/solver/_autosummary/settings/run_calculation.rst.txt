@@ -7,17 +7,14 @@ run_calculation
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.run_calculation
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   run_calculation
-
-.. rubric:: Attributes
+.. autoclass:: run_calculation
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==========================================================================   ===============================================================
 
-Attribute                                                                                                                            Summary
+Child                                                                                                                                Summary
 
 ==========================================================================   ===============================================================
 :ref:`adaptive_time_stepping <adaptive_time_stepping>`                                                       'adaptive_time_stepping' child.
@@ -42,11 +39,11 @@ Attribute                                                                       
 
 ==========================================================================   ===============================================================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ============================================   =============================================
 
-Method                                                                               Summary
+Command                                                                              Summary
 
 ============================================   =============================================
 :ref:`dual_time_iterate <dual_time_iterate>`                    Perform unsteady iterations.

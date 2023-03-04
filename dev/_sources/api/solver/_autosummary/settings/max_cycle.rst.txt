@@ -7,12 +7,9 @@ max_cycle
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.max_cycle
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   max_cycle
-
+.. autoclass:: max_cycle
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ===================================

@@ -7,17 +7,14 @@ beams
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.beams
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   beams
-
-.. rubric:: Methods
+.. autoclass:: beams
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ==================================================   =========================================
 
-Method                                                                                 Summary
+Command                                                                                Summary
 
 ==================================================   =========================================
 :ref:`copy <copy>`                                                     Copy optical beam grid.

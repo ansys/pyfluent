@@ -7,12 +7,9 @@ corey
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.corey
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   corey
-
+.. autoclass:: corey
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

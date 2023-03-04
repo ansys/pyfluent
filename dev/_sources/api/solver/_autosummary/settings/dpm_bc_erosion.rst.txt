@@ -7,17 +7,14 @@ dpm_bc_erosion
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_bc_erosion
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   dpm_bc_erosion
-
-.. rubric:: Attributes
+.. autoclass:: dpm_bc_erosion
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   =================================
 
-Attribute                                                                        Summary
+Child                                                                            Summary
 
 ====================================================   =================================
 :ref:`method <method_1>`                                                 'method' child.

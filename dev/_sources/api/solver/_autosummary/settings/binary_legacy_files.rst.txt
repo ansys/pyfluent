@@ -7,12 +7,9 @@ binary_legacy_files
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.binary_legacy_files
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   binary_legacy_files
-
+.. autoclass:: binary_legacy_files
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   =================

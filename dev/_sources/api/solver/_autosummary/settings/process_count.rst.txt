@@ -7,12 +7,9 @@ process_count
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.process_count
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   process_count
-
+.. autoclass:: process_count
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   =================================================================

@@ -7,12 +7,9 @@ statistics_controls
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.statistics_controls
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   statistics_controls
-
+.. autoclass:: statistics_controls
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==========================================   =============================

@@ -7,12 +7,9 @@ use_automatic_intersection_tolerance
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.use_automatic_intersection_tolerance
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   use_automatic_intersection_tolerance
-
+.. autoclass:: use_automatic_intersection_tolerance
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ============================================================================

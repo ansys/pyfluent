@@ -7,12 +7,9 @@ swirl_dominated_flow
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.swirl_dominated_flow
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   swirl_dominated_flow
-
+.. autoclass:: swirl_dominated_flow
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   ========================

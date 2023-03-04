@@ -7,12 +7,9 @@ lic_oriented
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.lic_oriented
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   lic_oriented
-
+.. autoclass:: lic_oriented
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ===============================

@@ -7,12 +7,9 @@ thin_wall
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.thin_wall
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   thin_wall
-
+.. autoclass:: thin_wall
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`shell_conduction_child <shell_conduction_child>`

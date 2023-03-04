@@ -7,12 +7,9 @@ orient_face_zone
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.orient_face_zone
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   orient_face_zone
-
+.. autoclass:: orient_face_zone
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==================================   =========================

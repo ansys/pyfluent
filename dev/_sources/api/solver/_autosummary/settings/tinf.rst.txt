@@ -7,12 +7,9 @@ tinf
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.tinf
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   tinf
-
+.. autoclass:: tinf
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

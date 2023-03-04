@@ -7,12 +7,9 @@ sm_relax_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.sm_relax_factor
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   sm_relax_factor
-
+.. autoclass:: sm_relax_factor
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================================   =============================================

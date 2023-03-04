@@ -7,12 +7,9 @@ static_shadows
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.static_shadows
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   static_shadows
-
+.. autoclass:: static_shadows
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

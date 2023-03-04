@@ -7,12 +7,9 @@ sphere_lod
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.sphere_lod
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   sphere_lod
-
+.. autoclass:: sphere_lod
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   ============================

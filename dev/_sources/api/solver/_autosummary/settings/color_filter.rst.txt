@@ -7,12 +7,9 @@ color_filter
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.color_filter
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   color_filter
-
+.. autoclass:: color_filter
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ========================================

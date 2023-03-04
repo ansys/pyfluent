@@ -7,12 +7,9 @@ gap
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.gap
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   gap
-
+.. autoclass:: gap
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   ====================

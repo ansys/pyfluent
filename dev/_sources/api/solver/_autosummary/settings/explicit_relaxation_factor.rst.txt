@@ -7,12 +7,9 @@ explicit_relaxation_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.explicit_relaxation_factor
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   explicit_relaxation_factor
-
+.. autoclass:: explicit_relaxation_factor
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================================

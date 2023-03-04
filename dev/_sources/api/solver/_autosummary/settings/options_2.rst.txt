@@ -7,17 +7,14 @@ options
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.options_2
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   options
-
-.. rubric:: Attributes
+.. autoclass:: options
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================   ========================
 
-Attribute                                         Summary
+Child                                             Summary
 
 ==============================   ========================
 :ref:`verbosity <verbosity_3>`       Multigrid verbosity.

@@ -7,17 +7,14 @@ porous_c_2
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.porous_c_2
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   porous_c_2
-
-.. rubric:: Attributes
+.. autoclass:: porous_c_2
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

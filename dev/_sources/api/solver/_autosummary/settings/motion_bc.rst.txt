@@ -7,12 +7,9 @@ motion_bc
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.motion_bc
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   motion_bc
-
+.. autoclass:: motion_bc
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -7,12 +7,9 @@ angle
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.angle
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   angle
-
+.. autoclass:: angle
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ====================

@@ -7,12 +7,9 @@ min_des_omega
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.min_des_omega
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   min_des_omega
-
+.. autoclass:: min_des_omega
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

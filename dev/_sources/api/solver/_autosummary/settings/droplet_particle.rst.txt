@@ -7,12 +7,9 @@ droplet_particle
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.droplet_particle
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   droplet_particle
-
+.. autoclass:: droplet_particle
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`droplet_particle_child <droplet_particle_child>`

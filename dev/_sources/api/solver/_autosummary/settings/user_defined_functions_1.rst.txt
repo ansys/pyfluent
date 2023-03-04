@@ -7,12 +7,9 @@ user_defined_functions
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.user_defined_functions_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   user_defined_functions
-
+.. autoclass:: user_defined_functions
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   ================================

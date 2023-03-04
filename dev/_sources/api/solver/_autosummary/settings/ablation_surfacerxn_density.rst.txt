@@ -7,12 +7,9 @@ ablation_surfacerxn_density
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ablation_surfacerxn_density
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   ablation_surfacerxn_density
-
+.. autoclass:: ablation_surfacerxn_density
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -7,17 +7,14 @@ auto_dt_advanced_controls
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.auto_dt_advanced_controls
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   auto_dt_advanced_controls
-
-.. rubric:: Attributes
+.. autoclass:: auto_dt_advanced_controls
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================================   ==================================================================================
 
-Attribute                                                                                                                   Summary
+Child                                                                                                                       Summary
 
 ==============================================   ==================================================================================
 :ref:`enable <enable_6>`                                              Enable advanced automatic time stepping for better stability.

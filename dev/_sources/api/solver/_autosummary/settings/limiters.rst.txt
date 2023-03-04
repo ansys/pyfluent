@@ -7,12 +7,9 @@ limiters
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.limiters
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   limiters
-
+.. autoclass:: limiters
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================   =================

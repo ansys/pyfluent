@@ -3,6 +3,11 @@
 meshing.datamodel.PMFileManagement.File.Options
 ===============================================
 
-.. autoclass:: ansys.fluent.core.datamodel_231.PMFileManagement.Root.File._File.Options
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.datamodel_231.PMFileManagement
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.PMFileManagement::Root.File._File.Options
+   :members: Line, Solid, Surface
 

@@ -7,12 +7,9 @@ custom_vector
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.custom_vector
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   custom_vector
-
+.. autoclass:: custom_vector
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ===================================

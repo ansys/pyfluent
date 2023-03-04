@@ -7,12 +7,9 @@ read_from_file
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.read_from_file
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   read_from_file
-
+.. autoclass:: read_from_file
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ===============================================================

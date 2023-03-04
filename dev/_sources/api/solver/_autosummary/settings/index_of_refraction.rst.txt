@@ -7,12 +7,9 @@ index_of_refraction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.index_of_refraction
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   index_of_refraction
-
+.. autoclass:: index_of_refraction
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ================================

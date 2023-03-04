@@ -7,12 +7,9 @@ initial_pressure
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.initial_pressure
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   initial_pressure
-
+.. autoclass:: initial_pressure
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ====================================

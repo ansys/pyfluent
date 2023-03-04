@@ -7,12 +7,9 @@ solid_motion_axis_direction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.solid_motion_axis_direction
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   solid_motion_axis_direction
-
+.. autoclass:: solid_motion_axis_direction
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`child_object_type_child <child_object_type_child_1>`

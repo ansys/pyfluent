@@ -3,6 +3,11 @@
 solver.tui.setup.models.multiphase.phases.iac\_expert
 =====================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.iac_expert
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.multiphase.phases.iac_expert
+   :members: hibiki_ishii_model, yao_morel_model, ishii_kim_model, iac_pseudo_time_step
 

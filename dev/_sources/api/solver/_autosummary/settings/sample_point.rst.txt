@@ -7,12 +7,9 @@ sample_point
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.sample_point
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   sample_point
-
+.. autoclass:: sample_point
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================

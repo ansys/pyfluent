@@ -7,12 +7,9 @@ show_periodic_shadow_zones
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.show_periodic_shadow_zones
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   show_periodic_shadow_zones
-
+.. autoclass:: show_periodic_shadow_zones
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   =================

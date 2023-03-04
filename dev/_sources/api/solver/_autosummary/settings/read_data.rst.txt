@@ -7,12 +7,9 @@ read_data
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.read_data
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   read_data
-
+.. autoclass:: read_data
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ============================================   ==============================

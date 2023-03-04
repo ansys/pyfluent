@@ -7,17 +7,14 @@ film_thermolysis_rate
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.film_thermolysis_rate
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   film_thermolysis_rate
-
-.. rubric:: Attributes
+.. autoclass:: film_thermolysis_rate
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================================================   ===================================
 
-Attribute                                                                            Summary
+Child                                                                                Summary
 
 ======================================================   ===================================
 :ref:`pre_exponential_factor <pre_exponential_factor>`       'pre_exponential_factor' child.

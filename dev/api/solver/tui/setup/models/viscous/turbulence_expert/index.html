@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -51,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../search.html" />
-    <link rel="next" title="solver.tui.setup.models.viscous.transition_model_options" href="../transition_model_options/index.html" />
-    <link rel="prev" title="solver.tui.setup.models.viscous.geko_options" href="../geko_options/index.html" />
+    <link rel="next" title="solver.tui.setup.models.viscous.geko_options" href="../geko_options/index.html" />
+    <link rel="prev" title="solver.tui.setup.models.viscous" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -296,8 +306,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -341,18 +356,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
        <li class="toctree-l4">
@@ -361,33 +366,53 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../../define/index.html">
          solver.tui.define
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../../surface/index.html">
          solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../icing/index.html">
-         solver.tui.icing
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -401,8 +426,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../dynamic_mesh/index.html">
-           solver.tui.setup.dynamic_mesh
+          <a class="reference internal" href="../../../named_expressions/index.html">
+           solver.tui.setup.named_expressions
           </a>
          </li>
          <li class="toctree-l5">
@@ -411,28 +436,23 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../named_expressions/index.html">
-           solver.tui.setup.named_expressions
+          <a class="reference internal" href="../../../turbo_model/index.html">
+           solver.tui.setup.turbo_model
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../operating_conditions/index.html">
-           solver.tui.setup.operating_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../boundary_conditions/index.html">
-           solver.tui.setup.boundary_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../expert/index.html">
-           solver.tui.setup.expert
+          <a class="reference internal" href="../../../gap_model/index.html">
+           solver.tui.setup.gap_model
           </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../../reference_values/index.html">
            solver.tui.setup.reference_values
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../reference_frames/index.html">
+           solver.tui.setup.reference_frames
           </a>
          </li>
          <li class="toctree-l5">
@@ -451,13 +471,18 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul class="current">
            <li class="toctree-l6">
-            <a class="reference internal" href="../../system_coupling_settings/index.html">
-             solver.tui.setup.models.system_coupling_settings
+            <a class="reference internal" href="../../species/index.html">
+             solver.tui.setup.models.species
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../solver/index.html">
-             solver.tui.setup.models.solver
+            <a class="reference internal" href="../../two_temperature/index.html">
+             solver.tui.setup.models.two_temperature
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../radiation/index.html">
+             solver.tui.setup.models.radiation
             </a>
            </li>
            <li class="toctree-l6">
@@ -466,8 +491,38 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../radiation/index.html">
-             solver.tui.setup.models.radiation
+            <a class="reference internal" href="../../eulerian_wallfilm/index.html">
+             solver.tui.setup.models.eulerian_wallfilm
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../electrolysis/index.html">
+             solver.tui.setup.models.electrolysis
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../multiphase/index.html">
+             solver.tui.setup.models.multiphase
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../acoustics/index.html">
+             solver.tui.setup.models.acoustics
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../solver/index.html">
+             solver.tui.setup.models.solver
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../cht/index.html">
+             solver.tui.setup.models.cht
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../optics/index.html">
+             solver.tui.setup.models.optics
             </a>
            </li>
            <li class="toctree-l6 current active has-children">
@@ -480,9 +535,14 @@ function checkPageExistsAndRedirect(event) {
              </i>
             </label>
             <ul class="current">
+             <li class="toctree-l7 current active">
+              <a class="current reference internal" href="#">
+               solver.tui.setup.models.viscous.turbulence_expert
+              </a>
+             </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../near_wall_treatment/index.html">
-               solver.tui.setup.models.viscous.near_wall_treatment
+              <a class="reference internal" href="../geko_options/index.html">
+               solver.tui.setup.models.viscous.geko_options
               </a>
              </li>
              <li class="toctree-l7">
@@ -491,13 +551,8 @@ function checkPageExistsAndRedirect(event) {
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../geko_options/index.html">
-               solver.tui.setup.models.viscous.geko_options
-              </a>
-             </li>
-             <li class="toctree-l7 current active">
-              <a class="current reference internal" href="#">
-               solver.tui.setup.models.viscous.turbulence_expert
+              <a class="reference internal" href="../near_wall_treatment/index.html">
+               solver.tui.setup.models.viscous.near_wall_treatment
               </a>
              </li>
              <li class="toctree-l7">
@@ -513,38 +568,13 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../two_temperature/index.html">
-             solver.tui.setup.models.two_temperature
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../species/index.html">
-             solver.tui.setup.models.species
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../eulerian_wallfilm/index.html">
-             solver.tui.setup.models.eulerian_wallfilm
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../structure/index.html">
-             solver.tui.setup.models.structure
-            </a>
-           </li>
-           <li class="toctree-l6">
             <a class="reference internal" href="../../shell_conduction/index.html">
              solver.tui.setup.models.shell_conduction
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../optics/index.html">
-             solver.tui.setup.models.optics
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../multiphase/index.html">
-             solver.tui.setup.models.multiphase
+            <a class="reference internal" href="../../dpm/index.html">
+             solver.tui.setup.models.dpm
             </a>
            </li>
            <li class="toctree-l6">
@@ -553,35 +583,30 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../electrolysis/index.html">
-             solver.tui.setup.models.electrolysis
+            <a class="reference internal" href="../../structure/index.html">
+             solver.tui.setup.models.structure
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../acoustics/index.html">
-             solver.tui.setup.models.acoustics
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../cht/index.html">
-             solver.tui.setup.models.cht
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../dpm/index.html">
-             solver.tui.setup.models.dpm
+            <a class="reference internal" href="../../system_coupling_settings/index.html">
+             solver.tui.setup.models.system_coupling_settings
             </a>
            </li>
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../turbo_model/index.html">
-           solver.tui.setup.turbo_model
+          <a class="reference internal" href="../../../mesh_interfaces/index.html">
+           solver.tui.setup.mesh_interfaces
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../mesh_interfaces/index.html">
-           solver.tui.setup.mesh_interfaces
+          <a class="reference internal" href="../../../dynamic_mesh/index.html">
+           solver.tui.setup.dynamic_mesh
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../boundary_conditions/index.html">
+           solver.tui.setup.boundary_conditions
           </a>
          </li>
          <li class="toctree-l5">
@@ -590,35 +615,25 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../reference_frames/index.html">
-           solver.tui.setup.reference_frames
+          <a class="reference internal" href="../../../expert/index.html">
+           solver.tui.setup.expert
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../gap_model/index.html">
-           solver.tui.setup.gap_model
+          <a class="reference internal" href="../../../operating_conditions/index.html">
+           solver.tui.setup.operating_conditions
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parametric_study/index.html">
-         solver.tui.parametric_study
+        <a class="reference internal" href="../../../../report/index.html">
+         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../../server/index.html">
+         solver.tui.server
         </a>
        </li>
        <li class="toctree-l4">
@@ -627,8 +642,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solution/index.html">
-         solver.tui.solution
+        <a class="reference internal" href="../../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
        <li class="toctree-l4">
@@ -637,23 +652,23 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../../views/index.html">
          solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../preferences/index.html">
-         solver.tui.preferences
         </a>
        </li>
       </ul>
@@ -725,25 +740,16 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert">
    <code class="docutils literal notranslate">
     <span class="pre">
-     turbulence_expert
+     main_menu.setup.models.viscous.turbulence_expert
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       __init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.kato_launder_model">
      <code class="docutils literal notranslate">
       <span class="pre">
-       kato_launder_model()
+       main_menu.setup.models.viscous.turbulence_expert.kato_launder_model()
       </span>
      </code>
     </a>
@@ -752,7 +758,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.kw_add_des">
      <code class="docutils literal notranslate">
       <span class="pre">
-       kw_add_des()
+       main_menu.setup.models.viscous.turbulence_expert.kw_add_des()
       </span>
      </code>
     </a>
@@ -761,7 +767,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.kw_add_sas">
      <code class="docutils literal notranslate">
       <span class="pre">
-       kw_add_sas()
+       main_menu.setup.models.viscous.turbulence_expert.kw_add_sas()
       </span>
      </code>
     </a>
@@ -770,7 +776,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.kw_vorticity_based_production">
      <code class="docutils literal notranslate">
       <span class="pre">
-       kw_vorticity_based_production()
+       main_menu.setup.models.viscous.turbulence_expert.kw_vorticity_based_production()
       </span>
      </code>
     </a>
@@ -779,7 +785,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.low_re_ke">
      <code class="docutils literal notranslate">
       <span class="pre">
-       low_re_ke()
+       main_menu.setup.models.viscous.turbulence_expert.low_re_ke()
       </span>
      </code>
     </a>
@@ -788,7 +794,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.low_re_ke_index">
      <code class="docutils literal notranslate">
       <span class="pre">
-       low_re_ke_index()
+       main_menu.setup.models.viscous.turbulence_expert.low_re_ke_index()
       </span>
      </code>
     </a>
@@ -797,7 +803,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.non_newtonian_modification">
      <code class="docutils literal notranslate">
       <span class="pre">
-       non_newtonian_modification()
+       main_menu.setup.models.viscous.turbulence_expert.non_newtonian_modification()
       </span>
      </code>
     </a>
@@ -806,7 +812,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.production_limiter">
      <code class="docutils literal notranslate">
       <span class="pre">
-       production_limiter()
+       main_menu.setup.models.viscous.turbulence_expert.production_limiter()
       </span>
      </code>
     </a>
@@ -815,7 +821,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.restore_sst_v61">
      <code class="docutils literal notranslate">
       <span class="pre">
-       restore_sst_v61()
+       main_menu.setup.models.viscous.turbulence_expert.restore_sst_v61()
       </span>
      </code>
     </a>
@@ -824,7 +830,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.rke_cmu_rotation_term">
      <code class="docutils literal notranslate">
       <span class="pre">
-       rke_cmu_rotation_term()
+       main_menu.setup.models.viscous.turbulence_expert.rke_cmu_rotation_term()
       </span>
      </code>
     </a>
@@ -833,7 +839,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.sbes_les_subgrid_dynamic_fvar">
      <code class="docutils literal notranslate">
       <span class="pre">
-       sbes_les_subgrid_dynamic_fvar()
+       main_menu.setup.models.viscous.turbulence_expert.sbes_les_subgrid_dynamic_fvar()
       </span>
      </code>
     </a>
@@ -842,7 +848,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.sbes_sdes_hybrid_model">
      <code class="docutils literal notranslate">
       <span class="pre">
-       sbes_sdes_hybrid_model()
+       main_menu.setup.models.viscous.turbulence_expert.sbes_sdes_hybrid_model()
       </span>
      </code>
     </a>
@@ -851,7 +857,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.sbes_sgs_option">
      <code class="docutils literal notranslate">
       <span class="pre">
-       sbes_sgs_option()
+       main_menu.setup.models.viscous.turbulence_expert.sbes_sgs_option()
       </span>
      </code>
     </a>
@@ -860,7 +866,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.sbes_update_interval_k_omega">
      <code class="docutils literal notranslate">
       <span class="pre">
-       sbes_update_interval_k_omega()
+       main_menu.setup.models.viscous.turbulence_expert.sbes_update_interval_k_omega()
       </span>
      </code>
     </a>
@@ -869,7 +875,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.thermal_p_function">
      <code class="docutils literal notranslate">
       <span class="pre">
-       thermal_p_function()
+       main_menu.setup.models.viscous.turbulence_expert.thermal_p_function()
       </span>
      </code>
     </a>
@@ -878,7 +884,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.turb_add_sbes_sdes">
      <code class="docutils literal notranslate">
       <span class="pre">
-       turb_add_sbes_sdes()
+       main_menu.setup.models.viscous.turbulence_expert.turb_add_sbes_sdes()
       </span>
      </code>
     </a>
@@ -887,7 +893,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.turb_non_newtonian">
      <code class="docutils literal notranslate">
       <span class="pre">
-       turb_non_newtonian()
+       main_menu.setup.models.viscous.turbulence_expert.turb_non_newtonian()
       </span>
      </code>
     </a>
@@ -896,7 +902,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.turb_pk_compressible">
      <code class="docutils literal notranslate">
       <span class="pre">
-       turb_pk_compressible()
+       main_menu.setup.models.viscous.turbulence_expert.turb_pk_compressible()
       </span>
      </code>
     </a>
@@ -905,7 +911,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.turbulence_damping">
      <code class="docutils literal notranslate">
       <span class="pre">
-       turbulence_damping()
+       main_menu.setup.models.viscous.turbulence_expert.turbulence_damping()
       </span>
      </code>
     </a>
@@ -933,82 +939,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-models-viscous-turbulence-expert">
 <span id="ref-solver-tui-setup-models-viscous-turbulence-expert"></span><h1>solver.tui.setup.models.viscous.turbulence_expert<a class="headerlink" href="#solver-tui-setup-models-viscous-turbulence-expert" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.</span></span><span class="sig-name descname"><span class="pre">turbulence_expert</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the turbulence expert menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p>__init__ method of TUIMenu class.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.kato_launder_model" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.kato_launder_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kato_launder_model</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable Kato-Launder modification for production.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.kw_add_des" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.kw_add_des"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kw_add_des</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable DES-mode with the current turbulence model.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.kw_add_sas" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.kw_add_sas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kw_add_sas</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable the SAS-mode with the current turbulence model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.kw_vorticity_based_production" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.kw_vorticity_based_production"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kw_vorticity_based_production</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable vorticity based production.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.low_re_ke" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.low_re_ke"><code class="xref py py-obj docutils literal notranslate"><span class="pre">low_re_ke</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable the low-Re k-epsilon turbulence model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.low_re_ke_index" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.low_re_ke_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">low_re_ke_index</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable the low-Re k-epsilon model version.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.non_newtonian_modification" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.non_newtonian_modification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_newtonian_modification</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable non-Newtonian modification for Lam-Bremhorst model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.production_limiter" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.production_limiter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">production_limiter</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable the Production Limiter.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.restore_sst_v61" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.restore_sst_v61"><code class="xref py py-obj docutils literal notranslate"><span class="pre">restore_sst_v61</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable SST formulation of v6.1.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.rke_cmu_rotation_term" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.rke_cmu_rotation_term"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rke_cmu_rotation_term</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable inclusion of omega in the Cmu definition.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.sbes_les_subgrid_dynamic_fvar" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.sbes_les_subgrid_dynamic_fvar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sbes_les_subgrid_dynamic_fvar</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable the dynamic subgrid-scale mixture fraction variance model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.sbes_sdes_hybrid_model" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.sbes_sdes_hybrid_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sbes_sdes_hybrid_model</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Select the SBES / SDES hybrid model.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.sbes_sgs_option" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.sbes_sgs_option"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sbes_sgs_option</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Select SBES subgrid-scale model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.sbes_update_interval_k_omega" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.sbes_update_interval_k_omega"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sbes_update_interval_k_omega</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set an integer value how often the k and omega equations are updated in a transient SBES run.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.thermal_p_function" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.thermal_p_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">thermal_p_function</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable the Jayatilleke P function.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.turb_add_sbes_sdes" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.turb_add_sbes_sdes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">turb_add_sbes_sdes</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable SBES / SDES with the current turbulence model.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.turb_non_newtonian" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.turb_non_newtonian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">turb_non_newtonian</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable turbulence for non-Newtonian fluids.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.turb_pk_compressible" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.turb_pk_compressible"><code class="xref py py-obj docutils literal notranslate"><span class="pre">turb_pk_compressible</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable turbulent production due to compressible divergence.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.turbulence_damping" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.turbulence_damping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">turbulence_damping</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable turbulence damping and set turbulence damping parameters.</p></td>
-</tr>
 </tbody>
 </table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>__init__ method of TUIMenu class.</p>
-</dd></dl>
-
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.models.viscous.</span></span><span class="sig-name descname"><span class="pre">turbulence_expert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the turbulence expert menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.kato_launder_model">
 <span class="sig-name descname"><span class="pre">kato_launder_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.turbulence_expert.kato_launder_model" title="Permalink to this definition">#</a></dt>

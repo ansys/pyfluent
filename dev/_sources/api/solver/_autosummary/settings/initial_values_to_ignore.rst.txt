@@ -7,12 +7,9 @@ initial_values_to_ignore
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.initial_values_to_ignore
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   initial_values_to_ignore
-
+.. autoclass:: initial_values_to_ignore
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

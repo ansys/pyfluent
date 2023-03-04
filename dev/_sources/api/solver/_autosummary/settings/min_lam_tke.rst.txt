@@ -7,12 +7,9 @@ min_lam_tke
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.min_lam_tke
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   min_lam_tke
-
+.. autoclass:: min_lam_tke
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

@@ -7,12 +7,9 @@ moments
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.moments
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   moments
-
+.. autoclass:: moments
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ======================================   ===========================

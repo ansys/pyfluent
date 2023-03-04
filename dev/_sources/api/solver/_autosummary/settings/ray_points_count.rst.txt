@@ -7,12 +7,9 @@ ray_points_count
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.ray_points_count
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   ray_points_count
-
+.. autoclass:: ray_points_count
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   =================================

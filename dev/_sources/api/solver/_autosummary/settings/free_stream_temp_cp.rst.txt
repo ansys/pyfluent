@@ -7,12 +7,9 @@ free_stream_temp_cp
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.free_stream_temp_cp
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   free_stream_temp_cp
-
+.. autoclass:: free_stream_temp_cp
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

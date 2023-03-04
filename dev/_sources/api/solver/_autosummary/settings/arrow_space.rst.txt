@@ -7,12 +7,9 @@ arrow_space
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.arrow_space
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   arrow_space
-
+.. autoclass:: arrow_space
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   ============================

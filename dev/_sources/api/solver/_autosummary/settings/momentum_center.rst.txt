@@ -7,12 +7,9 @@ momentum_center
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.momentum_center
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   momentum_center
-
+.. autoclass:: momentum_center
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   =====================

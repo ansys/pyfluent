@@ -3,15 +3,20 @@
 solver.tui.mesh.adapt
 =====================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.mesh.adapt
+   :members: anisotropic_adaption, free_hierarchy, manual_refinement_criteria, coarsening_criteria, display_adaption_cells, adapt_mesh, manual_coarsening_criteria, refinement_criteria, list_adaption_cells
 
 .. toctree::
    :hidden:
 
-   cell_registers/index
-   set/index
-   geometry/index
    multi_layer_refinement/index
    profile/index
+   set/index
    manage_criteria/index
+   geometry/index
+   cell_registers/index

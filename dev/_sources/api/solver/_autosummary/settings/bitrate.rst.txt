@@ -7,12 +7,9 @@ bitrate
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.bitrate
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   bitrate
-
+.. autoclass:: bitrate
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

@@ -7,12 +7,9 @@ fan_origin
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fan_origin
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fan_origin
-
+.. autoclass:: fan_origin
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`axis_direction_child <axis_direction_child>`

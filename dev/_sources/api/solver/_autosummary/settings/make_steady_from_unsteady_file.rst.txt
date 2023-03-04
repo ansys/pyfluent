@@ -7,12 +7,9 @@ make_steady_from_unsteady_file
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.make_steady_from_unsteady_file
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   make_steady_from_unsteady_file
-
+.. autoclass:: make_steady_from_unsteady_file
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ==========================================================================================================

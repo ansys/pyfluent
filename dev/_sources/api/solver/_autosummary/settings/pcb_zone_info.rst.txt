@@ -7,17 +7,14 @@ pcb_zone_info
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pcb_zone_info
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   pcb_zone_info
-
-.. rubric:: Attributes
+.. autoclass:: pcb_zone_info
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ============================   ======================
 
-Attribute                                     Summary
+Child                                         Summary
 
 ============================   ======================
 :ref:`ecad_name <ecad_name>`       'ecad_name' child.

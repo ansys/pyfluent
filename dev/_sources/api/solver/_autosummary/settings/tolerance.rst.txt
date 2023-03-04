@@ -7,12 +7,9 @@ tolerance
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.tolerance
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   tolerance
-
+.. autoclass:: tolerance
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =============================

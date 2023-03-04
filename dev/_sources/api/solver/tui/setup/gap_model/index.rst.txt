@@ -3,8 +3,13 @@
 solver.tui.setup.gap\_model
 ===========================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.gap_model
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.gap_model
+   :members: list_gap_regions, render_gap_regions, delete_all, list_gap_face_zones, edit, create, list_gap_cell_zones, delete, enable
 
 .. toctree::
    :hidden:

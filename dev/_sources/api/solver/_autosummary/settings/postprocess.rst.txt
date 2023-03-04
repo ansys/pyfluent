@@ -7,12 +7,9 @@ postprocess
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.postprocess
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   postprocess
-
+.. autoclass:: postprocess
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ================================

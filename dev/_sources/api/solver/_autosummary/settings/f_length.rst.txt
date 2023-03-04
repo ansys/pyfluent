@@ -7,12 +7,9 @@ f_length
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.f_length
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   f_length
-
+.. autoclass:: f_length
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   =============================================

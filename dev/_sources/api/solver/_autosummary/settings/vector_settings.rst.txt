@@ -7,17 +7,14 @@ vector_settings
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.vector_settings
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   vector_settings
-
-.. rubric:: Attributes
+.. autoclass:: vector_settings
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================================   =================================
 
-Attribute                                                                      Summary
+Child                                                                          Summary
 
 ==================================================   =================================
 :ref:`style <style>`                                                    'style' child.

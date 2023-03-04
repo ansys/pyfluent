@@ -7,12 +7,9 @@ fan_opert_angvel
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fan_opert_angvel
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fan_opert_angvel
-
+.. autoclass:: fan_opert_angvel
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

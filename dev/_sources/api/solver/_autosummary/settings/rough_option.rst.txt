@@ -7,12 +7,9 @@ rough_option
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rough_option
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   rough_option
-
+.. autoclass:: rough_option
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

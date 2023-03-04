@@ -7,12 +7,9 @@ dpm_bc_erosion_oka_dref
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_bc_erosion_oka_dref
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   dpm_bc_erosion_oka_dref
-
+.. autoclass:: dpm_bc_erosion_oka_dref
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

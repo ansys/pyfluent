@@ -7,12 +7,9 @@ press_averaging_method
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.press_averaging_method
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   press_averaging_method
-
+.. autoclass:: press_averaging_method
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

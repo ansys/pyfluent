@@ -7,12 +7,9 @@ min_allowed
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.min_allowed
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   min_allowed
-
+.. autoclass:: min_allowed
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   ========================

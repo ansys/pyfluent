@@ -7,12 +7,9 @@ update_frequency
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.update_frequency
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   update_frequency
-
+.. autoclass:: update_frequency
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   =========================================

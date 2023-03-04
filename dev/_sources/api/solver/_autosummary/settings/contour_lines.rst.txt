@@ -7,12 +7,9 @@ contour_lines
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.contour_lines
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   contour_lines
-
+.. autoclass:: contour_lines
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ===================================

@@ -7,12 +7,9 @@ summary_state
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.summary_state
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   summary_state
-
+.. autoclass:: summary_state
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================================   ============================================

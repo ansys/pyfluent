@@ -7,17 +7,14 @@ matrix
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.matrix
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   matrix
-
-.. rubric:: Attributes
+.. autoclass:: matrix
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ============   ==============
 
-Attribute             Summary
+Child                 Summary
 
 ============   ==============
 :ref:`r <r>`       'r' child.

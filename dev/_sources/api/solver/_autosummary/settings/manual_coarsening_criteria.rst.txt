@@ -7,12 +7,9 @@ manual_coarsening_criteria
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.manual_coarsening_criteria
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   manual_coarsening_criteria
-
+.. autoclass:: manual_coarsening_criteria
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ==================

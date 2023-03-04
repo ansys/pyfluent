@@ -7,12 +7,9 @@ position_on_y_axis
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.position_on_y_axis
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   position_on_y_axis
-
+.. autoclass:: position_on_y_axis
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===========================   ====================

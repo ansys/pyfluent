@@ -7,17 +7,14 @@ setup_reduction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.setup_reduction
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   setup_reduction
-
-.. rubric:: Attributes
+.. autoclass:: setup_reduction
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================================================================   ============================================================================================
 
-Attribute                                                                                                                                                     Summary
+Child                                                                                                                                                         Summary
 
 ======================================================================   ============================================================================================
 :ref:`use_weighting <use_weighting>`                                                                                                           'use_weighting' child.
@@ -26,11 +23,11 @@ Attribute                                                                       
 
 ======================================================================   ============================================================================================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ==================================================================   =============================================================================================================
 
-Method                                                                                                                                                                     Summary
+Command                                                                                                                                                                    Summary
 
 ==================================================================   =============================================================================================================
 :ref:`weighting_variable <weighting_variable>`                                                  Choose the weighting variable for the averaging in each bin in the data reduction.

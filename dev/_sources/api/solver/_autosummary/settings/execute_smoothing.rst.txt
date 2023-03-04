@@ -7,12 +7,9 @@ execute_smoothing
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.execute_smoothing
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   execute_smoothing
-
+.. autoclass:: execute_smoothing
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ============================================

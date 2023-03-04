@@ -3,6 +3,11 @@
 meshing.tui.file.checkpoint
 ===========================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.file.checkpoint
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.file.checkpoint
+   :members: restore_checkpoint, list_checkpoint_names, write_checkpoint, delete_checkpoint
 

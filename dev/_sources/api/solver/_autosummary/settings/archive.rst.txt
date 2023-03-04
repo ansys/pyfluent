@@ -7,12 +7,9 @@ archive
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.archive
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   archive
-
+.. autoclass:: archive
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==================================   =========================

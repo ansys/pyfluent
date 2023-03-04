@@ -7,17 +7,14 @@ set
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_3
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   set
-
-.. rubric:: Attributes
+.. autoclass:: set
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================================================   ==============================================================================================
 
-Attribute                                                                                                                                                                     Summary
+Child                                                                                                                                                                         Summary
 
 ====================================================================================   ==============================================================================================
 :ref:`cell_function <cell_function_1>`                                                                                                                             Set cell function.
@@ -62,11 +59,11 @@ Attribute                                                                       
 
 ====================================================================================   ==============================================================================================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ====================================   =============================================
 
-Method                                                                       Summary
+Command                                                                      Summary
 
 ====================================   =============================================
 :ref:`across_zones <across_zones_1>`       Enable partitioning by zone or by domain.

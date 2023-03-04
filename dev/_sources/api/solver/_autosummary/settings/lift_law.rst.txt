@@ -7,12 +7,9 @@ lift_law
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.lift_law
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   lift_law
-
+.. autoclass:: lift_law
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================

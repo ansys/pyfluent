@@ -7,12 +7,9 @@ statistics_mixture_fraction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.statistics_mixture_fraction
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   statistics_mixture_fraction
-
+.. autoclass:: statistics_mixture_fraction
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ==========================

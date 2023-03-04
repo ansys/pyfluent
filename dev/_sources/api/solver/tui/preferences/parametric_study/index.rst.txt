@@ -3,11 +3,14 @@
 solver.tui.preferences.parametric\_study
 ========================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.preferences.parametric_study
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
 
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.parametric_study
 .. toctree::
    :hidden:
 
-   update_options/index
    layout_options/index
+   update_options/index

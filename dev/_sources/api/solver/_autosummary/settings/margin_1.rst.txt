@@ -7,12 +7,9 @@ margin
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.margin_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   margin
-
+.. autoclass:: margin
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =======================

@@ -7,12 +7,9 @@ exponent_smoothing_func
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.exponent_smoothing_func
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   exponent_smoothing_func
-
+.. autoclass:: exponent_smoothing_func
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================================   =============================================

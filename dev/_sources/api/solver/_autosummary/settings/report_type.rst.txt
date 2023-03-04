@@ -7,12 +7,9 @@ report_type
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.report_type
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   report_type
-
+.. autoclass:: report_type
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   =========================================

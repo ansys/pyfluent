@@ -7,17 +7,14 @@ v_opq_absorbtivity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.v_opq_absorbtivity
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   v_opq_absorbtivity
-
-.. rubric:: Attributes
+.. autoclass:: v_opq_absorbtivity
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

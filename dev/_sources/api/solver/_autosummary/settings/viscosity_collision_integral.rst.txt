@@ -7,12 +7,9 @@ viscosity_collision_integral
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.viscosity_collision_integral
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   viscosity_collision_integral
-
+.. autoclass:: viscosity_collision_integral
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================================   =========================================

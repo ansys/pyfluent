@@ -7,17 +7,14 @@ lennard_jones_energy
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.lennard_jones_energy
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   lennard_jones_energy
-
-.. rubric:: Attributes
+.. autoclass:: lennard_jones_energy
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================   ====================================================
 
-Attribute                                                               Summary
+Child                                                                   Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

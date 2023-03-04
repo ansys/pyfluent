@@ -3,8 +3,12 @@
 meshing.datamodel.preferences
 =============================
 
-.. autoclass:: ansys.fluent.core.datamodel_231.preferences.Root
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root
 
 .. toctree::
    :hidden:

@@ -7,12 +7,9 @@ mom_center
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mom_center
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   mom_center
-
+.. autoclass:: mom_center
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ==================================

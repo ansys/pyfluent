@@ -7,17 +7,14 @@ turb_viscosity_ratio_profile
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.turb_viscosity_ratio_profile
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   turb_viscosity_ratio_profile
-
-.. rubric:: Attributes
+.. autoclass:: turb_viscosity_ratio_profile
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

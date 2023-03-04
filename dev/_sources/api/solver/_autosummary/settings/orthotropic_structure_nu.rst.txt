@@ -7,17 +7,14 @@ orthotropic_structure_nu
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.orthotropic_structure_nu
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   orthotropic_structure_nu
-
-.. rubric:: Attributes
+.. autoclass:: orthotropic_structure_nu
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==========================================   =============================
 
-Attribute                                                          Summary
+Child                                                              Summary
 
 ==========================================   =============================
 :ref:`poisson_ratio_01 <poisson_ratio_01>`       'poisson_ratio_01' child.

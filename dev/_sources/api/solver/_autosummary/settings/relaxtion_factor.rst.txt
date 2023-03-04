@@ -7,12 +7,9 @@ relaxtion_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.relaxtion_factor
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   relaxtion_factor
-
+.. autoclass:: relaxtion_factor
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   =====================================================================

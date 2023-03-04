@@ -7,12 +7,9 @@ boundary_marker
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.boundary_marker
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   boundary_marker
-
+.. autoclass:: boundary_marker
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

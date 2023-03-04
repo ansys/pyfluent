@@ -7,12 +7,9 @@ res_sat_p3
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.res_sat_p3
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   res_sat_p3
-
+.. autoclass:: res_sat_p3
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

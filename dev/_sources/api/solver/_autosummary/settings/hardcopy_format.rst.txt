@@ -7,12 +7,9 @@ hardcopy_format
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.hardcopy_format
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   hardcopy_format
-
+.. autoclass:: hardcopy_format
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ===========================

@@ -7,12 +7,9 @@ rhie_chow_method
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.rhie_chow_method
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   rhie_chow_method
-
+.. autoclass:: rhie_chow_method
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ====================

@@ -7,12 +7,9 @@ jet_diameter
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.jet_diameter
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   jet_diameter
-
+.. autoclass:: jet_diameter
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

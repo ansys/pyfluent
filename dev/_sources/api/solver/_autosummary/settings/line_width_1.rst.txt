@@ -7,12 +7,9 @@ line_width
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.line_width_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   line_width
-
+.. autoclass:: line_width
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

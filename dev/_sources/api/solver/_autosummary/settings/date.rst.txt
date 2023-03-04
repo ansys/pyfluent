@@ -7,12 +7,9 @@ date
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.date
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   date
-
+.. autoclass:: date
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   =======================================

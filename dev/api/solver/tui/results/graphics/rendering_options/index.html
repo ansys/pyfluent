@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -51,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
-    <link rel="next" title="solver.tui.results.graphics.update_scene" href="../update_scene/index.html" />
-    <link rel="prev" title="solver.tui.results.graphics" href="../index.html" />
+    <link rel="next" title="solver.tui.solution" href="../../../solution/index.html" />
+    <link rel="prev" title="solver.tui.results.graphics.lights" href="../lights/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -295,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -340,18 +355,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
        <li class="toctree-l4">
@@ -360,43 +365,18 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../define/index.html">
          solver.tui.define
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../surface/index.html">
-         solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../setup/index.html">
-         solver.tui.setup
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../parametric_study/index.html">
          solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../adjoint/index.html">
+         solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -410,6 +390,21 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
+          <a class="reference internal" href="../../animate/index.html">
+           solver.tui.results.animate
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../plot/index.html">
+           solver.tui.results.plot
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../report/index.html">
+           solver.tui.results.report
+          </a>
+         </li>
+         <li class="toctree-l5">
           <a class="reference internal" href="../../graphics_window/index.html">
            solver.tui.results.graphics_window
           </a>
@@ -417,11 +412,6 @@ function checkPageExistsAndRedirect(event) {
          <li class="toctree-l5">
           <a class="reference internal" href="../../surface/index.html">
            solver.tui.results.surface
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../plot/index.html">
-           solver.tui.results.plot
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -434,14 +424,9 @@ function checkPageExistsAndRedirect(event) {
            </i>
           </label>
           <ul class="current">
-           <li class="toctree-l6 current active">
-            <a class="current reference internal" href="#">
-             solver.tui.results.graphics.rendering_options
-            </a>
-           </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../update_scene/index.html">
-             solver.tui.results.graphics.update_scene
+            <a class="reference internal" href="../objects/index.html">
+             solver.tui.results.graphics.objects
             </a>
            </li>
            <li class="toctree-l6">
@@ -450,62 +435,27 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
+            <a class="reference internal" href="../update_scene/index.html">
+             solver.tui.results.graphics.update_scene
+            </a>
+           </li>
+           <li class="toctree-l6">
             <a class="reference internal" href="../lights/index.html">
              solver.tui.results.graphics.lights
             </a>
            </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../objects/index.html">
-             solver.tui.results.graphics.objects
+           <li class="toctree-l6 current active">
+            <a class="current reference internal" href="#">
+             solver.tui.results.graphics.rendering_options
             </a>
            </li>
           </ul>
          </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../report/index.html">
-           solver.tui.results.report
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../animate/index.html">
-           solver.tui.results.animate
-          </a>
-         </li>
         </ul>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../mesh/index.html">
-         solver.tui.mesh
-        </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../solution/index.html">
          solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../adjoint/index.html">
-         solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4">
@@ -514,8 +464,73 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../preferences/index.html">
-         solver.tui.preferences
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parallel/index.html">
+         solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../views/index.html">
+         solver.tui.views
         </a>
        </li>
       </ul>
@@ -587,25 +602,16 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options">
    <code class="docutils literal notranslate">
     <span class="pre">
-     rendering_options
+     main_menu.results.graphics.rendering_options
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       __init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.animation_option">
      <code class="docutils literal notranslate">
       <span class="pre">
-       animation_option()
+       main_menu.results.graphics.rendering_options.animation_option()
       </span>
      </code>
     </a>
@@ -614,7 +620,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.auto_spin">
      <code class="docutils literal notranslate">
       <span class="pre">
-       auto_spin()
+       main_menu.results.graphics.rendering_options.auto_spin()
       </span>
      </code>
     </a>
@@ -623,7 +629,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.color_map_alignment">
      <code class="docutils literal notranslate">
       <span class="pre">
-       color_map_alignment()
+       main_menu.results.graphics.rendering_options.color_map_alignment()
       </span>
      </code>
     </a>
@@ -632,7 +638,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.device_info">
      <code class="docutils literal notranslate">
       <span class="pre">
-       device_info()
+       main_menu.results.graphics.rendering_options.device_info()
       </span>
      </code>
     </a>
@@ -641,7 +647,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.double_buffering">
      <code class="docutils literal notranslate">
       <span class="pre">
-       double_buffering()
+       main_menu.results.graphics.rendering_options.double_buffering()
       </span>
      </code>
     </a>
@@ -650,7 +656,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.driver">
      <code class="docutils literal notranslate">
       <span class="pre">
-       driver()
+       main_menu.results.graphics.rendering_options.driver()
       </span>
      </code>
     </a>
@@ -659,7 +665,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.face_displacement">
      <code class="docutils literal notranslate">
       <span class="pre">
-       face_displacement()
+       main_menu.results.graphics.rendering_options.face_displacement()
       </span>
      </code>
     </a>
@@ -668,7 +674,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.help_text_color">
      <code class="docutils literal notranslate">
       <span class="pre">
-       help_text_color()
+       main_menu.results.graphics.rendering_options.help_text_color()
       </span>
      </code>
     </a>
@@ -677,7 +683,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.hidden_surface_method">
      <code class="docutils literal notranslate">
       <span class="pre">
-       hidden_surface_method()
+       main_menu.results.graphics.rendering_options.hidden_surface_method()
       </span>
      </code>
     </a>
@@ -686,7 +692,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.hidden_surfaces">
      <code class="docutils literal notranslate">
       <span class="pre">
-       hidden_surfaces()
+       main_menu.results.graphics.rendering_options.hidden_surfaces()
       </span>
      </code>
     </a>
@@ -695,7 +701,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.outer_face_cull">
      <code class="docutils literal notranslate">
       <span class="pre">
-       outer_face_cull()
+       main_menu.results.graphics.rendering_options.outer_face_cull()
       </span>
      </code>
     </a>
@@ -704,7 +710,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.set_rendering_options">
      <code class="docutils literal notranslate">
       <span class="pre">
-       set_rendering_options()
+       main_menu.results.graphics.rendering_options.set_rendering_options()
       </span>
      </code>
     </a>
@@ -713,7 +719,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.show_colormap">
      <code class="docutils literal notranslate">
       <span class="pre">
-       show_colormap()
+       main_menu.results.graphics.rendering_options.show_colormap()
       </span>
      </code>
     </a>
@@ -722,7 +728,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.surface_edge_visibility">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface_edge_visibility()
+       main_menu.results.graphics.rendering_options.surface_edge_visibility()
       </span>
      </code>
     </a>
@@ -750,67 +756,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-results-graphics-rendering-options">
 <span id="ref-solver-tui-results-graphics-rendering-options"></span><h1>solver.tui.results.graphics.rendering_options<a class="headerlink" href="#solver-tui-results-graphics-rendering-options" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.results.graphics.</span></span><span class="sig-name descname"><span class="pre">rendering_options</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the rendering options menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p>__init__ method of TUIMenu class.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.animation_option" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.animation_option"><code class="xref py py-obj docutils literal notranslate"><span class="pre">animation_option</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Using Wireframe / All option during animation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.auto_spin" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.auto_spin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_spin</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable mouse view rotations to continue to spin the display after the button is released.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.color_map_alignment" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.color_map_alignment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">color_map_alignment</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the color bar alignment.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.device_info" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.device_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">device_info</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List information for the graphics device.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.double_buffering" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.double_buffering"><code class="xref py py-obj docutils literal notranslate"><span class="pre">double_buffering</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable double-buffering.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.driver" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.driver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">driver</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Change the current graphics driver.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.face_displacement" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.face_displacement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_displacement</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set face displacement value in Z-buffer units along the Camera Z-axis.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.help_text_color" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.help_text_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">help_text_color</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the color of screen help text.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.hidden_surface_method" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.hidden_surface_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hidden_surface_method</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify the method to perform hidden line and hidden surface rendering.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.hidden_surfaces" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.hidden_surfaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hidden_surfaces</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable hidden surface removal.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.outer_face_cull" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.outer_face_cull"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outer_face_cull</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable discarding outer faces during display.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.set_rendering_options" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.set_rendering_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_rendering_options</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the rendering options.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.show_colormap" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.show_colormap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_colormap</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/Disable colormap.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.surface_edge_visibility" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.surface_edge_visibility"><code class="xref py py-obj docutils literal notranslate"><span class="pre">surface_edge_visibility</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set edge visibility flags for surfaces.</p></td>
-</tr>
 </tbody>
 </table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>__init__ method of TUIMenu class.</p>
-</dd></dl>
-
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.results.graphics.</span></span><span class="sig-name descname"><span class="pre">rendering_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the rendering options menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.animation_option">
 <span class="sig-name descname"><span class="pre">animation_option</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.rendering_options.animation_option" title="Permalink to this definition">#</a></dt>

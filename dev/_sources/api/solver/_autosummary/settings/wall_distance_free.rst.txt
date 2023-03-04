@@ -7,12 +7,9 @@ wall_distance_free
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.wall_distance_free
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   wall_distance_free
-
+.. autoclass:: wall_distance_free
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =========================

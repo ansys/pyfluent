@@ -7,12 +7,9 @@ logo_color
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.logo_color
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   logo_color
-
+.. autoclass:: logo_color
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ====================

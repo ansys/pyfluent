@@ -7,12 +7,9 @@ anisotropic_adaption
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.anisotropic_adaption
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   anisotropic_adaption
-
+.. autoclass:: anisotropic_adaption
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================   ================================

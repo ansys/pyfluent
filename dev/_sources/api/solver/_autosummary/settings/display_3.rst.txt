@@ -7,12 +7,9 @@ display
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.display_3
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   display
-
+.. autoclass:: display
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

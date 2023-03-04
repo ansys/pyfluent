@@ -7,12 +7,9 @@ surface_id_val
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.surface_id_val
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   surface_id_val
-
+.. autoclass:: surface_id_val
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   =========================================================================

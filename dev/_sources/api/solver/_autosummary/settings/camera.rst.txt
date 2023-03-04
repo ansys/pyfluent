@@ -7,17 +7,14 @@ camera
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.camera
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   camera
-
-.. rubric:: Methods
+.. autoclass:: camera
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ==============================   ==============================================================
 
-Method                                                                                  Summary
+Command                                                                                 Summary
 
 ==============================   ==============================================================
 :ref:`dolly <dolly>`                                     Adjust the camera position and target.

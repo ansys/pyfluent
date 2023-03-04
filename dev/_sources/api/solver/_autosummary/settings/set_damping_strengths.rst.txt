@@ -7,12 +7,9 @@ set_damping_strengths
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_damping_strengths
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   set_damping_strengths
-
+.. autoclass:: set_damping_strengths
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`axis_direction_child <axis_direction_child>`

@@ -7,12 +7,9 @@ consistency_index
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.consistency_index
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   consistency_index
-
+.. autoclass:: consistency_index
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   ====================================

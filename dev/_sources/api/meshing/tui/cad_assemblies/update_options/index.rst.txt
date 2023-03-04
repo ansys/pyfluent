@@ -3,6 +3,11 @@
 meshing.tui.cad\_assemblies.update\_options
 ===========================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.update_options
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.cad_assemblies.update_options
+   :members: import_edge_zones, tessellation, one_object_per, one_zone_per
 

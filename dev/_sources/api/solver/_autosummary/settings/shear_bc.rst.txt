@@ -7,12 +7,9 @@ shear_bc
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.shear_bc
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   shear_bc
-
+.. autoclass:: shear_bc
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -7,12 +7,9 @@ free_stream_particles
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.free_stream_particles
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   free_stream_particles
-
+.. autoclass:: free_stream_particles
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

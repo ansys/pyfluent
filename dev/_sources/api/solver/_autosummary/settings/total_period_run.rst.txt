@@ -7,12 +7,9 @@ total_period_run
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.total_period_run
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   total_period_run
-
+.. autoclass:: total_period_run
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ===========================

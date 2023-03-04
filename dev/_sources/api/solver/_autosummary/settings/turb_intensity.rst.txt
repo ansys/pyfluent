@@ -7,12 +7,9 @@ turb_intensity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.turb_intensity
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   turb_intensity
-
+.. autoclass:: turb_intensity
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

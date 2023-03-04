@@ -7,12 +7,9 @@ mrf_to_sliding_mesh
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mrf_to_sliding_mesh
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   mrf_to_sliding_mesh
-
+.. autoclass:: mrf_to_sliding_mesh
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ========================   ====================

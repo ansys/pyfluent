@@ -7,12 +7,9 @@ convergence_acceleration_type
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.convergence_acceleration_type
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   convergence_acceleration_type
-
+.. autoclass:: convergence_acceleration_type
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================================================================   ==============================================================================================================================================================

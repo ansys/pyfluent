@@ -7,12 +7,9 @@ geom_dir_y
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.geom_dir_y
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   geom_dir_y
-
+.. autoclass:: geom_dir_y
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================================   ================================================

@@ -7,12 +7,9 @@ fps
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fps
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fps
-
+.. autoclass:: fps
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ==================

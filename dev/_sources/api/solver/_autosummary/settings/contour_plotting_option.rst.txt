@@ -7,12 +7,9 @@ contour_plotting_option
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.contour_plotting_option
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   contour_plotting_option
-
+.. autoclass:: contour_plotting_option
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   ========================================================

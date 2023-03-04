@@ -7,17 +7,14 @@ except_in_range
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.except_in_range
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   except_in_range
-
-.. rubric:: Attributes
+.. autoclass:: except_in_range
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================   ===================
 
-Attribute                            Summary
+Child                                Summary
 
 ======================   ===================
 :ref:`value1 <value1>`       'value1' child.

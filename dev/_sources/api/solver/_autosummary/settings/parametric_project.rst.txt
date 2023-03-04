@@ -7,17 +7,14 @@ parametric_project
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.parametric_project
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   parametric_project
-
-.. rubric:: Methods
+.. autoclass:: parametric_project
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ==================================   =======================
 
-Method                                               Summary
+Command                                              Summary
 
 ==================================   =======================
 :ref:`new <new>`                         Create New Project.

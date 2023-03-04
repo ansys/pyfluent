@@ -7,12 +7,9 @@ read_fn
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.read_fn
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   read_fn
-
+.. autoclass:: read_fn
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ===========================

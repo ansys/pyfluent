@@ -7,12 +7,9 @@ sgs_turb_intensity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.sgs_turb_intensity
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   sgs_turb_intensity
-
+.. autoclass:: sgs_turb_intensity
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

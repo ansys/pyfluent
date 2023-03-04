@@ -3,6 +3,11 @@
 solver.tui.define.models.heat\_exchanger.dual\_cell\_model
 ==========================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.models.heat_exchanger.dual_cell_model
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.heat_exchanger.dual_cell_model
+   :members: modify_heat_exchanger, delete_heat_exchanger, write_NTU, plot_NTU, alternative_formulation, heat_exchanger, add_heat_exchanger
 

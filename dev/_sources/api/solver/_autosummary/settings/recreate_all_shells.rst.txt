@@ -7,12 +7,9 @@ recreate_all_shells
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.recreate_all_shells
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   recreate_all_shells
-
+.. autoclass:: recreate_all_shells
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   ================================

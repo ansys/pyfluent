@@ -7,12 +7,9 @@ file_name_path
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.file_name_path
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   file_name_path
-
+.. autoclass:: file_name_path
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================================   ========================================================

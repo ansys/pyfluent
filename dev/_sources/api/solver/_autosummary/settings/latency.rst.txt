@@ -7,12 +7,9 @@ latency
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.latency
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   latency
-
+.. autoclass:: latency
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   =====================

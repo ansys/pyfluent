@@ -7,12 +7,9 @@ film_contact_angle_beta
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.film_contact_angle_beta
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   film_contact_angle_beta
-
+.. autoclass:: film_contact_angle_beta
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

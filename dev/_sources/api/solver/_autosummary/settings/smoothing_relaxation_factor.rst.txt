@@ -7,12 +7,9 @@ smoothing_relaxation_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.smoothing_relaxation_factor
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   smoothing_relaxation_factor
-
+.. autoclass:: smoothing_relaxation_factor
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ============================================

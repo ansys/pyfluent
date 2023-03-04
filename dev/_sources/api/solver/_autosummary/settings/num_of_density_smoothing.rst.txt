@@ -7,12 +7,9 @@ num_of_density_smoothing
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.num_of_density_smoothing
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   num_of_density_smoothing
-
+.. autoclass:: num_of_density_smoothing
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =======================================================

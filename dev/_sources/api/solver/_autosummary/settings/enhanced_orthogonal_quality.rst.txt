@@ -7,12 +7,9 @@ enhanced_orthogonal_quality
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.enhanced_orthogonal_quality
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   enhanced_orthogonal_quality
-
+.. autoclass:: enhanced_orthogonal_quality
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   =================

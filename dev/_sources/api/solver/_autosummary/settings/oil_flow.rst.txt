@@ -7,12 +7,9 @@ oil_flow
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.oil_flow
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   oil_flow
-
+.. autoclass:: oil_flow
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   ====================

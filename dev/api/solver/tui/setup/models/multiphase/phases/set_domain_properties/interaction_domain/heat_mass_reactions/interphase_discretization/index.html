@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -51,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../../../../../search.html" />
-    <link rel="next" title="solver.tui.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.lift" href="../lift/index.html" />
-    <link rel="prev" title="solver.tui.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.virtual_mass" href="../virtual_mass/index.html" />
+    <link rel="next" title="solver.tui.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_viscous_dissipation" href="../interphase_viscous_dissipation/index.html" />
+    <link rel="prev" title="solver.tui.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.lift" href="../lift/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -300,8 +310,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -345,18 +360,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../../../../../../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
        <li class="toctree-l4">
@@ -365,33 +370,53 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../../../../../../define/index.html">
          solver.tui.define
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../../../../../../surface/index.html">
          solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../../../icing/index.html">
-         solver.tui.icing
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -405,8 +430,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../../../dynamic_mesh/index.html">
-           solver.tui.setup.dynamic_mesh
+          <a class="reference internal" href="../../../../../../../named_expressions/index.html">
+           solver.tui.setup.named_expressions
           </a>
          </li>
          <li class="toctree-l5">
@@ -415,28 +440,23 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../../../named_expressions/index.html">
-           solver.tui.setup.named_expressions
+          <a class="reference internal" href="../../../../../../../turbo_model/index.html">
+           solver.tui.setup.turbo_model
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../../../operating_conditions/index.html">
-           solver.tui.setup.operating_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../../../boundary_conditions/index.html">
-           solver.tui.setup.boundary_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../../../expert/index.html">
-           solver.tui.setup.expert
+          <a class="reference internal" href="../../../../../../../gap_model/index.html">
+           solver.tui.setup.gap_model
           </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../../../../../../reference_values/index.html">
            solver.tui.setup.reference_values
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../../../../reference_frames/index.html">
+           solver.tui.setup.reference_frames
           </a>
          </li>
          <li class="toctree-l5">
@@ -455,33 +475,8 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul class="current">
            <li class="toctree-l6">
-            <a class="reference internal" href="../../../../../../system_coupling_settings/index.html">
-             solver.tui.setup.models.system_coupling_settings
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../../../solver/index.html">
-             solver.tui.setup.models.solver
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../../../heat_exchanger/index.html">
-             solver.tui.setup.models.heat_exchanger
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../../../radiation/index.html">
-             solver.tui.setup.models.radiation
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../../../viscous/index.html">
-             solver.tui.setup.models.viscous
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../../../nox_parameters/index.html">
-             solver.tui.setup.models.nox_parameters
+            <a class="reference internal" href="../../../../../../species/index.html">
+             solver.tui.setup.models.species
             </a>
            </li>
            <li class="toctree-l6">
@@ -490,8 +485,13 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../../../../../species/index.html">
-             solver.tui.setup.models.species
+            <a class="reference internal" href="../../../../../../radiation/index.html">
+             solver.tui.setup.models.radiation
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../../../heat_exchanger/index.html">
+             solver.tui.setup.models.heat_exchanger
             </a>
            </li>
            <li class="toctree-l6">
@@ -500,18 +500,8 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../../../../../structure/index.html">
-             solver.tui.setup.models.structure
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../../../shell_conduction/index.html">
-             solver.tui.setup.models.shell_conduction
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../../../optics/index.html">
-             solver.tui.setup.models.optics
+            <a class="reference internal" href="../../../../../../electrolysis/index.html">
+             solver.tui.setup.models.electrolysis
             </a>
            </li>
            <li class="toctree-l6 current active has-children">
@@ -524,6 +514,31 @@ function checkPageExistsAndRedirect(event) {
              </i>
             </label>
             <ul class="current">
+             <li class="toctree-l7">
+              <a class="reference internal" href="../../../../../explicit_expert_options/index.html">
+               solver.tui.setup.models.multiphase.explicit_expert_options
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../../../../../flow_regime_modeling/index.html">
+               solver.tui.setup.models.multiphase.flow_regime_modeling
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../../../../../sub_models/index.html">
+               solver.tui.setup.models.multiphase.sub_models
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../../../../../population_balance/index.html">
+               solver.tui.setup.models.multiphase.population_balance
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../../../../../wet_steam/index.html">
+               solver.tui.setup.models.multiphase.wet_steam
+              </a>
+             </li>
              <li class="toctree-l7 current active has-children">
               <a class="reference internal" href="../../../../index.html">
                solver.tui.setup.models.multiphase.phases
@@ -554,6 +569,26 @@ function checkPageExistsAndRedirect(event) {
                    </i>
                   </label>
                   <ul class="current">
+                   <li class="toctree-l10">
+                    <a class="reference internal" href="../../numerics/index.html">
+                     solver.tui.setup.models.multiphase.phases.set_domain_properties.interaction_domain.numerics
+                    </a>
+                   </li>
+                   <li class="toctree-l10">
+                    <a class="reference internal" href="../../forces/index.html">
+                     solver.tui.setup.models.multiphase.phases.set_domain_properties.interaction_domain.forces
+                    </a>
+                   </li>
+                   <li class="toctree-l10">
+                    <a class="reference internal" href="../../model_transition/index.html">
+                     solver.tui.setup.models.multiphase.phases.set_domain_properties.interaction_domain.model_transition
+                    </a>
+                   </li>
+                   <li class="toctree-l10">
+                    <a class="reference internal" href="../../interfacial_area/index.html">
+                     solver.tui.setup.models.multiphase.phases.set_domain_properties.interaction_domain.interfacial_area
+                    </a>
+                   </li>
                    <li class="toctree-l10 current active has-children">
                     <a class="reference internal" href="../index.html">
                      solver.tui.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions
@@ -565,13 +600,18 @@ function checkPageExistsAndRedirect(event) {
                     </label>
                     <ul class="current">
                      <li class="toctree-l11">
-                      <a class="reference internal" href="../interphase_viscous_dissipation/index.html">
-                       solver.tui.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_viscous_dissipation
+                      <a class="reference internal" href="../virtual_mass/index.html">
+                       solver.tui.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.virtual_mass
                       </a>
                      </li>
                      <li class="toctree-l11">
-                      <a class="reference internal" href="../virtual_mass/index.html">
-                       solver.tui.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.virtual_mass
+                      <a class="reference internal" href="../cavitation/index.html">
+                       solver.tui.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.cavitation
+                      </a>
+                     </li>
+                     <li class="toctree-l11">
+                      <a class="reference internal" href="../lift/index.html">
+                       solver.tui.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.lift
                       </a>
                      </li>
                      <li class="toctree-l11 current active">
@@ -580,8 +620,8 @@ function checkPageExistsAndRedirect(event) {
                       </a>
                      </li>
                      <li class="toctree-l11">
-                      <a class="reference internal" href="../lift/index.html">
-                       solver.tui.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.lift
+                      <a class="reference internal" href="../interphase_viscous_dissipation/index.html">
+                       solver.tui.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_viscous_dissipation
                       </a>
                      </li>
                      <li class="toctree-l11">
@@ -589,32 +629,7 @@ function checkPageExistsAndRedirect(event) {
                        solver.tui.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.surface_tension
                       </a>
                      </li>
-                     <li class="toctree-l11">
-                      <a class="reference internal" href="../cavitation/index.html">
-                       solver.tui.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.cavitation
-                      </a>
-                     </li>
                     </ul>
-                   </li>
-                   <li class="toctree-l10">
-                    <a class="reference internal" href="../../model_transition/index.html">
-                     solver.tui.setup.models.multiphase.phases.set_domain_properties.interaction_domain.model_transition
-                    </a>
-                   </li>
-                   <li class="toctree-l10">
-                    <a class="reference internal" href="../../forces/index.html">
-                     solver.tui.setup.models.multiphase.phases.set_domain_properties.interaction_domain.forces
-                    </a>
-                   </li>
-                   <li class="toctree-l10">
-                    <a class="reference internal" href="../../numerics/index.html">
-                     solver.tui.setup.models.multiphase.phases.set_domain_properties.interaction_domain.numerics
-                    </a>
-                   </li>
-                   <li class="toctree-l10">
-                    <a class="reference internal" href="../../interfacial_area/index.html">
-                     solver.tui.setup.models.multiphase.phases.set_domain_properties.interaction_domain.interfacial_area
-                    </a>
                    </li>
                   </ul>
                  </li>
@@ -628,50 +643,20 @@ function checkPageExistsAndRedirect(event) {
               </ul>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../../../../../population_balance/index.html">
-               solver.tui.setup.models.multiphase.population_balance
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../../../../../wet_steam/index.html">
-               solver.tui.setup.models.multiphase.wet_steam
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../../../../../sub_models/index.html">
-               solver.tui.setup.models.multiphase.sub_models
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../../../../../flow_regime_modeling/index.html">
-               solver.tui.setup.models.multiphase.flow_regime_modeling
-              </a>
-             </li>
-             <li class="toctree-l7">
               <a class="reference internal" href="../../../../../hybrid_models/index.html">
                solver.tui.setup.models.multiphase.hybrid_models
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../../../../../explicit_expert_options/index.html">
-               solver.tui.setup.models.multiphase.explicit_expert_options
               </a>
              </li>
             </ul>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../../../../../soot_parameters/index.html">
-             solver.tui.setup.models.soot_parameters
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../../../electrolysis/index.html">
-             solver.tui.setup.models.electrolysis
-            </a>
-           </li>
-           <li class="toctree-l6">
             <a class="reference internal" href="../../../../../../acoustics/index.html">
              solver.tui.setup.models.acoustics
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../../../solver/index.html">
+             solver.tui.setup.models.solver
             </a>
            </li>
            <li class="toctree-l6">
@@ -680,20 +665,60 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
+            <a class="reference internal" href="../../../../../../optics/index.html">
+             solver.tui.setup.models.optics
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../../../viscous/index.html">
+             solver.tui.setup.models.viscous
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../../../nox_parameters/index.html">
+             solver.tui.setup.models.nox_parameters
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../../../shell_conduction/index.html">
+             solver.tui.setup.models.shell_conduction
+            </a>
+           </li>
+           <li class="toctree-l6">
             <a class="reference internal" href="../../../../../../dpm/index.html">
              solver.tui.setup.models.dpm
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../../../soot_parameters/index.html">
+             solver.tui.setup.models.soot_parameters
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../../../structure/index.html">
+             solver.tui.setup.models.structure
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../../../system_coupling_settings/index.html">
+             solver.tui.setup.models.system_coupling_settings
             </a>
            </li>
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../../../turbo_model/index.html">
-           solver.tui.setup.turbo_model
+          <a class="reference internal" href="../../../../../../../mesh_interfaces/index.html">
+           solver.tui.setup.mesh_interfaces
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../../../mesh_interfaces/index.html">
-           solver.tui.setup.mesh_interfaces
+          <a class="reference internal" href="../../../../../../../dynamic_mesh/index.html">
+           solver.tui.setup.dynamic_mesh
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../../../../boundary_conditions/index.html">
+           solver.tui.setup.boundary_conditions
           </a>
          </li>
          <li class="toctree-l5">
@@ -702,35 +727,25 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../../../reference_frames/index.html">
-           solver.tui.setup.reference_frames
+          <a class="reference internal" href="../../../../../../../expert/index.html">
+           solver.tui.setup.expert
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../../../gap_model/index.html">
-           solver.tui.setup.gap_model
+          <a class="reference internal" href="../../../../../../../operating_conditions/index.html">
+           solver.tui.setup.operating_conditions
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../../../parametric_study/index.html">
-         solver.tui.parametric_study
+        <a class="reference internal" href="../../../../../../../../report/index.html">
+         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../../../../../../server/index.html">
+         solver.tui.server
         </a>
        </li>
        <li class="toctree-l4">
@@ -739,8 +754,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../../../solution/index.html">
-         solver.tui.solution
+        <a class="reference internal" href="../../../../../../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
        <li class="toctree-l4">
@@ -749,23 +764,23 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../../../../../../views/index.html">
          solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../../../preferences/index.html">
-         solver.tui.preferences
         </a>
        </li>
       </ul>
@@ -837,25 +852,16 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization">
    <code class="docutils literal notranslate">
     <span class="pre">
-     interphase_discretization
+     main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       __init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.cavitation">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cavitation()
+       main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.cavitation()
       </span>
      </code>
     </a>
@@ -864,7 +870,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.interphase_discr">
      <code class="docutils literal notranslate">
       <span class="pre">
-       interphase_discr()
+       main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.interphase_discr()
       </span>
      </code>
     </a>
@@ -873,7 +879,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.interphase_visc_disp">
      <code class="docutils literal notranslate">
       <span class="pre">
-       interphase_visc_disp()
+       main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.interphase_visc_disp()
       </span>
      </code>
     </a>
@@ -882,7 +888,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.jump_adhesion">
      <code class="docutils literal notranslate">
       <span class="pre">
-       jump_adhesion()
+       main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.jump_adhesion()
       </span>
      </code>
     </a>
@@ -891,7 +897,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.lift">
      <code class="docutils literal notranslate">
       <span class="pre">
-       lift()
+       main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.lift()
       </span>
      </code>
     </a>
@@ -900,7 +906,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.lift_montoya">
      <code class="docutils literal notranslate">
       <span class="pre">
-       lift_montoya()
+       main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.lift_montoya()
       </span>
      </code>
     </a>
@@ -909,7 +915,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.lift_shaver_podowski">
      <code class="docutils literal notranslate">
       <span class="pre">
-       lift_shaver_podowski()
+       main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.lift_shaver_podowski()
       </span>
      </code>
     </a>
@@ -918,7 +924,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.sfc_model_type">
      <code class="docutils literal notranslate">
       <span class="pre">
-       sfc_model_type()
+       main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.sfc_model_type()
       </span>
      </code>
     </a>
@@ -927,7 +933,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.sfc_modeling">
      <code class="docutils literal notranslate">
       <span class="pre">
-       sfc_modeling()
+       main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.sfc_modeling()
       </span>
      </code>
     </a>
@@ -936,7 +942,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.sfc_tension_coeff">
      <code class="docutils literal notranslate">
       <span class="pre">
-       sfc_tension_coeff()
+       main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.sfc_tension_coeff()
       </span>
      </code>
     </a>
@@ -945,7 +951,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.slope_limiter">
      <code class="docutils literal notranslate">
       <span class="pre">
-       slope_limiter()
+       main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.slope_limiter()
       </span>
      </code>
     </a>
@@ -954,7 +960,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.virtual_mass">
      <code class="docutils literal notranslate">
       <span class="pre">
-       virtual_mass()
+       main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.virtual_mass()
       </span>
      </code>
     </a>
@@ -963,7 +969,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.visc_disp_factor">
      <code class="docutils literal notranslate">
       <span class="pre">
-       visc_disp_factor()
+       main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.visc_disp_factor()
       </span>
      </code>
     </a>
@@ -972,7 +978,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.vmass_coeff">
      <code class="docutils literal notranslate">
       <span class="pre">
-       vmass_coeff()
+       main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.vmass_coeff()
       </span>
      </code>
     </a>
@@ -981,7 +987,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.vmass_implicit">
      <code class="docutils literal notranslate">
       <span class="pre">
-       vmass_implicit()
+       main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.vmass_implicit()
       </span>
      </code>
     </a>
@@ -990,7 +996,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.vmass_implicit_options">
      <code class="docutils literal notranslate">
       <span class="pre">
-       vmass_implicit_options()
+       main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.vmass_implicit_options()
       </span>
      </code>
     </a>
@@ -999,7 +1005,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.wall_adhesion">
      <code class="docutils literal notranslate">
       <span class="pre">
-       wall_adhesion()
+       main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.wall_adhesion()
       </span>
      </code>
     </a>
@@ -1027,77 +1033,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-models-multiphase-phases-set-domain-properties-interaction-domain-heat-mass-reactions-interphase-discretization">
 <span id="ref-solver-tui-setup-models-multiphase-phases-set-domain-properties-interaction-domain-heat-mass-reactions-interphase-discretization"></span><h1>solver.tui.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization<a class="headerlink" href="#solver-tui-setup-models-multiphase-phases-set-domain-properties-interaction-domain-heat-mass-reactions-interphase-discretization" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.</span></span><span class="sig-name descname"><span class="pre">interphase_discretization</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the menu to set interphase discretization models.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p>__init__ method of TUIMenu class.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.cavitation" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.cavitation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cavitation</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the vaporization pressure, the surface tension coefficient, and the non-condensable gas mass fraction.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.interphase_discr" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.interphase_discr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interphase_discr</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable the phase localized compressive discretization scheme where the degree of diffusion/sharpness is controlled through the value of the slope limiters?.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.interphase_visc_disp" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.interphase_visc_disp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interphase_visc_disp</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable the interfacial viscous dissipation method, which introduces an artificial viscous damping term in the momentum equation?.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.jump_adhesion" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.jump_adhesion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jump_adhesion</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable the treatment of the contact angle specification at the porous jump boundary?.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.lift" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.lift"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lift</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.lift_montoya" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.lift_montoya"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lift_montoya</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Include the Montoya correction for Lift.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.lift_shaver_podowski" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.lift_shaver_podowski"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lift_shaver_podowski</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Include the Shaver-Podowski correction for Lift.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.sfc_model_type" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.sfc_model_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sfc_model_type</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Select the surface tension model.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.sfc_modeling" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.sfc_modeling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sfc_modeling</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Include the effects of surface tension along the fluid-fluid interface?.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.sfc_tension_coeff" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.sfc_tension_coeff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sfc_tension_coeff</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify the surface tension coefficient for each pair of phases.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.slope_limiter" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.slope_limiter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slope_limiter</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify the slope limiter to set a specific discretization scheme.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.virtual_mass" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.virtual_mass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">virtual_mass</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Include the virtual mass force that is present when a secondary phase accelerates relative to the primary phase?.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.visc_disp_factor" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.visc_disp_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visc_disp_factor</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the dissipation intensity.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.vmass_coeff" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.vmass_coeff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vmass_coeff</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify the virtual mass coefficient for each pair of phases.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.vmass_implicit" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.vmass_implicit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vmass_implicit</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable the implicit method for the virtual mass force?.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.vmass_implicit_options" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.vmass_implicit_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vmass_implicit_options</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Select the virtual mass implicit option.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.wall_adhesion" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.wall_adhesion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wall_adhesion</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable the specification for a wall adhesion angle?.</p></td>
-</tr>
 </tbody>
 </table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>__init__ method of TUIMenu class.</p>
-</dd></dl>
-
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.</span></span><span class="sig-name descname"><span class="pre">interphase_discretization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the menu to set interphase discretization models.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.cavitation">
 <span class="sig-name descname"><span class="pre">cavitation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.phases.set_domain_properties.interaction_domain.heat_mass_reactions.interphase_discretization.cavitation" title="Permalink to this definition">#</a></dt>

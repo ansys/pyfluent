@@ -7,12 +7,9 @@ turb_buoyancy_effects
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.turb_buoyancy_effects
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   turb_buoyancy_effects
-
+.. autoclass:: turb_buoyancy_effects
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   ====================

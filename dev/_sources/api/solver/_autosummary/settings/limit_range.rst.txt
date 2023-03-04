@@ -7,12 +7,9 @@ limit_range
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.limit_range
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   limit_range
-
+.. autoclass:: limit_range
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

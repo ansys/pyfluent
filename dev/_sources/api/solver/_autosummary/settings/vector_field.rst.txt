@@ -7,12 +7,9 @@ vector_field
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.vector_field
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   vector_field
-
+.. autoclass:: vector_field
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ==================================

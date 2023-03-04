@@ -7,12 +7,9 @@ vof_min_seeding
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.vof_min_seeding
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   vof_min_seeding
-
+.. autoclass:: vof_min_seeding
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==================================

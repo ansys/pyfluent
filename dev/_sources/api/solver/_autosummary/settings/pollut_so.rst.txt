@@ -7,17 +7,14 @@ pollut_so
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pollut_so
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   pollut_so
-
-.. rubric:: Attributes
+.. autoclass:: pollut_so
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

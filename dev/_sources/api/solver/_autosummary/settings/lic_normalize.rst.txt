@@ -7,12 +7,9 @@ lic_normalize
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.lic_normalize
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   lic_normalize
-
+.. autoclass:: lic_normalize
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ===============================

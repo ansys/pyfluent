@@ -7,12 +7,9 @@ append_file
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.append_file
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   append_file
-
+.. autoclass:: append_file
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   ======================================

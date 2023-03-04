@@ -7,12 +7,9 @@ lift
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.lift
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   lift
-
+.. autoclass:: lift
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`force_child <force_child>`

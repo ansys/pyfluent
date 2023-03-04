@@ -3,8 +3,13 @@
 solver.tui.define.overset\_interfaces.adapt
 ===========================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.adapt
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.overset_interfaces.adapt
+   :members: mark_adaption, adapt_mesh
 
 .. toctree::
    :hidden:

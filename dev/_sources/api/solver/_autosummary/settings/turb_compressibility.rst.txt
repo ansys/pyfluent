@@ -7,12 +7,9 @@ turb_compressibility
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.turb_compressibility
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   turb_compressibility
-
+.. autoclass:: turb_compressibility
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

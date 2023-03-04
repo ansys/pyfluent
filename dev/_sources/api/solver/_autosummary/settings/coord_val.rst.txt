@@ -7,12 +7,9 @@ coord_val
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.coord_val
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   coord_val
-
+.. autoclass:: coord_val
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   =====================

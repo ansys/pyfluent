@@ -7,12 +7,9 @@ viscosity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.viscosity_3
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   viscosity
-
+.. autoclass:: viscosity
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =============================

@@ -7,12 +7,9 @@ list_properties
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.list_properties
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   list_properties
-
+.. autoclass:: list_properties
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ====================   =================

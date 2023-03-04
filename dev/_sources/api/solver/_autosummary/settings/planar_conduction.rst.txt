@@ -7,12 +7,9 @@ planar_conduction
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.planar_conduction
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   planar_conduction
-
+.. autoclass:: planar_conduction
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

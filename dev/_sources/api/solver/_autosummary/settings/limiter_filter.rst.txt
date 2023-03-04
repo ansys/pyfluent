@@ -7,12 +7,9 @@ limiter_filter
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.limiter_filter
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   limiter_filter
-
+.. autoclass:: limiter_filter
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================================   ===========================================

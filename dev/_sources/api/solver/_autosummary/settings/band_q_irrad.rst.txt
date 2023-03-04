@@ -7,12 +7,9 @@ band_q_irrad
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.band_q_irrad
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   band_q_irrad
-
+.. autoclass:: band_q_irrad
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`child_object_type_child <child_object_type_child_1>`

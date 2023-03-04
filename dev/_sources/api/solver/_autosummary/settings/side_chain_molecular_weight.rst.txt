@@ -7,12 +7,9 @@ side_chain_molecular_weight
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.side_chain_molecular_weight
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   side_chain_molecular_weight
-
+.. autoclass:: side_chain_molecular_weight
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

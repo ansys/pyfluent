@@ -7,12 +7,9 @@ conservative_coarsening
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.conservative_coarsening
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   conservative_coarsening
-
+.. autoclass:: conservative_coarsening
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ==================================

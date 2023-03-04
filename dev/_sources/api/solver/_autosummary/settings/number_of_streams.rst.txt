@@ -7,12 +7,9 @@ number_of_streams
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.number_of_streams
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   number_of_streams
-
+.. autoclass:: number_of_streams
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   ======================================

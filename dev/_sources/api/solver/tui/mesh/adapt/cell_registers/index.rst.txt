@@ -3,6 +3,11 @@
 solver.tui.mesh.adapt.cell\_registers
 =====================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.cell_registers
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.mesh.adapt.cell_registers
+   :members: adapt, add, edit, list, refine, coarsen, delete, apply_poor_mesh_numerics, list_properties, display
 

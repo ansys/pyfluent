@@ -7,17 +7,14 @@ auto_save
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.auto_save
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   auto_save
-
-.. rubric:: Attributes
+.. autoclass:: auto_save
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==========================================================   =============================================================================================================================================
 
-Attribute                                                                                                                                                                                          Summary
+Child                                                                                                                                                                                              Summary
 
 ==========================================================   =============================================================================================================================================
 :ref:`case_frequency <case_frequency>`                                                                                                                           Set the preference for saving case files.

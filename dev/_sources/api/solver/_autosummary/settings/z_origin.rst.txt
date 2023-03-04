@@ -7,12 +7,9 @@ z_origin
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.z_origin
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   z_origin
-
+.. autoclass:: z_origin
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

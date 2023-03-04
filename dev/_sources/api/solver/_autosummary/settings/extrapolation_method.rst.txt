@@ -7,12 +7,9 @@ extrapolation_method
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.extrapolation_method
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   extrapolation_method
-
+.. autoclass:: extrapolation_method
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   =======================

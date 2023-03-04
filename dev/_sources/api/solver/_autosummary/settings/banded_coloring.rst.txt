@@ -7,12 +7,9 @@ banded_coloring
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.banded_coloring
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   banded_coloring
-
+.. autoclass:: banded_coloring
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ===========================

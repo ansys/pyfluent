@@ -3,17 +3,22 @@
 solver.tui.setup.models.dpm
 ===========================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.dpm
+   :members: user_defined, spray_model, clear_particles_from_domain, unsteady_tracking, injections, fill_injection_material_sources
 
 .. toctree::
    :hidden:
 
-   splash_options/index
-   erosion_dynamic_mesh/index
-   numerics/index
    interaction/index
-   parallel/index
    options/index
    stripping_options/index
+   erosion_dynamic_mesh/index
+   numerics/index
    collisions/index
+   parallel/index
+   splash_options/index

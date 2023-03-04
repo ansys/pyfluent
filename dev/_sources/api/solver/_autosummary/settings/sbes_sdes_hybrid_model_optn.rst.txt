@@ -7,12 +7,9 @@ sbes_sdes_hybrid_model_optn
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.sbes_sdes_hybrid_model_optn
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   sbes_sdes_hybrid_model_optn
-
+.. autoclass:: sbes_sdes_hybrid_model_optn
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ===================================

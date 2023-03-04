@@ -7,12 +7,9 @@ coarsen_rate
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.coarsen_rate
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   coarsen_rate
-
+.. autoclass:: coarsen_rate
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================   ================

@@ -7,12 +7,9 @@ turbulent_diffusion
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.turbulent_diffusion
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   turbulent_diffusion
-
+.. autoclass:: turbulent_diffusion
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =====================================

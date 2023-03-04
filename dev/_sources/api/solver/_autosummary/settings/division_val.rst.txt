@@ -7,12 +7,9 @@ division_val
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.division_val
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   division_val
-
+.. autoclass:: division_val
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ===============================================

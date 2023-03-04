@@ -7,12 +7,9 @@ max_merge_iterations
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.max_merge_iterations
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   max_merge_iterations
-
+.. autoclass:: max_merge_iterations
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================   =======================================

@@ -3,11 +3,16 @@
 solver.tui.results.graphics\_window.picture
 ===========================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.picture
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics_window.picture
+   :members: jpeg_hardcopy_quality, x_resolution, set_standard_resolution, invert_background, landscape, use_window_resolution, preview, dpi, y_resolution
 
 .. toctree::
    :hidden:
 
-   driver/index
    color_mode/index
+   driver/index

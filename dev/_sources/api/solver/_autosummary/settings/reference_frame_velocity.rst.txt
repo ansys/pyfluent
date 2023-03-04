@@ -7,12 +7,9 @@ reference_frame_velocity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reference_frame_velocity
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   reference_frame_velocity
-
+.. autoclass:: reference_frame_velocity
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`child_object_type_child <child_object_type_child_1>`

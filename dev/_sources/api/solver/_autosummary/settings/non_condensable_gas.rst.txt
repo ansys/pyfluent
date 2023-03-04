@@ -7,12 +7,9 @@ non_condensable_gas
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.non_condensable_gas
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   non_condensable_gas
-
+.. autoclass:: non_condensable_gas
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =======================

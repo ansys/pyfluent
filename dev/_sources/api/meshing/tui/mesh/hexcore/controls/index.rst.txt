@@ -3,8 +3,13 @@
 meshing.tui.mesh.hexcore.controls
 =================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.hexcore.controls
+   :members: buffer_layers, merge_tets_to_pyramids, skip_tet_refinement, delete_dead_zones, maximum_initial_cells, print_region_based_sizing, maximum_cell_length, set_region_based_sizing, define_hexcore_extents, compute_max_cell_length, avoid_1_by_8_cell_jump_in_hexcore, octree_hexcore, non_fluid_type, peel_layers
 
 .. toctree::
    :hidden:

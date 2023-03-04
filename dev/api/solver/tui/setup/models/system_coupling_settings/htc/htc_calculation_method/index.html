@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -297,8 +307,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -342,18 +357,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../../../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
        <li class="toctree-l4">
@@ -362,33 +367,53 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../../../define/index.html">
          solver.tui.define
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../../../surface/index.html">
          solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../icing/index.html">
-         solver.tui.icing
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -402,8 +427,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../dynamic_mesh/index.html">
-           solver.tui.setup.dynamic_mesh
+          <a class="reference internal" href="../../../../named_expressions/index.html">
+           solver.tui.setup.named_expressions
           </a>
          </li>
          <li class="toctree-l5">
@@ -412,28 +437,23 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../named_expressions/index.html">
-           solver.tui.setup.named_expressions
+          <a class="reference internal" href="../../../../turbo_model/index.html">
+           solver.tui.setup.turbo_model
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../operating_conditions/index.html">
-           solver.tui.setup.operating_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../boundary_conditions/index.html">
-           solver.tui.setup.boundary_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../expert/index.html">
-           solver.tui.setup.expert
+          <a class="reference internal" href="../../../../gap_model/index.html">
+           solver.tui.setup.gap_model
           </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../../../reference_values/index.html">
            solver.tui.setup.reference_values
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../reference_frames/index.html">
+           solver.tui.setup.reference_frames
           </a>
          </li>
          <li class="toctree-l5">
@@ -451,6 +471,91 @@ function checkPageExistsAndRedirect(event) {
            </i>
           </label>
           <ul class="current">
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../species/index.html">
+             solver.tui.setup.models.species
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../two_temperature/index.html">
+             solver.tui.setup.models.two_temperature
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../radiation/index.html">
+             solver.tui.setup.models.radiation
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../heat_exchanger/index.html">
+             solver.tui.setup.models.heat_exchanger
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../eulerian_wallfilm/index.html">
+             solver.tui.setup.models.eulerian_wallfilm
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../electrolysis/index.html">
+             solver.tui.setup.models.electrolysis
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../multiphase/index.html">
+             solver.tui.setup.models.multiphase
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../acoustics/index.html">
+             solver.tui.setup.models.acoustics
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../solver/index.html">
+             solver.tui.setup.models.solver
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../cht/index.html">
+             solver.tui.setup.models.cht
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../optics/index.html">
+             solver.tui.setup.models.optics
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../viscous/index.html">
+             solver.tui.setup.models.viscous
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../nox_parameters/index.html">
+             solver.tui.setup.models.nox_parameters
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../shell_conduction/index.html">
+             solver.tui.setup.models.shell_conduction
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../dpm/index.html">
+             solver.tui.setup.models.dpm
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../soot_parameters/index.html">
+             solver.tui.setup.models.soot_parameters
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../structure/index.html">
+             solver.tui.setup.models.structure
+            </a>
+           </li>
            <li class="toctree-l6 current active has-children">
             <a class="reference internal" href="../../index.html">
              solver.tui.setup.models.system_coupling_settings
@@ -485,101 +590,21 @@ function checkPageExistsAndRedirect(event) {
              </li>
             </ul>
            </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../solver/index.html">
-             solver.tui.setup.models.solver
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../heat_exchanger/index.html">
-             solver.tui.setup.models.heat_exchanger
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../radiation/index.html">
-             solver.tui.setup.models.radiation
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../viscous/index.html">
-             solver.tui.setup.models.viscous
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../nox_parameters/index.html">
-             solver.tui.setup.models.nox_parameters
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../two_temperature/index.html">
-             solver.tui.setup.models.two_temperature
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../species/index.html">
-             solver.tui.setup.models.species
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../eulerian_wallfilm/index.html">
-             solver.tui.setup.models.eulerian_wallfilm
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../structure/index.html">
-             solver.tui.setup.models.structure
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../shell_conduction/index.html">
-             solver.tui.setup.models.shell_conduction
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../optics/index.html">
-             solver.tui.setup.models.optics
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../multiphase/index.html">
-             solver.tui.setup.models.multiphase
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../soot_parameters/index.html">
-             solver.tui.setup.models.soot_parameters
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../electrolysis/index.html">
-             solver.tui.setup.models.electrolysis
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../acoustics/index.html">
-             solver.tui.setup.models.acoustics
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../cht/index.html">
-             solver.tui.setup.models.cht
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../dpm/index.html">
-             solver.tui.setup.models.dpm
-            </a>
-           </li>
           </ul>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../turbo_model/index.html">
-           solver.tui.setup.turbo_model
-          </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../../../mesh_interfaces/index.html">
            solver.tui.setup.mesh_interfaces
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../dynamic_mesh/index.html">
+           solver.tui.setup.dynamic_mesh
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../boundary_conditions/index.html">
+           solver.tui.setup.boundary_conditions
           </a>
          </li>
          <li class="toctree-l5">
@@ -588,35 +613,25 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../reference_frames/index.html">
-           solver.tui.setup.reference_frames
+          <a class="reference internal" href="../../../../expert/index.html">
+           solver.tui.setup.expert
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../gap_model/index.html">
-           solver.tui.setup.gap_model
+          <a class="reference internal" href="../../../../operating_conditions/index.html">
+           solver.tui.setup.operating_conditions
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../parametric_study/index.html">
-         solver.tui.parametric_study
+        <a class="reference internal" href="../../../../../report/index.html">
+         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../../../server/index.html">
+         solver.tui.server
         </a>
        </li>
        <li class="toctree-l4">
@@ -625,8 +640,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../solution/index.html">
-         solver.tui.solution
+        <a class="reference internal" href="../../../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
        <li class="toctree-l4">
@@ -635,23 +650,23 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../../../views/index.html">
          solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../preferences/index.html">
-         solver.tui.preferences
         </a>
        </li>
       </ul>
@@ -723,25 +738,16 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method">
    <code class="docutils literal notranslate">
     <span class="pre">
-     htc_calculation_method
+     main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       __init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method.use_tref_in_htc_calculation">
      <code class="docutils literal notranslate">
       <span class="pre">
-       use_tref_in_htc_calculation()
+       main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method.use_tref_in_htc_calculation()
       </span>
      </code>
     </a>
@@ -750,7 +756,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method.use_wall_function_based_htc">
      <code class="docutils literal notranslate">
       <span class="pre">
-       use_wall_function_based_htc()
+       main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method.use_wall_function_based_htc()
       </span>
      </code>
     </a>
@@ -759,7 +765,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method.use_yplus_based_htc_calculation">
      <code class="docutils literal notranslate">
       <span class="pre">
-       use_yplus_based_htc_calculation()
+       main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method.use_yplus_based_htc_calculation()
       </span>
      </code>
     </a>
@@ -787,34 +793,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-models-system-coupling-settings-htc-htc-calculation-method">
 <span id="ref-solver-tui-setup-models-system-coupling-settings-htc-htc-calculation-method"></span><h1>solver.tui.setup.models.system_coupling_settings.htc.htc_calculation_method<a class="headerlink" href="#solver-tui-setup-models-system-coupling-settings-htc-htc-calculation-method" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.setup.models.system_coupling_settings.htc.</span></span><span class="sig-name descname"><span class="pre">htc_calculation_method</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the htc calculation menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p>__init__ method of TUIMenu class.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method.use_tref_in_htc_calculation" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method.use_tref_in_htc_calculation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_tref_in_htc_calculation</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable tref in htc computation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method.use_wall_function_based_htc" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method.use_wall_function_based_htc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_wall_function_based_htc</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable wall function based htc computation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method.use_yplus_based_htc_calculation" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method.use_yplus_based_htc_calculation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_yplus_based_htc_calculation</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable yplus in htc computation.</p></td>
-</tr>
 </tbody>
 </table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>__init__ method of TUIMenu class.</p>
-</dd></dl>
-
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.models.system_coupling_settings.htc.</span></span><span class="sig-name descname"><span class="pre">htc_calculation_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the htc calculation menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method.use_tref_in_htc_calculation">
 <span class="sig-name descname"><span class="pre">use_tref_in_htc_calculation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.system_coupling_settings.htc.htc_calculation_method.use_tref_in_htc_calculation" title="Permalink to this definition">#</a></dt>

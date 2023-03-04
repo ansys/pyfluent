@@ -7,12 +7,9 @@ wall_function
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.wall_function
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   wall_function
-
+.. autoclass:: wall_function
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   ===========================================

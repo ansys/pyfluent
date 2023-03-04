@@ -3,6 +3,11 @@
 solver.tui.file.project
 =======================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.file.project
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file.project
+   :members: new, save_as, open, archive, save, save_as_copy
 

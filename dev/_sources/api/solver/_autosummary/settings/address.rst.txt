@@ -7,12 +7,9 @@ address
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.address
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   address
-
+.. autoclass:: address
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ====================

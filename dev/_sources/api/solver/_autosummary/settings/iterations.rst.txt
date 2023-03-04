@@ -7,12 +7,9 @@ iterations
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.iterations
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   iterations
-
+.. autoclass:: iterations
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   ==================================================================================================================

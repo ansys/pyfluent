@@ -7,12 +7,9 @@ front_faces_transparent
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.front_faces_transparent
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   front_faces_transparent
-
+.. autoclass:: front_faces_transparent
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

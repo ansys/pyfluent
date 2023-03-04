@@ -7,12 +7,9 @@ multi_stage_parameter
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.multi_stage_parameter
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   multi_stage_parameter
-
+.. autoclass:: multi_stage_parameter
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   ====================================

@@ -7,12 +7,9 @@ fan_thickness
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fan_thickness
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fan_thickness
-
+.. autoclass:: fan_thickness
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

@@ -7,12 +7,9 @@ degassing
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.degassing
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   degassing
-
+.. autoclass:: degassing
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`axis_child <axis_child>`

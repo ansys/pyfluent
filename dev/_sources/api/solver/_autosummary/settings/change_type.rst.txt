@@ -7,12 +7,9 @@ change_type
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.change_type
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   change_type
-
+.. autoclass:: change_type
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ============================   ======================

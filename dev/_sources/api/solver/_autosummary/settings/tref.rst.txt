@@ -7,12 +7,9 @@ tref
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.tref
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   tref
-
+.. autoclass:: tref
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

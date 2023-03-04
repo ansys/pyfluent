@@ -7,12 +7,9 @@ scale
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.scale_2
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   scale
-
+.. autoclass:: scale
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

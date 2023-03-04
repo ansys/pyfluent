@@ -3,6 +3,11 @@
 solver.tui.solution.methods.multiphase\_numerics.porous\_media
 ==============================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.porous_media
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.methods.multiphase_numerics.porous_media
+   :members: relative_permeability, capillary_pressure_as_diffusion
 

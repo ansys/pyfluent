@@ -7,12 +7,9 @@ select_variables
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.select_variables
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   select_variables
-
+.. autoclass:: select_variables
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   =======================================

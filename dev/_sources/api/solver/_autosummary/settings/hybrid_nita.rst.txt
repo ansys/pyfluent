@@ -7,17 +7,14 @@ hybrid_nita
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.hybrid_nita
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   hybrid_nita
-
-.. rubric:: Attributes
+.. autoclass:: hybrid_nita
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==========================================================   ==================================================
 
-Attribute                                                                                               Summary
+Child                                                                                                   Summary
 
 ==========================================================   ==================================================
 :ref:`outer_iterations <outer_iterations>`                       Set number of outer iterations in hybrid nita.

@@ -7,12 +7,9 @@ cjet
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cjet
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   cjet
-
+.. autoclass:: cjet
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =========================

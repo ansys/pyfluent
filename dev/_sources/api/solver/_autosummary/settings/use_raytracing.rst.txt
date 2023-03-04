@@ -7,12 +7,9 @@ use_raytracing
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.use_raytracing
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   use_raytracing
-
+.. autoclass:: use_raytracing
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -51,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
-    <link rel="next" title="solver.tui.setup.boundary_conditions.bc_settings" href="../bc_settings/index.html" />
-    <link rel="prev" title="solver.tui.setup.boundary_conditions.rename_zone" href="../rename_zone/index.html" />
+    <link rel="next" title="solver.tui.setup.boundary_conditions.expert" href="../expert/index.html" />
+    <link rel="prev" title="solver.tui.setup.boundary_conditions.bc_settings.pressure_far_field" href="../bc_settings/pressure_far_field/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -295,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -340,18 +355,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
        <li class="toctree-l4">
@@ -360,33 +365,53 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../define/index.html">
          solver.tui.define
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../surface/index.html">
          solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../icing/index.html">
-         solver.tui.icing
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -400,8 +425,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../dynamic_mesh/index.html">
-           solver.tui.setup.dynamic_mesh
+          <a class="reference internal" href="../../named_expressions/index.html">
+           solver.tui.setup.named_expressions
           </a>
          </li>
          <li class="toctree-l5">
@@ -410,70 +435,23 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../named_expressions/index.html">
-           solver.tui.setup.named_expressions
+          <a class="reference internal" href="../../turbo_model/index.html">
+           solver.tui.setup.turbo_model
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../operating_conditions/index.html">
-           solver.tui.setup.operating_conditions
-          </a>
-         </li>
-         <li class="toctree-l5 current active has-children">
-          <a class="reference internal" href="../index.html">
-           solver.tui.setup.boundary_conditions
-          </a>
-          <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-          <label for="toctree-checkbox-5">
-           <i class="fas fa-chevron-down">
-           </i>
-          </label>
-          <ul class="current">
-           <li class="toctree-l6">
-            <a class="reference internal" href="../rename_zone/index.html">
-             solver.tui.setup.boundary_conditions.rename_zone
-            </a>
-           </li>
-           <li class="toctree-l6 current active">
-            <a class="current reference internal" href="#">
-             solver.tui.setup.boundary_conditions.query
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../bc_settings/index.html">
-             solver.tui.setup.boundary_conditions.bc_settings
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../profiles/index.html">
-             solver.tui.setup.boundary_conditions.profiles
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../expert/index.html">
-             solver.tui.setup.boundary_conditions.expert
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../modify_zones/index.html">
-             solver.tui.setup.boundary_conditions.modify_zones
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../set/index.html">
-             solver.tui.setup.boundary_conditions.set
-            </a>
-           </li>
-          </ul>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../expert/index.html">
-           solver.tui.setup.expert
+          <a class="reference internal" href="../../gap_model/index.html">
+           solver.tui.setup.gap_model
           </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../reference_values/index.html">
            solver.tui.setup.reference_values
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../reference_frames/index.html">
+           solver.tui.setup.reference_frames
           </a>
          </li>
          <li class="toctree-l5">
@@ -487,14 +465,61 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../turbo_model/index.html">
-           solver.tui.setup.turbo_model
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="../../mesh_interfaces/index.html">
            solver.tui.setup.mesh_interfaces
           </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../dynamic_mesh/index.html">
+           solver.tui.setup.dynamic_mesh
+          </a>
+         </li>
+         <li class="toctree-l5 current active has-children">
+          <a class="reference internal" href="../index.html">
+           solver.tui.setup.boundary_conditions
+          </a>
+          <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+          <label for="toctree-checkbox-5">
+           <i class="fas fa-chevron-down">
+           </i>
+          </label>
+          <ul class="current">
+           <li class="toctree-l6">
+            <a class="reference internal" href="../bc_settings/index.html">
+             solver.tui.setup.boundary_conditions.bc_settings
+            </a>
+           </li>
+           <li class="toctree-l6 current active">
+            <a class="current reference internal" href="#">
+             solver.tui.setup.boundary_conditions.query
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../expert/index.html">
+             solver.tui.setup.boundary_conditions.expert
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../modify_zones/index.html">
+             solver.tui.setup.boundary_conditions.modify_zones
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../rename_zone/index.html">
+             solver.tui.setup.boundary_conditions.rename_zone
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../profiles/index.html">
+             solver.tui.setup.boundary_conditions.profiles
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../set/index.html">
+             solver.tui.setup.boundary_conditions.set
+            </a>
+           </li>
+          </ul>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../materials/index.html">
@@ -502,35 +527,25 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../reference_frames/index.html">
-           solver.tui.setup.reference_frames
+          <a class="reference internal" href="../../expert/index.html">
+           solver.tui.setup.expert
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../gap_model/index.html">
-           solver.tui.setup.gap_model
+          <a class="reference internal" href="../../operating_conditions/index.html">
+           solver.tui.setup.operating_conditions
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parametric_study/index.html">
-         solver.tui.parametric_study
+        <a class="reference internal" href="../../../report/index.html">
+         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../server/index.html">
+         solver.tui.server
         </a>
        </li>
        <li class="toctree-l4">
@@ -539,8 +554,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../solution/index.html">
-         solver.tui.solution
+        <a class="reference internal" href="../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
        <li class="toctree-l4">
@@ -549,23 +564,23 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../views/index.html">
          solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../preferences/index.html">
-         solver.tui.preferences
         </a>
        </li>
       </ul>
@@ -637,25 +652,16 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query">
    <code class="docutils literal notranslate">
     <span class="pre">
-     query
+     main_menu.setup.boundary_conditions.query
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       __init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.axis">
      <code class="docutils literal notranslate">
       <span class="pre">
-       axis()
+       main_menu.setup.boundary_conditions.query.axis()
       </span>
      </code>
     </a>
@@ -664,7 +670,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.degassing">
      <code class="docutils literal notranslate">
       <span class="pre">
-       degassing()
+       main_menu.setup.boundary_conditions.query.degassing()
       </span>
      </code>
     </a>
@@ -673,7 +679,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.delete_query">
      <code class="docutils literal notranslate">
       <span class="pre">
-       delete_query()
+       main_menu.setup.boundary_conditions.query.delete_query()
       </span>
      </code>
     </a>
@@ -682,7 +688,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.exhaust_fan">
      <code class="docutils literal notranslate">
       <span class="pre">
-       exhaust_fan()
+       main_menu.setup.boundary_conditions.query.exhaust_fan()
       </span>
      </code>
     </a>
@@ -691,7 +697,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.fan">
      <code class="docutils literal notranslate">
       <span class="pre">
-       fan()
+       main_menu.setup.boundary_conditions.query.fan()
       </span>
      </code>
     </a>
@@ -700,7 +706,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.fluid">
      <code class="docutils literal notranslate">
       <span class="pre">
-       fluid()
+       main_menu.setup.boundary_conditions.query.fluid()
       </span>
      </code>
     </a>
@@ -709,7 +715,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.geometry">
      <code class="docutils literal notranslate">
       <span class="pre">
-       geometry()
+       main_menu.setup.boundary_conditions.query.geometry()
       </span>
      </code>
     </a>
@@ -718,7 +724,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.inlet_vent">
      <code class="docutils literal notranslate">
       <span class="pre">
-       inlet_vent()
+       main_menu.setup.boundary_conditions.query.inlet_vent()
       </span>
      </code>
     </a>
@@ -727,7 +733,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.intake_fan">
      <code class="docutils literal notranslate">
       <span class="pre">
-       intake_fan()
+       main_menu.setup.boundary_conditions.query.intake_fan()
       </span>
      </code>
     </a>
@@ -736,7 +742,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.interface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       interface()
+       main_menu.setup.boundary_conditions.query.interface()
       </span>
      </code>
     </a>
@@ -745,7 +751,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.interior">
      <code class="docutils literal notranslate">
       <span class="pre">
-       interior()
+       main_menu.setup.boundary_conditions.query.interior()
       </span>
      </code>
     </a>
@@ -754,7 +760,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.list_boundary_conditions">
      <code class="docutils literal notranslate">
       <span class="pre">
-       list_boundary_conditions()
+       main_menu.setup.boundary_conditions.query.list_boundary_conditions()
       </span>
      </code>
     </a>
@@ -763,7 +769,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.list_cell_zone_conditions">
      <code class="docutils literal notranslate">
       <span class="pre">
-       list_cell_zone_conditions()
+       main_menu.setup.boundary_conditions.query.list_cell_zone_conditions()
       </span>
      </code>
     </a>
@@ -772,7 +778,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.list_named_selection">
      <code class="docutils literal notranslate">
       <span class="pre">
-       list_named_selection()
+       main_menu.setup.boundary_conditions.query.list_named_selection()
       </span>
      </code>
     </a>
@@ -781,7 +787,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.list_queries">
      <code class="docutils literal notranslate">
       <span class="pre">
-       list_queries()
+       main_menu.setup.boundary_conditions.query.list_queries()
       </span>
      </code>
     </a>
@@ -790,7 +796,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.mass_flow_inlet">
      <code class="docutils literal notranslate">
       <span class="pre">
-       mass_flow_inlet()
+       main_menu.setup.boundary_conditions.query.mass_flow_inlet()
       </span>
      </code>
     </a>
@@ -799,7 +805,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.mass_flow_outlet">
      <code class="docutils literal notranslate">
       <span class="pre">
-       mass_flow_outlet()
+       main_menu.setup.boundary_conditions.query.mass_flow_outlet()
       </span>
      </code>
     </a>
@@ -808,7 +814,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.named_zone_list">
      <code class="docutils literal notranslate">
       <span class="pre">
-       named_zone_list()
+       main_menu.setup.boundary_conditions.query.named_zone_list()
       </span>
      </code>
     </a>
@@ -817,7 +823,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.network">
      <code class="docutils literal notranslate">
       <span class="pre">
-       network()
+       main_menu.setup.boundary_conditions.query.network()
       </span>
      </code>
     </a>
@@ -826,7 +832,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.network_end">
      <code class="docutils literal notranslate">
       <span class="pre">
-       network_end()
+       main_menu.setup.boundary_conditions.query.network_end()
       </span>
      </code>
     </a>
@@ -835,7 +841,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.outflow">
      <code class="docutils literal notranslate">
       <span class="pre">
-       outflow()
+       main_menu.setup.boundary_conditions.query.outflow()
       </span>
      </code>
     </a>
@@ -844,7 +850,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.outlet_vent">
      <code class="docutils literal notranslate">
       <span class="pre">
-       outlet_vent()
+       main_menu.setup.boundary_conditions.query.outlet_vent()
       </span>
      </code>
     </a>
@@ -853,7 +859,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.overset">
      <code class="docutils literal notranslate">
       <span class="pre">
-       overset()
+       main_menu.setup.boundary_conditions.query.overset()
       </span>
      </code>
     </a>
@@ -862,7 +868,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.periodic">
      <code class="docutils literal notranslate">
       <span class="pre">
-       periodic()
+       main_menu.setup.boundary_conditions.query.periodic()
       </span>
      </code>
     </a>
@@ -871,7 +877,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.porous_jump">
      <code class="docutils literal notranslate">
       <span class="pre">
-       porous_jump()
+       main_menu.setup.boundary_conditions.query.porous_jump()
       </span>
      </code>
     </a>
@@ -880,7 +886,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.pressure_far_field">
      <code class="docutils literal notranslate">
       <span class="pre">
-       pressure_far_field()
+       main_menu.setup.boundary_conditions.query.pressure_far_field()
       </span>
      </code>
     </a>
@@ -889,7 +895,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.pressure_inlet">
      <code class="docutils literal notranslate">
       <span class="pre">
-       pressure_inlet()
+       main_menu.setup.boundary_conditions.query.pressure_inlet()
       </span>
      </code>
     </a>
@@ -898,7 +904,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.pressure_outlet">
      <code class="docutils literal notranslate">
       <span class="pre">
-       pressure_outlet()
+       main_menu.setup.boundary_conditions.query.pressure_outlet()
       </span>
      </code>
     </a>
@@ -907,7 +913,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.radiator">
      <code class="docutils literal notranslate">
       <span class="pre">
-       radiator()
+       main_menu.setup.boundary_conditions.query.radiator()
       </span>
      </code>
     </a>
@@ -916,7 +922,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.rans_les_interface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       rans_les_interface()
+       main_menu.setup.boundary_conditions.query.rans_les_interface()
       </span>
      </code>
     </a>
@@ -925,7 +931,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.recirculation_inlet">
      <code class="docutils literal notranslate">
       <span class="pre">
-       recirculation_inlet()
+       main_menu.setup.boundary_conditions.query.recirculation_inlet()
       </span>
      </code>
     </a>
@@ -934,7 +940,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.recirculation_outlet">
      <code class="docutils literal notranslate">
       <span class="pre">
-       recirculation_outlet()
+       main_menu.setup.boundary_conditions.query.recirculation_outlet()
       </span>
      </code>
     </a>
@@ -943,7 +949,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.shadow">
      <code class="docutils literal notranslate">
       <span class="pre">
-       shadow()
+       main_menu.setup.boundary_conditions.query.shadow()
       </span>
      </code>
     </a>
@@ -952,7 +958,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.solid">
      <code class="docutils literal notranslate">
       <span class="pre">
-       solid()
+       main_menu.setup.boundary_conditions.query.solid()
       </span>
      </code>
     </a>
@@ -961,7 +967,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.symmetry">
      <code class="docutils literal notranslate">
       <span class="pre">
-       symmetry()
+       main_menu.setup.boundary_conditions.query.symmetry()
       </span>
      </code>
     </a>
@@ -970,7 +976,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.velocity_inlet">
      <code class="docutils literal notranslate">
       <span class="pre">
-       velocity_inlet()
+       main_menu.setup.boundary_conditions.query.velocity_inlet()
       </span>
      </code>
     </a>
@@ -979,7 +985,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.wall">
      <code class="docutils literal notranslate">
       <span class="pre">
-       wall()
+       main_menu.setup.boundary_conditions.query.wall()
       </span>
      </code>
     </a>
@@ -1007,136 +1013,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-boundary-conditions-query">
 <span id="ref-solver-tui-setup-boundary-conditions-query"></span><h1>solver.tui.setup.boundary_conditions.query<a class="headerlink" href="#solver-tui-setup-boundary-conditions-query" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.</span></span><span class="sig-name descname"><span class="pre">query</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter zone query menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.__init__" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p>__init__ method of TUIMenu class.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.axis" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.axis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.degassing" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.degassing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">degassing</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.delete_query" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.delete_query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_query</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete saved query.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.exhaust_fan" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.exhaust_fan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exhaust_fan</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.fan" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.fan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fan</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.fluid" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.fluid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fluid</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.geometry" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geometry</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.inlet_vent" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.inlet_vent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inlet_vent</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.intake_fan" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.intake_fan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intake_fan</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.interface" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.interior" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.interior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interior</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.list_boundary_conditions" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.list_boundary_conditions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_boundary_conditions</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List boundary conditions.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.list_cell_zone_conditions" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.list_cell_zone_conditions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_cell_zone_conditions</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List cell zone conditions.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.list_named_selection" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.list_named_selection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_named_selection</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List named selection of zone type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.list_queries" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.list_queries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_queries</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List all saved queries.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.mass_flow_inlet" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.mass_flow_inlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mass_flow_inlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.mass_flow_outlet" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.mass_flow_outlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mass_flow_outlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.named_zone_list" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.named_zone_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">named_zone_list</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create named list of zones.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.network" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.network"><code class="xref py py-obj docutils literal notranslate"><span class="pre">network</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.network_end" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.network_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">network_end</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.outflow" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.outflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outflow</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.outlet_vent" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.outlet_vent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outlet_vent</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.overset" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.overset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overset</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.periodic" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.periodic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">periodic</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.porous_jump" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.porous_jump"><code class="xref py py-obj docutils literal notranslate"><span class="pre">porous_jump</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.pressure_far_field" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.pressure_far_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pressure_far_field</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.pressure_inlet" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.pressure_inlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pressure_inlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.pressure_outlet" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.pressure_outlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pressure_outlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.radiator" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.radiator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">radiator</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.rans_les_interface" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.rans_les_interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rans_les_interface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.recirculation_inlet" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.recirculation_inlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">recirculation_inlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.recirculation_outlet" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.recirculation_outlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">recirculation_outlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.shadow" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.shadow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shadow</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.solid" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.solid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solid</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.symmetry" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.symmetry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">symmetry</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.velocity_inlet" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.velocity_inlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_inlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.wall" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.wall"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wall</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Show boundary conditions for a zone of this type.</p></td>
-</tr>
 </tbody>
 </table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>__init__ method of TUIMenu class.</p>
-</dd></dl>
-
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.boundary_conditions.</span></span><span class="sig-name descname"><span class="pre">query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter zone query menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.axis">
 <span class="sig-name descname"><span class="pre">axis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.query.axis" title="Permalink to this definition">#</a></dt>

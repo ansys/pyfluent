@@ -7,12 +7,9 @@ solar_fluxes
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.solar_fluxes
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   solar_fluxes
-
+.. autoclass:: solar_fluxes
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================================   ================================================

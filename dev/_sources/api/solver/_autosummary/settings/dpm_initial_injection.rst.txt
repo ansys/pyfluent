@@ -7,12 +7,9 @@ dpm_initial_injection
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_initial_injection
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   dpm_initial_injection
-
+.. autoclass:: dpm_initial_injection
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -7,12 +7,9 @@ cfl_type
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.cfl_type
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   cfl_type
-
+.. autoclass:: cfl_type
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===============================

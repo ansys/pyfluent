@@ -1,6 +1,0 @@
-get
-===
-
-.. currentmodule:: ansys.fluent.core.meta
-
-.. automethod:: PyLocalContainer.get

@@ -7,17 +7,14 @@ vector
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.vector
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   vector
-
-.. rubric:: Methods
+.. autoclass:: vector
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ========================================   =============================================
 
-Method                                                                           Summary
+Command                                                                          Summary
 
 ========================================   =============================================
 :ref:`display <display_1>`                                      Display graphics object.

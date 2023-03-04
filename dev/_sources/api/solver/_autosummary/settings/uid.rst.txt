@@ -7,12 +7,9 @@ uid
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.uid
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   uid
-
+.. autoclass:: uid
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

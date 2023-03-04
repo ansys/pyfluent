@@ -3,12 +3,17 @@
 meshing.tui.objects.volumetric\_regions
 =======================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects.volumetric_regions
+   :members: update, merge_cells, change_type, compute, fill_empty_volume, delete, merge, auto_fill_volume, list, rename, delete_cells
 
 .. toctree::
    :hidden:
 
-   scoped_prism/index
-   hexcore/index
    tet/index
+   hexcore/index
+   scoped_prism/index

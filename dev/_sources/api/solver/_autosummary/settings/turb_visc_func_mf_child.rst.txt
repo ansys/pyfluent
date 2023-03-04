@@ -7,12 +7,9 @@ turb_visc_func_mf_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.turb_visc_func_mf_child
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   turb_visc_func_mf_child
-
+.. autoclass:: turb_visc_func_mf_child
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ==================================

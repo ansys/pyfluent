@@ -7,17 +7,14 @@ data_sampling_options
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.data_sampling_options
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   data_sampling_options
-
-.. rubric:: Methods
+.. autoclass:: data_sampling_options
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ======================================   ===================
 
-Method                                               Summary
+Command                                              Summary
 
 ======================================   ===================
 :ref:`remove_dataset <remove_dataset>`       Remove dataset.

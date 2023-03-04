@@ -7,17 +7,14 @@ set
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_5
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   set
-
-.. rubric:: Attributes
+.. autoclass:: set
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================================   =================================================================================
 
-Attribute                                                                                                                      Summary
+Child                                                                                                                          Summary
 
 ==================================================   =================================================================================
 :ref:`coupling <coupling>`                                                                                           'coupling' child.

@@ -7,12 +7,9 @@ impedance_0
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.impedance_0
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   impedance_0
-
+.. autoclass:: impedance_0
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

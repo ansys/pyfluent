@@ -3,6 +3,11 @@
 meshing.tui.display.advanced\_rendering
 =======================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.display.advanced_rendering
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.advanced_rendering
+   :members: max_extent_culling, edge_color, static_model, simple_shadow, fast_silhouette_edges
 

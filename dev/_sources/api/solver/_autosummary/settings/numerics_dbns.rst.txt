@@ -7,17 +7,14 @@ numerics_dbns
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.numerics_dbns
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   numerics_dbns
-
-.. rubric:: Attributes
+.. autoclass:: numerics_dbns
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================================================================   ===================================================================
 
-Attribute                                                                                                                                      Summary
+Child                                                                                                                                          Summary
 
 ================================================================================   ===================================================================
 :ref:`first_to_second_order_blending_dbns <first_to_second_order_blending_dbns>`       1st-order to higher-order blending factor [min=0.0 - max=1.0]:.

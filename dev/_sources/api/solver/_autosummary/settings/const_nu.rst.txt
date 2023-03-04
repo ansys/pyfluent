@@ -7,12 +7,9 @@ const_nu
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.const_nu
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   const_nu
-
+.. autoclass:: const_nu
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

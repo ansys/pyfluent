@@ -7,12 +7,9 @@ conical
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.conical
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   conical
-
+.. autoclass:: conical
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

@@ -7,12 +7,9 @@ clip_factor
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.clip_factor
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   clip_factor
-
+.. autoclass:: clip_factor
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===============================

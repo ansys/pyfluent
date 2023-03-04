@@ -7,12 +7,9 @@ maximum_allowed_effctive_relaxation
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.maximum_allowed_effctive_relaxation
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   maximum_allowed_effctive_relaxation
-
+.. autoclass:: maximum_allowed_effctive_relaxation
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =============================================================

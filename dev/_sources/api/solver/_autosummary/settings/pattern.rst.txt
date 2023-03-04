@@ -7,12 +7,9 @@ pattern
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pattern
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   pattern
-
+.. autoclass:: pattern
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   =================================

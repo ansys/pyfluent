@@ -7,12 +7,9 @@ init_flow_statistics
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.init_flow_statistics
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   init_flow_statistics
-
+.. autoclass:: init_flow_statistics
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ===========================

@@ -7,12 +7,9 @@ curvature
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.curvature
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   curvature
-
+.. autoclass:: curvature
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =======================

@@ -3,6 +3,11 @@
 solver.tui.report.modified\_setting
 ===================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.report.modified_setting
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.report.modified_setting
+   :members: write_user_setting, modified_setting
 

@@ -7,12 +7,9 @@ enable_node_based_averaging
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.enable_node_based_averaging
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   enable_node_based_averaging
-
+.. autoclass:: enable_node_based_averaging
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ==========================================================================================================

@@ -7,12 +7,9 @@ copy_by_name
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.copy_by_name
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   copy_by_name
-
+.. autoclass:: copy_by_name
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ====================   =================

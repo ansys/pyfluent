@@ -7,17 +7,14 @@ export
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.export
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   export
-
-.. rubric:: Attributes
+.. autoclass:: export
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================================   ===================================
 
-Attribute                                                                        Summary
+Child                                                                            Summary
 
 ==================================================   ===================================
 :ref:`sc_def_file_settings <sc_def_file_settings>`                            File menu.
@@ -26,11 +23,11 @@ Attribute                                                                       
 
 ==================================================   ===================================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ====================================================   ==========================================================
 
-Method                                                                                                    Summary
+Command                                                                                                   Summary
 
 ====================================================   ==========================================================
 :ref:`abaqus <abaqus>`                                                                      Write an ABAQUS file.

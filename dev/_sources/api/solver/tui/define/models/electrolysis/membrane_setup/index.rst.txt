@@ -3,6 +3,11 @@
 solver.tui.define.models.electrolysis.membrane\_setup
 =====================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.electrolysis.membrane_setup
+   :members: porous_layer, electrolyte, catalyst_layer, flow_channel, current_collector
 

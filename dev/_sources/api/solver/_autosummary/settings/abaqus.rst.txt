@@ -7,12 +7,9 @@ abaqus
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.abaqus
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   abaqus
-
+.. autoclass:: abaqus
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ================================================   ================================

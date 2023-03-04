@@ -7,12 +7,9 @@ accelerated_non_iterative_time_marching
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.accelerated_non_iterative_time_marching
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   accelerated_non_iterative_time_marching
-
+.. autoclass:: accelerated_non_iterative_time_marching
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   ====================

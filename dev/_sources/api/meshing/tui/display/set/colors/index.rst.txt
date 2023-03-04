@@ -3,11 +3,16 @@
 meshing.tui.display.set.colors
 ==============================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.set.colors
+   :members: periodic_faces, inlet_faces, list, axis_faces, show_user_colors, wall_faces, foreground, user_color, background, rans_les_interface_faces, graphics_color_theme, far_field_faces, symmetry_faces, interface_faces, overset_faces, reset_user_colors, color_by_type, internal_faces, outlet_faces, surface, automatic_skip, reset_colors, skip_label, interior_faces, traction_faces, free_surface_faces
 
 .. toctree::
    :hidden:
 
-   by_type/index
    by_surface/index
+   by_type/index

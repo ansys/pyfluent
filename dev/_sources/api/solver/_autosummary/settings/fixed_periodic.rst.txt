@@ -7,12 +7,9 @@ fixed_periodic
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fixed_periodic
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fixed_periodic
-
+.. autoclass:: fixed_periodic
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ===========================

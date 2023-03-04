@@ -7,12 +7,9 @@ fast_mesh
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fast_mesh
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fast_mesh
-
+.. autoclass:: fast_mesh
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==================   =================

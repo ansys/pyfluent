@@ -7,12 +7,9 @@ forces
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.forces
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   forces
-
+.. autoclass:: forces
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ================================================   ====================================

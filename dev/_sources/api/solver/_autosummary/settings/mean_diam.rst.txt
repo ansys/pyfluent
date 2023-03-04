@@ -7,12 +7,9 @@ mean_diam
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mean_diam
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   mean_diam
-
+.. autoclass:: mean_diam
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ===================================

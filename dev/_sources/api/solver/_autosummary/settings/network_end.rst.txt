@@ -7,12 +7,9 @@ network_end
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.network_end
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   network_end
-
+.. autoclass:: network_end
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`network_end_child <network_end_child>`

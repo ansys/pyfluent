@@ -7,12 +7,9 @@ variable_lewis_number
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.variable_lewis_number
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   variable_lewis_number
-
+.. autoclass:: variable_lewis_number
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================================   ============================================

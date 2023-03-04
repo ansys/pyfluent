@@ -7,12 +7,9 @@ dynamic_adaption
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.dynamic_adaption
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   dynamic_adaption
-
+.. autoclass:: dynamic_adaption
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ======================   ===================

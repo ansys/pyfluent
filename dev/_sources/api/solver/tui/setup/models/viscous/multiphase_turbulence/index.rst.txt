@@ -3,6 +3,11 @@
 solver.tui.setup.models.viscous.multiphase\_turbulence
 ======================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.multiphase_turbulence
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.viscous.multiphase_turbulence
+   :members: turbulence_multiphase_models, subgrid_turbulence_contribution_aiad, multiphase_options, rsm_multiphase_models
 

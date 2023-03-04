@@ -7,12 +7,9 @@ fanzone
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.fanzone
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   fanzone
-
+.. autoclass:: fanzone
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

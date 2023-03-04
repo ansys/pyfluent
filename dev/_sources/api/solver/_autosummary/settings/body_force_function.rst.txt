@@ -7,12 +7,9 @@ body_force_function
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.body_force_function
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   body_force_function
-
+.. autoclass:: body_force_function
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ==========================================================================================================================

@@ -7,12 +7,9 @@ partition_method
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.partition_method
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   partition_method
-
+.. autoclass:: partition_method
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   =========================

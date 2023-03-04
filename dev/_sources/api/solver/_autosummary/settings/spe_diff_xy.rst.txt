@@ -7,12 +7,9 @@ spe_diff_xy
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.spe_diff_xy
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   spe_diff_xy
-
+.. autoclass:: spe_diff_xy
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

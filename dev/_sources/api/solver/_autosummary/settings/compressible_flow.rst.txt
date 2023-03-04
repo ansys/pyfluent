@@ -7,17 +7,14 @@ compressible_flow
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.compressible_flow
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   compressible_flow
-
-.. rubric:: Attributes
+.. autoclass:: compressible_flow
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================================================================   ================================================================
 
-Attribute                                                                                                                                     Summary
+Child                                                                                                                                         Summary
 
 ==================================================================================   ================================================================
 :ref:`enhanced_numerics <enhanced_numerics>`                                                  Multiphase enhanced compressible flow numerics options.

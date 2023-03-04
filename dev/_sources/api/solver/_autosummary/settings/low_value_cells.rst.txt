@@ -7,12 +7,9 @@ low_value_cells
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.low_value_cells
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   low_value_cells
-
+.. autoclass:: low_value_cells
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 =========================   ===================

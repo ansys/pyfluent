@@ -7,12 +7,9 @@ free_stream_velocity
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.free_stream_velocity
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   free_stream_velocity
-
+.. autoclass:: free_stream_velocity
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -7,12 +7,9 @@ all_var_num_of_bins
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.all_var_num_of_bins
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   all_var_num_of_bins
-
+.. autoclass:: all_var_num_of_bins
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================================   ==============================================================================

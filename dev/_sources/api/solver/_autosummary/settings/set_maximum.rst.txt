@@ -7,12 +7,9 @@ set_maximum
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_maximum
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   set_maximum
-
+.. autoclass:: set_maximum
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==============================   =======================

@@ -7,12 +7,9 @@ user_skip
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.user_skip
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   user_skip
-
+.. autoclass:: user_skip
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

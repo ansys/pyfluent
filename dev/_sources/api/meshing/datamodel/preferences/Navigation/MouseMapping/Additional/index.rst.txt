@@ -3,6 +3,11 @@
 meshing.datamodel.preferences.Navigation.MouseMapping.Additional
 ================================================================
 
-.. autoclass:: ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.Navigation.MouseMapping.Additional
+   :members: CTRLLMBCLICK, CTRLLMBDRAG, CTRLMMBCLICK, CTRLMMBDRAG, CTRLRMBCLICK, CTRLRMBDRAG, MOUSEPROBE, MOUSEWHEEL, MOUSEWHEELSENSITIVITY, REVERSEWHEELDIRECTION, SHIFTLMBCLICK, SHIFTLMBDRAG, SHIFTMMBCLICK, SHIFTMMBDRAG, SHIFTRMBCLICK, SHIFTRMBDRAG
 

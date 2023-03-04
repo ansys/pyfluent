@@ -7,12 +7,9 @@ solid
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.solid_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   solid
-
+.. autoclass:: solid
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`solid_child <solid_child_1>`

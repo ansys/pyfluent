@@ -7,12 +7,9 @@ undo_timestep
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.undo_timestep
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   undo_timestep
-
+.. autoclass:: undo_timestep
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===============================

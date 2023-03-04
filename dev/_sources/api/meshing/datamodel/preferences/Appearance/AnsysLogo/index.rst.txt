@@ -3,6 +3,11 @@
 meshing.datamodel.preferences.Appearance.AnsysLogo
 ==================================================
 
-.. autoclass:: ansys.fluent.core.datamodel_231.preferences.Root.Appearance.AnsysLogo
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.Appearance.AnsysLogo
+   :members: Color, Visible
 

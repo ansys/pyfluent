@@ -7,12 +7,9 @@ geom_bgthread
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.geom_bgthread
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   geom_bgthread
-
+.. autoclass:: geom_bgthread
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================================   ================================================

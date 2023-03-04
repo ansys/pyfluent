@@ -7,12 +7,9 @@ lighting
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.lighting
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   lighting
-
+.. autoclass:: lighting
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

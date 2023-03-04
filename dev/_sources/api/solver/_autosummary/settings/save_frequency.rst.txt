@@ -7,12 +7,9 @@ save_frequency
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.save_frequency
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   save_frequency
-
+.. autoclass:: save_frequency
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ============================================================================================================

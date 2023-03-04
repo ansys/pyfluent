@@ -7,12 +7,9 @@ set_dynamic_strength_exponent
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.set_dynamic_strength_exponent
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   set_dynamic_strength_exponent
-
+.. autoclass:: set_dynamic_strength_exponent
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   =======================================================

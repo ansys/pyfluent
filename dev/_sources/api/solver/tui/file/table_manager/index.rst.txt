@@ -3,6 +3,11 @@
 solver.tui.file.table\_manager
 ==============================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.file.table_manager
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file.table_manager
+   :members: list_tables, read_rgp_file, store_in_case_file, list_properties, read_matrix_data_file, list_matrix_data, rename, delete
 

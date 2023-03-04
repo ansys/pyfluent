@@ -1,6 +1,0 @@
-add\_on\_child\_created
-=======================
-
-.. currentmodule:: ansys.fluent.core.workflow
-
-.. automethod:: WorkflowWrapper.add_on_child_created

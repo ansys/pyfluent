@@ -7,12 +7,9 @@ merge_small_regions
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.merge_small_regions
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   merge_small_regions
-
+.. autoclass:: merge_small_regions
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================   =======================================

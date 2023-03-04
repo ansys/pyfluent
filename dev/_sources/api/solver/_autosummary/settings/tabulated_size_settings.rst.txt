@@ -7,17 +7,14 @@ tabulated_size_settings
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.tabulated_size_settings
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   tabulated_size_settings
-
-.. rubric:: Attributes
+.. autoclass:: tabulated_size_settings
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================================================   =========================================
 
-Attribute                                                                                              Summary
+Child                                                                                                  Summary
 
 ==================================================================   =========================================
 :ref:`table_name <table_name>`                                                             'table_name' child.

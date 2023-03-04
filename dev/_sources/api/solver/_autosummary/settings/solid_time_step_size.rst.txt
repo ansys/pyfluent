@@ -7,17 +7,14 @@ solid_time_step_size
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.solid_time_step_size
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   solid_time_step_size
-
-.. rubric:: Attributes
+.. autoclass:: solid_time_step_size
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ============================================================   =============================================================
 
-Attribute                                                                                                            Summary
+Child                                                                                                                Summary
 
 ============================================================   =============================================================
 :ref:`enable_solid_time_step <enable_solid_time_step>`             Enable/Disable different time step size for solid zones?.

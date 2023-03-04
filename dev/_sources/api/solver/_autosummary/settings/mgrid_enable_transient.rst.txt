@@ -7,12 +7,9 @@ mgrid_enable_transient
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.mgrid_enable_transient
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   mgrid_enable_transient
-
+.. autoclass:: mgrid_enable_transient
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

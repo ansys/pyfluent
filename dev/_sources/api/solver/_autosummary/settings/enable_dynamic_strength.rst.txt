@@ -7,12 +7,9 @@ enable_dynamic_strength
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.enable_dynamic_strength
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   enable_dynamic_strength
-
+.. autoclass:: enable_dynamic_strength
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   =======================================================

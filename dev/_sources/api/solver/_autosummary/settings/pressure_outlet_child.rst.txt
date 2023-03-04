@@ -7,17 +7,14 @@ pressure_outlet_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.pressure_outlet_child
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   pressure_outlet_child
-
-.. rubric:: Attributes
+.. autoclass:: pressure_outlet_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================================================   =========================================
 
-Attribute                                                                                              Summary
+Child                                                                                                  Summary
 
 ==================================================================   =========================================
 :ref:`phase <phase_18>`                                                                         'phase' child.

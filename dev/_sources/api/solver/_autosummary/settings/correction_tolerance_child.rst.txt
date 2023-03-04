@@ -7,12 +7,9 @@ correction_tolerance_child
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.correction_tolerance_child
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   correction_tolerance_child
-
+.. autoclass:: correction_tolerance_child
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   =================================

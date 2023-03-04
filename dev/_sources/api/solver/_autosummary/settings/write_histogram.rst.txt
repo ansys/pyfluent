@@ -7,12 +7,9 @@ write_histogram
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.write_histogram
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   write_histogram
-
+.. autoclass:: write_histogram
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ====================================   ==========================

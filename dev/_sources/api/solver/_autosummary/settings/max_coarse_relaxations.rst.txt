@@ -7,12 +7,9 @@ max_coarse_relaxations
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.max_coarse_relaxations
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   max_coarse_relaxations
-
+.. autoclass:: max_coarse_relaxations
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ======================================

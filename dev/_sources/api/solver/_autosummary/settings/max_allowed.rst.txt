@@ -7,12 +7,9 @@ max_allowed
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.max_allowed
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   max_allowed
-
+.. autoclass:: max_allowed
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   ========================

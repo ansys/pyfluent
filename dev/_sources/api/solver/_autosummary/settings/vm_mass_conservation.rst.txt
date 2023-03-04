@@ -7,12 +7,9 @@ vm_mass_conservation
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.vm_mass_conservation
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   vm_mass_conservation
-
+.. autoclass:: vm_mass_conservation
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

@@ -7,12 +7,9 @@ reset_range
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.reset_range
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   reset_range
-
+.. autoclass:: reset_range
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =============================================================================================================

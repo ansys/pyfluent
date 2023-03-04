@@ -7,17 +7,14 @@ orthotropic_structure_te
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.orthotropic_structure_te
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   orthotropic_structure_te
-
-.. rubric:: Attributes
+.. autoclass:: orthotropic_structure_te
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================================   ================================
 
-Attribute                                                                   Summary
+Child                                                                       Summary
 
 ================================================   ================================
 :ref:`thermal_expansion_0 <thermal_expansion_0>`       'thermal_expansion_0' child.

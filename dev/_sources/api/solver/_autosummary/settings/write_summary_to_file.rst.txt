@@ -7,12 +7,9 @@ write_summary_to_file
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.write_summary_to_file
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   write_summary_to_file
-
+.. autoclass:: write_summary_to_file
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =================================================================================

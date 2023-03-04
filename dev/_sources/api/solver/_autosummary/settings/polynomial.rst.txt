@@ -7,17 +7,14 @@ polynomial
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.polynomial
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   polynomial
-
-.. rubric:: Attributes
+.. autoclass:: polynomial
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================================================   ==========================================================================
 
-Attribute                                                                                                                   Summary
+Child                                                                                                                       Summary
 
 ======================================================   ==========================================================================
 :ref:`number_of_coefficients <number_of_coefficients>`       Specify number of polynomial coefficients (polynomial order plus one).

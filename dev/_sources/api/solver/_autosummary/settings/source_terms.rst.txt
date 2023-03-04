@@ -7,17 +7,14 @@ source_terms
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.source_terms
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   source_terms
-
-.. rubric:: Attributes
+.. autoclass:: source_terms
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ============================================================================   =================================================================================
 
-Attribute                                                                                                                                                Summary
+Child                                                                                                                                                    Summary
 
 ============================================================================   =================================================================================
 :ref:`linearization <linearization>`                                               Menu containing options to enable/disable linearization of DPM source terms. 

@@ -7,12 +7,9 @@ auto_range
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.auto_range_1
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   auto_range
-
+.. autoclass:: auto_range
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================================

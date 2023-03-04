@@ -7,12 +7,9 @@ list_beam_parameters
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.list_beam_parameters
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   list_beam_parameters
-
+.. autoclass:: list_beam_parameters
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==============================   ======================================================

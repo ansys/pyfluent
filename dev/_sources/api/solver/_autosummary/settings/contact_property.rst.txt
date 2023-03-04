@@ -7,12 +7,9 @@ contact_property
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.contact_property
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   contact_property
-
+.. autoclass:: contact_property
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

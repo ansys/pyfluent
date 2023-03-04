@@ -7,12 +7,9 @@ additional_refinement_layers
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.additional_refinement_layers
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   additional_refinement_layers
-
+.. autoclass:: additional_refinement_layers
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================   ================================

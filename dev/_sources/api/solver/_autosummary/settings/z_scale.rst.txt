@@ -7,12 +7,9 @@ z_scale
 
 .. currentmodule:: ansys.fluent.core.solver.settings_231.z_scale
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   z_scale
-
+.. autoclass:: z_scale
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ====================
