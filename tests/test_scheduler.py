@@ -159,6 +159,7 @@ class TestLoadMachines(unittest.TestCase):
         self._machineList.reset()
     
     def test_machine_info(self):
+        print('wacky')
         info = [{'machine-name' : 'M0', 'core-count' : 1},
                 {'machine-name' : 'M1', 'core-count' : 6}]
         machineList = load_machines(machine_info = info)
