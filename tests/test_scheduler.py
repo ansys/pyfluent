@@ -156,6 +156,12 @@ class TestLoadMachines(unittest.TestCase):
 
     def tearDown(self):
         self._machineList.reset()
+    
+    def test_machine_info(self):
+        info = [{'machine-name' : 'M0', 'core-count' : 1},
+                {'machine-name' : 'M1', 'core-count' : 6}]
+        machineList = load_machines(machine_info = info)
+        self.assertEqual(machineList.number_of_cores, 7)
 
     def test_no_environment(self):
         machineList = load_machines()
