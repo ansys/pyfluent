@@ -10,8 +10,8 @@ from ansys.fluent.core.scheduler.load_machines import (
     _construct_machine_list_slurm,
     _parse_host_info,
     _parse_machine_data,
-    load_machines,
     _restrict_machines_to_core_count,
+    load_machines,
 )
 from ansys.fluent.core.scheduler.machine_list import Machine, MachineList
 
@@ -157,24 +157,30 @@ class TestLoadMachines(unittest.TestCase):
 
     def tearDown(self):
         self._machineList.reset()
-    
+
     def test_machine_info(self):
-        info = [{'machine-name' : 'M0', 'core-count' : 1},
-                {'machine-name' : 'M1', 'core-count' : 6}]
-        machineList = load_machines(machine_info = info)
+        info = [
+            {"machine-name": "M0", "core-count": 1},
+            {"machine-name": "M1", "core-count": 6},
+        ]
+        machineList = load_machines(machine_info=info)
         self.assertEqual(machineList.number_of_cores, 7)
 
     def test_restrict_machines(self):
-        info = [{'machine-name' : 'M0', 'core-count' : 1},
-                {'machine-name' : 'M1', 'core-count' : 1}]
-        machineList = load_machines(machine_info = info)
-        old_machine_list = _restrict_machines_to_core_count(machineList, ncores= machineList.number_of_cores)
+        info = [
+            {"machine-name": "M0", "core-count": 1},
+            {"machine-name": "M1", "core-count": 1},
+        ]
+        machineList = load_machines(machine_info=info)
+        old_machine_list = _restrict_machines_to_core_count(
+            machineList, ncores=machineList.number_of_cores
+        )
         self.assertEqual(machineList, old_machine_list)
-    
+
     def test_lsb_mcpu(self):
-        os.environ['LSB_MCPU_HOSTS'] = 'm1 3 m2 3'
+        os.environ["LSB_MCPU_HOSTS"] = "m1 3 m2 3"
         machineList = load_machines()
-        del os.environ['LSB_MCPU_HOSTS']
+        del os.environ["LSB_MCPU_HOSTS"]
         self.assertEqual(machineList.number_of_cores, 6)
 
     def test_no_environment(self):
@@ -400,12 +406,12 @@ class TestMachineListCmdLine(unittest.TestCase):
                 self.assertEqual(
                     machine.number_of_cores, self._expectedValues[machine.host_name]
                 )
-    
+
     def test_no_machine_name(self):
         hostList = "M0:2,M1:2,"
         with self.assertRaises(RuntimeError) as cm:
             _parse_host_info(hostList)
-        self.assertEqual(str(cm.exception), 'Problem with machine list format.')
+        self.assertEqual(str(cm.exception), "Problem with machine list format.")
 
     def test_host_file(self):
         import os.path
