@@ -5,11 +5,8 @@
 activate_cell_zone
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.activate_cell_zone
+.. autoclass:: ansys.fluent.core.solver.settings_231.activate_cell_zone.activate_cell_zone
 
-.. autoclass:: activate_cell_zone
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ======================================   ===========================

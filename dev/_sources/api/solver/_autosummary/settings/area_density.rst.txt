@@ -5,16 +5,13 @@
 area_density
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.area_density
+.. autoclass:: ansys.fluent.core.solver.settings_231.area_density.area_density
 
-.. autoclass:: area_density
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

@@ -5,16 +5,13 @@
 impedance_1_child
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.impedance_1_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.impedance_1_child.impedance_1_child
 
-.. autoclass:: impedance_1_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ============================   ======================
 
-Child                                         Summary
+Attribute                                     Summary
 
 ============================   ======================
 :ref:`pole <pole>`                      'pole' child.

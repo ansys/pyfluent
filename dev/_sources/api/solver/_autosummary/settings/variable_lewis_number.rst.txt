@@ -5,11 +5,8 @@
 variable_lewis_number
 =====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.variable_lewis_number
+.. autoclass:: ansys.fluent.core.solver.settings_231.variable_lewis_number.variable_lewis_number
 
-.. autoclass:: variable_lewis_number
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================================   ============================================

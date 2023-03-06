@@ -5,11 +5,8 @@
 height
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.height
+.. autoclass:: ansys.fluent.core.solver.settings_231.height.height
 
-.. autoclass:: height
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ==============================================

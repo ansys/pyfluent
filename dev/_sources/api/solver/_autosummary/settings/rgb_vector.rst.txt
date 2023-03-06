@@ -5,11 +5,8 @@
 rgb_vector
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.rgb_vector
+.. autoclass:: ansys.fluent.core.solver.settings_231.rgb_vector.rgb_vector
 
-.. autoclass:: rgb_vector
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ================================

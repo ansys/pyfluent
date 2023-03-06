@@ -5,11 +5,8 @@
 fan_x_origin
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.fan_x_origin
+.. autoclass:: ansys.fluent.core.solver.settings_231.fan_x_origin.fan_x_origin
 
-.. autoclass:: fan_x_origin
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

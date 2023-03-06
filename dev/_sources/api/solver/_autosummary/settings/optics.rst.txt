@@ -5,16 +5,13 @@
 optics
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.optics
+.. autoclass:: ansys.fluent.core.solver.settings_231.optics.optics
 
-.. autoclass:: optics
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ================================================   =========================================================================================
 
-Child                                                                                                                                Summary
+Attribute                                                                                                                            Summary
 
 ================================================   =========================================================================================
 :ref:`enable <enable_3>`                                                                                  Enable/disable aero-optical model.

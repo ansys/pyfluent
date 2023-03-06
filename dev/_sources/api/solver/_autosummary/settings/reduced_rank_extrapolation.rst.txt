@@ -5,11 +5,8 @@
 reduced_rank_extrapolation
 ==========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.reduced_rank_extrapolation
+.. autoclass:: ansys.fluent.core.solver.settings_231.reduced_rank_extrapolation.reduced_rank_extrapolation
 
-.. autoclass:: reduced_rank_extrapolation
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   ====================

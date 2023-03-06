@@ -5,11 +5,8 @@
 brooks_corey_ng
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.brooks_corey_ng
+.. autoclass:: ansys.fluent.core.solver.settings_231.brooks_corey_ng.brooks_corey_ng
 
-.. autoclass:: brooks_corey_ng
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

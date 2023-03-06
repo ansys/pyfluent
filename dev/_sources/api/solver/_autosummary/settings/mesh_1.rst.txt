@@ -5,11 +5,8 @@
 mesh
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.mesh_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.mesh_1.mesh
 
-.. autoclass:: mesh
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`mesh_child <mesh_child>`

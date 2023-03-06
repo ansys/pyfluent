@@ -5,11 +5,8 @@
 tref
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.tref
+.. autoclass:: ansys.fluent.core.solver.settings_231.tref.tref
 
-.. autoclass:: tref
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

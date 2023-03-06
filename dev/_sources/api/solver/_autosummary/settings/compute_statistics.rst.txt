@@ -5,11 +5,8 @@
 compute_statistics
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.compute_statistics
+.. autoclass:: ansys.fluent.core.solver.settings_231.compute_statistics.compute_statistics
 
-.. autoclass:: compute_statistics
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

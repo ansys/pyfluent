@@ -5,11 +5,8 @@
 false_time_step_linearization
 =============================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.false_time_step_linearization
+.. autoclass:: ansys.fluent.core.solver.settings_231.false_time_step_linearization.false_time_step_linearization
 
-.. autoclass:: false_time_step_linearization
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =======================================================

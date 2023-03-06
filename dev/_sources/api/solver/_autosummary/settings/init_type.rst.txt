@@ -5,11 +5,8 @@
 init_type
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.init_type
+.. autoclass:: ansys.fluent.core.solver.settings_231.init_type.init_type
 
-.. autoclass:: init_type
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =========================

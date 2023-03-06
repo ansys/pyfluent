@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -55,8 +51,8 @@
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
-    <link rel="next" title="solver.tui.mesh.adapt.cell_registers" href="../cell_registers/index.html" />
-    <link rel="prev" title="solver.tui.mesh.adapt.geometry" href="../geometry/index.html" />
+    <link rel="next" title="solver.tui.mesh.adapt.geometry" href="../geometry/index.html" />
+    <link rel="prev" title="solver.tui.mesh.adapt.manage_criteria" href="../manage_criteria/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -305,13 +295,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -355,23 +340,28 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../adjoint/index.html">
+         solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
+        <a class="reference internal" href="../../../display/index.html">
+         solver.tui.display
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../icing/index.html">
-         solver.tui.icing
+        <a class="reference internal" href="../../../define/index.html">
+         solver.tui.define
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../file/index.html">
          solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../icing/index.html">
+         solver.tui.icing
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -395,26 +385,6 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul class="current">
            <li class="toctree-l6">
-            <a class="reference internal" href="../manage_criteria/index.html">
-             solver.tui.mesh.adapt.manage_criteria
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../geometry/index.html">
-             solver.tui.mesh.adapt.geometry
-            </a>
-           </li>
-           <li class="toctree-l6 current active">
-            <a class="current reference internal" href="#">
-             solver.tui.mesh.adapt.multi_layer_refinement
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../cell_registers/index.html">
-             solver.tui.mesh.adapt.cell_registers
-            </a>
-           </li>
-           <li class="toctree-l6">
             <a class="reference internal" href="../set/index.html">
              solver.tui.mesh.adapt.set
             </a>
@@ -424,21 +394,31 @@ function checkPageExistsAndRedirect(event) {
              solver.tui.mesh.adapt.profile
             </a>
            </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../cell_registers/index.html">
+             solver.tui.mesh.adapt.cell_registers
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../manage_criteria/index.html">
+             solver.tui.mesh.adapt.manage_criteria
+            </a>
+           </li>
+           <li class="toctree-l6 current active">
+            <a class="current reference internal" href="#">
+             solver.tui.mesh.adapt.multi_layer_refinement
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../geometry/index.html">
+             solver.tui.mesh.adapt.geometry
+            </a>
+           </li>
           </ul>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../repair_improve/index.html">
-           solver.tui.mesh.repair_improve
-          </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../geometry/index.html">
            solver.tui.mesh.geometry
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../polyhedra/index.html">
-           solver.tui.mesh.polyhedra
           </a>
          </li>
          <li class="toctree-l5">
@@ -447,8 +427,8 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../surface_mesh/index.html">
-           solver.tui.mesh.surface_mesh
+          <a class="reference internal" href="../../polyhedra/index.html">
+           solver.tui.mesh.polyhedra
           </a>
          </li>
          <li class="toctree-l5">
@@ -456,46 +436,21 @@ function checkPageExistsAndRedirect(event) {
            solver.tui.mesh.reorder
           </a>
          </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../repair_improve/index.html">
+           solver.tui.mesh.repair_improve
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../surface_mesh/index.html">
+           solver.tui.mesh.surface_mesh
+          </a>
+         </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../define/index.html">
-         solver.tui.define
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../setup/index.html">
-         solver.tui.setup
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../solution/index.html">
-         solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
+        <a class="reference internal" href="../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
         </a>
        </li>
        <li class="toctree-l4">
@@ -504,23 +459,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../surface/index.html">
-         solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../plot/index.html">
+         solver.tui.plot
         </a>
        </li>
        <li class="toctree-l4">
@@ -529,8 +469,53 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../solve/index.html">
          solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../views/index.html">
+         solver.tui.views
         </a>
        </li>
        <li class="toctree-l4">
@@ -539,8 +524,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../server/index.html">
-         solver.tui.server
+        <a class="reference internal" href="../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
       </ul>
@@ -612,7 +597,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.multi_layer_refinement">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.mesh.adapt.multi_layer_refinement
+     multi_layer_refinement
     </span>
    </code>
   </a>
@@ -621,7 +606,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.multi_layer_refinement.boundary_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.adapt.multi_layer_refinement.boundary_zones()
+       multi_layer_refinement.boundary_zones()
       </span>
      </code>
     </a>
@@ -630,7 +615,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.multi_layer_refinement.layer_count">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.adapt.multi_layer_refinement.layer_count()
+       multi_layer_refinement.layer_count()
       </span>
      </code>
     </a>
@@ -639,7 +624,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.multi_layer_refinement.parameters">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.adapt.multi_layer_refinement.parameters()
+       multi_layer_refinement.parameters()
       </span>
      </code>
     </a>
@@ -648,7 +633,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.multi_layer_refinement.refine_mesh">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.adapt.multi_layer_refinement.refine_mesh()
+       multi_layer_refinement.refine_mesh()
       </span>
      </code>
     </a>
@@ -676,14 +661,28 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-mesh-adapt-multi-layer-refinement">
 <span id="ref-solver-tui-mesh-adapt-multi-layer-refinement"></span><h1>solver.tui.mesh.adapt.multi_layer_refinement<a class="headerlink" href="#solver-tui-mesh-adapt-multi-layer-refinement" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.multi_layer_refinement">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.adapt.</span></span><span class="sig-name descname"><span class="pre">multi_layer_refinement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.multi_layer_refinement" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the multiple boundary layer refinement menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.</span></span><span class="sig-name descname"><span class="pre">multi_layer_refinement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.multi_layer_refinement" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the multiple boundary layer refinement menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.multi_layer_refinement.boundary_zones" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.multi_layer_refinement.boundary_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boundary_zones</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify boundary zones for refinement.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.multi_layer_refinement.layer_count" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.multi_layer_refinement.layer_count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">layer_count</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify the layer count for refinement.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.multi_layer_refinement.parameters" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.multi_layer_refinement.parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parameters</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify parameters for multiple boundary layer refinement.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.multi_layer_refinement.refine_mesh" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.multi_layer_refinement.refine_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">refine_mesh</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Refine the mesh for multiple boundary layers.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.multi_layer_refinement.boundary_zones">
 <span class="sig-name descname"><span class="pre">boundary_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.multi_layer_refinement.boundary_zones" title="Permalink to this definition">#</a></dt>

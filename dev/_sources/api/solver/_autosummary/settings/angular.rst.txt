@@ -5,11 +5,8 @@
 angular
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.angular
+.. autoclass:: ansys.fluent.core.solver.settings_231.angular.angular
 
-.. autoclass:: angular
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

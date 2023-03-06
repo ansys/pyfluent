@@ -5,16 +5,13 @@
 film_contact_angle_mean
 =======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.film_contact_angle_mean
+.. autoclass:: ansys.fluent.core.solver.settings_231.film_contact_angle_mean.film_contact_angle_mean
 
-.. autoclass:: film_contact_angle_mean
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

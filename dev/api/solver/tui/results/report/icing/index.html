@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -55,8 +51,8 @@
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
-    <link rel="next" title="solver.tui.results.report.system" href="../system/index.html" />
-    <link rel="prev" title="solver.tui.results.report" href="../index.html" />
+    <link rel="next" title="solver.tui.results.report.reference_values" href="../reference_values/index.html" />
+    <link rel="prev" title="solver.tui.results.report.forces" href="../forces/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -305,13 +295,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -355,28 +340,13 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../adjoint/index.html">
+         solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../mesh/index.html">
-         solver.tui.mesh
+        <a class="reference internal" href="../../../display/index.html">
+         solver.tui.display
         </a>
        </li>
        <li class="toctree-l4">
@@ -385,23 +355,43 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parallel/index.html">
+         solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../plot/index.html">
          solver.tui.plot
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../adjoint/index.html">
-         solver.tui.adjoint
+        <a class="reference internal" href="../../../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../setup/index.html">
-         solver.tui.setup
+        <a class="reference internal" href="../../../report/index.html">
+         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -419,6 +409,16 @@ function checkPageExistsAndRedirect(event) {
            solver.tui.results.animate
           </a>
          </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../graphics/index.html">
+           solver.tui.results.graphics
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../plot/index.html">
+           solver.tui.results.plot
+          </a>
+         </li>
          <li class="toctree-l5 current active has-children">
           <a class="reference internal" href="../index.html">
            solver.tui.results.report
@@ -429,14 +429,9 @@ function checkPageExistsAndRedirect(event) {
            </i>
           </label>
           <ul class="current">
-           <li class="toctree-l6 current active">
-            <a class="current reference internal" href="#">
-             solver.tui.results.report.icing
-            </a>
-           </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../system/index.html">
-             solver.tui.results.report.system
+            <a class="reference internal" href="../dpm_histogram/index.html">
+             solver.tui.results.report.dpm_histogram
             </a>
            </li>
            <li class="toctree-l6">
@@ -445,18 +440,13 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../dpm_histogram/index.html">
-             solver.tui.results.report.dpm_histogram
+            <a class="reference internal" href="../forces/index.html">
+             solver.tui.results.report.forces
             </a>
            </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../simulation_reports/index.html">
-             solver.tui.results.report.simulation_reports
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../population_balance/index.html">
-             solver.tui.results.report.population_balance
+           <li class="toctree-l6 current active">
+            <a class="current reference internal" href="#">
+             solver.tui.results.report.icing
             </a>
            </li>
            <li class="toctree-l6">
@@ -465,8 +455,13 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../forces/index.html">
-             solver.tui.results.report.forces
+            <a class="reference internal" href="../modified_setting/index.html">
+             solver.tui.results.report.modified_setting
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../population_balance/index.html">
+             solver.tui.results.report.population_balance
             </a>
            </li>
            <li class="toctree-l6">
@@ -475,21 +470,16 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../modified_setting/index.html">
-             solver.tui.results.report.modified_setting
+            <a class="reference internal" href="../system/index.html">
+             solver.tui.results.report.system
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../simulation_reports/index.html">
+             solver.tui.results.report.simulation_reports
             </a>
            </li>
           </ul>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../graphics/index.html">
-           solver.tui.results.graphics
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../plot/index.html">
-           solver.tui.results.plot
-          </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../surface/index.html">
@@ -504,18 +494,18 @@ function checkPageExistsAndRedirect(event) {
         </ul>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../solution/index.html">
          solver.tui.solution
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parallel/index.html">
-         solver.tui.parallel
+        <a class="reference internal" href="../../../setup/index.html">
+         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4">
@@ -524,28 +514,23 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../views/index.html">
          solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../display/index.html">
-         solver.tui.display
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../preferences/index.html">
-         solver.tui.preferences
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../solve/index.html">
-         solver.tui.solve
         </a>
        </li>
        <li class="toctree-l4">
@@ -554,8 +539,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../server/index.html">
-         solver.tui.server
+        <a class="reference internal" href="../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
       </ul>
@@ -627,7 +612,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.icing">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.results.report.icing
+     icing
     </span>
    </code>
   </a>
@@ -636,7 +621,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.icing.energy_of_ice_formation">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.results.report.icing.energy_of_ice_formation()
+       icing.energy_of_ice_formation()
       </span>
      </code>
     </a>
@@ -645,7 +630,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.icing.energy_of_water_impinged">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.results.report.icing.energy_of_water_impinged()
+       icing.energy_of_water_impinged()
       </span>
      </code>
     </a>
@@ -654,7 +639,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.icing.icing_energy_of_conduction">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.results.report.icing.icing_energy_of_conduction()
+       icing.icing_energy_of_conduction()
       </span>
      </code>
     </a>
@@ -663,7 +648,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.icing.mass_of_ice">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.results.report.icing.mass_of_ice()
+       icing.mass_of_ice()
       </span>
      </code>
     </a>
@@ -672,7 +657,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.icing.mass_of_water_impinged">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.results.report.icing.mass_of_water_impinged()
+       icing.mass_of_water_impinged()
       </span>
      </code>
     </a>
@@ -681,7 +666,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.icing.particles_crystals_collection_eff">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.results.report.icing.particles_crystals_collection_eff()
+       icing.particles_crystals_collection_eff()
       </span>
      </code>
     </a>
@@ -690,7 +675,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.icing.particles_droplets_collection_eff">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.results.report.icing.particles_droplets_collection_eff()
+       icing.particles_droplets_collection_eff()
       </span>
      </code>
     </a>
@@ -718,14 +703,37 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-results-report-icing">
 <span id="ref-solver-tui-results-report-icing"></span><h1>solver.tui.results.report.icing<a class="headerlink" href="#solver-tui-results-report-icing" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.icing">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.results.report.</span></span><span class="sig-name descname"><span class="pre">icing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.icing" title="Permalink to this definition">#</a></dt>
-<dd><p>Icing reports menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.results.report.</span></span><span class="sig-name descname"><span class="pre">icing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.icing" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Icing reports menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.icing.energy_of_ice_formation" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.icing.energy_of_ice_formation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">energy_of_ice_formation</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Print Energy of Ice Formation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.icing.energy_of_water_impinged" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.icing.energy_of_water_impinged"><code class="xref py py-obj docutils literal notranslate"><span class="pre">energy_of_water_impinged</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Print Energy of Water Impingement.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.icing.icing_energy_of_conduction" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.icing.icing_energy_of_conduction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">icing_energy_of_conduction</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Print Energy of Conduction.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.icing.mass_of_ice" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.icing.mass_of_ice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mass_of_ice</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Print Mass of Ice Accretion.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.icing.mass_of_water_impinged" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.icing.mass_of_water_impinged"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mass_of_water_impinged</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Print Mass of Water Impingement.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.icing.particles_crystals_collection_eff" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.icing.particles_crystals_collection_eff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">particles_crystals_collection_eff</span></code></a>(*args, ...)</p></td>
+<td><p>Print Crystals Collection Efficiency.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.icing.particles_droplets_collection_eff" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.icing.particles_droplets_collection_eff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">particles_droplets_collection_eff</span></code></a>(*args, ...)</p></td>
+<td><p>Print Droplets Collection Efficiency.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.icing.energy_of_ice_formation">
 <span class="sig-name descname"><span class="pre">energy_of_ice_formation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.icing.energy_of_ice_formation" title="Permalink to this definition">#</a></dt>

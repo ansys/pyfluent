@@ -3,17 +3,17 @@
 solver.tui.preferences.appearance
 =================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.appearance
-   :members: show_enabled_models, surface_specularity, show_model_edges, graphics_title_window_framecolor, graphics_background_style, quick_property_view, graphics_color_theme, graphics_background_color1, ruler, graphics_edge_color, graphics_view, show_interface_children_zone, number_of_files_recently_used, graphics_surface_color, completer, surface_specularity_for_contours, default_view, color_theme, number_of_pastel_colors, titles_border_offset, pastel_color_value, axis_triad, graphics_default_manual_face_color, model_color_scheme, custom_title_bar, graphics_foreground_color, surface_emissivity, application_font_size, group_by_tree_view, pastel_color_saturation, graphics_partition_boundary_color, titles, graphics_wall_face_color, graphics_default_manual_node_color, solution_mode_edge_color_in_meshing_mode, graphics_background_color2
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:
 
-   selections/index
-   charts/index
    ansys_logo/index
+   charts/index
+   selections/index

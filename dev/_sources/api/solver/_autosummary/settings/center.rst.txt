@@ -5,11 +5,8 @@
 center
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.center
+.. autoclass:: ansys.fluent.core.solver.settings_231.center.center
 
-.. autoclass:: center
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

@@ -5,16 +5,13 @@
 tip_loss
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.tip_loss
+.. autoclass:: ansys.fluent.core.solver.settings_231.tip_loss.tip_loss
 
-.. autoclass:: tip_loss
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==============================================================   ===================================================================
 
-Child                                                                                                                        Summary
+Attribute                                                                                                                    Summary
 
 ==============================================================   ===================================================================
 :ref:`model_tip_loss <model_tip_loss>`                                                                        Select Tip Loss Model:

@@ -5,11 +5,8 @@
 faradaic_heat
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.faradaic_heat
+.. autoclass:: ansys.fluent.core.solver.settings_231.faradaic_heat.faradaic_heat
 
-.. autoclass:: faradaic_heat
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

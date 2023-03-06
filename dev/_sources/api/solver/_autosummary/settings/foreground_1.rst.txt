@@ -5,11 +5,8 @@
 foreground
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.foreground_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.foreground_1.foreground
 
-.. autoclass:: foreground
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ========================================

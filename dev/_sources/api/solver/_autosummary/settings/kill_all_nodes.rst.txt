@@ -5,11 +5,8 @@
 kill_all_nodes
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.kill_all_nodes
+.. autoclass:: ansys.fluent.core.solver.settings_231.kill_all_nodes.kill_all_nodes
 
-.. autoclass:: kill_all_nodes
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ==========================================================   =====================================

@@ -5,11 +5,8 @@
 transparency
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.transparency
+.. autoclass:: ansys.fluent.core.solver.settings_231.transparency.transparency
 
-.. autoclass:: transparency
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ============================================

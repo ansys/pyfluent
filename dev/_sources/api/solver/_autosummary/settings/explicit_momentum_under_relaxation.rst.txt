@@ -5,11 +5,8 @@
 explicit_momentum_under_relaxation
 ==================================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.explicit_momentum_under_relaxation
+.. autoclass:: ansys.fluent.core.solver.settings_231.explicit_momentum_under_relaxation.explicit_momentum_under_relaxation
 
-.. autoclass:: explicit_momentum_under_relaxation
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =========================

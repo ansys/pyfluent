@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -55,8 +51,8 @@
     <link rel="shortcut icon" href="../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../search.html" />
-    <link rel="next" title="solver.tui.setup.models.heat_exchanger.macro_model" href="../macro_model/index.html" />
-    <link rel="prev" title="solver.tui.setup.models.heat_exchanger" href="../index.html" />
+    <link rel="next" title="solver.tui.setup.models.electrolysis" href="../../electrolysis/index.html" />
+    <link rel="prev" title="solver.tui.setup.models.heat_exchanger.macro_model" href="../macro_model/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -306,13 +296,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -356,28 +341,13 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../../adjoint/index.html">
+         solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../mesh/index.html">
-         solver.tui.mesh
+        <a class="reference internal" href="../../../../display/index.html">
+         solver.tui.display
         </a>
        </li>
        <li class="toctree-l4">
@@ -386,18 +356,58 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parallel/index.html">
+         solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../../plot/index.html">
          solver.tui.plot
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../adjoint/index.html">
-         solver.tui.adjoint
+        <a class="reference internal" href="../../../../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_post/index.html">
-         solver.tui.turbo_post
+        <a class="reference internal" href="../../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../solution/index.html">
+         solver.tui.solution
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -411,28 +421,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../operating_conditions/index.html">
-           solver.tui.setup.operating_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../named_expressions/index.html">
-           solver.tui.setup.named_expressions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../mixing_planes/index.html">
-           solver.tui.setup.mixing_planes
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="../../../boundary_conditions/index.html">
            solver.tui.setup.boundary_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../materials/index.html">
-           solver.tui.setup.materials
           </a>
          </li>
          <li class="toctree-l5">
@@ -441,13 +431,8 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../overset_interfaces/index.html">
-           solver.tui.setup.overset_interfaces
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../reference_values/index.html">
-           solver.tui.setup.reference_values
+          <a class="reference internal" href="../../../expert/index.html">
+           solver.tui.setup.expert
           </a>
          </li>
          <li class="toctree-l5">
@@ -456,8 +441,18 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../reference_frames/index.html">
-           solver.tui.setup.reference_frames
+          <a class="reference internal" href="../../../materials/index.html">
+           solver.tui.setup.materials
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../mesh_interfaces/index.html">
+           solver.tui.setup.mesh_interfaces
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../mixing_planes/index.html">
+           solver.tui.setup.mixing_planes
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -476,38 +471,8 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../dpm/index.html">
-             solver.tui.setup.models.dpm
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../two_temperature/index.html">
-             solver.tui.setup.models.two_temperature
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../electrolysis/index.html">
-             solver.tui.setup.models.electrolysis
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../radiation/index.html">
-             solver.tui.setup.models.radiation
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../multiphase/index.html">
-             solver.tui.setup.models.multiphase
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../solver/index.html">
-             solver.tui.setup.models.solver
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../shell_conduction/index.html">
-             solver.tui.setup.models.shell_conduction
+            <a class="reference internal" href="../../optics/index.html">
+             solver.tui.setup.models.optics
             </a>
            </li>
            <li class="toctree-l6">
@@ -516,8 +481,13 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../nox_parameters/index.html">
-             solver.tui.setup.models.nox_parameters
+            <a class="reference internal" href="../../dpm/index.html">
+             solver.tui.setup.models.dpm
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../shell_conduction/index.html">
+             solver.tui.setup.models.shell_conduction
             </a>
            </li>
            <li class="toctree-l6">
@@ -531,8 +501,48 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
+            <a class="reference internal" href="../../two_temperature/index.html">
+             solver.tui.setup.models.two_temperature
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../multiphase/index.html">
+             solver.tui.setup.models.multiphase
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../nox_parameters/index.html">
+             solver.tui.setup.models.nox_parameters
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../soot_parameters/index.html">
+             solver.tui.setup.models.soot_parameters
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../radiation/index.html">
+             solver.tui.setup.models.radiation
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../solver/index.html">
+             solver.tui.setup.models.solver
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../species/index.html">
+             solver.tui.setup.models.species
+            </a>
+           </li>
+           <li class="toctree-l6">
             <a class="reference internal" href="../../viscous/index.html">
              solver.tui.setup.models.viscous
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../structure/index.html">
+             solver.tui.setup.models.structure
             </a>
            </li>
            <li class="toctree-l6 current active has-children">
@@ -545,48 +555,48 @@ function checkPageExistsAndRedirect(event) {
              </i>
             </label>
             <ul class="current">
-             <li class="toctree-l7 current active">
-              <a class="current reference internal" href="#">
-               solver.tui.setup.models.heat_exchanger.dual_cell_model
-              </a>
-             </li>
              <li class="toctree-l7">
               <a class="reference internal" href="../macro_model/index.html">
                solver.tui.setup.models.heat_exchanger.macro_model
               </a>
              </li>
+             <li class="toctree-l7 current active">
+              <a class="current reference internal" href="#">
+               solver.tui.setup.models.heat_exchanger.dual_cell_model
+              </a>
+             </li>
             </ul>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../soot_parameters/index.html">
-             solver.tui.setup.models.soot_parameters
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../species/index.html">
-             solver.tui.setup.models.species
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../structure/index.html">
-             solver.tui.setup.models.structure
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../optics/index.html">
-             solver.tui.setup.models.optics
+            <a class="reference internal" href="../../electrolysis/index.html">
+             solver.tui.setup.models.electrolysis
             </a>
            </li>
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../mesh_interfaces/index.html">
-           solver.tui.setup.mesh_interfaces
+          <a class="reference internal" href="../../../named_expressions/index.html">
+           solver.tui.setup.named_expressions
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../expert/index.html">
-           solver.tui.setup.expert
+          <a class="reference internal" href="../../../operating_conditions/index.html">
+           solver.tui.setup.operating_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../overset_interfaces/index.html">
+           solver.tui.setup.overset_interfaces
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../reference_frames/index.html">
+           solver.tui.setup.reference_frames
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../reference_values/index.html">
+           solver.tui.setup.reference_values
           </a>
          </li>
          <li class="toctree-l5">
@@ -597,13 +607,8 @@ function checkPageExistsAndRedirect(event) {
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solution/index.html">
-         solver.tui.solution
+        <a class="reference internal" href="../../../../surface/index.html">
+         solver.tui.surface
         </a>
        </li>
        <li class="toctree-l4">
@@ -612,13 +617,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parallel/index.html">
-         solver.tui.parallel
+        <a class="reference internal" href="../../../../server/index.html">
+         solver.tui.server
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../../../turbo_post/index.html">
+         solver.tui.turbo_post
         </a>
        </li>
        <li class="toctree-l4">
@@ -627,33 +632,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../display/index.html">
-         solver.tui.display
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../preferences/index.html">
-         solver.tui.preferences
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../../parametric_study/index.html">
          solver.tui.parametric_study
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../server/index.html">
-         solver.tui.server
+        <a class="reference internal" href="../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
       </ul>
@@ -725,7 +710,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.setup.models.heat_exchanger.dual_cell_model
+     dual_cell_model
     </span>
    </code>
   </a>
@@ -734,7 +719,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model.add_heat_exchanger">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.heat_exchanger.dual_cell_model.add_heat_exchanger()
+       dual_cell_model.add_heat_exchanger()
       </span>
      </code>
     </a>
@@ -743,7 +728,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model.alternative_formulation">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.heat_exchanger.dual_cell_model.alternative_formulation()
+       dual_cell_model.alternative_formulation()
       </span>
      </code>
     </a>
@@ -752,7 +737,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model.delete_heat_exchanger">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.heat_exchanger.dual_cell_model.delete_heat_exchanger()
+       dual_cell_model.delete_heat_exchanger()
       </span>
      </code>
     </a>
@@ -761,7 +746,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model.heat_exchanger">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.heat_exchanger.dual_cell_model.heat_exchanger()
+       dual_cell_model.heat_exchanger()
       </span>
      </code>
     </a>
@@ -770,7 +755,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model.modify_heat_exchanger">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.heat_exchanger.dual_cell_model.modify_heat_exchanger()
+       dual_cell_model.modify_heat_exchanger()
       </span>
      </code>
     </a>
@@ -779,7 +764,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model.plot_NTU">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.heat_exchanger.dual_cell_model.plot_NTU()
+       dual_cell_model.plot_NTU()
       </span>
      </code>
     </a>
@@ -788,7 +773,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model.write_NTU">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.heat_exchanger.dual_cell_model.write_NTU()
+       dual_cell_model.write_NTU()
       </span>
      </code>
     </a>
@@ -816,14 +801,37 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-models-heat-exchanger-dual-cell-model">
 <span id="ref-solver-tui-setup-models-heat-exchanger-dual-cell-model"></span><h1>solver.tui.setup.models.heat_exchanger.dual_cell_model<a class="headerlink" href="#solver-tui-setup-models-heat-exchanger-dual-cell-model" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.models.heat_exchanger.</span></span><span class="sig-name descname"><span class="pre">dual_cell_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the dual cell model menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.</span></span><span class="sig-name descname"><span class="pre">dual_cell_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the dual cell model menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model.add_heat_exchanger" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model.add_heat_exchanger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_heat_exchanger</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Add heat-exchanger.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model.alternative_formulation" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model.alternative_formulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alternative_formulation</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable alternative formulation for heat transfer calculations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model.delete_heat_exchanger" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model.delete_heat_exchanger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_heat_exchanger</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Delete heat-exchanger.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model.heat_exchanger" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model.heat_exchanger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">heat_exchanger</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable the dual cell heat-exchanger model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model.modify_heat_exchanger" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model.modify_heat_exchanger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify_heat_exchanger</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Modify heat-exchanger.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model.plot_NTU" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model.plot_NTU"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_NTU</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Plot NTU vs primary mass flow rate for each auxiliary mass flow rate.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model.write_NTU" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model.write_NTU"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_NTU</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Write NTU vs primary mass flow rate for each auxiliary mass flow rate.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model.add_heat_exchanger">
 <span class="sig-name descname"><span class="pre">add_heat_exchanger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.heat_exchanger.dual_cell_model.add_heat_exchanger" title="Permalink to this definition">#</a></dt>

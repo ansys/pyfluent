@@ -5,11 +5,8 @@
 glass
 =====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.glass
+.. autoclass:: ansys.fluent.core.solver.settings_231.glass.glass
 
-.. autoclass:: glass
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

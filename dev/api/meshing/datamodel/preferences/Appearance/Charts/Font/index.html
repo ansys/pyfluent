@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -305,13 +295,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -324,6 +309,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../../../tui/index.html">
      meshing.tui
@@ -497,7 +487,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font">
    <code class="docutils literal notranslate">
     <span class="pre">
-     Root.Appearance.Charts.Font
+     Font
     </span>
    </code>
   </a>
@@ -506,7 +496,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Axes">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.Charts.Font.Axes
+       Font.Axes
       </span>
      </code>
     </a>
@@ -515,7 +505,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.AxesTitles">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.Charts.Font.AxesTitles
+       Font.AxesTitles
       </span>
      </code>
     </a>
@@ -524,7 +514,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Legend">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.Charts.Font.Legend
+       Font.Legend
       </span>
      </code>
     </a>
@@ -533,7 +523,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Title">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.Charts.Font.Title
+       Font.Title
       </span>
      </code>
     </a>
@@ -561,36 +551,54 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-datamodel-preferences-appearance-charts-font">
 <span id="ref-meshing-datamodel-preferences-appearance-charts-font"></span><h1>meshing.datamodel.preferences.Appearance.Charts.Font<a class="headerlink" href="#meshing-datamodel-preferences-appearance-charts-font" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.</span></span><span class="sig-name descname"><span class="pre">Font</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
+<p>Singleton Font.</p>
+<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Axes" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Axes</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Axes of value type str.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.AxesTitles" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.AxesTitles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AxesTitles</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter AxesTitles of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Legend" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Legend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Legend</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Legend of value type str.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Title" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Title</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Title of value type str.</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Root.Appearance.Charts.</span></span><span class="sig-name descname"><span class="pre">Font</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font" title="Permalink to this definition">#</a></dt>
-<dd><p>Singleton Font.</p>
-<dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Axes">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Axes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Axes" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter Axes of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter Axes of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.AxesTitles">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AxesTitles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.AxesTitles" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter AxesTitles of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter AxesTitles of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Legend">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Legend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Legend" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter Legend of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter Legend of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Title">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Title</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Title" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter Title of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter Title of value type str.</p>
 </dd></dl>
 
 </dd></dl>

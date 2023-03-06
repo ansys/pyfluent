@@ -5,11 +5,8 @@
 error_tolerance
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.error_tolerance_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.error_tolerance_1.error_tolerance
 
-.. autoclass:: error_tolerance
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ======================================

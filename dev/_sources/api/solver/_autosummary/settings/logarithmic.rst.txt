@@ -5,11 +5,8 @@
 logarithmic
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.logarithmic
+.. autoclass:: ansys.fluent.core.solver.settings_231.logarithmic.logarithmic
 
-.. autoclass:: logarithmic
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================================

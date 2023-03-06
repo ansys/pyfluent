@@ -5,11 +5,8 @@
 solid_relative_to_thread
 ========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.solid_relative_to_thread
+.. autoclass:: ansys.fluent.core.solver.settings_231.solid_relative_to_thread.solid_relative_to_thread
 
-.. autoclass:: solid_relative_to_thread
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

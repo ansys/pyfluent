@@ -3,21 +3,21 @@
 solver.tui.setup.boundary\_conditions
 =====================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.boundary_conditions
-   :members: recirculation_outlet, axis, mass_flow_inlet, pressure_inlet, zone_type, network_end, symmetry, recirculation_inlet, mass_flow_outlet, geometry, list_zones, interior, degassing, intake_fan, interface, solid, fluid, outflow, periodic, fan, velocity_inlet, wall, rans_les_interface, zone_name, radiator, network, exhaust_fan, inlet_vent, pressure_far_field, outlet_vent, overset, pressure_outlet, shadow, copy_bc, porous_jump
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:
 
-   set/index
-   expert/index
-   query/index
-   profiles/index
    bc_settings/index
-   rename_zone/index
+   expert/index
    modify_zones/index
+   profiles/index
+   query/index
+   rename_zone/index
+   set/index

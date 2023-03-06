@@ -5,11 +5,8 @@
 outlet_number
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.outlet_number
+.. autoclass:: ansys.fluent.core.solver.settings_231.outlet_number.outlet_number
 
-.. autoclass:: outlet_number
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

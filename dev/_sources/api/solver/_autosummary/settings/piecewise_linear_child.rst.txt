@@ -5,11 +5,8 @@
 piecewise_linear_child
 ======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.piecewise_linear_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.piecewise_linear_child.piecewise_linear_child
 
-.. autoclass:: piecewise_linear_child
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =============================

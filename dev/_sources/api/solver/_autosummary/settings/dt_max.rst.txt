@@ -5,11 +5,8 @@
 dt_max
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dt_max
+.. autoclass:: ansys.fluent.core.solver.settings_231.dt_max.dt_max
 
-.. autoclass:: dt_max
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   =======================================================================

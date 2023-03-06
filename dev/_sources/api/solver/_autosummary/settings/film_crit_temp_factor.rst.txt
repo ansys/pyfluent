@@ -5,11 +5,8 @@
 film_crit_temp_factor
 =====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.film_crit_temp_factor
+.. autoclass:: ansys.fluent.core.solver.settings_231.film_crit_temp_factor.film_crit_temp_factor
 
-.. autoclass:: film_crit_temp_factor
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

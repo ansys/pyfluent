@@ -5,11 +5,8 @@
 include_convective_heat_transfer
 ================================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.include_convective_heat_transfer
+.. autoclass:: ansys.fluent.core.solver.settings_231.include_convective_heat_transfer.include_convective_heat_transfer
 
-.. autoclass:: include_convective_heat_transfer
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

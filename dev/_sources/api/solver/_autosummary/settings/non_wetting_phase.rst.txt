@@ -5,11 +5,8 @@
 non_wetting_phase
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.non_wetting_phase
+.. autoclass:: ansys.fluent.core.solver.settings_231.non_wetting_phase.non_wetting_phase
 
-.. autoclass:: non_wetting_phase
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

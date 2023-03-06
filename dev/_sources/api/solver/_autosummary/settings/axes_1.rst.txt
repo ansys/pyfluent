@@ -5,11 +5,8 @@
 axes
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.axes_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.axes_1.axes
 
-.. autoclass:: axes
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

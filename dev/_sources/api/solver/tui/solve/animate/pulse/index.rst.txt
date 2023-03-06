@@ -3,16 +3,16 @@
 solver.tui.solve.animate.pulse
 ==============================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.animate.pulse
-   :members: pulse_mode, write
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solve.animate.pulse
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:
 
-   hardcopy/index
    video/index
+   hardcopy/index

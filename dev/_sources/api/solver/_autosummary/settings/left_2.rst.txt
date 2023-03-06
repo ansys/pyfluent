@@ -5,11 +5,8 @@
 left
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.left_2
+.. autoclass:: ansys.fluent.core.solver.settings_231.left_2.left
 
-.. autoclass:: left
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ==============================================

@@ -5,11 +5,8 @@
 equib_thermal
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.equib_thermal
+.. autoclass:: ansys.fluent.core.solver.settings_231.equib_thermal.equib_thermal
 
-.. autoclass:: equib_thermal
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

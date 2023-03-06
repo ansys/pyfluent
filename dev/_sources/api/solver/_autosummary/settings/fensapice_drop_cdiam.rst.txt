@@ -5,11 +5,8 @@
 fensapice_drop_cdiam
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.fensapice_drop_cdiam
+.. autoclass:: ansys.fluent.core.solver.settings_231.fensapice_drop_cdiam.fensapice_drop_cdiam
 
-.. autoclass:: fensapice_drop_cdiam
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

@@ -5,11 +5,8 @@
 axis_origin
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.axis_origin_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.axis_origin_1.axis_origin
 
-.. autoclass:: axis_origin
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`child_object_type_child <child_object_type_child_1>`

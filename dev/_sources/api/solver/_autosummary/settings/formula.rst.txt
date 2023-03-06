@@ -5,11 +5,8 @@
 formula
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.formula
+.. autoclass:: ansys.fluent.core.solver.settings_231.formula.formula
 
-.. autoclass:: formula
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ========================================================

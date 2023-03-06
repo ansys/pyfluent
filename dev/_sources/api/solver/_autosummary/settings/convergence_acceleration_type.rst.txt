@@ -5,11 +5,8 @@
 convergence_acceleration_type
 =============================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.convergence_acceleration_type
+.. autoclass:: ansys.fluent.core.solver.settings_231.convergence_acceleration_type.convergence_acceleration_type
 
-.. autoclass:: convergence_acceleration_type
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================================================================   ==============================================================================================================================================================

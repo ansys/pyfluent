@@ -3,23 +3,23 @@
 meshing.tui.boundary
 ====================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.boundary
-   :members: delete_duplicate_faces, mark_face_intersection, delete_unused_faces, mark_bad_quality_faces, delete_island_faces, count_free_nodes, resolve_face_intersection, face_distribution, reset_element_type, mark_face_proximity, clear_marked_nodes, set_periodicity, mark_duplicate_nodes, compute_bounding_box, mark_faces_in_region, unmark_faces_in_zones, expand_marked_faces_by_rings, coarsen_boundary_faces, auto_slit_faces, delete_all_dup_faces, smooth_marked_faces, count_unused_bound_node, count_unused_faces, clear_marked_faces, count_unused_nodes, check_duplicate_geom, project_face_zone, face_skewness, merge_small_face_zones, delete_unconnected_faces, delete_free_edge_faces, improve_surface_mesh, create_bounding_box, create_cylinder, create_plane_surface, orient_faces_by_point, create_revolved_surface, edge_limits, print_info, check_boundary_mesh, create_swept_surface, unmark_selected_faces, fix_mconnected_edges, slit_boundary_face, recover_periodic_surfaces, jiggle_boundary_nodes, wrapper, delete_unused_nodes, merge_nodes, make_periodic, count_marked_faces, scale_nodes
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.boundary
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:
 
-   modify/index
-   boundary_conditions/index
-   manage/index
-   separate/index
-   feature/index
-   refine/index
-   shell_boundary_layer/index
    remesh/index
    improve/index
+   modify/index
+   manage/index
+   feature/index
+   separate/index
+   refine/index
+   boundary_conditions/index
+   shell_boundary_layer/index

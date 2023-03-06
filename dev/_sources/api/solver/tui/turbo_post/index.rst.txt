@@ -3,11 +3,11 @@
 solver.tui.turbo\_post
 ======================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.turbo_post
-   :members: two_d_contours, compute_report, avg_contours, current_topology, xy_plot_avg, write_report
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.turbo_post
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

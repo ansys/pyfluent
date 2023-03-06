@@ -3,11 +3,11 @@
 solver.tui.results.graphics\_window.embedded\_windows
 =====================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics_window.embedded_windows
-   :members: move_out, close, move_out_all, embed_in, close_all
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.embedded_windows
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

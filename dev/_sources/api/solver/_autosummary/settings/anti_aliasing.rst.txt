@@ -5,11 +5,8 @@
 anti_aliasing
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.anti_aliasing
+.. autoclass:: ansys.fluent.core.solver.settings_231.anti_aliasing.anti_aliasing
 
-.. autoclass:: anti_aliasing
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

@@ -5,11 +5,8 @@
 weighting
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.weighting
+.. autoclass:: ansys.fluent.core.solver.settings_231.weighting.weighting
 
-.. autoclass:: weighting
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================================

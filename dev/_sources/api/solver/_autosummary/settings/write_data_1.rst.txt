@@ -5,11 +5,8 @@
 write_data
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.write_data_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.write_data_1.write_data
 
-.. autoclass:: write_data
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================

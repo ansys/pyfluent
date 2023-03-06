@@ -5,11 +5,8 @@
 conservative_coarsening
 =======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.conservative_coarsening
+.. autoclass:: ansys.fluent.core.solver.settings_231.conservative_coarsening.conservative_coarsening
 
-.. autoclass:: conservative_coarsening
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ==================================

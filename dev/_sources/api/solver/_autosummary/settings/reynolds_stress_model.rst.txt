@@ -5,11 +5,8 @@
 reynolds_stress_model
 =====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.reynolds_stress_model
+.. autoclass:: ansys.fluent.core.solver.settings_231.reynolds_stress_model.reynolds_stress_model
 
-.. autoclass:: reynolds_stress_model
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ====================

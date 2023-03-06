@@ -5,11 +5,8 @@
 const_number_in_parcel
 ======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.const_number_in_parcel
+.. autoclass:: ansys.fluent.core.solver.settings_231.const_number_in_parcel.const_number_in_parcel
 
-.. autoclass:: const_number_in_parcel
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

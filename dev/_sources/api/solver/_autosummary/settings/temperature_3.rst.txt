@@ -5,11 +5,8 @@
 temperature
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.temperature_3
+.. autoclass:: ansys.fluent.core.solver.settings_231.temperature_3.temperature
 
-.. autoclass:: temperature
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =============================

@@ -3,11 +3,11 @@
 solver.tui.setup.models.dpm.options
 ===================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.dpm.options
-   :members: ensemble_average, maximum_udf_species, uniform_mass_distribution_for_injections, enable_contour_plots, vaporization_options, erosion_accretion, remove_wall_film_temperature_limiter, set_thermolysis_limit, track_in_absolute_frame, vaporization_heat_transfer_averaging, include_lwf_particles_in_dpm_concentration, staggering_factor, stagger_temporally, init_erosion_accretion_rate, stagger_radius, brownian_motion, stagger_spatially_atomizer_injections, pressure_gradient_force, allow_supercritical_pressure_vaporization, thermophoretic_force, current_positions_in_sample_file_format, particle_radiation, use_absolute_pressure_for_vaporization, convective_film_heat_transfer, lowest_volatiles_mass_fraction, stagger_spatially_standard_injections, treat_multicomponent_saturation_temperature_failure, virtual_mass_force, saffman_lift_force, step_report_sig_figures, two_way_coupling, scr_urea_deposition_risk_analysis, set_minimum_particle_diameter
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.options
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

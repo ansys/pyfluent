@@ -5,11 +5,8 @@
 les_embedded_spec
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.les_embedded_spec
+.. autoclass:: ansys.fluent.core.solver.settings_231.les_embedded_spec.les_embedded_spec
 
-.. autoclass:: les_embedded_spec
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

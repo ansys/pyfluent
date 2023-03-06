@@ -5,11 +5,8 @@
 y_axis_precision
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.y_axis_precision
+.. autoclass:: ansys.fluent.core.solver.settings_231.y_axis_precision.y_axis_precision
 
-.. autoclass:: y_axis_precision
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ====================

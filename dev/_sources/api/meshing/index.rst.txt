@@ -113,7 +113,11 @@ TUI commands example
 .. currentmodule:: ansys.fluent.core.meshing
 
 .. autosummary::
-   :toctree: _autosummary
+    :toctree: _autosummary
+    :template: flobject-module-template.rst
+    :recursive:
+
+    meshing
 
 .. toctree::
    :maxdepth: 2

@@ -5,11 +5,8 @@
 width
 =====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.width
+.. autoclass:: ansys.fluent.core.solver.settings_231.width.width
 
-.. autoclass:: width
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ==============================================

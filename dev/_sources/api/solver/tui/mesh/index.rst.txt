@@ -3,21 +3,21 @@
 solver.tui.mesh
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.mesh
-   :members: replace, check_verbosity, size_info, units, smooth_mesh, translate, redistribute_boundary_layer, quality, swap_mesh_faces, check, memory_usage, show_periodic_shadow_zones, scale, adjacency, enhanced_orthogonal_quality, mesh_info, set_unit_system, check_before_solve, rotate
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.mesh
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:
 
    adapt/index
-   repair_improve/index
    geometry/index
-   polyhedra/index
    modify_zones/index
-   surface_mesh/index
+   polyhedra/index
    reorder/index
+   repair_improve/index
+   surface_mesh/index

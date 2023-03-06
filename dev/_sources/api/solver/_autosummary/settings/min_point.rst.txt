@@ -5,11 +5,8 @@
 min_point
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.min_point
+.. autoclass:: ansys.fluent.core.solver.settings_231.min_point.min_point
 
-.. autoclass:: min_point
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =======================

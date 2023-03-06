@@ -5,11 +5,8 @@
 mrf_motion
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.mrf_motion
+.. autoclass:: ansys.fluent.core.solver.settings_231.mrf_motion.mrf_motion
 
-.. autoclass:: mrf_motion
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

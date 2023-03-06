@@ -5,11 +5,8 @@
 rough_option
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.rough_option
+.. autoclass:: ansys.fluent.core.solver.settings_231.rough_option.rough_option
 
-.. autoclass:: rough_option
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

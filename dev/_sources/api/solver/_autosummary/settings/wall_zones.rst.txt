@@ -5,11 +5,8 @@
 wall_zones
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.wall_zones
+.. autoclass:: ansys.fluent.core.solver.settings_231.wall_zones.wall_zones
 
-.. autoclass:: wall_zones
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================   ========================

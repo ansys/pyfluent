@@ -5,16 +5,13 @@
 pid
 ===
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.pid
+.. autoclass:: ansys.fluent.core.solver.settings_231.pid.pid
 
-.. autoclass:: pid
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   =================================
 
-Child                                                                            Summary
+Attribute                                                                        Summary
 
 ====================================================   =================================
 :ref:`method <method_1>`                                                 'method' child.

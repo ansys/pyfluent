@@ -5,11 +5,8 @@
 lines
 =====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.lines_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.lines_1.lines
 
-.. autoclass:: lines
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================   =====================

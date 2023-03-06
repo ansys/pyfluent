@@ -3,12 +3,11 @@
 solver.datamodel.preferences.Graphics.ExportVideoSettings.AdvancedVideoQualityOptions
 =====================================================================================
 
-.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.Graphics.ExportVideoSettings.AdvancedVideoQualityOptions
-   :members: BitRateQuality, Bitrate, CompressionMethod, EnableH264
-   :noindex:
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences.Root.Graphics.ExportVideoSettings.AdvancedVideoQualityOptions
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

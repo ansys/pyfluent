@@ -5,11 +5,8 @@
 division_val
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.division_val
+.. autoclass:: ansys.fluent.core.solver.settings_231.division_val.division_val
 
-.. autoclass:: division_val
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ===============================================

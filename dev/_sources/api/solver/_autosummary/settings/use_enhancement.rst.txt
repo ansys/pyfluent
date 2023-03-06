@@ -5,11 +5,8 @@
 use_enhancement
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.use_enhancement
+.. autoclass:: ansys.fluent.core.solver.settings_231.use_enhancement.use_enhancement
 
-.. autoclass:: use_enhancement
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================================   ==============================================

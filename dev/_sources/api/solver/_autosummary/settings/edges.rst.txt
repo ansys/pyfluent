@@ -5,11 +5,8 @@
 edges
 =====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.edges
+.. autoclass:: ansys.fluent.core.solver.settings_231.edges.edges
 
-.. autoclass:: edges
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   ====================

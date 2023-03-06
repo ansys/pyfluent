@@ -5,11 +5,8 @@
 thickness
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.thickness
+.. autoclass:: ansys.fluent.core.solver.settings_231.thickness.thickness
 
-.. autoclass:: thickness
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ============================================

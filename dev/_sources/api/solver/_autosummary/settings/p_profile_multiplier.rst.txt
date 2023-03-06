@@ -5,11 +5,8 @@
 p_profile_multiplier
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.p_profile_multiplier
+.. autoclass:: ansys.fluent.core.solver.settings_231.p_profile_multiplier.p_profile_multiplier
 
-.. autoclass:: p_profile_multiplier
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

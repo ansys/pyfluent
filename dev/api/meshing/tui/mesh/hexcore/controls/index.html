@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -304,13 +294,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -323,6 +308,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../../index.html">
      meshing.tui
@@ -334,48 +324,13 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../file/index.html">
-       meshing.tui.file
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../objects/index.html">
-       meshing.tui.objects
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../preferences/index.html">
-       meshing.tui.preferences
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../reference_frames/index.html">
-       meshing.tui.reference_frames
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../size_functions/index.html">
-       meshing.tui.size_functions
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../../../diagnostics/index.html">
        meshing.tui.diagnostics
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../parallel/index.html">
-       meshing.tui.parallel
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../boundary/index.html">
-       meshing.tui.boundary
+      <a class="reference internal" href="../../../material_point/index.html">
+       meshing.tui.material_point
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -389,38 +344,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../scoped_prisms/index.html">
-         meshing.tui.mesh.scoped_prisms
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../cavity/index.html">
-         meshing.tui.mesh.cavity
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../tet/index.html">
-         meshing.tui.mesh.tet
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../rapid_octree/index.html">
-         meshing.tui.mesh.rapid_octree
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../pyramid/index.html">
-         meshing.tui.mesh.pyramid
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../domains/index.html">
-         meshing.tui.mesh.domains
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../cell_zone_conditions/index.html">
-         meshing.tui.mesh.cell_zone_conditions
+        <a class="reference internal" href="../../modify/index.html">
+         meshing.tui.mesh.modify
         </a>
        </li>
        <li class="toctree-l4">
@@ -429,18 +354,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../modify/index.html">
-         meshing.tui.mesh.modify
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../cartesian/index.html">
-         meshing.tui.mesh.cartesian
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../auto_mesh_controls/index.html">
-         meshing.tui.mesh.auto_mesh_controls
+        <a class="reference internal" href="../../scoped_prisms/index.html">
+         meshing.tui.mesh.scoped_prisms
         </a>
        </li>
        <li class="toctree-l4">
@@ -449,13 +364,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../separate/index.html">
-         meshing.tui.mesh.separate
+        <a class="reference internal" href="../../pyramid/index.html">
+         meshing.tui.mesh.pyramid
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../prism/index.html">
-         meshing.tui.mesh.prism
+        <a class="reference internal" href="../../separate/index.html">
+         meshing.tui.mesh.separate
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -493,13 +408,48 @@ function checkPageExistsAndRedirect(event) {
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../poly/index.html">
-         meshing.tui.mesh.poly
+        <a class="reference internal" href="../../poly_hexcore/index.html">
+         meshing.tui.mesh.poly_hexcore
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../poly_hexcore/index.html">
-         meshing.tui.mesh.poly_hexcore
+        <a class="reference internal" href="../../auto_mesh_controls/index.html">
+         meshing.tui.mesh.auto_mesh_controls
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../prism/index.html">
+         meshing.tui.mesh.prism
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../cartesian/index.html">
+         meshing.tui.mesh.cartesian
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../cavity/index.html">
+         meshing.tui.mesh.cavity
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../cell_zone_conditions/index.html">
+         meshing.tui.mesh.cell_zone_conditions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../rapid_octree/index.html">
+         meshing.tui.mesh.rapid_octree
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../domains/index.html">
+         meshing.tui.mesh.domains
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../tet/index.html">
+         meshing.tui.mesh.tet
         </a>
        </li>
        <li class="toctree-l4">
@@ -507,11 +457,41 @@ function checkPageExistsAndRedirect(event) {
          meshing.tui.mesh.thin_volume_mesh
         </a>
        </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../poly/index.html">
+         meshing.tui.mesh.poly
+        </a>
+       </li>
       </ul>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../display/index.html">
-       meshing.tui.display
+      <a class="reference internal" href="../../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../preferences/index.html">
+       meshing.tui.preferences
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../objects/index.html">
+       meshing.tui.objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../boundary/index.html">
+       meshing.tui.boundary
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
       </a>
      </li>
      <li class="toctree-l3">
@@ -520,18 +500,28 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
+      <a class="reference internal" href="../../../parallel/index.html">
+       meshing.tui.parallel
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../material_point/index.html">
-       meshing.tui.material_point
+      <a class="reference internal" href="../../../display/index.html">
+       meshing.tui.display
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
+      <a class="reference internal" href="../../../reference_frames/index.html">
+       meshing.tui.reference_frames
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../file/index.html">
+       meshing.tui.file
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../size_functions/index.html">
+       meshing.tui.size_functions
       </a>
      </li>
     </ul>
@@ -576,7 +566,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.mesh.hexcore.controls
+     controls
     </span>
    </code>
   </a>
@@ -585,7 +575,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.avoid_1_by_8_cell_jump_in_hexcore">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.hexcore.controls.avoid_1_by_8_cell_jump_in_hexcore()
+       controls.avoid_1_by_8_cell_jump_in_hexcore()
       </span>
      </code>
     </a>
@@ -594,7 +584,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.buffer_layers">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.hexcore.controls.buffer_layers()
+       controls.buffer_layers()
       </span>
      </code>
     </a>
@@ -603,7 +593,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.compute_max_cell_length">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.hexcore.controls.compute_max_cell_length()
+       controls.compute_max_cell_length()
       </span>
      </code>
     </a>
@@ -612,7 +602,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.define_hexcore_extents">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.hexcore.controls.define_hexcore_extents()
+       controls.define_hexcore_extents()
       </span>
      </code>
     </a>
@@ -621,7 +611,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.delete_dead_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.hexcore.controls.delete_dead_zones()
+       controls.delete_dead_zones()
       </span>
      </code>
     </a>
@@ -630,7 +620,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.maximum_cell_length">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.hexcore.controls.maximum_cell_length()
+       controls.maximum_cell_length()
       </span>
      </code>
     </a>
@@ -639,7 +629,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.maximum_initial_cells">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.hexcore.controls.maximum_initial_cells()
+       controls.maximum_initial_cells()
       </span>
      </code>
     </a>
@@ -648,7 +638,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.merge_tets_to_pyramids">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.hexcore.controls.merge_tets_to_pyramids()
+       controls.merge_tets_to_pyramids()
       </span>
      </code>
     </a>
@@ -657,7 +647,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.non_fluid_type">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.hexcore.controls.non_fluid_type()
+       controls.non_fluid_type()
       </span>
      </code>
     </a>
@@ -666,16 +656,108 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.octree_hexcore">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.hexcore.controls.octree_hexcore()
+       controls.octree_hexcore()
       </span>
      </code>
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       controls.outer_domain_params
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.auto_align">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         controls.outer_domain_params.auto_align()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.auto_align_boundaries">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         controls.outer_domain_params.auto_align_boundaries()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.auto_align_tolerance">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         controls.outer_domain_params.auto_align_tolerance()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.boundaries">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         controls.outer_domain_params.boundaries()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.coordinates">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         controls.outer_domain_params.coordinates()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.delete_old_face_zones">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         controls.outer_domain_params.delete_old_face_zones()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.list">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         controls.outer_domain_params.list()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.specify_boundaries">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         controls.outer_domain_params.specify_boundaries()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.specify_coordinates">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         controls.outer_domain_params.specify_coordinates()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.peel_layers">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.hexcore.controls.peel_layers()
+       controls.peel_layers()
       </span>
      </code>
     </a>
@@ -684,7 +766,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.print_region_based_sizing">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.hexcore.controls.print_region_based_sizing()
+       controls.print_region_based_sizing()
       </span>
      </code>
     </a>
@@ -693,7 +775,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.set_region_based_sizing">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.hexcore.controls.set_region_based_sizing()
+       controls.set_region_based_sizing()
       </span>
      </code>
     </a>
@@ -702,7 +784,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.skip_tet_refinement">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.hexcore.controls.skip_tet_refinement()
+       controls.skip_tet_refinement()
       </span>
      </code>
     </a>
@@ -730,14 +812,66 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-mesh-hexcore-controls">
 <span id="ref-meshing-tui-mesh-hexcore-controls"></span><h1>meshing.tui.mesh.hexcore.controls<a class="headerlink" href="#meshing-tui-mesh-hexcore-controls" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.hexcore.</span></span><span class="sig-name descname"><span class="pre">controls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls" title="Permalink to this definition">#</a></dt>
-<dd><p>Enters the hexcore controls menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.</span></span><span class="sig-name descname"><span class="pre">controls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enters the hexcore controls menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.avoid_1_by_8_cell_jump_in_hexcore" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.avoid_1_by_8_cell_jump_in_hexcore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">avoid_1_by_8_cell_jump_in_hexcore</span></code></a>(*args, ...)</p></td>
+<td><p>Avoid-1:8-cell-jump-in-hexcore.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.buffer_layers" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.buffer_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">buffer_layers</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the number of addition cells to mark for subdivision.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.compute_max_cell_length" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.compute_max_cell_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_max_cell_length</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Computes the maximum cell length for the hexcore mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.define_hexcore_extents" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.define_hexcore_extents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">define_hexcore_extents</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to extend the hexcore mesh to specified domain extents and/or selected planar boundaries.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.delete_dead_zones" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.delete_dead_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_dead_zones</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Toggles the automatic deleting of the dead zones.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.maximum_cell_length" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.maximum_cell_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maximum_cell_length</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the maximum cell length for the hex cells in the domain.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.maximum_initial_cells" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.maximum_initial_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maximum_initial_cells</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the maximum number of cells in the initial Cartesian mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.merge_tets_to_pyramids" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.merge_tets_to_pyramids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_tets_to_pyramids</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Merge tets into pyramids.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.non_fluid_type" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.non_fluid_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_fluid_type</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Selects the default non-fluid cell zone type.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.octree_hexcore" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.octree_hexcore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">octree_hexcore</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Speeds up hexahedral core generation by enabling the octree technique for hexcore mesh generation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.peel_layers" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.peel_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">peel_layers</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the distance for the hexcore interface to peel-back from the boundary.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.print_region_based_sizing" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.print_region_based_sizing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_region_based_sizing</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Displays local sizing settings (max cell length and growth rate) for specified region(s).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.set_region_based_sizing" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.set_region_based_sizing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_region_based_sizing</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Allows you to specify local sizing settings (max cell length and growth rate) for specified region(s).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.skip_tet_refinement" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.skip_tet_refinement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">skip_tet_refinement</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to omit the tetrahedral refinement phase for reducing total cell count (default is no).</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outer_domain_params</span></code></a>(path, service)</p></td>
+<td><p>Contains options for defining the outer domain parameters.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.avoid_1_by_8_cell_jump_in_hexcore">
 <span class="sig-name descname"><span class="pre">avoid_1_by_8_cell_jump_in_hexcore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.avoid_1_by_8_cell_jump_in_hexcore" title="Permalink to this definition">#</a></dt>
@@ -797,6 +931,99 @@ before generating the hexcore mesh.  For zone-based meshing, if any cell zone ha
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.octree_hexcore">
 <span class="sig-name descname"><span class="pre">octree_hexcore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.octree_hexcore" title="Permalink to this definition">#</a></dt>
 <dd><p>Speeds up hexahedral core generation by enabling the octree technique for hexcore mesh generation. This option is disabled by default.   Body-of-influence sizing may be used for refinement.  This option does not support hexcore generation up to boundaries.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outer_domain_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Contains options for defining the outer domain parameters. This sub-menu is available only when define-hexcore-extents? is enabled.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.auto_align" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.auto_align"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_align</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to axis-align non-aligned planar boundaries to which hexcore mesh is to be generated.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.auto_align_boundaries" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.auto_align_boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_align_boundaries</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Aligns the boundary zones specified (using the boundaries command) with the tolerance specified (using the auto-align-tolerance command) when auto-align? is enabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.auto_align_tolerance" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.auto_align_tolerance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_align_tolerance</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the tolerance for aligning boundary zones when auto-align? is enabled.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.boundaries" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boundaries</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the boundaries to which the hexcore mesh is to be generated when the specify-boundaries? option is enabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.coordinates" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coordinates</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the extents (min and max coordinates) of the hexcore outer box.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.delete_old_face_zones" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.delete_old_face_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_old_face_zones</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to delete the original tri face zones that have been replaced during the hexcore meshing process.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.list" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Lists the boundaries to which the hexcore mesh is to be generated.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.specify_boundaries" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.specify_boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specify_boundaries</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to specify selected boundaries to which the hexcore mesh is to be generated using the boundaries command.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.specify_coordinates" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.specify_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specify_coordinates</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to specify the extents of the hexcore outer box using the coordinates command.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.auto_align">
+<span class="sig-name descname"><span class="pre">auto_align</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.auto_align" title="Permalink to this definition">#</a></dt>
+<dd><p>Enables you to axis-align non-aligned planar boundaries to which hexcore mesh is to be generated. This option is available only when the specify-boundaries? option is enabled and the boundaries are specified.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.auto_align_boundaries">
+<span class="sig-name descname"><span class="pre">auto_align_boundaries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.auto_align_boundaries" title="Permalink to this definition">#</a></dt>
+<dd><p>Aligns the boundary zones specified (using the boundaries command) with the tolerance specified (using the auto-align-tolerance command) when auto-align? is enabled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.auto_align_tolerance">
+<span class="sig-name descname"><span class="pre">auto_align_tolerance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.auto_align_tolerance" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies the tolerance for aligning boundary zones when auto-align? is enabled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.boundaries">
+<span class="sig-name descname"><span class="pre">boundaries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.boundaries" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies the boundaries to which the hexcore mesh is to be generated when the specify-boundaries? option is enabled. After specifying the boundaries, the auto-align?, delete-old-face-zones?, and list options will also be available.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.coordinates">
+<span class="sig-name descname"><span class="pre">coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.coordinates" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies the extents (min and max coordinates) of the hexcore outer box. This command is available when the specify-coordinates? option is enabled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.delete_old_face_zones">
+<span class="sig-name descname"><span class="pre">delete_old_face_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.delete_old_face_zones" title="Permalink to this definition">#</a></dt>
+<dd><p>Enables you to delete the original tri face zones that have been replaced during the hexcore meshing process. This option is available only when the specify-boundaries? option is enabled and the boundaries are specified.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.list">
+<span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.list" title="Permalink to this definition">#</a></dt>
+<dd><p>Lists the boundaries to which the hexcore mesh is to be generated. This option is available only when the specify-boundaries? option is enabled and the boundaries are specified.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.specify_boundaries">
+<span class="sig-name descname"><span class="pre">specify_boundaries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.specify_boundaries" title="Permalink to this definition">#</a></dt>
+<dd><p>Enables you to specify selected boundaries to which the hexcore mesh is to be generated using the boundaries command.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.specify_coordinates">
+<span class="sig-name descname"><span class="pre">specify_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls.outer_domain_params.specify_coordinates" title="Permalink to this definition">#</a></dt>
+<dd><p>Enables you to specify the extents of the hexcore outer box using the coordinates command.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py method">

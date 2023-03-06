@@ -3,21 +3,21 @@
 solver.tui.results.graphics\_window
 ===================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics_window
-   :members: open_window, set_window, close_window_by_name, update_layout, set_window_by_name, save_picture, close_window
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:
 
-   views/index
-   view_sync/index
    embedded_windows/index
-   display_states/index
    picture/index
-   titles/index
    windows/index
+   titles/index
+   views/index
+   display_states/index
+   view_sync/index

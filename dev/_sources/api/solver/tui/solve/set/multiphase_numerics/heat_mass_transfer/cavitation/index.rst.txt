@@ -3,11 +3,11 @@
 solver.tui.solve.set.multiphase\_numerics.heat\_mass\_transfer.cavitation
 =========================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation
-   :members: schnerr_evap_coeff, schnerr_cond_coeff, min_vapor_pressure, max_vapor_pressure_ratio, turbulent_diffusion, display_clipped_pressure
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.cavitation
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

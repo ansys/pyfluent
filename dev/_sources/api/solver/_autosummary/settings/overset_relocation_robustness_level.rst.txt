@@ -5,11 +5,8 @@
 overset_relocation_robustness_level
 ===================================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.overset_relocation_robustness_level
+.. autoclass:: ansys.fluent.core.solver.settings_231.overset_relocation_robustness_level.overset_relocation_robustness_level
 
-.. autoclass:: overset_relocation_robustness_level
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================================================================================================

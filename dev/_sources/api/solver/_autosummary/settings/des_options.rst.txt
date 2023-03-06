@@ -5,16 +5,13 @@
 des_options
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.des_options
+.. autoclass:: ansys.fluent.core.solver.settings_231.des_options.des_options
 
-.. autoclass:: des_options
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==============================================   =============================================================================
 
-Child                                                                                                                  Summary
+Attribute                                                                                                              Summary
 
 ==============================================   =============================================================================
 :ref:`all_len_modified <all_len_modified>`           Modify all length scales in nut equation? (if no, destruction term only).

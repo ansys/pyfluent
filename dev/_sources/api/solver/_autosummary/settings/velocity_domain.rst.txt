@@ -5,11 +5,8 @@
 velocity_domain
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.velocity_domain
+.. autoclass:: ansys.fluent.core.solver.settings_231.velocity_domain.velocity_domain
 
-.. autoclass:: velocity_domain
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

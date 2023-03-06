@@ -5,11 +5,8 @@
 number_of_blades
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.number_of_blades
+.. autoclass:: ansys.fluent.core.solver.settings_231.number_of_blades.number_of_blades
 
-.. autoclass:: number_of_blades
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   ================================================

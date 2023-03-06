@@ -5,11 +5,8 @@
 user_defined
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.user_defined_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.user_defined_1.user_defined
 
-.. autoclass:: user_defined
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`user_defined_child <user_defined_child>`

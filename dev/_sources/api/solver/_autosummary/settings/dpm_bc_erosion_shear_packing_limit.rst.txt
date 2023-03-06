@@ -5,11 +5,8 @@
 dpm_bc_erosion_shear_packing_limit
 ==================================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_bc_erosion_shear_packing_limit
+.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_bc_erosion_shear_packing_limit.dpm_bc_erosion_shear_packing_limit
 
-.. autoclass:: dpm_bc_erosion_shear_packing_limit
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -5,11 +5,8 @@
 average_every_step
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.average_every_step
+.. autoclass:: ansys.fluent.core.solver.settings_231.average_every_step.average_every_step
 
-.. autoclass:: average_every_step
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ==========================================================================================================

@@ -5,16 +5,13 @@
 film_height
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.film_height
+.. autoclass:: ansys.fluent.core.solver.settings_231.film_height.film_height
 
-.. autoclass:: film_height
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

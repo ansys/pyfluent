@@ -5,11 +5,8 @@
 characteristic_length
 =====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.characteristic_length
+.. autoclass:: ansys.fluent.core.solver.settings_231.characteristic_length.characteristic_length
 
-.. autoclass:: characteristic_length
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

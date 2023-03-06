@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -56,7 +52,7 @@
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
     <link rel="next" title="solver.tui.display.views.camera" href="camera/index.html" />
-    <link rel="prev" title="solver.tui.display.display_states" href="../display_states/index.html" />
+    <link rel="prev" title="solver.tui.display.surface.query" href="../surface/query/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -304,13 +294,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -354,88 +339,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../define/index.html">
-         solver.tui.define
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../adjoint/index.html">
          solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../setup/index.html">
-         solver.tui.setup
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../solution/index.html">
-         solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../surface/index.html">
-         solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../report/index.html">
-         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -449,8 +354,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../pdf_data/index.html">
-           solver.tui.display.pdf_data
+          <a class="reference internal" href="../embedded_windows/index.html">
+           solver.tui.display.embedded_windows
           </a>
          </li>
          <li class="toctree-l5">
@@ -459,23 +364,33 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
+          <a class="reference internal" href="../flamelet_data/index.html">
+           solver.tui.display.flamelet_data
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../particle_tracks/index.html">
+           solver.tui.display.particle_tracks
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../path_lines/index.html">
+           solver.tui.display.path_lines
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../pdf_data/index.html">
+           solver.tui.display.pdf_data
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../set/index.html">
+           solver.tui.display.set
+          </a>
+         </li>
+         <li class="toctree-l5">
           <a class="reference internal" href="../surface/index.html">
            solver.tui.display.surface
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../view_sync/index.html">
-           solver.tui.display.view_sync
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../define/index.html">
-           solver.tui.display.define
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../display_states/index.html">
-           solver.tui.display.display_states
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -501,13 +416,13 @@ function checkPageExistsAndRedirect(event) {
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../set/index.html">
-           solver.tui.display.set
+          <a class="reference internal" href="../display_states/index.html">
+           solver.tui.display.display_states
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../flamelet_data/index.html">
-           solver.tui.display.flamelet_data
+          <a class="reference internal" href="../view_sync/index.html">
+           solver.tui.display.view_sync
           </a>
          </li>
          <li class="toctree-l5">
@@ -521,25 +436,60 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../particle_tracks/index.html">
-           solver.tui.display.particle_tracks
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../embedded_windows/index.html">
-           solver.tui.display.embedded_windows
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../path_lines/index.html">
-           solver.tui.display.path_lines
+          <a class="reference internal" href="../define/index.html">
+           solver.tui.display.define
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../define/index.html">
+         solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../parallel/index.html">
+         solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../preferences/index.html">
          solver.tui.preferences
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../results/index.html">
+         solver.tui.results
         </a>
        </li>
        <li class="toctree-l4">
@@ -548,13 +498,48 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../parametric_study/index.html">
-         solver.tui.parametric_study
+        <a class="reference internal" href="../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../simulation_reports/index.html">
+         solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../server/index.html">
          solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../views/index.html">
+         solver.tui.views
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
       </ul>
@@ -626,7 +611,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.display.views
+     views
     </span>
    </code>
   </a>
@@ -635,16 +620,117 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.auto_scale">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.views.auto_scale()
+       views.auto_scale()
       </span>
      </code>
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       views.camera
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.dolly_camera">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         views.camera.dolly_camera()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.field">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         views.camera.field()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.orbit_camera">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         views.camera.orbit_camera()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.pan_camera">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         views.camera.pan_camera()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.position">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         views.camera.position()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.projection">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         views.camera.projection()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.roll_camera">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         views.camera.roll_camera()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.target">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         views.camera.target()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.up_vector">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         views.camera.up_vector()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.zoom_camera">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         views.camera.zoom_camera()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.default_view">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.views.default_view()
+       views.default_view()
       </span>
      </code>
     </a>
@@ -653,16 +739,117 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.delete_view">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.views.delete_view()
+       views.delete_view()
       </span>
      </code>
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       views.display_states
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.copy">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         views.display_states.copy()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.delete">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         views.display_states.delete()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.edit">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         views.display_states.edit()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.list">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         views.display_states.list()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.new">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         views.display_states.new()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.read">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         views.display_states.read()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.rename">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         views.display_states.rename()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.restore_state">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         views.display_states.restore_state()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.use_active">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         views.display_states.use_active()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.write">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         views.display_states.write()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.last_view">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.views.last_view()
+       views.last_view()
       </span>
      </code>
     </a>
@@ -671,7 +858,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.list_views">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.views.list_views()
+       views.list_views()
       </span>
      </code>
     </a>
@@ -680,7 +867,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.next_view">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.views.next_view()
+       views.next_view()
       </span>
      </code>
     </a>
@@ -689,7 +876,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.read_views">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.views.read_views()
+       views.read_views()
       </span>
      </code>
     </a>
@@ -698,7 +885,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.restore_view">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.views.restore_view()
+       views.restore_view()
       </span>
      </code>
     </a>
@@ -707,7 +894,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.save_view">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.views.save_view()
+       views.save_view()
       </span>
      </code>
     </a>
@@ -716,7 +903,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.write_views">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.views.write_views()
+       views.write_views()
       </span>
      </code>
     </a>
@@ -744,18 +931,165 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-display-views">
 <span id="ref-solver-tui-display-views"></span><h1>solver.tui.display.views<a class="headerlink" href="#solver-tui-display-views" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.display.</span></span><span class="sig-name descname"><span class="pre">views</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the view manipulation menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.display.</span></span><span class="sig-name descname"><span class="pre">views</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the view manipulation menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.auto_scale" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.auto_scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_scale</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Scales and centers the current scene without changing its orientation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.default_view" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.default_view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_view</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Resets the view to front and center.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.delete_view" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.delete_view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_view</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Deletes a particular view from the list of stored views.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.last_view" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.last_view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">last_view</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Returns to the camera position before the last manipulation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.list_views" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.list_views"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_views</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Lists all predefined and saved views.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.next_view" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.next_view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">next_view</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.read_views" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.read_views"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_views</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reads views from an external view file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.restore_view" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.restore_view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">restore_view</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the current view to one of the stored views.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.save_view" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.save_view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_view</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Saves the currently displayed view into the list of stored views.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.write_views" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.write_views"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_views</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Writes views to an external view file.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.camera"><code class="xref py py-obj docutils literal notranslate"><span class="pre">camera</span></code></a>(path, service)</p></td>
+<td><p>Contains commands to set the camera options.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display_states</span></code></a>(path, service)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.auto_scale">
 <span class="sig-name descname"><span class="pre">auto_scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.auto_scale" title="Permalink to this definition">#</a></dt>
 <dd><p>Scales and centers the current scene without changing its orientation.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.camera">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">camera</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Contains commands to set the camera options.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.dolly_camera" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.dolly_camera"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dolly_camera</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to move the camera left, right, up, down, in, and out.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.field" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">field</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to set the field of view (width and height) of the scene.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.orbit_camera" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.orbit_camera"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbit_camera</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to move the camera around the target.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.pan_camera" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.pan_camera"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pan_camera</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Gives you the effect of sweeping the camera across the scene.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.position" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.position"><code class="xref py py-obj docutils literal notranslate"><span class="pre">position</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the camera position.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.projection" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.projection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">projection</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Lets you switch between perspective and orthographic views.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.roll_camera" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.roll_camera"><code class="xref py py-obj docutils literal notranslate"><span class="pre">roll_camera</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Lets you adjust the camera up-vector.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.target" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.target"><code class="xref py py-obj docutils literal notranslate"><span class="pre">target</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the point the camera will look at.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.up_vector" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.up_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">up_vector</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the camera up-vector.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.zoom_camera" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.zoom_camera"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zoom_camera</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Adjusts the camera’s field of view.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.dolly_camera">
+<span class="sig-name descname"><span class="pre">dolly_camera</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.dolly_camera" title="Permalink to this definition">#</a></dt>
+<dd><p>Enables you to move the camera left, right, up, down, in, and out.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.field">
+<span class="sig-name descname"><span class="pre">field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.field" title="Permalink to this definition">#</a></dt>
+<dd><p>Enables you to set the field of view (width and height) of the scene.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.orbit_camera">
+<span class="sig-name descname"><span class="pre">orbit_camera</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.orbit_camera" title="Permalink to this definition">#</a></dt>
+<dd><p>Enables you to move the camera around the target. Gives the effect of circling around the target.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.pan_camera">
+<span class="sig-name descname"><span class="pre">pan_camera</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.pan_camera" title="Permalink to this definition">#</a></dt>
+<dd><p>Gives you the effect of sweeping the camera across the scene. The camera remains at its position but its target changes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.position">
+<span class="sig-name descname"><span class="pre">position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.position" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the camera position.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.projection">
+<span class="sig-name descname"><span class="pre">projection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.projection" title="Permalink to this definition">#</a></dt>
+<dd><p>Lets you switch between perspective and orthographic views.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.roll_camera">
+<span class="sig-name descname"><span class="pre">roll_camera</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.roll_camera" title="Permalink to this definition">#</a></dt>
+<dd><p>Lets you adjust the camera up-vector.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.target">
+<span class="sig-name descname"><span class="pre">target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.target" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the point the camera will look at.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.up_vector">
+<span class="sig-name descname"><span class="pre">up_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.up_vector" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the camera up-vector.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.zoom_camera">
+<span class="sig-name descname"><span class="pre">zoom_camera</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.camera.zoom_camera" title="Permalink to this definition">#</a></dt>
+<dd><p>Adjusts the camera’s field of view. This operation is similar to dollying the camera in or out of the scene. Dollying causes objects in front to move past you. Zooming changes the perspective effect in the scene (and can be disconcerting).</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py method">
@@ -768,6 +1102,114 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.delete_view">
 <span class="sig-name descname"><span class="pre">delete_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.delete_view" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes a particular view from the list of stored views.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">display_states</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.copy" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.delete" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Delete object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.edit" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.edit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edit</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Edit display-states object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.list" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.new" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.new"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Create a new display-states object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.read" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.rename" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.rename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rename</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Rename object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.restore_state" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.restore_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">restore_state</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.use_active" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.use_active"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_active</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.write" title="ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.copy" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.delete" title="Permalink to this definition">#</a></dt>
+<dd><p>Delete object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.edit">
+<span class="sig-name descname"><span class="pre">edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.edit" title="Permalink to this definition">#</a></dt>
+<dd><p>Edit display-states object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.list">
+<span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.list" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.new">
+<span class="sig-name descname"><span class="pre">new</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.new" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a new display-states object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.read" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.rename">
+<span class="sig-name descname"><span class="pre">rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.rename" title="Permalink to this definition">#</a></dt>
+<dd><p>Rename object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.restore_state">
+<span class="sig-name descname"><span class="pre">restore_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.restore_state" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.use_active">
+<span class="sig-name descname"><span class="pre">use_active</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.use_active" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.views.display_states.write" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py method">

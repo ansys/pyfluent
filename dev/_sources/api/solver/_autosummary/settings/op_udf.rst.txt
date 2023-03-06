@@ -5,11 +5,8 @@
 op_udf
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.op_udf
+.. autoclass:: ansys.fluent.core.solver.settings_231.op_udf.op_udf
 
-.. autoclass:: op_udf
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================   =====================

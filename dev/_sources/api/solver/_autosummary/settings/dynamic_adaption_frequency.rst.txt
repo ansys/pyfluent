@@ -5,11 +5,8 @@
 dynamic_adaption_frequency
 ==========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dynamic_adaption_frequency
+.. autoclass:: ansys.fluent.core.solver.settings_231.dynamic_adaption_frequency.dynamic_adaption_frequency
 
-.. autoclass:: dynamic_adaption_frequency
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================   ================================

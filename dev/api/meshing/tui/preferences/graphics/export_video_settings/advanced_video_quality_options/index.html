@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -55,7 +51,7 @@
     <link rel="shortcut icon" href="../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../search.html" />
-    <link rel="next" title="meshing.tui.preferences.simulation" href="../../../simulation/index.html" />
+    <link rel="next" title="meshing.tui.preferences.graphics.performance" href="../../performance/index.html" />
     <link rel="prev" title="meshing.tui.preferences.graphics.export_video_settings" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -305,13 +295,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -324,6 +309,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../../../index.html">
      meshing.tui
@@ -335,13 +325,23 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../file/index.html">
-       meshing.tui.file
+      <a class="reference internal" href="../../../../diagnostics/index.html">
+       meshing.tui.diagnostics
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../objects/index.html">
-       meshing.tui.objects
+      <a class="reference internal" href="../../../../material_point/index.html">
+       meshing.tui.material_point
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../mesh/index.html">
+       meshing.tui.mesh
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -355,38 +355,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../gpuapp/index.html">
-         meshing.tui.preferences.gpuapp
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../mat_pro_app/index.html">
-         meshing.tui.preferences.mat_pro_app
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../meshing_workflow/index.html">
-         meshing.tui.preferences.meshing_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../navigation/index.html">
-         meshing.tui.preferences.navigation
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../appearance/index.html">
          meshing.tui.preferences.appearance
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parametric_study/index.html">
-         meshing.tui.preferences.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_workflow/index.html">
-         meshing.tui.preferences.turbo_workflow
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -400,23 +370,18 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../boundary_markers/index.html">
-           meshing.tui.preferences.graphics.boundary_markers
+          <a class="reference internal" href="../../graphics_effects/index.html">
+           meshing.tui.preferences.graphics.graphics_effects
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../transparency/index.html">
-           meshing.tui.preferences.graphics.transparency
+          <a class="reference internal" href="../../hardcopy_settings/index.html">
+           meshing.tui.preferences.graphics.hardcopy_settings
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../performance/index.html">
-           meshing.tui.preferences.graphics.performance
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../material_effects/index.html">
-           meshing.tui.preferences.graphics.material_effects
+          <a class="reference internal" href="../../manage_hoops_memory/index.html">
+           meshing.tui.preferences.graphics.manage_hoops_memory
           </a>
          </li>
          <li class="toctree-l5">
@@ -430,8 +395,8 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../graphics_effects/index.html">
-           meshing.tui.preferences.graphics.graphics_effects
+          <a class="reference internal" href="../../boundary_markers/index.html">
+           meshing.tui.preferences.graphics.boundary_markers
           </a>
          </li>
          <li class="toctree-l5">
@@ -440,8 +405,8 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../meshing_mode/index.html">
-           meshing.tui.preferences.graphics.meshing_mode
+          <a class="reference internal" href="../../material_effects/index.html">
+           meshing.tui.preferences.graphics.material_effects
           </a>
          </li>
          <li class="toctree-l5">
@@ -450,13 +415,8 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../manage_hoops_memory/index.html">
-           meshing.tui.preferences.graphics.manage_hoops_memory
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../hardcopy_settings/index.html">
-           meshing.tui.preferences.graphics.hardcopy_settings
+          <a class="reference internal" href="../../meshing_mode/index.html">
+           meshing.tui.preferences.graphics.meshing_mode
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -476,7 +436,37 @@ function checkPageExistsAndRedirect(event) {
            </li>
           </ul>
          </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../performance/index.html">
+           meshing.tui.preferences.graphics.performance
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../transparency/index.html">
+           meshing.tui.preferences.graphics.transparency
+          </a>
+         </li>
         </ul>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../navigation/index.html">
+         meshing.tui.preferences.navigation
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parametric_study/index.html">
+         meshing.tui.preferences.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../meshing_workflow/index.html">
+         meshing.tui.preferences.meshing_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_workflow/index.html">
+         meshing.tui.preferences.turbo_workflow
+        </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../simulation/index.html">
@@ -484,35 +474,30 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../gpuapp/index.html">
+         meshing.tui.preferences.gpuapp
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../general/index.html">
          meshing.tui.preferences.general
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../mat_pro_app/index.html">
+         meshing.tui.preferences.mat_pro_app
         </a>
        </li>
       </ul>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
+      <a class="reference internal" href="../../../../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../reference_frames/index.html">
-       meshing.tui.reference_frames
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../size_functions/index.html">
-       meshing.tui.size_functions
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../diagnostics/index.html">
-       meshing.tui.diagnostics
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../parallel/index.html">
-       meshing.tui.parallel
+      <a class="reference internal" href="../../../../objects/index.html">
+       meshing.tui.objects
       </a>
      </li>
      <li class="toctree-l3">
@@ -521,13 +506,8 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../mesh/index.html">
-       meshing.tui.mesh
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../display/index.html">
-       meshing.tui.display
+      <a class="reference internal" href="../../../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
       </a>
      </li>
      <li class="toctree-l3">
@@ -536,18 +516,28 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
+      <a class="reference internal" href="../../../../parallel/index.html">
+       meshing.tui.parallel
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../material_point/index.html">
-       meshing.tui.material_point
+      <a class="reference internal" href="../../../../display/index.html">
+       meshing.tui.display
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
+      <a class="reference internal" href="../../../../reference_frames/index.html">
+       meshing.tui.reference_frames
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../file/index.html">
+       meshing.tui.file
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../size_functions/index.html">
+       meshing.tui.size_functions
       </a>
      </li>
     </ul>
@@ -592,7 +582,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.export_video_settings.advanced_video_quality_options">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.preferences.graphics.export_video_settings.advanced_video_quality_options
+     advanced_video_quality_options
     </span>
    </code>
   </a>
@@ -601,7 +591,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.export_video_settings.advanced_video_quality_options.bit_rate_quality">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.graphics.export_video_settings.advanced_video_quality_options.bit_rate_quality()
+       advanced_video_quality_options.bit_rate_quality()
       </span>
      </code>
     </a>
@@ -610,7 +600,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.export_video_settings.advanced_video_quality_options.bitrate">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.graphics.export_video_settings.advanced_video_quality_options.bitrate()
+       advanced_video_quality_options.bitrate()
       </span>
      </code>
     </a>
@@ -619,7 +609,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.export_video_settings.advanced_video_quality_options.compression_method">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.graphics.export_video_settings.advanced_video_quality_options.compression_method()
+       advanced_video_quality_options.compression_method()
       </span>
      </code>
     </a>
@@ -628,7 +618,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.export_video_settings.advanced_video_quality_options.enable_h264">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.graphics.export_video_settings.advanced_video_quality_options.enable_h264()
+       advanced_video_quality_options.enable_h264()
       </span>
      </code>
     </a>
@@ -656,14 +646,32 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-preferences-graphics-export-video-settings-advanced-video-quality-options">
 <span id="ref-meshing-tui-preferences-graphics-export-video-settings-advanced-video-quality-options"></span><h1>meshing.tui.preferences.graphics.export_video_settings.advanced_video_quality_options<a class="headerlink" href="#meshing-tui-preferences-graphics-export-video-settings-advanced-video-quality-options" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.export_video_settings.advanced_video_quality_options">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.preferences.graphics.export_video_settings.</span></span><span class="sig-name descname"><span class="pre">advanced_video_quality_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.export_video_settings.advanced_video_quality_options" title="Permalink to this definition">#</a></dt>
-<dd><p>.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.export_video_settings.</span></span><span class="sig-name descname"><span class="pre">advanced_video_quality_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.export_video_settings.advanced_video_quality_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.export_video_settings.advanced_video_quality_options.bit_rate_quality" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.export_video_settings.advanced_video_quality_options.bit_rate_quality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bit_rate_quality</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.export_video_settings.advanced_video_quality_options.bitrate" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.export_video_settings.advanced_video_quality_options.bitrate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bitrate</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.export_video_settings.advanced_video_quality_options.compression_method" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.export_video_settings.advanced_video_quality_options.compression_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compression_method</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.export_video_settings.advanced_video_quality_options.enable_h264" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.export_video_settings.advanced_video_quality_options.enable_h264"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_h264</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.export_video_settings.advanced_video_quality_options.bit_rate_quality">
 <span class="sig-name descname"><span class="pre">bit_rate_quality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.export_video_settings.advanced_video_quality_options.bit_rate_quality" title="Permalink to this definition">#</a></dt>

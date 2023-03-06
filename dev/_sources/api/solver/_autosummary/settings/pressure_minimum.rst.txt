@@ -5,11 +5,8 @@
 pressure_minimum
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.pressure_minimum
+.. autoclass:: ansys.fluent.core.solver.settings_231.pressure_minimum.pressure_minimum
 
-.. autoclass:: pressure_minimum
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ==================================

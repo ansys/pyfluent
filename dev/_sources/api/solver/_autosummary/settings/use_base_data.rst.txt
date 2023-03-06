@@ -5,11 +5,8 @@
 use_base_data
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.use_base_data
+.. autoclass:: ansys.fluent.core.solver.settings_231.use_base_data.use_base_data
 
-.. autoclass:: use_base_data
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===============================

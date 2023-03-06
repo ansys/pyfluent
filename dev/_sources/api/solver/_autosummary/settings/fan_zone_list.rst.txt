@@ -5,11 +5,8 @@
 fan_zone_list
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.fan_zone_list
+.. autoclass:: ansys.fluent.core.solver.settings_231.fan_zone_list.fan_zone_list
 
-.. autoclass:: fan_zone_list
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

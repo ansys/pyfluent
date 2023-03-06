@@ -5,11 +5,8 @@
 read_sample_file
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.read_sample_file
+.. autoclass:: ansys.fluent.core.solver.settings_231.read_sample_file.read_sample_file
 
-.. autoclass:: read_sample_file
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ================================   =================================================

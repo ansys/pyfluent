@@ -5,11 +5,8 @@
 sampling_iterations
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.sampling_iterations
+.. autoclass:: ansys.fluent.core.solver.settings_231.sampling_iterations.sampling_iterations
 
-.. autoclass:: sampling_iterations
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ================================

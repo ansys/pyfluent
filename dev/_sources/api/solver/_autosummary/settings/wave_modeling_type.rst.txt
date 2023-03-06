@@ -5,11 +5,8 @@
 wave_modeling_type
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.wave_modeling_type
+.. autoclass:: ansys.fluent.core.solver.settings_231.wave_modeling_type.wave_modeling_type
 
-.. autoclass:: wave_modeling_type
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

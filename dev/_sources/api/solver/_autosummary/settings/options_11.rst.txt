@@ -5,11 +5,8 @@
 options
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.options_11
+.. autoclass:: ansys.fluent.core.solver.settings_231.options_11.options
 
-.. autoclass:: options
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================   =====================

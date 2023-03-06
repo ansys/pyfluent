@@ -5,11 +5,8 @@
 termination_criteria
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.termination_criteria
+.. autoclass:: ansys.fluent.core.solver.settings_231.termination_criteria.termination_criteria
 
-.. autoclass:: termination_criteria
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =======================================

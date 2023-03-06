@@ -5,11 +5,8 @@
 correlation_var
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.correlation_var
+.. autoclass:: ansys.fluent.core.solver.settings_231.correlation_var.correlation_var
 
-.. autoclass:: correlation_var
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ===========================

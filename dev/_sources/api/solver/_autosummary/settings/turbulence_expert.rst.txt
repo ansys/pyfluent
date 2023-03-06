@@ -5,16 +5,13 @@
 turbulence_expert
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.turbulence_expert
+.. autoclass:: ansys.fluent.core.solver.settings_231.turbulence_expert.turbulence_expert
 
-.. autoclass:: turbulence_expert
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================================   =================================================================================================
 
-Child                                                                                                                                                            Summary
+Attribute                                                                                                                                                        Summary
 
 ====================================================================   =================================================================================================
 :ref:`low_re_ke <low_re_ke>`                                                                                       Enable/disable the low-Re k-epsilon turbulence model.

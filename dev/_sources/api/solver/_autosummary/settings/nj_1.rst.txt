@@ -5,16 +5,13 @@
 nj
 ==
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.nj_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.nj_1.nj
 
-.. autoclass:: nj
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

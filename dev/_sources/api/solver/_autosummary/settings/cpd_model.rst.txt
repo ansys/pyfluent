@@ -5,16 +5,13 @@
 cpd_model
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.cpd_model
+.. autoclass:: ansys.fluent.core.solver.settings_231.cpd_model.cpd_model
 
-.. autoclass:: cpd_model
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ================================================================================================   ========================================================
 
-Child                                                                                                                                               Summary
+Attribute                                                                                                                                           Summary
 
 ================================================================================================   ========================================================
 :ref:`initial_fraction_of_bridges_in_coal_lattice <initial_fraction_of_bridges_in_coal_lattice>`       'initial_fraction_of_bridges_in_coal_lattice' child.

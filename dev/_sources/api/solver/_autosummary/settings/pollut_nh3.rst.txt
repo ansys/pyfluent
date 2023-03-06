@@ -5,16 +5,13 @@
 pollut_nh3
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.pollut_nh3
+.. autoclass:: ansys.fluent.core.solver.settings_231.pollut_nh3.pollut_nh3
 
-.. autoclass:: pollut_nh3
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

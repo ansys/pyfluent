@@ -5,11 +5,8 @@
 porous
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.porous
+.. autoclass:: ansys.fluent.core.solver.settings_231.porous.porous
 
-.. autoclass:: porous
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

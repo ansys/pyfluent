@@ -5,16 +5,13 @@
 nita_expert_controls
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.nita_expert_controls
+.. autoclass:: ansys.fluent.core.solver.settings_231.nita_expert_controls.nita_expert_controls
 
-.. autoclass:: nita_expert_controls
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ================================================================   ======================================================================================
 
-Child                                                                                                                                             Summary
+Attribute                                                                                                                                         Summary
 
 ================================================================   ======================================================================================
 :ref:`set_verbosity <set_verbosity>`                                                                                           Set nita verbosity option.

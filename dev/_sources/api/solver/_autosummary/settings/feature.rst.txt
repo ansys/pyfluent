@@ -5,16 +5,13 @@
 feature
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.feature
+.. autoclass:: ansys.fluent.core.solver.settings_231.feature.feature
 
-.. autoclass:: feature
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================   ==========================
 
-Child                                                     Summary
+Attribute                                                 Summary
 
 ====================================   ==========================
 :ref:`feature_angle <feature_angle>`       'feature_angle' child.

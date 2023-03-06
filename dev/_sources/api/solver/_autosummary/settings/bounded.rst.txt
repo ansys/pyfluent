@@ -5,11 +5,8 @@
 bounded
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.bounded
+.. autoclass:: ansys.fluent.core.solver.settings_231.bounded.bounded
 
-.. autoclass:: bounded
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================

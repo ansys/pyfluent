@@ -5,11 +5,8 @@
 zone_name
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.zone_name
+.. autoclass:: ansys.fluent.core.solver.settings_231.zone_name.zone_name
 
-.. autoclass:: zone_name
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   =================================================================================================

@@ -5,16 +5,13 @@
 intrinsic_model
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.intrinsic_model
+.. autoclass:: ansys.fluent.core.solver.settings_231.intrinsic_model.intrinsic_model
 
-.. autoclass:: intrinsic_model
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ======================================================================   ===========================================
 
-Child                                                                                                        Summary
+Attribute                                                                                                    Summary
 
 ======================================================================   ===========================================
 :ref:`diffusion_rate_constant <diffusion_rate_constant>`                            'diffusion_rate_constant' child.

@@ -5,11 +5,8 @@
 reset_pseudo_time_method_generic
 ================================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.reset_pseudo_time_method_generic
+.. autoclass:: ansys.fluent.core.solver.settings_231.reset_pseudo_time_method_generic.reset_pseudo_time_method_generic
 
-.. autoclass:: reset_pseudo_time_method_generic
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   ====================================

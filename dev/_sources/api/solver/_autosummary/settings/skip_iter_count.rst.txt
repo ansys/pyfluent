@@ -5,11 +5,8 @@
 skip_iter_count
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.skip_iter_count
+.. autoclass:: ansys.fluent.core.solver.settings_231.skip_iter_count.skip_iter_count
 
-.. autoclass:: skip_iter_count
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================================================   =======================================

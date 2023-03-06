@@ -3,11 +3,11 @@
 solver.tui.define.profiles
 ==========================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.profiles
-   :members: display_profile_point_cloud_data, interpolation_method, update_interval, delete, replicate_profile, overlay_profile_point_cloud_data, orient_profile, list_profiles, delete_all, link_profile_to_reference_frame, overlay_profile_surface, list_profile_fields, list_profile_parameters, set_preference_profile_point_cloud_data, morphing, display_profile_surface
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.profiles
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

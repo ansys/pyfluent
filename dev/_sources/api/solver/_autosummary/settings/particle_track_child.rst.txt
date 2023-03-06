@@ -5,16 +5,13 @@
 particle_track_child
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.particle_track_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.particle_track_child.particle_track_child
 
-.. autoclass:: particle_track_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================================================   =========================================
 
-Child                                                                                                  Summary
+Attribute                                                                                              Summary
 
 ==================================================================   =========================================
 :ref:`name <name_1>`                                                                             'name' child.
@@ -63,11 +60,11 @@ Child                                                                           
 
 ==================================================================   =========================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ==========================   ======================
 
-Command                                     Summary
+Method                                      Summary
 
 ==========================   ======================
 :ref:`display <display_2>`       'display' command.

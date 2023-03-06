@@ -5,16 +5,13 @@
 curves
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.curves
+.. autoclass:: ansys.fluent.core.solver.settings_231.curves.curves
 
-.. autoclass:: curves
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================   ====================
 
-Child                                   Summary
+Attribute                               Summary
 
 ========================   ====================
 :ref:`lines <lines>`             'lines' child.

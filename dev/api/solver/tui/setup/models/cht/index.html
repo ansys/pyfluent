@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -56,7 +52,7 @@
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
     <link rel="next" title="solver.tui.setup.models.cht.explicit_time_averaged_coupling" href="explicit_time_averaged_coupling/index.html" />
-    <link rel="prev" title="solver.tui.setup.models.system_coupling_settings.htc.unsteady_statistics" href="../system_coupling_settings/htc/unsteady_statistics/index.html" />
+    <link rel="prev" title="solver.tui.setup.models.system_coupling_settings.htc.htc_calculation_method" href="../system_coupling_settings/htc/htc_calculation_method/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -305,13 +295,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -355,28 +340,13 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../adjoint/index.html">
+         solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../mesh/index.html">
-         solver.tui.mesh
+        <a class="reference internal" href="../../../display/index.html">
+         solver.tui.display
         </a>
        </li>
        <li class="toctree-l4">
@@ -385,18 +355,58 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parallel/index.html">
+         solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../plot/index.html">
          solver.tui.plot
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../adjoint/index.html">
-         solver.tui.adjoint
+        <a class="reference internal" href="../../../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
+        <a class="reference internal" href="../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solution/index.html">
+         solver.tui.solution
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -410,28 +420,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../operating_conditions/index.html">
-           solver.tui.setup.operating_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../named_expressions/index.html">
-           solver.tui.setup.named_expressions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../mixing_planes/index.html">
-           solver.tui.setup.mixing_planes
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="../../boundary_conditions/index.html">
            solver.tui.setup.boundary_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../materials/index.html">
-           solver.tui.setup.materials
           </a>
          </li>
          <li class="toctree-l5">
@@ -440,13 +430,8 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../overset_interfaces/index.html">
-           solver.tui.setup.overset_interfaces
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../reference_values/index.html">
-           solver.tui.setup.reference_values
+          <a class="reference internal" href="../../expert/index.html">
+           solver.tui.setup.expert
           </a>
          </li>
          <li class="toctree-l5">
@@ -455,8 +440,18 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../reference_frames/index.html">
-           solver.tui.setup.reference_frames
+          <a class="reference internal" href="../../materials/index.html">
+           solver.tui.setup.materials
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../mesh_interfaces/index.html">
+           solver.tui.setup.mesh_interfaces
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../mixing_planes/index.html">
+           solver.tui.setup.mixing_planes
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -475,38 +470,8 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../dpm/index.html">
-             solver.tui.setup.models.dpm
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../two_temperature/index.html">
-             solver.tui.setup.models.two_temperature
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../electrolysis/index.html">
-             solver.tui.setup.models.electrolysis
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../radiation/index.html">
-             solver.tui.setup.models.radiation
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../multiphase/index.html">
-             solver.tui.setup.models.multiphase
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../solver/index.html">
-             solver.tui.setup.models.solver
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../shell_conduction/index.html">
-             solver.tui.setup.models.shell_conduction
+            <a class="reference internal" href="../optics/index.html">
+             solver.tui.setup.models.optics
             </a>
            </li>
            <li class="toctree-l6">
@@ -515,8 +480,13 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../nox_parameters/index.html">
-             solver.tui.setup.models.nox_parameters
+            <a class="reference internal" href="../dpm/index.html">
+             solver.tui.setup.models.dpm
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../shell_conduction/index.html">
+             solver.tui.setup.models.shell_conduction
             </a>
            </li>
            <li class="toctree-l6">
@@ -542,13 +512,18 @@ function checkPageExistsAndRedirect(event) {
             </ul>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../viscous/index.html">
-             solver.tui.setup.models.viscous
+            <a class="reference internal" href="../two_temperature/index.html">
+             solver.tui.setup.models.two_temperature
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../heat_exchanger/index.html">
-             solver.tui.setup.models.heat_exchanger
+            <a class="reference internal" href="../multiphase/index.html">
+             solver.tui.setup.models.multiphase
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../nox_parameters/index.html">
+             solver.tui.setup.models.nox_parameters
             </a>
            </li>
            <li class="toctree-l6">
@@ -557,8 +532,23 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
+            <a class="reference internal" href="../radiation/index.html">
+             solver.tui.setup.models.radiation
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../solver/index.html">
+             solver.tui.setup.models.solver
+            </a>
+           </li>
+           <li class="toctree-l6">
             <a class="reference internal" href="../species/index.html">
              solver.tui.setup.models.species
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../viscous/index.html">
+             solver.tui.setup.models.viscous
             </a>
            </li>
            <li class="toctree-l6">
@@ -567,20 +557,40 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../optics/index.html">
-             solver.tui.setup.models.optics
+            <a class="reference internal" href="../heat_exchanger/index.html">
+             solver.tui.setup.models.heat_exchanger
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../electrolysis/index.html">
+             solver.tui.setup.models.electrolysis
             </a>
            </li>
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../mesh_interfaces/index.html">
-           solver.tui.setup.mesh_interfaces
+          <a class="reference internal" href="../../named_expressions/index.html">
+           solver.tui.setup.named_expressions
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../expert/index.html">
-           solver.tui.setup.expert
+          <a class="reference internal" href="../../operating_conditions/index.html">
+           solver.tui.setup.operating_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../overset_interfaces/index.html">
+           solver.tui.setup.overset_interfaces
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../reference_frames/index.html">
+           solver.tui.setup.reference_frames
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../reference_values/index.html">
+           solver.tui.setup.reference_values
           </a>
          </li>
          <li class="toctree-l5">
@@ -591,13 +601,8 @@ function checkPageExistsAndRedirect(event) {
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../solution/index.html">
-         solver.tui.solution
+        <a class="reference internal" href="../../../surface/index.html">
+         solver.tui.surface
         </a>
        </li>
        <li class="toctree-l4">
@@ -606,13 +611,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parallel/index.html">
-         solver.tui.parallel
+        <a class="reference internal" href="../../../server/index.html">
+         solver.tui.server
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
         </a>
        </li>
        <li class="toctree-l4">
@@ -621,33 +626,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../display/index.html">
-         solver.tui.display
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../preferences/index.html">
-         solver.tui.preferences
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../parametric_study/index.html">
          solver.tui.parametric_study
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../server/index.html">
-         solver.tui.server
+        <a class="reference internal" href="../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
       </ul>
@@ -719,16 +704,63 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.setup.models.cht
+     cht
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       cht.explicit_time_averaged_coupling
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling.conformal_coupled_walls">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         cht.explicit_time_averaged_coupling.conformal_coupled_walls()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling.coupling_controls">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         cht.explicit_time_averaged_coupling.coupling_controls()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling.fuse_explicit_cht_zones">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         cht.explicit_time_averaged_coupling.fuse_explicit_cht_zones()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling.mapped_interfaces">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         cht.explicit_time_averaged_coupling.mapped_interfaces()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.implicit_coupling">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.cht.implicit_coupling()
+       cht.implicit_coupling()
       </span>
      </code>
     </a>
@@ -737,7 +769,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.read_mi_type_wall">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.cht.read_mi_type_wall()
+       cht.read_mi_type_wall()
       </span>
      </code>
     </a>
@@ -746,7 +778,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.write_mi_type_wall">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.cht.write_mi_type_wall()
+       cht.write_mi_type_wall()
       </span>
      </code>
     </a>
@@ -774,14 +806,81 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-models-cht">
 <span id="ref-solver-tui-setup-models-cht"></span><h1>solver.tui.setup.models.cht<a class="headerlink" href="#solver-tui-setup-models-cht" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.setup.models.</span></span><span class="sig-name descname"><span class="pre">cht</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the mapped interface model menu.</p>
+<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">explicit_time_averaged_coupling</span></code></a>(path, service)</p></td>
+<td><p>Enter the explcit time averaged thermal coupling menu.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.implicit_coupling" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.implicit_coupling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">implicit_coupling</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable implicit coupling for mapped interface.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.read_mi_type_wall" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.read_mi_type_wall"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_mi_type_wall</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Read mapped interface data settings from a csv file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.write_mi_type_wall" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.write_mi_type_wall"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_mi_type_wall</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Write mapped interface settings to a scv file.</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.models.</span></span><span class="sig-name descname"><span class="pre">cht</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the mapped interface model menu.</p>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">explicit_time_averaged_coupling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the explcit time averaged thermal coupling menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling.conformal_coupled_walls" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling.conformal_coupled_walls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">conformal_coupled_walls</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Select fluid-solid coupled walls (without shell) for explicit coupling using time averaged thermal variables.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling.coupling_controls" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling.coupling_controls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coupling_controls</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify explcit coupling controls.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling.fuse_explicit_cht_zones" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling.fuse_explicit_cht_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fuse_explicit_cht_zones</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Fuse slitted conformal coupled walls marked for transient explicit thermal coupling.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling.mapped_interfaces" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling.mapped_interfaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mapped_interfaces</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Select fluid-solid mapped interfaces for explicit coupling using time averaged thermal variables.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling.conformal_coupled_walls">
+<span class="sig-name descname"><span class="pre">conformal_coupled_walls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling.conformal_coupled_walls" title="Permalink to this definition">#</a></dt>
+<dd><p>Select fluid-solid coupled walls (without shell) for explicit coupling using time averaged thermal variables.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling.coupling_controls">
+<span class="sig-name descname"><span class="pre">coupling_controls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling.coupling_controls" title="Permalink to this definition">#</a></dt>
+<dd><p>Specify explcit coupling controls.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling.fuse_explicit_cht_zones">
+<span class="sig-name descname"><span class="pre">fuse_explicit_cht_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling.fuse_explicit_cht_zones" title="Permalink to this definition">#</a></dt>
+<dd><p>Fuse slitted conformal coupled walls marked for transient explicit thermal coupling.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling.mapped_interfaces">
+<span class="sig-name descname"><span class="pre">mapped_interfaces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.explicit_time_averaged_coupling.mapped_interfaces" title="Permalink to this definition">#</a></dt>
+<dd><p>Select fluid-solid mapped interfaces for explicit coupling using time averaged thermal variables.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.implicit_coupling">
 <span class="sig-name descname"><span class="pre">implicit_coupling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.cht.implicit_coupling" title="Permalink to this definition">#</a></dt>

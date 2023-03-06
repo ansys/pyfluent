@@ -5,16 +5,13 @@
 viscous_flow
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.viscous_flow
+.. autoclass:: ansys.fluent.core.solver.settings_231.viscous_flow.viscous_flow
 
-.. autoclass:: viscous_flow
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==========================================================================   ===================================================================
 
-Child                                                                                                                                    Summary
+Attribute                                                                                                                                Summary
 
 ==========================================================================   ===================================================================
 :ref:`viscosity_averaging <viscosity_averaging>`                                         Enable/disable use of harmonic averaging for viscosity.

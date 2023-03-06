@@ -5,11 +5,8 @@
 film_vof_trans_high_relax
 =========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.film_vof_trans_high_relax
+.. autoclass:: ansys.fluent.core.solver.settings_231.film_vof_trans_high_relax.film_vof_trans_high_relax
 
-.. autoclass:: film_vof_trans_high_relax
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

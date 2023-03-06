@@ -5,11 +5,8 @@
 equations_child
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.equations_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.equations_child.equations_child
 
-.. autoclass:: equations_child
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   =================================

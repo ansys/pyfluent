@@ -5,11 +5,8 @@
 save_as
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.save_as
+.. autoclass:: ansys.fluent.core.solver.settings_231.save_as.save_as
 
-.. autoclass:: save_as
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ==========================================   =============================

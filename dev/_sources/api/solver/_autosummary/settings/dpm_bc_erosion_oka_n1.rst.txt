@@ -5,11 +5,8 @@
 dpm_bc_erosion_oka_n1
 =====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_bc_erosion_oka_n1
+.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_bc_erosion_oka_n1.dpm_bc_erosion_oka_n1
 
-.. autoclass:: dpm_bc_erosion_oka_n1
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

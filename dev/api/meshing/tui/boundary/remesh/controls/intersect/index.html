@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -55,7 +51,7 @@
     <link rel="shortcut icon" href="../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../search.html" />
-    <link rel="next" title="meshing.tui.boundary.remesh.size_functions" href="../../size_functions/index.html" />
+    <link rel="next" title="meshing.tui.boundary.improve" href="../../../improve/index.html" />
     <link rel="prev" title="meshing.tui.boundary.remesh.controls" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -305,13 +295,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -324,6 +309,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../../../index.html">
      meshing.tui
@@ -335,13 +325,23 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../file/index.html">
-       meshing.tui.file
+      <a class="reference internal" href="../../../../diagnostics/index.html">
+       meshing.tui.diagnostics
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../objects/index.html">
-       meshing.tui.objects
+      <a class="reference internal" href="../../../../material_point/index.html">
+       meshing.tui.material_point
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../mesh/index.html">
+       meshing.tui.mesh
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
       </a>
      </li>
      <li class="toctree-l3">
@@ -350,28 +350,13 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
+      <a class="reference internal" href="../../../../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../reference_frames/index.html">
-       meshing.tui.reference_frames
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../size_functions/index.html">
-       meshing.tui.size_functions
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../diagnostics/index.html">
-       meshing.tui.diagnostics
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../parallel/index.html">
-       meshing.tui.parallel
+      <a class="reference internal" href="../../../../objects/index.html">
+       meshing.tui.objects
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -384,41 +369,6 @@ function checkPageExistsAndRedirect(event) {
        </i>
       </label>
       <ul class="current">
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../modify/index.html">
-         meshing.tui.boundary.modify
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../boundary_conditions/index.html">
-         meshing.tui.boundary.boundary_conditions
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../manage/index.html">
-         meshing.tui.boundary.manage
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../separate/index.html">
-         meshing.tui.boundary.separate
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../feature/index.html">
-         meshing.tui.boundary.feature
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../refine/index.html">
-         meshing.tui.boundary.refine
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../shell_boundary_layer/index.html">
-         meshing.tui.boundary.shell_boundary_layer
-        </a>
-       </li>
        <li class="toctree-l4 current active has-children">
         <a class="reference internal" href="../../index.html">
          meshing.tui.boundary.remesh
@@ -429,6 +379,11 @@ function checkPageExistsAndRedirect(event) {
          </i>
         </label>
         <ul class="current">
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../size_functions/index.html">
+           meshing.tui.boundary.remesh.size_functions
+          </a>
+         </li>
          <li class="toctree-l5 current active has-children">
           <a class="reference internal" href="../index.html">
            meshing.tui.boundary.remesh.controls
@@ -446,11 +401,6 @@ function checkPageExistsAndRedirect(event) {
            </li>
           </ul>
          </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../size_functions/index.html">
-           meshing.tui.boundary.remesh.size_functions
-          </a>
-         </li>
         </ul>
        </li>
        <li class="toctree-l4">
@@ -458,16 +408,46 @@ function checkPageExistsAndRedirect(event) {
          meshing.tui.boundary.improve
         </a>
        </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../modify/index.html">
+         meshing.tui.boundary.modify
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../manage/index.html">
+         meshing.tui.boundary.manage
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../feature/index.html">
+         meshing.tui.boundary.feature
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../separate/index.html">
+         meshing.tui.boundary.separate
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../refine/index.html">
+         meshing.tui.boundary.refine
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../boundary_conditions/index.html">
+         meshing.tui.boundary.boundary_conditions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../shell_boundary_layer/index.html">
+         meshing.tui.boundary.shell_boundary_layer
+        </a>
+       </li>
       </ul>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../mesh/index.html">
-       meshing.tui.mesh
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../display/index.html">
-       meshing.tui.display
+      <a class="reference internal" href="../../../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
       </a>
      </li>
      <li class="toctree-l3">
@@ -476,18 +456,28 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
+      <a class="reference internal" href="../../../../parallel/index.html">
+       meshing.tui.parallel
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../material_point/index.html">
-       meshing.tui.material_point
+      <a class="reference internal" href="../../../../display/index.html">
+       meshing.tui.display
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
+      <a class="reference internal" href="../../../../reference_frames/index.html">
+       meshing.tui.reference_frames
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../file/index.html">
+       meshing.tui.file
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../size_functions/index.html">
+       meshing.tui.size_functions
       </a>
      </li>
     </ul>
@@ -532,7 +522,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.boundary.remesh.controls.intersect
+     intersect
     </span>
    </code>
   </a>
@@ -541,7 +531,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.absolute_tolerance">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.remesh.controls.intersect.absolute_tolerance()
+       intersect.absolute_tolerance()
       </span>
      </code>
     </a>
@@ -550,7 +540,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.delete_overlap">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.remesh.controls.intersect.delete_overlap()
+       intersect.delete_overlap()
       </span>
      </code>
     </a>
@@ -559,7 +549,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.feature_angle">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.remesh.controls.intersect.feature_angle()
+       intersect.feature_angle()
       </span>
      </code>
     </a>
@@ -568,7 +558,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.ignore_parallel_faces">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.remesh.controls.intersect.ignore_parallel_faces()
+       intersect.ignore_parallel_faces()
       </span>
      </code>
     </a>
@@ -577,7 +567,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.join_match_angle">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.remesh.controls.intersect.join_match_angle()
+       intersect.join_match_angle()
       </span>
      </code>
     </a>
@@ -586,7 +576,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.join_project_angle">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.remesh.controls.intersect.join_project_angle()
+       intersect.join_project_angle()
       </span>
      </code>
     </a>
@@ -595,7 +585,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.refine_region">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.remesh.controls.intersect.refine_region()
+       intersect.refine_region()
       </span>
      </code>
     </a>
@@ -604,7 +594,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.remesh_post_intersection">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.remesh.controls.intersect.remesh_post_intersection()
+       intersect.remesh_post_intersection()
       </span>
      </code>
     </a>
@@ -613,7 +603,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.retri_improve">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.remesh.controls.intersect.retri_improve()
+       intersect.retri_improve()
       </span>
      </code>
     </a>
@@ -622,7 +612,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.separate">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.remesh.controls.intersect.separate()
+       intersect.separate()
       </span>
      </code>
     </a>
@@ -631,7 +621,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.stitch_preserve">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.remesh.controls.intersect.stitch_preserve()
+       intersect.stitch_preserve()
       </span>
      </code>
     </a>
@@ -640,7 +630,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.tolerance">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.remesh.controls.intersect.tolerance()
+       intersect.tolerance()
       </span>
      </code>
     </a>
@@ -649,7 +639,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.within_tolerance">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.remesh.controls.intersect.within_tolerance()
+       intersect.within_tolerance()
       </span>
      </code>
     </a>
@@ -677,14 +667,55 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-boundary-remesh-controls-intersect">
 <span id="ref-meshing-tui-boundary-remesh-controls-intersect"></span><h1>meshing.tui.boundary.remesh.controls.intersect<a class="headerlink" href="#meshing-tui-boundary-remesh-controls-intersect" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.boundary.remesh.controls.</span></span><span class="sig-name descname"><span class="pre">intersect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect" title="Permalink to this definition">#</a></dt>
-<dd><p>Enters the intersect control menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.</span></span><span class="sig-name descname"><span class="pre">intersect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enters the intersect control menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.absolute_tolerance" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.absolute_tolerance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">absolute_tolerance</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to switch between the use of absolute and relative tolerance.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.delete_overlap" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.delete_overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_overlap</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables/disables the deletion of overlapped edges.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.feature_angle" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.feature_angle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">feature_angle</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the minimum feature angle that should be considered while retriangulating the boundary zones.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.ignore_parallel_faces" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.ignore_parallel_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ignore_parallel_faces</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Default is yes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.join_match_angle" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.join_match_angle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">join_match_angle</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the allowed maximum angle between the normals of the two overlapping surfaces to be joined.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.join_project_angle" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.join_project_angle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">join_project_angle</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the allowed maximum angle between the face normal and the project direction for the overlapping surfaces to be joined.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.refine_region" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.refine_region"><code class="xref py py-obj docutils literal notranslate"><span class="pre">refine_region</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to refine the regions that are modified during the intersect operations.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.remesh_post_intersection" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.remesh_post_intersection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remesh_post_intersection</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Used to enable or disable automatic post-remesh operation after any connect operation (join, intersect, or stitch).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.retri_improve" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.retri_improve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retri_improve</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to improve the mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.separate" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.separate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">separate</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables the automatic separation of intersected zones.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.stitch_preserve" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.stitch_preserve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stitch_preserve</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Indicates that shape of the first zone specified is to be preserved.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.tolerance" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.tolerance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tolerance</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the tolerance value for the intersect operations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.within_tolerance" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.within_tolerance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">within_tolerance</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Performs the intersection operation only within the specified tolerance value.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.absolute_tolerance">
 <span class="sig-name descname"><span class="pre">absolute_tolerance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.remesh.controls.intersect.absolute_tolerance" title="Permalink to this definition">#</a></dt>

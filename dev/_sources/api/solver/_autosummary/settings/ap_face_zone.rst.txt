@@ -5,11 +5,8 @@
 ap_face_zone
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.ap_face_zone
+.. autoclass:: ansys.fluent.core.solver.settings_231.ap_face_zone.ap_face_zone
 
-.. autoclass:: ap_face_zone
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================   =================================

@@ -5,16 +5,13 @@
 main
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.main
+.. autoclass:: ansys.fluent.core.solver.settings_231.main.main
 
-.. autoclass:: main
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==========================   =====================================================================
 
-Child                                                                                      Summary
+Attribute                                                                                  Summary
 
 ==========================   =====================================================================
 :ref:`border <border_1>`         Enable/disable drawing of borders around the main viewing window.

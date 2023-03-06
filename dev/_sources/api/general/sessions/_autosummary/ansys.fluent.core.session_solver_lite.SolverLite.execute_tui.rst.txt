@@ -1,0 +1,6 @@
+execute\_tui
+============
+
+.. currentmodule:: ansys.fluent.core.session_solver_lite
+
+.. automethod:: SolverLite.execute_tui

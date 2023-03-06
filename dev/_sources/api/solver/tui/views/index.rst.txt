@@ -3,16 +3,16 @@
 solver.tui.views
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.views
-   :members: list_views, delete_view, read_views, auto_scale, restore_view, next_view, default_view, write_views, last_view, save_view
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.views
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:
 
-   display_states/index
    camera/index
+   display_states/index

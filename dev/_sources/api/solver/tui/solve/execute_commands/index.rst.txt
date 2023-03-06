@@ -3,11 +3,11 @@
 solver.tui.solve.execute\_commands
 ==================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.execute_commands
-   :members: disable, import_, enable, delete, add_edit, export, copy
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solve.execute_commands
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

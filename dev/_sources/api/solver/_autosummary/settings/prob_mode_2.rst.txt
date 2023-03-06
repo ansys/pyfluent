@@ -5,16 +5,13 @@
 prob_mode_2
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.prob_mode_2
+.. autoclass:: ansys.fluent.core.solver.settings_231.prob_mode_2.prob_mode_2
 
-.. autoclass:: prob_mode_2
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

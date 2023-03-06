@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -56,7 +52,7 @@
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
     <link rel="next" title="solver.tui.setup.models.eulerian_wallfilm.coupled_solution" href="coupled_solution/index.html" />
-    <link rel="prev" title="solver.tui.setup.models.shell_conduction" href="../shell_conduction/index.html" />
+    <link rel="prev" title="solver.tui.setup.models.optics.statistics" href="../optics/statistics/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -305,13 +295,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -355,28 +340,13 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../adjoint/index.html">
+         solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../mesh/index.html">
-         solver.tui.mesh
+        <a class="reference internal" href="../../../display/index.html">
+         solver.tui.display
         </a>
        </li>
        <li class="toctree-l4">
@@ -385,18 +355,58 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parallel/index.html">
+         solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../plot/index.html">
          solver.tui.plot
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../adjoint/index.html">
-         solver.tui.adjoint
+        <a class="reference internal" href="../../../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
+        <a class="reference internal" href="../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solution/index.html">
+         solver.tui.solution
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -410,28 +420,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../operating_conditions/index.html">
-           solver.tui.setup.operating_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../named_expressions/index.html">
-           solver.tui.setup.named_expressions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../mixing_planes/index.html">
-           solver.tui.setup.mixing_planes
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="../../boundary_conditions/index.html">
            solver.tui.setup.boundary_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../materials/index.html">
-           solver.tui.setup.materials
           </a>
          </li>
          <li class="toctree-l5">
@@ -440,13 +430,8 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../overset_interfaces/index.html">
-           solver.tui.setup.overset_interfaces
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../reference_values/index.html">
-           solver.tui.setup.reference_values
+          <a class="reference internal" href="../../expert/index.html">
+           solver.tui.setup.expert
           </a>
          </li>
          <li class="toctree-l5">
@@ -455,8 +440,18 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../reference_frames/index.html">
-           solver.tui.setup.reference_frames
+          <a class="reference internal" href="../../materials/index.html">
+           solver.tui.setup.materials
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../mesh_interfaces/index.html">
+           solver.tui.setup.mesh_interfaces
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../mixing_planes/index.html">
+           solver.tui.setup.mixing_planes
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -475,38 +470,8 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../dpm/index.html">
-             solver.tui.setup.models.dpm
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../two_temperature/index.html">
-             solver.tui.setup.models.two_temperature
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../electrolysis/index.html">
-             solver.tui.setup.models.electrolysis
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../radiation/index.html">
-             solver.tui.setup.models.radiation
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../multiphase/index.html">
-             solver.tui.setup.models.multiphase
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../solver/index.html">
-             solver.tui.setup.models.solver
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../shell_conduction/index.html">
-             solver.tui.setup.models.shell_conduction
+            <a class="reference internal" href="../optics/index.html">
+             solver.tui.setup.models.optics
             </a>
            </li>
            <li class="toctree-l6 current active has-children">
@@ -532,8 +497,13 @@ function checkPageExistsAndRedirect(event) {
             </ul>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../nox_parameters/index.html">
-             solver.tui.setup.models.nox_parameters
+            <a class="reference internal" href="../dpm/index.html">
+             solver.tui.setup.models.dpm
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../shell_conduction/index.html">
+             solver.tui.setup.models.shell_conduction
             </a>
            </li>
            <li class="toctree-l6">
@@ -547,13 +517,18 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../viscous/index.html">
-             solver.tui.setup.models.viscous
+            <a class="reference internal" href="../two_temperature/index.html">
+             solver.tui.setup.models.two_temperature
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../heat_exchanger/index.html">
-             solver.tui.setup.models.heat_exchanger
+            <a class="reference internal" href="../multiphase/index.html">
+             solver.tui.setup.models.multiphase
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../nox_parameters/index.html">
+             solver.tui.setup.models.nox_parameters
             </a>
            </li>
            <li class="toctree-l6">
@@ -562,8 +537,23 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
+            <a class="reference internal" href="../radiation/index.html">
+             solver.tui.setup.models.radiation
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../solver/index.html">
+             solver.tui.setup.models.solver
+            </a>
+           </li>
+           <li class="toctree-l6">
             <a class="reference internal" href="../species/index.html">
              solver.tui.setup.models.species
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../viscous/index.html">
+             solver.tui.setup.models.viscous
             </a>
            </li>
            <li class="toctree-l6">
@@ -572,20 +562,40 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../optics/index.html">
-             solver.tui.setup.models.optics
+            <a class="reference internal" href="../heat_exchanger/index.html">
+             solver.tui.setup.models.heat_exchanger
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../electrolysis/index.html">
+             solver.tui.setup.models.electrolysis
             </a>
            </li>
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../mesh_interfaces/index.html">
-           solver.tui.setup.mesh_interfaces
+          <a class="reference internal" href="../../named_expressions/index.html">
+           solver.tui.setup.named_expressions
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../expert/index.html">
-           solver.tui.setup.expert
+          <a class="reference internal" href="../../operating_conditions/index.html">
+           solver.tui.setup.operating_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../overset_interfaces/index.html">
+           solver.tui.setup.overset_interfaces
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../reference_frames/index.html">
+           solver.tui.setup.reference_frames
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../reference_values/index.html">
+           solver.tui.setup.reference_values
           </a>
          </li>
          <li class="toctree-l5">
@@ -596,13 +606,8 @@ function checkPageExistsAndRedirect(event) {
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../solution/index.html">
-         solver.tui.solution
+        <a class="reference internal" href="../../../surface/index.html">
+         solver.tui.surface
         </a>
        </li>
        <li class="toctree-l4">
@@ -611,13 +616,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parallel/index.html">
-         solver.tui.parallel
+        <a class="reference internal" href="../../../server/index.html">
+         solver.tui.server
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
         </a>
        </li>
        <li class="toctree-l4">
@@ -626,33 +631,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../display/index.html">
-         solver.tui.display
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../preferences/index.html">
-         solver.tui.preferences
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../parametric_study/index.html">
          solver.tui.parametric_study
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../server/index.html">
-         solver.tui.server
+        <a class="reference internal" href="../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
       </ul>
@@ -724,16 +709,45 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.setup.models.eulerian_wallfilm
+     eulerian_wallfilm
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.coupled_solution">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       eulerian_wallfilm.coupled_solution
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.coupled_solution.enable_coupled_solution">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         eulerian_wallfilm.coupled_solution.enable_coupled_solution()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.coupled_solution.enable_curvature_smoothing">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         eulerian_wallfilm.coupled_solution.enable_curvature_smoothing()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.enable_film_vof_transition_message">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.eulerian_wallfilm.enable_film_vof_transition_message()
+       eulerian_wallfilm.enable_film_vof_transition_message()
       </span>
      </code>
     </a>
@@ -742,7 +756,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.enable_wallfilm_model">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.eulerian_wallfilm.enable_wallfilm_model()
+       eulerian_wallfilm.enable_wallfilm_model()
       </span>
      </code>
     </a>
@@ -751,16 +765,45 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.film_material">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.eulerian_wallfilm.film_material()
+       eulerian_wallfilm.film_material()
       </span>
      </code>
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.implicit_options">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       eulerian_wallfilm.implicit_options
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.implicit_options.new_implicit_scheme">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         eulerian_wallfilm.implicit_options.new_implicit_scheme()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.implicit_options.relative_error_residual">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         eulerian_wallfilm.implicit_options.relative_error_residual()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.initialize_wallfilm_model">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.eulerian_wallfilm.initialize_wallfilm_model()
+       eulerian_wallfilm.initialize_wallfilm_model()
       </span>
      </code>
     </a>
@@ -769,7 +812,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.list_film_walls">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.eulerian_wallfilm.list_film_walls()
+       eulerian_wallfilm.list_film_walls()
       </span>
      </code>
     </a>
@@ -778,7 +821,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.model_options">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.eulerian_wallfilm.model_options()
+       eulerian_wallfilm.model_options()
       </span>
      </code>
     </a>
@@ -787,7 +830,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.solution_options">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.eulerian_wallfilm.solution_options()
+       eulerian_wallfilm.solution_options()
       </span>
      </code>
     </a>
@@ -796,7 +839,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.solve_wallfilm_equation">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.eulerian_wallfilm.solve_wallfilm_equation()
+       eulerian_wallfilm.solve_wallfilm_equation()
       </span>
      </code>
     </a>
@@ -824,14 +867,81 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-models-eulerian-wallfilm">
 <span id="ref-solver-tui-setup-models-eulerian-wallfilm"></span><h1>solver.tui.setup.models.eulerian_wallfilm<a class="headerlink" href="#solver-tui-setup-models-eulerian-wallfilm" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.setup.models.</span></span><span class="sig-name descname"><span class="pre">eulerian_wallfilm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the Eulerian wall film model menu.</p>
+<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.coupled_solution" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.coupled_solution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coupled_solution</span></code></a>(path, service)</p></td>
+<td><p>Enter Eulerian wall film coupled solution menu.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.implicit_options" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.implicit_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">implicit_options</span></code></a>(path, service)</p></td>
+<td><p>Enter Implicit Scheme Option (beta).</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.enable_film_vof_transition_message" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.enable_film_vof_transition_message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_film_vof_transition_message</span></code></a>(*args, ...)</p></td>
+<td><p>Enable film-VOF transition message.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.enable_wallfilm_model" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.enable_wallfilm_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_wallfilm_model</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable Eulerian wall film model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.film_material" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.film_material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">film_material</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set film material and properties.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.initialize_wallfilm_model" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.initialize_wallfilm_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialize_wallfilm_model</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Initialize Eulerian wall film model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.list_film_walls" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.list_film_walls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_film_walls</span></code></a>(*args, **kwargs)</p></td>
+<td><p>List film walls.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.model_options" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.model_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_options</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set Eulerian wall film model options.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.solution_options" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.solution_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solution_options</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set Eulerian wall film model solution options.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.solve_wallfilm_equation" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.solve_wallfilm_equation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve_wallfilm_equation</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Activate Eulerian wall film equations.</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.models.</span></span><span class="sig-name descname"><span class="pre">eulerian_wallfilm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the Eulerian wall film model menu.</p>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.coupled_solution">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coupled_solution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.coupled_solution" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter Eulerian wall film coupled solution menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.coupled_solution.enable_coupled_solution" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.coupled_solution.enable_coupled_solution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_coupled_solution</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable Eulerian wall film coupled solution.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.coupled_solution.enable_curvature_smoothing" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.coupled_solution.enable_curvature_smoothing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_curvature_smoothing</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable Eulerian wall film curvature smoothing.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.coupled_solution.enable_coupled_solution">
+<span class="sig-name descname"><span class="pre">enable_coupled_solution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.coupled_solution.enable_coupled_solution" title="Permalink to this definition">#</a></dt>
+<dd><p>Enable Eulerian wall film coupled solution.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.coupled_solution.enable_curvature_smoothing">
+<span class="sig-name descname"><span class="pre">enable_curvature_smoothing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.coupled_solution.enable_curvature_smoothing" title="Permalink to this definition">#</a></dt>
+<dd><p>Enable Eulerian wall film curvature smoothing.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.enable_film_vof_transition_message">
 <span class="sig-name descname"><span class="pre">enable_film_vof_transition_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.enable_film_vof_transition_message" title="Permalink to this definition">#</a></dt>
@@ -848,6 +958,36 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.film_material">
 <span class="sig-name descname"><span class="pre">film_material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.film_material" title="Permalink to this definition">#</a></dt>
 <dd><p>Set film material and properties.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.implicit_options">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">implicit_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.implicit_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter Implicit Scheme Option (beta).</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.implicit_options.new_implicit_scheme" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.implicit_options.new_implicit_scheme"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new_implicit_scheme</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable alternative implicit scheme.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.implicit_options.relative_error_residual" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.implicit_options.relative_error_residual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_error_residual</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable relative error residual.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.implicit_options.new_implicit_scheme">
+<span class="sig-name descname"><span class="pre">new_implicit_scheme</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.implicit_options.new_implicit_scheme" title="Permalink to this definition">#</a></dt>
+<dd><p>Enable alternative implicit scheme.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.implicit_options.relative_error_residual">
+<span class="sig-name descname"><span class="pre">relative_error_residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.implicit_options.relative_error_residual" title="Permalink to this definition">#</a></dt>
+<dd><p>Enable relative error residual.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py method">

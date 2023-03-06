@@ -5,11 +5,8 @@
 none
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.none_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.none_1.none
 
-.. autoclass:: none
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =======================

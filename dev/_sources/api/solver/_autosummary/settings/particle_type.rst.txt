@@ -5,11 +5,8 @@
 particle_type
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.particle_type
+.. autoclass:: ansys.fluent.core.solver.settings_231.particle_type.particle_type
 
-.. autoclass:: particle_type
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   ======================================

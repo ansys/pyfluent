@@ -5,16 +5,13 @@
 pcb_zone_info
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.pcb_zone_info
+.. autoclass:: ansys.fluent.core.solver.settings_231.pcb_zone_info.pcb_zone_info
 
-.. autoclass:: pcb_zone_info
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ============================   ======================
 
-Child                                         Summary
+Attribute                                     Summary
 
 ============================   ======================
 :ref:`ecad_name <ecad_name>`       'ecad_name' child.

@@ -5,11 +5,8 @@
 use_stored_partitions
 =====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.use_stored_partitions
+.. autoclass:: ansys.fluent.core.solver.settings_231.use_stored_partitions.use_stored_partitions
 
-.. autoclass:: use_stored_partitions
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   ====================================

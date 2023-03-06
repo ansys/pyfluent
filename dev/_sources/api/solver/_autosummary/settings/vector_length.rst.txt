@@ -5,16 +5,13 @@
 vector_length
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.vector_length
+.. autoclass:: ansys.fluent.core.solver.settings_231.vector_length.vector_length
 
-.. autoclass:: vector_length
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================================   ============================
 
-Child                                                           Summary
+Attribute                                                       Summary
 
 ========================================   ============================
 :ref:`option <option_2>`                                'option' child.

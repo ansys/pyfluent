@@ -3,13 +3,13 @@
 solver.tui.setup.models.dpm.parallel
 ====================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.dpm.parallel
-   :members: hybrid_workpile, hybrid_2domain, report, use_shared_memory, fix_source_term_accumulation_order, enable_workpile, hybrid_collision_variant, hybrid_collision_model, hybrid_collision_unidirectional, n_threads, use_hybrid, use_message_passing
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:

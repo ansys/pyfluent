@@ -3,12 +3,11 @@
 solver.datamodel.preferences.Graphics.VectorSettings
 ====================================================
 
-.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.Graphics.VectorSettings
-   :members: Arrow3DRadius1Factor, Arrow3DRadius2Factor, Arrowhead3DRadius1Factor, LineArrow3DPerpendicularRadius
-   :noindex:
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences.Root.Graphics.VectorSettings
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

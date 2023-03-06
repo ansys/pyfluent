@@ -5,11 +5,8 @@
 y_velocity_2
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.y_velocity_2
+.. autoclass:: ansys.fluent.core.solver.settings_231.y_velocity_2.y_velocity_2
 
-.. autoclass:: y_velocity_2
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   =====================

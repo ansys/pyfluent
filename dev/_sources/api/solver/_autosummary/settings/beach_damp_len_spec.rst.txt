@@ -5,11 +5,8 @@
 beach_damp_len_spec
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.beach_damp_len_spec
+.. autoclass:: ansys.fluent.core.solver.settings_231.beach_damp_len_spec.beach_damp_len_spec
 
-.. autoclass:: beach_damp_len_spec
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

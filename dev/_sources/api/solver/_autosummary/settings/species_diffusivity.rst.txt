@@ -5,11 +5,8 @@
 species_diffusivity
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.species_diffusivity
+.. autoclass:: ansys.fluent.core.solver.settings_231.species_diffusivity.species_diffusivity
 
-.. autoclass:: species_diffusivity
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`species_diffusivity_child <species_diffusivity_child>`

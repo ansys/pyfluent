@@ -5,11 +5,8 @@
 default
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.default
+.. autoclass:: ansys.fluent.core.solver.settings_231.default.default
 
-.. autoclass:: default
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =========================

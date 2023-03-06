@@ -5,11 +5,8 @@
 capg_lowtu
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.capg_lowtu
+.. autoclass:: ansys.fluent.core.solver.settings_231.capg_lowtu.capg_lowtu
 
-.. autoclass:: capg_lowtu
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   =====================================

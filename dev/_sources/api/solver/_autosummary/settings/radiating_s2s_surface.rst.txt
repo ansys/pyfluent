@@ -5,11 +5,8 @@
 radiating_s2s_surface
 =====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.radiating_s2s_surface
+.. autoclass:: ansys.fluent.core.solver.settings_231.radiating_s2s_surface.radiating_s2s_surface
 
-.. autoclass:: radiating_s2s_surface
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

@@ -5,11 +5,8 @@
 minimum
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.minimum
+.. autoclass:: ansys.fluent.core.solver.settings_231.minimum.minimum
 
-.. autoclass:: minimum
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================================   ================================================

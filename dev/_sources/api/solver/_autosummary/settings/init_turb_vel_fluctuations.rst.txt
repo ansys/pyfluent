@@ -5,11 +5,8 @@
 init_turb_vel_fluctuations
 ==========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.init_turb_vel_fluctuations
+.. autoclass:: ansys.fluent.core.solver.settings_231.init_turb_vel_fluctuations.init_turb_vel_fluctuations
 
-.. autoclass:: init_turb_vel_fluctuations
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ===========================

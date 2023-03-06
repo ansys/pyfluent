@@ -5,11 +5,8 @@
 fensapice_drop_dtemp
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.fensapice_drop_dtemp
+.. autoclass:: ansys.fluent.core.solver.settings_231.fensapice_drop_dtemp.fensapice_drop_dtemp
 
-.. autoclass:: fensapice_drop_dtemp
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

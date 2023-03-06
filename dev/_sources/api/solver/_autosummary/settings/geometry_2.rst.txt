@@ -5,11 +5,8 @@
 geometry
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.geometry_2
+.. autoclass:: ansys.fluent.core.solver.settings_231.geometry_2.geometry
 
-.. autoclass:: geometry
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`axis_child <axis_child>`

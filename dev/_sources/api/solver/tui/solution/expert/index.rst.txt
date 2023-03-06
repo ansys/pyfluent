@@ -3,21 +3,21 @@
 solver.tui.solution.expert
 ==========================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.expert
-   :members: equation_ordering, bcd_boundedness, show_all_discretization_schemes, surface_tension, alternate_wall_temp_formulation, surface_tension_expert, flow_warnings, vof_explicit_controls, energy_numerical_noise_filter, open_channel_controls, bcd_weights_freeze, numerical_beach_controls, set_all_species_together, linearized_mass_transfer_udf, bc_pressure_extrapolations, explicit_under_relaxation_value, material_property_warnings, mp_reference_density, limiter_warnings, disable_reconstruction, lock_solid_temperature, mp_mfluid_aniso_drag, retain_temporary_solver_mem, correction_form, singhal_et_al_cavitation_model, retain_cell_residuals
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.expert
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:
 
-   secondary_gradient_limiting/index
-   previous_defaults/index
+   divergence_prevention/index
+   high_speed_numerics/index
    poor_mesh_numerics/index
+   previous_defaults/index
    non_reflecting_boundary_treatment/index
    open_channel_wave_options/index
-   high_speed_numerics/index
-   divergence_prevention/index
+   secondary_gradient_limiting/index

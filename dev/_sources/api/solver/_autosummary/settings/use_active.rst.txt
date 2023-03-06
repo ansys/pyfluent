@@ -5,11 +5,8 @@
 use_active
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.use_active
+.. autoclass:: ansys.fluent.core.solver.settings_231.use_active.use_active
 
-.. autoclass:: use_active
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ==============================   =======================

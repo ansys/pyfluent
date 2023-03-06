@@ -3,28 +3,28 @@
 solver.tui.display
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display
-   :members: set_window, add_custom_vector, open_window, multigrid_coarsening, save_picture, surface_cells, close_window, close_window_by_name, mesh_outline, update_layout, contour, mesh, vector, re_render, hsf_file, surface_mesh, profile, clear_annotations, display_custom_vector, re_scale, velocity_vector, switch_to_primary_volume, switch_to_post_processing_volume, set_window_by_name, set_list_tree_separator, reacting_channel_curves, mesh_partition_boundary, zone_mesh, graphics_window_layout, annotate
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.display
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:
 
-   pdf_data/index
+   embedded_windows/index
    objects/index
-   surface/index
-   view_sync/index
-   define/index
-   display_states/index
-   views/index
-   set/index
    flamelet_data/index
+   particle_tracks/index
+   path_lines/index
+   pdf_data/index
+   set/index
+   surface/index
+   views/index
+   display_states/index
+   view_sync/index
    update_scene/index
    inverse_dft/index
-   particle_tracks/index
-   embedded_windows/index
-   path_lines/index
+   define/index

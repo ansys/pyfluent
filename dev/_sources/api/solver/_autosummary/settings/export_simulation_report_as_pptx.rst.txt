@@ -5,11 +5,8 @@
 export_simulation_report_as_pptx
 ================================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.export_simulation_report_as_pptx
+.. autoclass:: ansys.fluent.core.solver.settings_231.export_simulation_report_as_pptx.export_simulation_report_as_pptx
 
-.. autoclass:: export_simulation_report_as_pptx
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ======================================   ===========================

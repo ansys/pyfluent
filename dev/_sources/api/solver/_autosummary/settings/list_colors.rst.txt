@@ -5,11 +5,8 @@
 list_colors
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.list_colors
+.. autoclass:: ansys.fluent.core.solver.settings_231.list_colors.list_colors
 
-.. autoclass:: list_colors
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

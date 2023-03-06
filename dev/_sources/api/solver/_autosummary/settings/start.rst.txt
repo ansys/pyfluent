@@ -5,11 +5,8 @@
 start
 =====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.start
+.. autoclass:: ansys.fluent.core.solver.settings_231.start.start
 
-.. autoclass:: start
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ========================   ====================

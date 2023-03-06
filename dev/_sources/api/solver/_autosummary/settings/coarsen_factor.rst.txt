@@ -5,11 +5,8 @@
 coarsen_factor
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.coarsen_factor
+.. autoclass:: ansys.fluent.core.solver.settings_231.coarsen_factor.coarsen_factor
 
-.. autoclass:: coarsen_factor
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

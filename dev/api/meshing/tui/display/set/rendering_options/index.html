@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -55,8 +51,8 @@
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
-    <link rel="next" title="meshing.tui.display.set.lights" href="../lights/index.html" />
-    <link rel="prev" title="meshing.tui.display.set.picture.color_mode" href="../picture/color_mode/index.html" />
+    <link rel="next" title="meshing.tui.display.set.colors" href="../colors/index.html" />
+    <link rel="prev" title="meshing.tui.display.set" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -304,13 +294,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -323,6 +308,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../../index.html">
      meshing.tui
@@ -334,13 +324,23 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../file/index.html">
-       meshing.tui.file
+      <a class="reference internal" href="../../../diagnostics/index.html">
+       meshing.tui.diagnostics
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../objects/index.html">
-       meshing.tui.objects
+      <a class="reference internal" href="../../../material_point/index.html">
+       meshing.tui.material_point
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../mesh/index.html">
+       meshing.tui.mesh
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
       </a>
      </li>
      <li class="toctree-l3">
@@ -349,28 +349,13 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
+      <a class="reference internal" href="../../../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../reference_frames/index.html">
-       meshing.tui.reference_frames
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../size_functions/index.html">
-       meshing.tui.size_functions
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../diagnostics/index.html">
-       meshing.tui.diagnostics
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../parallel/index.html">
-       meshing.tui.parallel
+      <a class="reference internal" href="../../../objects/index.html">
+       meshing.tui.objects
       </a>
      </li>
      <li class="toctree-l3">
@@ -379,8 +364,18 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../mesh/index.html">
-       meshing.tui.mesh
+      <a class="reference internal" href="../../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../report/index.html">
+       meshing.tui.report
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../parallel/index.html">
+       meshing.tui.parallel
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -393,56 +388,9 @@ function checkPageExistsAndRedirect(event) {
        </i>
       </label>
       <ul class="current">
-       <li class="toctree-l4 current active has-children">
-        <a class="reference internal" href="../index.html">
-         meshing.tui.display.set
-        </a>
-        <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-        <label for="toctree-checkbox-4">
-         <i class="fas fa-chevron-down">
-         </i>
-        </label>
-        <ul class="current">
-         <li class="toctree-l5">
-          <a class="reference internal" href="../colors/index.html">
-           meshing.tui.display.set.colors
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../picture/index.html">
-           meshing.tui.display.set.picture
-          </a>
-         </li>
-         <li class="toctree-l5 current active">
-          <a class="current reference internal" href="#">
-           meshing.tui.display.set.rendering_options
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../lights/index.html">
-           meshing.tui.display.set.lights
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../styles/index.html">
-           meshing.tui.display.set.styles
-          </a>
-         </li>
-        </ul>
-       </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../advanced_rendering/index.html">
-         meshing.tui.display.advanced_rendering
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../xy_plot/index.html">
-         meshing.tui.display.xy_plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../update_scene/index.html">
-         meshing.tui.display.update_scene
+        <a class="reference internal" href="../../set_grid/index.html">
+         meshing.tui.display.set_grid
         </a>
        </li>
        <li class="toctree-l4">
@@ -456,35 +404,77 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../update_scene/index.html">
+         meshing.tui.display.update_scene
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../display_states/index.html">
          meshing.tui.display.display_states
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../set_grid/index.html">
-         meshing.tui.display.set_grid
+        <a class="reference internal" href="../../xy_plot/index.html">
+         meshing.tui.display.xy_plot
+        </a>
+       </li>
+       <li class="toctree-l4 current active has-children">
+        <a class="reference internal" href="../index.html">
+         meshing.tui.display.set
+        </a>
+        <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+        <label for="toctree-checkbox-4">
+         <i class="fas fa-chevron-down">
+         </i>
+        </label>
+        <ul class="current">
+         <li class="toctree-l5 current active">
+          <a class="current reference internal" href="#">
+           meshing.tui.display.set.rendering_options
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../colors/index.html">
+           meshing.tui.display.set.colors
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../styles/index.html">
+           meshing.tui.display.set.styles
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../picture/index.html">
+           meshing.tui.display.set.picture
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../lights/index.html">
+           meshing.tui.display.set.lights
+          </a>
+         </li>
+        </ul>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../advanced_rendering/index.html">
+         meshing.tui.display.advanced_rendering
         </a>
        </li>
       </ul>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../report/index.html">
-       meshing.tui.report
+      <a class="reference internal" href="../../../reference_frames/index.html">
+       meshing.tui.reference_frames
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
+      <a class="reference internal" href="../../../file/index.html">
+       meshing.tui.file
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../material_point/index.html">
-       meshing.tui.material_point
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
+      <a class="reference internal" href="../../../size_functions/index.html">
+       meshing.tui.size_functions
       </a>
      </li>
     </ul>
@@ -529,7 +519,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.display.set.rendering_options
+     rendering_options
     </span>
    </code>
   </a>
@@ -538,7 +528,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.animation_option">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.rendering_options.animation_option()
+       rendering_options.animation_option()
       </span>
      </code>
     </a>
@@ -547,7 +537,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.auto_spin">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.rendering_options.auto_spin()
+       rendering_options.auto_spin()
       </span>
      </code>
     </a>
@@ -556,7 +546,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.color_map_alignment">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.rendering_options.color_map_alignment()
+       rendering_options.color_map_alignment()
       </span>
      </code>
     </a>
@@ -565,7 +555,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.device_info">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.rendering_options.device_info()
+       rendering_options.device_info()
       </span>
      </code>
     </a>
@@ -574,7 +564,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.double_buffering">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.rendering_options.double_buffering()
+       rendering_options.double_buffering()
       </span>
      </code>
     </a>
@@ -583,7 +573,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.driver">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.rendering_options.driver()
+       rendering_options.driver()
       </span>
      </code>
     </a>
@@ -592,7 +582,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.face_displacement">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.rendering_options.face_displacement()
+       rendering_options.face_displacement()
       </span>
      </code>
     </a>
@@ -601,7 +591,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.help_text_color">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.rendering_options.help_text_color()
+       rendering_options.help_text_color()
       </span>
      </code>
     </a>
@@ -610,7 +600,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.hidden_surface_method">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.rendering_options.hidden_surface_method()
+       rendering_options.hidden_surface_method()
       </span>
      </code>
     </a>
@@ -619,7 +609,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.hidden_surfaces">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.rendering_options.hidden_surfaces()
+       rendering_options.hidden_surfaces()
       </span>
      </code>
     </a>
@@ -628,7 +618,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.outer_face_cull">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.rendering_options.outer_face_cull()
+       rendering_options.outer_face_cull()
       </span>
      </code>
     </a>
@@ -637,7 +627,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.set_rendering_options">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.rendering_options.set_rendering_options()
+       rendering_options.set_rendering_options()
       </span>
      </code>
     </a>
@@ -646,7 +636,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.show_colormap">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.rendering_options.show_colormap()
+       rendering_options.show_colormap()
       </span>
      </code>
     </a>
@@ -655,7 +645,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.surface_edge_visibility">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.rendering_options.surface_edge_visibility()
+       rendering_options.surface_edge_visibility()
       </span>
      </code>
     </a>
@@ -683,14 +673,58 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-display-set-rendering-options">
 <span id="ref-meshing-tui-display-set-rendering-options"></span><h1>meshing.tui.display.set.rendering_options<a class="headerlink" href="#meshing-tui-display-set-rendering-options" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.display.set.</span></span><span class="sig-name descname"><span class="pre">rendering_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options" title="Permalink to this definition">#</a></dt>
-<dd><p>Contains the commands that enable you to set options that determine how the scene is rendered.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.display.set.</span></span><span class="sig-name descname"><span class="pre">rendering_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Contains the commands that enable you to set options that determine how the scene is rendered.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.animation_option" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.animation_option"><code class="xref py py-obj docutils literal notranslate"><span class="pre">animation_option</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to specify the animation option as appropriate.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.auto_spin" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.auto_spin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_spin</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables mouse view rotations to continue to spin the display after the button is released.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.color_map_alignment" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.color_map_alignment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">color_map_alignment</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the color bar alignment.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.device_info" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.device_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">device_info</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints out information about your graphics driver.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.double_buffering" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.double_buffering"><code class="xref py py-obj docutils literal notranslate"><span class="pre">double_buffering</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables or disables double buffering.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.driver" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.driver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">driver</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Changes the current graphics driver.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.face_displacement" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.face_displacement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_displacement</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the face displacement (in Z-buffer units along the camera Z-axis) for the displayed geometry when both faces and edges are displayed simultaneously.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.help_text_color" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.help_text_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">help_text_color</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the color of the help text on the screen.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.hidden_surface_method" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.hidden_surface_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hidden_surface_method</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to choose from among the hidden surface removal methods that are supported.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.hidden_surfaces" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.hidden_surfaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hidden_surfaces</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables/disables the display of hidden surfaces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.outer_face_cull" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.outer_face_cull"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outer_face_cull</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables/disables the display of outer faces.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.set_rendering_options" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.set_rendering_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_rendering_options</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the rendering options.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.show_colormap" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.show_colormap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_colormap</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/Disable colormap.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.surface_edge_visibility" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.surface_edge_visibility"><code class="xref py py-obj docutils literal notranslate"><span class="pre">surface_edge_visibility</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Controls whether or not the mesh edges are drawn.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.animation_option">
 <span class="sig-name descname"><span class="pre">animation_option</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.rendering_options.animation_option" title="Permalink to this definition">#</a></dt>

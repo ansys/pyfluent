@@ -5,11 +5,8 @@
 design_points
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.design_points
+.. autoclass:: ansys.fluent.core.solver.settings_231.design_points.design_points
 
-.. autoclass:: design_points
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==================================

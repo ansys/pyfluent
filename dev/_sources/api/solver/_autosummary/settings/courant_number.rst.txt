@@ -5,11 +5,8 @@
 courant_number
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.courant_number
+.. autoclass:: ansys.fluent.core.solver.settings_231.courant_number.courant_number
 
-.. autoclass:: courant_number
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   =====================

@@ -5,11 +5,8 @@
 solid
 =====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.solid_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.solid_1.solid
 
-.. autoclass:: solid
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`solid_child <solid_child_1>`

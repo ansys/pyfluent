@@ -5,11 +5,8 @@
 dual_potential_type
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dual_potential_type
+.. autoclass:: ansys.fluent.core.solver.settings_231.dual_potential_type.dual_potential_type
 
-.. autoclass:: dual_potential_type
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

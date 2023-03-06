@@ -5,16 +5,13 @@
 virtual_mass_force
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.virtual_mass_force
+.. autoclass:: ansys.fluent.core.solver.settings_231.virtual_mass_force.virtual_mass_force
 
-.. autoclass:: virtual_mass_force
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ================================================   =====================================================================================================================================================================
 
-Child                                                                                                                                                                                                            Summary
+Attribute                                                                                                                                                                                                        Summary
 
 ================================================   =====================================================================================================================================================================
 :ref:`option <option_7>`                               Enable/disable virtual mass force acting on particles. This force term may be important if the particle density is equal to or less than the local fluid density.

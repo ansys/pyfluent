@@ -5,11 +5,8 @@
 laminar
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.laminar
+.. autoclass:: ansys.fluent.core.solver.settings_231.laminar.laminar
 
-.. autoclass:: laminar
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

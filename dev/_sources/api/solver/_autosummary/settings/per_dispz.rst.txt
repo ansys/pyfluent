@@ -5,16 +5,13 @@
 per_dispz
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.per_dispz
+.. autoclass:: ansys.fluent.core.solver.settings_231.per_dispz.per_dispz
 
-.. autoclass:: per_dispz
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

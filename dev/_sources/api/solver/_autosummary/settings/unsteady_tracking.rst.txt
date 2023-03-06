@@ -5,16 +5,13 @@
 unsteady_tracking
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.unsteady_tracking
+.. autoclass:: ansys.fluent.core.solver.settings_231.unsteady_tracking.unsteady_tracking
 
-.. autoclass:: unsteady_tracking
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================================================================   ============================================================================
 
-Child                                                                                                                                                     Summary
+Attribute                                                                                                                                                 Summary
 
 ==================================================================================   ============================================================================
 :ref:`option <option_1>`                                                                                            Select the unsteady particle tracking option.

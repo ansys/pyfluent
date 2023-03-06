@@ -5,11 +5,8 @@
 minor_rule_line_color
 =====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.minor_rule_line_color
+.. autoclass:: ansys.fluent.core.solver.settings_231.minor_rule_line_color.minor_rule_line_color
 
-.. autoclass:: minor_rule_line_color
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ===================

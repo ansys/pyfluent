@@ -5,16 +5,13 @@
 time_scale_options
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.time_scale_options
+.. autoclass:: ansys.fluent.core.solver.settings_231.time_scale_options.time_scale_options
 
-.. autoclass:: time_scale_options
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   =============================================
 
-Child                                                                                        Summary
+Attribute                                                                                    Summary
 
 ====================================================   =============================================
 :ref:`viscous_scale <viscous_scale>`                                     Include viscous time scale.

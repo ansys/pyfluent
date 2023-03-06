@@ -5,11 +5,8 @@
 sources
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.sources
+.. autoclass:: ansys.fluent.core.solver.settings_231.sources.sources
 
-.. autoclass:: sources
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

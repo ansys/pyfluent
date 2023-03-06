@@ -3,11 +3,11 @@
 solver.tui.solve.report\_files
 ==============================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.report_files
-   :members: add, delete_all, clear_data, list, list_properties, delete, edit
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solve.report_files
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

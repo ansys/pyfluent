@@ -3,11 +3,11 @@
 meshing.tui.cad\_assemblies.labels
 ==================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.cad_assemblies.labels
-   :members: rename, add_to_graphics, remove_from_graphics, delete, draw
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.cad_assemblies.labels
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

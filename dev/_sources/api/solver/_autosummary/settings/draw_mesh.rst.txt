@@ -5,11 +5,8 @@
 draw_mesh
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.draw_mesh
+.. autoclass:: ansys.fluent.core.solver.settings_231.draw_mesh.draw_mesh
 
-.. autoclass:: draw_mesh
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

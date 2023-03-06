@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -55,8 +51,8 @@
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
-    <link rel="next" title="solver.tui.parametric_study.design_points.print_to_console" href="../print_to_console/index.html" />
-    <link rel="prev" title="solver.tui.parametric_study.design_points" href="../index.html" />
+    <link rel="next" title="solver.tui.parametric_study.update" href="../../update/index.html" />
+    <link rel="prev" title="solver.tui.parametric_study.design_points.auto_create" href="../auto_create/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -305,13 +295,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -355,88 +340,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../define/index.html">
-         solver.tui.define
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../adjoint/index.html">
          solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../setup/index.html">
-         solver.tui.setup
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../solution/index.html">
-         solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../surface/index.html">
-         solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../report/index.html">
-         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4">
@@ -445,13 +350,93 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../define/index.html">
+         solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parallel/index.html">
+         solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../preferences/index.html">
          solver.tui.preferences
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../solve/index.html">
          solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../views/index.html">
+         solver.tui.views
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -465,8 +450,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../update/index.html">
-           solver.tui.parametric_study.update
+          <a class="reference internal" href="../../study/index.html">
+           solver.tui.parametric_study.study
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -479,14 +464,14 @@ function checkPageExistsAndRedirect(event) {
            </i>
           </label>
           <ul class="current">
-           <li class="toctree-l6 current active">
-            <a class="current reference internal" href="#">
-             solver.tui.parametric_study.design_points.concurrent
-            </a>
-           </li>
            <li class="toctree-l6">
             <a class="reference internal" href="../print_to_console/index.html">
              solver.tui.parametric_study.design_points.print_to_console
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../set/index.html">
+             solver.tui.parametric_study.design_points.set
             </a>
            </li>
            <li class="toctree-l6">
@@ -499,23 +484,23 @@ function checkPageExistsAndRedirect(event) {
              solver.tui.parametric_study.design_points.auto_create
             </a>
            </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../set/index.html">
-             solver.tui.parametric_study.design_points.set
+           <li class="toctree-l6 current active">
+            <a class="current reference internal" href="#">
+             solver.tui.parametric_study.design_points.concurrent
             </a>
            </li>
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../study/index.html">
-           solver.tui.parametric_study.study
+          <a class="reference internal" href="../../update/index.html">
+           solver.tui.parametric_study.update
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../server/index.html">
-         solver.tui.server
+        <a class="reference internal" href="../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
       </ul>
@@ -587,7 +572,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.parametric_study.design_points.concurrent
+     concurrent
     </span>
    </code>
   </a>
@@ -596,7 +581,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.abort_all_design_points">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.parametric_study.design_points.concurrent.abort_all_design_points()
+       concurrent.abort_all_design_points()
       </span>
      </code>
     </a>
@@ -605,7 +590,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.abort_design_point">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.parametric_study.design_points.concurrent.abort_design_point()
+       concurrent.abort_design_point()
       </span>
      </code>
     </a>
@@ -614,7 +599,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.refresh_status">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.parametric_study.design_points.concurrent.refresh_status()
+       concurrent.refresh_status()
       </span>
      </code>
     </a>
@@ -642,14 +627,25 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-parametric-study-design-points-concurrent">
 <span id="ref-solver-tui-parametric-study-design-points-concurrent"></span><h1>solver.tui.parametric_study.design_points.concurrent<a class="headerlink" href="#solver-tui-parametric-study-design-points-concurrent" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.parametric_study.design_points.</span></span><span class="sig-name descname"><span class="pre">concurrent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the concurrent design points menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.</span></span><span class="sig-name descname"><span class="pre">concurrent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the concurrent design points menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.abort_all_design_points" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.abort_all_design_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">abort_all_design_points</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Interrupt All Design Points.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.abort_design_point" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.abort_design_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">abort_design_point</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Interrupt Design Point.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.refresh_status" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.refresh_status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">refresh_status</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Refresh Status.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.abort_all_design_points">
 <span class="sig-name descname"><span class="pre">abort_all_design_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.abort_all_design_points" title="Permalink to this definition">#</a></dt>

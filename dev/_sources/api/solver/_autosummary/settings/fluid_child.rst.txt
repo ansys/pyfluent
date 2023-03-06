@@ -5,16 +5,13 @@
 fluid_child
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.fluid_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.fluid_child.fluid_child
 
-.. autoclass:: fluid_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ======================================================================================   ===================================================
 
-Child                                                                                                                                Summary
+Attribute                                                                                                                            Summary
 
 ======================================================================================   ===================================================
 :ref:`density <density>`                                                                                                    'density' child.

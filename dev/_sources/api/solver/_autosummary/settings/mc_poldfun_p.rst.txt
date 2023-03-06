@@ -5,11 +5,8 @@
 mc_poldfun_p
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.mc_poldfun_p
+.. autoclass:: ansys.fluent.core.solver.settings_231.mc_poldfun_p.mc_poldfun_p
 
-.. autoclass:: mc_poldfun_p
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

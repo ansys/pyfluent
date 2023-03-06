@@ -5,16 +5,13 @@
 pressure_inlet_child
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.pressure_inlet_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.pressure_inlet_child.pressure_inlet_child
 
-.. autoclass:: pressure_inlet_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==============================================================================================================================   =======================================================================
 
-Child                                                                                                                                                                                            Summary
+Attribute                                                                                                                                                                                        Summary
 
 ==============================================================================================================================   =======================================================================
 :ref:`phase <phase_17>`                                                                                                                                                                   'phase' child.

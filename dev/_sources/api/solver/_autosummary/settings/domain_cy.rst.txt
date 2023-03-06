@@ -5,11 +5,8 @@
 domain_cy
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.domain_cy
+.. autoclass:: ansys.fluent.core.solver.settings_231.domain_cy.domain_cy
 
-.. autoclass:: domain_cy
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ================================

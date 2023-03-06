@@ -5,11 +5,8 @@
 headlights
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.headlights
+.. autoclass:: ansys.fluent.core.solver.settings_231.headlights.headlights
 
-.. autoclass:: headlights
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

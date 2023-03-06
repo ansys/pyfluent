@@ -5,11 +5,8 @@
 repair
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.repair
+.. autoclass:: ansys.fluent.core.solver.settings_231.repair.repair
 
-.. autoclass:: repair
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ==============================================

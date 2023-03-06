@@ -5,16 +5,13 @@
 windows
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.windows
+.. autoclass:: ansys.fluent.core.solver.settings_231.windows.windows
 
-.. autoclass:: windows
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==============================   =============================================================
 
-Child                                                                                  Summary
+Attribute                                                                              Summary
 
 ==============================   =============================================================
 :ref:`axes <axes_2>`                                       Enter the axes window options menu.
@@ -37,11 +34,11 @@ Child                                                                           
 
 ==============================   =============================================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ==================================   ==============================================
 
-Command                                                                     Summary
+Method                                                                      Summary
 
 ==================================   ==============================================
 :ref:`aspect_ratio <aspect_ratio>`       Set the aspect ratio of the active window.

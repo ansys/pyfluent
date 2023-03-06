@@ -5,16 +5,13 @@
 ocw_ship_vmag
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.ocw_ship_vmag
+.. autoclass:: ansys.fluent.core.solver.settings_231.ocw_ship_vmag.ocw_ship_vmag
 
-.. autoclass:: ocw_ship_vmag
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

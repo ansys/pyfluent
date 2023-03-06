@@ -5,16 +5,13 @@
 numbers
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.numbers
+.. autoclass:: ansys.fluent.core.solver.settings_231.numbers.numbers
 
-.. autoclass:: numbers
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==========================================   =============================
 
-Child                                                              Summary
+Attribute                                                          Summary
 
 ==========================================   =============================
 :ref:`x_format <x_format>`                               'x_format' child.

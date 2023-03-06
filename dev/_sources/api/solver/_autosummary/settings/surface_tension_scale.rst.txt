@@ -5,11 +5,8 @@
 surface_tension_scale
 =====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.surface_tension_scale
+.. autoclass:: ansys.fluent.core.solver.settings_231.surface_tension_scale.surface_tension_scale
 
-.. autoclass:: surface_tension_scale
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===============================

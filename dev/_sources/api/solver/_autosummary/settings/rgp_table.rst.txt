@@ -5,11 +5,8 @@
 rgp_table
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.rgp_table
+.. autoclass:: ansys.fluent.core.solver.settings_231.rgp_table.rgp_table
 
-.. autoclass:: rgp_table
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   =================================

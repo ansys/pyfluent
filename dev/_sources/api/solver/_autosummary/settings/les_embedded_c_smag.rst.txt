@@ -5,11 +5,8 @@
 les_embedded_c_smag
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.les_embedded_c_smag
+.. autoclass:: ansys.fluent.core.solver.settings_231.les_embedded_c_smag.les_embedded_c_smag
 
-.. autoclass:: les_embedded_c_smag
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

@@ -5,11 +5,8 @@
 ke_spec
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.ke_spec
+.. autoclass:: ansys.fluent.core.solver.settings_231.ke_spec.ke_spec
 
-.. autoclass:: ke_spec
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

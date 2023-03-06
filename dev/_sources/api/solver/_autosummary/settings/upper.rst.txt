@@ -5,11 +5,8 @@
 upper
 =====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.upper
+.. autoclass:: ansys.fluent.core.solver.settings_231.upper.upper
 
-.. autoclass:: upper
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

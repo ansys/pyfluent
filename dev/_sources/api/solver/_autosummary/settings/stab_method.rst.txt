@@ -5,11 +5,8 @@
 stab_method
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.stab_method
+.. autoclass:: ansys.fluent.core.solver.settings_231.stab_method.stab_method
 
-.. autoclass:: stab_method
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

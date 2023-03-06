@@ -5,11 +5,8 @@
 disk_bank_angle
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.disk_bank_angle
+.. autoclass:: ansys.fluent.core.solver.settings_231.disk_bank_angle.disk_bank_angle
 
-.. autoclass:: disk_bank_angle
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   ==============================================

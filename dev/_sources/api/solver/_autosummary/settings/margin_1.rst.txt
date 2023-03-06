@@ -5,11 +5,8 @@
 margin
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.margin_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.margin_1.margin
 
-.. autoclass:: margin
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =======================

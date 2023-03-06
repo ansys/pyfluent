@@ -3,13 +3,13 @@
 solver.tui.report.reference\_values
 ===================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.report.reference_values
-   :members: velocity, yplus, zone, temperature, pressure, density, viscosity, enthalpy, list, length, area, depth
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.report.reference_values
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:

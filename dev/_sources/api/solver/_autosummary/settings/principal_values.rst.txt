@@ -5,11 +5,8 @@
 principal_values
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.principal_values
+.. autoclass:: ansys.fluent.core.solver.settings_231.principal_values.principal_values
 
-.. autoclass:: principal_values
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ==================================

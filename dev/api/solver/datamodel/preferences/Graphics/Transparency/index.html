@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -304,13 +294,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -544,9 +529,70 @@ function checkPageExistsAndRedirect(event) {
     
     <div class="toc-item">
       
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
 
 <nav id="bd-toc-nav">
-    
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     Transparency
+    </span>
+   </code>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.AlgorithmForModernDrivers">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Transparency.AlgorithmForModernDrivers
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.DepthPeelingLayers">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Transparency.DepthPeelingLayers
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.DepthPeelingPreference">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Transparency.DepthPeelingPreference
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.QuickMoves">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Transparency.QuickMoves
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.ZSortOptions">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Transparency.ZSortOptions
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
 </nav>
     </div>
     
@@ -566,42 +612,64 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-datamodel-preferences-graphics-transparency">
 <span id="ref-solver-datamodel-preferences-graphics-transparency"></span><h1>solver.datamodel.preferences.Graphics.Transparency<a class="headerlink" href="#solver-datamodel-preferences-graphics-transparency" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.datamodel_231.preferences.Root.Graphics.</span></span><span class="sig-name descname"><span class="pre">Transparency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
+<p>Singleton Transparency.</p>
+<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../meshing/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.AlgorithmForModernDrivers" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.AlgorithmForModernDrivers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AlgorithmForModernDrivers</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter AlgorithmForModernDrivers of value type str.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../meshing/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.DepthPeelingLayers" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.DepthPeelingLayers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DepthPeelingLayers</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter DepthPeelingLayers of value type int.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../meshing/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.DepthPeelingPreference" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.DepthPeelingPreference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DepthPeelingPreference</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter DepthPeelingPreference of value type str.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../meshing/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.QuickMoves" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.QuickMoves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">QuickMoves</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter QuickMoves of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../meshing/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.ZSortOptions" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.ZSortOptions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZSortOptions</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter ZSortOptions of value type str.</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py class">
-<dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Root.Graphics.</span></span><span class="sig-name descname"><span class="pre">Transparency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Singleton Transparency.</p>
-<dl class="py class">
-<dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AlgorithmForModernDrivers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Parameter AlgorithmForModernDrivers of value type str.</p>
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.AlgorithmForModernDrivers">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AlgorithmForModernDrivers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.AlgorithmForModernDrivers" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter AlgorithmForModernDrivers of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DepthPeelingLayers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Parameter DepthPeelingLayers of value type int.</p>
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.DepthPeelingLayers">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DepthPeelingLayers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.DepthPeelingLayers" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter DepthPeelingLayers of value type int.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DepthPeelingPreference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Parameter DepthPeelingPreference of value type str.</p>
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.DepthPeelingPreference">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DepthPeelingPreference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.DepthPeelingPreference" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter DepthPeelingPreference of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">QuickMoves</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Parameter QuickMoves of value type str.</p>
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.QuickMoves">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">QuickMoves</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.QuickMoves" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter QuickMoves of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ZSortOptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Parameter ZSortOptions of value type str.</p>
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.ZSortOptions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ZSortOptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Transparency.ZSortOptions" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter ZSortOptions of value type str.</p>
 </dd></dl>
 
 </dd></dl>

@@ -5,11 +5,8 @@
 enthalpy
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.enthalpy
+.. autoclass:: ansys.fluent.core.solver.settings_231.enthalpy.enthalpy
 
-.. autoclass:: enthalpy
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =============================

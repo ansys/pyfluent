@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -56,7 +52,7 @@
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
     <link rel="next" title="meshing.tui.preferences.appearance.selections" href="selections/index.html" />
-    <link rel="prev" title="meshing.tui.preferences.navigation.mouse_mapping.basic" href="../navigation/mouse_mapping/basic/index.html" />
+    <link rel="prev" title="meshing.tui.preferences" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -303,13 +293,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -322,6 +307,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -333,13 +323,23 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../file/index.html">
-       meshing.tui.file
+      <a class="reference internal" href="../../diagnostics/index.html">
+       meshing.tui.diagnostics
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../objects/index.html">
-       meshing.tui.objects
+      <a class="reference internal" href="../../material_point/index.html">
+       meshing.tui.material_point
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../mesh/index.html">
+       meshing.tui.mesh
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -352,26 +352,6 @@ function checkPageExistsAndRedirect(event) {
        </i>
       </label>
       <ul class="current">
-       <li class="toctree-l4">
-        <a class="reference internal" href="../gpuapp/index.html">
-         meshing.tui.preferences.gpuapp
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../mat_pro_app/index.html">
-         meshing.tui.preferences.mat_pro_app
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../meshing_workflow/index.html">
-         meshing.tui.preferences.meshing_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../navigation/index.html">
-         meshing.tui.preferences.navigation
-        </a>
-       </li>
        <li class="toctree-l4 current active has-children">
         <a class="current reference internal" href="#">
          meshing.tui.preferences.appearance
@@ -388,20 +368,35 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="ansys_logo/index.html">
-           meshing.tui.preferences.appearance.ansys_logo
+          <a class="reference internal" href="charts/index.html">
+           meshing.tui.preferences.appearance.charts
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="charts/index.html">
-           meshing.tui.preferences.appearance.charts
+          <a class="reference internal" href="ansys_logo/index.html">
+           meshing.tui.preferences.appearance.ansys_logo
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../graphics/index.html">
+         meshing.tui.preferences.graphics
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../navigation/index.html">
+         meshing.tui.preferences.navigation
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../parametric_study/index.html">
          meshing.tui.preferences.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../meshing_workflow/index.html">
+         meshing.tui.preferences.meshing_workflow
         </a>
        </li>
        <li class="toctree-l4">
@@ -410,13 +405,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../graphics/index.html">
-         meshing.tui.preferences.graphics
+        <a class="reference internal" href="../simulation/index.html">
+         meshing.tui.preferences.simulation
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../simulation/index.html">
-         meshing.tui.preferences.simulation
+        <a class="reference internal" href="../gpuapp/index.html">
+         meshing.tui.preferences.gpuapp
         </a>
        </li>
        <li class="toctree-l4">
@@ -424,31 +419,21 @@ function checkPageExistsAndRedirect(event) {
          meshing.tui.preferences.general
         </a>
        </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../mat_pro_app/index.html">
+         meshing.tui.preferences.mat_pro_app
+        </a>
+       </li>
       </ul>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
+      <a class="reference internal" href="../../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../reference_frames/index.html">
-       meshing.tui.reference_frames
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../size_functions/index.html">
-       meshing.tui.size_functions
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../diagnostics/index.html">
-       meshing.tui.diagnostics
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../parallel/index.html">
-       meshing.tui.parallel
+      <a class="reference internal" href="../../objects/index.html">
+       meshing.tui.objects
       </a>
      </li>
      <li class="toctree-l3">
@@ -457,13 +442,8 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../mesh/index.html">
-       meshing.tui.mesh
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../display/index.html">
-       meshing.tui.display
+      <a class="reference internal" href="../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
       </a>
      </li>
      <li class="toctree-l3">
@@ -472,18 +452,28 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
+      <a class="reference internal" href="../../parallel/index.html">
+       meshing.tui.parallel
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../material_point/index.html">
-       meshing.tui.material_point
+      <a class="reference internal" href="../../display/index.html">
+       meshing.tui.display
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
+      <a class="reference internal" href="../../reference_frames/index.html">
+       meshing.tui.reference_frames
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../file/index.html">
+       meshing.tui.file
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../size_functions/index.html">
+       meshing.tui.size_functions
       </a>
      </li>
     </ul>
@@ -528,16 +518,45 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.preferences.appearance
+     appearance
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.ansys_logo">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       appearance.ansys_logo
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.ansys_logo.color">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.ansys_logo.color()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.ansys_logo.visible">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.ansys_logo.visible()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.application_font_size">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.application_font_size()
+       appearance.application_font_size()
       </span>
      </code>
     </a>
@@ -546,16 +565,220 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.axis_triad">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.axis_triad()
+       appearance.axis_triad()
       </span>
      </code>
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       appearance.charts
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.curve_colors">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.charts.curve_colors()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.enable_open_glfor_modern_plots">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.charts.enable_open_glfor_modern_plots()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.charts.font
+        </span>
+       </code>
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font.axes">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           appearance.charts.font.axes()
+          </span>
+         </code>
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font.axes_titles">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           appearance.charts.font.axes_titles()
+          </span>
+         </code>
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font.legend">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           appearance.charts.font.legend()
+          </span>
+         </code>
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font.title">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           appearance.charts.font.title()
+          </span>
+         </code>
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.legend_alignment">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.charts.legend_alignment()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.legend_visibility">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.charts.legend_visibility()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.modern_plots_enabled">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.charts.modern_plots_enabled()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.modern_plots_points_threshold">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.charts.modern_plots_points_threshold()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.plots_behavior">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.charts.plots_behavior()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.print_plot_data">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.charts.print_plot_data()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.print_residuals_data">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.charts.print_residuals_data()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.charts.text_color
+        </span>
+       </code>
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color.axes">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           appearance.charts.text_color.axes()
+          </span>
+         </code>
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color.axes_titles">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           appearance.charts.text_color.axes_titles()
+          </span>
+         </code>
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color.legend">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           appearance.charts.text_color.legend()
+          </span>
+         </code>
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color.title">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           appearance.charts.text_color.title()
+          </span>
+         </code>
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.threshold">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.charts.threshold()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.tooltip_interpolation">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.charts.tooltip_interpolation()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.color_theme">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.color_theme()
+       appearance.color_theme()
       </span>
      </code>
     </a>
@@ -564,7 +787,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.completer">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.completer()
+       appearance.completer()
       </span>
      </code>
     </a>
@@ -573,7 +796,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.custom_title_bar">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.custom_title_bar()
+       appearance.custom_title_bar()
       </span>
      </code>
     </a>
@@ -582,7 +805,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.default_view">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.default_view()
+       appearance.default_view()
       </span>
      </code>
     </a>
@@ -591,7 +814,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_background_color1">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.graphics_background_color1()
+       appearance.graphics_background_color1()
       </span>
      </code>
     </a>
@@ -600,7 +823,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_background_color2">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.graphics_background_color2()
+       appearance.graphics_background_color2()
       </span>
      </code>
     </a>
@@ -609,7 +832,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_background_style">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.graphics_background_style()
+       appearance.graphics_background_style()
       </span>
      </code>
     </a>
@@ -618,7 +841,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_color_theme">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.graphics_color_theme()
+       appearance.graphics_color_theme()
       </span>
      </code>
     </a>
@@ -627,7 +850,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_default_manual_face_color">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.graphics_default_manual_face_color()
+       appearance.graphics_default_manual_face_color()
       </span>
      </code>
     </a>
@@ -636,7 +859,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_default_manual_node_color">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.graphics_default_manual_node_color()
+       appearance.graphics_default_manual_node_color()
       </span>
      </code>
     </a>
@@ -645,7 +868,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_edge_color">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.graphics_edge_color()
+       appearance.graphics_edge_color()
       </span>
      </code>
     </a>
@@ -654,7 +877,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_foreground_color">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.graphics_foreground_color()
+       appearance.graphics_foreground_color()
       </span>
      </code>
     </a>
@@ -663,7 +886,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_partition_boundary_color">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.graphics_partition_boundary_color()
+       appearance.graphics_partition_boundary_color()
       </span>
      </code>
     </a>
@@ -672,7 +895,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_surface_color">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.graphics_surface_color()
+       appearance.graphics_surface_color()
       </span>
      </code>
     </a>
@@ -681,7 +904,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_title_window_framecolor">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.graphics_title_window_framecolor()
+       appearance.graphics_title_window_framecolor()
       </span>
      </code>
     </a>
@@ -690,7 +913,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_view">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.graphics_view()
+       appearance.graphics_view()
       </span>
      </code>
     </a>
@@ -699,7 +922,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_wall_face_color">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.graphics_wall_face_color()
+       appearance.graphics_wall_face_color()
       </span>
      </code>
     </a>
@@ -708,7 +931,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.group_by_tree_view">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.group_by_tree_view()
+       appearance.group_by_tree_view()
       </span>
      </code>
     </a>
@@ -717,7 +940,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.model_color_scheme">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.model_color_scheme()
+       appearance.model_color_scheme()
       </span>
      </code>
     </a>
@@ -726,7 +949,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.number_of_files_recently_used">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.number_of_files_recently_used()
+       appearance.number_of_files_recently_used()
       </span>
      </code>
     </a>
@@ -735,7 +958,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.number_of_pastel_colors">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.number_of_pastel_colors()
+       appearance.number_of_pastel_colors()
       </span>
      </code>
     </a>
@@ -744,7 +967,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.pastel_color_saturation">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.pastel_color_saturation()
+       appearance.pastel_color_saturation()
       </span>
      </code>
     </a>
@@ -753,7 +976,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.pastel_color_value">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.pastel_color_value()
+       appearance.pastel_color_value()
       </span>
      </code>
     </a>
@@ -762,7 +985,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.quick_property_view">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.quick_property_view()
+       appearance.quick_property_view()
       </span>
      </code>
     </a>
@@ -771,16 +994,126 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.ruler">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.ruler()
+       appearance.ruler()
       </span>
      </code>
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       appearance.selections
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.general_displacement">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.selections.general_displacement()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_edge_color">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.selections.highlight_edge_color()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_edge_weight">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.selections.highlight_edge_weight()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_face_color">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.selections.highlight_face_color()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_gloss">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.selections.highlight_gloss()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_specular_component">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.selections.highlight_specular_component()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_transparency">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.selections.highlight_transparency()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.mouse_hover_probe_values_enabled">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.selections.mouse_hover_probe_values_enabled()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.mouse_over_highlight_enabled">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.selections.mouse_over_highlight_enabled()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.probe_tooltip_hide_delay_timer">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.selections.probe_tooltip_hide_delay_timer()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.probe_tooltip_show_delay_timer">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         appearance.selections.probe_tooltip_show_delay_timer()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.show_enabled_models">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.show_enabled_models()
+       appearance.show_enabled_models()
       </span>
      </code>
     </a>
@@ -789,7 +1122,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.show_interface_children_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.show_interface_children_zone()
+       appearance.show_interface_children_zone()
       </span>
      </code>
     </a>
@@ -798,7 +1131,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.show_model_edges">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.show_model_edges()
+       appearance.show_model_edges()
       </span>
      </code>
     </a>
@@ -807,7 +1140,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.solution_mode_edge_color_in_meshing_mode">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.solution_mode_edge_color_in_meshing_mode()
+       appearance.solution_mode_edge_color_in_meshing_mode()
       </span>
      </code>
     </a>
@@ -816,7 +1149,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.surface_emissivity">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.surface_emissivity()
+       appearance.surface_emissivity()
       </span>
      </code>
     </a>
@@ -825,7 +1158,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.surface_specularity">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.surface_specularity()
+       appearance.surface_specularity()
       </span>
      </code>
     </a>
@@ -834,7 +1167,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.surface_specularity_for_contours">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.surface_specularity_for_contours()
+       appearance.surface_specularity_for_contours()
       </span>
      </code>
     </a>
@@ -843,7 +1176,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.titles">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.titles()
+       appearance.titles()
       </span>
      </code>
     </a>
@@ -852,7 +1185,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.titles_border_offset">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.titles_border_offset()
+       appearance.titles_border_offset()
       </span>
      </code>
     </a>
@@ -880,14 +1213,187 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-preferences-appearance">
 <span id="ref-meshing-tui-preferences-appearance"></span><h1>meshing.tui.preferences.appearance<a class="headerlink" href="#meshing-tui-preferences-appearance" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.preferences.</span></span><span class="sig-name descname"><span class="pre">appearance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the menu for preferences covering appearance.</p>
+<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.ansys_logo" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.ansys_logo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ansys_logo</span></code></a>(path, service)</p></td>
+<td><p>Enter the menu for controlling Ansys logo visibility.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">charts</span></code></a>(path, service)</p></td>
+<td><p>Enter the menu for controlling the display of 2D charts/plots.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections"><code class="xref py py-obj docutils literal notranslate"><span class="pre">selections</span></code></a>(path, service)</p></td>
+<td><p>Enters the menu for controlling selections in the graphics window.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.application_font_size" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.application_font_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">application_font_size</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.axis_triad" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.axis_triad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis_triad</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable or disable the visibility of the axis triad in the graphics window.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.color_theme" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.color_theme"><code class="xref py py-obj docutils literal notranslate"><span class="pre">color_theme</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify a color theme for the appearance of ANSYS Fluent.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.completer" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.completer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">completer</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable the console automatic-completer, which suggests available commands as you type in the console.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.custom_title_bar" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.custom_title_bar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">custom_title_bar</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.default_view" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.default_view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_view</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_background_color1" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_background_color1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphics_background_color1</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Controls the primary background color of the graphics window.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_background_color2" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_background_color2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphics_background_color2</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Controls the secondary background color when the style is set as a gradient.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_background_style" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_background_style"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphics_background_style</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify whether the background color is uniform or if there is a gradient.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_color_theme" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_color_theme"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphics_color_theme</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_default_manual_face_color" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_default_manual_face_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphics_default_manual_face_color</span></code></a>(*args, ...)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_default_manual_node_color" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_default_manual_node_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphics_default_manual_node_color</span></code></a>(*args, ...)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_edge_color" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_edge_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphics_edge_color</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_foreground_color" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_foreground_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphics_foreground_color</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify the color of graphics window text.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_partition_boundary_color" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_partition_boundary_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphics_partition_boundary_color</span></code></a>(*args, ...)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_surface_color" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_surface_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphics_surface_color</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_title_window_framecolor" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_title_window_framecolor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphics_title_window_framecolor</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_view" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphics_view</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify whether the default view is orthographic or perspective.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_wall_face_color" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.graphics_wall_face_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphics_wall_face_color</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the default face color for when the mesh is displayed.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.group_by_tree_view" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.group_by_tree_view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">group_by_tree_view</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify how boundary conditions are grouped in the tree.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.model_color_scheme" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.model_color_scheme"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_color_scheme</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.number_of_files_recently_used" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.number_of_files_recently_used"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_files_recently_used</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Controls how many recently-used files are listed in the File ribbon tab and the Fluent Launcher.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.number_of_pastel_colors" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.number_of_pastel_colors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_pastel_colors</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.pastel_color_saturation" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.pastel_color_saturation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pastel_color_saturation</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.pastel_color_value" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.pastel_color_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pastel_color_value</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.quick_property_view" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.quick_property_view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quick_property_view</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables/Disables the &quot;quick-edit&quot; properties panels that appear when you select a boundary in the graphics windows.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.ruler" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.ruler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ruler</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Adds or removes the ruler from the graphics window.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.show_enabled_models" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.show_enabled_models"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_enabled_models</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.show_interface_children_zone" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.show_interface_children_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_interface_children_zone</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable the showing of the non-overlapping zones and interior zones associated with one-to-one mesh interfaces under Setup / Boundary Conditions (under their zone types) in the outline view tree.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.show_model_edges" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.show_model_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_model_edges</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable whether mesh edges are shown in a mesh display.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.solution_mode_edge_color_in_meshing_mode" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.solution_mode_edge_color_in_meshing_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solution_mode_edge_color_in_meshing_mode</span></code></a>(...)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.surface_emissivity" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.surface_emissivity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">surface_emissivity</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.surface_specularity" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.surface_specularity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">surface_specularity</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify the specularity of all surfaces except those included in contour plots.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.surface_specularity_for_contours" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.surface_specularity_for_contours"><code class="xref py py-obj docutils literal notranslate"><span class="pre">surface_specularity_for_contours</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.titles" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.titles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">titles</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable the display of solver information in the graphics window.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.titles_border_offset" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.titles_border_offset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">titles_border_offset</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.preferences.</span></span><span class="sig-name descname"><span class="pre">appearance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the menu for preferences covering appearance.</p>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.ansys_logo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ansys_logo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.ansys_logo" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the menu for controlling Ansys logo visibility.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.ansys_logo.color" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.ansys_logo.color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">color</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify whether the Ansys logo is white or black.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.ansys_logo.visible" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.ansys_logo.visible"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visible</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable or disable the visibility of the Ansys logo in the graphics window.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.ansys_logo.color">
+<span class="sig-name descname"><span class="pre">color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.ansys_logo.color" title="Permalink to this definition">#</a></dt>
+<dd><p>Specify whether the Ansys logo is white or black.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.ansys_logo.visible">
+<span class="sig-name descname"><span class="pre">visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.ansys_logo.visible" title="Permalink to this definition">#</a></dt>
+<dd><p>Enable or disable the visibility of the Ansys logo in the graphics window.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.application_font_size">
 <span class="sig-name descname"><span class="pre">application_font_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.application_font_size" title="Permalink to this definition">#</a></dt>
@@ -898,6 +1404,243 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.axis_triad">
 <span class="sig-name descname"><span class="pre">axis_triad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.axis_triad" title="Permalink to this definition">#</a></dt>
 <dd><p>Enable or disable the visibility of the axis triad in the graphics window.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">charts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the menu for controlling the display of 2D charts/plots.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.curve_colors" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.curve_colors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">curve_colors</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify the initial set of default colors for the rendering of curves.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.enable_open_glfor_modern_plots" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.enable_open_glfor_modern_plots"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_open_glfor_modern_plots</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.legend_alignment" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.legend_alignment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">legend_alignment</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.legend_visibility" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.legend_visibility"><code class="xref py py-obj docutils literal notranslate"><span class="pre">legend_visibility</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.modern_plots_enabled" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.modern_plots_enabled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modern_plots_enabled</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables enhanced plots, which is a beta feature.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.modern_plots_points_threshold" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.modern_plots_points_threshold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modern_plots_points_threshold</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.plots_behavior" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.plots_behavior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plots_behavior</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.print_plot_data" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.print_plot_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_plot_data</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.print_residuals_data" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.print_residuals_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_residuals_data</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.threshold" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.threshold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">threshold</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.tooltip_interpolation" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.tooltip_interpolation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tooltip_interpolation</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font"><code class="xref py py-obj docutils literal notranslate"><span class="pre">font</span></code></a>(path, service)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_color</span></code></a>(path, service)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.curve_colors">
+<span class="sig-name descname"><span class="pre">curve_colors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.curve_colors" title="Permalink to this definition">#</a></dt>
+<dd><p>Specify the initial set of default colors for the rendering of curves. Note that changing this setting requires any plots to be replotted before you see the effect of the new setting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.enable_open_glfor_modern_plots">
+<span class="sig-name descname"><span class="pre">enable_open_glfor_modern_plots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.enable_open_glfor_modern_plots" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">font</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font.axes" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font.axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axes</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font.axes_titles" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font.axes_titles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axes_titles</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font.legend" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font.legend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">legend</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font.title" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font.title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">title</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font.axes">
+<span class="sig-name descname"><span class="pre">axes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font.axes" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font.axes_titles">
+<span class="sig-name descname"><span class="pre">axes_titles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font.axes_titles" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font.legend">
+<span class="sig-name descname"><span class="pre">legend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font.legend" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.font.title" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.legend_alignment">
+<span class="sig-name descname"><span class="pre">legend_alignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.legend_alignment" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.legend_visibility">
+<span class="sig-name descname"><span class="pre">legend_visibility</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.legend_visibility" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.modern_plots_enabled">
+<span class="sig-name descname"><span class="pre">modern_plots_enabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.modern_plots_enabled" title="Permalink to this definition">#</a></dt>
+<dd><p>Enables enhanced plots, which is a beta feature. Enabling this feature exposes new fields (all beta functionality).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.modern_plots_points_threshold">
+<span class="sig-name descname"><span class="pre">modern_plots_points_threshold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.modern_plots_points_threshold" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.plots_behavior">
+<span class="sig-name descname"><span class="pre">plots_behavior</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.plots_behavior" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.print_plot_data">
+<span class="sig-name descname"><span class="pre">print_plot_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.print_plot_data" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.print_residuals_data">
+<span class="sig-name descname"><span class="pre">print_residuals_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.print_residuals_data" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">text_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color.axes" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color.axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axes</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color.axes_titles" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color.axes_titles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axes_titles</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color.legend" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color.legend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">legend</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color.title" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color.title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">title</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color.axes">
+<span class="sig-name descname"><span class="pre">axes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color.axes" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color.axes_titles">
+<span class="sig-name descname"><span class="pre">axes_titles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color.axes_titles" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color.legend">
+<span class="sig-name descname"><span class="pre">legend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color.legend" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.text_color.title" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.threshold">
+<span class="sig-name descname"><span class="pre">threshold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.threshold" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.tooltip_interpolation">
+<span class="sig-name descname"><span class="pre">tooltip_interpolation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts.tooltip_interpolation" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py method">
@@ -1048,6 +1791,123 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.ruler">
 <span class="sig-name descname"><span class="pre">ruler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.ruler" title="Permalink to this definition">#</a></dt>
 <dd><p>Adds or removes the ruler from the graphics window. Note that you must be in orthographic view for the ruler to be visible in the graphics  window.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">selections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enters the menu for controlling selections in the graphics window.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.general_displacement" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.general_displacement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">general_displacement</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_edge_color" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_edge_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">highlight_edge_color</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the color used to highlight edges when the Hover-Over Highlight feature is enabled (mouse-over-highlight-enabled).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_edge_weight" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_edge_weight"><code class="xref py py-obj docutils literal notranslate"><span class="pre">highlight_edge_weight</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the thickness of the edge highlights when the Hover-Over Highlight feature is enabled (mouse-over-highlight-enabled).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_face_color" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_face_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">highlight_face_color</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify which color indicates that a face is selected.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_gloss" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_gloss"><code class="xref py py-obj docutils literal notranslate"><span class="pre">highlight_gloss</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_specular_component" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_specular_component"><code class="xref py py-obj docutils literal notranslate"><span class="pre">highlight_specular_component</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_transparency" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_transparency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">highlight_transparency</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify the transparency of the coloring on a selected surface.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.mouse_hover_probe_values_enabled" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.mouse_hover_probe_values_enabled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mouse_hover_probe_values_enabled</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.mouse_over_highlight_enabled" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.mouse_over_highlight_enabled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mouse_over_highlight_enabled</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable the highlighted outline of a surface when hovered-over.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.probe_tooltip_hide_delay_timer" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.probe_tooltip_hide_delay_timer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">probe_tooltip_hide_delay_timer</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.probe_tooltip_show_delay_timer" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.probe_tooltip_show_delay_timer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">probe_tooltip_show_delay_timer</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.general_displacement">
+<span class="sig-name descname"><span class="pre">general_displacement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.general_displacement" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_edge_color">
+<span class="sig-name descname"><span class="pre">highlight_edge_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_edge_color" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies the color used to highlight edges when the Hover-Over Highlight feature is enabled (mouse-over-highlight-enabled).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_edge_weight">
+<span class="sig-name descname"><span class="pre">highlight_edge_weight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_edge_weight" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies the thickness of the edge highlights when the Hover-Over Highlight feature is enabled (mouse-over-highlight-enabled).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_face_color">
+<span class="sig-name descname"><span class="pre">highlight_face_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_face_color" title="Permalink to this definition">#</a></dt>
+<dd><p>Specify which color indicates that a face is selected.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_gloss">
+<span class="sig-name descname"><span class="pre">highlight_gloss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_gloss" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_specular_component">
+<span class="sig-name descname"><span class="pre">highlight_specular_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_specular_component" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_transparency">
+<span class="sig-name descname"><span class="pre">highlight_transparency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.highlight_transparency" title="Permalink to this definition">#</a></dt>
+<dd><p>Specify the transparency of the coloring on a selected surface. 0.1 is fully opaque and 1 is fully transparent.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.mouse_hover_probe_values_enabled">
+<span class="sig-name descname"><span class="pre">mouse_hover_probe_values_enabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.mouse_hover_probe_values_enabled" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.mouse_over_highlight_enabled">
+<span class="sig-name descname"><span class="pre">mouse_over_highlight_enabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.mouse_over_highlight_enabled" title="Permalink to this definition">#</a></dt>
+<dd><p>Enable/disable the highlighted outline of a surface when hovered-over. Note that objects must be redisplayed after changing this setting before the new setting is visible.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.probe_tooltip_hide_delay_timer">
+<span class="sig-name descname"><span class="pre">probe_tooltip_hide_delay_timer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.probe_tooltip_hide_delay_timer" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.probe_tooltip_show_delay_timer">
+<span class="sig-name descname"><span class="pre">probe_tooltip_show_delay_timer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.selections.probe_tooltip_show_delay_timer" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py method">

@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -55,8 +51,8 @@
     <link rel="shortcut icon" href="../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Reduction" href="reduction.html" />
-    <link rel="prev" title="EventsManager" href="events.html" />
+    <link rel="next" title="ansys.fluent.core.streaming_services.monitor_streaming.MonitorsManager" href="_autosummary/ansys.fluent.core.streaming_services.monitor_streaming.MonitorsManager.html" />
+    <link rel="prev" title="unregister_callback" href="_autosummary/ansys.fluent.core.streaming_services.events_streaming.EventsManager.unregister_callback.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -301,13 +291,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -360,10 +345,22 @@ function checkPageExistsAndRedirect(event) {
      EventsManager
     </a>
    </li>
-   <li class="toctree-l2 current active">
+   <li class="toctree-l2 current active has-children">
     <a class="current reference internal" href="#">
      MonitorsManager
     </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+    <label for="toctree-checkbox-2">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="_autosummary/ansys.fluent.core.streaming_services.monitor_streaming.MonitorsManager.html">
+       ansys.fluent.core.streaming_services.monitor_streaming.MonitorsManager
+      </a>
+     </li>
+    </ul>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="reduction.html">
@@ -390,41 +387,9 @@ function checkPageExistsAndRedirect(event) {
     
     <div class="toc-item">
       
-<div class="tocsection onthispage mt-5 pt-1 pb-3">
-    <i class="fas fa-list"></i> On this page
-</div>
 
 <nav id="bd-toc-nav">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.streaming_services.monitor_streaming.MonitorsManager.get_monitor_set_names">
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     MonitorsManager.get_monitor_set_names()
-    </span>
-   </code>
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.streaming_services.monitor_streaming.MonitorsManager.get_monitor_set_data">
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     MonitorsManager.get_monitor_set_data()
-    </span>
-   </code>
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.streaming_services.monitor_streaming.MonitorsManager.get_monitor_set_plot">
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     MonitorsManager.get_monitor_set_plot()
-    </span>
-   </code>
-  </a>
- </li>
-</ul>
-
+    
 </nav>
     </div>
     
@@ -448,82 +413,11 @@ function checkPageExistsAndRedirect(event) {
 property in each solution-mode session object. It provides access to server monitors.</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/ansys.fluent.core.streaming_services.monitor_streaming.MonitorsManager.html#ansys.fluent.core.streaming_services.monitor_streaming.MonitorsManager" title="ansys.fluent.core.streaming_services.monitor_streaming.MonitorsManager"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MonitorsManager</span></code></a>(session_id, service)</p></td>
+<td><p>Manages monitors (Fluent residuals and report definitions monitors).</p></td>
+</tr>
 </tbody>
 </table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.streaming_services.monitor_streaming.MonitorsManager.get_monitor_set_names">
-<span class="sig-prename descclassname"><span class="pre">MonitorsManager.</span></span><span class="sig-name descname"><span class="pre">get_monitor_set_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.streaming_services.monitor_streaming.MonitorsManager.get_monitor_set_names" title="Permalink to this definition">#</a></dt>
-<dd><p>Get monitor set names.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>None</strong></dt><dd></dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a>]</dt><dd><p>List of all monitor set names.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.streaming_services.monitor_streaming.MonitorsManager.get_monitor_set_data">
-<span class="sig-prename descclassname"><span class="pre">MonitorsManager.</span></span><span class="sig-name descname"><span class="pre">get_monitor_set_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">monitor_set_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.streaming_services.monitor_streaming.MonitorsManager.get_monitor_set_data" title="Permalink to this definition">#</a></dt>
-<dd><p>Get monitor set data.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>monitor_set_name</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the monitor set.</p>
-</dd>
-<dt><strong>start_index: int, optional</strong></dt><dd><p>Start index to provide data.</p>
-</dd>
-<dt><strong>end_index: int, optional</strong></dt><dd><p>End index to provide data.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">np.array</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">Dict</span></code>[<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">np.array</span></code>]]</dt><dd><p>Tuple containing two elements: a numpy array of x-axis values and a dictionary
-associating monitor names of type <code class="docutils literal notranslate"><span class="pre">str</span></code> to numpy arrays of y-axis values.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Tuple" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code>, <a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code>]]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.streaming_services.monitor_streaming.MonitorsManager.get_monitor_set_plot">
-<span class="sig-prename descclassname"><span class="pre">MonitorsManager.</span></span><span class="sig-name descname"><span class="pre">get_monitor_set_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">monitor_set_name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.streaming_services.monitor_streaming.MonitorsManager.get_monitor_set_plot" title="Permalink to this definition">#</a></dt>
-<dd><p>Get monitor set plot.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>monitor_set_name</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the monitor.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>, <a class="reference external" href="https://docs.python.org/dev/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></a>]</dt><dd><p>Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if the <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html">DataFrame</a>
-is empty. Otherwise, it returns the plot object, depending on the <code class="docutils literal notranslate"><span class="pre">plotting.backend</span></code>.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/dev/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
 </section>
 
 

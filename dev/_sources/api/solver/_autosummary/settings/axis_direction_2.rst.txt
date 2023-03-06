@@ -5,11 +5,8 @@
 axis_direction
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.axis_direction_2
+.. autoclass:: ansys.fluent.core.solver.settings_231.axis_direction_2.axis_direction
 
-.. autoclass:: axis_direction
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`axis_direction_child <axis_direction_child>`

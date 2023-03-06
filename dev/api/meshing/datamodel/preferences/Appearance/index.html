@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -303,13 +293,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -322,6 +307,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../tui/index.html">
      meshing.tui
@@ -478,16 +468,45 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance">
    <code class="docutils literal notranslate">
     <span class="pre">
-     Root.Appearance
+     Appearance
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.AnsysLogo">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Appearance.AnsysLogo
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.AnsysLogo.Color">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.AnsysLogo.Color
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.AnsysLogo.Visible">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.AnsysLogo.Visible
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ApplicationFontSize">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.ApplicationFontSize
+       Appearance.ApplicationFontSize
       </span>
      </code>
     </a>
@@ -496,16 +515,220 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.AxisTriad">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.AxisTriad
+       Appearance.AxisTriad
       </span>
      </code>
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Appearance.Charts
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.CurveColors">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Charts.CurveColors
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.EnableOpenGLForModernPlots">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Charts.EnableOpenGLForModernPlots
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Charts.Font
+        </span>
+       </code>
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Axes">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           Appearance.Charts.Font.Axes
+          </span>
+         </code>
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.AxesTitles">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           Appearance.Charts.Font.AxesTitles
+          </span>
+         </code>
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Legend">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           Appearance.Charts.Font.Legend
+          </span>
+         </code>
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Title">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           Appearance.Charts.Font.Title
+          </span>
+         </code>
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.LegendAlignment">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Charts.LegendAlignment
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.LegendVisibility">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Charts.LegendVisibility
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.ModernPlotsEnabled">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Charts.ModernPlotsEnabled
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.ModernPlotsPointsThreshold">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Charts.ModernPlotsPointsThreshold
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.PlotsBehavior">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Charts.PlotsBehavior
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.PrintPlotData">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Charts.PrintPlotData
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.PrintResidualsData">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Charts.PrintResidualsData
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Charts.TextColor
+        </span>
+       </code>
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           Appearance.Charts.TextColor.Axes
+          </span>
+         </code>
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           Appearance.Charts.TextColor.AxesTitles
+          </span>
+         </code>
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           Appearance.Charts.TextColor.Legend
+          </span>
+         </code>
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           Appearance.Charts.TextColor.Title
+          </span>
+         </code>
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Threshold">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Charts.Threshold
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TooltipInterpolation">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Charts.TooltipInterpolation
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ColorTheme">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.ColorTheme
+       Appearance.ColorTheme
       </span>
      </code>
     </a>
@@ -514,7 +737,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Completer">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.Completer
+       Appearance.Completer
       </span>
      </code>
     </a>
@@ -523,7 +746,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.CustomTitleBar">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.CustomTitleBar
+       Appearance.CustomTitleBar
       </span>
      </code>
     </a>
@@ -532,7 +755,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.DefaultView">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.DefaultView
+       Appearance.DefaultView
       </span>
      </code>
     </a>
@@ -541,7 +764,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsBackgroundColor1">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.GraphicsBackgroundColor1
+       Appearance.GraphicsBackgroundColor1
       </span>
      </code>
     </a>
@@ -550,7 +773,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsBackgroundColor2">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.GraphicsBackgroundColor2
+       Appearance.GraphicsBackgroundColor2
       </span>
      </code>
     </a>
@@ -559,7 +782,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsBackgroundStyle">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.GraphicsBackgroundStyle
+       Appearance.GraphicsBackgroundStyle
       </span>
      </code>
     </a>
@@ -568,7 +791,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsColorTheme">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.GraphicsColorTheme
+       Appearance.GraphicsColorTheme
       </span>
      </code>
     </a>
@@ -577,7 +800,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsDefaultManualFaceColor">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.GraphicsDefaultManualFaceColor
+       Appearance.GraphicsDefaultManualFaceColor
       </span>
      </code>
     </a>
@@ -586,7 +809,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsDefaultManualNodeColor">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.GraphicsDefaultManualNodeColor
+       Appearance.GraphicsDefaultManualNodeColor
       </span>
      </code>
     </a>
@@ -595,7 +818,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsEdgeColor">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.GraphicsEdgeColor
+       Appearance.GraphicsEdgeColor
       </span>
      </code>
     </a>
@@ -604,7 +827,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsForegroundColor">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.GraphicsForegroundColor
+       Appearance.GraphicsForegroundColor
       </span>
      </code>
     </a>
@@ -613,7 +836,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsPartitionBoundaryColor">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.GraphicsPartitionBoundaryColor
+       Appearance.GraphicsPartitionBoundaryColor
       </span>
      </code>
     </a>
@@ -622,7 +845,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsSurfaceColor">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.GraphicsSurfaceColor
+       Appearance.GraphicsSurfaceColor
       </span>
      </code>
     </a>
@@ -631,7 +854,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsTitleWindowFramecolor">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.GraphicsTitleWindowFramecolor
+       Appearance.GraphicsTitleWindowFramecolor
       </span>
      </code>
     </a>
@@ -640,7 +863,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsView">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.GraphicsView
+       Appearance.GraphicsView
       </span>
      </code>
     </a>
@@ -649,7 +872,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsWallFaceColor">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.GraphicsWallFaceColor
+       Appearance.GraphicsWallFaceColor
       </span>
      </code>
     </a>
@@ -658,7 +881,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GroupByTreeView">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.GroupByTreeView
+       Appearance.GroupByTreeView
       </span>
      </code>
     </a>
@@ -667,7 +890,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ModelColorScheme">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.ModelColorScheme
+       Appearance.ModelColorScheme
       </span>
      </code>
     </a>
@@ -676,7 +899,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.NumberOfFilesRecentlyUsed">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.NumberOfFilesRecentlyUsed
+       Appearance.NumberOfFilesRecentlyUsed
       </span>
      </code>
     </a>
@@ -685,7 +908,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.NumberOfPastelColors">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.NumberOfPastelColors
+       Appearance.NumberOfPastelColors
       </span>
      </code>
     </a>
@@ -694,7 +917,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.PastelColorSaturation">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.PastelColorSaturation
+       Appearance.PastelColorSaturation
       </span>
      </code>
     </a>
@@ -703,7 +926,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.PastelColorValue">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.PastelColorValue
+       Appearance.PastelColorValue
       </span>
      </code>
     </a>
@@ -712,7 +935,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.QuickPropertyView">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.QuickPropertyView
+       Appearance.QuickPropertyView
       </span>
      </code>
     </a>
@@ -721,16 +944,126 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Ruler">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.Ruler
+       Appearance.Ruler
       </span>
      </code>
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Appearance.Selections
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.GeneralDisplacement">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Selections.GeneralDisplacement
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightEdgeColor">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Selections.HighlightEdgeColor
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightEdgeWeight">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Selections.HighlightEdgeWeight
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightFaceColor">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Selections.HighlightFaceColor
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightGloss">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Selections.HighlightGloss
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightSpecularComponent">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Selections.HighlightSpecularComponent
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightTransparency">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Selections.HighlightTransparency
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.MouseHoverProbeValuesEnabled">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Selections.MouseHoverProbeValuesEnabled
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.MouseOverHighlightEnabled">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Selections.MouseOverHighlightEnabled
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.ProbeTooltipHideDelayTimer">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Selections.ProbeTooltipHideDelayTimer
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.ProbeTooltipShowDelayTimer">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         Appearance.Selections.ProbeTooltipShowDelayTimer
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ShowEnabledModels">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.ShowEnabledModels
+       Appearance.ShowEnabledModels
       </span>
      </code>
     </a>
@@ -739,7 +1072,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ShowInterfaceChildrenZone">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.ShowInterfaceChildrenZone
+       Appearance.ShowInterfaceChildrenZone
       </span>
      </code>
     </a>
@@ -748,7 +1081,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ShowModelEdges">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.ShowModelEdges
+       Appearance.ShowModelEdges
       </span>
      </code>
     </a>
@@ -757,7 +1090,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.SolutionModeEdgeColorInMeshingMode">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.SolutionModeEdgeColorInMeshingMode
+       Appearance.SolutionModeEdgeColorInMeshingMode
       </span>
      </code>
     </a>
@@ -766,7 +1099,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.SurfaceEmissivity">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.SurfaceEmissivity
+       Appearance.SurfaceEmissivity
       </span>
      </code>
     </a>
@@ -775,7 +1108,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.SurfaceSpecularity">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.SurfaceSpecularity
+       Appearance.SurfaceSpecularity
       </span>
      </code>
     </a>
@@ -784,7 +1117,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.SurfaceSpecularityForContours">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.SurfaceSpecularityForContours
+       Appearance.SurfaceSpecularityForContours
       </span>
      </code>
     </a>
@@ -793,7 +1126,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Titles">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.Titles
+       Appearance.Titles
       </span>
      </code>
     </a>
@@ -802,7 +1135,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.TitlesBorderOffset">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Appearance.TitlesBorderOffset
+       Appearance.TitlesBorderOffset
       </span>
      </code>
     </a>
@@ -830,228 +1163,769 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-datamodel-preferences-appearance">
 <span id="ref-meshing-datamodel-preferences-appearance"></span><h1>meshing.datamodel.preferences.Appearance<a class="headerlink" href="#meshing-datamodel-preferences-appearance" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.datamodel_231.preferences.Root.</span></span><span class="sig-name descname"><span class="pre">Appearance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
+<p>Singleton Appearance.</p>
+<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.AnsysLogo" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.AnsysLogo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AnsysLogo</span></code></a>(service, rules, path)</p></td>
+<td><p>Singleton AnsysLogo.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ApplicationFontSize" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ApplicationFontSize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ApplicationFontSize</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter ApplicationFontSize of value type int.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.AxisTriad" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.AxisTriad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AxisTriad</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter AxisTriad of value type bool.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Charts</span></code></a>(service, rules, path)</p></td>
+<td><p>Singleton Charts.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ColorTheme" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ColorTheme"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ColorTheme</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter ColorTheme of value type str.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Completer" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Completer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Completer</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Completer of value type bool.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.CustomTitleBar" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.CustomTitleBar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CustomTitleBar</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter CustomTitleBar of value type bool.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.DefaultView" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.DefaultView"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DefaultView</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter DefaultView of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsBackgroundColor1" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsBackgroundColor1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GraphicsBackgroundColor1</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter GraphicsBackgroundColor1 of value type str.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsBackgroundColor2" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsBackgroundColor2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GraphicsBackgroundColor2</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter GraphicsBackgroundColor2 of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsBackgroundStyle" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsBackgroundStyle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GraphicsBackgroundStyle</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter GraphicsBackgroundStyle of value type str.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsColorTheme" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsColorTheme"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GraphicsColorTheme</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter GraphicsColorTheme of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsDefaultManualFaceColor" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsDefaultManualFaceColor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GraphicsDefaultManualFaceColor</span></code></a>(service, rules)</p></td>
+<td><p>Parameter GraphicsDefaultManualFaceColor of value type str.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsDefaultManualNodeColor" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsDefaultManualNodeColor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GraphicsDefaultManualNodeColor</span></code></a>(service, rules)</p></td>
+<td><p>Parameter GraphicsDefaultManualNodeColor of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsEdgeColor" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsEdgeColor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GraphicsEdgeColor</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter GraphicsEdgeColor of value type str.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsForegroundColor" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsForegroundColor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GraphicsForegroundColor</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter GraphicsForegroundColor of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsPartitionBoundaryColor" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsPartitionBoundaryColor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GraphicsPartitionBoundaryColor</span></code></a>(service, rules)</p></td>
+<td><p>Parameter GraphicsPartitionBoundaryColor of value type str.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsSurfaceColor" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsSurfaceColor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GraphicsSurfaceColor</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter GraphicsSurfaceColor of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsTitleWindowFramecolor" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsTitleWindowFramecolor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GraphicsTitleWindowFramecolor</span></code></a>(service, rules)</p></td>
+<td><p>Parameter GraphicsTitleWindowFramecolor of value type str.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsView" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsView"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GraphicsView</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter GraphicsView of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsWallFaceColor" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsWallFaceColor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GraphicsWallFaceColor</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter GraphicsWallFaceColor of value type str.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GroupByTreeView" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GroupByTreeView"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GroupByTreeView</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter GroupByTreeView of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ModelColorScheme" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ModelColorScheme"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelColorScheme</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter ModelColorScheme of value type str.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.NumberOfFilesRecentlyUsed" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.NumberOfFilesRecentlyUsed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NumberOfFilesRecentlyUsed</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter NumberOfFilesRecentlyUsed of value type int.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.NumberOfPastelColors" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.NumberOfPastelColors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NumberOfPastelColors</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter NumberOfPastelColors of value type str.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.PastelColorSaturation" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.PastelColorSaturation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PastelColorSaturation</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter PastelColorSaturation of value type float.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.PastelColorValue" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.PastelColorValue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PastelColorValue</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter PastelColorValue of value type float.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.QuickPropertyView" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.QuickPropertyView"><code class="xref py py-obj docutils literal notranslate"><span class="pre">QuickPropertyView</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter QuickPropertyView of value type bool.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Ruler" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Ruler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Ruler</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Ruler of value type bool.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Selections</span></code></a>(service, rules, path)</p></td>
+<td><p>Singleton Selections.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ShowEnabledModels" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ShowEnabledModels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ShowEnabledModels</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter ShowEnabledModels of value type bool.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ShowInterfaceChildrenZone" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ShowInterfaceChildrenZone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ShowInterfaceChildrenZone</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter ShowInterfaceChildrenZone of value type bool.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ShowModelEdges" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ShowModelEdges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ShowModelEdges</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter ShowModelEdges of value type bool.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.SolutionModeEdgeColorInMeshingMode" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.SolutionModeEdgeColorInMeshingMode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SolutionModeEdgeColorInMeshingMode</span></code></a>(service, ...)</p></td>
+<td><p>Parameter SolutionModeEdgeColorInMeshingMode of value type bool.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.SurfaceEmissivity" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.SurfaceEmissivity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SurfaceEmissivity</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter SurfaceEmissivity of value type float.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.SurfaceSpecularity" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.SurfaceSpecularity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SurfaceSpecularity</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter SurfaceSpecularity of value type float.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.SurfaceSpecularityForContours" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.SurfaceSpecularityForContours"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SurfaceSpecularityForContours</span></code></a>(service, rules)</p></td>
+<td><p>Parameter SurfaceSpecularityForContours of value type float.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Titles" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Titles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Titles</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Titles of value type bool.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.TitlesBorderOffset" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.TitlesBorderOffset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TitlesBorderOffset</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter TitlesBorderOffset of value type float.</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Root.</span></span><span class="sig-name descname"><span class="pre">Appearance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance" title="Permalink to this definition">#</a></dt>
-<dd><p>Singleton Appearance.</p>
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.AnsysLogo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AnsysLogo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.AnsysLogo" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
+<p>Singleton AnsysLogo.</p>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.AnsysLogo.Color" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.AnsysLogo.Color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Color</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Color of value type str.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.AnsysLogo.Visible" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.AnsysLogo.Visible"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Visible</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Visible of value type bool.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.AnsysLogo.Color">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.AnsysLogo.Color" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter Color of value type str.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.AnsysLogo.Visible">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.AnsysLogo.Visible" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter Visible of value type bool.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ApplicationFontSize">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ApplicationFontSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ApplicationFontSize" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter ApplicationFontSize of value type int.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter ApplicationFontSize of value type int.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.AxisTriad">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AxisTriad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.AxisTriad" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter AxisTriad of value type bool.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter AxisTriad of value type bool.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Charts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
+<p>Singleton Charts.</p>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.CurveColors" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.CurveColors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CurveColors</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter CurveColors of value type str.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.EnableOpenGLForModernPlots" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.EnableOpenGLForModernPlots"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EnableOpenGLForModernPlots</span></code></a>(service, rules[, ...])</p></td>
+<td><p>Parameter EnableOpenGLForModernPlots of value type bool.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Font</span></code></a>(service, rules, path)</p></td>
+<td><p>Singleton Font.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.LegendAlignment" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.LegendAlignment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LegendAlignment</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter LegendAlignment of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.LegendVisibility" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.LegendVisibility"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LegendVisibility</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter LegendVisibility of value type bool.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.ModernPlotsEnabled" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.ModernPlotsEnabled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModernPlotsEnabled</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter ModernPlotsEnabled of value type bool.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.ModernPlotsPointsThreshold" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.ModernPlotsPointsThreshold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModernPlotsPointsThreshold</span></code></a>(service, rules[, ...])</p></td>
+<td><p>Parameter ModernPlotsPointsThreshold of value type bool.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.PlotsBehavior" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.PlotsBehavior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlotsBehavior</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter PlotsBehavior of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.PrintPlotData" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.PrintPlotData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PrintPlotData</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter PrintPlotData of value type bool.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.PrintResidualsData" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.PrintResidualsData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PrintResidualsData</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter PrintResidualsData of value type int.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TextColor</span></code></a>(service, rules, path)</p></td>
+<td><p>Singleton TextColor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Threshold" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Threshold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Threshold</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Threshold of value type int.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TooltipInterpolation" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TooltipInterpolation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TooltipInterpolation</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter TooltipInterpolation of value type bool.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.CurveColors">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CurveColors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.CurveColors" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter CurveColors of value type str.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.EnableOpenGLForModernPlots">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EnableOpenGLForModernPlots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.EnableOpenGLForModernPlots" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter EnableOpenGLForModernPlots of value type bool.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Font</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
+<p>Singleton Font.</p>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Axes" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Axes</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Axes of value type str.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.AxesTitles" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.AxesTitles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AxesTitles</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter AxesTitles of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Legend" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Legend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Legend</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Legend of value type str.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Title" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Title</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Title of value type str.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Axes">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Axes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Axes" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter Axes of value type str.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.AxesTitles">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AxesTitles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.AxesTitles" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter AxesTitles of value type str.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Legend">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Legend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Legend" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter Legend of value type str.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Title">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Title</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Font.Title" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter Title of value type str.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.LegendAlignment">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LegendAlignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.LegendAlignment" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter LegendAlignment of value type str.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.LegendVisibility">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LegendVisibility</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.LegendVisibility" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter LegendVisibility of value type bool.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.ModernPlotsEnabled">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ModernPlotsEnabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.ModernPlotsEnabled" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter ModernPlotsEnabled of value type bool.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.ModernPlotsPointsThreshold">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ModernPlotsPointsThreshold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.ModernPlotsPointsThreshold" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter ModernPlotsPointsThreshold of value type bool.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.PlotsBehavior">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PlotsBehavior</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.PlotsBehavior" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter PlotsBehavior of value type str.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.PrintPlotData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PrintPlotData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.PrintPlotData" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter PrintPlotData of value type bool.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.PrintResidualsData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PrintResidualsData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.PrintResidualsData" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter PrintResidualsData of value type int.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TextColor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
+<p>Singleton TextColor.</p>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Axes</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Axes of value type str.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AxesTitles</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter AxesTitles of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Legend</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Legend of value type str.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Title</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Title of value type str.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Axes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Axes" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter Axes of value type str.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AxesTitles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.AxesTitles" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter AxesTitles of value type str.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Legend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Legend" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter Legend of value type str.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Title</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TextColor.Title" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter Title of value type str.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Threshold">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Threshold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.Threshold" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter Threshold of value type int.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TooltipInterpolation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TooltipInterpolation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Charts.TooltipInterpolation" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter TooltipInterpolation of value type bool.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ColorTheme">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ColorTheme</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ColorTheme" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter ColorTheme of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter ColorTheme of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Completer">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Completer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Completer" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter Completer of value type bool.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter Completer of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.CustomTitleBar">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CustomTitleBar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.CustomTitleBar" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter CustomTitleBar of value type bool.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter CustomTitleBar of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.DefaultView">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DefaultView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.DefaultView" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter DefaultView of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter DefaultView of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsBackgroundColor1">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GraphicsBackgroundColor1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsBackgroundColor1" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter GraphicsBackgroundColor1 of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter GraphicsBackgroundColor1 of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsBackgroundColor2">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GraphicsBackgroundColor2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsBackgroundColor2" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter GraphicsBackgroundColor2 of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter GraphicsBackgroundColor2 of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsBackgroundStyle">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GraphicsBackgroundStyle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsBackgroundStyle" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter GraphicsBackgroundStyle of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter GraphicsBackgroundStyle of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsColorTheme">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GraphicsColorTheme</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsColorTheme" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter GraphicsColorTheme of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter GraphicsColorTheme of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsDefaultManualFaceColor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GraphicsDefaultManualFaceColor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsDefaultManualFaceColor" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter GraphicsDefaultManualFaceColor of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter GraphicsDefaultManualFaceColor of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsDefaultManualNodeColor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GraphicsDefaultManualNodeColor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsDefaultManualNodeColor" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter GraphicsDefaultManualNodeColor of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter GraphicsDefaultManualNodeColor of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsEdgeColor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GraphicsEdgeColor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsEdgeColor" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter GraphicsEdgeColor of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter GraphicsEdgeColor of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsForegroundColor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GraphicsForegroundColor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsForegroundColor" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter GraphicsForegroundColor of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter GraphicsForegroundColor of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsPartitionBoundaryColor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GraphicsPartitionBoundaryColor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsPartitionBoundaryColor" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter GraphicsPartitionBoundaryColor of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter GraphicsPartitionBoundaryColor of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsSurfaceColor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GraphicsSurfaceColor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsSurfaceColor" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter GraphicsSurfaceColor of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter GraphicsSurfaceColor of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsTitleWindowFramecolor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GraphicsTitleWindowFramecolor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsTitleWindowFramecolor" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter GraphicsTitleWindowFramecolor of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter GraphicsTitleWindowFramecolor of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsView">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GraphicsView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsView" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter GraphicsView of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter GraphicsView of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsWallFaceColor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GraphicsWallFaceColor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GraphicsWallFaceColor" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter GraphicsWallFaceColor of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter GraphicsWallFaceColor of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GroupByTreeView">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GroupByTreeView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.GroupByTreeView" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter GroupByTreeView of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter GroupByTreeView of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ModelColorScheme">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ModelColorScheme</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ModelColorScheme" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter ModelColorScheme of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter ModelColorScheme of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.NumberOfFilesRecentlyUsed">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NumberOfFilesRecentlyUsed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.NumberOfFilesRecentlyUsed" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter NumberOfFilesRecentlyUsed of value type int.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter NumberOfFilesRecentlyUsed of value type int.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.NumberOfPastelColors">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NumberOfPastelColors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.NumberOfPastelColors" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter NumberOfPastelColors of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter NumberOfPastelColors of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.PastelColorSaturation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PastelColorSaturation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.PastelColorSaturation" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter PastelColorSaturation of value type float.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter PastelColorSaturation of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.PastelColorValue">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PastelColorValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.PastelColorValue" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter PastelColorValue of value type float.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter PastelColorValue of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.QuickPropertyView">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">QuickPropertyView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.QuickPropertyView" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter QuickPropertyView of value type bool.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter QuickPropertyView of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Ruler">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Ruler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Ruler" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter Ruler of value type bool.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter Ruler of value type bool.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Selections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
+<p>Singleton Selections.</p>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.GeneralDisplacement" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.GeneralDisplacement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralDisplacement</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter GeneralDisplacement of value type int.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightEdgeColor" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightEdgeColor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HighlightEdgeColor</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter HighlightEdgeColor of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightEdgeWeight" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightEdgeWeight"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HighlightEdgeWeight</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter HighlightEdgeWeight of value type int.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightFaceColor" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightFaceColor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HighlightFaceColor</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter HighlightFaceColor of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightGloss" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightGloss"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HighlightGloss</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter HighlightGloss of value type float.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightSpecularComponent" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightSpecularComponent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HighlightSpecularComponent</span></code></a>(service, rules[, ...])</p></td>
+<td><p>Parameter HighlightSpecularComponent of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightTransparency" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightTransparency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HighlightTransparency</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter HighlightTransparency of value type float.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.MouseHoverProbeValuesEnabled" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.MouseHoverProbeValuesEnabled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MouseHoverProbeValuesEnabled</span></code></a>(service, rules)</p></td>
+<td><p>Parameter MouseHoverProbeValuesEnabled of value type bool.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.MouseOverHighlightEnabled" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.MouseOverHighlightEnabled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MouseOverHighlightEnabled</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter MouseOverHighlightEnabled of value type bool.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.ProbeTooltipHideDelayTimer" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.ProbeTooltipHideDelayTimer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProbeTooltipHideDelayTimer</span></code></a>(service, rules[, ...])</p></td>
+<td><p>Parameter ProbeTooltipHideDelayTimer of value type int.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.ProbeTooltipShowDelayTimer" title="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.ProbeTooltipShowDelayTimer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProbeTooltipShowDelayTimer</span></code></a>(service, rules[, ...])</p></td>
+<td><p>Parameter ProbeTooltipShowDelayTimer of value type int.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.GeneralDisplacement">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GeneralDisplacement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.GeneralDisplacement" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter GeneralDisplacement of value type int.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightEdgeColor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">HighlightEdgeColor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightEdgeColor" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter HighlightEdgeColor of value type str.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightEdgeWeight">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">HighlightEdgeWeight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightEdgeWeight" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter HighlightEdgeWeight of value type int.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightFaceColor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">HighlightFaceColor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightFaceColor" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter HighlightFaceColor of value type str.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightGloss">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">HighlightGloss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightGloss" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter HighlightGloss of value type float.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightSpecularComponent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">HighlightSpecularComponent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightSpecularComponent" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter HighlightSpecularComponent of value type str.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightTransparency">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">HighlightTransparency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.HighlightTransparency" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter HighlightTransparency of value type float.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.MouseHoverProbeValuesEnabled">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MouseHoverProbeValuesEnabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.MouseHoverProbeValuesEnabled" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter MouseHoverProbeValuesEnabled of value type bool.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.MouseOverHighlightEnabled">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MouseOverHighlightEnabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.MouseOverHighlightEnabled" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter MouseOverHighlightEnabled of value type bool.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.ProbeTooltipHideDelayTimer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ProbeTooltipHideDelayTimer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.ProbeTooltipHideDelayTimer" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter ProbeTooltipHideDelayTimer of value type int.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.ProbeTooltipShowDelayTimer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ProbeTooltipShowDelayTimer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Selections.ProbeTooltipShowDelayTimer" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter ProbeTooltipShowDelayTimer of value type int.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ShowEnabledModels">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ShowEnabledModels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ShowEnabledModels" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter ShowEnabledModels of value type bool.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter ShowEnabledModels of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ShowInterfaceChildrenZone">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ShowInterfaceChildrenZone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ShowInterfaceChildrenZone" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter ShowInterfaceChildrenZone of value type bool.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter ShowInterfaceChildrenZone of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ShowModelEdges">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ShowModelEdges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.ShowModelEdges" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter ShowModelEdges of value type bool.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter ShowModelEdges of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.SolutionModeEdgeColorInMeshingMode">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SolutionModeEdgeColorInMeshingMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.SolutionModeEdgeColorInMeshingMode" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter SolutionModeEdgeColorInMeshingMode of value type bool.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter SolutionModeEdgeColorInMeshingMode of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.SurfaceEmissivity">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SurfaceEmissivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.SurfaceEmissivity" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter SurfaceEmissivity of value type float.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter SurfaceEmissivity of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.SurfaceSpecularity">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SurfaceSpecularity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.SurfaceSpecularity" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter SurfaceSpecularity of value type float.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter SurfaceSpecularity of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.SurfaceSpecularityForContours">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SurfaceSpecularityForContours</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.SurfaceSpecularityForContours" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter SurfaceSpecularityForContours of value type float.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter SurfaceSpecularityForContours of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Titles">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Titles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.Titles" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter Titles of value type bool.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter Titles of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Appearance.TitlesBorderOffset">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TitlesBorderOffset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Appearance.TitlesBorderOffset" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter TitlesBorderOffset of value type float.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter TitlesBorderOffset of value type float.</p>
 </dd></dl>
 
 </dd></dl>

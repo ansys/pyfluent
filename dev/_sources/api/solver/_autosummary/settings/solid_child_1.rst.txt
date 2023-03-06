@@ -5,16 +5,13 @@
 solid_child
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.solid_child_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.solid_child_1.solid_child
 
-.. autoclass:: solid_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ======================================================================   ===========================================
 
-Child                                                                                                        Summary
+Attribute                                                                                                    Summary
 
 ======================================================================   ===========================================
 :ref:`phase <phase_1>`                                                                                'phase' child.

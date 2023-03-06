@@ -5,11 +5,8 @@
 write_to_file
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.write_to_file
+.. autoclass:: ansys.fluent.core.solver.settings_231.write_to_file.write_to_file
 
-.. autoclass:: write_to_file
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   =====================================================

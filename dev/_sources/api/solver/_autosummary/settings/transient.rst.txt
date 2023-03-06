@@ -5,16 +5,13 @@
 transient
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.transient
+.. autoclass:: ansys.fluent.core.solver.settings_231.transient.transient
 
-.. autoclass:: transient
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ======================================================================   ============================================================
 
-Child                                                                                                                         Summary
+Attribute                                                                                                                     Summary
 
 ======================================================================   ============================================================
 :ref:`transient_parameters_specify <transient_parameters_specify>`                  Enable/Disable transient parameter specification.

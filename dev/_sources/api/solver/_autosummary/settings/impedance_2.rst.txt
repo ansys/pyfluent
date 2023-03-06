@@ -5,11 +5,8 @@
 impedance_2
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.impedance_2
+.. autoclass:: ansys.fluent.core.solver.settings_231.impedance_2.impedance_2
 
-.. autoclass:: impedance_2
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`impedance_2_child <impedance_2_child>`

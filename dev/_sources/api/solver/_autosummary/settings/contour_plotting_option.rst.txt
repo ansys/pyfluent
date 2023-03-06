@@ -5,11 +5,8 @@
 contour_plotting_option
 =======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.contour_plotting_option
+.. autoclass:: ansys.fluent.core.solver.settings_231.contour_plotting_option.contour_plotting_option
 
-.. autoclass:: contour_plotting_option
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   ========================================================

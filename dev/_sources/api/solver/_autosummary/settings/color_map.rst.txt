@@ -5,16 +5,13 @@
 color_map
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.color_map
+.. autoclass:: ansys.fluent.core.solver.settings_231.color_map.color_map
 
-.. autoclass:: color_map
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ======================================   ===========================
 
-Child                                                        Summary
+Attribute                                                    Summary
 
 ======================================   ===========================
 :ref:`visible <visible>`                            'visible' child.

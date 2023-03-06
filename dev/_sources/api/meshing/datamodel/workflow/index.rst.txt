@@ -3,13 +3,13 @@
 meshing.datamodel.workflow
 ==========================
 
-.. currentmodule:: ansys.fluent.core.datamodel_231.workflow
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.datamodel_231.workflow::Root
-   :members: CreateCompositeTask, CreateNewWorkflow, DeleteTasks, InitializeWorkflow, InsertNewTask, LoadState, LoadWorkflow, ResetWorkflow, SaveWorkflow
+.. autoclass:: ansys.fluent.core.datamodel_231.workflow.Root
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:

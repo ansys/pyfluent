@@ -5,16 +5,13 @@
 surface_child
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.surface_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.surface_child.surface_child
 
-.. autoclass:: surface_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ================================================================   ========================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ================================================================   ========================================
 :ref:`report_type <report_type>`                                                       'report_type' child.

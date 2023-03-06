@@ -5,11 +5,8 @@
 update_frequency
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.update_frequency
+.. autoclass:: ansys.fluent.core.solver.settings_231.update_frequency.update_frequency
 
-.. autoclass:: update_frequency
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   =========================================

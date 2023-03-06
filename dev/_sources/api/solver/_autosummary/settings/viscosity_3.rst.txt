@@ -5,11 +5,8 @@
 viscosity
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.viscosity_3
+.. autoclass:: ansys.fluent.core.solver.settings_231.viscosity_3.viscosity
 
-.. autoclass:: viscosity
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =============================

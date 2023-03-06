@@ -5,11 +5,8 @@
 delete_all_shells
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.delete_all_shells
+.. autoclass:: ansys.fluent.core.solver.settings_231.delete_all_shells.delete_all_shells
 
-.. autoclass:: delete_all_shells
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   ================================

@@ -5,11 +5,8 @@
 use_volumetric_smoothing
 ========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.use_volumetric_smoothing
+.. autoclass:: ansys.fluent.core.solver.settings_231.use_volumetric_smoothing.use_volumetric_smoothing
 
-.. autoclass:: use_volumetric_smoothing
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ============================================

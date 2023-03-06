@@ -5,11 +5,8 @@
 free_hierarchy
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.free_hierarchy
+.. autoclass:: ansys.fluent.core.solver.settings_231.free_hierarchy.free_hierarchy
 
-.. autoclass:: free_hierarchy
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ==================

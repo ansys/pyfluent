@@ -5,11 +5,8 @@
 liquid_vof_factor
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.liquid_vof_factor
+.. autoclass:: ansys.fluent.core.solver.settings_231.liquid_vof_factor.liquid_vof_factor
 
-.. autoclass:: liquid_vof_factor
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   =======================================

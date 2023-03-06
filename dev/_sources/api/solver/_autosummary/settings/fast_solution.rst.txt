@@ -5,11 +5,8 @@
 fast_solution
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.fast_solution
+.. autoclass:: ansys.fluent.core.solver.settings_231.fast_solution.fast_solution
 
-.. autoclass:: fast_solution
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ==================   =================

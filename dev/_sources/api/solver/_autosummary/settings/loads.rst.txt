@@ -5,11 +5,8 @@
 loads
 =====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.loads
+.. autoclass:: ansys.fluent.core.solver.settings_231.loads.loads
 
-.. autoclass:: loads
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ========================================

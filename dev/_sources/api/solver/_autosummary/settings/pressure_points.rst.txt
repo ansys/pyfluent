@@ -5,11 +5,8 @@
 pressure_points
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.pressure_points
+.. autoclass:: ansys.fluent.core.solver.settings_231.pressure_points.pressure_points
 
-.. autoclass:: pressure_points
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ==================================

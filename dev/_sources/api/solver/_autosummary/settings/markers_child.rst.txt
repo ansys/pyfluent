@@ -5,16 +5,13 @@
 markers_child
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.markers_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.markers_child.markers_child
 
-.. autoclass:: markers_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ======================   ===================
 
-Child                                Summary
+Attribute                            Summary
 
 ======================   ===================
 :ref:`symbol <symbol>`       'symbol' child.

@@ -5,11 +5,8 @@
 gradient_scheme
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.gradient_scheme
+.. autoclass:: ansys.fluent.core.solver.settings_231.gradient_scheme.gradient_scheme
 
-.. autoclass:: gradient_scheme
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   ====================

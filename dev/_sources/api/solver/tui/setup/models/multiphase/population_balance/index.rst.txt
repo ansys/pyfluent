@@ -3,16 +3,16 @@
 solver.tui.setup.models.multiphase.population\_balance
 ======================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.multiphase.population_balance
-   :members: size_calculator, model, include_expansion
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.population_balance
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:
 
-   expert/index
    phenomena/index
+   expert/index

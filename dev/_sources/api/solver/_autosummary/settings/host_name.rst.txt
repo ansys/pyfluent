@@ -5,11 +5,8 @@
 host_name
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.host_name
+.. autoclass:: ansys.fluent.core.solver.settings_231.host_name.host_name
 
-.. autoclass:: host_name
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   =================================================================

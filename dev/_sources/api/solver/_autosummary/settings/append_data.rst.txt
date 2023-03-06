@@ -5,11 +5,8 @@
 append_data
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.append_data
+.. autoclass:: ansys.fluent.core.solver.settings_231.append_data.append_data
 
-.. autoclass:: append_data
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   =====================================================

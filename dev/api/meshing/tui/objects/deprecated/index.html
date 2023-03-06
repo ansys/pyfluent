@@ -30,10 +30,6 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/css/ansys_sphinx_theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -116,12 +112,6 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../index.html">
   API reference
- </a>
-</li>
-
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../examples/index.html">
-  Examples
  </a>
 </li>
 
@@ -303,13 +293,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -322,6 +307,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -333,8 +323,33 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../file/index.html">
-       meshing.tui.file
+      <a class="reference internal" href="../../diagnostics/index.html">
+       meshing.tui.diagnostics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../material_point/index.html">
+       meshing.tui.material_point
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../mesh/index.html">
+       meshing.tui.mesh
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../preferences/index.html">
+       meshing.tui.preferences
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -358,33 +373,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../cad_association/index.html">
-         meshing.tui.objects.cad_association
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../labels/index.html">
-         meshing.tui.objects.labels
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../set/index.html">
          meshing.tui.objects.set
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../fix_holes/index.html">
-         meshing.tui.objects.fix_holes
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../wrap/index.html">
-         meshing.tui.objects.wrap
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../remove_gaps/index.html">
-         meshing.tui.objects.remove_gaps
         </a>
        </li>
        <li class="toctree-l4">
@@ -393,15 +383,40 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../wrap/index.html">
+         meshing.tui.objects.wrap
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../labels/index.html">
+         meshing.tui.objects.labels
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../fix_holes/index.html">
+         meshing.tui.objects.fix_holes
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../create_new_mesh_object/index.html">
          meshing.tui.objects.create_new_mesh_object
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../remove_gaps/index.html">
+         meshing.tui.objects.remove_gaps
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../cad_association/index.html">
+         meshing.tui.objects.cad_association
         </a>
        </li>
       </ul>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../preferences/index.html">
-       meshing.tui.preferences
+      <a class="reference internal" href="../../boundary/index.html">
+       meshing.tui.boundary
       </a>
      </li>
      <li class="toctree-l3">
@@ -410,18 +425,8 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../reference_frames/index.html">
-       meshing.tui.reference_frames
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../size_functions/index.html">
-       meshing.tui.size_functions
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../diagnostics/index.html">
-       meshing.tui.diagnostics
+      <a class="reference internal" href="../../report/index.html">
+       meshing.tui.report
       </a>
      </li>
      <li class="toctree-l3">
@@ -430,38 +435,23 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../boundary/index.html">
-       meshing.tui.boundary
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../mesh/index.html">
-       meshing.tui.mesh
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../../display/index.html">
        meshing.tui.display
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../report/index.html">
-       meshing.tui.report
+      <a class="reference internal" href="../../reference_frames/index.html">
+       meshing.tui.reference_frames
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
+      <a class="reference internal" href="../../file/index.html">
+       meshing.tui.file
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../material_point/index.html">
-       meshing.tui.material_point
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
+      <a class="reference internal" href="../../size_functions/index.html">
+       meshing.tui.size_functions
       </a>
      </li>
     </ul>
@@ -506,7 +496,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.deprecated">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.objects.deprecated
+     deprecated
     </span>
    </code>
   </a>
@@ -515,7 +505,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.deprecated.create_mesh_object_from_wrap">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.objects.deprecated.create_mesh_object_from_wrap()
+       deprecated.create_mesh_object_from_wrap()
       </span>
      </code>
     </a>
@@ -543,14 +533,19 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-objects-deprecated">
 <span id="ref-meshing-tui-objects-deprecated"></span><h1>meshing.tui.objects.deprecated<a class="headerlink" href="#meshing-tui-objects-deprecated" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.objects.deprecated">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.objects.</span></span><span class="sig-name descname"><span class="pre">deprecated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.deprecated" title="Permalink to this definition">#</a></dt>
-<dd><p>Deprecated features.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.objects.</span></span><span class="sig-name descname"><span class="pre">deprecated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.deprecated" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Deprecated features.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.deprecated.create_mesh_object_from_wrap" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.deprecated.create_mesh_object_from_wrap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_mesh_object_from_wrap</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Create mesh object from a wrap object.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.objects.deprecated.create_mesh_object_from_wrap">
 <span class="sig-name descname"><span class="pre">create_mesh_object_from_wrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.deprecated.create_mesh_object_from_wrap" title="Permalink to this definition">#</a></dt>

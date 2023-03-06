@@ -3,11 +3,11 @@
 solver.tui.define.phases.set\_domain\_properties.interaction\_domain.interfacial\_area.interphase\_discretization
 =================================================================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.phases.set_domain_properties.interaction_domain.interfacial_area.interphase_discretization
-   :members: lift_shaver_podowski, vmass_implicit, cavitation, sfc_model_type, interphase_discr, lift, sfc_modeling, wall_adhesion, slope_limiter, jump_adhesion, visc_disp_factor, lift_montoya, interphase_visc_disp, virtual_mass, vmass_coeff, vmass_implicit_options, sfc_tension_coeff
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.phases.set_domain_properties.interaction_domain.interfacial_area.interphase_discretization
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

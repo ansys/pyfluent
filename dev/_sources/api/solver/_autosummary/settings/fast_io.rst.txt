@@ -5,11 +5,8 @@
 fast_io
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.fast_io
+.. autoclass:: ansys.fluent.core.solver.settings_231.fast_io.fast_io
 
-.. autoclass:: fast_io
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================   ================

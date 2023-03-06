@@ -5,11 +5,8 @@
 old_default_of_volume_fraction_smoothing
 ========================================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.old_default_of_volume_fraction_smoothing
+.. autoclass:: ansys.fluent.core.solver.settings_231.old_default_of_volume_fraction_smoothing.old_default_of_volume_fraction_smoothing
 
-.. autoclass:: old_default_of_volume_fraction_smoothing
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================================================   =========================================================

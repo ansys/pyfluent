@@ -5,11 +5,8 @@
 switch
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.switch
+.. autoclass:: ansys.fluent.core.solver.settings_231.switch.switch
 
-.. autoclass:: switch
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================   ========================

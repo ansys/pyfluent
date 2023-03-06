@@ -5,11 +5,8 @@
 boundry_treatment
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.boundry_treatment
+.. autoclass:: ansys.fluent.core.solver.settings_231.boundry_treatment.boundry_treatment
 
-.. autoclass:: boundry_treatment
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================================   =============================================

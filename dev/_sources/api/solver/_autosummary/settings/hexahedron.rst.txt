@@ -5,16 +5,13 @@
 hexahedron
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.hexahedron
+.. autoclass:: ansys.fluent.core.solver.settings_231.hexahedron.hexahedron
 
-.. autoclass:: hexahedron
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   ==================================
 
-Child                                                                             Summary
+Attribute                                                                         Summary
 
 ====================================================   ==================================
 :ref:`min_point <min_point>`                                           'min_point' child.

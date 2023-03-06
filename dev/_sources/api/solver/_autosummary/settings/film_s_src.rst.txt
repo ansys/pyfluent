@@ -5,16 +5,13 @@
 film_s_src
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.film_s_src
+.. autoclass:: ansys.fluent.core.solver.settings_231.film_s_src.film_s_src
 
-.. autoclass:: film_s_src
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

@@ -3,11 +3,15 @@
 solver.tui.results.graphics.expert.set.lights
 =============================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.lights
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
-.. autosummary::
-   :toctree: _autosummary
+.. toctree::
+   :hidden:
 
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.lights
-   :members: set_ambient_color, headlight_on, lights_on, set_light, lighting_interpolation
-
+   lighting_interpolation/index

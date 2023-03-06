@@ -5,11 +5,8 @@
 plotting_grid_interval_size
 ===========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.plotting_grid_interval_size
+.. autoclass:: ansys.fluent.core.solver.settings_231.plotting_grid_interval_size.plotting_grid_interval_size
 
-.. autoclass:: plotting_grid_interval_size
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   =====================================

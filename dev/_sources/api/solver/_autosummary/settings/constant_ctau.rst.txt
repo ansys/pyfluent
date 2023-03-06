@@ -5,11 +5,8 @@
 constant_ctau
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.constant_ctau
+.. autoclass:: ansys.fluent.core.solver.settings_231.constant_ctau.constant_ctau
 
-.. autoclass:: constant_ctau
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================
