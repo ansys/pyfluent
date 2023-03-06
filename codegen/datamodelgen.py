@@ -300,6 +300,11 @@ class DataModelGenerator:
             commands = sorted(info.commands)
 
             f.write(f".. autoclass:: {module_name}.{class_name}\n")
+            f.write("   :members:\n")
+            f.write("   :show-inheritance:\n")
+            f.write("   :undoc-members:\n")
+            f.write('   :exclude-members: "__weakref__, __dict__"\n')
+            f.write('   :special-members: " __init__"\n')
             f.write("   :autosummary:\n\n")
 
             if singletons or named_objects:

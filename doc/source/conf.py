@@ -40,19 +40,6 @@ extensions = [
     "sphinxemoji.sphinxemoji",
 ]
 
-autodoc_default_options = {
-    "members": True,
-    "inherited-members": True,
-    "show-inheritance": True,
-    "exclude-members": "__weakref__, __dict__",
-    "special-members": "__init__",
-    "undoc-members": True,
-}
-
-autosummary_generate = True
-autodoc_class_signature = "separated"
-toc_object_entries_show_parents = "hide"
-
 # Intersphinx mapping
 intersphinx_mapping = {
     "python": ("https://docs.python.org/dev", None),
