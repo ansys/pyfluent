@@ -9,5 +9,5 @@ solver.tui.define.dynamic\_mesh.controls.in\_cylinder\_parameters
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.dynamic_mesh.controls.in_cylinder_parameters
-   :members: piston_stroke_cutoff, print_plot_lift, minimum_lift, starting_crank_angle, modify_lift, position_starting_mesh, piston_data, max_crank_angle_step, crank_period, crank_angle_step
+   :members: crank_period, starting_crank_angle, minimum_lift, piston_data, print_plot_lift, position_starting_mesh, piston_stroke_cutoff, modify_lift, crank_angle_step, max_crank_angle_step
 

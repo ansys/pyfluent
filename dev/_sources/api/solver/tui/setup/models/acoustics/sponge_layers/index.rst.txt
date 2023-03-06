@@ -9,5 +9,5 @@ solver.tui.setup.models.acoustics.sponge\_layers
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.acoustics.sponge_layers
-   :members: add, edit, deactivate, list, delete, list_active, list_properties, activate
+   :members: list_properties, activate, deactivate, list, delete, add, edit, list_active
 

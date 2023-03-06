@@ -9,5 +9,5 @@ solver.tui.solve.animate.pulse.video.advance\_quality
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.animate.pulse.video.advance_quality
-   :members: compression_method, bitrate, enable_h264, bitrate_scale
+   :members: bitrate, enable_h264, compression_method, bitrate_scale
 

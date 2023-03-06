@@ -9,15 +9,15 @@ solver.tui.solution.expert
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.expert
-   :members: mp_reference_density, retain_temporary_solver_mem, flow_warnings, show_all_discretization_schemes, lock_solid_temperature, limiter_warnings, disable_reconstruction, vof_explicit_controls, correction_form, numerical_beach_controls, material_property_warnings, linearized_mass_transfer_udf, bcd_boundedness, singhal_et_al_cavitation_model, surface_tension_expert, equation_ordering, energy_numerical_noise_filter, surface_tension, retain_cell_residuals, bc_pressure_extrapolations, bcd_weights_freeze, mp_mfluid_aniso_drag, explicit_under_relaxation_value, alternate_wall_temp_formulation, set_all_species_together, open_channel_controls
+   :members: equation_ordering, bcd_boundedness, show_all_discretization_schemes, surface_tension, alternate_wall_temp_formulation, surface_tension_expert, flow_warnings, vof_explicit_controls, energy_numerical_noise_filter, open_channel_controls, bcd_weights_freeze, numerical_beach_controls, set_all_species_together, linearized_mass_transfer_udf, bc_pressure_extrapolations, explicit_under_relaxation_value, material_property_warnings, mp_reference_density, limiter_warnings, disable_reconstruction, lock_solid_temperature, mp_mfluid_aniso_drag, retain_temporary_solver_mem, correction_form, singhal_et_al_cavitation_model, retain_cell_residuals
 
 .. toctree::
    :hidden:
 
    secondary_gradient_limiting/index
-   open_channel_wave_options/index
-   divergence_prevention/index
-   non_reflecting_boundary_treatment/index
-   high_speed_numerics/index
-   poor_mesh_numerics/index
    previous_defaults/index
+   poor_mesh_numerics/index
+   non_reflecting_boundary_treatment/index
+   open_channel_wave_options/index
+   high_speed_numerics/index
+   divergence_prevention/index

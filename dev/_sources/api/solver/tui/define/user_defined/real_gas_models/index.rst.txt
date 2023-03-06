@@ -9,5 +9,5 @@ solver.tui.define.user\_defined.real\_gas\_models
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.user_defined.real_gas_models
-   :members: set_state, user_defined_real_gas_model, nist_real_gas_model, nist_multispecies_real_gas_model, user_defined_multispecies_real_gas_model, nist_settings
+   :members: user_defined_real_gas_model, nist_real_gas_model, nist_multispecies_real_gas_model, nist_settings, set_state, user_defined_multispecies_real_gas_model
 

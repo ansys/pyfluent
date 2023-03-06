@@ -12,5 +12,5 @@ solver.tui.define.phases
 .. toctree::
    :hidden:
 
-   iac_expert/index
    set_domain_properties/index
+   iac_expert/index

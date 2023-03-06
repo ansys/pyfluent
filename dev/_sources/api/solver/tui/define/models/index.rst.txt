@@ -9,26 +9,26 @@ solver.tui.define.models
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models
-   :members: steady, unsteady_2nd_order, addon_module, unsteady_1st_order, noniterative_time_advance, frozen_flux, swirl, potential_and_li_ion_battery, unsteady_structure_euler, crevice_model, solidification_melting, unsteady_structure_newmark, nox, unsteady_global_time, axisymmetric, energy, soot, crevice_model_controls, battery_model, unsteady_2nd_order_bounded, virtual_blade_model, ablation, vbm
+   :members: unsteady_global_time, potential_and_li_ion_battery, virtual_blade_model, crevice_model, unsteady_2nd_order_bounded, unsteady_structure_euler, unsteady_1st_order, swirl, crevice_model_controls, soot, solidification_melting, axisymmetric, vbm, unsteady_2nd_order, battery_model, energy, noniterative_time_advance, unsteady_structure_newmark, nox, steady, ablation, addon_module, frozen_flux
 
 .. toctree::
    :hidden:
 
-   dpm/index
-   structure/index
-   cht/index
-   optics/index
-   shell_conduction/index
    electrolysis/index
-   soot_parameters/index
-   acoustics/index
-   viscous/index
-   eulerian_wallfilm/index
-   heat_exchanger/index
-   two_temperature/index
    nox_parameters/index
-   species/index
-   solver/index
-   system_coupling_settings/index
+   eulerian_wallfilm/index
    radiation/index
+   optics/index
+   structure/index
+   heat_exchanger/index
+   cht/index
+   acoustics/index
+   solver/index
+   species/index
    multiphase/index
+   dpm/index
+   shell_conduction/index
+   viscous/index
+   two_temperature/index
+   system_coupling_settings/index
+   soot_parameters/index

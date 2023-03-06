@@ -9,5 +9,5 @@ meshing.tui.mesh.tet.local\_regions
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.tet.local_regions
-   :members: init, delete, ideal_vol, ideal_area, define, refine, deactivate, activate, list_all_regions
+   :members: ideal_area, define, list_all_regions, ideal_vol, deactivate, init, refine, activate, delete
 

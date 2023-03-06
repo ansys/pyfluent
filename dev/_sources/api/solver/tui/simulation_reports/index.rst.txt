@@ -9,7 +9,7 @@ solver.tui.simulation\_reports
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.simulation_reports
-   :members: generate_simulation_report, rename_simulation_report, view_simulation_report, list_simulation_reports, delete_simulation_report, write_simulation_report_template_file, reset_report_to_defaults, export_simulation_report_as_pdf, read_simulation_report_template_file, export_simulation_report_as_pptx, export_simulation_report_as_html, write_report_names_to_file, duplicate_simulation_report
+   :members: read_simulation_report_template_file, export_simulation_report_as_html, generate_simulation_report, reset_report_to_defaults, write_report_names_to_file, list_simulation_reports, delete_simulation_report, export_simulation_report_as_pdf, export_simulation_report_as_pptx, view_simulation_report, duplicate_simulation_report, write_simulation_report_template_file, rename_simulation_report
 
 .. toctree::
    :hidden:

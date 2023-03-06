@@ -9,5 +9,5 @@ solver.tui.preferences.graphics.transparency
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.graphics.transparency
-   :members: zsort_options, depth_peeling_layers, depth_peeling_preference, quick_moves, algorithm_for_modern_drivers
+   :members: depth_peeling_preference, quick_moves, depth_peeling_layers, algorithm_for_modern_drivers, zsort_options
 

@@ -9,5 +9,5 @@ meshing.tui.preferences.graphics.lighting
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.graphics.lighting
-   :members: headlight, headlight_intensity, ambient_light_intensity, lighting_method
+   :members: headlight, lighting_method, ambient_light_intensity, headlight_intensity
 

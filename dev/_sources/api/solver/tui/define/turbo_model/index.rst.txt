@@ -9,11 +9,11 @@ solver.tui.define.turbo\_model
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.turbo_model
-   :members: append_graphics_spectral_content, append_phaselag_spectral_content, list_phaselag_state, blade_flutter_row, create_graphics_spectral_content, create_phaselag_spectral_content, make_phaselag_from_boundaries, enable_turbo_model, delete_graphics_spectral_content, isentropic_efficiency, list_graphics_spectral_content, graphics_extra_settings, list_turbomachine_description, turbo_interface_check, phaselag_extra_settings, make_phaselag_from_periodic, delete_turbomachine_description, separate_nonoverlapping_interface_boundary, turbo_create, delete_phaselag_spectral_content, create_turbomachine_description
+   :members: turbo_interface_check, turbo_create, create_turbomachine_description, list_graphics_spectral_content, create_phaselag_spectral_content, make_phaselag_from_periodic, phaselag_extra_settings, delete_graphics_spectral_content, enable_turbo_model, append_graphics_spectral_content, blade_flutter_row, make_phaselag_from_boundaries, list_turbomachine_description, delete_turbomachine_description, list_phaselag_state, isentropic_efficiency, graphics_extra_settings, append_phaselag_spectral_content, create_graphics_spectral_content, delete_phaselag_spectral_content, separate_nonoverlapping_interface_boundary
 
 .. toctree::
    :hidden:
 
+   blade_flutter_harmonics/index
    general_turbo_interface_settings/index
    turbo_topology/index
-   blade_flutter_harmonics/index

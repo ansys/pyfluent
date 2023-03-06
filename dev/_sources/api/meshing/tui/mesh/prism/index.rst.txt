@@ -9,12 +9,12 @@ meshing.tui.mesh.prism
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.prism
-   :members: mark_proximity_faces, reset_parameters, quality_method, mark_ignore_faces, create, list_parameters, mark_nonmanifold_nodes
+   :members: quality_method, mark_nonmanifold_nodes, mark_proximity_faces, reset_parameters, list_parameters, create, mark_ignore_faces
 
 .. toctree::
    :hidden:
 
-   controls/index
-   post_ignore/index
-   split/index
    improve/index
+   split/index
+   post_ignore/index
+   controls/index

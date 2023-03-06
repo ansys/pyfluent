@@ -9,5 +9,5 @@ meshing.tui.objects.labels.cavity
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects.labels.cavity
-   :members: add, remove, replace
+   :members: remove, add, replace
 

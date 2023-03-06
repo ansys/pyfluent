@@ -9,10 +9,10 @@ meshing.tui.diagnostics
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.diagnostics
-   :members: modify_defaults, perform_summary, manage_summary, set_scope
+   :members: set_scope, manage_summary, perform_summary, modify_defaults
 
 .. toctree::
    :hidden:
 
-   quality/index
    face_connectivity/index
+   quality/index

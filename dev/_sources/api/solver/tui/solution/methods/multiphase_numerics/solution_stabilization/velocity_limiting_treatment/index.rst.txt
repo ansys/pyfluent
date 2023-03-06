@@ -9,5 +9,5 @@ solver.tui.solution.methods.multiphase\_numerics.solution\_stabilization.velocit
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment
-   :members: set_damping_strength, set_velocity_and_vof_cutoffs, set_velocity_cutoff, enable_velocity_limiting, verbosity, set_damping_strengths
+   :members: set_damping_strengths, set_velocity_and_vof_cutoffs, set_velocity_cutoff, verbosity, enable_velocity_limiting, set_damping_strength
 

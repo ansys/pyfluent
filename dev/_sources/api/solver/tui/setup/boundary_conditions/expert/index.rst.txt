@@ -15,6 +15,6 @@ solver.tui.setup.boundary\_conditions.expert
    :hidden:
 
    non_reflecting_bc/index
-   perforated_walls/index
    impedance_data_fitting/index
+   perforated_walls/index
    periodic_conditions/index

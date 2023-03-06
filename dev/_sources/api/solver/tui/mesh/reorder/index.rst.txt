@@ -9,5 +9,5 @@ solver.tui.mesh.reorder
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.mesh.reorder
-   :members: reorder_zones, reorder_domain, band_width
+   :members: reorder_domain, band_width, reorder_zones
 

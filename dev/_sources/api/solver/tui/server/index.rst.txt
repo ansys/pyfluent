@@ -9,5 +9,5 @@ solver.tui.server
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.server
-   :members: start_client, start_web_server, print_server_address, print_connected_clients, start_server, shutdown_server, write_or_reset_server_info, stop_web_server
+   :members: print_connected_clients, start_web_server, print_server_address, shutdown_server, stop_web_server, start_server, start_client, write_or_reset_server_info
 

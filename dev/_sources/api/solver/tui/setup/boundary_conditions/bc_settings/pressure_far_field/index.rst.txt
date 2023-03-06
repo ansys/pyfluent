@@ -9,5 +9,5 @@ solver.tui.setup.boundary\_conditions.bc\_settings.pressure\_far\_field
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.boundary_conditions.bc_settings.pressure_far_field
-   :members: type, riemann_invariants_tangency_correction
+   :members: riemann_invariants_tangency_correction, type
 

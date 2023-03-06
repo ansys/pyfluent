@@ -9,5 +9,5 @@ solver.tui.define.models.dpm.numerics.high\_resolution\_tracking.barycentric\_in
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.dpm.numerics.high_resolution_tracking.barycentric_interpolation
-   :members: enable_transient_variable_interpolation, interpolate_flow_cp, user_interpolation_function, interpolate_temperature, zero_nodal_velocity_on_walls, precompute_pdf_species, interpolate_flow_solution_gradients, interpolate_flow_viscosity, interpolate_wallfilm_properties, interpolate_flow_density, nodal_reconstruction_frequency
+   :members: precompute_pdf_species, interpolate_flow_viscosity, interpolate_flow_solution_gradients, interpolate_flow_density, nodal_reconstruction_frequency, interpolate_temperature, interpolate_flow_cp, enable_transient_variable_interpolation, interpolate_wallfilm_properties, zero_nodal_velocity_on_walls, user_interpolation_function
 

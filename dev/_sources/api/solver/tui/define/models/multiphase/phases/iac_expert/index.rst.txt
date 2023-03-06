@@ -9,5 +9,5 @@ solver.tui.define.models.multiphase.phases.iac\_expert
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.multiphase.phases.iac_expert
-   :members: yao_morel_model, ishii_kim_model, hibiki_ishii_model, iac_pseudo_time_step
+   :members: yao_morel_model, iac_pseudo_time_step, hibiki_ishii_model, ishii_kim_model
 

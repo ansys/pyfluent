@@ -9,5 +9,5 @@ solver.tui.adjoint
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.adjoint
-   :members: geometry, utilities, reporting, monitors, run, controls, multi_objective, morphing, observable, design_tool, optimizer, expert, methods, postprocess_options
+   :members: monitors, run, methods, geometry, controls, design_tool, expert, utilities, multi_objective, observable, optimizer, morphing, reporting, postprocess_options
 

@@ -9,5 +9,5 @@ solver.tui.results.graphics.expert.set.particle\_tracks.vector\_settings
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.particle_tracks.vector_settings
-   :members: color_variable, style, vector_variable, constant_color, length_to_head_ratio, vector_length, length_variable, vector_length_variable, scale_factor
+   :members: style, length_to_head_ratio, vector_length_variable, scale_factor, color_variable, length_variable, constant_color, vector_length, vector_variable
 

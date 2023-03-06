@@ -9,5 +9,5 @@ meshing.tui.objects.volumetric\_regions.tet.set.remove\_slivers
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects.volumetric_regions.tet.set.remove_slivers
-   :members: angle, remove, skew, method, low_skew, attempts, iterations
+   :members: iterations, low_skew, method, attempts, remove, skew, angle
 

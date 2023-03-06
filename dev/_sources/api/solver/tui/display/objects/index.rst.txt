@@ -9,5 +9,5 @@ solver.tui.display.objects
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.objects
-   :members: add_to_graphics, edit, delete, display, copy, create
+   :members: display, delete, create, copy, edit, add_to_graphics
 

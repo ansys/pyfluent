@@ -9,5 +9,5 @@ meshing.tui.preferences.navigation.mouse\_mapping.additional
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.navigation.mouse_mapping.additional
-   :members: reversewheeldirection, ctrlmmbclick, ctrlrmbdrag, shiftmmbdrag, mousewheel, shiftlmbdrag, shiftrmbdrag, shiftmmbclick, ctrlrmbclick, mousewheelsensitivity, shiftrmbclick, ctrlmmbdrag, ctrllmbdrag, mouseprobe, shiftlmbclick, ctrllmbclick
+   :members: ctrlrmbclick, ctrlmmbdrag, shiftmmbclick, mouseprobe, shiftrmbclick, ctrllmbclick, reversewheeldirection, mousewheel, shiftrmbdrag, mousewheelsensitivity, shiftlmbclick, ctrllmbdrag, ctrlmmbclick, shiftmmbdrag, ctrlrmbdrag, shiftlmbdrag
 

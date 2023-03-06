@@ -9,5 +9,5 @@ solver.tui.solution.controls.contact\_solution\_controls.amg
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.controls.contact_solution_controls.amg
-   :members: enforce_laplace_coarsening, coarsen_rate, pre_sweeps, specify_coarsening_rate, increase_pre_sweeps
+   :members: pre_sweeps, enforce_laplace_coarsening, coarsen_rate, increase_pre_sweeps, specify_coarsening_rate
 

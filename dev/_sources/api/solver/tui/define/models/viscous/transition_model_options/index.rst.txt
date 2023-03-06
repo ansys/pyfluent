@@ -9,5 +9,5 @@ solver.tui.define.models.viscous.transition\_model\_options
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.viscous.transition_model_options
-   :members: ctu_lowtu, rec_max, cbubble_c1, clambda_scale, rec_c2, critical_reynolds_number_correlation, rec_c1, cbubble_c2, cfpg_hightu, ctu_hightu, cfpg_lowtu, crossflow_transition, capg_hightu, capg_lowtu, rv1_switch
+   :members: critical_reynolds_number_correlation, ctu_hightu, cfpg_hightu, cbubble_c2, clambda_scale, rec_c1, capg_hightu, rv1_switch, cbubble_c1, ctu_lowtu, cfpg_lowtu, rec_c2, capg_lowtu, rec_max, crossflow_transition
 

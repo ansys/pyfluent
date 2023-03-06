@@ -9,5 +9,5 @@ solver.tui.define.models.heat\_exchanger.dual\_cell\_model
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.heat_exchanger.dual_cell_model
-   :members: modify_heat_exchanger, delete_heat_exchanger, write_NTU, plot_NTU, alternative_formulation, heat_exchanger, add_heat_exchanger
+   :members: heat_exchanger, write_NTU, plot_NTU, add_heat_exchanger, alternative_formulation, delete_heat_exchanger, modify_heat_exchanger
 

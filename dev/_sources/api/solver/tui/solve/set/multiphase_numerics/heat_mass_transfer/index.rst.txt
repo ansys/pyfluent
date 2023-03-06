@@ -15,6 +15,6 @@ solver.tui.solve.set.multiphase\_numerics.heat\_mass\_transfer
    :hidden:
 
    area_density/index
+   boiling/index
    evaporation_condensation/index
    cavitation/index
-   boiling/index

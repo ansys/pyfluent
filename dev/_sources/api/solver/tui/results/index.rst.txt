@@ -13,8 +13,8 @@ solver.tui.results
    :hidden:
 
    animate/index
-   plot/index
    report/index
-   graphics_window/index
-   surface/index
    graphics/index
+   plot/index
+   surface/index
+   graphics_window/index

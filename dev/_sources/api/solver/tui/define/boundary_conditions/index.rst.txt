@@ -9,16 +9,16 @@ solver.tui.define.boundary\_conditions
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.boundary_conditions
-   :members: outlet_vent, network_end, degassing, knudsen_number_calculator, mass_flow_outlet, wall, shadow, pressure_outlet, velocity_inlet, exhaust_fan, recirculation_outlet, open_channel_wave_settings, rans_les_interface, pressure_far_field, intake_fan, axis, pressure_inlet, interior, openchannel_threads, recirculation_inlet, mass_flow_inlet, network, solid, periodic, overset, list_zones, symmetry, radiator, interface, fan, non_overlapping_zone_name, copy_bc, geometry, fluid, outflow, porous_jump, zone_type, target_mass_flow_rate_settings, zone_name, inlet_vent
+   :members: target_mass_flow_rate_settings, rans_les_interface, network_end, fan, outflow, openchannel_threads, radiator, pressure_outlet, copy_bc, porous_jump, interface, wall, recirculation_inlet, outlet_vent, knudsen_number_calculator, symmetry, network, non_overlapping_zone_name, periodic, mass_flow_outlet, pressure_inlet, inlet_vent, geometry, overset, velocity_inlet, exhaust_fan, shadow, list_zones, fluid, interior, zone_name, mass_flow_inlet, zone_type, pressure_far_field, axis, intake_fan, open_channel_wave_settings, recirculation_outlet, degassing, solid
 
 .. toctree::
    :hidden:
 
-   rename_zone/index
    bc_settings/index
-   impedance_data_fitting/index
    advanced/index
+   impedance_data_fitting/index
    non_reflecting_bc/index
+   perforated_walls/index
    modify_zones/index
    set/index
-   perforated_walls/index
+   rename_zone/index

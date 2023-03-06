@@ -9,5 +9,5 @@ meshing.tui.preferences.graphics.hardcopy\_settings
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.graphics.hardcopy_settings
-   :members: save_embedded_hardcopies_separately, transparent_embedded_windows, export_edges_for_avz, hardcopy_line_width, save_embedded_windows_in_hardcopy, hardcopy_driver, hardware_image_accel, post_script_permission_override
+   :members: transparent_embedded_windows, post_script_permission_override, save_embedded_windows_in_hardcopy, hardware_image_accel, hardcopy_line_width, export_edges_for_avz, hardcopy_driver, save_embedded_hardcopies_separately
 

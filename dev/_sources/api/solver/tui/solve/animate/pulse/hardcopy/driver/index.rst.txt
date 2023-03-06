@@ -9,7 +9,7 @@ solver.tui.solve.animate.pulse.hardcopy.driver
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.animate.pulse.hardcopy.driver
-   :members: hsf, options, list, ppm, tiff, vrml, png, eps, avz, glb, post_script, dump_window, jpeg
+   :members: avz, post_script, tiff, list, vrml, ppm, png, jpeg, eps, glb, options, dump_window, hsf
 
 .. toctree::
    :hidden:

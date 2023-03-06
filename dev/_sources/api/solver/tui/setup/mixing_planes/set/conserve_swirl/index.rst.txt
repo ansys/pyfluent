@@ -9,5 +9,5 @@ solver.tui.setup.mixing\_planes.set.conserve\_swirl
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.mixing_planes.set.conserve_swirl
-   :members: report_swirl_integration, enable, verbosity
+   :members: enable, verbosity, report_swirl_integration
 

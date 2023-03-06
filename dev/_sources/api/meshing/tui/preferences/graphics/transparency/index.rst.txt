@@ -9,5 +9,5 @@ meshing.tui.preferences.graphics.transparency
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.graphics.transparency
-   :members: depth_peeling_layers, depth_peeling_preference, quick_moves, zsort_options, algorithm_for_modern_drivers
+   :members: depth_peeling_preference, zsort_options, quick_moves, algorithm_for_modern_drivers, depth_peeling_layers
 

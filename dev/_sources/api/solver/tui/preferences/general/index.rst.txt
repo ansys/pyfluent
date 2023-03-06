@@ -9,5 +9,5 @@ solver.tui.preferences.general
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.general
-   :members: idle_timeout, initial_physics_volume_definitions, utlcreate_physics_on_mode_change, flow_model, dock_editor, default_ioformat, key_behavioral_changes_message, qaservice_message, advanced_partition, enable_parametric_study, utlmode, automatic_transcript, laplace_auto_partition_default
+   :members: key_behavioral_changes_message, utlmode, initial_physics_volume_definitions, advanced_partition, utlcreate_physics_on_mode_change, automatic_transcript, enable_parametric_study, default_ioformat, dock_editor, idle_timeout, qaservice_message, flow_model, laplace_auto_partition_default
 

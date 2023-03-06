@@ -9,13 +9,13 @@ solver.tui.parametric\_study.design\_points
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.parametric_study.design_points
-   :members: load_case_data_for_current_dp, duplicate, delete, clear_data_and_edit_values, add, save_journals
+   :members: save_journals, add, duplicate, load_case_data_for_current_dp, clear_data_and_edit_values, delete
 
 .. toctree::
    :hidden:
 
-   auto_create/index
-   set/index
    concurrent/index
    print_to_console/index
    table/index
+   auto_create/index
+   set/index

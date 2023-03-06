@@ -9,5 +9,5 @@ solver.tui.file.import\_.mechanical\_apdl
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file.import_.mechanical_apdl
-   :members: input, result
+   :members: result, input
 

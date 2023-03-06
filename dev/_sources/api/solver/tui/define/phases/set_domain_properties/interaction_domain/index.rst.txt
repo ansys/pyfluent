@@ -12,8 +12,8 @@ solver.tui.define.phases.set\_domain\_properties.interaction\_domain
 .. toctree::
    :hidden:
 
-   interfacial_area/index
-   heat_mass_reactions/index
    forces/index
    numerics/index
    model_transition/index
+   interfacial_area/index
+   heat_mass_reactions/index

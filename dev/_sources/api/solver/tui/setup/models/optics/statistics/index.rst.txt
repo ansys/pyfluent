@@ -9,5 +9,5 @@ solver.tui.setup.models.optics.statistics
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.optics.statistics
-   :members: reset_statistics, statistics_controls
+   :members: statistics_controls, reset_statistics
 

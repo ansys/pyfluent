@@ -9,10 +9,10 @@ solver.tui.solution.run\_calculation
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.run_calculation
-   :members: number_of_iterations, data_sampling, second_order_time_options, cfl_based_adaptive_time_stepping, residual_verbosity, adaptive_time_stepping, mesh_motion, variable_time_stepping, time_step, solution_steering, residual_tolerance, multistage_time_iterate, summary, update_physical_time, iterate, reporting_interval, set_solution_steering, max_corrections, dual_time_iterate
+   :members: residual_verbosity, reporting_interval, number_of_iterations, time_step, summary, cfl_based_adaptive_time_stepping, residual_tolerance, update_physical_time, variable_time_stepping, set_solution_steering, adaptive_time_stepping, max_corrections, multistage_time_iterate, solution_steering, dual_time_iterate, data_sampling, mesh_motion, second_order_time_options, iterate
 
 .. toctree::
    :hidden:
 
-   data_sampling_options/index
    transient_controls/index
+   data_sampling_options/index
