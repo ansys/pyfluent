@@ -49,6 +49,7 @@ autodoc_default_options = {
     "undoc-members": True,
 }
 
+autosummary_generate = True
 autodoc_class_signature = "separated"
 toc_object_entries_show_parents = "hide"
 

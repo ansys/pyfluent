@@ -533,7 +533,7 @@ class Dimension(object):
         Parameters
         ----------
         unit_str: str
-            Unit pf quantity
+            Unit of quantity
         """
         self._dimensions = {
             "M": 0.0,
