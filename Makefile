@@ -70,17 +70,7 @@ build-doc-source:
 	@pip install -r requirements/requirements_doc.txt
 	@xvfb-run make -C doc html
 
-build-doc-no-settings:
-	@sudo rm -rf doc/source/api/solver/_autosummary/settings
-	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
-	@pip install -r requirements/requirements_doc.txt
-	@xvfb-run make -C doc html
-
-build-doc-settings:
-	@sudo rm -rf doc/source/api/meshing/datamodel
-	@sudo rm -rf doc/source/api/meshing/tui
-	@sudo rm -rf doc/source/api/solver/datamodel
-	@sudo rm -rf doc/source/api/solver/tui
+build-all-docs:
 	@python doc/settings_rstgen.py
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@pip install -r requirements/requirements_doc.txt
