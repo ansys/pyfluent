@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -296,8 +306,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -705,7 +720,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting">
    <code class="docutils literal notranslate">
     <span class="pre">
-     secondary_gradient_limiting
+     main_menu.solve.set.advanced.secondary_gradient_limiting
     </span>
    </code>
   </a>
@@ -714,7 +729,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.energy">
      <code class="docutils literal notranslate">
       <span class="pre">
-       secondary_gradient_limiting.energy()
+       main_menu.solve.set.advanced.secondary_gradient_limiting.energy()
       </span>
      </code>
     </a>
@@ -723,7 +738,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.mesh_quality_limits">
      <code class="docutils literal notranslate">
       <span class="pre">
-       secondary_gradient_limiting.mesh_quality_limits()
+       main_menu.solve.set.advanced.secondary_gradient_limiting.mesh_quality_limits()
       </span>
      </code>
     </a>
@@ -732,7 +747,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.uds">
      <code class="docutils literal notranslate">
       <span class="pre">
-       secondary_gradient_limiting.uds()
+       main_menu.solve.set.advanced.secondary_gradient_limiting.uds()
       </span>
      </code>
     </a>
@@ -760,25 +775,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solve-set-advanced-secondary-gradient-limiting">
 <span id="ref-solver-tui-solve-set-advanced-secondary-gradient-limiting"></span><h1>solver.tui.solve.set.advanced.secondary_gradient_limiting<a class="headerlink" href="#solver-tui-solve-set-advanced-secondary-gradient-limiting" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.</span></span><span class="sig-name descname"><span class="pre">secondary_gradient_limiting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the secondary gradient limiting menu. This menu is only available when the define/models/solver/pressure-based text command is enabled.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.energy" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.energy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">energy</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables secondary gradient limiting for the energy  calculations on coupled two-sided walls.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.mesh_quality_limits" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.mesh_quality_limits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_quality_limits</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Defines the mesh quality limits used when applying secondary  gradient limiting to faces on coupled two-sided walls.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.uds" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.uds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uds</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables secondary gradient limiting for the user-defined  scalar (UDS) calculations on coupled two-sided walls.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solve.set.advanced.</span></span><span class="sig-name descname"><span class="pre">secondary_gradient_limiting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the secondary gradient limiting menu. This menu is only available when the define/models/solver/pressure-based text command is enabled.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.energy">
 <span class="sig-name descname"><span class="pre">energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.energy" title="Permalink to this definition">#</a></dt>

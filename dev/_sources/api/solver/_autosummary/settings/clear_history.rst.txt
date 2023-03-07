@@ -5,8 +5,11 @@
 clear_history
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.clear_history.clear_history
+.. currentmodule:: ansys.fluent.core.solver.settings_231.clear_history
 
+.. autoclass:: clear_history
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ================================   ========================

@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -297,8 +307,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -688,7 +703,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment">
    <code class="docutils literal notranslate">
     <span class="pre">
-     velocity_limiting_treatment
+     main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment
     </span>
    </code>
   </a>
@@ -697,7 +712,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.enable_velocity_limiting">
      <code class="docutils literal notranslate">
       <span class="pre">
-       velocity_limiting_treatment.enable_velocity_limiting()
+       main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.enable_velocity_limiting()
       </span>
      </code>
     </a>
@@ -706,7 +721,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_damping_strength">
      <code class="docutils literal notranslate">
       <span class="pre">
-       velocity_limiting_treatment.set_damping_strength()
+       main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_damping_strength()
       </span>
      </code>
     </a>
@@ -715,7 +730,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_damping_strengths">
      <code class="docutils literal notranslate">
       <span class="pre">
-       velocity_limiting_treatment.set_damping_strengths()
+       main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_damping_strengths()
       </span>
      </code>
     </a>
@@ -724,7 +739,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_velocity_and_vof_cutoffs">
      <code class="docutils literal notranslate">
       <span class="pre">
-       velocity_limiting_treatment.set_velocity_and_vof_cutoffs()
+       main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_velocity_and_vof_cutoffs()
       </span>
      </code>
     </a>
@@ -733,7 +748,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_velocity_cutoff">
      <code class="docutils literal notranslate">
       <span class="pre">
-       velocity_limiting_treatment.set_velocity_cutoff()
+       main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_velocity_cutoff()
       </span>
      </code>
     </a>
@@ -742,7 +757,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.verbosity">
      <code class="docutils literal notranslate">
       <span class="pre">
-       velocity_limiting_treatment.verbosity()
+       main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.verbosity()
       </span>
      </code>
     </a>
@@ -770,34 +785,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solution-methods-multiphase-numerics-solution-stabilization-velocity-limiting-treatment">
 <span id="ref-solver-tui-solution-methods-multiphase-numerics-solution-stabilization-velocity-limiting-treatment"></span><h1>solver.tui.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment<a class="headerlink" href="#solver-tui-solution-methods-multiphase-numerics-solution-stabilization-velocity-limiting-treatment" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.</span></span><span class="sig-name descname"><span class="pre">velocity_limiting_treatment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Velocity limiting related stabiity controls for VOF.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.enable_velocity_limiting" title="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.enable_velocity_limiting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_velocity_limiting</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable velocity limiting treatment.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_damping_strength" title="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_damping_strength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_damping_strength</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enter damping strength.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_damping_strengths" title="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_damping_strengths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_damping_strengths</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set phase based damping strength.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_velocity_and_vof_cutoffs" title="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_velocity_and_vof_cutoffs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_velocity_and_vof_cutoffs</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set phase based velocity limiting controls.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_velocity_cutoff" title="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_velocity_cutoff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_velocity_cutoff</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enter max velocity magnitude.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.verbosity" title="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.verbosity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verbosity</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable verbosity to print number of velocity limited cells during iterations.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solution.methods.multiphase_numerics.solution_stabilization.</span></span><span class="sig-name descname"><span class="pre">velocity_limiting_treatment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment" title="Permalink to this definition">#</a></dt>
+<dd><p>Velocity limiting related stabiity controls for VOF.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.enable_velocity_limiting">
 <span class="sig-name descname"><span class="pre">enable_velocity_limiting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.enable_velocity_limiting" title="Permalink to this definition">#</a></dt>

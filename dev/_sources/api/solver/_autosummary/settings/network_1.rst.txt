@@ -5,24 +5,27 @@
 network
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.network_1.network
+.. currentmodule:: ansys.fluent.core.solver.settings_231.network_1
 
-.. rubric:: Attributes
+.. autoclass:: network
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ============================================   =====================================
 
-Attribute                                                                    Summary
+Child                                                                        Summary
 
 ============================================   =====================================
 :ref:`shell_script_path <shell_script_path>`       Set the Fluent shell script path.
 
 ============================================   =====================================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ======================================   ========================================================
 
-Method                                                                                    Summary
+Command                                                                                   Summary
 
 ======================================   ========================================================
 :ref:`kill_all_nodes <kill_all_nodes>`             Delete all compute nodes from virtual machine.

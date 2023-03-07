@@ -5,8 +5,11 @@
 limiter_type
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.limiter_type.limiter_type
+.. currentmodule:: ansys.fluent.core.solver.settings_231.limiter_type
 
+.. autoclass:: limiter_type
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================================   ===========================================

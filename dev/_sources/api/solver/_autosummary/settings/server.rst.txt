@@ -5,13 +5,16 @@
 server
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.server.server
+.. currentmodule:: ansys.fluent.core.solver.settings_231.server
 
-.. rubric:: Attributes
+.. autoclass:: server
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================   =======================
 
-Attribute                                        Summary
+Child                                            Summary
 
 ==============================   =======================
 :ref:`web_server <web_server>`       'web_server' child.

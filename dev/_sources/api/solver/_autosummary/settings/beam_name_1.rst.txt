@@ -5,8 +5,11 @@
 beam_name
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.beam_name_1.beam_name
+.. currentmodule:: ansys.fluent.core.solver.settings_231.beam_name_1
 
+.. autoclass:: beam_name
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   =========================================

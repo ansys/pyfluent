@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -294,8 +304,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -574,7 +589,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general">
    <code class="docutils literal notranslate">
     <span class="pre">
-     general
+     main_menu.preferences.general
     </span>
    </code>
   </a>
@@ -583,7 +598,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.advanced_partition">
      <code class="docutils literal notranslate">
       <span class="pre">
-       general.advanced_partition()
+       main_menu.preferences.general.advanced_partition()
       </span>
      </code>
     </a>
@@ -592,7 +607,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.automatic_transcript">
      <code class="docutils literal notranslate">
       <span class="pre">
-       general.automatic_transcript()
+       main_menu.preferences.general.automatic_transcript()
       </span>
      </code>
     </a>
@@ -601,7 +616,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.default_ioformat">
      <code class="docutils literal notranslate">
       <span class="pre">
-       general.default_ioformat()
+       main_menu.preferences.general.default_ioformat()
       </span>
      </code>
     </a>
@@ -610,7 +625,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.dock_editor">
      <code class="docutils literal notranslate">
       <span class="pre">
-       general.dock_editor()
+       main_menu.preferences.general.dock_editor()
       </span>
      </code>
     </a>
@@ -619,7 +634,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.enable_parametric_study">
      <code class="docutils literal notranslate">
       <span class="pre">
-       general.enable_parametric_study()
+       main_menu.preferences.general.enable_parametric_study()
       </span>
      </code>
     </a>
@@ -628,7 +643,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.flow_model">
      <code class="docutils literal notranslate">
       <span class="pre">
-       general.flow_model()
+       main_menu.preferences.general.flow_model()
       </span>
      </code>
     </a>
@@ -637,7 +652,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.idle_timeout">
      <code class="docutils literal notranslate">
       <span class="pre">
-       general.idle_timeout()
+       main_menu.preferences.general.idle_timeout()
       </span>
      </code>
     </a>
@@ -646,7 +661,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.initial_physics_volume_definitions">
      <code class="docutils literal notranslate">
       <span class="pre">
-       general.initial_physics_volume_definitions()
+       main_menu.preferences.general.initial_physics_volume_definitions()
       </span>
      </code>
     </a>
@@ -655,7 +670,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.key_behavioral_changes_message">
      <code class="docutils literal notranslate">
       <span class="pre">
-       general.key_behavioral_changes_message()
+       main_menu.preferences.general.key_behavioral_changes_message()
       </span>
      </code>
     </a>
@@ -664,7 +679,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.laplace_auto_partition_default">
      <code class="docutils literal notranslate">
       <span class="pre">
-       general.laplace_auto_partition_default()
+       main_menu.preferences.general.laplace_auto_partition_default()
       </span>
      </code>
     </a>
@@ -673,7 +688,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.qaservice_message">
      <code class="docutils literal notranslate">
       <span class="pre">
-       general.qaservice_message()
+       main_menu.preferences.general.qaservice_message()
       </span>
      </code>
     </a>
@@ -682,7 +697,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.utlcreate_physics_on_mode_change">
      <code class="docutils literal notranslate">
       <span class="pre">
-       general.utlcreate_physics_on_mode_change()
+       main_menu.preferences.general.utlcreate_physics_on_mode_change()
       </span>
      </code>
     </a>
@@ -691,7 +706,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.utlmode">
      <code class="docutils literal notranslate">
       <span class="pre">
-       general.utlmode()
+       main_menu.preferences.general.utlmode()
       </span>
      </code>
     </a>
@@ -719,68 +734,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-preferences-general">
 <span id="ref-solver-tui-preferences-general"></span><h1>solver.tui.preferences.general<a class="headerlink" href="#solver-tui-preferences-general" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.general">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.preferences.</span></span><span class="sig-name descname"><span class="pre">general</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.advanced_partition" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.advanced_partition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">advanced_partition</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.automatic_transcript" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.automatic_transcript"><code class="xref py py-obj docutils literal notranslate"><span class="pre">automatic_transcript</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.default_ioformat" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.default_ioformat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_ioformat</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.dock_editor" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.dock_editor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dock_editor</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.enable_parametric_study" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.enable_parametric_study"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_parametric_study</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.flow_model" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.flow_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flow_model</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.idle_timeout" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.idle_timeout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">idle_timeout</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.initial_physics_volume_definitions" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.initial_physics_volume_definitions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initial_physics_volume_definitions</span></code></a>(*args, ...)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.key_behavioral_changes_message" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.key_behavioral_changes_message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_behavioral_changes_message</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.laplace_auto_partition_default" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.laplace_auto_partition_default"><code class="xref py py-obj docutils literal notranslate"><span class="pre">laplace_auto_partition_default</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.qaservice_message" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.qaservice_message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">qaservice_message</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.utlcreate_physics_on_mode_change" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.utlcreate_physics_on_mode_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utlcreate_physics_on_mode_change</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.utlmode" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.utlmode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utlmode</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.general">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.preferences.</span></span><span class="sig-name descname"><span class="pre">general</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.general.advanced_partition">
 <span class="sig-name descname"><span class="pre">advanced_partition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.general.advanced_partition" title="Permalink to this definition">#</a></dt>

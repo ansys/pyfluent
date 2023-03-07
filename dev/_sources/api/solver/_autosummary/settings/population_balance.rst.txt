@@ -5,13 +5,16 @@
 population_balance
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.population_balance.population_balance
+.. currentmodule:: ansys.fluent.core.solver.settings_231.population_balance
 
-.. rubric:: Methods
+.. autoclass:: population_balance
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ======================================   =======================================
 
-Method                                                                   Summary
+Command                                                                  Summary
 
 ======================================   =======================================
 :ref:`moments <moments>`                     Set moments for population balance.

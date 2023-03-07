@@ -5,13 +5,16 @@
 ex_emiss
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.ex_emiss.ex_emiss
+.. currentmodule:: ansys.fluent.core.solver.settings_231.ex_emiss
 
-.. rubric:: Attributes
+.. autoclass:: ex_emiss
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

@@ -5,8 +5,11 @@
 pseudo_time_scale_factor
 ========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.pseudo_time_scale_factor.pseudo_time_scale_factor
+.. currentmodule:: ansys.fluent.core.solver.settings_231.pseudo_time_scale_factor
 
+.. autoclass:: pseudo_time_scale_factor
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

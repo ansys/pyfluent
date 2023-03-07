@@ -5,8 +5,11 @@
 save_view
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.save_view.save_view
+.. currentmodule:: ansys.fluent.core.solver.settings_231.save_view
 
+.. autoclass:: save_view
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ============================   ======================

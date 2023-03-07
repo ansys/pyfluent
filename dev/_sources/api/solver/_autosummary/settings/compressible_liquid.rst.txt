@@ -5,13 +5,16 @@
 compressible_liquid
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.compressible_liquid.compressible_liquid
+.. currentmodule:: ansys.fluent.core.solver.settings_231.compressible_liquid
 
-.. rubric:: Attributes
+.. autoclass:: compressible_liquid
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================================================   ===================================
 
-Attribute                                                                            Summary
+Child                                                                                Summary
 
 ======================================================   ===================================
 :ref:`reference_pressure <reference_pressure>`                   'reference_pressure' child.

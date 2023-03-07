@@ -5,8 +5,11 @@
 previous_values_to_consider
 ===========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.previous_values_to_consider.previous_values_to_consider
+.. currentmodule:: ansys.fluent.core.solver.settings_231.previous_values_to_consider
 
+.. autoclass:: previous_values_to_consider
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

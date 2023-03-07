@@ -5,8 +5,11 @@
 vibrational_degeneracy_mode_3
 =============================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.vibrational_degeneracy_mode_3.vibrational_degeneracy_mode_3
+.. currentmodule:: ansys.fluent.core.solver.settings_231.vibrational_degeneracy_mode_3
 
+.. autoclass:: vibrational_degeneracy_mode_3
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================

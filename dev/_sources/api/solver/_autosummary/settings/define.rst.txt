@@ -5,8 +5,11 @@
 define
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.define.define
+.. currentmodule:: ansys.fluent.core.solver.settings_231.define
 
+.. autoclass:: define
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================================   =================================================

@@ -5,13 +5,16 @@
 multiple_surface_reactions
 ==========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.multiple_surface_reactions.multiple_surface_reactions
+.. currentmodule:: ansys.fluent.core.solver.settings_231.multiple_surface_reactions
 
-.. rubric:: Attributes
+.. autoclass:: multiple_surface_reactions
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================================================================   ================================================
 
-Attribute                                                                                                                   Summary
+Child                                                                                                                       Summary
 
 ================================================================================   ================================================
 :ref:`composition_dependent_specific_heat <composition_dependent_specific_heat>`       'composition_dependent_specific_heat' child.

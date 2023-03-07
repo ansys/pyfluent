@@ -5,8 +5,11 @@
 enalbled
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.enalbled.enalbled
+.. currentmodule:: ansys.fluent.core.solver.settings_231.enalbled
 
+.. autoclass:: enalbled
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================================   =============================================

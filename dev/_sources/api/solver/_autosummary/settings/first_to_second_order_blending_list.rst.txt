@@ -5,8 +5,11 @@
 first_to_second_order_blending_list
 ===================================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.first_to_second_order_blending_list.first_to_second_order_blending_list
+.. currentmodule:: ansys.fluent.core.solver.settings_231.first_to_second_order_blending_list
 
+.. autoclass:: first_to_second_order_blending_list
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ====================

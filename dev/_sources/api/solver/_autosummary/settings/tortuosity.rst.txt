@@ -5,8 +5,11 @@
 tortuosity
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.tortuosity.tortuosity
+.. currentmodule:: ansys.fluent.core.solver.settings_231.tortuosity
 
+.. autoclass:: tortuosity
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

@@ -5,8 +5,11 @@
 splashing_distribution_function
 ===============================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.splashing_distribution_function.splashing_distribution_function
+.. currentmodule:: ansys.fluent.core.solver.settings_231.splashing_distribution_function
 
+.. autoclass:: splashing_distribution_function
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ==========================================================================================================================

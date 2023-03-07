@@ -5,13 +5,16 @@
 fan_child
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fan_child.fan_child
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fan_child
 
-.. rubric:: Attributes
+.. autoclass:: fan_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================================   ============================================
 
-Attribute                                                                                                       Summary
+Child                                                                                                           Summary
 
 ========================================================================   ============================================
 :ref:`phase <phase_4>`                                                                                   'phase' child.

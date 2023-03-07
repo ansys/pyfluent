@@ -5,8 +5,11 @@
 increment
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.increment.increment
+.. currentmodule:: ansys.fluent.core.solver.settings_231.increment
 
+.. autoclass:: increment
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ===============================================================

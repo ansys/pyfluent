@@ -5,8 +5,11 @@
 turbulent_viscosity_ratio
 =========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.turbulent_viscosity_ratio.turbulent_viscosity_ratio
+.. currentmodule:: ansys.fluent.core.solver.settings_231.turbulent_viscosity_ratio
 
+.. autoclass:: turbulent_viscosity_ratio
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   ================================================================================================

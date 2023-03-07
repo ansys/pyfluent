@@ -5,8 +5,11 @@
 dpm_allow_lwf_to_vof
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_allow_lwf_to_vof.dpm_allow_lwf_to_vof
+.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_allow_lwf_to_vof
 
+.. autoclass:: dpm_allow_lwf_to_vof
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

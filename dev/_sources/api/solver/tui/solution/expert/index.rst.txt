@@ -3,13 +3,13 @@
 solver.tui.solution.expert
 ==========================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.expert
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.expert
+   :members: alternate_wall_temp_formulation, bc_pressure_extrapolations, bcd_boundedness, bcd_weights_freeze, correction_form, disable_reconstruction, energy_numerical_noise_filter, explicit_under_relaxation_value, equation_ordering, flow_warnings, limiter_warnings, linearized_mass_transfer_udf, lock_solid_temperature, material_property_warnings, mp_mfluid_aniso_drag, mp_reference_density, numerical_beach_controls, open_channel_controls, retain_cell_residuals, retain_temporary_solver_mem, set_all_species_together, show_all_discretization_schemes, singhal_et_al_cavitation_model, surface_tension, surface_tension_expert, vof_explicit_controls
 
 .. toctree::
    :hidden:

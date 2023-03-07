@@ -5,8 +5,11 @@
 max_step_change_factor
 ======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.max_step_change_factor.max_step_change_factor
+.. currentmodule:: ansys.fluent.core.solver.settings_231.max_step_change_factor
 
+.. autoclass:: max_step_change_factor
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================================   =============================================

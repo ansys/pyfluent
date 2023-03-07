@@ -3,11 +3,11 @@
 solver.tui.preferences.appearance.selections
 ============================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.selections
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.appearance.selections
+   :members: general_displacement, highlight_edge_color, highlight_edge_weight, highlight_face_color, highlight_gloss, highlight_specular_component, highlight_transparency, mouse_hover_probe_values_enabled, mouse_over_highlight_enabled, probe_tooltip_hide_delay_timer, probe_tooltip_show_delay_timer
 

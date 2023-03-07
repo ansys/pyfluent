@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -295,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -612,7 +627,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.heat_exchanger">
    <code class="docutils literal notranslate">
     <span class="pre">
-     heat_exchanger
+     main_menu.results.report.heat_exchanger
     </span>
    </code>
   </a>
@@ -621,7 +636,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.heat_exchanger.computed_heat_rejection">
      <code class="docutils literal notranslate">
       <span class="pre">
-       heat_exchanger.computed_heat_rejection()
+       main_menu.results.report.heat_exchanger.computed_heat_rejection()
       </span>
      </code>
     </a>
@@ -630,7 +645,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.heat_exchanger.inlet_temperature">
      <code class="docutils literal notranslate">
       <span class="pre">
-       heat_exchanger.inlet_temperature()
+       main_menu.results.report.heat_exchanger.inlet_temperature()
       </span>
      </code>
     </a>
@@ -639,7 +654,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.heat_exchanger.mass_flow_rate">
      <code class="docutils literal notranslate">
       <span class="pre">
-       heat_exchanger.mass_flow_rate()
+       main_menu.results.report.heat_exchanger.mass_flow_rate()
       </span>
      </code>
     </a>
@@ -648,7 +663,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.heat_exchanger.outlet_temperature">
      <code class="docutils literal notranslate">
       <span class="pre">
-       heat_exchanger.outlet_temperature()
+       main_menu.results.report.heat_exchanger.outlet_temperature()
       </span>
      </code>
     </a>
@@ -657,7 +672,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.heat_exchanger.specific_heat">
      <code class="docutils literal notranslate">
       <span class="pre">
-       heat_exchanger.specific_heat()
+       main_menu.results.report.heat_exchanger.specific_heat()
       </span>
      </code>
     </a>
@@ -685,31 +700,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-results-report-heat-exchanger">
 <span id="ref-solver-tui-results-report-heat-exchanger"></span><h1>solver.tui.results.report.heat_exchanger<a class="headerlink" href="#solver-tui-results-report-heat-exchanger" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.heat_exchanger">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.results.report.</span></span><span class="sig-name descname"><span class="pre">heat_exchanger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.heat_exchanger" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the heat exchanger menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.heat_exchanger.computed_heat_rejection" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.heat_exchanger.computed_heat_rejection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">computed_heat_rejection</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Print total heat rejection.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.heat_exchanger.inlet_temperature" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.heat_exchanger.inlet_temperature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inlet_temperature</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Print inlet temperature.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.heat_exchanger.mass_flow_rate" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.heat_exchanger.mass_flow_rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mass_flow_rate</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Print mass flow rate.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.heat_exchanger.outlet_temperature" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.heat_exchanger.outlet_temperature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outlet_temperature</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Print outlet temperature.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.heat_exchanger.specific_heat" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.heat_exchanger.specific_heat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specific_heat</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Print fluid's specific heat.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.heat_exchanger">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.results.report.</span></span><span class="sig-name descname"><span class="pre">heat_exchanger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.heat_exchanger" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the heat exchanger menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.heat_exchanger.computed_heat_rejection">
 <span class="sig-name descname"><span class="pre">computed_heat_rejection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.heat_exchanger.computed_heat_rejection" title="Permalink to this definition">#</a></dt>

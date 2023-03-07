@@ -5,8 +5,11 @@
 thread_id
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.thread_id.thread_id
+.. currentmodule:: ansys.fluent.core.solver.settings_231.thread_id
 
+.. autoclass:: thread_id
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================================   ==========================================

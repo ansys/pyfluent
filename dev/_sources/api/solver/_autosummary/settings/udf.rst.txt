@@ -5,8 +5,11 @@
 udf
 ===
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.udf.udf
+.. currentmodule:: ansys.fluent.core.solver.settings_231.udf
 
+.. autoclass:: udf
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================================================================   ============================================================

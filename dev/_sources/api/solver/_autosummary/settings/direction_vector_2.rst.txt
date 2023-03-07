@@ -5,13 +5,16 @@
 direction_vector
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.direction_vector_2.direction_vector
+.. currentmodule:: ansys.fluent.core.solver.settings_231.direction_vector_2
 
-.. rubric:: Attributes
+.. autoclass:: direction_vector
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================   ========================
 
-Attribute                                           Summary
+Child                                               Summary
 
 ================================   ========================
 :ref:`x_component <x_component>`       'x_component' child.

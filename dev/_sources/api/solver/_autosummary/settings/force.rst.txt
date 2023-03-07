@@ -5,8 +5,11 @@
 force
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.force.force
+.. currentmodule:: ansys.fluent.core.solver.settings_231.force
 
+.. autoclass:: force
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`force_child <force_child>`

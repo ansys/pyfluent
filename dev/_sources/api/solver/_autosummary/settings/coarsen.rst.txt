@@ -5,8 +5,11 @@
 coarsen
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.coarsen.coarsen
+.. currentmodule:: ansys.fluent.core.solver.settings_231.coarsen
 
+.. autoclass:: coarsen
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

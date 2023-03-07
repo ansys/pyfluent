@@ -3,13 +3,13 @@
 meshing.tui.objects.join\_intersect
 ===================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.objects.join_intersect
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects.join_intersect
+   :members: join, add_objects_to_mesh_object, list_regions, merge_regions, intersect, create_mesh_object, delete_region, change_region_type, rename_region, compute_regions
 
 .. toctree::
    :hidden:

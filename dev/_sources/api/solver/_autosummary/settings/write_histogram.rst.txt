@@ -5,8 +5,11 @@
 write_histogram
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.write_histogram.write_histogram
+.. currentmodule:: ansys.fluent.core.solver.settings_231.write_histogram
 
+.. autoclass:: write_histogram
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ====================================   ==========================

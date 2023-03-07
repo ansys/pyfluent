@@ -5,8 +5,11 @@
 specific_heat
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.specific_heat_5.specific_heat
+.. currentmodule:: ansys.fluent.core.solver.settings_231.specific_heat_5
 
+.. autoclass:: specific_heat
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ======================================   ===========================

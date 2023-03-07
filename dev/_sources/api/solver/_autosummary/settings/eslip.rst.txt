@@ -5,8 +5,11 @@
 eslip
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.eslip.eslip
+.. currentmodule:: ansys.fluent.core.solver.settings_231.eslip
 
+.. autoclass:: eslip
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

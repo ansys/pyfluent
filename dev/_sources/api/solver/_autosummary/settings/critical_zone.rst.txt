@@ -5,8 +5,11 @@
 critical_zone
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.critical_zone.critical_zone
+.. currentmodule:: ansys.fluent.core.solver.settings_231.critical_zone
 
+.. autoclass:: critical_zone
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

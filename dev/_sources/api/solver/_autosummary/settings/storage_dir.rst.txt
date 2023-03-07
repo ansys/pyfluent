@@ -5,8 +5,11 @@
 storage_dir
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.storage_dir.storage_dir
+.. currentmodule:: ansys.fluent.core.solver.settings_231.storage_dir
 
+.. autoclass:: storage_dir
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

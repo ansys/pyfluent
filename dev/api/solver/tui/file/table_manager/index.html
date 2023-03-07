@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -294,8 +304,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -584,7 +599,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.table_manager">
    <code class="docutils literal notranslate">
     <span class="pre">
-     table_manager
+     main_menu.file.table_manager
     </span>
    </code>
   </a>
@@ -593,7 +608,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
-       table_manager.delete()
+       main_menu.file.table_manager.delete()
       </span>
      </code>
     </a>
@@ -602,7 +617,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.list_matrix_data">
      <code class="docutils literal notranslate">
       <span class="pre">
-       table_manager.list_matrix_data()
+       main_menu.file.table_manager.list_matrix_data()
       </span>
      </code>
     </a>
@@ -611,7 +626,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.list_properties">
      <code class="docutils literal notranslate">
       <span class="pre">
-       table_manager.list_properties()
+       main_menu.file.table_manager.list_properties()
       </span>
      </code>
     </a>
@@ -620,7 +635,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.list_tables">
      <code class="docutils literal notranslate">
       <span class="pre">
-       table_manager.list_tables()
+       main_menu.file.table_manager.list_tables()
       </span>
      </code>
     </a>
@@ -629,7 +644,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.read_matrix_data_file">
      <code class="docutils literal notranslate">
       <span class="pre">
-       table_manager.read_matrix_data_file()
+       main_menu.file.table_manager.read_matrix_data_file()
       </span>
      </code>
     </a>
@@ -638,7 +653,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.read_rgp_file">
      <code class="docutils literal notranslate">
       <span class="pre">
-       table_manager.read_rgp_file()
+       main_menu.file.table_manager.read_rgp_file()
       </span>
      </code>
     </a>
@@ -647,7 +662,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.rename">
      <code class="docutils literal notranslate">
       <span class="pre">
-       table_manager.rename()
+       main_menu.file.table_manager.rename()
       </span>
      </code>
     </a>
@@ -656,7 +671,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.store_in_case_file">
      <code class="docutils literal notranslate">
       <span class="pre">
-       table_manager.store_in_case_file()
+       main_menu.file.table_manager.store_in_case_file()
       </span>
      </code>
     </a>
@@ -684,40 +699,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-file-table-manager">
 <span id="ref-solver-tui-file-table-manager"></span><h1>solver.tui.file.table_manager<a class="headerlink" href="#solver-tui-file-table-manager" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.table_manager">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.file.</span></span><span class="sig-name descname"><span class="pre">table_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.table_manager" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the table file manager menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.delete" title="ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Deletes a table from local storage.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.list_matrix_data" title="ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.list_matrix_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_matrix_data</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Lists the data of a “matrix” type locally-stored table.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.list_properties" title="ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.list_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_properties</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Lists the properties of a locally-stored table.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.list_tables" title="ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.list_tables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_tables</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Lists all locally-stored tables.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.read_matrix_data_file" title="ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.read_matrix_data_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_matrix_data_file</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Imports a “matrix” type table from a file into local storage.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.read_rgp_file" title="ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.read_rgp_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_rgp_file</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Imports a set of Real Gas Property (RGP) tables from a file into local storage.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.rename" title="ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.rename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rename</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Renames a locally-stored table.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.store_in_case_file" title="ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.store_in_case_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">store_in_case_file</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets the persistence mode for RGP tables (embedded in case file or rely on external file).</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.table_manager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.file.</span></span><span class="sig-name descname"><span class="pre">table_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.table_manager" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the table file manager menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.delete">
 <span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.table_manager.delete" title="Permalink to this definition">#</a></dt>

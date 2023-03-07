@@ -5,8 +5,11 @@
 expr_list
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.expr_list.expr_list
+.. currentmodule:: ansys.fluent.core.solver.settings_231.expr_list
 
+.. autoclass:: expr_list
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ==================================

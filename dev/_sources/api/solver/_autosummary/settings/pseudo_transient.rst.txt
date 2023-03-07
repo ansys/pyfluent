@@ -5,13 +5,16 @@
 pseudo_transient
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.pseudo_transient.pseudo_transient
+.. currentmodule:: ansys.fluent.core.solver.settings_231.pseudo_transient
 
-.. rubric:: Attributes
+.. autoclass:: pseudo_transient
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================================================   =======================================================================
 
-Attribute                                                                                                                                              Summary
+Child                                                                                                                                                  Summary
 
 ====================================================================================   =======================================================================
 :ref:`smoothed_density_stabilization_method <smoothed_density_stabilization_method>`               Enable/disable smoothed density for momentum stabilization.

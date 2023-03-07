@@ -5,8 +5,11 @@
 constant_xi
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.constant_xi.constant_xi
+.. currentmodule:: ansys.fluent.core.solver.settings_231.constant_xi
 
+.. autoclass:: constant_xi
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

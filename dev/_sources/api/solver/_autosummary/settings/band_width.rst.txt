@@ -5,8 +5,11 @@
 band_width
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.band_width.band_width
+.. currentmodule:: ansys.fluent.core.solver.settings_231.band_width
 
+.. autoclass:: band_width
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ==================================

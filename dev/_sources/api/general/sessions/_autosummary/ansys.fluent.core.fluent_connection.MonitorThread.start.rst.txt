@@ -1,6 +1,0 @@
-start
-=====
-
-.. currentmodule:: ansys.fluent.core.fluent_connection
-
-.. automethod:: MonitorThread.start

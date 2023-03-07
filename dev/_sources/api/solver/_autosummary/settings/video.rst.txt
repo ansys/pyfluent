@@ -5,13 +5,16 @@
 video
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.video.video
+.. currentmodule:: ansys.fluent.core.solver.settings_231.video
 
-.. rubric:: Attributes
+.. autoclass:: video
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   ==================================================
 
-Attribute                                                                       Summary
+Child                                                                           Summary
 
 ==================================   ==================================================
 :ref:`background <background_1>`         Set the background color in the video picture.

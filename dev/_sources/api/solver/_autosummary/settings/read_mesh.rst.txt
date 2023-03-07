@@ -5,8 +5,11 @@
 read_mesh
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.read_mesh.read_mesh
+.. currentmodule:: ansys.fluent.core.solver.settings_231.read_mesh
 
+.. autoclass:: read_mesh
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ============================================   ==============================

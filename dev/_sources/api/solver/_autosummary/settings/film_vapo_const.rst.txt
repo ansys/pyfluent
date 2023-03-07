@@ -5,8 +5,11 @@
 film_vapo_const
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.film_vapo_const.film_vapo_const
+.. currentmodule:: ansys.fluent.core.solver.settings_231.film_vapo_const
 
+.. autoclass:: film_vapo_const
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

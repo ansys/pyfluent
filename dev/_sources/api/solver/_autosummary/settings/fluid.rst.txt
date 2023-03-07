@@ -5,8 +5,11 @@
 fluid
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fluid.fluid
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fluid
 
+.. autoclass:: fluid
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`fluid_child <fluid_child>`

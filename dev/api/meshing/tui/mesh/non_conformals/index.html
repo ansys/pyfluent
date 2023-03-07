@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -52,7 +56,7 @@
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
     <link rel="next" title="meshing.tui.mesh.non_conformals.controls" href="controls/index.html" />
-    <link rel="prev" title="meshing.tui.mesh.modify" href="../modify/index.html" />
+    <link rel="prev" title="meshing.tui.mesh" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -293,8 +303,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -307,11 +322,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -323,13 +333,53 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../diagnostics/index.html">
-       meshing.tui.diagnostics
+      <a class="reference internal" href="../../report/index.html">
+       meshing.tui.report
       </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../../material_point/index.html">
        meshing.tui.material_point
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../display/index.html">
+       meshing.tui.display
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../diagnostics/index.html">
+       meshing.tui.diagnostics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../file/index.html">
+       meshing.tui.file
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../objects/index.html">
+       meshing.tui.objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../reference_frames/index.html">
+       meshing.tui.reference_frames
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -342,11 +392,6 @@ function checkPageExistsAndRedirect(event) {
        </i>
       </label>
       <ul class="current">
-       <li class="toctree-l4">
-        <a class="reference internal" href="../modify/index.html">
-         meshing.tui.mesh.modify
-        </a>
-       </li>
        <li class="toctree-l4 current active has-children">
         <a class="current reference internal" href="#">
          meshing.tui.mesh.non_conformals
@@ -365,6 +410,16 @@ function checkPageExistsAndRedirect(event) {
         </ul>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../rapid_octree/index.html">
+         meshing.tui.mesh.rapid_octree
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../thin_volume_mesh/index.html">
+         meshing.tui.mesh.thin_volume_mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../scoped_prisms/index.html">
          meshing.tui.mesh.scoped_prisms
         </a>
@@ -375,23 +430,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../pyramid/index.html">
-         meshing.tui.mesh.pyramid
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../separate/index.html">
-         meshing.tui.mesh.separate
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../hexcore/index.html">
          meshing.tui.mesh.hexcore
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../poly_hexcore/index.html">
-         meshing.tui.mesh.poly_hexcore
         </a>
        </li>
        <li class="toctree-l4">
@@ -400,28 +440,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../prism/index.html">
-         meshing.tui.mesh.prism
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../cartesian/index.html">
-         meshing.tui.mesh.cartesian
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../cavity/index.html">
-         meshing.tui.mesh.cavity
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../cell_zone_conditions/index.html">
-         meshing.tui.mesh.cell_zone_conditions
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../rapid_octree/index.html">
-         meshing.tui.mesh.rapid_octree
+        <a class="reference internal" href="../modify/index.html">
+         meshing.tui.mesh.modify
         </a>
        </li>
        <li class="toctree-l4">
@@ -430,13 +450,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../tet/index.html">
-         meshing.tui.mesh.tet
+        <a class="reference internal" href="../pyramid/index.html">
+         meshing.tui.mesh.pyramid
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../thin_volume_mesh/index.html">
-         meshing.tui.mesh.thin_volume_mesh
+        <a class="reference internal" href="../tet/index.html">
+         meshing.tui.mesh.tet
         </a>
        </li>
        <li class="toctree-l4">
@@ -444,11 +464,46 @@ function checkPageExistsAndRedirect(event) {
          meshing.tui.mesh.poly
         </a>
        </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../separate/index.html">
+         meshing.tui.mesh.separate
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../cell_zone_conditions/index.html">
+         meshing.tui.mesh.cell_zone_conditions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../cavity/index.html">
+         meshing.tui.mesh.cavity
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../poly_hexcore/index.html">
+         meshing.tui.mesh.poly_hexcore
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../cartesian/index.html">
+         meshing.tui.mesh.cartesian
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../prism/index.html">
+         meshing.tui.mesh.prism
+        </a>
+       </li>
       </ul>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
+      <a class="reference internal" href="../../parallel/index.html">
+       meshing.tui.parallel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../size_functions/index.html">
+       meshing.tui.size_functions
       </a>
      </li>
      <li class="toctree-l3">
@@ -457,53 +512,8 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../objects/index.html">
-       meshing.tui.objects
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../../boundary/index.html">
        meshing.tui.boundary
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../report/index.html">
-       meshing.tui.report
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../parallel/index.html">
-       meshing.tui.parallel
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../display/index.html">
-       meshing.tui.display
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../reference_frames/index.html">
-       meshing.tui.reference_frames
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../file/index.html">
-       meshing.tui.file
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../size_functions/index.html">
-       meshing.tui.size_functions
       </a>
      </li>
     </ul>
@@ -548,45 +558,16 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals">
    <code class="docutils literal notranslate">
     <span class="pre">
-     non_conformals
+     main_menu.mesh.non_conformals
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals.controls">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       non_conformals.controls
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals.controls.enable">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         non_conformals.controls.enable()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals.controls.retri_method">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         non_conformals.controls.retri_method()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals.create">
      <code class="docutils literal notranslate">
       <span class="pre">
-       non_conformals.create()
+       main_menu.mesh.non_conformals.create()
       </span>
      </code>
     </a>
@@ -595,7 +576,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals.separate">
      <code class="docutils literal notranslate">
       <span class="pre">
-       non_conformals.separate()
+       main_menu.mesh.non_conformals.separate()
       </span>
      </code>
     </a>
@@ -623,60 +604,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-mesh-non-conformals">
 <span id="ref-meshing-tui-mesh-non-conformals"></span><h1>meshing.tui.mesh.non_conformals<a class="headerlink" href="#meshing-tui-mesh-non-conformals" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.mesh.</span></span><span class="sig-name descname"><span class="pre">non_conformals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the non-conformals menu.</p>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals.controls" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals.controls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">controls</span></code></a>(path, service)</p></td>
-<td><p>Enters the non-conformals controls menu.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals.create" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Creates the non-conformal interface on the specified face zones using the specified retriangulation method.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals.separate" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals.separate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">separate</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to separate the face zones comprising the non-conformal interface between the cell zones specified.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals.controls">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">controls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals.controls" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the non-conformals controls menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals.controls.enable" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals.controls.enable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Toggles the creation of a non-conformal interface.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals.controls.retri_method" title="ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals.controls.retri_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retri_method</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the method to be used for retriangulating the quad faces on the non-conformal zones.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals.controls.enable">
-<span class="sig-name descname"><span class="pre">enable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals.controls.enable" title="Permalink to this definition">#</a></dt>
-<dd><p>Toggles the creation of a non-conformal interface.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals.controls.retri_method">
-<span class="sig-name descname"><span class="pre">retri_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals.controls.retri_method" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the method to be used for retriangulating the quad faces on the non-conformal zones.</p>
-</dd></dl>
-
-</dd></dl>
-
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.</span></span><span class="sig-name descname"><span class="pre">non_conformals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the non-conformals menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals.create">
 <span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.non_conformals.create" title="Permalink to this definition">#</a></dt>

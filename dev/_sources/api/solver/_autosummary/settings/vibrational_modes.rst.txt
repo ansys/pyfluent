@@ -5,13 +5,16 @@
 vibrational_modes
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.vibrational_modes.vibrational_modes
+.. currentmodule:: ansys.fluent.core.solver.settings_231.vibrational_modes
 
-.. rubric:: Attributes
+.. autoclass:: vibrational_modes
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================================================================   ===========================================
 
-Attribute                                                                                                    Summary
+Child                                                                                                        Summary
 
 ======================================================================   ===========================================
 :ref:`vibrational_temperature_mode_1 <vibrational_temperature_mode_1>`       'vibrational_temperature_mode_1' child.

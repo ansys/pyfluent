@@ -5,8 +5,11 @@
 surface
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.surface_2.surface
+.. currentmodule:: ansys.fluent.core.solver.settings_231.surface_2
 
+.. autoclass:: surface
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

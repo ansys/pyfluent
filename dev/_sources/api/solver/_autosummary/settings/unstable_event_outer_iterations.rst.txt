@@ -5,8 +5,11 @@
 unstable_event_outer_iterations
 ===============================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.unstable_event_outer_iterations.unstable_event_outer_iterations
+.. currentmodule:: ansys.fluent.core.solver.settings_231.unstable_event_outer_iterations
 
+.. autoclass:: unstable_event_outer_iterations
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==================================================

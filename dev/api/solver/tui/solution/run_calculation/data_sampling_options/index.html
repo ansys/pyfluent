@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -295,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -599,7 +614,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options">
    <code class="docutils literal notranslate">
     <span class="pre">
-     data_sampling_options
+     main_menu.solution.run_calculation.data_sampling_options
     </span>
    </code>
   </a>
@@ -608,7 +623,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.add_datasets">
      <code class="docutils literal notranslate">
       <span class="pre">
-       data_sampling_options.add_datasets()
+       main_menu.solution.run_calculation.data_sampling_options.add_datasets()
       </span>
      </code>
     </a>
@@ -617,90 +632,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.add_rtdft_datasets">
      <code class="docutils literal notranslate">
       <span class="pre">
-       data_sampling_options.add_rtdft_datasets()
+       main_menu.solution.run_calculation.data_sampling_options.add_rtdft_datasets()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       data_sampling_options.dft_datasets
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.add_datasets">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         data_sampling_options.dft_datasets.add_datasets()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.band_or_tone">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         data_sampling_options.dft_datasets.band_or_tone()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.freq_min_max">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         data_sampling_options.dft_datasets.freq_min_max()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.freq_step_and_sampling">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         data_sampling_options.dft_datasets.freq_step_and_sampling()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.freq_tone_and_sampling">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         data_sampling_options.dft_datasets.freq_tone_and_sampling()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.quantities">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         data_sampling_options.dft_datasets.quantities()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.zones">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         data_sampling_options.dft_datasets.zones()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.list_datasets">
      <code class="docutils literal notranslate">
       <span class="pre">
-       data_sampling_options.list_datasets()
+       main_menu.solution.run_calculation.data_sampling_options.list_datasets()
       </span>
      </code>
     </a>
@@ -709,7 +650,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.remove_dataset">
      <code class="docutils literal notranslate">
       <span class="pre">
-       data_sampling_options.remove_dataset()
+       main_menu.solution.run_calculation.data_sampling_options.remove_dataset()
       </span>
      </code>
     </a>
@@ -737,36 +678,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solution-run-calculation-data-sampling-options">
 <span id="ref-solver-tui-solution-run-calculation-data-sampling-options"></span><h1>solver.tui.solution.run_calculation.data_sampling_options<a class="headerlink" href="#solver-tui-solution-run-calculation-data-sampling-options" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.</span></span><span class="sig-name descname"><span class="pre">data_sampling_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Data sampling options for statistics.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.add_datasets" title="ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.add_datasets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_datasets</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Add a dataset.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.add_rtdft_datasets" title="ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.add_rtdft_datasets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_rtdft_datasets</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Add a dataset.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.list_datasets" title="ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.list_datasets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_datasets</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List dataset.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.remove_dataset" title="ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.remove_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_dataset</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Remove dataset.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets" title="ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dft_datasets</span></code></a>(path, service)</p></td>
-<td><p>Data sampling options for runtime discrete Fourier transform.</p></td>
-</tr>
-</tbody>
-</table>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solution.run_calculation.</span></span><span class="sig-name descname"><span class="pre">data_sampling_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Data sampling options for statistics.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.add_datasets">
 <span class="sig-name descname"><span class="pre">add_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.add_datasets" title="Permalink to this definition">#</a></dt>
@@ -777,81 +696,6 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.add_rtdft_datasets">
 <span class="sig-name descname"><span class="pre">add_rtdft_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.add_rtdft_datasets" title="Permalink to this definition">#</a></dt>
 <dd><p>Add a dataset. After providing the zones for a dataset, press [Enter] to move onto selecting quantities. Enter () to complete the quantity selection for this dataset.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dft_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Data sampling options for runtime discrete Fourier transform.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.add_datasets" title="ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.add_datasets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_datasets</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Add DFT datasets.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.band_or_tone" title="ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.band_or_tone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">band_or_tone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify, whether a new dataset is for DFT in a frequency band resolved by many harmonics or for a single tone.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.freq_min_max" title="ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.freq_min_max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">freq_min_max</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify the minimum and the maximum frequency for a band.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.freq_step_and_sampling" title="ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.freq_step_and_sampling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">freq_step_and_sampling</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify either the band resolution or the sampling timesteps number.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.freq_tone_and_sampling" title="ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.freq_tone_and_sampling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">freq_tone_and_sampling</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify single tone frequency and sampling duration as the number of tone periods.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.quantities" title="ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.quantities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantities</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Select quantities for a new DFT dataset.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.zones" title="ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zones</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Select zones for a new DFT dataset.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.add_datasets">
-<span class="sig-name descname"><span class="pre">add_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.add_datasets" title="Permalink to this definition">#</a></dt>
-<dd><p>Add DFT datasets.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.band_or_tone">
-<span class="sig-name descname"><span class="pre">band_or_tone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.band_or_tone" title="Permalink to this definition">#</a></dt>
-<dd><p>Specify, whether a new dataset is for DFT in a frequency band resolved by many harmonics or for a single tone.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.freq_min_max">
-<span class="sig-name descname"><span class="pre">freq_min_max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.freq_min_max" title="Permalink to this definition">#</a></dt>
-<dd><p>Specify the minimum and the maximum frequency for a band.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.freq_step_and_sampling">
-<span class="sig-name descname"><span class="pre">freq_step_and_sampling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.freq_step_and_sampling" title="Permalink to this definition">#</a></dt>
-<dd><p>Specify either the band resolution or the sampling timesteps number. The other value will be computed consistently.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.freq_tone_and_sampling">
-<span class="sig-name descname"><span class="pre">freq_tone_and_sampling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.freq_tone_and_sampling" title="Permalink to this definition">#</a></dt>
-<dd><p>Specify single tone frequency and sampling duration as the number of tone periods.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.quantities">
-<span class="sig-name descname"><span class="pre">quantities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.quantities" title="Permalink to this definition">#</a></dt>
-<dd><p>Select quantities for a new DFT dataset. Enter () to complete the quantity selection.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.zones">
-<span class="sig-name descname"><span class="pre">zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.run_calculation.data_sampling_options.dft_datasets.zones" title="Permalink to this definition">#</a></dt>
-<dd><p>Select zones for a new DFT dataset.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">

@@ -5,13 +5,16 @@
 surfaces
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.surfaces_2.surfaces
+.. currentmodule:: ansys.fluent.core.solver.settings_231.surfaces_2
 
-.. rubric:: Attributes
+.. autoclass:: surfaces
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================   ==========================
 
-Attribute                                                 Summary
+Child                                                     Summary
 
 ====================================   ==========================
 :ref:`plane_surface <plane_surface>`       'plane_surface' child.

@@ -5,13 +5,16 @@
 sutherland
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.sutherland.sutherland
+.. currentmodule:: ansys.fluent.core.solver.settings_231.sutherland
 
-.. rubric:: Attributes
+.. autoclass:: sutherland
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   ==================================
 
-Attribute                                                                         Summary
+Child                                                                             Summary
 
 ====================================================   ==================================
 :ref:`option <option_2>`                                                  'option' child.

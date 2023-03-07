@@ -5,8 +5,11 @@
 nk
 ==
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.nk.nk
+.. currentmodule:: ansys.fluent.core.solver.settings_231.nk
 
+.. autoclass:: nk
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

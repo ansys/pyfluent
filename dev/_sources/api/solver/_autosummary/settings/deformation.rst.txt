@@ -5,8 +5,11 @@
 deformation
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.deformation.deformation
+.. currentmodule:: ansys.fluent.core.solver.settings_231.deformation
 
+.. autoclass:: deformation
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ===================================

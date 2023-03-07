@@ -5,8 +5,11 @@
 sbes_sgs_option
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.sbes_sgs_option.sbes_sgs_option
+.. currentmodule:: ansys.fluent.core.solver.settings_231.sbes_sgs_option
 
+.. autoclass:: sbes_sgs_option
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================

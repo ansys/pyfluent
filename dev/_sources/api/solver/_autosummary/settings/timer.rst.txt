@@ -5,13 +5,16 @@
 timer
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.timer.timer
+.. currentmodule:: ansys.fluent.core.solver.settings_231.timer
 
-.. rubric:: Methods
+.. autoclass:: timer
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ======================   ========================
 
-Method                                    Summary
+Command                                   Summary
 
 ======================   ========================
 :ref:`usage <usage>`          Print solver timer.

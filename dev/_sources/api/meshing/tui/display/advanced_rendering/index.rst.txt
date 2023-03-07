@@ -3,11 +3,11 @@
 meshing.tui.display.advanced\_rendering
 =======================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.display.advanced_rendering
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.advanced_rendering
+   :members: max_extent_culling, simple_shadow, fast_silhouette_edges, static_model, edge_color
 

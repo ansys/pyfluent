@@ -5,13 +5,16 @@
 user_defined
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.user_defined.user_defined
+.. currentmodule:: ansys.fluent.core.solver.settings_231.user_defined
 
-.. rubric:: Attributes
+.. autoclass:: user_defined
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================   ============================================
 
-Attribute                                                                                       Summary
+Child                                                                                           Summary
 
 ========================================================   ============================================
 :ref:`subgrid_scale_turb_visc <subgrid_scale_turb_visc>`               'subgrid_scale_turb_visc' child.

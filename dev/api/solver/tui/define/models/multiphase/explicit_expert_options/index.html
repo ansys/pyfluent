@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -296,8 +306,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -792,7 +807,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options">
    <code class="docutils literal notranslate">
     <span class="pre">
-     explicit_expert_options
+     main_menu.define.models.multiphase.explicit_expert_options
     </span>
    </code>
   </a>
@@ -801,7 +816,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.solve_vof_every_iter">
      <code class="docutils literal notranslate">
       <span class="pre">
-       explicit_expert_options.solve_vof_every_iter()
+       main_menu.define.models.multiphase.explicit_expert_options.solve_vof_every_iter()
       </span>
      </code>
     </a>
@@ -810,48 +825,10 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.sub_time_step_method">
      <code class="docutils literal notranslate">
       <span class="pre">
-       explicit_expert_options.sub_time_step_method()
+       main_menu.define.models.multiphase.explicit_expert_options.sub_time_step_method()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.volume_fraction_filtering">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       explicit_expert_options.volume_fraction_filtering
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.volume_fraction_filtering.enable">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         explicit_expert_options.volume_fraction_filtering.enable()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.volume_fraction_filtering.filtering_options">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         explicit_expert_options.volume_fraction_filtering.filtering_options()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.volume_fraction_filtering.vol_frac_cutoff">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         explicit_expert_options.volume_fraction_filtering.vol_frac_cutoff()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -876,30 +853,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-define-models-multiphase-explicit-expert-options">
 <span id="ref-solver-tui-define-models-multiphase-explicit-expert-options"></span><h1>solver.tui.define.models.multiphase.explicit_expert_options<a class="headerlink" href="#solver-tui-define-models-multiphase-explicit-expert-options" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.</span></span><span class="sig-name descname"><span class="pre">explicit_expert_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the menu to set explicit VOF expert  options.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.solve_vof_every_iter" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.solve_vof_every_iter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve_vof_every_iter</span></code></a>(*args, **kwargs)</p></td>
-<td><p>If you enter yes, the volume fraction equations will be solved every iteration.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.sub_time_step_method" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.sub_time_step_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub_time_step_method</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Selects the sub-time step method.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.volume_fraction_filtering" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.volume_fraction_filtering"><code class="xref py py-obj docutils literal notranslate"><span class="pre">volume_fraction_filtering</span></code></a>(path, service)</p></td>
-<td><p>Enters the volume fraction filtering menu.</p></td>
-</tr>
-</tbody>
-</table>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.models.multiphase.</span></span><span class="sig-name descname"><span class="pre">explicit_expert_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the menu to set explicit VOF expert  options.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.solve_vof_every_iter">
 <span class="sig-name descname"><span class="pre">solve_vof_every_iter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.solve_vof_every_iter" title="Permalink to this definition">#</a></dt>
@@ -910,45 +871,6 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.sub_time_step_method">
 <span class="sig-name descname"><span class="pre">sub_time_step_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.sub_time_step_method" title="Permalink to this definition">#</a></dt>
 <dd><p>Selects the sub-time step method.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.volume_fraction_filtering">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">volume_fraction_filtering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.volume_fraction_filtering" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the volume fraction filtering menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.volume_fraction_filtering.enable" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.volume_fraction_filtering.enable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the volume fraction filtering treatment.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.volume_fraction_filtering.filtering_options" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.volume_fraction_filtering.filtering_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filtering_options</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Selects the volume fraction filtering method.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.volume_fraction_filtering.vol_frac_cutoff" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.volume_fraction_filtering.vol_frac_cutoff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vol_frac_cutoff</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies a cut-off value for the volume fraction filtering.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.volume_fraction_filtering.enable">
-<span class="sig-name descname"><span class="pre">enable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.volume_fraction_filtering.enable" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables/disables the volume fraction filtering treatment.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.volume_fraction_filtering.filtering_options">
-<span class="sig-name descname"><span class="pre">filtering_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.volume_fraction_filtering.filtering_options" title="Permalink to this definition">#</a></dt>
-<dd><p>Selects the volume fraction filtering method. This command becomes available once the define/models/multiphase/explicit-expert-options/volume-fraction-filtering/enable? text option has been set to yes.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.volume_fraction_filtering.vol_frac_cutoff">
-<span class="sig-name descname"><span class="pre">vol_frac_cutoff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.explicit_expert_options.volume_fraction_filtering.vol_frac_cutoff" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies a cut-off value for the volume fraction filtering. This command becomes available after you select the node averaged cutoff method using the define/models/multiphase/explicit-expert-options/volume-fraction-filtering/filtering-options text command.</p>
-</dd></dl>
-
 </dd></dl>
 
 </dd></dl>

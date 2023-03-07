@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -295,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -754,193 +769,25 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis">
    <code class="docutils literal notranslate">
     <span class="pre">
-     electrolysis
+     main_menu.define.models.electrolysis
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       electrolysis.anode_setup
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.catalyst_layer">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         electrolysis.anode_setup.catalyst_layer()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.current_collector">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         electrolysis.anode_setup.current_collector()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.electrolyte">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         electrolysis.anode_setup.electrolyte()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.flow_channel">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         electrolysis.anode_setup.flow_channel()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.porous_layer">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         electrolysis.anode_setup.porous_layer()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       electrolysis.cathode_setup
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.catalyst_layer">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         electrolysis.cathode_setup.catalyst_layer()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.current_collector">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         electrolysis.cathode_setup.current_collector()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.electrolyte">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         electrolysis.cathode_setup.electrolyte()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.flow_channel">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         electrolysis.cathode_setup.flow_channel()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.porous_layer">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         electrolysis.cathode_setup.porous_layer()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.electrical_tabs_setup">
      <code class="docutils literal notranslate">
       <span class="pre">
-       electrolysis.electrical_tabs_setup()
+       main_menu.define.models.electrolysis.electrical_tabs_setup()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       electrolysis.membrane_setup
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.catalyst_layer">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         electrolysis.membrane_setup.catalyst_layer()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.current_collector">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         electrolysis.membrane_setup.current_collector()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.electrolyte">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         electrolysis.membrane_setup.electrolyte()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.flow_channel">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         electrolysis.membrane_setup.flow_channel()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.porous_layer">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         electrolysis.membrane_setup.porous_layer()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.model_options">
      <code class="docutils literal notranslate">
       <span class="pre">
-       electrolysis.model_options()
+       main_menu.define.models.electrolysis.model_options()
       </span>
      </code>
     </a>
@@ -949,7 +796,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.parameters">
      <code class="docutils literal notranslate">
       <span class="pre">
-       electrolysis.parameters()
+       main_menu.define.models.electrolysis.parameters()
       </span>
      </code>
     </a>
@@ -977,214 +824,18 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-define-models-electrolysis">
 <span id="ref-solver-tui-define-models-electrolysis"></span><h1>solver.tui.define.models.electrolysis<a class="headerlink" href="#solver-tui-define-models-electrolysis" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.define.models.</span></span><span class="sig-name descname"><span class="pre">electrolysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the electrolysis model setup menu.</p>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">anode_setup</span></code></a>(path, service)</p></td>
-<td><p>Enter the menu for the anode controls.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cathode_setup</span></code></a>(path, service)</p></td>
-<td><p>Enter the menu for the cathode controls.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">membrane_setup</span></code></a>(path, service)</p></td>
-<td><p>Specify parameters for electrolyte.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.electrical_tabs_setup" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.electrical_tabs_setup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">electrical_tabs_setup</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify settings for the electrical tabs.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.model_options" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.model_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_options</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify electrolysis model options.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.parameters" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parameters</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify electrolysis model parameters.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">anode_setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the menu for the anode controls.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.catalyst_layer" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.catalyst_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">catalyst_layer</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set parameters for the catalyst layer.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.current_collector" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.current_collector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">current_collector</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set parameters for the current collector.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.electrolyte" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.electrolyte"><code class="xref py py-obj docutils literal notranslate"><span class="pre">electrolyte</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set parameters for the electrolyte.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.flow_channel" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.flow_channel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flow_channel</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set parameters for the flow channel.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.porous_layer" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.porous_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">porous_layer</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set parameters for the porous layer.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.catalyst_layer">
-<span class="sig-name descname"><span class="pre">catalyst_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.catalyst_layer" title="Permalink to this definition">#</a></dt>
-<dd><p>Set parameters for the catalyst layer.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.current_collector">
-<span class="sig-name descname"><span class="pre">current_collector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.current_collector" title="Permalink to this definition">#</a></dt>
-<dd><p>Set parameters for the current collector.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.electrolyte">
-<span class="sig-name descname"><span class="pre">electrolyte</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.electrolyte" title="Permalink to this definition">#</a></dt>
-<dd><p>Set parameters for the electrolyte.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.flow_channel">
-<span class="sig-name descname"><span class="pre">flow_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.flow_channel" title="Permalink to this definition">#</a></dt>
-<dd><p>Set parameters for the flow channel.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.porous_layer">
-<span class="sig-name descname"><span class="pre">porous_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.anode_setup.porous_layer" title="Permalink to this definition">#</a></dt>
-<dd><p>Set parameters for the porous layer.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cathode_setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the menu for the cathode controls.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.catalyst_layer" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.catalyst_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">catalyst_layer</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set parameters for the catalyst layer.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.current_collector" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.current_collector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">current_collector</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set parameters for the current collector.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.electrolyte" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.electrolyte"><code class="xref py py-obj docutils literal notranslate"><span class="pre">electrolyte</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set parameters for the electrolyte.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.flow_channel" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.flow_channel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flow_channel</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set parameters for the flow channel.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.porous_layer" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.porous_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">porous_layer</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set parameters for the porous layer.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.catalyst_layer">
-<span class="sig-name descname"><span class="pre">catalyst_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.catalyst_layer" title="Permalink to this definition">#</a></dt>
-<dd><p>Set parameters for the catalyst layer.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.current_collector">
-<span class="sig-name descname"><span class="pre">current_collector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.current_collector" title="Permalink to this definition">#</a></dt>
-<dd><p>Set parameters for the current collector.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.electrolyte">
-<span class="sig-name descname"><span class="pre">electrolyte</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.electrolyte" title="Permalink to this definition">#</a></dt>
-<dd><p>Set parameters for the electrolyte.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.flow_channel">
-<span class="sig-name descname"><span class="pre">flow_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.flow_channel" title="Permalink to this definition">#</a></dt>
-<dd><p>Set parameters for the flow channel.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.porous_layer">
-<span class="sig-name descname"><span class="pre">porous_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.cathode_setup.porous_layer" title="Permalink to this definition">#</a></dt>
-<dd><p>Set parameters for the porous layer.</p>
-</dd></dl>
-
-</dd></dl>
-
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.models.</span></span><span class="sig-name descname"><span class="pre">electrolysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the electrolysis model setup menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.electrical_tabs_setup">
 <span class="sig-name descname"><span class="pre">electrical_tabs_setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.electrical_tabs_setup" title="Permalink to this definition">#</a></dt>
 <dd><p>Specify settings for the electrical tabs.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">membrane_setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Specify parameters for electrolyte.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.catalyst_layer" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.catalyst_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">catalyst_layer</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set parameters for the catalyst layer.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.current_collector" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.current_collector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">current_collector</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set parameters for the current collector.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.electrolyte" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.electrolyte"><code class="xref py py-obj docutils literal notranslate"><span class="pre">electrolyte</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set parameters for the electrolyte.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.flow_channel" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.flow_channel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flow_channel</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set parameters for the flow channel.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.porous_layer" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.porous_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">porous_layer</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set parameters for the porous layer.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.catalyst_layer">
-<span class="sig-name descname"><span class="pre">catalyst_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.catalyst_layer" title="Permalink to this definition">#</a></dt>
-<dd><p>Set parameters for the catalyst layer.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.current_collector">
-<span class="sig-name descname"><span class="pre">current_collector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.current_collector" title="Permalink to this definition">#</a></dt>
-<dd><p>Set parameters for the current collector.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.electrolyte">
-<span class="sig-name descname"><span class="pre">electrolyte</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.electrolyte" title="Permalink to this definition">#</a></dt>
-<dd><p>Set parameters for the electrolyte.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.flow_channel">
-<span class="sig-name descname"><span class="pre">flow_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.flow_channel" title="Permalink to this definition">#</a></dt>
-<dd><p>Set parameters for the flow channel.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.porous_layer">
-<span class="sig-name descname"><span class="pre">porous_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.electrolysis.membrane_setup.porous_layer" title="Permalink to this definition">#</a></dt>
-<dd><p>Set parameters for the porous layer.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">

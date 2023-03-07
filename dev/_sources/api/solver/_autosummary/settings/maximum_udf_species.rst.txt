@@ -5,8 +5,11 @@
 maximum_udf_species
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.maximum_udf_species.maximum_udf_species
+.. currentmodule:: ansys.fluent.core.solver.settings_231.maximum_udf_species
 
+.. autoclass:: maximum_udf_species
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ==========================================================================================================================

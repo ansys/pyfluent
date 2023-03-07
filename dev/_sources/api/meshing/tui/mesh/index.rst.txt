@@ -3,32 +3,32 @@
 meshing.tui.mesh
 ================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.mesh
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh
+   :members: reset_mesh_parameter, auto_mesh, auto_prefix_cell_zones, activate_lean_datastructures, cutcell, list_mesh_parameter, check_mesh, check_quality, prepare_for_solve, selective_mesh_check, zone_names_clean_up, repair_face_handedness, deactivate_lean_datastructures, clear_mesh, reset_mesh, clear_undo_stack, create_heat_exchanger, check_quality_level, auto_mesh_multiple_objects, laplace_smooth_nodes, create_frustrum
 
 .. toctree::
    :hidden:
 
-   modify/index
    non_conformals/index
+   rapid_octree/index
+   thin_volume_mesh/index
    scoped_prisms/index
    manage/index
-   pyramid/index
-   separate/index
    hexcore/index
-   poly_hexcore/index
    auto_mesh_controls/index
-   prism/index
-   cartesian/index
-   cavity/index
-   cell_zone_conditions/index
-   rapid_octree/index
+   modify/index
    domains/index
+   pyramid/index
    tet/index
-   thin_volume_mesh/index
    poly/index
+   separate/index
+   cell_zone_conditions/index
+   cavity/index
+   poly_hexcore/index
+   cartesian/index
+   prism/index

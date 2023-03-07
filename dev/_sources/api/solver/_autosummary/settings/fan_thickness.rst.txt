@@ -5,8 +5,11 @@
 fan_thickness
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fan_thickness.fan_thickness
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fan_thickness
 
+.. autoclass:: fan_thickness
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

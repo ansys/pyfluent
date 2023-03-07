@@ -5,8 +5,11 @@
 all_bndry_zones
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.all_bndry_zones.all_bndry_zones
+.. currentmodule:: ansys.fluent.core.solver.settings_231.all_bndry_zones
 
+.. autoclass:: all_bndry_zones
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   =====================================================

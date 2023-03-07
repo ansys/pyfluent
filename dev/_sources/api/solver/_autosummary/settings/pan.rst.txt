@@ -5,8 +5,11 @@
 pan
 ===
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.pan.pan
+.. currentmodule:: ansys.fluent.core.solver.settings_231.pan
 
+.. autoclass:: pan
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ====================   ==================

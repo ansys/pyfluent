@@ -5,8 +5,11 @@
 pseudo_time_step_size
 =====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.pseudo_time_step_size.pseudo_time_step_size
+.. currentmodule:: ansys.fluent.core.solver.settings_231.pseudo_time_step_size
 
+.. autoclass:: pseudo_time_step_size
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =============================

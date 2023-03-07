@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -296,8 +306,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -765,7 +780,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options">
    <code class="docutils literal notranslate">
     <span class="pre">
-     geko_options
+     main_menu.define.models.viscous.geko_options
     </span>
    </code>
   </a>
@@ -774,7 +789,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.blending_function">
      <code class="docutils literal notranslate">
       <span class="pre">
-       geko_options.blending_function()
+       main_menu.define.models.viscous.geko_options.blending_function()
       </span>
      </code>
     </a>
@@ -783,7 +798,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.cbf_lam">
      <code class="docutils literal notranslate">
       <span class="pre">
-       geko_options.cbf_lam()
+       main_menu.define.models.viscous.geko_options.cbf_lam()
       </span>
      </code>
     </a>
@@ -792,7 +807,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.cbf_tur">
      <code class="docutils literal notranslate">
       <span class="pre">
-       geko_options.cbf_tur()
+       main_menu.define.models.viscous.geko_options.cbf_tur()
       </span>
      </code>
     </a>
@@ -801,7 +816,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.cjet">
      <code class="docutils literal notranslate">
       <span class="pre">
-       geko_options.cjet()
+       main_menu.define.models.viscous.geko_options.cjet()
       </span>
      </code>
     </a>
@@ -810,7 +825,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.cjet_aux">
      <code class="docutils literal notranslate">
       <span class="pre">
-       geko_options.cjet_aux()
+       main_menu.define.models.viscous.geko_options.cjet_aux()
       </span>
      </code>
     </a>
@@ -819,7 +834,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.cmix">
      <code class="docutils literal notranslate">
       <span class="pre">
-       geko_options.cmix()
+       main_menu.define.models.viscous.geko_options.cmix()
       </span>
      </code>
     </a>
@@ -828,7 +843,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.cnw">
      <code class="docutils literal notranslate">
       <span class="pre">
-       geko_options.cnw()
+       main_menu.define.models.viscous.geko_options.cnw()
       </span>
      </code>
     </a>
@@ -837,7 +852,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.cnw_sub">
      <code class="docutils literal notranslate">
       <span class="pre">
-       geko_options.cnw_sub()
+       main_menu.define.models.viscous.geko_options.cnw_sub()
       </span>
      </code>
     </a>
@@ -846,7 +861,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.creal">
      <code class="docutils literal notranslate">
       <span class="pre">
-       geko_options.creal()
+       main_menu.define.models.viscous.geko_options.creal()
       </span>
      </code>
     </a>
@@ -855,7 +870,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.csep">
      <code class="docutils literal notranslate">
       <span class="pre">
-       geko_options.csep()
+       main_menu.define.models.viscous.geko_options.csep()
       </span>
      </code>
     </a>
@@ -864,7 +879,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.geko_defaults">
      <code class="docutils literal notranslate">
       <span class="pre">
-       geko_options.geko_defaults()
+       main_menu.define.models.viscous.geko_options.geko_defaults()
       </span>
      </code>
     </a>
@@ -873,7 +888,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.wall_distance_free">
      <code class="docutils literal notranslate">
       <span class="pre">
-       geko_options.wall_distance_free()
+       main_menu.define.models.viscous.geko_options.wall_distance_free()
       </span>
      </code>
     </a>
@@ -901,52 +916,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-define-models-viscous-geko-options">
 <span id="ref-solver-tui-define-models-viscous-geko-options"></span><h1>solver.tui.define.models.viscous.geko_options<a class="headerlink" href="#solver-tui-define-models-viscous-geko-options" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.</span></span><span class="sig-name descname"><span class="pre">geko_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the GEKO model menu..</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.blending_function" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.blending_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">blending_function</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets the blending function, which deactivatescmix and cjet inside boundary layers.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.cbf_lam" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.cbf_lam"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cbf_lam</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Setscbf_lam, a part of the blending function and shields the laminar boundary layer.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.cbf_tur" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.cbf_tur"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cbf_tur</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Setscbf_tur, a factor for the main blending factor, controlling the thickness of the layer near walls.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.cjet" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.cjet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cjet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Setscjet, the parameter to optimize free shear layer mixing (optimize free jets independent of mixing layer).</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.cjet_aux" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.cjet_aux"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cjet_aux</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Setscjet_aux, which allows fine-tuning of the parameter to optimize free jets.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.cmix" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.cmix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cmix</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Setscmix, the parameter to optimize strength of mixing in free shear flows.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.cnw" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.cnw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cnw</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Setscnw, the parameter to optimize flow in non-equilibrium near wall regions.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.cnw_sub" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.cnw_sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cnw_sub</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Setscnw_sub, which allows the adjustment of log-layer and cf.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.creal" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.creal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">creal</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Setscreal, a realizability limiter that ensures positive normal stresses in the entire domain.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.csep" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.csep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">csep</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Setscsep, the parameter to optimize flow separation from smooth surfaces.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.geko_defaults" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.geko_defaults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geko_defaults</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Restores the defaults of all GEKO parameters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.wall_distance_free" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.wall_distance_free"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wall_distance_free</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the wall distance free version of the GEKO model.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.models.viscous.</span></span><span class="sig-name descname"><span class="pre">geko_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the GEKO model menu..</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.blending_function">
 <span class="sig-name descname"><span class="pre">blending_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.viscous.geko_options.blending_function" title="Permalink to this definition">#</a></dt>

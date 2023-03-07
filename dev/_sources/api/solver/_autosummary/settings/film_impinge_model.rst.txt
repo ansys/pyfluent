@@ -5,8 +5,11 @@
 film_impinge_model
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.film_impinge_model.film_impinge_model
+.. currentmodule:: ansys.fluent.core.solver.settings_231.film_impinge_model
 
+.. autoclass:: film_impinge_model
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

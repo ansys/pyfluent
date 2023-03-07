@@ -5,8 +5,11 @@
 solution_status
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.solution_status.solution_status
+.. currentmodule:: ansys.fluent.core.solver.settings_231.solution_status
 
+.. autoclass:: solution_status
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===============================

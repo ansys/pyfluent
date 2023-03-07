@@ -3,13 +3,13 @@
 meshing.tui.objects.volumetric\_regions
 =======================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects.volumetric_regions
+   :members: list, merge_cells, rename, update, auto_fill_volume, compute, delete_cells, change_type, merge, fill_empty_volume, delete
 
 .. toctree::
    :hidden:

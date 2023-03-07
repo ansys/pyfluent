@@ -5,8 +5,11 @@
 fan
 ===
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fan.fan
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fan
 
+.. autoclass:: fan
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`fan_child <fan_child>`

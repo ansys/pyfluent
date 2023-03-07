@@ -5,13 +5,16 @@
 injection_type
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.injection_type.injection_type
+.. currentmodule:: ansys.fluent.core.solver.settings_231.injection_type
 
-.. rubric:: Attributes
+.. autoclass:: injection_type
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================================   ===========================
 
-Attribute                                                    Summary
+Child                                                        Summary
 
 ======================================   ===========================
 :ref:`option <option_2>`                             'option' child.

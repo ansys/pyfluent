@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -295,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -647,7 +662,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings">
    <code class="docutils literal notranslate">
     <span class="pre">
-     hardcopy_settings
+     main_menu.preferences.graphics.hardcopy_settings
     </span>
    </code>
   </a>
@@ -656,7 +671,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.export_edges_for_avz">
      <code class="docutils literal notranslate">
       <span class="pre">
-       hardcopy_settings.export_edges_for_avz()
+       main_menu.preferences.graphics.hardcopy_settings.export_edges_for_avz()
       </span>
      </code>
     </a>
@@ -665,7 +680,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.hardcopy_driver">
      <code class="docutils literal notranslate">
       <span class="pre">
-       hardcopy_settings.hardcopy_driver()
+       main_menu.preferences.graphics.hardcopy_settings.hardcopy_driver()
       </span>
      </code>
     </a>
@@ -674,7 +689,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.hardcopy_line_width">
      <code class="docutils literal notranslate">
       <span class="pre">
-       hardcopy_settings.hardcopy_line_width()
+       main_menu.preferences.graphics.hardcopy_settings.hardcopy_line_width()
       </span>
      </code>
     </a>
@@ -683,7 +698,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.hardware_image_accel">
      <code class="docutils literal notranslate">
       <span class="pre">
-       hardcopy_settings.hardware_image_accel()
+       main_menu.preferences.graphics.hardcopy_settings.hardware_image_accel()
       </span>
      </code>
     </a>
@@ -692,7 +707,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.post_script_permission_override">
      <code class="docutils literal notranslate">
       <span class="pre">
-       hardcopy_settings.post_script_permission_override()
+       main_menu.preferences.graphics.hardcopy_settings.post_script_permission_override()
       </span>
      </code>
     </a>
@@ -701,7 +716,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.save_embedded_hardcopies_separately">
      <code class="docutils literal notranslate">
       <span class="pre">
-       hardcopy_settings.save_embedded_hardcopies_separately()
+       main_menu.preferences.graphics.hardcopy_settings.save_embedded_hardcopies_separately()
       </span>
      </code>
     </a>
@@ -710,7 +725,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.save_embedded_windows_in_hardcopy">
      <code class="docutils literal notranslate">
       <span class="pre">
-       hardcopy_settings.save_embedded_windows_in_hardcopy()
+       main_menu.preferences.graphics.hardcopy_settings.save_embedded_windows_in_hardcopy()
       </span>
      </code>
     </a>
@@ -719,7 +734,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.transparent_embedded_windows">
      <code class="docutils literal notranslate">
       <span class="pre">
-       hardcopy_settings.transparent_embedded_windows()
+       main_menu.preferences.graphics.hardcopy_settings.transparent_embedded_windows()
       </span>
      </code>
     </a>
@@ -747,48 +762,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-preferences-graphics-hardcopy-settings">
 <span id="ref-solver-tui-preferences-graphics-hardcopy-settings"></span><h1>solver.tui.preferences.graphics.hardcopy_settings<a class="headerlink" href="#solver-tui-preferences-graphics-hardcopy-settings" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.</span></span><span class="sig-name descname"><span class="pre">hardcopy_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.export_edges_for_avz" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.export_edges_for_avz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_edges_for_avz</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.hardcopy_driver" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.hardcopy_driver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hardcopy_driver</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.hardcopy_line_width" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.hardcopy_line_width"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hardcopy_line_width</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.hardware_image_accel" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.hardware_image_accel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hardware_image_accel</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.post_script_permission_override" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.post_script_permission_override"><code class="xref py py-obj docutils literal notranslate"><span class="pre">post_script_permission_override</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.save_embedded_hardcopies_separately" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.save_embedded_hardcopies_separately"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_embedded_hardcopies_separately</span></code></a>(*args, ...)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.save_embedded_windows_in_hardcopy" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.save_embedded_windows_in_hardcopy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_embedded_windows_in_hardcopy</span></code></a>(*args, ...)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.transparent_embedded_windows" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.transparent_embedded_windows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transparent_embedded_windows</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.preferences.graphics.</span></span><span class="sig-name descname"><span class="pre">hardcopy_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.export_edges_for_avz">
 <span class="sig-name descname"><span class="pre">export_edges_for_avz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.hardcopy_settings.export_edges_for_avz" title="Permalink to this definition">#</a></dt>

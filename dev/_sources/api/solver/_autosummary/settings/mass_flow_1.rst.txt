@@ -5,8 +5,11 @@
 mass_flow
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.mass_flow_1.mass_flow
+.. currentmodule:: ansys.fluent.core.solver.settings_231.mass_flow_1
 
+.. autoclass:: mass_flow
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ========================================   ===========================================

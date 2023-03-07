@@ -1,6 +1,0 @@
-filter\_multiplier
-==================
-
-.. currentmodule:: ansys.fluent.core.quantity
-
-.. autofunction:: filter_multiplier

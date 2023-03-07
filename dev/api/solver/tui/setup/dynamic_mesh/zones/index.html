@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -295,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -627,7 +642,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones">
    <code class="docutils literal notranslate">
     <span class="pre">
-     zones
+     main_menu.setup.dynamic_mesh.zones
     </span>
    </code>
   </a>
@@ -636,7 +651,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones.create">
      <code class="docutils literal notranslate">
       <span class="pre">
-       zones.create()
+       main_menu.setup.dynamic_mesh.zones.create()
       </span>
      </code>
     </a>
@@ -645,7 +660,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
-       zones.delete()
+       main_menu.setup.dynamic_mesh.zones.delete()
       </span>
      </code>
     </a>
@@ -654,7 +669,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones.insert_boundary_layer">
      <code class="docutils literal notranslate">
       <span class="pre">
-       zones.insert_boundary_layer()
+       main_menu.setup.dynamic_mesh.zones.insert_boundary_layer()
       </span>
      </code>
     </a>
@@ -663,7 +678,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones.insert_interior_layer">
      <code class="docutils literal notranslate">
       <span class="pre">
-       zones.insert_interior_layer()
+       main_menu.setup.dynamic_mesh.zones.insert_interior_layer()
       </span>
      </code>
     </a>
@@ -672,7 +687,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones.list">
      <code class="docutils literal notranslate">
       <span class="pre">
-       zones.list()
+       main_menu.setup.dynamic_mesh.zones.list()
       </span>
      </code>
     </a>
@@ -681,7 +696,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones.remove_boundary_layer">
      <code class="docutils literal notranslate">
       <span class="pre">
-       zones.remove_boundary_layer()
+       main_menu.setup.dynamic_mesh.zones.remove_boundary_layer()
       </span>
      </code>
     </a>
@@ -690,7 +705,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones.remove_interior_layer">
      <code class="docutils literal notranslate">
       <span class="pre">
-       zones.remove_interior_layer()
+       main_menu.setup.dynamic_mesh.zones.remove_interior_layer()
       </span>
      </code>
     </a>
@@ -718,37 +733,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-dynamic-mesh-zones">
 <span id="ref-solver-tui-setup-dynamic-mesh-zones"></span><h1>solver.tui.setup.dynamic_mesh.zones<a class="headerlink" href="#solver-tui-setup-dynamic-mesh-zones" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.</span></span><span class="sig-name descname"><span class="pre">zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the dynamic mesh zones menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones.create" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create dynamic zone.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones.delete" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete dynamic zone.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones.insert_boundary_layer" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones.insert_boundary_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_boundary_layer</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Insert new cell zone.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones.insert_interior_layer" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones.insert_interior_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_interior_layer</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Insert new layer cell zone at specified location.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones.list" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List dynamic zones.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones.remove_boundary_layer" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones.remove_boundary_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_boundary_layer</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Remove cell zone.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones.remove_interior_layer" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones.remove_interior_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_interior_layer</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Remove interior layer cell zone.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.dynamic_mesh.</span></span><span class="sig-name descname"><span class="pre">zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the dynamic mesh zones menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones.create">
 <span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.zones.create" title="Permalink to this definition">#</a></dt>

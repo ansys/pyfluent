@@ -1,6 +1,0 @@
-task
-====
-
-.. currentmodule:: ansys.fluent.core.workflow
-
-.. automethod:: WorkflowWrapper.task

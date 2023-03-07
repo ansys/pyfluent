@@ -1,6 +1,0 @@
-as\_dict
-========
-
-.. currentmodule:: ansys.fluent.core.quantity
-
-.. automethod:: Dimension.as_dict

@@ -5,8 +5,11 @@
 append_sample
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.append_sample.append_sample
+.. currentmodule:: ansys.fluent.core.solver.settings_231.append_sample
 
+.. autoclass:: append_sample
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   =====================

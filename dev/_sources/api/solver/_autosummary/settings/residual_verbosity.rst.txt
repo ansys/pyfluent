@@ -5,8 +5,11 @@
 residual_verbosity
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.residual_verbosity.residual_verbosity
+.. currentmodule:: ansys.fluent.core.solver.settings_231.residual_verbosity
 
+.. autoclass:: residual_verbosity
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

@@ -5,8 +5,11 @@
 open
 ====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.open.open
+.. currentmodule:: ansys.fluent.core.solver.settings_231.open
 
+.. autoclass:: open
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==========================================   =============================

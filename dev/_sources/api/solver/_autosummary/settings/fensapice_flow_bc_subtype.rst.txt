@@ -5,8 +5,11 @@
 fensapice_flow_bc_subtype
 =========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fensapice_flow_bc_subtype.fensapice_flow_bc_subtype
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fensapice_flow_bc_subtype
 
+.. autoclass:: fensapice_flow_bc_subtype
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

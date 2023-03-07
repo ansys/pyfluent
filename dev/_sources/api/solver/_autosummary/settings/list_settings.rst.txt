@@ -5,8 +5,11 @@
 list_settings
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.list_settings.list_settings
+.. currentmodule:: ansys.fluent.core.solver.settings_231.list_settings
 
+.. autoclass:: list_settings
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ==========================================================================================================

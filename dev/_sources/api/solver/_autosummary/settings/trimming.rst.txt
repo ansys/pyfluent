@@ -5,13 +5,16 @@
 trimming
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.trimming.trimming
+.. currentmodule:: ansys.fluent.core.solver.settings_231.trimming
 
-.. rubric:: Attributes
+.. autoclass:: trimming
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================================   ====================================================================
 
-Attribute                                                                                                         Summary
+Child                                                                                                             Summary
 
 ==================================================   ====================================================================
 :ref:`trim_option <trim_option>`                                                                  Select Trimming Option:

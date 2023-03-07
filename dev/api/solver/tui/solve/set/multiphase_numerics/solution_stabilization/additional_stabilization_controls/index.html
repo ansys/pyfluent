@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -297,8 +307,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -753,7 +768,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.solution_stabilization.additional_stabilization_controls">
    <code class="docutils literal notranslate">
     <span class="pre">
-     additional_stabilization_controls
+     main_menu.solve.set.multiphase_numerics.solution_stabilization.additional_stabilization_controls
     </span>
    </code>
   </a>
@@ -762,7 +777,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.solution_stabilization.additional_stabilization_controls.blended_compressive_scheme">
      <code class="docutils literal notranslate">
       <span class="pre">
-       additional_stabilization_controls.blended_compressive_scheme()
+       main_menu.solve.set.multiphase_numerics.solution_stabilization.additional_stabilization_controls.blended_compressive_scheme()
       </span>
      </code>
     </a>
@@ -771,7 +786,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.solution_stabilization.additional_stabilization_controls.pseudo_time_stabilization">
      <code class="docutils literal notranslate">
       <span class="pre">
-       additional_stabilization_controls.pseudo_time_stabilization()
+       main_menu.solve.set.multiphase_numerics.solution_stabilization.additional_stabilization_controls.pseudo_time_stabilization()
       </span>
      </code>
     </a>
@@ -799,22 +814,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solve-set-multiphase-numerics-solution-stabilization-additional-stabilization-controls">
 <span id="ref-solver-tui-solve-set-multiphase-numerics-solution-stabilization-additional-stabilization-controls"></span><h1>solver.tui.solve.set.multiphase_numerics.solution_stabilization.additional_stabilization_controls<a class="headerlink" href="#solver-tui-solve-set-multiphase-numerics-solution-stabilization-additional-stabilization-controls" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.solution_stabilization.additional_stabilization_controls">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.solution_stabilization.</span></span><span class="sig-name descname"><span class="pre">additional_stabilization_controls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.solution_stabilization.additional_stabilization_controls" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the menu for additional advanced stability controls.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.solution_stabilization.additional_stabilization_controls.blended_compressive_scheme" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.solution_stabilization.additional_stabilization_controls.blended_compressive_scheme"><code class="xref py py-obj docutils literal notranslate"><span class="pre">blended_compressive_scheme</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the blended compressive discretization scheme.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.solution_stabilization.additional_stabilization_controls.pseudo_time_stabilization" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.solution_stabilization.additional_stabilization_controls.pseudo_time_stabilization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pseudo_time_stabilization</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Pseudo-Time Momentum stabilization and False Time Step Linearization methods for VOF.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.solution_stabilization.additional_stabilization_controls">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solve.set.multiphase_numerics.solution_stabilization.</span></span><span class="sig-name descname"><span class="pre">additional_stabilization_controls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.solution_stabilization.additional_stabilization_controls" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the menu for additional advanced stability controls.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.solution_stabilization.additional_stabilization_controls.blended_compressive_scheme">
 <span class="sig-name descname"><span class="pre">blended_compressive_scheme</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.solution_stabilization.additional_stabilization_controls.blended_compressive_scheme" title="Permalink to this definition">#</a></dt>

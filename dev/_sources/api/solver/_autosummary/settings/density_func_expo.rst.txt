@@ -5,8 +5,11 @@
 density_func_expo
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.density_func_expo.density_func_expo
+.. currentmodule:: ansys.fluent.core.solver.settings_231.density_func_expo
 
+.. autoclass:: density_func_expo
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ==================================================

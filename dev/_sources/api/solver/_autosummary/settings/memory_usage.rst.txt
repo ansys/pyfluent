@@ -5,8 +5,11 @@
 memory_usage
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.memory_usage.memory_usage
+.. currentmodule:: ansys.fluent.core.solver.settings_231.memory_usage
 
+.. autoclass:: memory_usage
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   =================

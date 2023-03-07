@@ -5,13 +5,16 @@
 combustible_fraction
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.combustible_fraction.combustible_fraction
+.. currentmodule:: ansys.fluent.core.solver.settings_231.combustible_fraction
 
-.. rubric:: Attributes
+.. autoclass:: combustible_fraction
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================   ====================================================
 
-Attribute                                                               Summary
+Child                                                                   Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

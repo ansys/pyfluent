@@ -5,8 +5,11 @@
 turb_visc_based_damping
 =======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.turb_visc_based_damping.turb_visc_based_damping
+.. currentmodule:: ansys.fluent.core.solver.settings_231.turb_visc_based_damping
 
+.. autoclass:: turb_visc_based_damping
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ==================================================

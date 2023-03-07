@@ -5,8 +5,11 @@
 sdr_prandtl
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.sdr_prandtl.sdr_prandtl
+.. currentmodule:: ansys.fluent.core.solver.settings_231.sdr_prandtl
 
+.. autoclass:: sdr_prandtl
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =========================

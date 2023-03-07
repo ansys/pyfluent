@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -296,8 +306,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -752,7 +767,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models">
    <code class="docutils literal notranslate">
     <span class="pre">
-     sub_models
+     main_menu.setup.models.multiphase.sub_models
     </span>
    </code>
   </a>
@@ -761,39 +776,10 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models.boiling">
      <code class="docutils literal notranslate">
       <span class="pre">
-       sub_models.boiling()
+       main_menu.setup.models.multiphase.sub_models.boiling()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models.boiling_options">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       sub_models.boiling_options
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models.boiling_options.nlbf_model">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         sub_models.boiling_options.nlbf_model()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models.boiling_options.options">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         sub_models.boiling_options.options()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -818,61 +804,18 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-models-multiphase-sub-models">
 <span id="ref-solver-tui-setup-models-multiphase-sub-models"></span><h1>solver.tui.setup.models.multiphase.sub_models<a class="headerlink" href="#solver-tui-setup-models-multiphase-sub-models" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.</span></span><span class="sig-name descname"><span class="pre">sub_models</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the menu to select sub-models.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models.boiling" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models.boiling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boiling</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Activate boiling model.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models.boiling_options" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models.boiling_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boiling_options</span></code></a>(path, service)</p></td>
-<td><p>Set boiling options.</p></td>
-</tr>
-</tbody>
-</table>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.models.multiphase.</span></span><span class="sig-name descname"><span class="pre">sub_models</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the menu to select sub-models.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models.boiling">
 <span class="sig-name descname"><span class="pre">boiling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models.boiling" title="Permalink to this definition">#</a></dt>
 <dd><p>Activate boiling model.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models.boiling_options">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">boiling_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models.boiling_options" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Set boiling options.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models.boiling_options.nlbf_model" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models.boiling_options.nlbf_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nlbf_model</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the non-local boundary field correction.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models.boiling_options.options" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models.boiling_options.options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">options</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Choose the type of boiling model.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models.boiling_options.nlbf_model">
-<span class="sig-name descname"><span class="pre">nlbf_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models.boiling_options.nlbf_model" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the non-local boundary field correction.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models.boiling_options.options">
-<span class="sig-name descname"><span class="pre">options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.sub_models.boiling_options.options" title="Permalink to this definition">#</a></dt>
-<dd><p>Choose the type of boiling model.</p>
-</dd></dl>
-
 </dd></dl>
 
 </dd></dl>

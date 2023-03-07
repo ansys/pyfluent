@@ -3,13 +3,13 @@
 meshing.tui.preferences.appearance.charts
 =========================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance.charts
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.appearance.charts
+   :members: tooltip_interpolation, print_residuals_data, legend_alignment, print_plot_data, plots_behavior, legend_visibility, curve_colors, enable_open_glfor_modern_plots, modern_plots_enabled, modern_plots_points_threshold, threshold
 
 .. toctree::
    :hidden:

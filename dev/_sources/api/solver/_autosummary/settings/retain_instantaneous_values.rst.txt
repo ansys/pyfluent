@@ -5,8 +5,11 @@
 retain_instantaneous_values
 ===========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.retain_instantaneous_values.retain_instantaneous_values
+.. currentmodule:: ansys.fluent.core.solver.settings_231.retain_instantaneous_values
 
+.. autoclass:: retain_instantaneous_values
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================================   =================================================

@@ -5,8 +5,11 @@
 min_vapor_pressure
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.min_vapor_pressure.min_vapor_pressure
+.. currentmodule:: ansys.fluent.core.solver.settings_231.min_vapor_pressure
 
+.. autoclass:: min_vapor_pressure
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =====================================

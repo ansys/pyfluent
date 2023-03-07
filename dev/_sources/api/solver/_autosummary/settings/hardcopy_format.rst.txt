@@ -5,8 +5,11 @@
 hardcopy_format
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.hardcopy_format.hardcopy_format
+.. currentmodule:: ansys.fluent.core.solver.settings_231.hardcopy_format
 
+.. autoclass:: hardcopy_format
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ===========================

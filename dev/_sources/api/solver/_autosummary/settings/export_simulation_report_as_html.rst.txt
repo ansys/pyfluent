@@ -5,8 +5,11 @@
 export_simulation_report_as_html
 ================================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.export_simulation_report_as_html.export_simulation_report_as_html
+.. currentmodule:: ansys.fluent.core.solver.settings_231.export_simulation_report_as_html
 
+.. autoclass:: export_simulation_report_as_html
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ================================   ========================

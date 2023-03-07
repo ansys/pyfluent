@@ -5,13 +5,16 @@
 convection_diffusion_controlled
 ===============================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.convection_diffusion_controlled.convection_diffusion_controlled
+.. currentmodule:: ansys.fluent.core.solver.settings_231.convection_diffusion_controlled
 
-.. rubric:: Attributes
+.. autoclass:: convection_diffusion_controlled
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================================   ============================================
 
-Attribute                                                                                                       Summary
+Child                                                                                                           Summary
 
 ========================================================================   ============================================
 :ref:`variable_lewis_number <variable_lewis_number>`                                     'variable_lewis_number' child.

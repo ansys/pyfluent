@@ -5,8 +5,11 @@
 interpolate_flow_solution_gradients
 ===================================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.interpolate_flow_solution_gradients.interpolate_flow_solution_gradients
+.. currentmodule:: ansys.fluent.core.solver.settings_231.interpolate_flow_solution_gradients
 
+.. autoclass:: interpolate_flow_solution_gradients
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ====================================================================================================

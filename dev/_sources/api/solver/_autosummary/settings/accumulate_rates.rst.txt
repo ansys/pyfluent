@@ -5,8 +5,11 @@
 accumulate_rates
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.accumulate_rates.accumulate_rates
+.. currentmodule:: ansys.fluent.core.solver.settings_231.accumulate_rates
 
+.. autoclass:: accumulate_rates
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   =====================

@@ -5,8 +5,11 @@
 p_backflow_spec_gen
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.p_backflow_spec_gen.p_backflow_spec_gen
+.. currentmodule:: ansys.fluent.core.solver.settings_231.p_backflow_spec_gen
 
+.. autoclass:: p_backflow_spec_gen
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

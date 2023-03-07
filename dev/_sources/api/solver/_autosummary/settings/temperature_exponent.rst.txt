@@ -5,8 +5,11 @@
 temperature_exponent
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.temperature_exponent.temperature_exponent
+.. currentmodule:: ansys.fluent.core.solver.settings_231.temperature_exponent
 
+.. autoclass:: temperature_exponent
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

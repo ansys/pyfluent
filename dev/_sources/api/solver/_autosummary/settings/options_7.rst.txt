@@ -5,13 +5,16 @@
 options
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.options_7.options
+.. currentmodule:: ansys.fluent.core.solver.settings_231.options_7
 
-.. rubric:: Attributes
+.. autoclass:: options
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   ========================
 
-Attribute                                             Summary
+Child                                                 Summary
 
 ==================================   ========================
 :ref:`node_values <node_values_1>`       'node_values' child.

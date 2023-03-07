@@ -5,8 +5,11 @@
 disable_repair
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.disable_repair.disable_repair
+.. currentmodule:: ansys.fluent.core.solver.settings_231.disable_repair
 
+.. autoclass:: disable_repair
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   =============================================================

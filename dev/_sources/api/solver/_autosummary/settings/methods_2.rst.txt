@@ -5,8 +5,11 @@
 methods
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.methods_2.methods
+.. currentmodule:: ansys.fluent.core.solver.settings_231.methods_2
 
+.. autoclass:: methods
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================

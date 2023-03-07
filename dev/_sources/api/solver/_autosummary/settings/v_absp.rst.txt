@@ -5,13 +5,16 @@
 v_absp
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.v_absp.v_absp
+.. currentmodule:: ansys.fluent.core.solver.settings_231.v_absp
 
-.. rubric:: Attributes
+.. autoclass:: v_absp
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

@@ -5,13 +5,16 @@
 wsn
 ===
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.wsn.wsn
+.. currentmodule:: ansys.fluent.core.solver.settings_231.wsn
 
-.. rubric:: Attributes
+.. autoclass:: wsn
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

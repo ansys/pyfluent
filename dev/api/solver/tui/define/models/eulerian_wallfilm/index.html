@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -295,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -749,45 +764,16 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm">
    <code class="docutils literal notranslate">
     <span class="pre">
-     eulerian_wallfilm
+     main_menu.define.models.eulerian_wallfilm
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.coupled_solution">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       eulerian_wallfilm.coupled_solution
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.coupled_solution.enable_coupled_solution">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         eulerian_wallfilm.coupled_solution.enable_coupled_solution()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.coupled_solution.enable_curvature_smoothing">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         eulerian_wallfilm.coupled_solution.enable_curvature_smoothing()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.enable_film_vof_transition_message">
      <code class="docutils literal notranslate">
       <span class="pre">
-       eulerian_wallfilm.enable_film_vof_transition_message()
+       main_menu.define.models.eulerian_wallfilm.enable_film_vof_transition_message()
       </span>
      </code>
     </a>
@@ -796,7 +782,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.enable_wallfilm_model">
      <code class="docutils literal notranslate">
       <span class="pre">
-       eulerian_wallfilm.enable_wallfilm_model()
+       main_menu.define.models.eulerian_wallfilm.enable_wallfilm_model()
       </span>
      </code>
     </a>
@@ -805,45 +791,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.film_material">
      <code class="docutils literal notranslate">
       <span class="pre">
-       eulerian_wallfilm.film_material()
+       main_menu.define.models.eulerian_wallfilm.film_material()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.implicit_options">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       eulerian_wallfilm.implicit_options
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.implicit_options.new_implicit_scheme">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         eulerian_wallfilm.implicit_options.new_implicit_scheme()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.implicit_options.relative_error_residual">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         eulerian_wallfilm.implicit_options.relative_error_residual()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.initialize_wallfilm_model">
      <code class="docutils literal notranslate">
       <span class="pre">
-       eulerian_wallfilm.initialize_wallfilm_model()
+       main_menu.define.models.eulerian_wallfilm.initialize_wallfilm_model()
       </span>
      </code>
     </a>
@@ -852,7 +809,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.list_film_walls">
      <code class="docutils literal notranslate">
       <span class="pre">
-       eulerian_wallfilm.list_film_walls()
+       main_menu.define.models.eulerian_wallfilm.list_film_walls()
       </span>
      </code>
     </a>
@@ -861,7 +818,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.model_options">
      <code class="docutils literal notranslate">
       <span class="pre">
-       eulerian_wallfilm.model_options()
+       main_menu.define.models.eulerian_wallfilm.model_options()
       </span>
      </code>
     </a>
@@ -870,7 +827,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.solution_options">
      <code class="docutils literal notranslate">
       <span class="pre">
-       eulerian_wallfilm.solution_options()
+       main_menu.define.models.eulerian_wallfilm.solution_options()
       </span>
      </code>
     </a>
@@ -879,7 +836,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.solve_wallfilm_equation">
      <code class="docutils literal notranslate">
       <span class="pre">
-       eulerian_wallfilm.solve_wallfilm_equation()
+       main_menu.define.models.eulerian_wallfilm.solve_wallfilm_equation()
       </span>
      </code>
     </a>
@@ -907,81 +864,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-define-models-eulerian-wallfilm">
 <span id="ref-solver-tui-define-models-eulerian-wallfilm"></span><h1>solver.tui.define.models.eulerian_wallfilm<a class="headerlink" href="#solver-tui-define-models-eulerian-wallfilm" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.define.models.</span></span><span class="sig-name descname"><span class="pre">eulerian_wallfilm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the Eulerian wall film model menu.</p>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.coupled_solution" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.coupled_solution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coupled_solution</span></code></a>(path, service)</p></td>
-<td><p>Enters the Coupled-Solution menu.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.implicit_options" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.implicit_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">implicit_options</span></code></a>(path, service)</p></td>
-<td><p>Enter Implicit Scheme Option (beta).</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.enable_film_vof_transition_message" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.enable_film_vof_transition_message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_film_vof_transition_message</span></code></a>(*args, ...)</p></td>
-<td><p>Enable film-VOF transition message.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.enable_wallfilm_model" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.enable_wallfilm_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_wallfilm_model</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables Eulerian Wall Film Model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.film_material" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.film_material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">film_material</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets Film Material and Properties.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.initialize_wallfilm_model" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.initialize_wallfilm_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialize_wallfilm_model</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Initializes Eulerian Wall Film Model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.list_film_walls" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.list_film_walls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_film_walls</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List film walls.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.model_options" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.model_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_options</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set Eulerian wall film model options.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.solution_options" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.solution_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solution_options</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets Eulerian Wall Film Model Solution Options.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.solve_wallfilm_equation" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.solve_wallfilm_equation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve_wallfilm_equation</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Activates Eulerian Wall Film Equations.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.coupled_solution">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coupled_solution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.coupled_solution" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the Coupled-Solution menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.coupled_solution.enable_coupled_solution" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.coupled_solution.enable_coupled_solution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_coupled_solution</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the coupled solution method.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.coupled_solution.enable_curvature_smoothing" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.coupled_solution.enable_curvature_smoothing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_curvature_smoothing</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the film curvature smoothing option and sets the smoothing parameters.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.coupled_solution.enable_coupled_solution">
-<span class="sig-name descname"><span class="pre">enable_coupled_solution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.coupled_solution.enable_coupled_solution" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables/disables the coupled solution method.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.coupled_solution.enable_curvature_smoothing">
-<span class="sig-name descname"><span class="pre">enable_curvature_smoothing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.coupled_solution.enable_curvature_smoothing" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables/disables the film curvature smoothing option and sets the smoothing parameters.</p>
-</dd></dl>
-
-</dd></dl>
-
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.models.</span></span><span class="sig-name descname"><span class="pre">eulerian_wallfilm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the Eulerian wall film model menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.enable_film_vof_transition_message">
 <span class="sig-name descname"><span class="pre">enable_film_vof_transition_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.enable_film_vof_transition_message" title="Permalink to this definition">#</a></dt>
@@ -998,36 +888,6 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.film_material">
 <span class="sig-name descname"><span class="pre">film_material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.film_material" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets Film Material and Properties.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.implicit_options">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">implicit_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.implicit_options" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter Implicit Scheme Option (beta).</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.implicit_options.new_implicit_scheme" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.implicit_options.new_implicit_scheme"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new_implicit_scheme</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable alternative implicit scheme.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.implicit_options.relative_error_residual" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.implicit_options.relative_error_residual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_error_residual</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable relative error residual.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.implicit_options.new_implicit_scheme">
-<span class="sig-name descname"><span class="pre">new_implicit_scheme</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.implicit_options.new_implicit_scheme" title="Permalink to this definition">#</a></dt>
-<dd><p>Enable alternative implicit scheme.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.implicit_options.relative_error_residual">
-<span class="sig-name descname"><span class="pre">relative_error_residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.eulerian_wallfilm.implicit_options.relative_error_residual" title="Permalink to this definition">#</a></dt>
-<dd><p>Enable relative error residual.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">

@@ -5,24 +5,27 @@
 warped_face_gradient_correction
 ===============================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.warped_face_gradient_correction.warped_face_gradient_correction
+.. currentmodule:: ansys.fluent.core.solver.settings_231.warped_face_gradient_correction
 
-.. rubric:: Attributes
+.. autoclass:: warped_face_gradient_correction
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================================   =============
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==============================================   =============
 :ref:`turbulence_options <turbulence_options>`        Options:
 
 ==============================================   =============
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ========================   ===========================================
 
-Method                                                         Summary
+Command                                                        Summary
 
 ========================   ===========================================
 :ref:`enable <enable_8>`       Enable Warped-Face Gradient Correction.

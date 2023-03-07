@@ -5,8 +5,11 @@
 show_unsteady_rate
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.show_unsteady_rate.show_unsteady_rate
+.. currentmodule:: ansys.fluent.core.solver.settings_231.show_unsteady_rate
 
+.. autoclass:: show_unsteady_rate
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   =====================================

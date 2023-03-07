@@ -5,13 +5,16 @@
 options
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.options_2.options
+.. currentmodule:: ansys.fluent.core.solver.settings_231.options_2
 
-.. rubric:: Attributes
+.. autoclass:: options
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================   ========================
 
-Attribute                                         Summary
+Child                                             Summary
 
 ==============================   ========================
 :ref:`verbosity <verbosity_3>`       Multigrid verbosity.

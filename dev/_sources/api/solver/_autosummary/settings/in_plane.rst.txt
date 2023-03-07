@@ -5,8 +5,11 @@
 in_plane
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.in_plane.in_plane
+.. currentmodule:: ansys.fluent.core.solver.settings_231.in_plane
 
+.. autoclass:: in_plane
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =======================

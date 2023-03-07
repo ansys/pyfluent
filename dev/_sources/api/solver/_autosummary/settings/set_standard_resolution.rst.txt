@@ -5,8 +5,11 @@
 set_standard_resolution
 =======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.set_standard_resolution.set_standard_resolution
+.. currentmodule:: ansys.fluent.core.solver.settings_231.set_standard_resolution
 
+.. autoclass:: set_standard_resolution
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ==================

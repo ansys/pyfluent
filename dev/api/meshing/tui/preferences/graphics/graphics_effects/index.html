@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -51,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
-    <link rel="next" title="meshing.tui.preferences.graphics.hardcopy_settings" href="../hardcopy_settings/index.html" />
-    <link rel="prev" title="meshing.tui.preferences.graphics" href="../index.html" />
+    <link rel="next" title="meshing.tui.preferences.graphics.lighting" href="../lighting/index.html" />
+    <link rel="prev" title="meshing.tui.preferences.graphics.vector_settings" href="../vector_settings/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -294,8 +304,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -308,11 +323,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../../index.html">
      meshing.tui
@@ -324,8 +334,8 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../diagnostics/index.html">
-       meshing.tui.diagnostics
+      <a class="reference internal" href="../../../report/index.html">
+       meshing.tui.report
       </a>
      </li>
      <li class="toctree-l3">
@@ -334,13 +344,58 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../mesh/index.html">
-       meshing.tui.mesh
+      <a class="reference internal" href="../../../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../display/index.html">
+       meshing.tui.display
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../diagnostics/index.html">
+       meshing.tui.diagnostics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../file/index.html">
+       meshing.tui.file
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../objects/index.html">
+       meshing.tui.objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../reference_frames/index.html">
+       meshing.tui.reference_frames
       </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../../../cad_assemblies/index.html">
        meshing.tui.cad_assemblies
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../mesh/index.html">
+       meshing.tui.mesh
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../parallel/index.html">
+       meshing.tui.parallel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../size_functions/index.html">
+       meshing.tui.size_functions
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -354,110 +409,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../appearance/index.html">
-         meshing.tui.preferences.appearance
-        </a>
-       </li>
-       <li class="toctree-l4 current active has-children">
-        <a class="reference internal" href="../index.html">
-         meshing.tui.preferences.graphics
-        </a>
-        <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-        <label for="toctree-checkbox-4">
-         <i class="fas fa-chevron-down">
-         </i>
-        </label>
-        <ul class="current">
-         <li class="toctree-l5 current active">
-          <a class="current reference internal" href="#">
-           meshing.tui.preferences.graphics.graphics_effects
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../hardcopy_settings/index.html">
-           meshing.tui.preferences.graphics.hardcopy_settings
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../manage_hoops_memory/index.html">
-           meshing.tui.preferences.graphics.manage_hoops_memory
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../vector_settings/index.html">
-           meshing.tui.preferences.graphics.vector_settings
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../colormap_settings/index.html">
-           meshing.tui.preferences.graphics.colormap_settings
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../boundary_markers/index.html">
-           meshing.tui.preferences.graphics.boundary_markers
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../embedded_windows/index.html">
-           meshing.tui.preferences.graphics.embedded_windows
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../material_effects/index.html">
-           meshing.tui.preferences.graphics.material_effects
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../lighting/index.html">
-           meshing.tui.preferences.graphics.lighting
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../meshing_mode/index.html">
-           meshing.tui.preferences.graphics.meshing_mode
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../export_video_settings/index.html">
-           meshing.tui.preferences.graphics.export_video_settings
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../performance/index.html">
-           meshing.tui.preferences.graphics.performance
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../transparency/index.html">
-           meshing.tui.preferences.graphics.transparency
-          </a>
-         </li>
-        </ul>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../navigation/index.html">
          meshing.tui.preferences.navigation
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../parametric_study/index.html">
-         meshing.tui.preferences.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../meshing_workflow/index.html">
-         meshing.tui.preferences.meshing_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../turbo_workflow/index.html">
-         meshing.tui.preferences.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../simulation/index.html">
-         meshing.tui.preferences.simulation
         </a>
        </li>
        <li class="toctree-l4">
@@ -471,60 +424,117 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../simulation/index.html">
+         meshing.tui.preferences.simulation
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../mat_pro_app/index.html">
          meshing.tui.preferences.mat_pro_app
         </a>
        </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../meshing_workflow/index.html">
+         meshing.tui.preferences.meshing_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../appearance/index.html">
+         meshing.tui.preferences.appearance
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../parametric_study/index.html">
+         meshing.tui.preferences.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../turbo_workflow/index.html">
+         meshing.tui.preferences.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4 current active has-children">
+        <a class="reference internal" href="../index.html">
+         meshing.tui.preferences.graphics
+        </a>
+        <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+        <label for="toctree-checkbox-4">
+         <i class="fas fa-chevron-down">
+         </i>
+        </label>
+        <ul class="current">
+         <li class="toctree-l5">
+          <a class="reference internal" href="../manage_hoops_memory/index.html">
+           meshing.tui.preferences.graphics.manage_hoops_memory
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../export_video_settings/index.html">
+           meshing.tui.preferences.graphics.export_video_settings
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../embedded_windows/index.html">
+           meshing.tui.preferences.graphics.embedded_windows
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../boundary_markers/index.html">
+           meshing.tui.preferences.graphics.boundary_markers
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../hardcopy_settings/index.html">
+           meshing.tui.preferences.graphics.hardcopy_settings
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../material_effects/index.html">
+           meshing.tui.preferences.graphics.material_effects
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../vector_settings/index.html">
+           meshing.tui.preferences.graphics.vector_settings
+          </a>
+         </li>
+         <li class="toctree-l5 current active">
+          <a class="current reference internal" href="#">
+           meshing.tui.preferences.graphics.graphics_effects
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../lighting/index.html">
+           meshing.tui.preferences.graphics.lighting
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../colormap_settings/index.html">
+           meshing.tui.preferences.graphics.colormap_settings
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../performance/index.html">
+           meshing.tui.preferences.graphics.performance
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../transparency/index.html">
+           meshing.tui.preferences.graphics.transparency
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../meshing_mode/index.html">
+           meshing.tui.preferences.graphics.meshing_mode
+          </a>
+         </li>
+        </ul>
+       </li>
       </ul>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../objects/index.html">
-       meshing.tui.objects
-      </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../../../boundary/index.html">
        meshing.tui.boundary
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../report/index.html">
-       meshing.tui.report
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../parallel/index.html">
-       meshing.tui.parallel
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../display/index.html">
-       meshing.tui.display
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../reference_frames/index.html">
-       meshing.tui.reference_frames
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../file/index.html">
-       meshing.tui.file
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../size_functions/index.html">
-       meshing.tui.size_functions
       </a>
      </li>
     </ul>
@@ -569,7 +579,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects">
    <code class="docutils literal notranslate">
     <span class="pre">
-     graphics_effects
+     main_menu.preferences.graphics.graphics_effects
     </span>
    </code>
   </a>
@@ -578,7 +588,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.ambient_occlusion_enabled">
      <code class="docutils literal notranslate">
       <span class="pre">
-       graphics_effects.ambient_occlusion_enabled()
+       main_menu.preferences.graphics.graphics_effects.ambient_occlusion_enabled()
       </span>
      </code>
     </a>
@@ -587,7 +597,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.ambient_occlusion_quality">
      <code class="docutils literal notranslate">
       <span class="pre">
-       graphics_effects.ambient_occlusion_quality()
+       main_menu.preferences.graphics.graphics_effects.ambient_occlusion_quality()
       </span>
      </code>
     </a>
@@ -596,7 +606,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.ambient_occlusion_strength">
      <code class="docutils literal notranslate">
       <span class="pre">
-       graphics_effects.ambient_occlusion_strength()
+       main_menu.preferences.graphics.graphics_effects.ambient_occlusion_strength()
       </span>
      </code>
     </a>
@@ -605,7 +615,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.anti_aliasing">
      <code class="docutils literal notranslate">
       <span class="pre">
-       graphics_effects.anti_aliasing()
+       main_menu.preferences.graphics.graphics_effects.anti_aliasing()
       </span>
      </code>
     </a>
@@ -614,7 +624,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.bloom_blur">
      <code class="docutils literal notranslate">
       <span class="pre">
-       graphics_effects.bloom_blur()
+       main_menu.preferences.graphics.graphics_effects.bloom_blur()
       </span>
      </code>
     </a>
@@ -623,7 +633,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.bloom_enabled">
      <code class="docutils literal notranslate">
       <span class="pre">
-       graphics_effects.bloom_enabled()
+       main_menu.preferences.graphics.graphics_effects.bloom_enabled()
       </span>
      </code>
     </a>
@@ -632,7 +642,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.bloom_strength">
      <code class="docutils literal notranslate">
       <span class="pre">
-       graphics_effects.bloom_strength()
+       main_menu.preferences.graphics.graphics_effects.bloom_strength()
       </span>
      </code>
     </a>
@@ -641,7 +651,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.grid_color">
      <code class="docutils literal notranslate">
       <span class="pre">
-       graphics_effects.grid_color()
+       main_menu.preferences.graphics.graphics_effects.grid_color()
       </span>
      </code>
     </a>
@@ -650,7 +660,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.grid_plane_count">
      <code class="docutils literal notranslate">
       <span class="pre">
-       graphics_effects.grid_plane_count()
+       main_menu.preferences.graphics.graphics_effects.grid_plane_count()
       </span>
      </code>
     </a>
@@ -659,7 +669,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.grid_plane_enabled">
      <code class="docutils literal notranslate">
       <span class="pre">
-       graphics_effects.grid_plane_enabled()
+       main_menu.preferences.graphics.graphics_effects.grid_plane_enabled()
       </span>
      </code>
     </a>
@@ -668,7 +678,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.grid_plane_offset">
      <code class="docutils literal notranslate">
       <span class="pre">
-       graphics_effects.grid_plane_offset()
+       main_menu.preferences.graphics.graphics_effects.grid_plane_offset()
       </span>
      </code>
     </a>
@@ -677,7 +687,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.grid_plane_size_factor">
      <code class="docutils literal notranslate">
       <span class="pre">
-       graphics_effects.grid_plane_size_factor()
+       main_menu.preferences.graphics.graphics_effects.grid_plane_size_factor()
       </span>
      </code>
     </a>
@@ -686,7 +696,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.plane_direction">
      <code class="docutils literal notranslate">
       <span class="pre">
-       graphics_effects.plane_direction()
+       main_menu.preferences.graphics.graphics_effects.plane_direction()
       </span>
      </code>
     </a>
@@ -695,7 +705,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.reflections_enabled">
      <code class="docutils literal notranslate">
       <span class="pre">
-       graphics_effects.reflections_enabled()
+       main_menu.preferences.graphics.graphics_effects.reflections_enabled()
       </span>
      </code>
     </a>
@@ -704,7 +714,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.shadow_map_enabled">
      <code class="docutils literal notranslate">
       <span class="pre">
-       graphics_effects.shadow_map_enabled()
+       main_menu.preferences.graphics.graphics_effects.shadow_map_enabled()
       </span>
      </code>
     </a>
@@ -713,7 +723,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.show_edge_reflections">
      <code class="docutils literal notranslate">
       <span class="pre">
-       graphics_effects.show_edge_reflections()
+       main_menu.preferences.graphics.graphics_effects.show_edge_reflections()
       </span>
      </code>
     </a>
@@ -722,7 +732,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.show_marker_reflections">
      <code class="docutils literal notranslate">
       <span class="pre">
-       graphics_effects.show_marker_reflections()
+       main_menu.preferences.graphics.graphics_effects.show_marker_reflections()
       </span>
      </code>
     </a>
@@ -731,7 +741,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.simple_shadows_enabled">
      <code class="docutils literal notranslate">
       <span class="pre">
-       graphics_effects.simple_shadows_enabled()
+       main_menu.preferences.graphics.graphics_effects.simple_shadows_enabled()
       </span>
      </code>
     </a>
@@ -740,7 +750,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.update_after_mouse_release">
      <code class="docutils literal notranslate">
       <span class="pre">
-       graphics_effects.update_after_mouse_release()
+       main_menu.preferences.graphics.graphics_effects.update_after_mouse_release()
       </span>
      </code>
     </a>
@@ -768,82 +778,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-preferences-graphics-graphics-effects">
 <span id="ref-meshing-tui-preferences-graphics-graphics-effects"></span><h1>meshing.tui.preferences.graphics.graphics_effects<a class="headerlink" href="#meshing-tui-preferences-graphics-graphics-effects" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.</span></span><span class="sig-name descname"><span class="pre">graphics_effects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the graphics effects menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.ambient_occlusion_enabled" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.ambient_occlusion_enabled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ambient_occlusion_enabled</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.ambient_occlusion_quality" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.ambient_occlusion_quality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ambient_occlusion_quality</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.ambient_occlusion_strength" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.ambient_occlusion_strength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ambient_occlusion_strength</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.anti_aliasing" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.anti_aliasing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">anti_aliasing</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable the smoothing of lines and text.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.bloom_blur" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.bloom_blur"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bloom_blur</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.bloom_enabled" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.bloom_enabled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bloom_enabled</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.bloom_strength" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.bloom_strength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bloom_strength</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.grid_color" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.grid_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_color</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify the color of the grid lines when the ground plane grid is shown.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.grid_plane_count" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.grid_plane_count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_plane_count</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.grid_plane_enabled" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.grid_plane_enabled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_plane_enabled</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable the display of the ground plane grid.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.grid_plane_offset" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.grid_plane_offset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_plane_offset</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the grid plane offset from the model as a percentage of the model size.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.grid_plane_size_factor" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.grid_plane_size_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_plane_size_factor</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.plane_direction" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.plane_direction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plane_direction</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify the direction of the plane for the ground plane grid and reflections.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.reflections_enabled" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.reflections_enabled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reflections_enabled</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable model reflections (mirror-type reflections).</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.shadow_map_enabled" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.shadow_map_enabled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shadow_map_enabled</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable dynamic shadows, which show shadows of geometric entities on other objects based on lighting and object orientation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.show_edge_reflections" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.show_edge_reflections"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_edge_reflections</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable the display of model edges in reflections.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.show_marker_reflections" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.show_marker_reflections"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_marker_reflections</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.simple_shadows_enabled" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.simple_shadows_enabled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">simple_shadows_enabled</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable the display of static shadows on the ground plane.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.update_after_mouse_release" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.update_after_mouse_release"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_after_mouse_release</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable the updating of graphics effects as a model is being manipulated in the graphics window.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.preferences.graphics.</span></span><span class="sig-name descname"><span class="pre">graphics_effects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the graphics effects menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.ambient_occlusion_enabled">
 <span class="sig-name descname"><span class="pre">ambient_occlusion_enabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects.ambient_occlusion_enabled" title="Permalink to this definition">#</a></dt>

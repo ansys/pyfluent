@@ -5,8 +5,11 @@
 mode
 ====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.mode.mode
+.. currentmodule:: ansys.fluent.core.solver.settings_231.mode
 
+.. autoclass:: mode
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =============================

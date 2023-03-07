@@ -5,13 +5,16 @@
 range_option
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.range_option.range_option
+.. currentmodule:: ansys.fluent.core.solver.settings_231.range_option
 
-.. rubric:: Attributes
+.. autoclass:: range_option
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================================   ===========================
 
-Attribute                                                    Summary
+Child                                                        Summary
 
 ======================================   ===========================
 :ref:`option <option_2>`                             'option' child.

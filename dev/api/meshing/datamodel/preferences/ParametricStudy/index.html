@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -293,8 +303,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -307,11 +322,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../tui/index.html">
      meshing.tui
@@ -463,97 +473,10 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy">
    <code class="docutils literal notranslate">
     <span class="pre">
-     ParametricStudy
+     Root.ParametricStudy
     </span>
    </code>
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.LayoutOptions">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ParametricStudy.LayoutOptions
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.LayoutOptions.CurrentCaseParameters">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         ParametricStudy.LayoutOptions.CurrentCaseParameters
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.LayoutOptions.ParametricStudyTree">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         ParametricStudy.LayoutOptions.ParametricStudyTree
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ParametricStudy.UpdateOptions
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.AutoRefreshTime">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         ParametricStudy.UpdateOptions.AutoRefreshTime
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.CaptureSimReportData">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         ParametricStudy.UpdateOptions.CaptureSimReportData
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.EnableAutoRefresh">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         ParametricStudy.UpdateOptions.EnableAutoRefresh
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.SaveProjectAfterDPUpdate">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         ParametricStudy.UpdateOptions.SaveProjectAfterDPUpdate
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.WriteData">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         ParametricStudy.UpdateOptions.WriteData
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
  </li>
 </ul>
 
@@ -576,116 +499,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-datamodel-preferences-parametricstudy">
 <span id="ref-meshing-datamodel-preferences-parametricstudy"></span><h1>meshing.datamodel.preferences.ParametricStudy<a class="headerlink" href="#meshing-datamodel-preferences-parametricstudy" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.datamodel_231.preferences.Root.</span></span><span class="sig-name descname"><span class="pre">ParametricStudy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
-<p>Singleton ParametricStudy.</p>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.LayoutOptions" title="ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.LayoutOptions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LayoutOptions</span></code></a>(service, rules, path)</p></td>
-<td><p>Singleton LayoutOptions.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions" title="ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UpdateOptions</span></code></a>(service, rules, path)</p></td>
-<td><p>Singleton UpdateOptions.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.LayoutOptions">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LayoutOptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.LayoutOptions" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
-<p>Singleton LayoutOptions.</p>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.LayoutOptions.CurrentCaseParameters" title="ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.LayoutOptions.CurrentCaseParameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CurrentCaseParameters</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter CurrentCaseParameters of value type bool.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.LayoutOptions.ParametricStudyTree" title="ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.LayoutOptions.ParametricStudyTree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ParametricStudyTree</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter ParametricStudyTree of value type bool.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.LayoutOptions.CurrentCaseParameters">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CurrentCaseParameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.LayoutOptions.CurrentCaseParameters" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter CurrentCaseParameters of value type bool.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.LayoutOptions.ParametricStudyTree">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ParametricStudyTree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.LayoutOptions.ParametricStudyTree" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter ParametricStudyTree of value type bool.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">UpdateOptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
-<p>Singleton UpdateOptions.</p>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.AutoRefreshTime" title="ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.AutoRefreshTime"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AutoRefreshTime</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter AutoRefreshTime of value type int.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.CaptureSimReportData" title="ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.CaptureSimReportData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CaptureSimReportData</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter CaptureSimReportData of value type bool.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.EnableAutoRefresh" title="ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.EnableAutoRefresh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EnableAutoRefresh</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter EnableAutoRefresh of value type bool.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.SaveProjectAfterDPUpdate" title="ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.SaveProjectAfterDPUpdate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SaveProjectAfterDPUpdate</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter SaveProjectAfterDPUpdate of value type bool.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.WriteData" title="ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.WriteData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WriteData</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter WriteData of value type bool.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.AutoRefreshTime">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AutoRefreshTime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.AutoRefreshTime" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter AutoRefreshTime of value type int.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.CaptureSimReportData">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CaptureSimReportData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.CaptureSimReportData" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter CaptureSimReportData of value type bool.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.EnableAutoRefresh">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EnableAutoRefresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.EnableAutoRefresh" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter EnableAutoRefresh of value type bool.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.SaveProjectAfterDPUpdate">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SaveProjectAfterDPUpdate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.SaveProjectAfterDPUpdate" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter SaveProjectAfterDPUpdate of value type bool.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.WriteData">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">WriteData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy.UpdateOptions.WriteData" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter WriteData of value type bool.</p>
-</dd></dl>
-
-</dd></dl>
-
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Root.</span></span><span class="sig-name descname"><span class="pre">ParametricStudy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.ParametricStudy" title="Permalink to this definition">#</a></dt>
+<dd><p>Singleton ParametricStudy.</p>
 </dd></dl>
 
 <div class="toctree-wrapper compound">

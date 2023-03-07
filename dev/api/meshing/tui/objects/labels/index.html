@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -52,7 +56,7 @@
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
     <link rel="next" title="meshing.tui.objects.labels.cavity" href="cavity/index.html" />
-    <link rel="prev" title="meshing.tui.objects.wrap.set" href="../wrap/set/index.html" />
+    <link rel="prev" title="meshing.tui.objects.fix_holes.advanced" href="../fix_holes/advanced/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -293,8 +303,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -307,11 +322,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -323,8 +333,8 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../diagnostics/index.html">
-       meshing.tui.diagnostics
+      <a class="reference internal" href="../../report/index.html">
+       meshing.tui.report
       </a>
      </li>
      <li class="toctree-l3">
@@ -333,23 +343,23 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../mesh/index.html">
-       meshing.tui.mesh
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../preferences/index.html">
-       meshing.tui.preferences
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../../scoped_sizing/index.html">
        meshing.tui.scoped_sizing
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../display/index.html">
+       meshing.tui.display
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../diagnostics/index.html">
+       meshing.tui.diagnostics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../file/index.html">
+       meshing.tui.file
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -363,28 +373,28 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../deprecated/index.html">
-         meshing.tui.objects.deprecated
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../join_intersect/index.html">
-         meshing.tui.objects.join_intersect
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../set/index.html">
          meshing.tui.objects.set
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../volumetric_regions/index.html">
-         meshing.tui.objects.volumetric_regions
+        <a class="reference internal" href="../wrap/index.html">
+         meshing.tui.objects.wrap
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../wrap/index.html">
-         meshing.tui.objects.wrap
+        <a class="reference internal" href="../create_new_mesh_object/index.html">
+         meshing.tui.objects.create_new_mesh_object
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../cad_association/index.html">
+         meshing.tui.objects.cad_association
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../fix_holes/index.html">
+         meshing.tui.objects.fix_holes
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -405,30 +415,35 @@ function checkPageExistsAndRedirect(event) {
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../fix_holes/index.html">
-         meshing.tui.objects.fix_holes
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../create_new_mesh_object/index.html">
-         meshing.tui.objects.create_new_mesh_object
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../remove_gaps/index.html">
          meshing.tui.objects.remove_gaps
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../cad_association/index.html">
-         meshing.tui.objects.cad_association
+        <a class="reference internal" href="../join_intersect/index.html">
+         meshing.tui.objects.join_intersect
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../volumetric_regions/index.html">
+         meshing.tui.objects.volumetric_regions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../deprecated/index.html">
+         meshing.tui.objects.deprecated
         </a>
        </li>
       </ul>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../boundary/index.html">
-       meshing.tui.boundary
+      <a class="reference internal" href="../../reference_frames/index.html">
+       meshing.tui.reference_frames
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
       </a>
      </li>
      <li class="toctree-l3">
@@ -437,8 +452,8 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../report/index.html">
-       meshing.tui.report
+      <a class="reference internal" href="../../mesh/index.html">
+       meshing.tui.mesh
       </a>
      </li>
      <li class="toctree-l3">
@@ -447,23 +462,18 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../display/index.html">
-       meshing.tui.display
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../reference_frames/index.html">
-       meshing.tui.reference_frames
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../file/index.html">
-       meshing.tui.file
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../../size_functions/index.html">
        meshing.tui.size_functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../preferences/index.html">
+       meshing.tui.preferences
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../boundary/index.html">
+       meshing.tui.boundary
       </a>
      </li>
     </ul>
@@ -508,7 +518,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels">
    <code class="docutils literal notranslate">
     <span class="pre">
-     labels
+     main_menu.objects.labels
     </span>
    </code>
   </a>
@@ -517,54 +527,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.add_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
-       labels.add_zones()
+       main_menu.objects.labels.add_zones()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.cavity">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       labels.cavity
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.cavity.add">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         labels.cavity.add()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.cavity.remove">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         labels.cavity.remove()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.cavity.replace">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         labels.cavity.replace()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.create">
      <code class="docutils literal notranslate">
       <span class="pre">
-       labels.create()
+       main_menu.objects.labels.create()
       </span>
      </code>
     </a>
@@ -573,7 +545,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.create_label_per_object">
      <code class="docutils literal notranslate">
       <span class="pre">
-       labels.create_label_per_object()
+       main_menu.objects.labels.create_label_per_object()
       </span>
      </code>
     </a>
@@ -582,7 +554,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.create_label_per_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
-       labels.create_label_per_zone()
+       main_menu.objects.labels.create_label_per_zone()
       </span>
      </code>
     </a>
@@ -591,7 +563,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
-       labels.delete()
+       main_menu.objects.labels.delete()
       </span>
      </code>
     </a>
@@ -600,7 +572,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.label_unlabeled_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
-       labels.label_unlabeled_zones()
+       main_menu.objects.labels.label_unlabeled_zones()
       </span>
      </code>
     </a>
@@ -609,7 +581,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.merge">
      <code class="docutils literal notranslate">
       <span class="pre">
-       labels.merge()
+       main_menu.objects.labels.merge()
       </span>
      </code>
     </a>
@@ -618,7 +590,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.remove_all_labels_on_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
-       labels.remove_all_labels_on_zones()
+       main_menu.objects.labels.remove_all_labels_on_zones()
       </span>
      </code>
     </a>
@@ -627,7 +599,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.remove_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
-       labels.remove_zones()
+       main_menu.objects.labels.remove_zones()
       </span>
      </code>
     </a>
@@ -636,7 +608,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.rename">
      <code class="docutils literal notranslate">
       <span class="pre">
-       labels.rename()
+       main_menu.objects.labels.rename()
       </span>
      </code>
     </a>
@@ -664,97 +636,18 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-objects-labels">
 <span id="ref-meshing-tui-objects-labels"></span><h1>meshing.tui.objects.labels<a class="headerlink" href="#meshing-tui-objects-labels" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.objects.labels">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.objects.</span></span><span class="sig-name descname"><span class="pre">labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Contains options for creating and managing face zone labels.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.add_zones" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.add_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_zones</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Adds the specified face zones to the existing face zone label for an object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.create" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Creates a new face zone label for the specified face zones.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.create_label_per_object" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.create_label_per_object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_label_per_object</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Creates a new face zone label for all the face zones in every object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.create_label_per_zone" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.create_label_per_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_label_per_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Creates a new face zone label for each face zone in the object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.delete" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Deletes the specified face zone labels.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.label_unlabeled_zones" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.label_unlabeled_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">label_unlabeled_zones</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Creates labels for unlabeled face zones within the specified object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.merge" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.merge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Merges the specified face zone labels to a single label with the name specified.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.remove_all_labels_on_zones" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.remove_all_labels_on_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_all_labels_on_zones</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Removes all the face zone labels for the specified face zones.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.remove_zones" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.remove_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_zones</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Removes the specified face zones from the existing face zone label for an object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.rename" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.rename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rename</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Renames the specified face zone label.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.cavity" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.cavity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cavity</span></code></a>(path, service)</p></td>
-<td><p>Enter menu to create cavity using labels.</p></td>
-</tr>
-</tbody>
-</table>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.objects.</span></span><span class="sig-name descname"><span class="pre">labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Contains options for creating and managing face zone labels.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.add_zones">
 <span class="sig-name descname"><span class="pre">add_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.add_zones" title="Permalink to this definition">#</a></dt>
 <dd><p>Adds the specified face zones to the existing face zone label for an object.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.cavity">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cavity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.cavity" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter menu to create cavity using labels.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.cavity.add" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.cavity.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create cavity by adding labels from another mesh object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.cavity.remove" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.cavity.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create cavity by removing labels.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.cavity.replace" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.cavity.replace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">replace</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create cavity by replacing labels from another mesh object.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.cavity.add">
-<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.cavity.add" title="Permalink to this definition">#</a></dt>
-<dd><p>Create cavity by adding labels from another mesh object.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.cavity.remove">
-<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.cavity.remove" title="Permalink to this definition">#</a></dt>
-<dd><p>Create cavity by removing labels.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.cavity.replace">
-<span class="sig-name descname"><span class="pre">replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.labels.cavity.replace" title="Permalink to this definition">#</a></dt>
-<dd><p>Create cavity by replacing labels from another mesh object.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">

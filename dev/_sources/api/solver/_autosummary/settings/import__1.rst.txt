@@ -5,8 +5,11 @@
 import_
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.import__1.import_
+.. currentmodule:: ansys.fluent.core.solver.settings_231.import__1
 
+.. autoclass:: import_
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ====================================   ==========================

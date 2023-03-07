@@ -5,8 +5,11 @@
 font_size
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.font_size_1.font_size
+.. currentmodule:: ansys.fluent.core.solver.settings_231.font_size_1
 
+.. autoclass:: font_size
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ==============================================

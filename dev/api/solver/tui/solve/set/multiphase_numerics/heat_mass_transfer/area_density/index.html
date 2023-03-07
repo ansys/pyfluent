@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -297,8 +307,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -763,7 +778,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.area_density">
    <code class="docutils literal notranslate">
     <span class="pre">
-     area_density
+     main_menu.solve.set.multiphase_numerics.heat_mass_transfer.area_density
     </span>
    </code>
   </a>
@@ -772,7 +787,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.area_density.ia_grad_sym">
      <code class="docutils literal notranslate">
       <span class="pre">
-       area_density.ia_grad_sym()
+       main_menu.solve.set.multiphase_numerics.heat_mass_transfer.area_density.ia_grad_sym()
       </span>
      </code>
     </a>
@@ -781,7 +796,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.area_density.vof_min_seeding">
      <code class="docutils literal notranslate">
       <span class="pre">
-       area_density.vof_min_seeding()
+       main_menu.solve.set.multiphase_numerics.heat_mass_transfer.area_density.vof_min_seeding()
       </span>
      </code>
     </a>
@@ -809,22 +824,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solve-set-multiphase-numerics-heat-mass-transfer-area-density">
 <span id="ref-solver-tui-solve-set-multiphase-numerics-heat-mass-transfer-area-density"></span><h1>solver.tui.solve.set.multiphase_numerics.heat_mass_transfer.area_density<a class="headerlink" href="#solver-tui-solve-set-multiphase-numerics-heat-mass-transfer-area-density" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.area_density">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.</span></span><span class="sig-name descname"><span class="pre">area_density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.area_density" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the menu for the area density.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.area_density.ia_grad_sym" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.area_density.ia_grad_sym"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ia_grad_sym</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the interfacial area density Gradient-Symmetric model.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.area_density.vof_min_seeding" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.area_density.vof_min_seeding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vof_min_seeding</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets the minimum volume fraction for the area density and cavitation.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.area_density">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solve.set.multiphase_numerics.heat_mass_transfer.</span></span><span class="sig-name descname"><span class="pre">area_density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.area_density" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the menu for the area density.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.area_density.ia_grad_sym">
 <span class="sig-name descname"><span class="pre">ia_grad_sym</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.area_density.ia_grad_sym" title="Permalink to this definition">#</a></dt>

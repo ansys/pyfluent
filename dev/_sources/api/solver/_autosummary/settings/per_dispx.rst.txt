@@ -5,13 +5,16 @@
 per_dispx
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.per_dispx.per_dispx
+.. currentmodule:: ansys.fluent.core.solver.settings_231.per_dispx
 
-.. rubric:: Attributes
+.. autoclass:: per_dispx
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

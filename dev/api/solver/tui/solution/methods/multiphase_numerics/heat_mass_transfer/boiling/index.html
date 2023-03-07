@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -297,8 +307,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -698,7 +713,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling">
    <code class="docutils literal notranslate">
     <span class="pre">
-     boiling
+     main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling
     </span>
    </code>
   </a>
@@ -707,7 +722,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.heat_flux_relaxation_factor">
      <code class="docutils literal notranslate">
       <span class="pre">
-       boiling.heat_flux_relaxation_factor()
+       main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.heat_flux_relaxation_factor()
       </span>
      </code>
     </a>
@@ -716,7 +731,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.show_expert_options">
      <code class="docutils literal notranslate">
       <span class="pre">
-       boiling.show_expert_options()
+       main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.show_expert_options()
       </span>
      </code>
     </a>
@@ -725,7 +740,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.two_resistance_boiling_framework">
      <code class="docutils literal notranslate">
       <span class="pre">
-       boiling.two_resistance_boiling_framework()
+       main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.two_resistance_boiling_framework()
       </span>
      </code>
     </a>
@@ -753,25 +768,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solution-methods-multiphase-numerics-heat-mass-transfer-boiling">
 <span id="ref-solver-tui-solution-methods-multiphase-numerics-heat-mass-transfer-boiling"></span><h1>solver.tui.solution.methods.multiphase_numerics.heat_mass_transfer.boiling<a class="headerlink" href="#solver-tui-solution-methods-multiphase-numerics-heat-mass-transfer-boiling" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.</span></span><span class="sig-name descname"><span class="pre">boiling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Boiling advanced options menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.heat_flux_relaxation_factor" title="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.heat_flux_relaxation_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">heat_flux_relaxation_factor</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Under-relaxation factor for boiling heat flux.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.show_expert_options" title="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.show_expert_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_expert_options</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Exposes expert options of min/max superheat along with wetting fraction controls.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.two_resistance_boiling_framework" title="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.two_resistance_boiling_framework"><code class="xref py py-obj docutils literal notranslate"><span class="pre">two_resistance_boiling_framework</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Allow generalized two-resistance framework for boiling model.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.</span></span><span class="sig-name descname"><span class="pre">boiling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling" title="Permalink to this definition">#</a></dt>
+<dd><p>Boiling advanced options menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.heat_flux_relaxation_factor">
 <span class="sig-name descname"><span class="pre">heat_flux_relaxation_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.heat_flux_relaxation_factor" title="Permalink to this definition">#</a></dt>

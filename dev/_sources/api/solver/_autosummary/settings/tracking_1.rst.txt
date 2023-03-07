@@ -5,13 +5,16 @@
 tracking
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.tracking_1.tracking
+.. currentmodule:: ansys.fluent.core.solver.settings_231.tracking_1
 
-.. rubric:: Attributes
+.. autoclass:: tracking
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ============================================================   ============================================================================================================================================================================
 
-Attribute                                                                                                                                                                                                                           Summary
+Child                                                                                                                                                                                                                               Summary
 
 ============================================================   ============================================================================================================================================================================
 :ref:`enable_high_res_tracking <enable_high_res_tracking>`         Enable/disable high resolution tracking. Please note that high-resolution tracking is the recommended default for highest tracking robustness, accuracy and performance.

@@ -5,8 +5,11 @@
 function_of
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.function_of.function_of
+.. currentmodule:: ansys.fluent.core.solver.settings_231.function_of
 
+.. autoclass:: function_of
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   ================================

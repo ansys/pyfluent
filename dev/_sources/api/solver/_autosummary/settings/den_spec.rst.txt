@@ -5,8 +5,11 @@
 den_spec
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.den_spec.den_spec
+.. currentmodule:: ansys.fluent.core.solver.settings_231.den_spec
 
+.. autoclass:: den_spec
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

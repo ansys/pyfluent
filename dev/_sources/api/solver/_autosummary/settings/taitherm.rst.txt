@@ -5,8 +5,11 @@
 taitherm
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.taitherm.taitherm
+.. currentmodule:: ansys.fluent.core.solver.settings_231.taitherm
 
+.. autoclass:: taitherm
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ============================================   ==============================

@@ -5,24 +5,27 @@
 polyhedra
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.polyhedra.polyhedra
+.. currentmodule:: ansys.fluent.core.solver.settings_231.polyhedra
 
-.. rubric:: Attributes
+.. autoclass:: polyhedra
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================   =======================
 
-Attribute                                  Summary
+Child                                      Summary
 
 ========================   =======================
 :ref:`options <options>`       Enter options menu.
 
 ========================   =======================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ==============================================================   ===========================================================================
 
-Method                                                                                                                               Summary
+Command                                                                                                                              Summary
 
 ==============================================================   ===========================================================================
 :ref:`convert_domain <convert_domain>`                                                             Convert entire domain to polyhedra cells.

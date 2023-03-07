@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -296,8 +306,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -725,7 +740,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.contact_solution_controls.models">
    <code class="docutils literal notranslate">
     <span class="pre">
-     models
+     main_menu.solve.set.contact_solution_controls.models
     </span>
    </code>
   </a>
@@ -734,7 +749,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.contact_solution_controls.models.model_ramping">
      <code class="docutils literal notranslate">
       <span class="pre">
-       models.model_ramping()
+       main_menu.solve.set.contact_solution_controls.models.model_ramping()
       </span>
      </code>
     </a>
@@ -743,7 +758,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.contact_solution_controls.models.ramp_flow">
      <code class="docutils literal notranslate">
       <span class="pre">
-       models.ramp_flow()
+       main_menu.solve.set.contact_solution_controls.models.ramp_flow()
       </span>
      </code>
     </a>
@@ -752,7 +767,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.contact_solution_controls.models.ramp_scalars">
      <code class="docutils literal notranslate">
       <span class="pre">
-       models.ramp_scalars()
+       main_menu.solve.set.contact_solution_controls.models.ramp_scalars()
       </span>
      </code>
     </a>
@@ -761,7 +776,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.contact_solution_controls.models.ramp_turbulence">
      <code class="docutils literal notranslate">
       <span class="pre">
-       models.ramp_turbulence()
+       main_menu.solve.set.contact_solution_controls.models.ramp_turbulence()
       </span>
      </code>
     </a>
@@ -789,28 +804,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solve-set-contact-solution-controls-models">
 <span id="ref-solver-tui-solve-set-contact-solution-controls-models"></span><h1>solver.tui.solve.set.contact_solution_controls.models<a class="headerlink" href="#solver-tui-solve-set-contact-solution-controls-models" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.contact_solution_controls.models">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.solve.set.contact_solution_controls.</span></span><span class="sig-name descname"><span class="pre">models</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.contact_solution_controls.models" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Model control options.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.contact_solution_controls.models.model_ramping" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.contact_solution_controls.models.model_ramping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_ramping</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Activate model ramping for solver stability and accuracy.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.contact_solution_controls.models.ramp_flow" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.contact_solution_controls.models.ramp_flow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ramp_flow</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Ramp flow for solver stability and accuracy.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.contact_solution_controls.models.ramp_scalars" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.contact_solution_controls.models.ramp_scalars"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ramp_scalars</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Ramp all scalar transport equations for solver stability and accuracy.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.contact_solution_controls.models.ramp_turbulence" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.contact_solution_controls.models.ramp_turbulence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ramp_turbulence</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Ramp turbulence for solver stability and accuracy.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.contact_solution_controls.models">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solve.set.contact_solution_controls.</span></span><span class="sig-name descname"><span class="pre">models</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.contact_solution_controls.models" title="Permalink to this definition">#</a></dt>
+<dd><p>Model control options.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.contact_solution_controls.models.model_ramping">
 <span class="sig-name descname"><span class="pre">model_ramping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.contact_solution_controls.models.model_ramping" title="Permalink to this definition">#</a></dt>

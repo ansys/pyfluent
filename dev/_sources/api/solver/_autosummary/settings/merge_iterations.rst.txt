@@ -5,8 +5,11 @@
 merge_iterations
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.merge_iterations.merge_iterations
+.. currentmodule:: ansys.fluent.core.solver.settings_231.merge_iterations
 
+.. autoclass:: merge_iterations
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   =============================

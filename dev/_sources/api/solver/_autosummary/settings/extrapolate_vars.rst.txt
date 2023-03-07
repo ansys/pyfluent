@@ -5,8 +5,11 @@
 extrapolate_vars
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.extrapolate_vars.extrapolate_vars
+.. currentmodule:: ansys.fluent.core.solver.settings_231.extrapolate_vars
 
+.. autoclass:: extrapolate_vars
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===============================

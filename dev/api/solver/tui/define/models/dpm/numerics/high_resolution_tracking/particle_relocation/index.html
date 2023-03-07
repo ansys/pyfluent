@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -298,8 +308,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -811,7 +826,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation">
    <code class="docutils literal notranslate">
     <span class="pre">
-     particle_relocation
+     main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation
     </span>
    </code>
   </a>
@@ -820,7 +835,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.enhanced_cell_relocation_method">
      <code class="docutils literal notranslate">
       <span class="pre">
-       particle_relocation.enhanced_cell_relocation_method()
+       main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.enhanced_cell_relocation_method()
       </span>
      </code>
     </a>
@@ -829,7 +844,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.enhanced_wallfilm_location_method">
      <code class="docutils literal notranslate">
       <span class="pre">
-       particle_relocation.enhanced_wallfilm_location_method()
+       main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.enhanced_wallfilm_location_method()
       </span>
      </code>
     </a>
@@ -838,7 +853,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.load_legacy_particles">
      <code class="docutils literal notranslate">
       <span class="pre">
-       particle_relocation.load_legacy_particles()
+       main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.load_legacy_particles()
       </span>
      </code>
     </a>
@@ -847,7 +862,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.overset_relocation_robustness_level">
      <code class="docutils literal notranslate">
       <span class="pre">
-       particle_relocation.overset_relocation_robustness_level()
+       main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.overset_relocation_robustness_level()
       </span>
      </code>
     </a>
@@ -856,7 +871,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.use_legacy_particle_location_method">
      <code class="docutils literal notranslate">
       <span class="pre">
-       particle_relocation.use_legacy_particle_location_method()
+       main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.use_legacy_particle_location_method()
       </span>
      </code>
     </a>
@@ -865,7 +880,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.wallfilm_relocation_tolerance_scale_factor">
      <code class="docutils literal notranslate">
       <span class="pre">
-       particle_relocation.wallfilm_relocation_tolerance_scale_factor()
+       main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.wallfilm_relocation_tolerance_scale_factor()
       </span>
      </code>
     </a>
@@ -893,34 +908,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-define-models-dpm-numerics-high-resolution-tracking-particle-relocation">
 <span id="ref-solver-tui-define-models-dpm-numerics-high-resolution-tracking-particle-relocation"></span><h1>solver.tui.define.models.dpm.numerics.high_resolution_tracking.particle_relocation<a class="headerlink" href="#solver-tui-define-models-dpm-numerics-high-resolution-tracking-particle-relocation" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.</span></span><span class="sig-name descname"><span class="pre">particle_relocation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the particle relocation menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.enhanced_cell_relocation_method" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.enhanced_cell_relocation_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enhanced_cell_relocation_method</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable enhanced method of locating particles in cells.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.enhanced_wallfilm_location_method" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.enhanced_wallfilm_location_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enhanced_wallfilm_location_method</span></code></a>(*args, ...)</p></td>
-<td><p>Enable enhanced method of locating film particles on faces.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.load_legacy_particles" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.load_legacy_particles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_legacy_particles</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Load particles that were tracked without high-resolution tracking enabled.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.overset_relocation_robustness_level" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.overset_relocation_robustness_level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overset_relocation_robustness_level</span></code></a>(*args, ...)</p></td>
-<td><p>Set the robustness level for particle relocation in overset meshes.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.use_legacy_particle_location_method" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.use_legacy_particle_location_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_legacy_particle_location_method</span></code></a>(*args, ...)</p></td>
-<td><p>Enable legacy method of locating particles in cells.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.wallfilm_relocation_tolerance_scale_factor" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.wallfilm_relocation_tolerance_scale_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wallfilm_relocation_tolerance_scale_factor</span></code></a>(...)</p></td>
-<td><p>Set the relocation tolerance scaling factor for wallfilm particles after remeshing.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.models.dpm.numerics.high_resolution_tracking.</span></span><span class="sig-name descname"><span class="pre">particle_relocation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the particle relocation menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.enhanced_cell_relocation_method">
 <span class="sig-name descname"><span class="pre">enhanced_cell_relocation_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.numerics.high_resolution_tracking.particle_relocation.enhanced_cell_relocation_method" title="Permalink to this definition">#</a></dt>

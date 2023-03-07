@@ -5,8 +5,11 @@
 set_velocity_cutoff
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.set_velocity_cutoff.set_velocity_cutoff
+.. currentmodule:: ansys.fluent.core.solver.settings_231.set_velocity_cutoff
 
+.. autoclass:: set_velocity_cutoff
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================================   ========================================================

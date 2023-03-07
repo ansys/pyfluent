@@ -5,8 +5,11 @@
 sample_var
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.sample_var.sample_var
+.. currentmodule:: ansys.fluent.core.solver.settings_231.sample_var
 
+.. autoclass:: sample_var
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =============================================================================================================

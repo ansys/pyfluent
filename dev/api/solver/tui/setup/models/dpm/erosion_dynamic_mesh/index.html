@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -296,8 +306,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -757,7 +772,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh">
    <code class="docutils literal notranslate">
     <span class="pre">
-     erosion_dynamic_mesh
+     main_menu.setup.models.dpm.erosion_dynamic_mesh
     </span>
    </code>
   </a>
@@ -766,110 +781,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.enable_erosion_dynamic_mesh_coupling">
      <code class="docutils literal notranslate">
       <span class="pre">
-       erosion_dynamic_mesh.enable_erosion_dynamic_mesh_coupling()
+       main_menu.setup.models.dpm.erosion_dynamic_mesh.enable_erosion_dynamic_mesh_coupling()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.general_parameters">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       erosion_dynamic_mesh.general_parameters
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.general_parameters.dynamic_mesh_settings">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         erosion_dynamic_mesh.general_parameters.dynamic_mesh_settings()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.general_parameters.erosion_settings">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         erosion_dynamic_mesh.general_parameters.erosion_settings()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.general_parameters.participating_walls">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         erosion_dynamic_mesh.general_parameters.participating_walls()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       erosion_dynamic_mesh.run_parameters
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.autosave_files">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         erosion_dynamic_mesh.run_parameters.autosave_files()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.autosave_graphics">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         erosion_dynamic_mesh.run_parameters.autosave_graphics()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.flow_simulation_control">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         erosion_dynamic_mesh.run_parameters.flow_simulation_control()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.mesh_motion_time_step">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         erosion_dynamic_mesh.run_parameters.mesh_motion_time_step()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.simulation_termination">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         erosion_dynamic_mesh.run_parameters.simulation_termination()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_simulation">
      <code class="docutils literal notranslate">
       <span class="pre">
-       erosion_dynamic_mesh.run_simulation()
+       main_menu.setup.models.dpm.erosion_dynamic_mesh.run_simulation()
       </span>
      </code>
     </a>
@@ -897,133 +818,18 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-models-dpm-erosion-dynamic-mesh">
 <span id="ref-solver-tui-setup-models-dpm-erosion-dynamic-mesh"></span><h1>solver.tui.setup.models.dpm.erosion_dynamic_mesh<a class="headerlink" href="#solver-tui-setup-models-dpm-erosion-dynamic-mesh" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.</span></span><span class="sig-name descname"><span class="pre">erosion_dynamic_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the erosion-dynamic mesh interactions menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.enable_erosion_dynamic_mesh_coupling" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.enable_erosion_dynamic_mesh_coupling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_erosion_dynamic_mesh_coupling</span></code></a>(*args, ...)</p></td>
-<td><p>Enable mesh deformation due to wall erosion.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_simulation" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_simulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_simulation</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Perform coupled erosion-dynamic mesh simulation.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.general_parameters" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.general_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">general_parameters</span></code></a>(path, service)</p></td>
-<td><p>Enter the erosion-dynamic mesh setup menu.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_parameters</span></code></a>(path, service)</p></td>
-<td><p>Enter the erosion-dynamic mesh run menu.</p></td>
-</tr>
-</tbody>
-</table>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.models.dpm.</span></span><span class="sig-name descname"><span class="pre">erosion_dynamic_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the erosion-dynamic mesh interactions menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.enable_erosion_dynamic_mesh_coupling">
 <span class="sig-name descname"><span class="pre">enable_erosion_dynamic_mesh_coupling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.enable_erosion_dynamic_mesh_coupling" title="Permalink to this definition">#</a></dt>
 <dd><p>Enable mesh deformation due to wall erosion.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.general_parameters">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">general_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.general_parameters" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the erosion-dynamic mesh setup menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.general_parameters.dynamic_mesh_settings" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.general_parameters.dynamic_mesh_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dynamic_mesh_settings</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Perform dynamic mesh related setup.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.general_parameters.erosion_settings" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.general_parameters.erosion_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">erosion_settings</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set erosion modelling specific settings.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.general_parameters.participating_walls" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.general_parameters.participating_walls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">participating_walls</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify all participating walls.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.general_parameters.dynamic_mesh_settings">
-<span class="sig-name descname"><span class="pre">dynamic_mesh_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.general_parameters.dynamic_mesh_settings" title="Permalink to this definition">#</a></dt>
-<dd><p>Perform dynamic mesh related setup.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.general_parameters.erosion_settings">
-<span class="sig-name descname"><span class="pre">erosion_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.general_parameters.erosion_settings" title="Permalink to this definition">#</a></dt>
-<dd><p>Set erosion modelling specific settings.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.general_parameters.participating_walls">
-<span class="sig-name descname"><span class="pre">participating_walls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.general_parameters.participating_walls" title="Permalink to this definition">#</a></dt>
-<dd><p>Specify all participating walls.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the erosion-dynamic mesh run menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.autosave_files" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.autosave_files"><code class="xref py py-obj docutils literal notranslate"><span class="pre">autosave_files</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the iteration increment to save data files.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.autosave_graphics" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.autosave_graphics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">autosave_graphics</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the iteration increment to save graphics files.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.flow_simulation_control" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.flow_simulation_control"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flow_simulation_control</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set number of iterations per flow simulation step.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.mesh_motion_time_step" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.mesh_motion_time_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_motion_time_step</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the mesh motion time stepping parameters and method.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.simulation_termination" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.simulation_termination"><code class="xref py py-obj docutils literal notranslate"><span class="pre">simulation_termination</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set total time of erosion.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.autosave_files">
-<span class="sig-name descname"><span class="pre">autosave_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.autosave_files" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the iteration increment to save data files.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.autosave_graphics">
-<span class="sig-name descname"><span class="pre">autosave_graphics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.autosave_graphics" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the iteration increment to save graphics files.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.flow_simulation_control">
-<span class="sig-name descname"><span class="pre">flow_simulation_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.flow_simulation_control" title="Permalink to this definition">#</a></dt>
-<dd><p>Set number of iterations per flow simulation step.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.mesh_motion_time_step">
-<span class="sig-name descname"><span class="pre">mesh_motion_time_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.mesh_motion_time_step" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the mesh motion time stepping parameters and method.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.simulation_termination">
-<span class="sig-name descname"><span class="pre">simulation_termination</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.erosion_dynamic_mesh.run_parameters.simulation_termination" title="Permalink to this definition">#</a></dt>
-<dd><p>Set total time of erosion.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">

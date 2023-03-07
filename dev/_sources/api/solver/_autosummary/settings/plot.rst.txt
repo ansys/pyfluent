@@ -5,8 +5,11 @@
 plot
 ====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.plot.plot
+.. currentmodule:: ansys.fluent.core.solver.settings_231.plot
 
+.. autoclass:: plot
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

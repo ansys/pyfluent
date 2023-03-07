@@ -5,13 +5,16 @@
 boundary
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.boundary.boundary
+.. currentmodule:: ansys.fluent.core.solver.settings_231.boundary
 
-.. rubric:: Attributes
+.. autoclass:: boundary
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   ==================================
 
-Attribute                                                                         Summary
+Child                                                                             Summary
 
 ====================================================   ==================================
 :ref:`distance_option <distance_option>`                         'distance_option' child.

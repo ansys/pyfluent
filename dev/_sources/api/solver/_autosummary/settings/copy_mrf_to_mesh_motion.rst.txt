@@ -5,8 +5,11 @@
 copy_mrf_to_mesh_motion
 =======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.copy_mrf_to_mesh_motion.copy_mrf_to_mesh_motion
+.. currentmodule:: ansys.fluent.core.solver.settings_231.copy_mrf_to_mesh_motion
 
+.. autoclass:: copy_mrf_to_mesh_motion
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ============================   ======================

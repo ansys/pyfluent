@@ -5,8 +5,11 @@
 y_origin
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.y_origin.y_origin
+.. currentmodule:: ansys.fluent.core.solver.settings_231.y_origin
 
+.. autoclass:: y_origin
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

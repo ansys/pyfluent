@@ -5,8 +5,11 @@
 flow_rate
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.flow_rate.flow_rate
+.. currentmodule:: ansys.fluent.core.solver.settings_231.flow_rate
 
+.. autoclass:: flow_rate
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   ======================

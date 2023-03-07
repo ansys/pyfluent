@@ -5,8 +5,11 @@
 max_files
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.max_files.max_files
+.. currentmodule:: ansys.fluent.core.solver.settings_231.max_files
 
+.. autoclass:: max_files
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

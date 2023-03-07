@@ -5,8 +5,11 @@
 value1
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.value1.value1
+.. currentmodule:: ansys.fluent.core.solver.settings_231.value1
 
+.. autoclass:: value1
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

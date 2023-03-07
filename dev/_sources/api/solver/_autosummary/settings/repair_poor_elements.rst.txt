@@ -5,8 +5,11 @@
 repair_poor_elements
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.repair_poor_elements.repair_poor_elements
+.. currentmodule:: ansys.fluent.core.solver.settings_231.repair_poor_elements
 
+.. autoclass:: repair_poor_elements
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ==============================================

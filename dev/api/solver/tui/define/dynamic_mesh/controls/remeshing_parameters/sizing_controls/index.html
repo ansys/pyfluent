@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -297,8 +307,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -738,7 +753,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls">
    <code class="docutils literal notranslate">
     <span class="pre">
-     sizing_controls
+     main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls
     </span>
    </code>
   </a>
@@ -747,7 +762,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls.add">
      <code class="docutils literal notranslate">
       <span class="pre">
-       sizing_controls.add()
+       main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls.add()
       </span>
      </code>
     </a>
@@ -756,7 +771,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
-       sizing_controls.delete()
+       main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls.delete()
       </span>
      </code>
     </a>
@@ -765,7 +780,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls.edit">
      <code class="docutils literal notranslate">
       <span class="pre">
-       sizing_controls.edit()
+       main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls.edit()
       </span>
      </code>
     </a>
@@ -774,7 +789,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls.list">
      <code class="docutils literal notranslate">
       <span class="pre">
-       sizing_controls.list()
+       main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls.list()
       </span>
      </code>
     </a>
@@ -783,7 +798,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls.list_properties">
      <code class="docutils literal notranslate">
       <span class="pre">
-       sizing_controls.list_properties()
+       main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls.list_properties()
       </span>
      </code>
     </a>
@@ -811,31 +826,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-define-dynamic-mesh-controls-remeshing-parameters-sizing-controls">
 <span id="ref-solver-tui-define-dynamic-mesh-controls-remeshing-parameters-sizing-controls"></span><h1>solver.tui.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls<a class="headerlink" href="#solver-tui-define-dynamic-mesh-controls-remeshing-parameters-sizing-controls" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.remeshing_parameters.</span></span><span class="sig-name descname"><span class="pre">sizing_controls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the dynamic mesh sizing controls menu, which provides text commands that can be useful when you want to modify the algorithm that attempts to retain the size distribution during unified remeshing. Each sizing control definition is applied to one or more boundary zones, and then affects the size of the cells throughout the mesh based on their distance from those boundary zone(s) and your settings in the definition.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls.add" title="ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Adds a new sizing controls definition.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls.delete" title="ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Deletes an existing sizing controls definition.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls.edit" title="ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls.edit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edit</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Edits an existing sizing controls definition.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls.list" title="ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Prints a list of the existing sizing controls definitions in the console.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls.list_properties" title="ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls.list_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_properties</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Prints the properties of an existing sizing controls definition of your choice in the console.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.dynamic_mesh.controls.remeshing_parameters.</span></span><span class="sig-name descname"><span class="pre">sizing_controls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the dynamic mesh sizing controls menu, which provides text commands that can be useful when you want to modify the algorithm that attempts to retain the size distribution during unified remeshing. Each sizing control definition is applied to one or more boundary zones, and then affects the size of the cells throughout the mesh based on their distance from those boundary zone(s) and your settings in the definition.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls.add">
 <span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls.add" title="Permalink to this definition">#</a></dt>

@@ -5,8 +5,11 @@
 volume
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.volume.volume
+.. currentmodule:: ansys.fluent.core.solver.settings_231.volume
 
+.. autoclass:: volume
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`volume_child <volume_child>`

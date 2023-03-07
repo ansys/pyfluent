@@ -5,8 +5,11 @@
 dpm_critical_shear_stress
 =========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_critical_shear_stress.dpm_critical_shear_stress
+.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_critical_shear_stress
 
+.. autoclass:: dpm_critical_shear_stress
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

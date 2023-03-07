@@ -5,8 +5,11 @@
 stop_criterion
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.stop_criterion.stop_criterion
+.. currentmodule:: ansys.fluent.core.solver.settings_231.stop_criterion
 
+.. autoclass:: stop_criterion
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

@@ -5,8 +5,11 @@
 wall_restitution_coeff
 ======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.wall_restitution_coeff.wall_restitution_coeff
+.. currentmodule:: ansys.fluent.core.solver.settings_231.wall_restitution_coeff
 
+.. autoclass:: wall_restitution_coeff
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

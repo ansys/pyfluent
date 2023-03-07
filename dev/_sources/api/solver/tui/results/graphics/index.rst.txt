@@ -3,13 +3,13 @@
 solver.tui.results.graphics
 ===========================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.graphics
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics
+   :members: color_map, annotate, clear_annotations, hsf_file
 
 .. toctree::
    :hidden:

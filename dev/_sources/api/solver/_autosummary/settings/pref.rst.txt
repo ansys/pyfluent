@@ -5,8 +5,11 @@
 pref
 ====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.pref.pref
+.. currentmodule:: ansys.fluent.core.solver.settings_231.pref
 
+.. autoclass:: pref
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

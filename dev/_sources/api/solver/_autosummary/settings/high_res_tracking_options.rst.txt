@@ -5,13 +5,16 @@
 high_res_tracking_options
 =========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.high_res_tracking_options.high_res_tracking_options
+.. currentmodule:: ansys.fluent.core.solver.settings_231.high_res_tracking_options
 
-.. rubric:: Attributes
+.. autoclass:: high_res_tracking_options
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================================================   =========================================================================================================================
 
-Attribute                                                                                                                                                                                                    Summary
+Child                                                                                                                                                                                                        Summary
 
 ========================================================================================   =========================================================================================================================
 :ref:`always_use_face_centroid_with_periodics <always_use_face_centroid_with_periodics>`                    Enable/disable using quad face centroids when creating subtets if the case contains periodic boundaries.

@@ -5,13 +5,16 @@
 plot_write_sample
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.plot_write_sample.plot_write_sample
+.. currentmodule:: ansys.fluent.core.solver.settings_231.plot_write_sample
 
-.. rubric:: Methods
+.. autoclass:: plot_write_sample
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ==================================   ===========================
 
-Method                                                   Summary
+Command                                                  Summary
 
 ==================================   ===========================
 :ref:`plot_sample <plot_sample>`          'plot_sample' command.

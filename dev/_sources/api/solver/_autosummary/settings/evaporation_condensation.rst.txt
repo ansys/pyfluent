@@ -5,13 +5,16 @@
 evaporation_condensation
 ========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.evaporation_condensation.evaporation_condensation
+.. currentmodule:: ansys.fluent.core.solver.settings_231.evaporation_condensation
 
-.. rubric:: Attributes
+.. autoclass:: evaporation_condensation
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================================   ==================================================================================
 
-Attribute                                                                                                                   Summary
+Child                                                                                                                       Summary
 
 ==============================================   ==================================================================================
 :ref:`vof_from_min_limit <vof_from_min_limit>`               Minimum volume fraction below which mass transfer rate is set to zero.

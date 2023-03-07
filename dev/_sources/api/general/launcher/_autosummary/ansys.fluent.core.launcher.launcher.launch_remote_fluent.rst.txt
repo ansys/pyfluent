@@ -1,6 +1,0 @@
-launch\_remote\_fluent
-======================
-
-.. currentmodule:: ansys.fluent.core.launcher.launcher
-
-.. autofunction:: launch_remote_fluent

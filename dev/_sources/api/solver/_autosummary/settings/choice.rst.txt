@@ -5,8 +5,11 @@
 choice
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.choice.choice
+.. currentmodule:: ansys.fluent.core.solver.settings_231.choice
 
+.. autoclass:: choice
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

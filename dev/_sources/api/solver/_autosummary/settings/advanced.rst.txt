@@ -5,13 +5,16 @@
 advanced
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.advanced.advanced
+.. currentmodule:: ansys.fluent.core.solver.settings_231.advanced
 
-.. rubric:: Attributes
+.. autoclass:: advanced
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================================   ============================================
 
-Attribute                                                                                                       Summary
+Child                                                                                                           Summary
 
 ========================================================================   ============================================
 :ref:`multi_grid <multi_grid>`                                                                      'multi_grid' child.

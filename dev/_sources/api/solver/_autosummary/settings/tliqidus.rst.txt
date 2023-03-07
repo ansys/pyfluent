@@ -5,13 +5,16 @@
 tliqidus
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.tliqidus.tliqidus
+.. currentmodule:: ansys.fluent.core.solver.settings_231.tliqidus
 
-.. rubric:: Attributes
+.. autoclass:: tliqidus
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================   ====================================================
 
-Attribute                                                               Summary
+Child                                                                   Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

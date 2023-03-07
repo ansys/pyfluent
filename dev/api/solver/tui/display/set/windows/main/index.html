@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -296,8 +306,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -690,7 +705,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main
+     main_menu.display.set.windows.main
     </span>
    </code>
   </a>
@@ -699,7 +714,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main.border">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main.border()
+       main_menu.display.set.windows.main.border()
       </span>
      </code>
     </a>
@@ -708,7 +723,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main.bottom">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main.bottom()
+       main_menu.display.set.windows.main.bottom()
       </span>
      </code>
     </a>
@@ -717,7 +732,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main.left">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main.left()
+       main_menu.display.set.windows.main.left()
       </span>
      </code>
     </a>
@@ -726,7 +741,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main.right">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main.right()
+       main_menu.display.set.windows.main.right()
       </span>
      </code>
     </a>
@@ -735,7 +750,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main.top">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main.top()
+       main_menu.display.set.windows.main.top()
       </span>
      </code>
     </a>
@@ -744,7 +759,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main.visible">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main.visible()
+       main_menu.display.set.windows.main.visible()
       </span>
      </code>
     </a>
@@ -772,34 +787,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-display-set-windows-main">
 <span id="ref-solver-tui-display-set-windows-main"></span><h1>solver.tui.display.set.windows.main<a class="headerlink" href="#solver-tui-display-set-windows-main" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the main view window options menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main.border" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main.border"><code class="xref py py-obj docutils literal notranslate"><span class="pre">border</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets whether or not to draw a border around the main viewing window.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main.bottom" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main.bottom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bottom</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets the bottom boundary of the main viewing window.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main.left" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main.left"><code class="xref py py-obj docutils literal notranslate"><span class="pre">left</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets the left boundary of the main viewing window.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main.right" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main.right"><code class="xref py py-obj docutils literal notranslate"><span class="pre">right</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets the right boundary of the main viewing window.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main.top" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main.top"><code class="xref py py-obj docutils literal notranslate"><span class="pre">top</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets the top boundary of the main viewing window.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main.visible" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main.visible"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visible</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Controls the visibility of the main viewing window.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.display.set.windows.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the main view window options menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main.border">
 <span class="sig-name descname"><span class="pre">border</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.main.border" title="Permalink to this definition">#</a></dt>

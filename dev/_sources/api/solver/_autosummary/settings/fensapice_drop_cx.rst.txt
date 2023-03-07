@@ -5,8 +5,11 @@
 fensapice_drop_cx
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fensapice_drop_cx.fensapice_drop_cx
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fensapice_drop_cx
 
+.. autoclass:: fensapice_drop_cx
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

@@ -1,6 +1,0 @@
-add\_on\_affected\_at\_type\_path
-=================================
-
-.. currentmodule:: ansys.fluent.core.workflow
-
-.. automethod:: WorkflowWrapper.add_on_affected_at_type_path

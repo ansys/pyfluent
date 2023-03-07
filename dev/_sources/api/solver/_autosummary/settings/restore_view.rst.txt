@@ -5,8 +5,11 @@
 restore_view
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.restore_view.restore_view
+.. currentmodule:: ansys.fluent.core.solver.settings_231.restore_view
 
+.. autoclass:: restore_view
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ============================   ======================

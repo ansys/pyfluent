@@ -5,8 +5,11 @@
 fmg_courant_number
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fmg_courant_number.fmg_courant_number
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fmg_courant_number
 
+.. autoclass:: fmg_courant_number
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   =========================================================

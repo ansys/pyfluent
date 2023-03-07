@@ -5,8 +5,11 @@
 dpm_bc_erosion_mclaury_b
 ========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_bc_erosion_mclaury_b.dpm_bc_erosion_mclaury_b
+.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_bc_erosion_mclaury_b
 
+.. autoclass:: dpm_bc_erosion_mclaury_b
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

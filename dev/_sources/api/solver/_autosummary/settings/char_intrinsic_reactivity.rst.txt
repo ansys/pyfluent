@@ -5,8 +5,11 @@
 char_intrinsic_reactivity
 =========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.char_intrinsic_reactivity.char_intrinsic_reactivity
+.. currentmodule:: ansys.fluent.core.solver.settings_231.char_intrinsic_reactivity
 
+.. autoclass:: char_intrinsic_reactivity
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================   ================

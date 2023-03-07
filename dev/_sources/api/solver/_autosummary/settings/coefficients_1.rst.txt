@@ -5,8 +5,11 @@
 coefficients
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.coefficients_1.coefficients
+.. currentmodule:: ansys.fluent.core.solver.settings_231.coefficients_1
 
+.. autoclass:: coefficients
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================================   ================================================

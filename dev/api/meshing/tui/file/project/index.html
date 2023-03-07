@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -51,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
-    <link rel="next" title="meshing.tui.size_functions" href="../../size_functions/index.html" />
-    <link rel="prev" title="meshing.tui.file.export" href="../export/index.html" />
+    <link rel="next" title="meshing.tui.file.import_" href="../import_/index.html" />
+    <link rel="prev" title="meshing.tui.file.checkpoint" href="../checkpoint/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -293,8 +303,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -307,11 +322,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -323,8 +333,8 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../diagnostics/index.html">
-       meshing.tui.diagnostics
+      <a class="reference internal" href="../../report/index.html">
+       meshing.tui.report
       </a>
      </li>
      <li class="toctree-l3">
@@ -333,48 +343,8 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../mesh/index.html">
-       meshing.tui.mesh
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../preferences/index.html">
-       meshing.tui.preferences
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../../scoped_sizing/index.html">
        meshing.tui.scoped_sizing
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../objects/index.html">
-       meshing.tui.objects
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../boundary/index.html">
-       meshing.tui.boundary
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../report/index.html">
-       meshing.tui.report
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../parallel/index.html">
-       meshing.tui.parallel
       </a>
      </li>
      <li class="toctree-l3">
@@ -383,8 +353,8 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../reference_frames/index.html">
-       meshing.tui.reference_frames
+      <a class="reference internal" href="../../diagnostics/index.html">
+       meshing.tui.diagnostics
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -398,18 +368,13 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../checkpoint/index.html">
-         meshing.tui.file.checkpoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../import_/index.html">
-         meshing.tui.file.import_
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../export/index.html">
          meshing.tui.file.export
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../checkpoint/index.html">
+         meshing.tui.file.checkpoint
         </a>
        </li>
        <li class="toctree-l4 current active">
@@ -417,11 +382,56 @@ function checkPageExistsAndRedirect(event) {
          meshing.tui.file.project
         </a>
        </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../import_/index.html">
+         meshing.tui.file.import_
+        </a>
+       </li>
       </ul>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../objects/index.html">
+       meshing.tui.objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../reference_frames/index.html">
+       meshing.tui.reference_frames
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../mesh/index.html">
+       meshing.tui.mesh
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../parallel/index.html">
+       meshing.tui.parallel
+      </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../../size_functions/index.html">
        meshing.tui.size_functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../preferences/index.html">
+       meshing.tui.preferences
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../boundary/index.html">
+       meshing.tui.boundary
       </a>
      </li>
     </ul>
@@ -466,7 +476,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.project">
    <code class="docutils literal notranslate">
     <span class="pre">
-     project
+     main_menu.file.project
     </span>
    </code>
   </a>
@@ -475,7 +485,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.project.archive">
      <code class="docutils literal notranslate">
       <span class="pre">
-       project.archive()
+       main_menu.file.project.archive()
       </span>
      </code>
     </a>
@@ -484,7 +494,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.project.new">
      <code class="docutils literal notranslate">
       <span class="pre">
-       project.new()
+       main_menu.file.project.new()
       </span>
      </code>
     </a>
@@ -493,7 +503,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.project.open">
      <code class="docutils literal notranslate">
       <span class="pre">
-       project.open()
+       main_menu.file.project.open()
       </span>
      </code>
     </a>
@@ -502,7 +512,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.project.save">
      <code class="docutils literal notranslate">
       <span class="pre">
-       project.save()
+       main_menu.file.project.save()
       </span>
      </code>
     </a>
@@ -511,7 +521,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.project.save_as">
      <code class="docutils literal notranslate">
       <span class="pre">
-       project.save_as()
+       main_menu.file.project.save_as()
       </span>
      </code>
     </a>
@@ -520,7 +530,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.project.save_as_copy">
      <code class="docutils literal notranslate">
       <span class="pre">
-       project.save_as_copy()
+       main_menu.file.project.save_as_copy()
       </span>
      </code>
     </a>
@@ -548,34 +558,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-file-project">
 <span id="ref-meshing-tui-file-project"></span><h1>meshing.tui.file.project<a class="headerlink" href="#meshing-tui-file-project" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.file.project">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.file.</span></span><span class="sig-name descname"><span class="pre">project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.project" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter to create new project, open project, save and archive project.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.project.archive" title="ansys.fluent.core.meshing.tui_231.main_menu.file.project.archive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">archive</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Archive Project.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.project.new" title="ansys.fluent.core.meshing.tui_231.main_menu.file.project.new"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create New Project.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.project.open" title="ansys.fluent.core.meshing.tui_231.main_menu.file.project.open"><code class="xref py py-obj docutils literal notranslate"><span class="pre">open</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Open project.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.project.save" title="ansys.fluent.core.meshing.tui_231.main_menu.file.project.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Save Project.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.project.save_as" title="ansys.fluent.core.meshing.tui_231.main_menu.file.project.save_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_as</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Save As Project.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.project.save_as_copy" title="ansys.fluent.core.meshing.tui_231.main_menu.file.project.save_as_copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_as_copy</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Save As Copy.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.file.project">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.file.</span></span><span class="sig-name descname"><span class="pre">project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.project" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter to create new project, open project, save and archive project.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.file.project.archive">
 <span class="sig-name descname"><span class="pre">archive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.project.archive" title="Permalink to this definition">#</a></dt>

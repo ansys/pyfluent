@@ -3,13 +3,13 @@
 solver.tui.results.graphics.expert
 ==================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert
+   :members: add_custom_vector, contour, display_custom_vector, graphics_window_layout, mesh, mesh_outline, mesh_partition_boundary, multigrid_coarsening, profile, reacting_channel_curves, re_render, re_scale, set_list_tree_separator, surface_cells, surface_mesh, vector, velocity_vector, zone_mesh
 
 .. toctree::
    :hidden:

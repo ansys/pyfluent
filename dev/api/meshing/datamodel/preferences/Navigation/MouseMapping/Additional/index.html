@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -295,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -309,11 +324,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../../../tui/index.html">
      meshing.tui
@@ -477,7 +487,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional">
    <code class="docutils literal notranslate">
     <span class="pre">
-     Additional
+     Root.Navigation.MouseMapping.Additional
     </span>
    </code>
   </a>
@@ -486,7 +496,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLLMBCLICK">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Additional.CTRLLMBCLICK
+       Root.Navigation.MouseMapping.Additional.CTRLLMBCLICK
       </span>
      </code>
     </a>
@@ -495,7 +505,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLLMBDRAG">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Additional.CTRLLMBDRAG
+       Root.Navigation.MouseMapping.Additional.CTRLLMBDRAG
       </span>
      </code>
     </a>
@@ -504,7 +514,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLMMBCLICK">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Additional.CTRLMMBCLICK
+       Root.Navigation.MouseMapping.Additional.CTRLMMBCLICK
       </span>
      </code>
     </a>
@@ -513,7 +523,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLMMBDRAG">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Additional.CTRLMMBDRAG
+       Root.Navigation.MouseMapping.Additional.CTRLMMBDRAG
       </span>
      </code>
     </a>
@@ -522,7 +532,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLRMBCLICK">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Additional.CTRLRMBCLICK
+       Root.Navigation.MouseMapping.Additional.CTRLRMBCLICK
       </span>
      </code>
     </a>
@@ -531,7 +541,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLRMBDRAG">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Additional.CTRLRMBDRAG
+       Root.Navigation.MouseMapping.Additional.CTRLRMBDRAG
       </span>
      </code>
     </a>
@@ -540,7 +550,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.MOUSEPROBE">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Additional.MOUSEPROBE
+       Root.Navigation.MouseMapping.Additional.MOUSEPROBE
       </span>
      </code>
     </a>
@@ -549,7 +559,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.MOUSEWHEEL">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Additional.MOUSEWHEEL
+       Root.Navigation.MouseMapping.Additional.MOUSEWHEEL
       </span>
      </code>
     </a>
@@ -558,7 +568,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.MOUSEWHEELSENSITIVITY">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Additional.MOUSEWHEELSENSITIVITY
+       Root.Navigation.MouseMapping.Additional.MOUSEWHEELSENSITIVITY
       </span>
      </code>
     </a>
@@ -567,7 +577,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.REVERSEWHEELDIRECTION">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Additional.REVERSEWHEELDIRECTION
+       Root.Navigation.MouseMapping.Additional.REVERSEWHEELDIRECTION
       </span>
      </code>
     </a>
@@ -576,7 +586,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTLMBCLICK">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Additional.SHIFTLMBCLICK
+       Root.Navigation.MouseMapping.Additional.SHIFTLMBCLICK
       </span>
      </code>
     </a>
@@ -585,7 +595,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTLMBDRAG">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Additional.SHIFTLMBDRAG
+       Root.Navigation.MouseMapping.Additional.SHIFTLMBDRAG
       </span>
      </code>
     </a>
@@ -594,7 +604,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTMMBCLICK">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Additional.SHIFTMMBCLICK
+       Root.Navigation.MouseMapping.Additional.SHIFTMMBCLICK
       </span>
      </code>
     </a>
@@ -603,7 +613,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTMMBDRAG">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Additional.SHIFTMMBDRAG
+       Root.Navigation.MouseMapping.Additional.SHIFTMMBDRAG
       </span>
      </code>
     </a>
@@ -612,7 +622,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTRMBCLICK">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Additional.SHIFTRMBCLICK
+       Root.Navigation.MouseMapping.Additional.SHIFTRMBCLICK
       </span>
      </code>
     </a>
@@ -621,7 +631,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTRMBDRAG">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Additional.SHIFTRMBDRAG
+       Root.Navigation.MouseMapping.Additional.SHIFTRMBDRAG
       </span>
      </code>
     </a>
@@ -649,174 +659,108 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-datamodel-preferences-navigation-mousemapping-additional">
 <span id="ref-meshing-datamodel-preferences-navigation-mousemapping-additional"></span><h1>meshing.datamodel.preferences.Navigation.MouseMapping.Additional<a class="headerlink" href="#meshing-datamodel-preferences-navigation-mousemapping-additional" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.</span></span><span class="sig-name descname"><span class="pre">Additional</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
-<p>Singleton Additional.</p>
-<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLLMBCLICK" title="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLLMBCLICK"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CTRLLMBCLICK</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter CTRLLMBCLICK of value type str.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLLMBDRAG" title="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLLMBDRAG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CTRLLMBDRAG</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter CTRLLMBDRAG of value type str.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLMMBCLICK" title="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLMMBCLICK"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CTRLMMBCLICK</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter CTRLMMBCLICK of value type str.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLMMBDRAG" title="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLMMBDRAG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CTRLMMBDRAG</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter CTRLMMBDRAG of value type str.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLRMBCLICK" title="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLRMBCLICK"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CTRLRMBCLICK</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter CTRLRMBCLICK of value type str.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLRMBDRAG" title="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLRMBDRAG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CTRLRMBDRAG</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter CTRLRMBDRAG of value type str.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.MOUSEPROBE" title="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.MOUSEPROBE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MOUSEPROBE</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter MOUSEPROBE of value type str.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.MOUSEWHEEL" title="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.MOUSEWHEEL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MOUSEWHEEL</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter MOUSEWHEEL of value type str.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.MOUSEWHEELSENSITIVITY" title="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.MOUSEWHEELSENSITIVITY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MOUSEWHEELSENSITIVITY</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter MOUSEWHEELSENSITIVITY of value type float.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.REVERSEWHEELDIRECTION" title="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.REVERSEWHEELDIRECTION"><code class="xref py py-obj docutils literal notranslate"><span class="pre">REVERSEWHEELDIRECTION</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter REVERSEWHEELDIRECTION of value type bool.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTLMBCLICK" title="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTLMBCLICK"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SHIFTLMBCLICK</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter SHIFTLMBCLICK of value type str.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTLMBDRAG" title="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTLMBDRAG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SHIFTLMBDRAG</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter SHIFTLMBDRAG of value type str.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTMMBCLICK" title="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTMMBCLICK"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SHIFTMMBCLICK</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter SHIFTMMBCLICK of value type str.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTMMBDRAG" title="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTMMBDRAG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SHIFTMMBDRAG</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter SHIFTMMBDRAG of value type str.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTRMBCLICK" title="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTRMBCLICK"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SHIFTRMBCLICK</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter SHIFTRMBCLICK of value type str.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTRMBDRAG" title="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTRMBDRAG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SHIFTRMBDRAG</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter SHIFTRMBDRAG of value type str.</p></td>
-</tr>
 </tbody>
 </table>
 <dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Root.Navigation.MouseMapping.</span></span><span class="sig-name descname"><span class="pre">Additional</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional" title="Permalink to this definition">#</a></dt>
+<dd><p>Singleton Additional.</p>
+<dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLLMBCLICK">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CTRLLMBCLICK</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLLMBCLICK" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter CTRLLMBCLICK of value type str.</p>
+<dd><p>Parameter CTRLLMBCLICK of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLLMBDRAG">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CTRLLMBDRAG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLLMBDRAG" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter CTRLLMBDRAG of value type str.</p>
+<dd><p>Parameter CTRLLMBDRAG of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLMMBCLICK">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CTRLMMBCLICK</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLMMBCLICK" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter CTRLMMBCLICK of value type str.</p>
+<dd><p>Parameter CTRLMMBCLICK of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLMMBDRAG">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CTRLMMBDRAG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLMMBDRAG" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter CTRLMMBDRAG of value type str.</p>
+<dd><p>Parameter CTRLMMBDRAG of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLRMBCLICK">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CTRLRMBCLICK</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLRMBCLICK" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter CTRLRMBCLICK of value type str.</p>
+<dd><p>Parameter CTRLRMBCLICK of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLRMBDRAG">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CTRLRMBDRAG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.CTRLRMBDRAG" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter CTRLRMBDRAG of value type str.</p>
+<dd><p>Parameter CTRLRMBDRAG of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.MOUSEPROBE">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MOUSEPROBE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.MOUSEPROBE" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter MOUSEPROBE of value type str.</p>
+<dd><p>Parameter MOUSEPROBE of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.MOUSEWHEEL">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MOUSEWHEEL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.MOUSEWHEEL" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter MOUSEWHEEL of value type str.</p>
+<dd><p>Parameter MOUSEWHEEL of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.MOUSEWHEELSENSITIVITY">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MOUSEWHEELSENSITIVITY</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.MOUSEWHEELSENSITIVITY" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter MOUSEWHEELSENSITIVITY of value type float.</p>
+<dd><p>Parameter MOUSEWHEELSENSITIVITY of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.REVERSEWHEELDIRECTION">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">REVERSEWHEELDIRECTION</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.REVERSEWHEELDIRECTION" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter REVERSEWHEELDIRECTION of value type bool.</p>
+<dd><p>Parameter REVERSEWHEELDIRECTION of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTLMBCLICK">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SHIFTLMBCLICK</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTLMBCLICK" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter SHIFTLMBCLICK of value type str.</p>
+<dd><p>Parameter SHIFTLMBCLICK of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTLMBDRAG">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SHIFTLMBDRAG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTLMBDRAG" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter SHIFTLMBDRAG of value type str.</p>
+<dd><p>Parameter SHIFTLMBDRAG of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTMMBCLICK">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SHIFTMMBCLICK</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTMMBCLICK" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter SHIFTMMBCLICK of value type str.</p>
+<dd><p>Parameter SHIFTMMBCLICK of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTMMBDRAG">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SHIFTMMBDRAG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTMMBDRAG" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter SHIFTMMBDRAG of value type str.</p>
+<dd><p>Parameter SHIFTMMBDRAG of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTRMBCLICK">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SHIFTRMBCLICK</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTRMBCLICK" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter SHIFTRMBCLICK of value type str.</p>
+<dd><p>Parameter SHIFTRMBCLICK of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTRMBDRAG">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SHIFTRMBDRAG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Navigation.MouseMapping.Additional.SHIFTRMBDRAG" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter SHIFTRMBDRAG of value type str.</p>
+<dd><p>Parameter SHIFTRMBDRAG of value type str.</p>
 </dd></dl>
 
 </dd></dl>

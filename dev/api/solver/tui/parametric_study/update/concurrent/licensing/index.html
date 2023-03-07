@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -296,8 +306,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -592,88 +607,10 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing">
    <code class="docutils literal notranslate">
     <span class="pre">
-     licensing
+     main_menu.parametric_study.update.concurrent.licensing
     </span>
    </code>
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       licensing.print_to_console
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.license_type">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         licensing.print_to_console.license_type()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.optislang_license_count">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         licensing.print_to_console.optislang_license_count()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.optislang_license_type">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         licensing.print_to_console.optislang_license_type()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       licensing.set
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.license_type">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         licensing.set.license_type()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.optislang_license_count">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         licensing.set.optislang_license_count()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.optislang_license_type">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         licensing.set.optislang_license_type()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
  </li>
 </ul>
 
@@ -696,100 +633,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-parametric-study-update-concurrent-licensing">
 <span id="ref-solver-tui-parametric-study-update-concurrent-licensing"></span><h1>solver.tui.parametric_study.update.concurrent.licensing<a class="headerlink" href="#solver-tui-parametric-study-update-concurrent-licensing" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.</span></span><span class="sig-name descname"><span class="pre">licensing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter Concurrent Licensing menu.</p>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_to_console</span></code></a>(path, service)</p></td>
-<td><p>Print Concurrent Licensing Settings.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a>(path, service)</p></td>
-<td><p>Enter Concurrent Licensing Menu.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">print_to_console</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Print Concurrent Licensing Settings.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.license_type" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.license_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">license_type</span></code></a>(*args, **kwargs)</p></td>
-<td><p>License Type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.optislang_license_count" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.optislang_license_count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">optislang_license_count</span></code></a>(*args, **kwargs)</p></td>
-<td><p>OptiSLang License Count.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.optislang_license_type" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.optislang_license_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">optislang_license_type</span></code></a>(*args, **kwargs)</p></td>
-<td><p>OptiSLang License Type.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.license_type">
-<span class="sig-name descname"><span class="pre">license_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.license_type" title="Permalink to this definition">#</a></dt>
-<dd><p>License Type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.optislang_license_count">
-<span class="sig-name descname"><span class="pre">optislang_license_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.optislang_license_count" title="Permalink to this definition">#</a></dt>
-<dd><p>OptiSLang License Count.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.optislang_license_type">
-<span class="sig-name descname"><span class="pre">optislang_license_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.print_to_console.optislang_license_type" title="Permalink to this definition">#</a></dt>
-<dd><p>OptiSLang License Type.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter Concurrent Licensing Menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.license_type" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.license_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">license_type</span></code></a>(*args, **kwargs)</p></td>
-<td><p>License Type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.optislang_license_count" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.optislang_license_count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">optislang_license_count</span></code></a>(*args, **kwargs)</p></td>
-<td><p>OptiSLang License Count.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.optislang_license_type" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.optislang_license_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">optislang_license_type</span></code></a>(*args, **kwargs)</p></td>
-<td><p>OptiSLang License Type.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.license_type">
-<span class="sig-name descname"><span class="pre">license_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.license_type" title="Permalink to this definition">#</a></dt>
-<dd><p>License Type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.optislang_license_count">
-<span class="sig-name descname"><span class="pre">optislang_license_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.optislang_license_count" title="Permalink to this definition">#</a></dt>
-<dd><p>OptiSLang License Count.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.optislang_license_type">
-<span class="sig-name descname"><span class="pre">optislang_license_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing.set.optislang_license_type" title="Permalink to this definition">#</a></dt>
-<dd><p>OptiSLang License Type.</p>
-</dd></dl>
-
-</dd></dl>
-
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.parametric_study.update.concurrent.</span></span><span class="sig-name descname"><span class="pre">licensing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update.concurrent.licensing" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter Concurrent Licensing menu.</p>
 </dd></dl>
 
 <div class="toctree-wrapper compound">

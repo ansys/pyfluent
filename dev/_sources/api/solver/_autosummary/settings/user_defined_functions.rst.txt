@@ -5,13 +5,16 @@
 user_defined_functions
 ======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.user_defined_functions.user_defined_functions
+.. currentmodule:: ansys.fluent.core.solver.settings_231.user_defined_functions
 
-.. rubric:: Attributes
+.. autoclass:: user_defined_functions
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================================   =======================================================================
 
-Attribute                                                                                                                                  Summary
+Child                                                                                                                                      Summary
 
 ========================================================================   =======================================================================
 :ref:`body_force_function <body_force_function>`                                                  Specify the name of the DPM body force function.

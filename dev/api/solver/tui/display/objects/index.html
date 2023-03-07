@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -294,8 +304,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -594,7 +609,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.objects">
    <code class="docutils literal notranslate">
     <span class="pre">
-     objects
+     main_menu.display.objects
     </span>
    </code>
   </a>
@@ -603,7 +618,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.objects.add_to_graphics">
      <code class="docutils literal notranslate">
       <span class="pre">
-       objects.add_to_graphics()
+       main_menu.display.objects.add_to_graphics()
       </span>
      </code>
     </a>
@@ -612,7 +627,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.objects.copy">
      <code class="docutils literal notranslate">
       <span class="pre">
-       objects.copy()
+       main_menu.display.objects.copy()
       </span>
      </code>
     </a>
@@ -621,7 +636,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.objects.create">
      <code class="docutils literal notranslate">
       <span class="pre">
-       objects.create()
+       main_menu.display.objects.create()
       </span>
      </code>
     </a>
@@ -630,7 +645,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.objects.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
-       objects.delete()
+       main_menu.display.objects.delete()
       </span>
      </code>
     </a>
@@ -639,7 +654,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.objects.display">
      <code class="docutils literal notranslate">
       <span class="pre">
-       objects.display()
+       main_menu.display.objects.display()
       </span>
      </code>
     </a>
@@ -648,7 +663,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.objects.edit">
      <code class="docutils literal notranslate">
       <span class="pre">
-       objects.edit()
+       main_menu.display.objects.edit()
       </span>
      </code>
     </a>
@@ -676,34 +691,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-display-objects">
 <span id="ref-solver-tui-display-objects"></span><h1>solver.tui.display.objects<a class="headerlink" href="#solver-tui-display-objects" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.objects">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.display.</span></span><span class="sig-name descname"><span class="pre">objects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.objects" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter to add, edit, delete or display graphics objects.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.objects.add_to_graphics" title="ansys.fluent.core.solver.tui_231.main_menu.display.objects.add_to_graphics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_to_graphics</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Add graphics object to existing graphics.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.objects.copy" title="ansys.fluent.core.solver.tui_231.main_menu.display.objects.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Copy graphics object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.objects.create" title="ansys.fluent.core.solver.tui_231.main_menu.display.objects.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create new graphics object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.objects.delete" title="ansys.fluent.core.solver.tui_231.main_menu.display.objects.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete graphics object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.objects.display" title="ansys.fluent.core.solver.tui_231.main_menu.display.objects.display"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Display graphics object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.objects.edit" title="ansys.fluent.core.solver.tui_231.main_menu.display.objects.edit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edit</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Edit graphics object.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.objects">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.display.</span></span><span class="sig-name descname"><span class="pre">objects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.objects" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter to add, edit, delete or display graphics objects.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.objects.add_to_graphics">
 <span class="sig-name descname"><span class="pre">add_to_graphics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.objects.add_to_graphics" title="Permalink to this definition">#</a></dt>

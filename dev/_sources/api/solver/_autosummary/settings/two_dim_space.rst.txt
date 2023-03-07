@@ -5,8 +5,11 @@
 two_dim_space
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.two_dim_space.two_dim_space
+.. currentmodule:: ansys.fluent.core.solver.settings_231.two_dim_space
 
+.. autoclass:: two_dim_space
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

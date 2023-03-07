@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -51,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
-    <link rel="next" title="meshing.tui.boundary.manage" href="../manage/index.html" />
-    <link rel="prev" title="meshing.tui.boundary.improve" href="../improve/index.html" />
+    <link rel="next" title="meshing.tui.boundary.feature" href="../feature/index.html" />
+    <link rel="prev" title="meshing.tui.boundary" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -293,8 +303,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -307,11 +322,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -323,8 +333,8 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../diagnostics/index.html">
-       meshing.tui.diagnostics
+      <a class="reference internal" href="../../report/index.html">
+       meshing.tui.report
       </a>
      </li>
      <li class="toctree-l3">
@@ -333,8 +343,33 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../mesh/index.html">
-       meshing.tui.mesh
+      <a class="reference internal" href="../../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../display/index.html">
+       meshing.tui.display
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../diagnostics/index.html">
+       meshing.tui.diagnostics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../file/index.html">
+       meshing.tui.file
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../objects/index.html">
+       meshing.tui.objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../reference_frames/index.html">
+       meshing.tui.reference_frames
       </a>
      </li>
      <li class="toctree-l3">
@@ -343,18 +378,28 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../mesh/index.html">
+       meshing.tui.mesh
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../parallel/index.html">
+       meshing.tui.parallel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../size_functions/index.html">
+       meshing.tui.size_functions
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../../preferences/index.html">
        meshing.tui.preferences
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../objects/index.html">
-       meshing.tui.objects
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -367,34 +412,14 @@ function checkPageExistsAndRedirect(event) {
        </i>
       </label>
       <ul class="current">
-       <li class="toctree-l4">
-        <a class="reference internal" href="../remesh/index.html">
-         meshing.tui.boundary.remesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../improve/index.html">
-         meshing.tui.boundary.improve
-        </a>
-       </li>
        <li class="toctree-l4 current active">
         <a class="current reference internal" href="#">
          meshing.tui.boundary.modify
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../manage/index.html">
-         meshing.tui.boundary.manage
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../feature/index.html">
          meshing.tui.boundary.feature
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../separate/index.html">
-         meshing.tui.boundary.separate
         </a>
        </li>
        <li class="toctree-l4">
@@ -408,46 +433,31 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../separate/index.html">
+         meshing.tui.boundary.separate
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../improve/index.html">
+         meshing.tui.boundary.improve
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../shell_boundary_layer/index.html">
          meshing.tui.boundary.shell_boundary_layer
         </a>
        </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../remesh/index.html">
+         meshing.tui.boundary.remesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../manage/index.html">
+         meshing.tui.boundary.manage
+        </a>
+       </li>
       </ul>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../report/index.html">
-       meshing.tui.report
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../parallel/index.html">
-       meshing.tui.parallel
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../display/index.html">
-       meshing.tui.display
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../reference_frames/index.html">
-       meshing.tui.reference_frames
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../file/index.html">
-       meshing.tui.file
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../size_functions/index.html">
-       meshing.tui.size_functions
-      </a>
      </li>
     </ul>
    </li>
@@ -491,7 +501,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify">
    <code class="docutils literal notranslate">
     <span class="pre">
-     modify
+     main_menu.boundary.modify
     </span>
    </code>
   </a>
@@ -500,7 +510,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.analyze_bnd_connectvty">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.analyze_bnd_connectvty()
+       main_menu.boundary.modify.analyze_bnd_connectvty()
       </span>
      </code>
     </a>
@@ -509,7 +519,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.auto_patch_holes">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.auto_patch_holes()
+       main_menu.boundary.modify.auto_patch_holes()
       </span>
      </code>
     </a>
@@ -518,7 +528,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.clear_selections">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.clear_selections()
+       main_menu.boundary.modify.clear_selections()
       </span>
      </code>
     </a>
@@ -527,7 +537,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.clear_skew_faces">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.clear_skew_faces()
+       main_menu.boundary.modify.clear_skew_faces()
       </span>
      </code>
     </a>
@@ -536,7 +546,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.collapse">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.collapse()
+       main_menu.boundary.modify.collapse()
       </span>
      </code>
     </a>
@@ -545,7 +555,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.create">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.create()
+       main_menu.boundary.modify.create()
       </span>
      </code>
     </a>
@@ -554,7 +564,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.create_mid_node">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.create_mid_node()
+       main_menu.boundary.modify.create_mid_node()
       </span>
      </code>
     </a>
@@ -563,7 +573,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.delete()
+       main_menu.boundary.modify.delete()
       </span>
      </code>
     </a>
@@ -572,7 +582,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.delta_move">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.delta_move()
+       main_menu.boundary.modify.delta_move()
       </span>
      </code>
     </a>
@@ -581,7 +591,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.deselect_last">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.deselect_last()
+       main_menu.boundary.modify.deselect_last()
       </span>
      </code>
     </a>
@@ -590,7 +600,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.hole_feature_angle">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.hole_feature_angle()
+       main_menu.boundary.modify.hole_feature_angle()
       </span>
      </code>
     </a>
@@ -599,7 +609,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.list_selections">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.list_selections()
+       main_menu.boundary.modify.list_selections()
       </span>
      </code>
     </a>
@@ -608,7 +618,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.local_remesh">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.local_remesh()
+       main_menu.boundary.modify.local_remesh()
       </span>
      </code>
     </a>
@@ -617,7 +627,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.mark_skew_face">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.mark_skew_face()
+       main_menu.boundary.modify.mark_skew_face()
       </span>
      </code>
     </a>
@@ -626,7 +636,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.merge">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.merge()
+       main_menu.boundary.modify.merge()
       </span>
      </code>
     </a>
@@ -635,7 +645,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.move">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.move()
+       main_menu.boundary.modify.move()
       </span>
      </code>
     </a>
@@ -644,7 +654,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.next_skew">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.next_skew()
+       main_menu.boundary.modify.next_skew()
       </span>
      </code>
     </a>
@@ -653,7 +663,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.patch_options">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.patch_options()
+       main_menu.boundary.modify.patch_options()
       </span>
      </code>
     </a>
@@ -662,7 +672,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.rezone">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.rezone()
+       main_menu.boundary.modify.rezone()
       </span>
      </code>
     </a>
@@ -671,7 +681,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.select_entity">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.select_entity()
+       main_menu.boundary.modify.select_entity()
       </span>
      </code>
     </a>
@@ -680,7 +690,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.select_filter">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.select_filter()
+       main_menu.boundary.modify.select_filter()
       </span>
      </code>
     </a>
@@ -689,7 +699,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.select_position">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.select_position()
+       main_menu.boundary.modify.select_position()
       </span>
      </code>
     </a>
@@ -698,7 +708,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.select_probe">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.select_probe()
+       main_menu.boundary.modify.select_probe()
       </span>
      </code>
     </a>
@@ -707,7 +717,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.select_visible_entities">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.select_visible_entities()
+       main_menu.boundary.modify.select_visible_entities()
       </span>
      </code>
     </a>
@@ -716,7 +726,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.select_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.select_zone()
+       main_menu.boundary.modify.select_zone()
       </span>
      </code>
     </a>
@@ -725,7 +735,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.show_filter">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.show_filter()
+       main_menu.boundary.modify.show_filter()
       </span>
      </code>
     </a>
@@ -734,7 +744,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.show_probe">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.show_probe()
+       main_menu.boundary.modify.show_probe()
       </span>
      </code>
     </a>
@@ -743,7 +753,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.skew">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.skew()
+       main_menu.boundary.modify.skew()
       </span>
      </code>
     </a>
@@ -752,7 +762,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.skew_report_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.skew_report_zone()
+       main_menu.boundary.modify.skew_report_zone()
       </span>
      </code>
     </a>
@@ -761,7 +771,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.smooth">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.smooth()
+       main_menu.boundary.modify.smooth()
       </span>
      </code>
     </a>
@@ -770,7 +780,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.split_face">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.split_face()
+       main_menu.boundary.modify.split_face()
       </span>
      </code>
     </a>
@@ -779,7 +789,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.swap">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.swap()
+       main_menu.boundary.modify.swap()
       </span>
      </code>
     </a>
@@ -788,7 +798,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.undo">
      <code class="docutils literal notranslate">
       <span class="pre">
-       modify.undo()
+       main_menu.boundary.modify.undo()
       </span>
      </code>
     </a>
@@ -816,115 +826,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-boundary-modify">
 <span id="ref-meshing-tui-boundary-modify"></span><h1>meshing.tui.boundary.modify<a class="headerlink" href="#meshing-tui-boundary-modify" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.boundary.</span></span><span class="sig-name descname"><span class="pre">modify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Contains commands used to modify the boundary mesh.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.analyze_bnd_connectvty" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.analyze_bnd_connectvty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">analyze_bnd_connectvty</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Finds and marks free edges and nodes and multiply-connected edges and nodes.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.auto_patch_holes" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.auto_patch_holes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_patch_holes</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Patch zone(s) by filling holes.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.clear_selections" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.clear_selections"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_selections</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Clears all selections.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.clear_skew_faces" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.clear_skew_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_skew_faces</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Clears faces that were marked using the mark-skew-face command.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.collapse" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.collapse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">collapse</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Collapses pairs of nodes, edge(s), or face(s).</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.create" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Creates a boundary face if the selection list contains 3 nodes and an optional zone.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.create_mid_node" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.create_mid_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_mid_node</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Creates a node at the midpoint between two selected nodes.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.delete" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Deletes all selected faces and nodes.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.delta_move" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.delta_move"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delta_move</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Moves the selected node by specified magnitude.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.deselect_last" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.deselect_last"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deselect_last</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Removes the last selection from the selection list.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.hole_feature_angle" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.hole_feature_angle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hole_feature_angle</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the feature angle for consideration of holes in the geometry.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.list_selections" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.list_selections"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_selections</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Lists all of the selected objects.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.local_remesh" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.local_remesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">local_remesh</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Remeshes marked faces or faces based on selections in the graphics window.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.mark_skew_face" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.mark_skew_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mark_skew_face</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Marks faces that should be skipped when the worst skewed face is reported using the Modify Boundary dialog box.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.merge" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.merge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Merges pairs of nodes.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.move" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.move"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Moves the selected node to the selected position if the selection list contains a node and a position.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.next_skew" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.next_skew"><code class="xref py py-obj docutils literal notranslate"><span class="pre">next_skew</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Finds the triangular face of nearest lower skewness value than that of the worst skewed face.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.patch_options" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.patch_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">patch_options</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Settings for Patching zone(s) by filling holes.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.rezone" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.rezone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rezone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Moves the selected faces from their current zone into the selected zone, if the selection list contains a zone and one or more faces.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.select_entity" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.select_entity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_entity</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Adds a cell, face, or node to the selection list by entering the name of the entity.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.select_filter" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.select_filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_filter</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Selects a filter.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.select_position" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.select_position"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_position</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Adds a position to the selection list by entering the coordinates of the position.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.select_probe" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.select_probe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_probe</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Selects the probe function.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.select_visible_entities" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.select_visible_entities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_visible_entities</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to select only visible entities (nodes, edges, faces, zones, objects) when the box select or polygon select options are used.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.select_zone" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.select_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Adds a zone to the selection list by entering the zone name or ID.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.show_filter" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.show_filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_filter</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Shows the current filter.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.show_probe" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.show_probe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_probe</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Shows the current probe function.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.skew" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.skew"><code class="xref py py-obj docutils literal notranslate"><span class="pre">skew</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Finds the face with the highest (worst) skewness, selects it in the graphics window, and reports its skewness and zone ID in the console window.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.skew_report_zone" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.skew_report_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">skew_report_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to select the zone for which you want to report the skewness.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.smooth" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.smooth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Uses Laplace smoothing to modify the position of the nodes in the selection list.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.split_face" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.split_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_face</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Splits two selected faces into four faces.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.swap" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.swap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">swap</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Swaps boundary edges (of triangular faces) if the selection list contains edges.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.undo" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.undo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">undo</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Undoes the previous operation.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.boundary.</span></span><span class="sig-name descname"><span class="pre">modify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify" title="Permalink to this definition">#</a></dt>
+<dd><p>Contains commands used to modify the boundary mesh.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.analyze_bnd_connectvty">
 <span class="sig-name descname"><span class="pre">analyze_bnd_connectvty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.modify.analyze_bnd_connectvty" title="Permalink to this definition">#</a></dt>

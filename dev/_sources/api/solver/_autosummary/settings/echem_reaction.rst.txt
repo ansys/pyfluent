@@ -5,8 +5,11 @@
 echem_reaction
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.echem_reaction.echem_reaction
+.. currentmodule:: ansys.fluent.core.solver.settings_231.echem_reaction
 
+.. autoclass:: echem_reaction
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

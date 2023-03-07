@@ -5,8 +5,11 @@
 always_use_face_centroid_with_periodics
 =======================================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.always_use_face_centroid_with_periodics.always_use_face_centroid_with_periodics
+.. currentmodule:: ansys.fluent.core.solver.settings_231.always_use_face_centroid_with_periodics
 
+.. autoclass:: always_use_face_centroid_with_periodics
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ============================================================================

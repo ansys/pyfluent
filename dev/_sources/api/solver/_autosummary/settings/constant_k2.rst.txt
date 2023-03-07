@@ -5,8 +5,11 @@
 constant_k2
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.constant_k2.constant_k2
+.. currentmodule:: ansys.fluent.core.solver.settings_231.constant_k2
 
+.. autoclass:: constant_k2
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

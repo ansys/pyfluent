@@ -5,8 +5,11 @@
 critical_weber_number
 =====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.critical_weber_number.critical_weber_number
+.. currentmodule:: ansys.fluent.core.solver.settings_231.critical_weber_number
 
+.. autoclass:: critical_weber_number
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

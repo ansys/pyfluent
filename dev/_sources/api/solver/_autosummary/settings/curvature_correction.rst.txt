@@ -5,8 +5,11 @@
 curvature_correction
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.curvature_correction.curvature_correction
+.. currentmodule:: ansys.fluent.core.solver.settings_231.curvature_correction
 
+.. autoclass:: curvature_correction
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   ====================

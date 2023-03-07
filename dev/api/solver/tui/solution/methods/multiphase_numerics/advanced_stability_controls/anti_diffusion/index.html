@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -297,8 +307,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -708,7 +723,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion">
    <code class="docutils literal notranslate">
     <span class="pre">
-     anti_diffusion
+     main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion
     </span>
    </code>
   </a>
@@ -717,7 +732,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion.enable_dynamic_strength">
      <code class="docutils literal notranslate">
       <span class="pre">
-       anti_diffusion.enable_dynamic_strength()
+       main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion.enable_dynamic_strength()
       </span>
      </code>
     </a>
@@ -726,7 +741,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion.set_dynamic_strength_exponent">
      <code class="docutils literal notranslate">
       <span class="pre">
-       anti_diffusion.set_dynamic_strength_exponent()
+       main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion.set_dynamic_strength_exponent()
       </span>
      </code>
     </a>
@@ -735,7 +750,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion.set_maximum_dynamic_strength">
      <code class="docutils literal notranslate">
       <span class="pre">
-       anti_diffusion.set_maximum_dynamic_strength()
+       main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion.set_maximum_dynamic_strength()
       </span>
      </code>
     </a>
@@ -763,25 +778,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solution-methods-multiphase-numerics-advanced-stability-controls-anti-diffusion">
 <span id="ref-solver-tui-solution-methods-multiphase-numerics-advanced-stability-controls-anti-diffusion"></span><h1>solver.tui.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion<a class="headerlink" href="#solver-tui-solution-methods-multiphase-numerics-advanced-stability-controls-anti-diffusion" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.</span></span><span class="sig-name descname"><span class="pre">anti_diffusion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Anti Diffusion Menu for VOF/Multi-Fluid VOF Models.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion.enable_dynamic_strength" title="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion.enable_dynamic_strength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_dynamic_strength</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable dynamic strength to reduce compression in the tangential direction to the interface.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion.set_dynamic_strength_exponent" title="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion.set_dynamic_strength_exponent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_dynamic_strength_exponent</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set cosine exponent in dynamic strength treatment.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion.set_maximum_dynamic_strength" title="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion.set_maximum_dynamic_strength"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_maximum_dynamic_strength</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set maximum value of dynamic anti-diffusion strength.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.</span></span><span class="sig-name descname"><span class="pre">anti_diffusion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion" title="Permalink to this definition">#</a></dt>
+<dd><p>Anti Diffusion Menu for VOF/Multi-Fluid VOF Models.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion.enable_dynamic_strength">
 <span class="sig-name descname"><span class="pre">enable_dynamic_strength</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion.enable_dynamic_strength" title="Permalink to this definition">#</a></dt>

@@ -5,8 +5,11 @@
 amplitude
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.amplitude.amplitude
+.. currentmodule:: ansys.fluent.core.solver.settings_231.amplitude
 
+.. autoclass:: amplitude
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =======================================

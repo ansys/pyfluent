@@ -5,8 +5,11 @@
 num_of_density_smoothing
 ========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.num_of_density_smoothing.num_of_density_smoothing
+.. currentmodule:: ansys.fluent.core.solver.settings_231.num_of_density_smoothing
 
+.. autoclass:: num_of_density_smoothing
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =======================================================

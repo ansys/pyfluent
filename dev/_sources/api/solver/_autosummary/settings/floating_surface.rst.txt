@@ -5,8 +5,11 @@
 floating_surface
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.floating_surface.floating_surface
+.. currentmodule:: ansys.fluent.core.solver.settings_231.floating_surface
 
+.. autoclass:: floating_surface
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ==============================================

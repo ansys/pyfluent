@@ -5,8 +5,11 @@
 cone_axis_z
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.cone_axis_z.cone_axis_z
+.. currentmodule:: ansys.fluent.core.solver.settings_231.cone_axis_z
 
+.. autoclass:: cone_axis_z
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

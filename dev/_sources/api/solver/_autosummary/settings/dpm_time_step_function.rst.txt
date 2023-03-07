@@ -5,8 +5,11 @@
 dpm_time_step_function
 ======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_time_step_function.dpm_time_step_function
+.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_time_step_function
 
+.. autoclass:: dpm_time_step_function
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ==========================================================================================================================

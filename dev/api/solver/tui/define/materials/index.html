@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -294,8 +304,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -646,7 +661,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials">
    <code class="docutils literal notranslate">
     <span class="pre">
-     materials
+     main_menu.define.materials
     </span>
    </code>
   </a>
@@ -655,7 +670,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials.change_create">
      <code class="docutils literal notranslate">
       <span class="pre">
-       materials.change_create()
+       main_menu.define.materials.change_create()
       </span>
      </code>
     </a>
@@ -664,7 +679,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials.copy">
      <code class="docutils literal notranslate">
       <span class="pre">
-       materials.copy()
+       main_menu.define.materials.copy()
       </span>
      </code>
     </a>
@@ -673,81 +688,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials.copy_by_formula">
      <code class="docutils literal notranslate">
       <span class="pre">
-       materials.copy_by_formula()
+       main_menu.define.materials.copy_by_formula()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       materials.data_base
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.database_type">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         materials.data_base.database_type()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.edit">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         materials.data_base.edit()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.list_materials">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         materials.data_base.list_materials()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.list_properties">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         materials.data_base.list_properties()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.new">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         materials.data_base.new()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.save">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         materials.data_base.save()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
-       materials.delete()
+       main_menu.define.materials.delete()
       </span>
      </code>
     </a>
@@ -756,7 +706,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials.list_materials">
      <code class="docutils literal notranslate">
       <span class="pre">
-       materials.list_materials()
+       main_menu.define.materials.list_materials()
       </span>
      </code>
     </a>
@@ -765,7 +715,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials.list_properties">
      <code class="docutils literal notranslate">
       <span class="pre">
-       materials.list_properties()
+       main_menu.define.materials.list_properties()
       </span>
      </code>
     </a>
@@ -793,42 +743,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-define-materials">
 <span id="ref-solver-tui-define-materials"></span><h1>solver.tui.define.materials<a class="headerlink" href="#solver-tui-define-materials" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.materials">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.define.</span></span><span class="sig-name descname"><span class="pre">materials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the materials menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.materials.change_create" title="ansys.fluent.core.solver.tui_231.main_menu.define.materials.change_create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">change_create</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Changes the properties of a locally-stored material or create a new material.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.materials.copy" title="ansys.fluent.core.solver.tui_231.main_menu.define.materials.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Copies a material from the database.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.materials.copy_by_formula" title="ansys.fluent.core.solver.tui_231.main_menu.define.materials.copy_by_formula"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy_by_formula</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Copies a material from the database by formula.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.materials.delete" title="ansys.fluent.core.solver.tui_231.main_menu.define.materials.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Deletes a material from local storage.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.materials.list_materials" title="ansys.fluent.core.solver.tui_231.main_menu.define.materials.list_materials"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_materials</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Lists all locally-stored materials.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.materials.list_properties" title="ansys.fluent.core.solver.tui_231.main_menu.define.materials.list_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_properties</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Lists the properties of a locally-stored material.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base" title="ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data_base</span></code></a>(path, service)</p></td>
-<td><p>Enters the material database menu.</p></td>
-</tr>
-</tbody>
-</table>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.</span></span><span class="sig-name descname"><span class="pre">materials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the materials menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.materials.change_create">
 <span class="sig-name descname"><span class="pre">change_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials.change_create" title="Permalink to this definition">#</a></dt>
@@ -845,72 +767,6 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.materials.copy_by_formula">
 <span class="sig-name descname"><span class="pre">copy_by_formula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials.copy_by_formula" title="Permalink to this definition">#</a></dt>
 <dd><p>Copies a material from the database by formula.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data_base</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the material database menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.database_type" title="ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.database_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">database_type</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets the database type      (fluent-database,       granta-mds, or  user-defined).</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.edit" title="ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.edit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edit</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Edits material.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.list_materials" title="ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.list_materials"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_materials</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Lists all materials in the database.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.list_properties" title="ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.list_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_properties</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Lists the properties of a material in the database.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.new" title="ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.new"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Defines new material.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.save" title="ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Saves user-defined database.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.database_type">
-<span class="sig-name descname"><span class="pre">database_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.database_type" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets the database type      (fluent-database,       granta-mds, or  user-defined).</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.edit">
-<span class="sig-name descname"><span class="pre">edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.edit" title="Permalink to this definition">#</a></dt>
-<dd><p>Edits material.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.list_materials">
-<span class="sig-name descname"><span class="pre">list_materials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.list_materials" title="Permalink to this definition">#</a></dt>
-<dd><p>Lists all materials in the database.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.list_properties">
-<span class="sig-name descname"><span class="pre">list_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.list_properties" title="Permalink to this definition">#</a></dt>
-<dd><p>Lists the properties of a material in the database.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.new">
-<span class="sig-name descname"><span class="pre">new</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.new" title="Permalink to this definition">#</a></dt>
-<dd><p>Defines new material.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.materials.data_base.save" title="Permalink to this definition">#</a></dt>
-<dd><p>Saves user-defined database.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">

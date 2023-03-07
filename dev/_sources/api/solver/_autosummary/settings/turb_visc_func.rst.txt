@@ -5,8 +5,11 @@
 turb_visc_func
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.turb_visc_func.turb_visc_func
+.. currentmodule:: ansys.fluent.core.solver.settings_231.turb_visc_func
 
+.. autoclass:: turb_visc_func
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =========================

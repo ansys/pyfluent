@@ -5,8 +5,11 @@
 visible
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.visible_4.visible
+.. currentmodule:: ansys.fluent.core.solver.settings_231.visible_4
 
+.. autoclass:: visible
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   =======================================

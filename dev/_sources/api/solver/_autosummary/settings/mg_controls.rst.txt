@@ -5,8 +5,11 @@
 mg_controls
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.mg_controls.mg_controls
+.. currentmodule:: ansys.fluent.core.solver.settings_231.mg_controls
 
+.. autoclass:: mg_controls
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`mg_controls_child <mg_controls_child>`

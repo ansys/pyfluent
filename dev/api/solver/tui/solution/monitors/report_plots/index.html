@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -295,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -592,7 +607,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots">
    <code class="docutils literal notranslate">
     <span class="pre">
-     report_plots
+     main_menu.solution.monitors.report_plots
     </span>
    </code>
   </a>
@@ -601,7 +616,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.add">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_plots.add()
+       main_menu.solution.monitors.report_plots.add()
       </span>
      </code>
     </a>
@@ -610,7 +625,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.axes">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_plots.axes()
+       main_menu.solution.monitors.report_plots.axes()
       </span>
      </code>
     </a>
@@ -619,7 +634,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.clear_data">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_plots.clear_data()
+       main_menu.solution.monitors.report_plots.clear_data()
       </span>
      </code>
     </a>
@@ -628,7 +643,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.curves">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_plots.curves()
+       main_menu.solution.monitors.report_plots.curves()
       </span>
      </code>
     </a>
@@ -637,7 +652,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_plots.delete()
+       main_menu.solution.monitors.report_plots.delete()
       </span>
      </code>
     </a>
@@ -646,7 +661,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.delete_all">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_plots.delete_all()
+       main_menu.solution.monitors.report_plots.delete_all()
       </span>
      </code>
     </a>
@@ -655,7 +670,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.edit">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_plots.edit()
+       main_menu.solution.monitors.report_plots.edit()
       </span>
      </code>
     </a>
@@ -664,7 +679,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.list">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_plots.list()
+       main_menu.solution.monitors.report_plots.list()
       </span>
      </code>
     </a>
@@ -673,7 +688,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.list_properties">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_plots.list_properties()
+       main_menu.solution.monitors.report_plots.list_properties()
       </span>
      </code>
     </a>
@@ -682,7 +697,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.plot">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_plots.plot()
+       main_menu.solution.monitors.report_plots.plot()
       </span>
      </code>
     </a>
@@ -710,46 +725,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solution-monitors-report-plots">
 <span id="ref-solver-tui-solution-monitors-report-plots"></span><h1>solver.tui.solution.monitors.report_plots<a class="headerlink" href="#solver-tui-solution-monitors-report-plots" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.</span></span><span class="sig-name descname"><span class="pre">report_plots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Manage report plots.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.add" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Add a new object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.axes" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axes</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set axes options of an object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.clear_data" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.clear_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_data</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Clear report plot data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.curves" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.curves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">curves</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set curves options of an object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.delete" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete an object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.delete_all" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.delete_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_all</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete all plot objects.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.edit" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.edit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edit</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Edit an object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.list" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List objects.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.list_properties" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.list_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_properties</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List properties of an object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.plot" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Plot.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solution.monitors.</span></span><span class="sig-name descname"><span class="pre">report_plots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots" title="Permalink to this definition">#</a></dt>
+<dd><p>Manage report plots.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.add">
 <span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_plots.add" title="Permalink to this definition">#</a></dt>

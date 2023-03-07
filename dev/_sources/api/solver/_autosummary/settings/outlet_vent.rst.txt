@@ -5,8 +5,11 @@
 outlet_vent
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.outlet_vent.outlet_vent
+.. currentmodule:: ansys.fluent.core.solver.settings_231.outlet_vent
 
+.. autoclass:: outlet_vent
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`outlet_vent_child <outlet_vent_child>`

@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -295,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -704,7 +719,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced">
    <code class="docutils literal notranslate">
     <span class="pre">
-     advanced
+     main_menu.solve.set.advanced
     </span>
    </code>
   </a>
@@ -713,7 +728,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.alternate_wall_temp_formulation">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advanced.alternate_wall_temp_formulation()
+       main_menu.solve.set.advanced.alternate_wall_temp_formulation()
       </span>
      </code>
     </a>
@@ -722,7 +737,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.anisotropic_solid_heat_transfer">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advanced.anisotropic_solid_heat_transfer()
+       main_menu.solve.set.advanced.anisotropic_solid_heat_transfer()
       </span>
      </code>
     </a>
@@ -731,7 +746,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.bcd_boundedness">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advanced.bcd_boundedness()
+       main_menu.solve.set.advanced.bcd_boundedness()
       </span>
      </code>
     </a>
@@ -740,7 +755,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.bcd_weights_freeze">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advanced.bcd_weights_freeze()
+       main_menu.solve.set.advanced.bcd_weights_freeze()
       </span>
      </code>
     </a>
@@ -749,7 +764,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.correction_form">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advanced.correction_form()
+       main_menu.solve.set.advanced.correction_form()
       </span>
      </code>
     </a>
@@ -758,7 +773,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.energy_numerical_noise_filter">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advanced.energy_numerical_noise_filter()
+       main_menu.solve.set.advanced.energy_numerical_noise_filter()
       </span>
      </code>
     </a>
@@ -767,7 +782,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.energy_reconstruction_gradient_limiting">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advanced.energy_reconstruction_gradient_limiting()
+       main_menu.solve.set.advanced.energy_reconstruction_gradient_limiting()
       </span>
      </code>
     </a>
@@ -776,7 +791,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.explicit_under_relaxation_value">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advanced.explicit_under_relaxation_value()
+       main_menu.solve.set.advanced.explicit_under_relaxation_value()
       </span>
      </code>
     </a>
@@ -785,54 +800,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.linearized_mass_transfer_udf">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advanced.linearized_mass_transfer_udf()
+       main_menu.solve.set.advanced.linearized_mass_transfer_udf()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.non_reflecting_boundary_treatment">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       advanced.non_reflecting_boundary_treatment
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.non_reflecting_boundary_treatment.pressure_inlet">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         advanced.non_reflecting_boundary_treatment.pressure_inlet()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.non_reflecting_boundary_treatment.pressure_outlet">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         advanced.non_reflecting_boundary_treatment.pressure_outlet()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.non_reflecting_boundary_treatment.velocity_inlet">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         advanced.non_reflecting_boundary_treatment.velocity_inlet()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.retain_cell_residuals">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advanced.retain_cell_residuals()
+       main_menu.solve.set.advanced.retain_cell_residuals()
       </span>
      </code>
     </a>
@@ -841,54 +818,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.retain_temporary_solver_mem">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advanced.retain_temporary_solver_mem()
+       main_menu.solve.set.advanced.retain_temporary_solver_mem()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       advanced.secondary_gradient_limiting
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.energy">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         advanced.secondary_gradient_limiting.energy()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.mesh_quality_limits">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         advanced.secondary_gradient_limiting.mesh_quality_limits()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.uds">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         advanced.secondary_gradient_limiting.uds()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.show_all_discretization_schemes">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advanced.show_all_discretization_schemes()
+       main_menu.solve.set.advanced.show_all_discretization_schemes()
       </span>
      </code>
     </a>
@@ -897,7 +836,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.singhal_et_al_cavitation_model">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advanced.singhal_et_al_cavitation_model()
+       main_menu.solve.set.advanced.singhal_et_al_cavitation_model()
       </span>
      </code>
     </a>
@@ -906,39 +845,10 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.skewness_correction_enhanced">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advanced.skewness_correction_enhanced()
+       main_menu.solve.set.advanced.skewness_correction_enhanced()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.turbomachinery_specific_numerics">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       advanced.turbomachinery_specific_numerics
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.turbomachinery_specific_numerics.enable">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         advanced.turbomachinery_specific_numerics.enable()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.turbomachinery_specific_numerics.settings">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         advanced.turbomachinery_specific_numerics.settings()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -963,75 +873,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solve-set-advanced">
 <span id="ref-solver-tui-solve-set-advanced"></span><h1>solver.tui.solve.set.advanced<a class="headerlink" href="#solver-tui-solve-set-advanced" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.solve.set.</span></span><span class="sig-name descname"><span class="pre">advanced</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the advanced settings menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.alternate_wall_temp_formulation" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.alternate_wall_temp_formulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alternate_wall_temp_formulation</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables an alternate formulation for wall temperatures.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.anisotropic_solid_heat_transfer" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.anisotropic_solid_heat_transfer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">anisotropic_solid_heat_transfer</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set up the heat transfer for anisotropic solid zones.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.bcd_boundedness" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.bcd_boundedness"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bcd_boundedness</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the BCD scheme parameter, which controls the boundedness strength of the BCD scheme in the pressure-based solver, as described in .</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.bcd_weights_freeze" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.bcd_weights_freeze"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bcd_weights_freeze</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables freezing of weighting coefficients of the central differencing and the upwind components of the BCD scheme.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.correction_form" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.correction_form"><code class="xref py py-obj docutils literal notranslate"><span class="pre">correction_form</span></code></a>(*args, **kwargs)</p></td>
-<td><p><ol class="upperalpha simple" start="19">
-<li></li>
-</ol>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.energy_numerical_noise_filter" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.energy_numerical_noise_filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">energy_numerical_noise_filter</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables a filter to eliminate non-physical numerical noise in the energy field.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.energy_reconstruction_gradient_limiting" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.energy_reconstruction_gradient_limiting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">energy_reconstruction_gradient_limiting</span></code></a>(...)</p></td>
-<td><p>Enable limiting of reconstruction gradient for the energy equation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.explicit_under_relaxation_value" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.explicit_under_relaxation_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">explicit_under_relaxation_value</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Explicit under-relaxation value.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.linearized_mass_transfer_udf" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.linearized_mass_transfer_udf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linearized_mass_transfer_udf</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the use of a linearized mass transfer user-defined function (that is, the DEFINE_LINEARIZED_MASS_TRANSFER macro), as opposed to a mass transfer user-defined function (that is, the DEFINE_MASS_TRANSFER macro).</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.retain_cell_residuals" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.retain_cell_residuals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retain_cell_residuals</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the retention of cell residuals for postprocessing.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.retain_temporary_solver_mem" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.retain_temporary_solver_mem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retain_temporary_solver_mem</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the retention of temporary solver memory, which retains gradient data and makes some advanced options available for postprocessing.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.show_all_discretization_schemes" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.show_all_discretization_schemes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_all_discretization_schemes</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the availability of all applicable discretization schemes.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.singhal_et_al_cavitation_model" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.singhal_et_al_cavitation_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">singhal_et_al_cavitation_model</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the availability of the Singhal et al. cavitation model option, which can then be enabled in the Multiphase Model dialog box or by using the following text command: define/phases/set-domain-properties/interaction-domain/heat-mass-reaction/cavitation/cavitation?.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.skewness_correction_enhanced" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.skewness_correction_enhanced"><code class="xref py py-obj docutils literal notranslate"><span class="pre">skewness_correction_enhanced</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable enhanced skewness correction scheme.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.non_reflecting_boundary_treatment" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.non_reflecting_boundary_treatment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_reflecting_boundary_treatment</span></code></a>(path, service)</p></td>
-<td><p>Enter non reflecting boundary treatment using minimal pressure reflection approach menu.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">secondary_gradient_limiting</span></code></a>(path, service)</p></td>
-<td><p>Enters the secondary gradient limiting menu.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.turbomachinery_specific_numerics" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.turbomachinery_specific_numerics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">turbomachinery_specific_numerics</span></code></a>(path, service)</p></td>
-<td><p>Enter turbomachinery specific numerics menu.</p></td>
-</tr>
-</tbody>
-</table>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solve.set.</span></span><span class="sig-name descname"><span class="pre">advanced</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the advanced settings menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.alternate_wall_temp_formulation">
 <span class="sig-name descname"><span class="pre">alternate_wall_temp_formulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.alternate_wall_temp_formulation" title="Permalink to this definition">#</a></dt>
@@ -1088,45 +937,6 @@ function checkPageExistsAndRedirect(event) {
 <dd><p>Enables/disables the use of a linearized mass transfer user-defined function (that is, the DEFINE_LINEARIZED_MASS_TRANSFER macro), as opposed to a mass transfer user-defined function (that is, the DEFINE_MASS_TRANSFER macro).</p>
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.non_reflecting_boundary_treatment">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">non_reflecting_boundary_treatment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.non_reflecting_boundary_treatment" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter non reflecting boundary treatment using minimal pressure reflection approach menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.non_reflecting_boundary_treatment.pressure_inlet" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.non_reflecting_boundary_treatment.pressure_inlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pressure_inlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enabling the use of minimal pressure reflection treatment.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.non_reflecting_boundary_treatment.pressure_outlet" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.non_reflecting_boundary_treatment.pressure_outlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pressure_outlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enabling the use of minimal pressure reflection treatment.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.non_reflecting_boundary_treatment.velocity_inlet" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.non_reflecting_boundary_treatment.velocity_inlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_inlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enabling the use of minimal pressure reflection treatment.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.non_reflecting_boundary_treatment.pressure_inlet">
-<span class="sig-name descname"><span class="pre">pressure_inlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.non_reflecting_boundary_treatment.pressure_inlet" title="Permalink to this definition">#</a></dt>
-<dd><p>Enabling the use of minimal pressure reflection treatment. This treatment will minimize pressure wave reflections from the boundaries on which this option is active, but not necessarily fully eliminating them. The reflections would be of an acceptable limit in order to not contaminate the solution, the simulation will gain from the robustness of the new algorithm compared to traditional non-reflecting boundary condition treatment.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.non_reflecting_boundary_treatment.pressure_outlet">
-<span class="sig-name descname"><span class="pre">pressure_outlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.non_reflecting_boundary_treatment.pressure_outlet" title="Permalink to this definition">#</a></dt>
-<dd><p>Enabling the use of minimal pressure reflection treatment. This treatment will minimize pressure wave reflections from the boundaries on which this option is active, but not necessarily fully eliminating them. The reflections would be of an acceptable limit in order to not contaminate the solution, the simulation will gain from the robustness of the new algorithm compared to traditional non-reflecting boundary condition treatment.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.non_reflecting_boundary_treatment.velocity_inlet">
-<span class="sig-name descname"><span class="pre">velocity_inlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.non_reflecting_boundary_treatment.velocity_inlet" title="Permalink to this definition">#</a></dt>
-<dd><p>Enabling the use of minimal pressure reflection treatment. This treatment will minimize pressure wave reflections from the boundaries on which this option is active, but not necessarily fully eliminating them. The reflections would be of an acceptable limit in order to not contaminate the solution, the simulation will gain from the robustness of the new algorithm compared to traditional non-reflecting boundary condition treatment.</p>
-</dd></dl>
-
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.retain_cell_residuals">
 <span class="sig-name descname"><span class="pre">retain_cell_residuals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.retain_cell_residuals" title="Permalink to this definition">#</a></dt>
@@ -1137,45 +947,6 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.retain_temporary_solver_mem">
 <span class="sig-name descname"><span class="pre">retain_temporary_solver_mem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.retain_temporary_solver_mem" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables/disables the retention of temporary solver memory, which retains gradient data and makes some advanced options available for postprocessing.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">secondary_gradient_limiting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the secondary gradient limiting menu. This menu is only available when the define/models/solver/pressure-based text command is enabled.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.energy" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.energy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">energy</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables secondary gradient limiting for the energy  calculations on coupled two-sided walls.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.mesh_quality_limits" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.mesh_quality_limits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_quality_limits</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Defines the mesh quality limits used when applying secondary  gradient limiting to faces on coupled two-sided walls.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.uds" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.uds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uds</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables secondary gradient limiting for the user-defined  scalar (UDS) calculations on coupled two-sided walls.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.energy">
-<span class="sig-name descname"><span class="pre">energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.energy" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables/disables secondary gradient limiting for the energy  calculations on coupled two-sided walls. This limiting can help prevent  divergence when the cells on such walls have poor orthogonality.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.mesh_quality_limits">
-<span class="sig-name descname"><span class="pre">mesh_quality_limits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.mesh_quality_limits" title="Permalink to this definition">#</a></dt>
-<dd><p>Defines the mesh quality limits used when applying secondary  gradient limiting to faces on coupled two-sided walls. Shifting this  range closer to 1 will decrease the risk of divergence, but at the cost  of accuracy.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.uds">
-<span class="sig-name descname"><span class="pre">uds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.secondary_gradient_limiting.uds" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables/disables secondary gradient limiting for the user-defined  scalar (UDS) calculations on coupled two-sided walls. This limiting can  help prevent divergence when the cells on such walls have poor  orthogonality.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">
@@ -1194,36 +965,6 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.skewness_correction_enhanced">
 <span class="sig-name descname"><span class="pre">skewness_correction_enhanced</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.skewness_correction_enhanced" title="Permalink to this definition">#</a></dt>
 <dd><p>Enable enhanced skewness correction scheme.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.turbomachinery_specific_numerics">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">turbomachinery_specific_numerics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.turbomachinery_specific_numerics" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter turbomachinery specific numerics menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.turbomachinery_specific_numerics.enable" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.turbomachinery_specific_numerics.enable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Activate/deactivate turbomachinery specific numerics.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.turbomachinery_specific_numerics.settings" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.turbomachinery_specific_numerics.settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">settings</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Adjust settings for turbomachinery specific numerics.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.turbomachinery_specific_numerics.enable">
-<span class="sig-name descname"><span class="pre">enable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.turbomachinery_specific_numerics.enable" title="Permalink to this definition">#</a></dt>
-<dd><p>Activate/deactivate turbomachinery specific numerics.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.turbomachinery_specific_numerics.settings">
-<span class="sig-name descname"><span class="pre">settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced.turbomachinery_specific_numerics.settings" title="Permalink to this definition">#</a></dt>
-<dd><p>Adjust settings for turbomachinery specific numerics.</p>
-</dd></dl>
-
 </dd></dl>
 
 </dd></dl>

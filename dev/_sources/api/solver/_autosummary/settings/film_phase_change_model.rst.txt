@@ -5,8 +5,11 @@
 film_phase_change_model
 =======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.film_phase_change_model.film_phase_change_model
+.. currentmodule:: ansys.fluent.core.solver.settings_231.film_phase_change_model
 
+.. autoclass:: film_phase_change_model
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

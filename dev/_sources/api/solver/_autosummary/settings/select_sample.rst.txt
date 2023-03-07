@@ -5,8 +5,11 @@
 select_sample
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.select_sample.select_sample
+.. currentmodule:: ansys.fluent.core.solver.settings_231.select_sample
 
+.. autoclass:: select_sample
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   =====================================

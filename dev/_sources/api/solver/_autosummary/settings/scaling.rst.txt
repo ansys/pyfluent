@@ -5,13 +5,16 @@
 scaling
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.scaling.scaling
+.. currentmodule:: ansys.fluent.core.solver.settings_231.scaling
 
-.. rubric:: Attributes
+.. autoclass:: scaling
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================   ====================================
 
-Attribute                                                                               Summary
+Child                                                                                   Summary
 
 ========================================================   ====================================
 :ref:`option <option_2>`                                                        'option' child.

@@ -5,8 +5,11 @@
 relaxation_factor
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.relaxation_factor_2.relaxation_factor
+.. currentmodule:: ansys.fluent.core.solver.settings_231.relaxation_factor_2
 
+.. autoclass:: relaxation_factor
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   =======================================

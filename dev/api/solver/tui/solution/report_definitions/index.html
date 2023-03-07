@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -294,8 +304,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -569,7 +584,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions">
    <code class="docutils literal notranslate">
     <span class="pre">
-     report_definitions
+     main_menu.solution.report_definitions
     </span>
    </code>
   </a>
@@ -578,7 +593,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.add">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_definitions.add()
+       main_menu.solution.report_definitions.add()
       </span>
      </code>
     </a>
@@ -587,7 +602,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.compute">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_definitions.compute()
+       main_menu.solution.report_definitions.compute()
       </span>
      </code>
     </a>
@@ -596,7 +611,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.copy">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_definitions.copy()
+       main_menu.solution.report_definitions.copy()
       </span>
      </code>
     </a>
@@ -605,7 +620,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_definitions.delete()
+       main_menu.solution.report_definitions.delete()
       </span>
      </code>
     </a>
@@ -614,7 +629,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.delete_all">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_definitions.delete_all()
+       main_menu.solution.report_definitions.delete_all()
       </span>
      </code>
     </a>
@@ -623,7 +638,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.edit">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_definitions.edit()
+       main_menu.solution.report_definitions.edit()
       </span>
      </code>
     </a>
@@ -632,7 +647,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.list">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_definitions.list()
+       main_menu.solution.report_definitions.list()
       </span>
      </code>
     </a>
@@ -641,7 +656,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.list_properties">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_definitions.list_properties()
+       main_menu.solution.report_definitions.list_properties()
       </span>
      </code>
     </a>
@@ -650,7 +665,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.rename">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_definitions.rename()
+       main_menu.solution.report_definitions.rename()
       </span>
      </code>
     </a>
@@ -678,43 +693,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solution-report-definitions">
 <span id="ref-solver-tui-solution-report-definitions"></span><h1>solver.tui.solution.report_definitions<a class="headerlink" href="#solver-tui-solution-report-definitions" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.solution.</span></span><span class="sig-name descname"><span class="pre">report_definitions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Manage report definitions.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.add" title="ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Add a new object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.compute" title="ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.compute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Computes selected report definition.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.copy" title="ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Makes a copy of selected report definition with new name.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.delete" title="ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete an object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.delete_all" title="ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.delete_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_all</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete all report definition objects.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.edit" title="ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.edit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edit</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Edit an object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.list" title="ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List objects.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.list_properties" title="ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.list_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_properties</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List properties of an object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.rename" title="ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.rename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rename</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Rename selected report definition with new name.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solution.</span></span><span class="sig-name descname"><span class="pre">report_definitions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions" title="Permalink to this definition">#</a></dt>
+<dd><p>Manage report definitions.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.add">
 <span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.report_definitions.add" title="Permalink to this definition">#</a></dt>

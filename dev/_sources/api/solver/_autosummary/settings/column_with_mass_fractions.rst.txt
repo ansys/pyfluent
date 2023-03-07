@@ -5,8 +5,11 @@
 column_with_mass_fractions
 ==========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.column_with_mass_fractions.column_with_mass_fractions
+.. currentmodule:: ansys.fluent.core.solver.settings_231.column_with_mass_fractions
 
+.. autoclass:: column_with_mass_fractions
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   ====================================

@@ -5,8 +5,11 @@
 lightweight_setup
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.lightweight_setup.lightweight_setup
+.. currentmodule:: ansys.fluent.core.solver.settings_231.lightweight_setup
 
+.. autoclass:: lightweight_setup
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ================================

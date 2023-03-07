@@ -5,8 +5,11 @@
 list_samples
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.list_samples.list_samples
+.. currentmodule:: ansys.fluent.core.solver.settings_231.list_samples
 
+.. autoclass:: list_samples
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

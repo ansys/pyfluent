@@ -5,8 +5,11 @@
 num_division
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.num_division.num_division
+.. currentmodule:: ansys.fluent.core.solver.settings_231.num_division
 
+.. autoclass:: num_division
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   =====================================================

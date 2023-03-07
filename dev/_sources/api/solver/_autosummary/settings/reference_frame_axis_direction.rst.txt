@@ -5,8 +5,11 @@
 reference_frame_axis_direction
 ==============================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.reference_frame_axis_direction.reference_frame_axis_direction
+.. currentmodule:: ansys.fluent.core.solver.settings_231.reference_frame_axis_direction
 
+.. autoclass:: reference_frame_axis_direction
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`child_object_type_child <child_object_type_child_1>`

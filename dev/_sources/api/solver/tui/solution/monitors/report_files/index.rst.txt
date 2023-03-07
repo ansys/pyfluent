@@ -3,11 +3,11 @@
 solver.tui.solution.monitors.report\_files
 ==========================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.report_files
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.monitors.report_files
+   :members: add, clear_data, delete_all, edit, delete, list, list_properties
 

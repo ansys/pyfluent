@@ -5,8 +5,11 @@
 ablation_flux
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.ablation_flux.ablation_flux
+.. currentmodule:: ansys.fluent.core.solver.settings_231.ablation_flux
 
+.. autoclass:: ablation_flux
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

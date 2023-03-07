@@ -5,13 +5,16 @@
 lic
 ===
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.lic.lic
+.. currentmodule:: ansys.fluent.core.solver.settings_231.lic
 
-.. rubric:: Methods
+.. autoclass:: lic
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ========================================   =============================================
 
-Method                                                                           Summary
+Command                                                                          Summary
 
 ========================================   =============================================
 :ref:`display <display_1>`                                      Display graphics object.

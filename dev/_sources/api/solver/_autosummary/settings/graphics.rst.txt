@@ -5,13 +5,16 @@
 graphics
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.graphics.graphics
+.. currentmodule:: ansys.fluent.core.solver.settings_231.graphics
 
-.. rubric:: Attributes
+.. autoclass:: graphics
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================   =================================================
 
-Attribute                                                                            Summary
+Child                                                                                Summary
 
 ========================================   =================================================
 :ref:`contour <contour>`                                                    'contour' child.

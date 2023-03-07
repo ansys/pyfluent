@@ -5,13 +5,16 @@
 degrees_of_freedom
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.degrees_of_freedom.degrees_of_freedom
+.. currentmodule:: ansys.fluent.core.solver.settings_231.degrees_of_freedom
 
-.. rubric:: Attributes
+.. autoclass:: degrees_of_freedom
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================   ====================================================
 
-Attribute                                                               Summary
+Child                                                                   Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

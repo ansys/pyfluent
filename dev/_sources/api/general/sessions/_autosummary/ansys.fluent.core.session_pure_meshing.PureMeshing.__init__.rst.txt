@@ -1,6 +1,0 @@
-\_\_init\_\_
-============
-
-.. currentmodule:: ansys.fluent.core.session_pure_meshing
-
-.. automethod:: PureMeshing.__init__

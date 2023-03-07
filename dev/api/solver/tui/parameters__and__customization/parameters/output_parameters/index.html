@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -295,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -557,7 +572,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters">
    <code class="docutils literal notranslate">
     <span class="pre">
-     output_parameters
+     main_menu.parameters__and__customization.parameters.output_parameters
     </span>
    </code>
   </a>
@@ -566,7 +581,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.create">
      <code class="docutils literal notranslate">
       <span class="pre">
-       output_parameters.create()
+       main_menu.parameters__and__customization.parameters.output_parameters.create()
       </span>
      </code>
     </a>
@@ -575,7 +590,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
-       output_parameters.delete()
+       main_menu.parameters__and__customization.parameters.output_parameters.delete()
       </span>
      </code>
     </a>
@@ -584,7 +599,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.edit">
      <code class="docutils literal notranslate">
       <span class="pre">
-       output_parameters.edit()
+       main_menu.parameters__and__customization.parameters.output_parameters.edit()
       </span>
      </code>
     </a>
@@ -593,7 +608,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.print_all_to_console">
      <code class="docutils literal notranslate">
       <span class="pre">
-       output_parameters.print_all_to_console()
+       main_menu.parameters__and__customization.parameters.output_parameters.print_all_to_console()
       </span>
      </code>
     </a>
@@ -602,7 +617,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.print_to_console">
      <code class="docutils literal notranslate">
       <span class="pre">
-       output_parameters.print_to_console()
+       main_menu.parameters__and__customization.parameters.output_parameters.print_to_console()
       </span>
      </code>
     </a>
@@ -611,7 +626,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.rename">
      <code class="docutils literal notranslate">
       <span class="pre">
-       output_parameters.rename()
+       main_menu.parameters__and__customization.parameters.output_parameters.rename()
       </span>
      </code>
     </a>
@@ -620,7 +635,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.write_all_to_file">
      <code class="docutils literal notranslate">
       <span class="pre">
-       output_parameters.write_all_to_file()
+       main_menu.parameters__and__customization.parameters.output_parameters.write_all_to_file()
       </span>
      </code>
     </a>
@@ -629,7 +644,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.write_to_file">
      <code class="docutils literal notranslate">
       <span class="pre">
-       output_parameters.write_to_file()
+       main_menu.parameters__and__customization.parameters.output_parameters.write_to_file()
       </span>
      </code>
     </a>
@@ -657,40 +672,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-parameters-and-customization-parameters-output-parameters">
 <span id="ref-solver-tui-parameters-and-customization-parameters-output-parameters"></span><h1>solver.tui.parameters__and__customization.parameters.output_parameters<a class="headerlink" href="#solver-tui-parameters-and-customization-parameters-output-parameters" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.</span></span><span class="sig-name descname"><span class="pre">output_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the output-parameters menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.create" title="ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create an output parameter.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.delete" title="ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete an output parameter.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.edit" title="ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.edit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edit</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Edit an output parameter.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.print_all_to_console" title="ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.print_all_to_console"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_all_to_console</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Print all parameter values to console.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.print_to_console" title="ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.print_to_console"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_to_console</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Print parameter value to console.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.rename" title="ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.rename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rename</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Rename an output parameter.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.write_all_to_file" title="ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.write_all_to_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_all_to_file</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Write all parameter values to file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.write_to_file" title="ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.write_to_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_to_file</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Write parameter value to file.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.parameters__and__customization.parameters.</span></span><span class="sig-name descname"><span class="pre">output_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the output-parameters menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.create">
 <span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parameters__and__customization.parameters.output_parameters.create" title="Permalink to this definition">#</a></dt>

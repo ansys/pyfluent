@@ -5,8 +5,11 @@
 length
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.length.length
+.. currentmodule:: ansys.fluent.core.solver.settings_231.length
 
+.. autoclass:: length
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =============================

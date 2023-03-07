@@ -5,8 +5,11 @@
 flux_type
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.flux_type.flux_type
+.. currentmodule:: ansys.fluent.core.solver.settings_231.flux_type
 
+.. autoclass:: flux_type
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =======================

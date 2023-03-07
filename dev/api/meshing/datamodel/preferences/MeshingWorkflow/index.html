@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -293,8 +303,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -307,11 +322,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../tui/index.html">
      meshing.tui
@@ -458,7 +468,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow">
    <code class="docutils literal notranslate">
     <span class="pre">
-     MeshingWorkflow
+     Root.MeshingWorkflow
     </span>
    </code>
   </a>
@@ -467,54 +477,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.CheckpointingOption">
      <code class="docutils literal notranslate">
       <span class="pre">
-       MeshingWorkflow.CheckpointingOption
+       Root.MeshingWorkflow.CheckpointingOption
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.DrawSettings">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       MeshingWorkflow.DrawSettings
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.DrawSettings.AutoDraw">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         MeshingWorkflow.DrawSettings.AutoDraw
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.DrawSettings.FaceZoneLimit">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         MeshingWorkflow.DrawSettings.FaceZoneLimit
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.DrawSettings.FacetLimit">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         MeshingWorkflow.DrawSettings.FacetLimit
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.SaveCheckpointFiles">
      <code class="docutils literal notranslate">
       <span class="pre">
-       MeshingWorkflow.SaveCheckpointFiles
+       Root.MeshingWorkflow.SaveCheckpointFiles
       </span>
      </code>
     </a>
@@ -523,7 +495,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.TempFolder">
      <code class="docutils literal notranslate">
       <span class="pre">
-       MeshingWorkflow.TempFolder
+       Root.MeshingWorkflow.TempFolder
       </span>
      </code>
     </a>
@@ -532,7 +504,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.TemplatesFolder">
      <code class="docutils literal notranslate">
       <span class="pre">
-       MeshingWorkflow.TemplatesFolder
+       Root.MeshingWorkflow.TemplatesFolder
       </span>
      </code>
     </a>
@@ -541,7 +513,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.Verbosity">
      <code class="docutils literal notranslate">
       <span class="pre">
-       MeshingWorkflow.Verbosity
+       Root.MeshingWorkflow.Verbosity
       </span>
      </code>
     </a>
@@ -569,109 +541,42 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-datamodel-preferences-meshingworkflow">
 <span id="ref-meshing-datamodel-preferences-meshingworkflow"></span><h1>meshing.datamodel.preferences.MeshingWorkflow<a class="headerlink" href="#meshing-datamodel-preferences-meshingworkflow" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.datamodel_231.preferences.Root.</span></span><span class="sig-name descname"><span class="pre">MeshingWorkflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
-<p>Singleton MeshingWorkflow.</p>
-<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.CheckpointingOption" title="ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.CheckpointingOption"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CheckpointingOption</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter CheckpointingOption of value type str.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.DrawSettings" title="ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.DrawSettings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DrawSettings</span></code></a>(service, rules, path)</p></td>
-<td><p>Singleton DrawSettings.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.SaveCheckpointFiles" title="ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.SaveCheckpointFiles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SaveCheckpointFiles</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter SaveCheckpointFiles of value type bool.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.TempFolder" title="ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.TempFolder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TempFolder</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter TempFolder of value type str.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.TemplatesFolder" title="ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.TemplatesFolder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TemplatesFolder</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter TemplatesFolder of value type str.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.Verbosity" title="ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.Verbosity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Verbosity</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Verbosity of value type str.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Root.</span></span><span class="sig-name descname"><span class="pre">MeshingWorkflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow" title="Permalink to this definition">#</a></dt>
+<dd><p>Singleton MeshingWorkflow.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.CheckpointingOption">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CheckpointingOption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.CheckpointingOption" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter CheckpointingOption of value type str.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.DrawSettings">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DrawSettings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.DrawSettings" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
-<p>Singleton DrawSettings.</p>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.DrawSettings.AutoDraw" title="ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.DrawSettings.AutoDraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AutoDraw</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter AutoDraw of value type str.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.DrawSettings.FaceZoneLimit" title="ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.DrawSettings.FaceZoneLimit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FaceZoneLimit</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter FaceZoneLimit of value type int.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.DrawSettings.FacetLimit" title="ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.DrawSettings.FacetLimit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FacetLimit</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter FacetLimit of value type int.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.DrawSettings.AutoDraw">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AutoDraw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.DrawSettings.AutoDraw" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter AutoDraw of value type str.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.DrawSettings.FaceZoneLimit">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FaceZoneLimit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.DrawSettings.FaceZoneLimit" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter FaceZoneLimit of value type int.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.DrawSettings.FacetLimit">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FacetLimit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.DrawSettings.FacetLimit" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter FacetLimit of value type int.</p>
-</dd></dl>
-
+<dd><p>Parameter CheckpointingOption of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.SaveCheckpointFiles">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SaveCheckpointFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.SaveCheckpointFiles" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter SaveCheckpointFiles of value type bool.</p>
+<dd><p>Parameter SaveCheckpointFiles of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.TempFolder">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TempFolder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.TempFolder" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter TempFolder of value type str.</p>
+<dd><p>Parameter TempFolder of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.TemplatesFolder">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TemplatesFolder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.TemplatesFolder" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter TemplatesFolder of value type str.</p>
+<dd><p>Parameter TemplatesFolder of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.Verbosity">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Verbosity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.MeshingWorkflow.Verbosity" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter Verbosity of value type str.</p>
+<dd><p>Parameter Verbosity of value type str.</p>
 </dd></dl>
 
 </dd></dl>

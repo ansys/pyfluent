@@ -5,8 +5,11 @@
 fixes
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fixes.fixes
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fixes
 
+.. autoclass:: fixes
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`child_object_type_child <child_object_type_child_1>`

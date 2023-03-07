@@ -3,11 +3,11 @@
 solver.tui.solve.set.multiphase\_numerics.heat\_mass\_transfer.boiling
 ======================================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.heat_mass_transfer.boiling
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.multiphase_numerics.heat_mass_transfer.boiling
+   :members: heat_flux_relaxation_factor, show_expert_options, two_resistance_boiling_framework
 

@@ -5,8 +5,11 @@
 tip_radius
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.tip_radius.tip_radius
+.. currentmodule:: ansys.fluent.core.solver.settings_231.tip_radius
 
+.. autoclass:: tip_radius
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   ================================================

@@ -5,8 +5,11 @@
 hessian
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.hessian.hessian
+.. currentmodule:: ansys.fluent.core.solver.settings_231.hessian
 
+.. autoclass:: hessian
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =======================

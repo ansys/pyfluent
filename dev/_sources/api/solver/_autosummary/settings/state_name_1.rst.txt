@@ -5,8 +5,11 @@
 state_name
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.state_name_1.state_name
+.. currentmodule:: ansys.fluent.core.solver.settings_231.state_name_1
 
+.. autoclass:: state_name
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================================

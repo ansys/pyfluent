@@ -5,8 +5,11 @@
 dt_factor_max
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.dt_factor_max.dt_factor_max
+.. currentmodule:: ansys.fluent.core.solver.settings_231.dt_factor_max
 
+.. autoclass:: dt_factor_max
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   =======================================================================

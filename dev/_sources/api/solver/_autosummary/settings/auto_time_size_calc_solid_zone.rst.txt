@@ -5,8 +5,11 @@
 auto_time_size_calc_solid_zone
 ==============================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.auto_time_size_calc_solid_zone.auto_time_size_calc_solid_zone
+.. currentmodule:: ansys.fluent.core.solver.settings_231.auto_time_size_calc_solid_zone
 
+.. autoclass:: auto_time_size_calc_solid_zone
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =============================

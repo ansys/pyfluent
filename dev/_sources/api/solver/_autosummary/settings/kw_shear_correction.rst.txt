@@ -5,8 +5,11 @@
 kw_shear_correction
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.kw_shear_correction.kw_shear_correction
+.. currentmodule:: ansys.fluent.core.solver.settings_231.kw_shear_correction
 
+.. autoclass:: kw_shear_correction
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

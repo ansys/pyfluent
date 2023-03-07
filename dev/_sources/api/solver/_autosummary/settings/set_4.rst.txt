@@ -5,13 +5,16 @@
 set
 ===
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.set_4.set
+.. currentmodule:: ansys.fluent.core.solver.settings_231.set_4
 
-.. rubric:: Attributes
+.. autoclass:: set
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================================   ===============================
 
-Attribute                                                        Summary
+Child                                                            Summary
 
 ======================================   ===============================
 :ref:`partition_mask <partition_mask>`               Set partition mask.

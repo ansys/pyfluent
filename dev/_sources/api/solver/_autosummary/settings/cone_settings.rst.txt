@@ -5,13 +5,16 @@
 cone_settings
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.cone_settings.cone_settings
+.. currentmodule:: ansys.fluent.core.solver.settings_231.cone_settings
 
-.. rubric:: Attributes
+.. autoclass:: cone_settings
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==========================================   =============================
 
-Attribute                                                          Summary
+Child                                                              Summary
 
 ==========================================   =============================
 :ref:`half_angle <half_angle>`                         'half_angle' child.

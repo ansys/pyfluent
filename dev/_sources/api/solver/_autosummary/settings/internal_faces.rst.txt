@@ -5,8 +5,11 @@
 internal_faces
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.internal_faces.internal_faces
+.. currentmodule:: ansys.fluent.core.solver.settings_231.internal_faces
 
+.. autoclass:: internal_faces
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

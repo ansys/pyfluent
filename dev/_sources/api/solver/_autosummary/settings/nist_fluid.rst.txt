@@ -5,8 +5,11 @@
 nist_fluid
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.nist_fluid.nist_fluid
+.. currentmodule:: ansys.fluent.core.solver.settings_231.nist_fluid
 
+.. autoclass:: nist_fluid
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

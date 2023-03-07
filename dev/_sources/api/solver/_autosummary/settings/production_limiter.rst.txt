@@ -5,13 +5,16 @@
 production_limiter
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.production_limiter.production_limiter
+.. currentmodule:: ansys.fluent.core.solver.settings_231.production_limiter
 
-.. rubric:: Attributes
+.. autoclass:: production_limiter
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================================   =============================================
 
-Attribute                                                                                Summary
+Child                                                                                    Summary
 
 ================================================   =============================================
 :ref:`enable_prod_limiter <enable_prod_limiter>`          Enable/disable the Production Limiter.

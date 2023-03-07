@@ -5,8 +5,11 @@
 reaction_mechs
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.reaction_mechs_1.reaction_mechs
+.. currentmodule:: ansys.fluent.core.solver.settings_231.reaction_mechs_1
 
+.. autoclass:: reaction_mechs
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

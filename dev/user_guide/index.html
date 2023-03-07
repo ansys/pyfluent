@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../api/index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -333,6 +343,16 @@ function checkPageExistsAndRedirect(event) {
    Apply solution settings
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="case_reader.html">
+   Use case reader
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="data_transfer.html">
+   Transfer data
+  </a>
+ </li>
 </ul>
 
   </div>
@@ -467,7 +487,7 @@ Python code to control and monitor Ansys Fluent.</p>
 </div>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
-<p>You use the <a class="reference internal" href="../api/general/launcher/_autosummary/ansys.fluent.core.launcher.launcher.launch_fluent.html#ansys.fluent.core.launcher.launcher.launch_fluent" title="ansys.fluent.core.launcher.launcher.launch_fluent"><code class="xref py py-func docutils literal notranslate"><span class="pre">launch_fluent()</span></code></a> method
+<p>You use the <code class="xref py py-func docutils literal notranslate"><span class="pre">launch_fluent()</span></code> method
 to launch an instance of Fluent that runs as a server in the background.</p>
 <p>You can launch Fluent in solution mode with this code:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ansys.fluent.core</span> <span class="kn">import</span> <span class="n">launch_fluent</span>
@@ -482,7 +502,7 @@ to launch an instance of Fluent that runs as a server in the background.</p>
 </pre></div>
 </div>
 <p>For more information, see <a class="reference internal" href="launching_ansys_fluent.html#ref-user-guide-launch"><span class="std std-ref">Launch Fluent locally</span></a>
-and <span class="xref std std-ref">ref_launcher_launcher</span>.</p>
+and <a class="reference internal" href="../api/launcher.html#ref-launcher-launcher"><span class="std std-ref">Launching Fluent</span></a>.</p>
 <p>You can use PyFluent to create and initialize multiple, independent session
 objects. Each session object provides full access to the Fluent components
 relevant to the session’s current mode (solution or meshing).</p>

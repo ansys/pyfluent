@@ -5,13 +5,16 @@
 report
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.report_1.report
+.. currentmodule:: ansys.fluent.core.solver.settings_231.report_1
 
-.. rubric:: Attributes
+.. autoclass:: report
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==========================================================   =====================================
 
-Attribute                                                                                  Summary
+Child                                                                                      Summary
 
 ==========================================================   =====================================
 :ref:`simulation_reports <simulation_reports>`                         'simulation_reports' child.
@@ -34,11 +37,11 @@ Attribute                                                                       
 
 ==========================================================   =====================================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ==========================================================   =========================================================================
 
-Method                                                                                                                         Summary
+Command                                                                                                                        Summary
 
 ==========================================================   =========================================================================
 :ref:`aero_optical_distortions <aero_optical_distortions>`                                                         Optics report menu.

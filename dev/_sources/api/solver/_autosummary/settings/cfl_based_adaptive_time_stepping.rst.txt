@@ -5,13 +5,16 @@
 cfl_based_adaptive_time_stepping
 ================================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.cfl_based_adaptive_time_stepping.cfl_based_adaptive_time_stepping
+.. currentmodule:: ansys.fluent.core.solver.settings_231.cfl_based_adaptive_time_stepping
 
-.. rubric:: Attributes
+.. autoclass:: cfl_based_adaptive_time_stepping
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================================================================   =======================================
 
-Attribute                                                                                                Summary
+Child                                                                                                    Summary
 
 ======================================================================   =======================================
 :ref:`enalbled <enalbled>`                                                                     'enalbled' child.

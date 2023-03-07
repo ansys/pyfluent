@@ -5,8 +5,11 @@
 flux
 ====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.flux_1.flux
+.. currentmodule:: ansys.fluent.core.solver.settings_231.flux_1
 
+.. autoclass:: flux
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`flux_child <flux_child>`

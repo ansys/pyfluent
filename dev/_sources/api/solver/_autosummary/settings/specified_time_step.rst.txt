@@ -5,8 +5,11 @@
 specified_time_step
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.specified_time_step.specified_time_step
+.. currentmodule:: ansys.fluent.core.solver.settings_231.specified_time_step
 
+.. autoclass:: specified_time_step
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===============================

@@ -5,8 +5,11 @@
 z_displacement_type
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.z_displacement_type.z_displacement_type
+.. currentmodule:: ansys.fluent.core.solver.settings_231.z_displacement_type
 
+.. autoclass:: z_displacement_type
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

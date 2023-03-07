@@ -3,11 +3,11 @@
 solver.tui.setup.models.electrolysis.cathode\_setup
 ===================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.electrolysis.cathode_setup
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.electrolysis.cathode_setup
+   :members: current_collector, flow_channel, porous_layer, catalyst_layer, electrolyte
 

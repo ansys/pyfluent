@@ -5,8 +5,11 @@
 lwf_reset
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.lwf_reset.lwf_reset
+.. currentmodule:: ansys.fluent.core.solver.settings_231.lwf_reset
 
+.. autoclass:: lwf_reset
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ===========================

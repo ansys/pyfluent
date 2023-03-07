@@ -5,8 +5,11 @@
 law_1
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.law_1.law_1
+.. currentmodule:: ansys.fluent.core.solver.settings_231.law_1
 
+.. autoclass:: law_1
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   ========================

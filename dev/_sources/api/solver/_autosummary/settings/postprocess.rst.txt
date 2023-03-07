@@ -5,8 +5,11 @@
 postprocess
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.postprocess.postprocess
+.. currentmodule:: ansys.fluent.core.solver.settings_231.postprocess
 
+.. autoclass:: postprocess
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ================================

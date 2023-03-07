@@ -5,8 +5,11 @@
 target
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.target.target
+.. currentmodule:: ansys.fluent.core.solver.settings_231.target
 
+.. autoclass:: target
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ================   ================

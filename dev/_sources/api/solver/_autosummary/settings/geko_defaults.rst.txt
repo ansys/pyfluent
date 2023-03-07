@@ -5,8 +5,11 @@
 geko_defaults
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.geko_defaults.geko_defaults
+.. currentmodule:: ansys.fluent.core.solver.settings_231.geko_defaults
 
+.. autoclass:: geko_defaults
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =========================

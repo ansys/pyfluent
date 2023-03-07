@@ -5,8 +5,11 @@
 wave_spect_freq_components
 ==========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.wave_spect_freq_components.wave_spect_freq_components
+.. currentmodule:: ansys.fluent.core.solver.settings_231.wave_spect_freq_components
 
+.. autoclass:: wave_spect_freq_components
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

@@ -5,8 +5,11 @@
 per_zone
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.per_zone.per_zone
+.. currentmodule:: ansys.fluent.core.solver.settings_231.per_zone
 
+.. autoclass:: per_zone
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================

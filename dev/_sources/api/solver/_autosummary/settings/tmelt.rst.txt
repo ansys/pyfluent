@@ -5,13 +5,16 @@
 tmelt
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.tmelt.tmelt
+.. currentmodule:: ansys.fluent.core.solver.settings_231.tmelt
 
-.. rubric:: Attributes
+.. autoclass:: tmelt
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   ====================================================
 
-Attribute                                                                                           Summary
+Child                                                                                               Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

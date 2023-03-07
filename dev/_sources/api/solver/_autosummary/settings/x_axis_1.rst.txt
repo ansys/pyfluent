@@ -5,13 +5,16 @@
 x_axis
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.x_axis_1.x_axis
+.. currentmodule:: ansys.fluent.core.solver.settings_231.x_axis_1
 
-.. rubric:: Attributes
+.. autoclass:: x_axis
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   ==================================
 
-Attribute                                                                         Summary
+Child                                                                             Summary
 
 ====================================================   ==================================
 :ref:`draw_major_rules <draw_major_rules>`                      'draw_major_rules' child.

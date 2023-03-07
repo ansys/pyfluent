@@ -5,8 +5,11 @@
 sample_point
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.sample_point.sample_point
+.. currentmodule:: ansys.fluent.core.solver.settings_231.sample_point
 
+.. autoclass:: sample_point
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================

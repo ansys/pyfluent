@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -297,8 +307,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -778,7 +793,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.wave_equation_options.remote_receivers_options">
    <code class="docutils literal notranslate">
     <span class="pre">
-     remote_receivers_options
+     main_menu.define.models.acoustics.wave_equation_options.remote_receivers_options
     </span>
    </code>
   </a>
@@ -787,7 +802,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.wave_equation_options.remote_receivers_options.integration_surface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       remote_receivers_options.integration_surface()
+       main_menu.define.models.acoustics.wave_equation_options.remote_receivers_options.integration_surface()
       </span>
      </code>
     </a>
@@ -796,7 +811,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.wave_equation_options.remote_receivers_options.write_signals">
      <code class="docutils literal notranslate">
       <span class="pre">
-       remote_receivers_options.write_signals()
+       main_menu.define.models.acoustics.wave_equation_options.remote_receivers_options.write_signals()
       </span>
      </code>
     </a>
@@ -824,22 +839,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-define-models-acoustics-wave-equation-options-remote-receivers-options">
 <span id="ref-solver-tui-define-models-acoustics-wave-equation-options-remote-receivers-options"></span><h1>solver.tui.define.models.acoustics.wave_equation_options.remote_receivers_options<a class="headerlink" href="#solver-tui-define-models-acoustics-wave-equation-options-remote-receivers-options" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.wave_equation_options.remote_receivers_options">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.wave_equation_options.</span></span><span class="sig-name descname"><span class="pre">remote_receivers_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.wave_equation_options.remote_receivers_options" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the menu to define remote receivers for the Kirchhoff integral model.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.wave_equation_options.remote_receivers_options.integration_surface" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.wave_equation_options.remote_receivers_options.integration_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">integration_surface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Selects the integration surface for the Kirchhoff model.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.wave_equation_options.remote_receivers_options.write_signals" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.wave_equation_options.remote_receivers_options.write_signals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_signals</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Writes the computed receiver signals to the ASCII files.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.wave_equation_options.remote_receivers_options">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.models.acoustics.wave_equation_options.</span></span><span class="sig-name descname"><span class="pre">remote_receivers_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.wave_equation_options.remote_receivers_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the menu to define remote receivers for the Kirchhoff integral model.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.wave_equation_options.remote_receivers_options.integration_surface">
 <span class="sig-name descname"><span class="pre">integration_surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.wave_equation_options.remote_receivers_options.integration_surface" title="Permalink to this definition">#</a></dt>

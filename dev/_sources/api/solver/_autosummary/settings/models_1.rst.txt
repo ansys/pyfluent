@@ -5,13 +5,16 @@
 models
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.models_1.models
+.. currentmodule:: ansys.fluent.core.solver.settings_231.models_1
 
-.. rubric:: Attributes
+.. autoclass:: models
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================================   ==============================================================================================================================================================================================================
 
-Attribute                                                                                                                                                                                                                                                 Summary
+Child                                                                                                                                                                                                                                                     Summary
 
 ================================================   ==============================================================================================================================================================================================================
 :ref:`discrete_phase <discrete_phase>`                 Toplevel menu of the Discrete Phase multiphase model. A discrete phase model (DPM) is used when the aim is to investigate the behavior of the particles from a Lagrangian view and a discrete perspective.

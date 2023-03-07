@@ -5,8 +5,11 @@
 subgrid_scale_model
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.subgrid_scale_model.subgrid_scale_model
+.. currentmodule:: ansys.fluent.core.solver.settings_231.subgrid_scale_model
 
+.. autoclass:: subgrid_scale_model
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ====================

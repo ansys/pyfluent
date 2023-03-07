@@ -5,8 +5,11 @@
 non_condensable_gas
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.non_condensable_gas.non_condensable_gas
+.. currentmodule:: ansys.fluent.core.solver.settings_231.non_condensable_gas
 
+.. autoclass:: non_condensable_gas
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =======================

@@ -5,8 +5,11 @@
 ramp_turbulence
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.ramp_turbulence.ramp_turbulence
+.. currentmodule:: ansys.fluent.core.solver.settings_231.ramp_turbulence
 
+.. autoclass:: ramp_turbulence
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ===================

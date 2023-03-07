@@ -5,13 +5,16 @@
 viscous
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.viscous.viscous
+.. currentmodule:: ansys.fluent.core.solver.settings_231.viscous
 
-.. rubric:: Attributes
+.. autoclass:: viscous
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================================================   ==========================================================================
 
-Attribute                                                                                                                             Summary
+Child                                                                                                                                 Summary
 
 ================================================================   ==========================================================================
 :ref:`model <model>`                                                                                                           'model' child.

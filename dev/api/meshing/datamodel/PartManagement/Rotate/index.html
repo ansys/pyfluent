@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -293,8 +303,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -307,11 +322,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../tui/index.html">
      meshing.tui
@@ -476,7 +486,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate">
    <code class="docutils literal notranslate">
     <span class="pre">
-     _Rotate
+     Root.Rotate._Rotate
     </span>
    </code>
   </a>
@@ -485,7 +495,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Add">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Rotate.Add
+       Root.Rotate._Rotate.Add
       </span>
      </code>
     </a>
@@ -494,7 +504,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Applied">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Rotate.Applied
+       Root.Rotate._Rotate.Applied
       </span>
      </code>
     </a>
@@ -503,7 +513,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Apply">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Rotate.Apply
+       Root.Rotate._Rotate.Apply
       </span>
      </code>
     </a>
@@ -512,7 +522,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Children">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Rotate.Children
+       Root.Rotate._Rotate.Children
       </span>
      </code>
     </a>
@@ -521,7 +531,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Context">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Rotate.Context
+       Root.Rotate._Rotate.Context
       </span>
      </code>
     </a>
@@ -530,7 +540,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Global">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Rotate.Global
+       Root.Rotate._Rotate.Global
       </span>
      </code>
     </a>
@@ -539,7 +549,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Name">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Rotate.Name
+       Root.Rotate._Rotate.Name
       </span>
      </code>
     </a>
@@ -548,7 +558,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Remove">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Rotate.Remove
+       Root.Rotate._Rotate.Remove
       </span>
      </code>
     </a>
@@ -557,7 +567,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Rename">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Rotate.Rename
+       Root.Rotate._Rotate.Rename
       </span>
      </code>
     </a>
@@ -566,7 +576,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.RotateX">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Rotate.RotateX
+       Root.Rotate._Rotate.RotateX
       </span>
      </code>
     </a>
@@ -575,7 +585,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.RotateY">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Rotate.RotateY
+       Root.Rotate._Rotate.RotateY
       </span>
      </code>
     </a>
@@ -584,7 +594,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.RotateZ">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Rotate.RotateZ
+       Root.Rotate._Rotate.RotateZ
       </span>
      </code>
     </a>
@@ -593,7 +603,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Type">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Rotate.Type
+       Root.Rotate._Rotate.Type
       </span>
      </code>
     </a>
@@ -602,7 +612,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Undo">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Rotate.Undo
+       Root.Rotate._Rotate.Undo
       </span>
      </code>
     </a>
@@ -611,7 +621,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Update">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Rotate.Update
+       Root.Rotate._Rotate.Update
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate._name_">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Root.Rotate._Rotate._name_
       </span>
      </code>
     </a>
@@ -639,66 +658,18 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-datamodel-partmanagement-rotate">
 <span id="ref-meshing-datamodel-partmanagement-rotate"></span><h1>meshing.datamodel.PartManagement.Rotate<a class="headerlink" href="#meshing-datamodel-partmanagement-rotate" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate.</span></span><span class="sig-name descname"><span class="pre">_Rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
-<p>Singleton _Rotate.</p>
-<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Add" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Add</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Add.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Applied" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Applied"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Applied</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Applied of value type bool.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Apply" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Apply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Apply</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Apply.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Children" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Children</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Children of value type List[str].</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Context" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Context</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Context of value type int.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Global" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Global"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Global</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Global of value type str.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Name" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Name</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Name of value type str.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Remove" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Remove</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Remove.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Rename" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Rename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Rename</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Rename.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.RotateX" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.RotateX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateX</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter RotateX of value type float.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.RotateY" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.RotateY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateY</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter RotateY of value type float.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.RotateZ" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.RotateZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateZ</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter RotateZ of value type float.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Type" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Type</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Type of value type str.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Undo" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Undo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Undo</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Undo.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Update" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Update</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Update.</p></td>
-</tr>
 </tbody>
 </table>
 <dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Root.Rotate.</span></span><span class="sig-name descname"><span class="pre">_Rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate" title="Permalink to this definition">#</a></dt>
+<dd><p>Singleton _Rotate.</p>
+<dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Add">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Add" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Add.</p>
+<dd><p>Command Add.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -716,15 +687,13 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Applied">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Applied</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Applied" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter Applied of value type bool.</p>
+<dd><p>Parameter Applied of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Apply">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Apply" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Apply.</p>
+<dd><p>Command Apply.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -737,36 +706,31 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Children">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Children" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter Children of value type List[str].</p>
+<dd><p>Parameter Children of value type List[str].</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Context">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Context</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Context" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter Context of value type int.</p>
+<dd><p>Parameter Context of value type int.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Global">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Global</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Global" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter Global of value type str.</p>
+<dd><p>Parameter Global of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Name">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Name" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter Name of value type str.</p>
+<dd><p>Parameter Name of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Remove">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Remove" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Remove.</p>
+<dd><p>Command Remove.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -784,8 +748,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Rename">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Rename" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Rename.</p>
+<dd><p>Command Rename.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -803,36 +766,31 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.RotateX">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RotateX</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.RotateX" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter RotateX of value type float.</p>
+<dd><p>Parameter RotateX of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.RotateY">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RotateY</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.RotateY" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter RotateY of value type float.</p>
+<dd><p>Parameter RotateY of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.RotateZ">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RotateZ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.RotateZ" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter RotateZ of value type float.</p>
+<dd><p>Parameter RotateZ of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Type">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Type" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter Type of value type str.</p>
+<dd><p>Parameter Type of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Undo">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Undo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Undo" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Undo.</p>
+<dd><p>Command Undo.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -845,8 +803,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Update">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate.Update" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Update.</p>
+<dd><p>Command Update.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -854,6 +811,12 @@ function checkPageExistsAndRedirect(event) {
 </dl>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate._name_">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_name_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Rotate._Rotate._name_" title="Permalink to this definition">#</a></dt>
+<dd><p>Parameter _name_ of value type str.</p>
 </dd></dl>
 
 </dd></dl>

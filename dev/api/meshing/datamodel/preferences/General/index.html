@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -293,8 +303,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -307,11 +322,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../tui/index.html">
      meshing.tui
@@ -446,7 +456,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.General">
    <code class="docutils literal notranslate">
     <span class="pre">
-     General
+     Root.General
     </span>
    </code>
   </a>
@@ -455,7 +465,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.AdvancedPartition">
      <code class="docutils literal notranslate">
       <span class="pre">
-       General.AdvancedPartition
+       Root.General.AdvancedPartition
       </span>
      </code>
     </a>
@@ -464,7 +474,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.AutomaticTranscript">
      <code class="docutils literal notranslate">
       <span class="pre">
-       General.AutomaticTranscript
+       Root.General.AutomaticTranscript
       </span>
      </code>
     </a>
@@ -473,7 +483,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.DefaultIOFormat">
      <code class="docutils literal notranslate">
       <span class="pre">
-       General.DefaultIOFormat
+       Root.General.DefaultIOFormat
       </span>
      </code>
     </a>
@@ -482,7 +492,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.DockEditor">
      <code class="docutils literal notranslate">
       <span class="pre">
-       General.DockEditor
+       Root.General.DockEditor
       </span>
      </code>
     </a>
@@ -491,7 +501,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.EnableParametricStudy">
      <code class="docutils literal notranslate">
       <span class="pre">
-       General.EnableParametricStudy
+       Root.General.EnableParametricStudy
       </span>
      </code>
     </a>
@@ -500,7 +510,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.FlowModel">
      <code class="docutils literal notranslate">
       <span class="pre">
-       General.FlowModel
+       Root.General.FlowModel
       </span>
      </code>
     </a>
@@ -509,7 +519,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.IdleTimeout">
      <code class="docutils literal notranslate">
       <span class="pre">
-       General.IdleTimeout
+       Root.General.IdleTimeout
       </span>
      </code>
     </a>
@@ -518,7 +528,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.InitialPhysicsVolumeDefinitions">
      <code class="docutils literal notranslate">
       <span class="pre">
-       General.InitialPhysicsVolumeDefinitions
+       Root.General.InitialPhysicsVolumeDefinitions
       </span>
      </code>
     </a>
@@ -527,7 +537,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.KeyBehavioralChangesMessage">
      <code class="docutils literal notranslate">
       <span class="pre">
-       General.KeyBehavioralChangesMessage
+       Root.General.KeyBehavioralChangesMessage
       </span>
      </code>
     </a>
@@ -536,7 +546,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.LaplaceAutoPartitionDefault">
      <code class="docutils literal notranslate">
       <span class="pre">
-       General.LaplaceAutoPartitionDefault
+       Root.General.LaplaceAutoPartitionDefault
       </span>
      </code>
     </a>
@@ -545,7 +555,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.QAServiceMessage">
      <code class="docutils literal notranslate">
       <span class="pre">
-       General.QAServiceMessage
+       Root.General.QAServiceMessage
       </span>
      </code>
     </a>
@@ -554,7 +564,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.UTLCreatePhysicsOnModeChange">
      <code class="docutils literal notranslate">
       <span class="pre">
-       General.UTLCreatePhysicsOnModeChange
+       Root.General.UTLCreatePhysicsOnModeChange
       </span>
      </code>
     </a>
@@ -563,7 +573,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.UTLMode">
      <code class="docutils literal notranslate">
       <span class="pre">
-       General.UTLMode
+       Root.General.UTLMode
       </span>
      </code>
     </a>
@@ -591,144 +601,90 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-datamodel-preferences-general">
 <span id="ref-meshing-datamodel-preferences-general"></span><h1>meshing.datamodel.preferences.General<a class="headerlink" href="#meshing-datamodel-preferences-general" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.General">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.datamodel_231.preferences.Root.</span></span><span class="sig-name descname"><span class="pre">General</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.General" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
-<p>Singleton General.</p>
-<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.General.AdvancedPartition" title="ansys.fluent.core.datamodel_231.preferences.Root.General.AdvancedPartition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AdvancedPartition</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter AdvancedPartition of value type bool.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.General.AutomaticTranscript" title="ansys.fluent.core.datamodel_231.preferences.Root.General.AutomaticTranscript"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AutomaticTranscript</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter AutomaticTranscript of value type bool.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.General.DefaultIOFormat" title="ansys.fluent.core.datamodel_231.preferences.Root.General.DefaultIOFormat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DefaultIOFormat</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter DefaultIOFormat of value type str.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.General.DockEditor" title="ansys.fluent.core.datamodel_231.preferences.Root.General.DockEditor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DockEditor</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter DockEditor of value type bool.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.General.EnableParametricStudy" title="ansys.fluent.core.datamodel_231.preferences.Root.General.EnableParametricStudy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EnableParametricStudy</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter EnableParametricStudy of value type bool.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.General.FlowModel" title="ansys.fluent.core.datamodel_231.preferences.Root.General.FlowModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FlowModel</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter FlowModel of value type str.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.General.IdleTimeout" title="ansys.fluent.core.datamodel_231.preferences.Root.General.IdleTimeout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IdleTimeout</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter IdleTimeout of value type int.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.General.InitialPhysicsVolumeDefinitions" title="ansys.fluent.core.datamodel_231.preferences.Root.General.InitialPhysicsVolumeDefinitions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InitialPhysicsVolumeDefinitions</span></code></a>(service, rules)</p></td>
-<td><p>Parameter InitialPhysicsVolumeDefinitions of value type str.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.General.KeyBehavioralChangesMessage" title="ansys.fluent.core.datamodel_231.preferences.Root.General.KeyBehavioralChangesMessage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KeyBehavioralChangesMessage</span></code></a>(service, rules)</p></td>
-<td><p>Parameter KeyBehavioralChangesMessage of value type bool.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.General.LaplaceAutoPartitionDefault" title="ansys.fluent.core.datamodel_231.preferences.Root.General.LaplaceAutoPartitionDefault"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LaplaceAutoPartitionDefault</span></code></a>(service, rules)</p></td>
-<td><p>Parameter LaplaceAutoPartitionDefault of value type bool.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.General.QAServiceMessage" title="ansys.fluent.core.datamodel_231.preferences.Root.General.QAServiceMessage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">QAServiceMessage</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter QAServiceMessage of value type bool.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.General.UTLCreatePhysicsOnModeChange" title="ansys.fluent.core.datamodel_231.preferences.Root.General.UTLCreatePhysicsOnModeChange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UTLCreatePhysicsOnModeChange</span></code></a>(service, rules)</p></td>
-<td><p>Parameter UTLCreatePhysicsOnModeChange of value type bool.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.preferences.Root.General.UTLMode" title="ansys.fluent.core.datamodel_231.preferences.Root.General.UTLMode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UTLMode</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter UTLMode of value type bool.</p></td>
-</tr>
 </tbody>
 </table>
 <dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.General">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Root.</span></span><span class="sig-name descname"><span class="pre">General</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.General" title="Permalink to this definition">#</a></dt>
+<dd><p>Singleton General.</p>
+<dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.General.AdvancedPartition">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AdvancedPartition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.AdvancedPartition" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter AdvancedPartition of value type bool.</p>
+<dd><p>Parameter AdvancedPartition of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.General.AutomaticTranscript">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AutomaticTranscript</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.AutomaticTranscript" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter AutomaticTranscript of value type bool.</p>
+<dd><p>Parameter AutomaticTranscript of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.General.DefaultIOFormat">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DefaultIOFormat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.DefaultIOFormat" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter DefaultIOFormat of value type str.</p>
+<dd><p>Parameter DefaultIOFormat of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.General.DockEditor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DockEditor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.DockEditor" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter DockEditor of value type bool.</p>
+<dd><p>Parameter DockEditor of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.General.EnableParametricStudy">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EnableParametricStudy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.EnableParametricStudy" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter EnableParametricStudy of value type bool.</p>
+<dd><p>Parameter EnableParametricStudy of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.General.FlowModel">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FlowModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.FlowModel" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter FlowModel of value type str.</p>
+<dd><p>Parameter FlowModel of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.General.IdleTimeout">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">IdleTimeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.IdleTimeout" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter IdleTimeout of value type int.</p>
+<dd><p>Parameter IdleTimeout of value type int.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.General.InitialPhysicsVolumeDefinitions">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InitialPhysicsVolumeDefinitions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.InitialPhysicsVolumeDefinitions" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter InitialPhysicsVolumeDefinitions of value type str.</p>
+<dd><p>Parameter InitialPhysicsVolumeDefinitions of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.General.KeyBehavioralChangesMessage">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">KeyBehavioralChangesMessage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.KeyBehavioralChangesMessage" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter KeyBehavioralChangesMessage of value type bool.</p>
+<dd><p>Parameter KeyBehavioralChangesMessage of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.General.LaplaceAutoPartitionDefault">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LaplaceAutoPartitionDefault</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.LaplaceAutoPartitionDefault" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter LaplaceAutoPartitionDefault of value type bool.</p>
+<dd><p>Parameter LaplaceAutoPartitionDefault of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.General.QAServiceMessage">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">QAServiceMessage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.QAServiceMessage" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter QAServiceMessage of value type bool.</p>
+<dd><p>Parameter QAServiceMessage of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.General.UTLCreatePhysicsOnModeChange">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">UTLCreatePhysicsOnModeChange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.UTLCreatePhysicsOnModeChange" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter UTLCreatePhysicsOnModeChange of value type bool.</p>
+<dd><p>Parameter UTLCreatePhysicsOnModeChange of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.General.UTLMode">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">UTLMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.General.UTLMode" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter UTLMode of value type bool.</p>
+<dd><p>Parameter UTLMode of value type bool.</p>
 </dd></dl>
 
 </dd></dl>

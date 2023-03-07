@@ -5,8 +5,11 @@
 mixing_plane_thread
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.mixing_plane_thread.mixing_plane_thread
+.. currentmodule:: ansys.fluent.core.solver.settings_231.mixing_plane_thread
 
+.. autoclass:: mixing_plane_thread
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

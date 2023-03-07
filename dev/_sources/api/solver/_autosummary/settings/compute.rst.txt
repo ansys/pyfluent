@@ -5,8 +5,11 @@
 compute
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.compute.compute
+.. currentmodule:: ansys.fluent.core.solver.settings_231.compute
 
+.. autoclass:: compute
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ======================================   ===========================

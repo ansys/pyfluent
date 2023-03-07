@@ -5,13 +5,16 @@
 type
 ====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.type_2.type
+.. currentmodule:: ansys.fluent.core.solver.settings_231.type_2
 
-.. rubric:: Attributes
+.. autoclass:: type
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================   ========================
 
-Attribute                                           Summary
+Child                                               Summary
 
 ================================   ========================
 :ref:`option <option_2>`                    'option' child.

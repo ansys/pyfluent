@@ -5,8 +5,11 @@
 min_lam_tke
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.min_lam_tke.min_lam_tke
+.. currentmodule:: ansys.fluent.core.solver.settings_231.min_lam_tke
 
+.. autoclass:: min_lam_tke
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

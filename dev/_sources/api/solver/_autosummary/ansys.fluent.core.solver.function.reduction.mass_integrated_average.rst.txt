@@ -1,6 +1,0 @@
-mass\_integrated\_average
-=========================
-
-.. currentmodule:: ansys.fluent.core.solver.function.reduction
-
-.. autofunction:: mass_integrated_average

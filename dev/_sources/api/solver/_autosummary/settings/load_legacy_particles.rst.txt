@@ -5,8 +5,11 @@
 load_legacy_particles
 =====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.load_legacy_particles.load_legacy_particles
+.. currentmodule:: ansys.fluent.core.solver.settings_231.load_legacy_particles
 
+.. autoclass:: load_legacy_particles
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================================================================================================

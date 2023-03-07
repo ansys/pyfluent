@@ -5,8 +5,11 @@
 surf_tens_grad
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.surf_tens_grad.surf_tens_grad
+.. currentmodule:: ansys.fluent.core.solver.settings_231.surf_tens_grad
 
+.. autoclass:: surf_tens_grad
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

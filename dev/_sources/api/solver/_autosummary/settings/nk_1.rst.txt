@@ -5,13 +5,16 @@
 nk
 ==
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.nk_1.nk
+.. currentmodule:: ansys.fluent.core.solver.settings_231.nk_1
 
-.. rubric:: Attributes
+.. autoclass:: nk
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

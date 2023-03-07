@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -296,8 +306,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -715,7 +730,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.implicit_update_parameters">
    <code class="docutils literal notranslate">
     <span class="pre">
-     implicit_update_parameters
+     main_menu.define.dynamic_mesh.controls.implicit_update_parameters
     </span>
    </code>
   </a>
@@ -724,7 +739,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.implicit_update_parameters.motion_relaxation">
      <code class="docutils literal notranslate">
       <span class="pre">
-       implicit_update_parameters.motion_relaxation()
+       main_menu.define.dynamic_mesh.controls.implicit_update_parameters.motion_relaxation()
       </span>
      </code>
     </a>
@@ -733,7 +748,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.implicit_update_parameters.residual_criteria">
      <code class="docutils literal notranslate">
       <span class="pre">
-       implicit_update_parameters.residual_criteria()
+       main_menu.define.dynamic_mesh.controls.implicit_update_parameters.residual_criteria()
       </span>
      </code>
     </a>
@@ -742,7 +757,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.implicit_update_parameters.update_interval">
      <code class="docutils literal notranslate">
       <span class="pre">
-       implicit_update_parameters.update_interval()
+       main_menu.define.dynamic_mesh.controls.implicit_update_parameters.update_interval()
       </span>
      </code>
     </a>
@@ -770,25 +785,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-define-dynamic-mesh-controls-implicit-update-parameters">
 <span id="ref-solver-tui-define-dynamic-mesh-controls-implicit-update-parameters"></span><h1>solver.tui.define.dynamic_mesh.controls.implicit_update_parameters<a class="headerlink" href="#solver-tui-define-dynamic-mesh-controls-implicit-update-parameters" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.implicit_update_parameters">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.</span></span><span class="sig-name descname"><span class="pre">implicit_update_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.implicit_update_parameters" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the dynamic mesh implicit update menu. This text command is only available   when you enable implicit mesh updating using the prompts        of the define/dynamic-mesh/dynamic-mesh?        text command.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.implicit_update_parameters.motion_relaxation" title="ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.implicit_update_parameters.motion_relaxation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">motion_relaxation</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies a value (within the range of 0 to 1) for the motion relaxation, which is applied during the implicit mesh update.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.implicit_update_parameters.residual_criteria" title="ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.implicit_update_parameters.residual_criteria"><code class="xref py py-obj docutils literal notranslate"><span class="pre">residual_criteria</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the relative residual threshold that is used to check the motion convergence during the implicit mesh update.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.implicit_update_parameters.update_interval" title="ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.implicit_update_parameters.update_interval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_interval</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the update interval (that is, the frequency in iterations) at which the mesh is updated within a time step.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.implicit_update_parameters">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.dynamic_mesh.controls.</span></span><span class="sig-name descname"><span class="pre">implicit_update_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.implicit_update_parameters" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the dynamic mesh implicit update menu. This text command is only available   when you enable implicit mesh updating using the prompts        of the define/dynamic-mesh/dynamic-mesh?        text command.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.implicit_update_parameters.motion_relaxation">
 <span class="sig-name descname"><span class="pre">motion_relaxation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.implicit_update_parameters.motion_relaxation" title="Permalink to this definition">#</a></dt>

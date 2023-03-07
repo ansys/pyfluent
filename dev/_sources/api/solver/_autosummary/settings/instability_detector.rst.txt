@@ -5,13 +5,16 @@
 instability_detector
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.instability_detector.instability_detector
+.. currentmodule:: ansys.fluent.core.solver.settings_231.instability_detector
 
-.. rubric:: Attributes
+.. autoclass:: instability_detector
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================================   =============================================================
 
-Attribute                                                                                                                        Summary
+Child                                                                                                                            Summary
 
 ========================================================================   =============================================================
 :ref:`enable_instability_detector <enable_instability_detector>`                       Enable instability detector for better stability.

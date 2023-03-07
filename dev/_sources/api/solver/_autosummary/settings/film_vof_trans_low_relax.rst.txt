@@ -5,8 +5,11 @@
 film_vof_trans_low_relax
 ========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.film_vof_trans_low_relax.film_vof_trans_low_relax
+.. currentmodule:: ansys.fluent.core.solver.settings_231.film_vof_trans_low_relax
 
+.. autoclass:: film_vof_trans_low_relax
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

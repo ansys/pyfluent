@@ -5,8 +5,11 @@
 p_jump
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.p_jump.p_jump
+.. currentmodule:: ansys.fluent.core.solver.settings_231.p_jump
 
+.. autoclass:: p_jump
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

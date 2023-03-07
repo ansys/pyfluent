@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -295,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -744,7 +759,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species">
    <code class="docutils literal notranslate">
     <span class="pre">
-     species
+     main_menu.define.models.species
     </span>
    </code>
   </a>
@@ -753,72 +768,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.CHEMKIN_CFD()
+       main_menu.define.models.species.CHEMKIN_CFD()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       species.CHEMKIN_CFD_parameters
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.add_cell_monitor">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         species.CHEMKIN_CFD_parameters.add_cell_monitor()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.advanced_options">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         species.CHEMKIN_CFD_parameters.advanced_options()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.basic_options">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         species.CHEMKIN_CFD_parameters.basic_options()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.delete_cell_monitors">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         species.CHEMKIN_CFD_parameters.delete_cell_monitors()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.list_cell_monitors">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         species.CHEMKIN_CFD_parameters.list_cell_monitors()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.clear_isat_table">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.clear_isat_table()
+       main_menu.define.models.species.clear_isat_table()
       </span>
      </code>
     </a>
@@ -827,7 +786,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.coal_calculator">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.coal_calculator()
+       main_menu.define.models.species.coal_calculator()
       </span>
      </code>
     </a>
@@ -836,7 +795,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.combustion_expert">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.combustion_expert()
+       main_menu.define.models.species.combustion_expert()
       </span>
      </code>
     </a>
@@ -845,7 +804,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.combustion_numerics">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.combustion_numerics()
+       main_menu.define.models.species.combustion_numerics()
       </span>
      </code>
     </a>
@@ -854,7 +813,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.decoupled_detailed_chemistry">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.decoupled_detailed_chemistry()
+       main_menu.define.models.species.decoupled_detailed_chemistry()
       </span>
      </code>
     </a>
@@ -863,7 +822,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.diffusion_energy_source">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.diffusion_energy_source()
+       main_menu.define.models.species.diffusion_energy_source()
       </span>
      </code>
     </a>
@@ -872,7 +831,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.electro_chemical_surface_reactions">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.electro_chemical_surface_reactions()
+       main_menu.define.models.species.electro_chemical_surface_reactions()
       </span>
      </code>
     </a>
@@ -881,7 +840,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.epdf_energy">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.epdf_energy()
+       main_menu.define.models.species.epdf_energy()
       </span>
      </code>
     </a>
@@ -890,7 +849,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.flamelet_expert">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.flamelet_expert()
+       main_menu.define.models.species.flamelet_expert()
       </span>
      </code>
     </a>
@@ -899,7 +858,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.full_tabulation">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.full_tabulation()
+       main_menu.define.models.species.full_tabulation()
       </span>
      </code>
     </a>
@@ -908,7 +867,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.heat_of_surface_reactions">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.heat_of_surface_reactions()
+       main_menu.define.models.species.heat_of_surface_reactions()
       </span>
      </code>
     </a>
@@ -917,7 +876,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.ignition_model">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.ignition_model()
+       main_menu.define.models.species.ignition_model()
       </span>
      </code>
     </a>
@@ -926,7 +885,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.ignition_model_controls">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.ignition_model_controls()
+       main_menu.define.models.species.ignition_model_controls()
       </span>
      </code>
     </a>
@@ -935,7 +894,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.import_flamelet_for_restart">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.import_flamelet_for_restart()
+       main_menu.define.models.species.import_flamelet_for_restart()
       </span>
      </code>
     </a>
@@ -944,7 +903,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.inert_transport_controls">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.inert_transport_controls()
+       main_menu.define.models.species.inert_transport_controls()
       </span>
      </code>
     </a>
@@ -953,7 +912,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.inert_transport_model">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.inert_transport_model()
+       main_menu.define.models.species.inert_transport_model()
       </span>
      </code>
     </a>
@@ -962,7 +921,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.init_unsteady_flamelet_prob">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.init_unsteady_flamelet_prob()
+       main_menu.define.models.species.init_unsteady_flamelet_prob()
       </span>
      </code>
     </a>
@@ -971,7 +930,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.inlet_diffusion">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.inlet_diffusion()
+       main_menu.define.models.species.inlet_diffusion()
       </span>
      </code>
     </a>
@@ -980,7 +939,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.integration_parameters">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.integration_parameters()
+       main_menu.define.models.species.integration_parameters()
       </span>
      </code>
     </a>
@@ -989,7 +948,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.liquid_energy_diffusion">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.liquid_energy_diffusion()
+       main_menu.define.models.species.liquid_energy_diffusion()
       </span>
      </code>
     </a>
@@ -998,7 +957,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.liquid_micro_mixing">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.liquid_micro_mixing()
+       main_menu.define.models.species.liquid_micro_mixing()
       </span>
      </code>
     </a>
@@ -1007,7 +966,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.mass_deposition_source">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.mass_deposition_source()
+       main_menu.define.models.species.mass_deposition_source()
       </span>
      </code>
     </a>
@@ -1016,7 +975,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.mixing_model">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.mixing_model()
+       main_menu.define.models.species.mixing_model()
       </span>
      </code>
     </a>
@@ -1025,7 +984,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.multicomponent_diffusion">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.multicomponent_diffusion()
+       main_menu.define.models.species.multicomponent_diffusion()
       </span>
      </code>
     </a>
@@ -1034,7 +993,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.non_premixed_combustion">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.non_premixed_combustion()
+       main_menu.define.models.species.non_premixed_combustion()
       </span>
      </code>
     </a>
@@ -1043,7 +1002,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.non_premixed_combustion_expert">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.non_premixed_combustion_expert()
+       main_menu.define.models.species.non_premixed_combustion_expert()
       </span>
      </code>
     </a>
@@ -1052,7 +1011,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.non_premixed_combustion_parameters">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.non_premixed_combustion_parameters()
+       main_menu.define.models.species.non_premixed_combustion_parameters()
       </span>
      </code>
     </a>
@@ -1061,7 +1020,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.off">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.off()
+       main_menu.define.models.species.off()
       </span>
      </code>
     </a>
@@ -1070,7 +1029,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.partially_premixed_combustion">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.partially_premixed_combustion()
+       main_menu.define.models.species.partially_premixed_combustion()
       </span>
      </code>
     </a>
@@ -1079,7 +1038,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.partially_premixed_combustion_expert">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.partially_premixed_combustion_expert()
+       main_menu.define.models.species.partially_premixed_combustion_expert()
       </span>
      </code>
     </a>
@@ -1088,7 +1047,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.partially_premixed_combustion_grids">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.partially_premixed_combustion_grids()
+       main_menu.define.models.species.partially_premixed_combustion_grids()
       </span>
      </code>
     </a>
@@ -1097,7 +1056,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.partially_premixed_combustion_parameters">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.partially_premixed_combustion_parameters()
+       main_menu.define.models.species.partially_premixed_combustion_parameters()
       </span>
      </code>
     </a>
@@ -1106,7 +1065,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.partially_premixed_properties">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.partially_premixed_properties()
+       main_menu.define.models.species.partially_premixed_properties()
       </span>
      </code>
     </a>
@@ -1115,7 +1074,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.particle_surface_reactions">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.particle_surface_reactions()
+       main_menu.define.models.species.particle_surface_reactions()
       </span>
      </code>
     </a>
@@ -1124,7 +1083,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.pdf_transport">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.pdf_transport()
+       main_menu.define.models.species.pdf_transport()
       </span>
      </code>
     </a>
@@ -1133,7 +1092,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.pdf_transport_expert">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.pdf_transport_expert()
+       main_menu.define.models.species.pdf_transport_expert()
       </span>
      </code>
     </a>
@@ -1142,7 +1101,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.premixed_combustion">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.premixed_combustion()
+       main_menu.define.models.species.premixed_combustion()
       </span>
      </code>
     </a>
@@ -1151,7 +1110,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.premixed_model">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.premixed_model()
+       main_menu.define.models.species.premixed_model()
       </span>
      </code>
     </a>
@@ -1160,7 +1119,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.re_calc_par_premix_props">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.re_calc_par_premix_props()
+       main_menu.define.models.species.re_calc_par_premix_props()
       </span>
      </code>
     </a>
@@ -1169,7 +1128,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.reacting_channel_model">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.reacting_channel_model()
+       main_menu.define.models.species.reacting_channel_model()
       </span>
      </code>
     </a>
@@ -1178,7 +1137,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.reacting_channel_model_options">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.reacting_channel_model_options()
+       main_menu.define.models.species.reacting_channel_model_options()
       </span>
      </code>
     </a>
@@ -1187,7 +1146,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.reaction_diffusion_balance">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.reaction_diffusion_balance()
+       main_menu.define.models.species.reaction_diffusion_balance()
       </span>
      </code>
     </a>
@@ -1196,7 +1155,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.reactor_network_model">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.reactor_network_model()
+       main_menu.define.models.species.reactor_network_model()
       </span>
      </code>
     </a>
@@ -1205,7 +1164,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.relax_to_equil">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.relax_to_equil()
+       main_menu.define.models.species.relax_to_equil()
       </span>
      </code>
     </a>
@@ -1214,7 +1173,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.save_gradients">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.save_gradients()
+       main_menu.define.models.species.save_gradients()
       </span>
      </code>
     </a>
@@ -1223,7 +1182,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.set_multi_regime_fgm">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.set_multi_regime_fgm()
+       main_menu.define.models.species.set_multi_regime_fgm()
       </span>
      </code>
     </a>
@@ -1232,7 +1191,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.set_premixed_combustion">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.set_premixed_combustion()
+       main_menu.define.models.species.set_premixed_combustion()
       </span>
      </code>
     </a>
@@ -1241,7 +1200,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.set_turb_chem_interaction">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.set_turb_chem_interaction()
+       main_menu.define.models.species.set_turb_chem_interaction()
       </span>
      </code>
     </a>
@@ -1250,7 +1209,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.spark_model">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.spark_model()
+       main_menu.define.models.species.spark_model()
       </span>
      </code>
     </a>
@@ -1259,7 +1218,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.species_migration">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.species_migration()
+       main_menu.define.models.species.species_migration()
       </span>
      </code>
     </a>
@@ -1268,7 +1227,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.species_transport">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.species_transport()
+       main_menu.define.models.species.species_transport()
       </span>
      </code>
     </a>
@@ -1277,7 +1236,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.species_transport_expert">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.species_transport_expert()
+       main_menu.define.models.species.species_transport_expert()
       </span>
      </code>
     </a>
@@ -1286,7 +1245,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.stiff_chemistry">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.stiff_chemistry()
+       main_menu.define.models.species.stiff_chemistry()
       </span>
      </code>
     </a>
@@ -1295,7 +1254,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.surf_reaction_aggressiveness_factor">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.surf_reaction_aggressiveness_factor()
+       main_menu.define.models.species.surf_reaction_aggressiveness_factor()
       </span>
      </code>
     </a>
@@ -1304,7 +1263,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.surf_reaction_netm_params">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.surf_reaction_netm_params()
+       main_menu.define.models.species.surf_reaction_netm_params()
       </span>
      </code>
     </a>
@@ -1313,7 +1272,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.thermal_diffusion">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.thermal_diffusion()
+       main_menu.define.models.species.thermal_diffusion()
       </span>
      </code>
     </a>
@@ -1322,7 +1281,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.thickened_flame_model">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.thickened_flame_model()
+       main_menu.define.models.species.thickened_flame_model()
       </span>
      </code>
     </a>
@@ -1331,7 +1290,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.volumetric_reactions">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.volumetric_reactions()
+       main_menu.define.models.species.volumetric_reactions()
       </span>
      </code>
     </a>
@@ -1340,7 +1299,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.wall_surface_reactions">
      <code class="docutils literal notranslate">
       <span class="pre">
-       species.wall_surface_reactions()
+       main_menu.define.models.species.wall_surface_reactions()
       </span>
      </code>
     </a>
@@ -1368,265 +1327,18 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-define-models-species">
 <span id="ref-solver-tui-define-models-species"></span><h1>solver.tui.define.models.species<a class="headerlink" href="#solver-tui-define-models-species" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.species">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.define.models.</span></span><span class="sig-name descname"><span class="pre">species</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the species models menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CHEMKIN_CFD</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the Ansys CHEMKIN-CFD solver.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.clear_isat_table" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.clear_isat_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_isat_table</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Clears ISAT table.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.coal_calculator" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.coal_calculator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coal_calculator</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets up coal modeling inputs.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.combustion_expert" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.combustion_expert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">combustion_expert</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables import of the CHEMKIN mechanism transport   data.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.combustion_numerics" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.combustion_numerics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">combustion_numerics</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Applies optimal solver settings automatically to provide a faster solution time.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.decoupled_detailed_chemistry" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.decoupled_detailed_chemistry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decoupled_detailed_chemistry</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the Decoupled Detailed Chemistry model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.diffusion_energy_source" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.diffusion_energy_source"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diffusion_energy_source</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables diffusion energy source.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.electro_chemical_surface_reactions" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.electro_chemical_surface_reactions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">electro_chemical_surface_reactions</span></code></a>(*args, ...)</p></td>
-<td><p>Enables/disables electrochemical surface reactions.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.epdf_energy" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.epdf_energy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">epdf_energy</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables EPDF energy option.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.flamelet_expert" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.flamelet_expert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flamelet_expert</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets flamelet expert parameters.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.full_tabulation" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.full_tabulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">full_tabulation</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables building of a full 2-mixture fraction table.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.heat_of_surface_reactions" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.heat_of_surface_reactions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">heat_of_surface_reactions</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables heat of surface reactions.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.ignition_model" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.ignition_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ignition_model</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the ignition model.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.ignition_model_controls" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.ignition_model_controls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ignition_model_controls</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets ignition model parameters.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.import_flamelet_for_restart" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.import_flamelet_for_restart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">import_flamelet_for_restart</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Imports Flamelet File for Restart.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.inert_transport_controls" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.inert_transport_controls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inert_transport_controls</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets inert transport model parameters.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.inert_transport_model" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.inert_transport_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inert_transport_model</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the inert transport model.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.init_unsteady_flamelet_prob" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.init_unsteady_flamelet_prob"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_unsteady_flamelet_prob</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Initializes Unsteady Flamelet Probability.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.inlet_diffusion" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.inlet_diffusion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inlet_diffusion</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables inclusion of diffusion at inlets.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.integration_parameters" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.integration_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">integration_parameters</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets chemistry ODE integrator parameters.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.liquid_energy_diffusion" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.liquid_energy_diffusion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">liquid_energy_diffusion</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable energy diffusion for liquid regime.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.liquid_micro_mixing" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.liquid_micro_mixing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">liquid_micro_mixing</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables liquid micro mixing.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.mass_deposition_source" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.mass_deposition_source"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mass_deposition_source</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables mass deposition source due to surface reactions.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.mixing_model" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.mixing_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixing_model</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets PDF Transport mixing model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.multicomponent_diffusion" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.multicomponent_diffusion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">multicomponent_diffusion</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables multicomponent diffusion.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.non_premixed_combustion" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.non_premixed_combustion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_premixed_combustion</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables non-premixed combustion model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.non_premixed_combustion_expert" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.non_premixed_combustion_expert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_premixed_combustion_expert</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets PDF expert parameters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.non_premixed_combustion_parameters" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.non_premixed_combustion_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_premixed_combustion_parameters</span></code></a>(*args, ...)</p></td>
-<td><p>Sets PDF parameters.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.off" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.off"><code class="xref py py-obj docutils literal notranslate"><span class="pre">off</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables solution of species models.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.partially_premixed_combustion" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.partially_premixed_combustion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partially_premixed_combustion</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables partially premixed combustion model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.partially_premixed_combustion_expert" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.partially_premixed_combustion_expert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partially_premixed_combustion_expert</span></code></a>(*args, ...)</p></td>
-<td><p>Sets PDF expert parameters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.partially_premixed_combustion_grids" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.partially_premixed_combustion_grids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partially_premixed_combustion_grids</span></code></a>(*args, ...)</p></td>
-<td><p>Sets values for the grid distribution for PDF table or      flamelet parameter.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.partially_premixed_combustion_parameters" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.partially_premixed_combustion_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partially_premixed_combustion_parameters</span></code></a>(...)</p></td>
-<td><p>Sets PDF parameters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.partially_premixed_properties" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.partially_premixed_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partially_premixed_properties</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets/changes partially-premixed mixture properties.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.particle_surface_reactions" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.particle_surface_reactions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">particle_surface_reactions</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables particle surface reactions.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.pdf_transport" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.pdf_transport"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pdf_transport</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the composition PDF transport combustion model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.pdf_transport_expert" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.pdf_transport_expert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pdf_transport_expert</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables PDF Transport expert user.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.premixed_combustion" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.premixed_combustion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">premixed_combustion</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables premixed combustion model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.premixed_model" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.premixed_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">premixed_model</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets premixed combustion model.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.re_calc_par_premix_props" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.re_calc_par_premix_props"><code class="xref py py-obj docutils literal notranslate"><span class="pre">re_calc_par_premix_props</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Re-calculate partially-premixed properties.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.reacting_channel_model" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.reacting_channel_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reacting_channel_model</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the Reacting Channel Model.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.reacting_channel_model_options" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.reacting_channel_model_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reacting_channel_model_options</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets Reacting Channel Model parameters.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.reaction_diffusion_balance" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.reaction_diffusion_balance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reaction_diffusion_balance</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables reaction diffusion balance at reacting surface for surface         reactions.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.reactor_network_model" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.reactor_network_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reactor_network_model</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the Reactor Network Model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.relax_to_equil" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.relax_to_equil"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relax_to_equil</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the Relaxation to Chemical Equilibrium model.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.save_gradients" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.save_gradients"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_gradients</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables storage of species mass fraction gradients.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.set_multi_regime_fgm" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.set_multi_regime_fgm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_multi_regime_fgm</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set-multi-regim-fgm-parameters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.set_premixed_combustion" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.set_premixed_combustion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_premixed_combustion</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets premixed combustion parameters.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.set_turb_chem_interaction" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.set_turb_chem_interaction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_turb_chem_interaction</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets EDC model constants.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.spark_model" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.spark_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spark_model</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Switches between the R15 and R14.5 spark models and sets spark model        parameters.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.species_migration" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.species_migration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">species_migration</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Includes species migration in electric field.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.species_transport" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.species_transport"><code class="xref py py-obj docutils literal notranslate"><span class="pre">species_transport</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the species transport model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.species_transport_expert" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.species_transport_expert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">species_transport_expert</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets the convergence acceleration expert parameters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.stiff_chemistry" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.stiff_chemistry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stiff_chemistry</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables stiff chemistry option.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.surf_reaction_aggressiveness_factor" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.surf_reaction_aggressiveness_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">surf_reaction_aggressiveness_factor</span></code></a>(*args, ...)</p></td>
-<td><p>Sets the surface reaction aggressiveness factor.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.surf_reaction_netm_params" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.surf_reaction_netm_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">surf_reaction_netm_params</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets the surface reaction parameters for the Non-Equilibrium Thermal Model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.thermal_diffusion" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.thermal_diffusion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">thermal_diffusion</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables thermal diffusion.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.thickened_flame_model" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.thickened_flame_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">thickened_flame_model</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the Relaxation to Chemical Equilibrium model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.volumetric_reactions" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.volumetric_reactions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">volumetric_reactions</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables volumetric reactions.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.wall_surface_reactions" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.wall_surface_reactions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wall_surface_reactions</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables wall surface reactions.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CHEMKIN_CFD_parameters</span></code></a>(path, service)</p></td>
-<td><p>Enters the expert CHEMKIN-CFD parameters menu.</p></td>
-</tr>
-</tbody>
-</table>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.models.</span></span><span class="sig-name descname"><span class="pre">species</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the species models menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD">
 <span class="sig-name descname"><span class="pre">CHEMKIN_CFD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables/disables the Ansys CHEMKIN-CFD solver.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CHEMKIN_CFD_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the expert CHEMKIN-CFD parameters menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.add_cell_monitor" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.add_cell_monitor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_cell_monitor</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Monitors cell for debug output.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.advanced_options" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.advanced_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">advanced_options</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets advanced parameter options.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.basic_options" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.basic_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">basic_options</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets basic parameter options.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.delete_cell_monitors" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.delete_cell_monitors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_cell_monitors</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Deletes cell monitors.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.list_cell_monitors" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.list_cell_monitors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_cell_monitors</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Lists cell monitors.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.add_cell_monitor">
-<span class="sig-name descname"><span class="pre">add_cell_monitor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.add_cell_monitor" title="Permalink to this definition">#</a></dt>
-<dd><p>Monitors cell for debug output.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.advanced_options">
-<span class="sig-name descname"><span class="pre">advanced_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.advanced_options" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets advanced parameter options.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.basic_options">
-<span class="sig-name descname"><span class="pre">basic_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.basic_options" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets basic parameter options.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.delete_cell_monitors">
-<span class="sig-name descname"><span class="pre">delete_cell_monitors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.delete_cell_monitors" title="Permalink to this definition">#</a></dt>
-<dd><p>Deletes cell monitors.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.list_cell_monitors">
-<span class="sig-name descname"><span class="pre">list_cell_monitors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.species.CHEMKIN_CFD_parameters.list_cell_monitors" title="Permalink to this definition">#</a></dt>
-<dd><p>Lists cell monitors.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">

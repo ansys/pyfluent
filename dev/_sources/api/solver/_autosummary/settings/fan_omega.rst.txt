@@ -5,8 +5,11 @@
 fan_omega
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fan_omega.fan_omega
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fan_omega
 
+.. autoclass:: fan_omega
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   ======================================

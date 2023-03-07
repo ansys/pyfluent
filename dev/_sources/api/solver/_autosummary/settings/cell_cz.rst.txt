@@ -5,8 +5,11 @@
 cell_cz
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.cell_cz.cell_cz
+.. currentmodule:: ansys.fluent.core.solver.settings_231.cell_cz
 
+.. autoclass:: cell_cz
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ================================

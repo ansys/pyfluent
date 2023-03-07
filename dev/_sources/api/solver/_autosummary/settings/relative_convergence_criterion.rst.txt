@@ -5,8 +5,11 @@
 relative_convergence_criterion
 ==============================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.relative_convergence_criterion.relative_convergence_criterion
+.. currentmodule:: ansys.fluent.core.solver.settings_231.relative_convergence_criterion
 
+.. autoclass:: relative_convergence_criterion
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================================   ===========================================================

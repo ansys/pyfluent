@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -295,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -612,7 +627,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.system">
    <code class="docutils literal notranslate">
     <span class="pre">
-     system
+     main_menu.results.report.system
     </span>
    </code>
   </a>
@@ -621,7 +636,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.system.gpgpu_stats">
      <code class="docutils literal notranslate">
       <span class="pre">
-       system.gpgpu_stats()
+       main_menu.results.report.system.gpgpu_stats()
       </span>
      </code>
     </a>
@@ -630,7 +645,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.system.proc_stats">
      <code class="docutils literal notranslate">
       <span class="pre">
-       system.proc_stats()
+       main_menu.results.report.system.proc_stats()
       </span>
      </code>
     </a>
@@ -639,7 +654,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.system.sys_stats">
      <code class="docutils literal notranslate">
       <span class="pre">
-       system.sys_stats()
+       main_menu.results.report.system.sys_stats()
       </span>
      </code>
     </a>
@@ -648,7 +663,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.system.time_stats">
      <code class="docutils literal notranslate">
       <span class="pre">
-       system.time_stats()
+       main_menu.results.report.system.time_stats()
       </span>
      </code>
     </a>
@@ -676,28 +691,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-results-report-system">
 <span id="ref-solver-tui-results-report-system"></span><h1>solver.tui.results.report.system<a class="headerlink" href="#solver-tui-results-report-system" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.system">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.results.report.</span></span><span class="sig-name descname"><span class="pre">system</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.system" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Sytem menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.system.gpgpu_stats" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.system.gpgpu_stats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gpgpu_stats</span></code></a>(*args, **kwargs)</p></td>
-<td><p>GPGPU information.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.system.proc_stats" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.system.proc_stats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">proc_stats</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Fluent process information.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.system.sys_stats" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.system.sys_stats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sys_stats</span></code></a>(*args, **kwargs)</p></td>
-<td><p>System information.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.system.time_stats" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.system.time_stats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_stats</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Time usage information.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.system">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.results.report.</span></span><span class="sig-name descname"><span class="pre">system</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.system" title="Permalink to this definition">#</a></dt>
+<dd><p>Sytem menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.system.gpgpu_stats">
 <span class="sig-name descname"><span class="pre">gpgpu_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.system.gpgpu_stats" title="Permalink to this definition">#</a></dt>

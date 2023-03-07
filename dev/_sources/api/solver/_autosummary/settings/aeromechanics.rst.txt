@@ -5,8 +5,11 @@
 aeromechanics
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.aeromechanics.aeromechanics
+.. currentmodule:: ansys.fluent.core.solver.settings_231.aeromechanics
 
+.. autoclass:: aeromechanics
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`aeromechanics_child <aeromechanics_child>`

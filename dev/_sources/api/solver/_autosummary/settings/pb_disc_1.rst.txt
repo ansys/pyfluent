@@ -5,13 +5,16 @@
 pb_disc
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.pb_disc_1.pb_disc
+.. currentmodule:: ansys.fluent.core.solver.settings_231.pb_disc_1
 
-.. rubric:: Attributes
+.. autoclass:: pb_disc
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================================================   ====================================
 
-Attribute                                                                             Summary
+Child                                                                                 Summary
 
 ======================================================   ====================================
 :ref:`mean_and_std_deviation <mean_and_std_deviation>`       Set mean and standard deviation.

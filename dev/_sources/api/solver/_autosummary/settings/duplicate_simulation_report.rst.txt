@@ -5,8 +5,11 @@
 duplicate_simulation_report
 ===========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.duplicate_simulation_report.duplicate_simulation_report
+.. currentmodule:: ansys.fluent.core.solver.settings_231.duplicate_simulation_report
 
+.. autoclass:: duplicate_simulation_report
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ================================   ========================

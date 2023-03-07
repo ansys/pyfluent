@@ -5,8 +5,11 @@
 outside
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.outside.outside
+.. currentmodule:: ansys.fluent.core.solver.settings_231.outside
 
+.. autoclass:: outside
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   ====================

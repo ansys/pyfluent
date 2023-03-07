@@ -5,8 +5,11 @@
 user_defined_function
 =====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.user_defined_function.user_defined_function
+.. currentmodule:: ansys.fluent.core.solver.settings_231.user_defined_function
 
+.. autoclass:: user_defined_function
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================================   =============================================

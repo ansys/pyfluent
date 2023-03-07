@@ -5,8 +5,11 @@
 two_stage
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.two_stage.two_stage
+.. currentmodule:: ansys.fluent.core.solver.settings_231.two_stage
 
+.. autoclass:: two_stage
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   ========================

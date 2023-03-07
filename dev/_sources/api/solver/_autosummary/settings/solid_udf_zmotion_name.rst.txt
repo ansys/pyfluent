@@ -5,8 +5,11 @@
 solid_udf_zmotion_name
 ======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.solid_udf_zmotion_name.solid_udf_zmotion_name
+.. currentmodule:: ansys.fluent.core.solver.settings_231.solid_udf_zmotion_name
 
+.. autoclass:: solid_udf_zmotion_name
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

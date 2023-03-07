@@ -5,8 +5,11 @@
 volume_integrals
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.volume_integrals.volume_integrals
+.. currentmodule:: ansys.fluent.core.solver.settings_231.volume_integrals
 
+.. autoclass:: volume_integrals
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ======================================   ===========================

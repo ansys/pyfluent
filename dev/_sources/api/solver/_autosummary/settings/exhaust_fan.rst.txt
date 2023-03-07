@@ -5,8 +5,11 @@
 exhaust_fan
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.exhaust_fan.exhaust_fan
+.. currentmodule:: ansys.fluent.core.solver.settings_231.exhaust_fan
 
+.. autoclass:: exhaust_fan
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`exhaust_fan_child <exhaust_fan_child>`

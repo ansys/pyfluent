@@ -3,11 +3,11 @@
 solver.tui.solve.set.multiphase\_numerics.advanced\_stability\_controls.num\_ventilation
 ========================================================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.advanced_stability_controls.num_ventilation
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.multiphase_numerics.advanced_stability_controls.num_ventilation
+   :members: enable, near_wall_treatment_options, tau_estimation_options, trapped_phase_vof_min, trapped_phase_vof_max
 

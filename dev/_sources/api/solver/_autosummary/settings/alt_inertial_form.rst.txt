@@ -5,8 +5,11 @@
 alt_inertial_form
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.alt_inertial_form.alt_inertial_form
+.. currentmodule:: ansys.fluent.core.solver.settings_231.alt_inertial_form
 
+.. autoclass:: alt_inertial_form
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

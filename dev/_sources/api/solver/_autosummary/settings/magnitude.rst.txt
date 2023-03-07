@@ -5,8 +5,11 @@
 magnitude
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.magnitude.magnitude
+.. currentmodule:: ansys.fluent.core.solver.settings_231.magnitude
 
+.. autoclass:: magnitude
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =============================

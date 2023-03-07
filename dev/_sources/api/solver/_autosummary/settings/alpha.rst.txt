@@ -5,8 +5,11 @@
 alpha
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.alpha.alpha
+.. currentmodule:: ansys.fluent.core.solver.settings_231.alpha
 
+.. autoclass:: alpha
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =======================================

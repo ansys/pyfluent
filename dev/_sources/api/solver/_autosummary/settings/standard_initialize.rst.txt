@@ -5,8 +5,11 @@
 standard_initialize
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.standard_initialize.standard_initialize
+.. currentmodule:: ansys.fluent.core.solver.settings_231.standard_initialize
 
+.. autoclass:: standard_initialize
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ===========================

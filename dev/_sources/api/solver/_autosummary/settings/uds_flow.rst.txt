@@ -5,8 +5,11 @@
 uds_flow
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.uds_flow.uds_flow
+.. currentmodule:: ansys.fluent.core.solver.settings_231.uds_flow
 
+.. autoclass:: uds_flow
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==============================   =======================

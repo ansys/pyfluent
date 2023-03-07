@@ -3,13 +3,13 @@
 solver.tui.define.phases.set\_domain\_properties.interaction\_domain.heat\_mass\_reactions
 ==========================================================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.phases.set_domain_properties.interaction_domain.heat_mass_reactions
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.phases.set_domain_properties.interaction_domain.heat_mass_reactions
+   :members: drag, heat_coeff, interfacial_area, mass_transfer, model_transition, reactions, restitution, slip_velocity, turbulence_interaction, turbulent_dispersion, wall_lubrication
 
 .. toctree::
    :hidden:

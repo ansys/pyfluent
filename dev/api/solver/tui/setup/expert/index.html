@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -294,8 +304,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -606,7 +621,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.expert">
    <code class="docutils literal notranslate">
     <span class="pre">
-     expert
+     main_menu.setup.expert
     </span>
    </code>
   </a>
@@ -615,7 +630,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.beta_feature_access">
      <code class="docutils literal notranslate">
       <span class="pre">
-       expert.beta_feature_access()
+       main_menu.setup.expert.beta_feature_access()
       </span>
      </code>
     </a>
@@ -624,7 +639,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.enable_mesh_morpher_optimizer">
      <code class="docutils literal notranslate">
       <span class="pre">
-       expert.enable_mesh_morpher_optimizer()
+       main_menu.setup.expert.enable_mesh_morpher_optimizer()
       </span>
      </code>
     </a>
@@ -633,63 +648,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.heterogeneous_stiff_chemistry">
      <code class="docutils literal notranslate">
       <span class="pre">
-       expert.heterogeneous_stiff_chemistry()
+       main_menu.setup.expert.heterogeneous_stiff_chemistry()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       expert.spectral
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral.calculate_fourier_coefficients">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         expert.spectral.calculate_fourier_coefficients()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral.calculate_harmonic_exports">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         expert.spectral.calculate_harmonic_exports()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral.delete_fourier_coefficients">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         expert.spectral.delete_fourier_coefficients()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral.delete_harmonic_exports">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         expert.spectral.delete_harmonic_exports()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.stiff_chemistry">
      <code class="docutils literal notranslate">
       <span class="pre">
-       expert.stiff_chemistry()
+       main_menu.setup.expert.stiff_chemistry()
       </span>
      </code>
     </a>
@@ -717,36 +685,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-expert">
 <span id="ref-solver-tui-setup-expert"></span><h1>solver.tui.setup.expert<a class="headerlink" href="#solver-tui-setup-expert" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.expert">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.setup.</span></span><span class="sig-name descname"><span class="pre">expert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.expert" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter expert setup menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.beta_feature_access" title="ansys.fluent.core.solver.tui_231.main_menu.setup.expert.beta_feature_access"><code class="xref py py-obj docutils literal notranslate"><span class="pre">beta_feature_access</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable access to beta features in the interface.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.enable_mesh_morpher_optimizer" title="ansys.fluent.core.solver.tui_231.main_menu.setup.expert.enable_mesh_morpher_optimizer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_mesh_morpher_optimizer</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable use of mesh morpher/optimizer.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.heterogeneous_stiff_chemistry" title="ansys.fluent.core.solver.tui_231.main_menu.setup.expert.heterogeneous_stiff_chemistry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">heterogeneous_stiff_chemistry</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set heterogeneous stiff-chemistry solver.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.stiff_chemistry" title="ansys.fluent.core.solver.tui_231.main_menu.setup.expert.stiff_chemistry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stiff_chemistry</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set solver options for stiff-chemistry solutions.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral" title="ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spectral</span></code></a>(path, service)</p></td>
-<td><p>Enter the Spectral menu.</p></td>
-</tr>
-</tbody>
-</table>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.</span></span><span class="sig-name descname"><span class="pre">expert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.expert" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter expert setup menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.expert.beta_feature_access">
 <span class="sig-name descname"><span class="pre">beta_feature_access</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.beta_feature_access" title="Permalink to this definition">#</a></dt>
@@ -763,54 +709,6 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.expert.heterogeneous_stiff_chemistry">
 <span class="sig-name descname"><span class="pre">heterogeneous_stiff_chemistry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.heterogeneous_stiff_chemistry" title="Permalink to this definition">#</a></dt>
 <dd><p>Set heterogeneous stiff-chemistry solver.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">spectral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the Spectral menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral.calculate_fourier_coefficients" title="ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral.calculate_fourier_coefficients"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_fourier_coefficients</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Calculates Fourier coefficient data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral.calculate_harmonic_exports" title="ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral.calculate_harmonic_exports"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_harmonic_exports</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Calculates Harmonic Export data.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral.delete_fourier_coefficients" title="ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral.delete_fourier_coefficients"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_fourier_coefficients</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Deletes Fourier coefficient data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral.delete_harmonic_exports" title="ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral.delete_harmonic_exports"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_harmonic_exports</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Deletes Harmonic Export data.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral.calculate_fourier_coefficients">
-<span class="sig-name descname"><span class="pre">calculate_fourier_coefficients</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral.calculate_fourier_coefficients" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculates Fourier coefficient data.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral.calculate_harmonic_exports">
-<span class="sig-name descname"><span class="pre">calculate_harmonic_exports</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral.calculate_harmonic_exports" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculates Harmonic Export data.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral.delete_fourier_coefficients">
-<span class="sig-name descname"><span class="pre">delete_fourier_coefficients</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral.delete_fourier_coefficients" title="Permalink to this definition">#</a></dt>
-<dd><p>Deletes Fourier coefficient data.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral.delete_harmonic_exports">
-<span class="sig-name descname"><span class="pre">delete_harmonic_exports</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.expert.spectral.delete_harmonic_exports" title="Permalink to this definition">#</a></dt>
-<dd><p>Deletes Harmonic Export data.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">

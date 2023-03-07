@@ -5,8 +5,11 @@
 exit
 ====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.exit.exit
+.. currentmodule:: ansys.fluent.core.solver.settings_231.exit
 
+.. autoclass:: exit
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   ==================

@@ -5,8 +5,11 @@
 offset
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.offset.offset
+.. currentmodule:: ansys.fluent.core.solver.settings_231.offset
 
+.. autoclass:: offset
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   =======================

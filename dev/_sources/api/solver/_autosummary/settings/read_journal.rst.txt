@@ -5,8 +5,11 @@
 read_journal
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.read_journal.read_journal
+.. currentmodule:: ansys.fluent.core.solver.settings_231.read_journal
 
+.. autoclass:: read_journal
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ======================================   ===========================

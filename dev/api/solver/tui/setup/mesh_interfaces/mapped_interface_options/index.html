@@ -30,6 +30,10 @@
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/ansys_sphinx_theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -112,6 +116,12 @@
 <li class="toctree-l1 current active nav-item">
  <a class="reference internal nav-link" href="../../../../../index.html">
   API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../../examples/index.html">
+  Examples
  </a>
 </li>
 
@@ -295,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -617,7 +632,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.mesh_interfaces.mapped_interface_options">
    <code class="docutils literal notranslate">
     <span class="pre">
-     mapped_interface_options
+     main_menu.setup.mesh_interfaces.mapped_interface_options
     </span>
    </code>
   </a>
@@ -626,7 +641,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.mesh_interfaces.mapped_interface_options.convert_to_mapped_interface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       mapped_interface_options.convert_to_mapped_interface()
+       main_menu.setup.mesh_interfaces.mapped_interface_options.convert_to_mapped_interface()
       </span>
      </code>
     </a>
@@ -635,7 +650,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.mesh_interfaces.mapped_interface_options.solution_controls">
      <code class="docutils literal notranslate">
       <span class="pre">
-       mapped_interface_options.solution_controls()
+       main_menu.setup.mesh_interfaces.mapped_interface_options.solution_controls()
       </span>
      </code>
     </a>
@@ -644,7 +659,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.mesh_interfaces.mapped_interface_options.tolerance">
      <code class="docutils literal notranslate">
       <span class="pre">
-       mapped_interface_options.tolerance()
+       main_menu.setup.mesh_interfaces.mapped_interface_options.tolerance()
       </span>
      </code>
     </a>
@@ -672,25 +687,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-mesh-interfaces-mapped-interface-options">
 <span id="ref-solver-tui-setup-mesh-interfaces-mapped-interface-options"></span><h1>solver.tui.setup.mesh_interfaces.mapped_interface_options<a class="headerlink" href="#solver-tui-setup-mesh-interfaces-mapped-interface-options" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.mesh_interfaces.mapped_interface_options">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.setup.mesh_interfaces.</span></span><span class="sig-name descname"><span class="pre">mapped_interface_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.mesh_interfaces.mapped_interface_options" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the mapped-interface-options menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.mesh_interfaces.mapped_interface_options.convert_to_mapped_interface" title="ansys.fluent.core.solver.tui_231.main_menu.setup.mesh_interfaces.mapped_interface_options.convert_to_mapped_interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_to_mapped_interface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Convert non-conformal mesh interface to mapped mesh interfaces.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.mesh_interfaces.mapped_interface_options.solution_controls" title="ansys.fluent.core.solver.tui_231.main_menu.setup.mesh_interfaces.mapped_interface_options.solution_controls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solution_controls</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specification of mapped frequency and under-relaxation factor for mapped interfaces.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.mesh_interfaces.mapped_interface_options.tolerance" title="ansys.fluent.core.solver.tui_231.main_menu.setup.mesh_interfaces.mapped_interface_options.tolerance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tolerance</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specification of mapped interface tolerance.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.mesh_interfaces.mapped_interface_options">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.mesh_interfaces.</span></span><span class="sig-name descname"><span class="pre">mapped_interface_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.mesh_interfaces.mapped_interface_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the mapped-interface-options menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.mesh_interfaces.mapped_interface_options.convert_to_mapped_interface">
 <span class="sig-name descname"><span class="pre">convert_to_mapped_interface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.mesh_interfaces.mapped_interface_options.convert_to_mapped_interface" title="Permalink to this definition">#</a></dt>

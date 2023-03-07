@@ -5,8 +5,11 @@
 van_genuchten_ng
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.van_genuchten_ng.van_genuchten_ng
+.. currentmodule:: ansys.fluent.core.solver.settings_231.van_genuchten_ng
 
+.. autoclass:: van_genuchten_ng
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

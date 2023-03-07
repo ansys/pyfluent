@@ -5,8 +5,11 @@
 external_aero
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.external_aero.external_aero
+.. currentmodule:: ansys.fluent.core.solver.settings_231.external_aero
 
+.. autoclass:: external_aero
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ====================================

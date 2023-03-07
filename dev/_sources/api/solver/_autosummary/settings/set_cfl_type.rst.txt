@@ -5,8 +5,11 @@
 set_cfl_type
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.set_cfl_type.set_cfl_type
+.. currentmodule:: ansys.fluent.core.solver.settings_231.set_cfl_type
 
+.. autoclass:: set_cfl_type
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==================================================

@@ -5,8 +5,11 @@
 current_design_point
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.current_design_point.current_design_point
+.. currentmodule:: ansys.fluent.core.solver.settings_231.current_design_point
 
+.. autoclass:: current_design_point
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

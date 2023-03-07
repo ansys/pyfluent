@@ -5,8 +5,11 @@
 dpm_initial_height
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_initial_height.dpm_initial_height
+.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_initial_height
 
+.. autoclass:: dpm_initial_height
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================
