@@ -1,6 +1,7 @@
 """Provide a module to test the algorithms which parse job scheduler
 environments for machines to run on."""
 from builtins import range
+import tempfile
 import os
 import socket
 import unittest
@@ -161,7 +162,7 @@ class TestLoadMachines(unittest.TestCase):
     def test_machine_info(self):
         info = [
             {"machine-name": "M0", "core-count": 1},
-            {"machine-name": "M1", "core-count": 1},
+            {"machine-name": "M1", "core-count": 6},
         ]
         machineList = load_machines(machine_info=info)
         self.assertEqual(machineList.number_of_cores, 7)
@@ -177,11 +178,23 @@ class TestLoadMachines(unittest.TestCase):
         )
         self.assertEqual(machineList, old_machine_list)
 
+    def test_pe_hostfile(self):
+        with tempfile.NamedTemporaryFile(delete=False) as fp:
+            fp.write(b'm1 3 None None\r\nm2 3 None None')
+            os.environ["PE_HOSTFILE"] = fp.name
+        machineList = load_machines()
+        os.unlink(fp.name)
+        self.assertEqual(machineList.number_of_cores, 6)
+        self.assertEqual(machineList.machines[1].host_name, "m2")
+        self.assertEqual(os.path.exists(fp.name), False)
+        del os.environ["PE_HOSTFILE"] 
+        
+
     def test_lsb_mcpu(self):
         os.environ["LSB_MCPU_HOSTS"] = "m1 3 m2 3"
         machineList = load_machines()
-        del os.environ["LSB_MCPU_HOSTS"]
         self.assertEqual(machineList.number_of_cores, 6)
+        del os.environ["LSB_MCPU_HOSTS"]
 
     def test_no_environment(self):
         machineList = load_machines()
