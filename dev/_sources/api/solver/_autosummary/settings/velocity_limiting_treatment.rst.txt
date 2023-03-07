@@ -5,16 +5,13 @@
 velocity_limiting_treatment
 ===========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.velocity_limiting_treatment
+.. autoclass:: ansys.fluent.core.solver.settings_231.velocity_limiting_treatment.velocity_limiting_treatment
 
-.. autoclass:: velocity_limiting_treatment
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================================================   =================================================================================
 
-Child                                                                                                                                          Summary
+Attribute                                                                                                                                      Summary
 
 ==================================================================   =================================================================================
 :ref:`enable_velocity_limiting <enable_velocity_limiting>`                                                         Enable velocity limiting treatment.

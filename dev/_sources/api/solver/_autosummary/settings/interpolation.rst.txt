@@ -5,16 +5,13 @@
 interpolation
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.interpolation
+.. autoclass:: ansys.fluent.core.solver.settings_231.interpolation.interpolation
 
-.. autoclass:: interpolation
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ================================================================================   =====================================================================================
 
-Child                                                                                                                                                            Summary
+Attribute                                                                                                                                                        Summary
 
 ================================================================================   =====================================================================================
 :ref:`interpolate_flow_cp <interpolate_flow_cp>`                                            Enable/disable interpolation of flow specific heat to the particle position.

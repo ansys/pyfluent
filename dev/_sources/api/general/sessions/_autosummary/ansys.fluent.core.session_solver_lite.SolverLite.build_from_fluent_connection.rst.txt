@@ -1,0 +1,6 @@
+build\_from\_fluent\_connection
+===============================
+
+.. currentmodule:: ansys.fluent.core.session_solver_lite
+
+.. automethod:: SolverLite.build_from_fluent_connection

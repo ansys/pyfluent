@@ -5,11 +5,8 @@
 relaxation_method
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.relaxation_method
+.. autoclass:: ansys.fluent.core.solver.settings_231.relaxation_method.relaxation_method
 
-.. autoclass:: relaxation_method
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   =====================

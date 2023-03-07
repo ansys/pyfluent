@@ -5,11 +5,8 @@
 solution_controls
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.solution_controls
+.. autoclass:: ansys.fluent.core.solver.settings_231.solution_controls.solution_controls
 
-.. autoclass:: solution_controls
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   ====================================

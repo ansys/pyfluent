@@ -5,11 +5,8 @@
 dpm_crit_temp_option
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_crit_temp_option
+.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_crit_temp_option.dpm_crit_temp_option
 
-.. autoclass:: dpm_crit_temp_option
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

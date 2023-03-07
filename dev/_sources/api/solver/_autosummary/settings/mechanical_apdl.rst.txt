@@ -5,11 +5,8 @@
 mechanical_apdl
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.mechanical_apdl
+.. autoclass:: ansys.fluent.core.solver.settings_231.mechanical_apdl.mechanical_apdl
 
-.. autoclass:: mechanical_apdl
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ==========================================   =============================

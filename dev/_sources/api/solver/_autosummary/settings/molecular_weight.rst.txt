@@ -5,16 +5,13 @@
 molecular_weight
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.molecular_weight
+.. autoclass:: ansys.fluent.core.solver.settings_231.molecular_weight.molecular_weight
 
-.. autoclass:: molecular_weight
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ============================   ====================================================
 
-Child                                                                       Summary
+Attribute                                                                   Summary
 
 ============================   ====================================================
 :ref:`option <option_9>`           Select method for calculating material property.

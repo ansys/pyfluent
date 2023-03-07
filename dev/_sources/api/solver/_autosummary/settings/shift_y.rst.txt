@@ -5,11 +5,8 @@
 shift_y
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.shift_y
+.. autoclass:: ansys.fluent.core.solver.settings_231.shift_y.shift_y
 
-.. autoclass:: shift_y
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

@@ -5,11 +5,8 @@
 moving_mesh_constraint
 ======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.moving_mesh_constraint
+.. autoclass:: ansys.fluent.core.solver.settings_231.moving_mesh_constraint.moving_mesh_constraint
 
-.. autoclass:: moving_mesh_constraint
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================================   =======================================

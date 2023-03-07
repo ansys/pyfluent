@@ -5,11 +5,8 @@
 num_bins
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.num_bins
+.. autoclass:: ansys.fluent.core.solver.settings_231.num_bins.num_bins
 
-.. autoclass:: num_bins
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================================================================

@@ -5,11 +5,8 @@
 import_design_table
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.import_design_table
+.. autoclass:: ansys.fluent.core.solver.settings_231.import_design_table.import_design_table
 
-.. autoclass:: import_design_table
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ========================================   ============================

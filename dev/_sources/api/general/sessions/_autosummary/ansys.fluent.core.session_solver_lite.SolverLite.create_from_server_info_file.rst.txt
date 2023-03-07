@@ -1,0 +1,6 @@
+create\_from\_server\_info\_file
+================================
+
+.. currentmodule:: ansys.fluent.core.session_solver_lite
+
+.. automethod:: SolverLite.create_from_server_info_file

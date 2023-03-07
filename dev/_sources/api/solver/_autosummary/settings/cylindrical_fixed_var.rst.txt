@@ -5,11 +5,8 @@
 cylindrical_fixed_var
 =====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.cylindrical_fixed_var
+.. autoclass:: ansys.fluent.core.solver.settings_231.cylindrical_fixed_var.cylindrical_fixed_var
 
-.. autoclass:: cylindrical_fixed_var
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

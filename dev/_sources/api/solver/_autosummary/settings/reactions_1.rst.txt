@@ -5,11 +5,8 @@
 reactions
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.reactions_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.reactions_1.reactions
 
-.. autoclass:: reactions
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ======================

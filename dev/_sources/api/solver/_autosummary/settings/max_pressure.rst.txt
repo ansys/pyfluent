@@ -5,11 +5,8 @@
 max_pressure
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.max_pressure
+.. autoclass:: ansys.fluent.core.solver.settings_231.max_pressure.max_pressure
 
-.. autoclass:: max_pressure
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

@@ -5,11 +5,8 @@
 execute_smoothing
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.execute_smoothing
+.. autoclass:: ansys.fluent.core.solver.settings_231.execute_smoothing.execute_smoothing
 
-.. autoclass:: execute_smoothing
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ============================================

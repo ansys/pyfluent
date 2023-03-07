@@ -5,16 +5,13 @@
 dp_profile
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dp_profile
+.. autoclass:: ansys.fluent.core.solver.settings_231.dp_profile.dp_profile
 
-.. autoclass:: dp_profile
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

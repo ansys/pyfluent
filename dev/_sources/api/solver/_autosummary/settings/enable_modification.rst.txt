@@ -5,11 +5,8 @@
 enable_modification
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.enable_modification
+.. autoclass:: ansys.fluent.core.solver.settings_231.enable_modification.enable_modification
 
-.. autoclass:: enable_modification
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ==========================   =====================

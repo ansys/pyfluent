@@ -5,11 +5,8 @@
 output_parameter
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.output_parameter
+.. autoclass:: ansys.fluent.core.solver.settings_231.output_parameter.output_parameter
 
-.. autoclass:: output_parameter
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   =============================================

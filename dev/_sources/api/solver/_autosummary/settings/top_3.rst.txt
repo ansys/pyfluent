@@ -5,11 +5,8 @@
 top
 ===
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.top_3
+.. autoclass:: ansys.fluent.core.solver.settings_231.top_3.top
 
-.. autoclass:: top
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================   =======================================

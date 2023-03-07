@@ -5,11 +5,8 @@
 set_filetype
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.set_filetype
+.. autoclass:: ansys.fluent.core.solver.settings_231.set_filetype.set_filetype
 
-.. autoclass:: set_filetype
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ===============================================

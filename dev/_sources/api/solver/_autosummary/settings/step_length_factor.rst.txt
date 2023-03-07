@@ -5,11 +5,8 @@
 step_length_factor
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.step_length_factor
+.. autoclass:: ansys.fluent.core.solver.settings_231.step_length_factor.step_length_factor
 
-.. autoclass:: step_length_factor
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   ===================================================================================

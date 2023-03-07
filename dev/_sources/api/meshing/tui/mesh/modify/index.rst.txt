@@ -3,11 +3,11 @@
 meshing.tui.mesh.modify
 =======================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.modify
-   :members: smooth_node, auto_improve_warp, mesh_node, mesh_nodes_on_zone, deselect_last, select_entity, neighborhood_skew, list_selections, list_skewed_cells, clear_selections, refine_cell, auto_node_move, delete_isolated_cells, extract_unused_nodes, repair_negative_volume_cells
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

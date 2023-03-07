@@ -5,11 +5,8 @@
 blade_pitch_collective
 ======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.blade_pitch_collective
+.. autoclass:: ansys.fluent.core.solver.settings_231.blade_pitch_collective.blade_pitch_collective
 
-.. autoclass:: blade_pitch_collective
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   =======================================================

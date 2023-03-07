@@ -5,11 +5,8 @@
 axis_components
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.axis_components
+.. autoclass:: ansys.fluent.core.solver.settings_231.axis_components.axis_components
 
-.. autoclass:: axis_components
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ====================

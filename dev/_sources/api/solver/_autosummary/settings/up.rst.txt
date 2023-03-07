@@ -5,11 +5,8 @@
 up
 ==
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.up
+.. autoclass:: ansys.fluent.core.solver.settings_231.up.up
 
-.. autoclass:: up
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ==============================================================

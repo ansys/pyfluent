@@ -5,11 +5,8 @@
 dpm_bc_erosion_shielding
 ========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_bc_erosion_shielding
+.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_bc_erosion_shielding.dpm_bc_erosion_shielding
 
-.. autoclass:: dpm_bc_erosion_shielding
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

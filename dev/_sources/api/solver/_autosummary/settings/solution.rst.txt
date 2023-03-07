@@ -5,16 +5,13 @@
 solution
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.solution
+.. autoclass:: ansys.fluent.core.solver.settings_231.solution.solution
 
-.. autoclass:: solution
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================================   =================================
 
-Child                                                                          Summary
+Attribute                                                                      Summary
 
 ==================================================   =================================
 :ref:`controls <controls>`                                           'controls' child.

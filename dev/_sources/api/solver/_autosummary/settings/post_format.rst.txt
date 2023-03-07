@@ -5,11 +5,8 @@
 post_format
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.post_format
+.. autoclass:: ansys.fluent.core.solver.settings_231.post_format.post_format
 
-.. autoclass:: post_format
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ===========================

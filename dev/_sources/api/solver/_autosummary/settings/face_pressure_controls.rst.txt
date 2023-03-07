@@ -5,16 +5,13 @@
 face_pressure_controls
 ======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.face_pressure_controls
+.. autoclass:: ansys.fluent.core.solver.settings_231.face_pressure_controls.face_pressure_controls
 
-.. autoclass:: face_pressure_controls
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   ==============================
 
-Child                                                                         Summary
+Attribute                                                                     Summary
 
 ====================================================   ==============================
 :ref:`face_pressure_options <face_pressure_options>`       Set face pressure options.

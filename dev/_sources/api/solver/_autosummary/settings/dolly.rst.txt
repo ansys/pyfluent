@@ -5,11 +5,8 @@
 dolly
 =====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dolly
+.. autoclass:: ansys.fluent.core.solver.settings_231.dolly.dolly
 
-.. autoclass:: dolly
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ====================   ==================

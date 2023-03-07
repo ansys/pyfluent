@@ -5,16 +5,13 @@
 absorption_coefficient
 ======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.absorption_coefficient_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.absorption_coefficient_1.absorption_coefficient
 
-.. autoclass:: absorption_coefficient
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ======================================================   ====================================================
 
-Child                                                                                                 Summary
+Attribute                                                                                             Summary
 
 ======================================================   ====================================================
 :ref:`option <option_9>`                                     Select method for calculating material property.

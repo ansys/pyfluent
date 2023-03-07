@@ -5,11 +5,8 @@
 condition
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.condition
+.. autoclass:: ansys.fluent.core.solver.settings_231.condition.condition
 
-.. autoclass:: condition
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ===================================

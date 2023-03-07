@@ -5,11 +5,8 @@
 list_adaption_cells
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.list_adaption_cells
+.. autoclass:: ansys.fluent.core.solver.settings_231.list_adaption_cells.list_adaption_cells
 
-.. autoclass:: list_adaption_cells
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ==================

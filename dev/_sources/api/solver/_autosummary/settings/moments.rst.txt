@@ -5,11 +5,8 @@
 moments
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.moments
+.. autoclass:: ansys.fluent.core.solver.settings_231.moments.moments
 
-.. autoclass:: moments
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ======================================   ===========================

@@ -5,16 +5,13 @@
 advanced_stability_controls
 ===========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.advanced_stability_controls
+.. autoclass:: ansys.fluent.core.solver.settings_231.advanced_stability_controls.advanced_stability_controls
 
-.. autoclass:: advanced_stability_controls
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==========================================   ===============================================================
 
-Child                                                                                                Summary
+Attribute                                                                                            Summary
 
 ==========================================   ===============================================================
 :ref:`pseudo_transient <pseudo_transient>`               Pseudo-Time stability controls for multiphase flow.

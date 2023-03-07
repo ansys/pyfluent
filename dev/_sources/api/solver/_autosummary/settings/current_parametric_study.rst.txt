@@ -5,11 +5,8 @@
 current_parametric_study
 ========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.current_parametric_study
+.. autoclass:: ansys.fluent.core.solver.settings_231.current_parametric_study.current_parametric_study
 
-.. autoclass:: current_parametric_study
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================   ==================

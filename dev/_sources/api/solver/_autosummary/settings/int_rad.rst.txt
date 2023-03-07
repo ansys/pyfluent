@@ -5,11 +5,8 @@
 int_rad
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.int_rad
+.. autoclass:: ansys.fluent.core.solver.settings_231.int_rad.int_rad
 
-.. autoclass:: int_rad
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

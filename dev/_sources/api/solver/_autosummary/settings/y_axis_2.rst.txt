@@ -5,11 +5,8 @@
 y_axis
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.y_axis_2
+.. autoclass:: ansys.fluent.core.solver.settings_231.y_axis_2.y_axis
 
-.. autoclass:: y_axis
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================   =======================

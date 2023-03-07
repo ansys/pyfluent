@@ -5,11 +5,8 @@
 fan_curve_fit
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.fan_curve_fit
+.. autoclass:: ansys.fluent.core.solver.settings_231.fan_curve_fit.fan_curve_fit
 
-.. autoclass:: fan_curve_fit
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

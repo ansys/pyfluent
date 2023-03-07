@@ -5,11 +5,8 @@
 light_number
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.light_number
+.. autoclass:: ansys.fluent.core.solver.settings_231.light_number.light_number
 
-.. autoclass:: light_number
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ========================

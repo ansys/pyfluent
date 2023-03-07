@@ -5,11 +5,8 @@
 disc_output_type
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.disc_output_type
+.. autoclass:: ansys.fluent.core.solver.settings_231.disc_output_type.disc_output_type
 
-.. autoclass:: disc_output_type
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   =============================

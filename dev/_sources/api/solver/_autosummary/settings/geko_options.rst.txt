@@ -5,16 +5,13 @@
 geko_options
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.geko_options
+.. autoclass:: ansys.fluent.core.solver.settings_231.geko_options.geko_options
 
-.. autoclass:: geko_options
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==============================================   ============================================================
 
-Child                                                                                                 Summary
+Attribute                                                                                             Summary
 
 ==============================================   ============================================================
 :ref:`wall_distance_free <wall_distance_free>`       Enable/disable wall-distance-free version of GEKO model.
@@ -33,11 +30,11 @@ Child                                                                           
 
 ==============================================   ============================================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ====================================   ================================
 
-Command                                                         Summary
+Method                                                          Summary
 
 ====================================   ================================
 :ref:`geko_defaults <geko_defaults>`       Set GEKO options to default.

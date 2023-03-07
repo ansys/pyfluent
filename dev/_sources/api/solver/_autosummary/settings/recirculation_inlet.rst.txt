@@ -5,11 +5,8 @@
 recirculation_inlet
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.recirculation_inlet
+.. autoclass:: ansys.fluent.core.solver.settings_231.recirculation_inlet.recirculation_inlet
 
-.. autoclass:: recirculation_inlet
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`recirculation_inlet_child <recirculation_inlet_child>`

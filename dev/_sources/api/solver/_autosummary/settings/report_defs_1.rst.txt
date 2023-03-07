@@ -5,11 +5,8 @@
 report_defs
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.report_defs_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.report_defs_1.report_defs
 
-.. autoclass:: report_defs
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

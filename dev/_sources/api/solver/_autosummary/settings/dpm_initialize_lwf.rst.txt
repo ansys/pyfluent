@@ -5,11 +5,8 @@
 dpm_initialize_lwf
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_initialize_lwf
+.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_initialize_lwf.dpm_initialize_lwf
 
-.. autoclass:: dpm_initialize_lwf
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

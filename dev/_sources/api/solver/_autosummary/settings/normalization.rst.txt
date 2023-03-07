@@ -5,11 +5,8 @@
 normalization
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.normalization
+.. autoclass:: ansys.fluent.core.solver.settings_231.normalization.normalization
 
-.. autoclass:: normalization
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================

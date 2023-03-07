@@ -5,11 +5,8 @@
 skip
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.skip
+.. autoclass:: ansys.fluent.core.solver.settings_231.skip.skip
 
-.. autoclass:: skip
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

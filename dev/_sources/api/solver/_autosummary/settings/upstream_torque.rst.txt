@@ -5,11 +5,8 @@
 upstream_torque
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.upstream_torque
+.. autoclass:: ansys.fluent.core.solver.settings_231.upstream_torque.upstream_torque
 
-.. autoclass:: upstream_torque
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

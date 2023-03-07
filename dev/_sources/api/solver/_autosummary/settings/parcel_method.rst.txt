@@ -5,16 +5,13 @@
 parcel_method
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.parcel_method
+.. autoclass:: ansys.fluent.core.solver.settings_231.parcel_method.parcel_method
 
-.. autoclass:: parcel_method
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ======================================================   ===================================
 
-Child                                                                                Summary
+Attribute                                                                            Summary
 
 ======================================================   ===================================
 :ref:`option <option_2>`                                                     'option' child.

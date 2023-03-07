@@ -5,16 +5,13 @@
 shell_conduction_child
 ======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.shell_conduction_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.shell_conduction_child.shell_conduction_child
 
-.. autoclass:: shell_conduction_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ============================   ======================
 
-Child                                         Summary
+Attribute                                     Summary
 
 ============================   ======================
 :ref:`thickness <thickness>`       'thickness' child.

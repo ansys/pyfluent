@@ -5,11 +5,8 @@
 reorder_domain
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.reorder_domain
+.. autoclass:: ansys.fluent.core.solver.settings_231.reorder_domain.reorder_domain
 
-.. autoclass:: reorder_domain
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ==================================

@@ -5,11 +5,8 @@
 film_mass_flow
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.film_mass_flow
+.. autoclass:: ansys.fluent.core.solver.settings_231.film_mass_flow.film_mass_flow
 
-.. autoclass:: film_mass_flow
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ========================================   ===========================================

@@ -5,11 +5,8 @@
 les_embedded_mom_scheme
 =======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.les_embedded_mom_scheme
+.. autoclass:: ansys.fluent.core.solver.settings_231.les_embedded_mom_scheme.les_embedded_mom_scheme
 
-.. autoclass:: les_embedded_mom_scheme
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

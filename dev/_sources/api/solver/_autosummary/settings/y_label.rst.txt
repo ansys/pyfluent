@@ -5,11 +5,8 @@
 y_label
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.y_label
+.. autoclass:: ansys.fluent.core.solver.settings_231.y_label.y_label
 
-.. autoclass:: y_label
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ========================================

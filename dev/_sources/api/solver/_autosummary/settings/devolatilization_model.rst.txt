@@ -5,16 +5,13 @@
 devolatilization_model
 ======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.devolatilization_model
+.. autoclass:: ansys.fluent.core.solver.settings_231.devolatilization_model.devolatilization_model
 
-.. autoclass:: devolatilization_model
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ================================================   ====================================================
 
-Child                                                                                           Summary
+Attribute                                                                                       Summary
 
 ================================================   ====================================================
 :ref:`option <option_9>`                               Select method for calculating material property.

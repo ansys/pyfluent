@@ -1,0 +1,6 @@
+as\_integer\_ratio
+==================
+
+.. currentmodule:: ansys.fluent.core.quantity
+
+.. automethod:: Quantity.as_integer_ratio

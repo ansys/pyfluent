@@ -5,16 +5,13 @@
 velocity
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.velocity
+.. autoclass:: ansys.fluent.core.solver.settings_231.velocity.velocity
 
-.. autoclass:: velocity
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ============================================================   ======================================
 
-Child                                                                                         Summary
+Attribute                                                                                     Summary
 
 ============================================================   ======================================
 :ref:`x_velocity <x_velocity>`                                                    'x_velocity' child.

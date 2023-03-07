@@ -5,11 +5,8 @@
 colormap_left
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.colormap_left
+.. autoclass:: ansys.fluent.core.solver.settings_231.colormap_left.colormap_left
 
-.. autoclass:: colormap_left
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ============================================

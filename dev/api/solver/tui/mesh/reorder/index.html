@@ -304,13 +304,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -574,7 +569,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.reorder">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.mesh.reorder
+     reorder
     </span>
    </code>
   </a>
@@ -583,7 +578,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.reorder.band_width">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.reorder.band_width()
+       reorder.band_width()
       </span>
      </code>
     </a>
@@ -592,7 +587,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.reorder.reorder_domain">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.reorder.reorder_domain()
+       reorder.reorder_domain()
       </span>
      </code>
     </a>
@@ -601,7 +596,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.reorder.reorder_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.reorder.reorder_zones()
+       reorder.reorder_zones()
       </span>
      </code>
     </a>
@@ -629,14 +624,25 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-mesh-reorder">
 <span id="ref-solver-tui-mesh-reorder"></span><h1>solver.tui.mesh.reorder<a class="headerlink" href="#solver-tui-mesh-reorder" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.reorder">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.</span></span><span class="sig-name descname"><span class="pre">reorder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.reorder" title="Permalink to this definition">#</a></dt>
-<dd><p>Reorders domain menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.mesh.</span></span><span class="sig-name descname"><span class="pre">reorder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.reorder" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Reorders domain menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.reorder.band_width" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.reorder.band_width"><code class="xref py py-obj docutils literal notranslate"><span class="pre">band_width</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints cell bandwidth.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.reorder.reorder_domain" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.reorder.reorder_domain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reorder_domain</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reorders cells and faces using the reverse Cuthill-McKee algorithm.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.reorder.reorder_zones" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.reorder.reorder_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reorder_zones</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reorders zones by partition, type, and ID.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.reorder.band_width">
 <span class="sig-name descname"><span class="pre">band_width</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.reorder.band_width" title="Permalink to this definition">#</a></dt>

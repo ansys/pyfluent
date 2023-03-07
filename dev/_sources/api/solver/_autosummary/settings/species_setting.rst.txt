@@ -5,16 +5,13 @@
 species_setting
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.species_setting
+.. autoclass:: ansys.fluent.core.solver.settings_231.species_setting.species_setting
 
-.. autoclass:: species_setting
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ======================================================   ======================================
 
-Child                                                                                   Summary
+Attribute                                                                               Summary
 
 ======================================================   ======================================
 :ref:`user_specified_species <user_specified_species>`       Enable/Disable species parameters.

@@ -5,16 +5,13 @@
 manual
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.manual
+.. autoclass:: ansys.fluent.core.solver.settings_231.manual.manual
 
-.. autoclass:: manual
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ======================================   ===========================
 
-Child                                                        Summary
+Attribute                                                    Summary
 
 ======================================   ===========================
 :ref:`faces <faces_1>`                                'faces' child.

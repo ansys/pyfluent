@@ -5,16 +5,13 @@
 coarsening_parameters
 =====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.coarsening_parameters_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.coarsening_parameters_1.coarsening_parameters
 
-.. autoclass:: coarsening_parameters
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================================================   ==================================================================
 
-Child                                                                                                                 Summary
+Attribute                                                                                                             Summary
 
 ========================================================   ==================================================================
 :ref:`max_coarse_levels <max_coarse_levels_1>`                                  Coupled:maximum number of coarse grid levels.

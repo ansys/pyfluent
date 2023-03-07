@@ -304,13 +304,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -599,7 +594,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.auto_save">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.file.auto_save
+     auto_save
     </span>
    </code>
   </a>
@@ -608,7 +603,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.auto_save.append_file_name_with">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.file.auto_save.append_file_name_with()
+       auto_save.append_file_name_with()
       </span>
      </code>
     </a>
@@ -617,7 +612,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.auto_save.case_frequency">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.file.auto_save.case_frequency()
+       auto_save.case_frequency()
       </span>
      </code>
     </a>
@@ -626,7 +621,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.auto_save.data_frequency">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.file.auto_save.data_frequency()
+       auto_save.data_frequency()
       </span>
      </code>
     </a>
@@ -635,7 +630,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.auto_save.max_files">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.file.auto_save.max_files()
+       auto_save.max_files()
       </span>
      </code>
     </a>
@@ -644,7 +639,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.auto_save.retain_most_recent_files">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.file.auto_save.retain_most_recent_files()
+       auto_save.retain_most_recent_files()
       </span>
      </code>
     </a>
@@ -653,7 +648,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.auto_save.root_name">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.file.auto_save.root_name()
+       auto_save.root_name()
       </span>
      </code>
     </a>
@@ -662,7 +657,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.auto_save.save_data_file_every">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.file.auto_save.save_data_file_every()
+       auto_save.save_data_file_every()
       </span>
      </code>
     </a>
@@ -690,14 +685,37 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-file-auto-save">
 <span id="ref-solver-tui-file-auto-save"></span><h1>solver.tui.file.auto_save<a class="headerlink" href="#solver-tui-file-auto-save" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.auto_save">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.file.</span></span><span class="sig-name descname"><span class="pre">auto_save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.auto_save" title="Permalink to this definition">#</a></dt>
-<dd><p>Enters the auto save menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.file.</span></span><span class="sig-name descname"><span class="pre">auto_save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.auto_save" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enters the auto save menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.auto_save.append_file_name_with" title="ansys.fluent.core.solver.tui_231.main_menu.file.auto_save.append_file_name_with"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_file_name_with</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the suffix for auto-saved files.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.auto_save.case_frequency" title="ansys.fluent.core.solver.tui_231.main_menu.file.auto_save.case_frequency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">case_frequency</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the frequency (in iterations, time steps, or flow time) with which case files are saved.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.auto_save.data_frequency" title="ansys.fluent.core.solver.tui_231.main_menu.file.auto_save.data_frequency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data_frequency</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the frequency (in iterations, time steps, or flow time) with which data files are saved.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.auto_save.max_files" title="ansys.fluent.core.solver.tui_231.main_menu.file.auto_save.max_files"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_files</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the maximum number of files.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.auto_save.retain_most_recent_files" title="ansys.fluent.core.solver.tui_231.main_menu.file.auto_save.retain_most_recent_files"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retain_most_recent_files</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets autosave to retain the 5 most recent files.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.auto_save.root_name" title="ansys.fluent.core.solver.tui_231.main_menu.file.auto_save.root_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">root_name</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the root name for the files that are saved.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.auto_save.save_data_file_every" title="ansys.fluent.core.solver.tui_231.main_menu.file.auto_save.save_data_file_every"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_data_file_every</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the type and frequency of the data file to be saved.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.auto_save.append_file_name_with">
 <span class="sig-name descname"><span class="pre">append_file_name_with</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.auto_save.append_file_name_with" title="Permalink to this definition">#</a></dt>

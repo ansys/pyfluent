@@ -5,11 +5,8 @@
 update_all
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.update_all
+.. autoclass:: ansys.fluent.core.solver.settings_231.update_all.update_all
 
-.. autoclass:: update_all
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ==========================

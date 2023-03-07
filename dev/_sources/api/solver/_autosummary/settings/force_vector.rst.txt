@@ -5,11 +5,8 @@
 force_vector
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.force_vector
+.. autoclass:: ansys.fluent.core.solver.settings_231.force_vector.force_vector
 
-.. autoclass:: force_vector
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================   =================================

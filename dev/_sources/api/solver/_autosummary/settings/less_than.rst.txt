@@ -5,11 +5,8 @@
 less_than
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.less_than
+.. autoclass:: ansys.fluent.core.solver.settings_231.less_than.less_than
 
-.. autoclass:: less_than
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 =========================   ===================

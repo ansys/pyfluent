@@ -5,11 +5,8 @@
 ocw_sp_vel_spec
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.ocw_sp_vel_spec
+.. autoclass:: ansys.fluent.core.solver.settings_231.ocw_sp_vel_spec.ocw_sp_vel_spec
 
-.. autoclass:: ocw_sp_vel_spec
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

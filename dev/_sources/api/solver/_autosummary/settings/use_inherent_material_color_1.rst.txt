@@ -5,11 +5,8 @@
 use_inherent_material_color
 ===========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.use_inherent_material_color_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.use_inherent_material_color_1.use_inherent_material_color
 
-.. autoclass:: use_inherent_material_color
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =======================

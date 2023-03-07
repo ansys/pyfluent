@@ -5,11 +5,8 @@
 plot_sample
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.plot_sample
+.. autoclass:: ansys.fluent.core.solver.settings_231.plot_sample.plot_sample
 
-.. autoclass:: plot_sample
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ================================================   ================================

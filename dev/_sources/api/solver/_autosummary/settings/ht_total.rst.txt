@@ -5,16 +5,13 @@
 ht_total
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.ht_total
+.. autoclass:: ansys.fluent.core.solver.settings_231.ht_total.ht_total
 
-.. autoclass:: ht_total
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

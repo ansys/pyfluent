@@ -5,11 +5,8 @@
 fixed_periodic_type_value
 =========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.fixed_periodic_type_value
+.. autoclass:: ansys.fluent.core.solver.settings_231.fixed_periodic_type_value.fixed_periodic_type_value
 
-.. autoclass:: fixed_periodic_type_value
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ===========================

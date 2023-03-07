@@ -5,11 +5,8 @@
 display
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.display_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.display_1.display
 
-.. autoclass:: display
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ================================   ========================

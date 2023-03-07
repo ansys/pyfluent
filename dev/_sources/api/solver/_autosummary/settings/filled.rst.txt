@@ -5,11 +5,8 @@
 filled
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.filled
+.. autoclass:: ansys.fluent.core.solver.settings_231.filled.filled
 
-.. autoclass:: filled
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ===================================

@@ -5,16 +5,13 @@
 collision_cross_section
 =======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.collision_cross_section
+.. autoclass:: ansys.fluent.core.solver.settings_231.collision_cross_section.collision_cross_section
 
-.. autoclass:: collision_cross_section
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================================================   ====================================================
 
-Child                                                                                                             Summary
+Attribute                                                                                                         Summary
 
 ==================================================================   ====================================================
 :ref:`option <option_9>`                                                 Select method for calculating material property.

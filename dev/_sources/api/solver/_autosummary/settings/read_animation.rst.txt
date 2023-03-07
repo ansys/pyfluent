@@ -5,11 +5,8 @@
 read_animation
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.read_animation
+.. autoclass:: ansys.fluent.core.solver.settings_231.read_animation.read_animation
 
-.. autoclass:: read_animation
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ====================================================   ==================================

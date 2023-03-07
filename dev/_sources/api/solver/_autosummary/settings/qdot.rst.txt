@@ -5,16 +5,13 @@
 qdot
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.qdot
+.. autoclass:: ansys.fluent.core.solver.settings_231.qdot.qdot
 
-.. autoclass:: qdot
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

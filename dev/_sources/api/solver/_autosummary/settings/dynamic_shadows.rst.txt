@@ -5,11 +5,8 @@
 dynamic_shadows
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dynamic_shadows
+.. autoclass:: ansys.fluent.core.solver.settings_231.dynamic_shadows.dynamic_shadows
 
-.. autoclass:: dynamic_shadows
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

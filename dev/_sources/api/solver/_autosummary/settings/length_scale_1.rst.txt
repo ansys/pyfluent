@@ -5,11 +5,8 @@
 length_scale
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.length_scale_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.length_scale_1.length_scale
 
-.. autoclass:: length_scale
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =============================

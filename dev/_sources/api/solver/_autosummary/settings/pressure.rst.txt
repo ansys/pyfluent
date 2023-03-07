@@ -5,11 +5,8 @@
 pressure
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.pressure
+.. autoclass:: ansys.fluent.core.solver.settings_231.pressure.pressure
 
-.. autoclass:: pressure
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =============================

@@ -5,16 +5,13 @@
 load_balance
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.load_balance
+.. autoclass:: ansys.fluent.core.solver.settings_231.load_balance.load_balance
 
-.. autoclass:: load_balance
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==========================================   ==========================================
 
-Child                                                                           Summary
+Attribute                                                                       Summary
 
 ==========================================   ==========================================
 :ref:`physical_models <physical_models_2>`         Use physical-models load balancing?.

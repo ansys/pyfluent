@@ -5,16 +5,13 @@
 liquid_content_cp
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.liquid_content_cp
+.. autoclass:: ansys.fluent.core.solver.settings_231.liquid_content_cp.liquid_content_cp
 
-.. autoclass:: liquid_content_cp
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

@@ -5,16 +5,13 @@
 k_omega_options
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.k_omega_options
+.. autoclass:: ansys.fluent.core.solver.settings_231.k_omega_options.k_omega_options
 
-.. autoclass:: k_omega_options
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================================   ============================================================
 
-Child                                                                                                     Summary
+Attribute                                                                                                 Summary
 
 ==================================================   ============================================================
 :ref:`kw_low_re_correction <kw_low_re_correction>`                      Enable/disable the k-omega low Re option.

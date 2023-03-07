@@ -5,11 +5,8 @@
 coll_dphi
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.coll_dphi
+.. autoclass:: ansys.fluent.core.solver.settings_231.coll_dphi.coll_dphi
 
-.. autoclass:: coll_dphi
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

@@ -5,11 +5,8 @@
 list_datasets
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.list_datasets
+.. autoclass:: ansys.fluent.core.solver.settings_231.list_datasets.list_datasets
 
-.. autoclass:: list_datasets
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   =========================================

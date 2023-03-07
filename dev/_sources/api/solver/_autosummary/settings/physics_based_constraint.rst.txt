@@ -5,11 +5,8 @@
 physics_based_constraint
 ========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.physics_based_constraint
+.. autoclass:: ansys.fluent.core.solver.settings_231.physics_based_constraint.physics_based_constraint
 
-.. autoclass:: physics_based_constraint
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================================================   =================================================

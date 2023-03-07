@@ -5,11 +5,8 @@
 multicomponent
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.multicomponent
+.. autoclass:: ansys.fluent.core.solver.settings_231.multicomponent.multicomponent
 
-.. autoclass:: multicomponent
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`multicomponent_child <multicomponent_child>`

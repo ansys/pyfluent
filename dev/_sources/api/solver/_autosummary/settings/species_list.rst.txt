@@ -5,11 +5,8 @@
 species_list
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.species_list
+.. autoclass:: ansys.fluent.core.solver.settings_231.species_list.species_list
 
-.. autoclass:: species_list
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ==========================

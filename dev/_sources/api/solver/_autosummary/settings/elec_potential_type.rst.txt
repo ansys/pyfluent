@@ -5,11 +5,8 @@
 elec_potential_type
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.elec_potential_type
+.. autoclass:: ansys.fluent.core.solver.settings_231.elec_potential_type.elec_potential_type
 
-.. autoclass:: elec_potential_type
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

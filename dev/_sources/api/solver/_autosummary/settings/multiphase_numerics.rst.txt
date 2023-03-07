@@ -5,16 +5,13 @@
 multiphase_numerics
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.multiphase_numerics
+.. autoclass:: ansys.fluent.core.solver.settings_231.multiphase_numerics.multiphase_numerics
 
-.. autoclass:: multiphase_numerics
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ================================================================   =======================================================================
 
-Child                                                                                                                              Summary
+Attribute                                                                                                                          Summary
 
 ================================================================   =======================================================================
 :ref:`porous_media <porous_media>`                                                    Multiphase miscellaneous porous media numerics menu.

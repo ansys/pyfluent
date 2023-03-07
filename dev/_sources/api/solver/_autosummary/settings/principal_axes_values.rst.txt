@@ -5,16 +5,13 @@
 principal_axes_values
 =====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.principal_axes_values
+.. autoclass:: ansys.fluent.core.solver.settings_231.principal_axes_values.principal_axes_values
 
-.. autoclass:: principal_axes_values
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==========================================   =============================
 
-Child                                                              Summary
+Attribute                                                          Summary
 
 ==========================================   =============================
 :ref:`principal_axes <principal_axes>`             'principal_axes' child.

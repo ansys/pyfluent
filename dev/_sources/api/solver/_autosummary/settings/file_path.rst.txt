@@ -5,11 +5,8 @@
 file_path
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.file_path
+.. autoclass:: ansys.fluent.core.solver.settings_231.file_path.file_path
 
-.. autoclass:: file_path
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================================================   =====================================================================

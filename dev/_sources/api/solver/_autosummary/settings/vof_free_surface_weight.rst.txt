@@ -5,16 +5,13 @@
 vof_free_surface_weight
 =======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.vof_free_surface_weight
+.. autoclass:: ansys.fluent.core.solver.settings_231.vof_free_surface_weight.vof_free_surface_weight
 
-.. autoclass:: vof_free_surface_weight
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================   =========================
 
-Child                                                    Summary
+Attribute                                                Summary
 
 ====================================   =========================
 :ref:`use <use>`                                    'use' child.

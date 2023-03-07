@@ -1,0 +1,23 @@
+﻿session\_base\_meshing
+======================
+
+.. automodule:: ansys.fluent.core.session_base_meshing
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

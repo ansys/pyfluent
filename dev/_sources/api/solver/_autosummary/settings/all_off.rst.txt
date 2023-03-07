@@ -5,11 +5,8 @@
 all_off
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.all_off
+.. autoclass:: ansys.fluent.core.solver.settings_231.all_off.all_off
 
-.. autoclass:: all_off
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================   ===============================================

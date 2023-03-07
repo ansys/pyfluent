@@ -5,16 +5,13 @@
 mesh
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.mesh_2
+.. autoclass:: ansys.fluent.core.solver.settings_231.mesh_2.mesh
 
-.. autoclass:: mesh
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Commands
+.. rubric:: Methods
 
 ========================================   =============================================
 
-Command                                                                          Summary
+Method                                                                           Summary
 
 ========================================   =============================================
 :ref:`display <display_1>`                                      Display graphics object.

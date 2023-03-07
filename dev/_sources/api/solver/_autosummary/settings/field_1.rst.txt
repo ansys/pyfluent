@@ -5,11 +5,8 @@
 field
 =====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.field_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.field_1.field
 
-.. autoclass:: field
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ======================   ===================

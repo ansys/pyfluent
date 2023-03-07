@@ -5,11 +5,8 @@
 lower
 =====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.lower
+.. autoclass:: ansys.fluent.core.solver.settings_231.lower.lower
 
-.. autoclass:: lower
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

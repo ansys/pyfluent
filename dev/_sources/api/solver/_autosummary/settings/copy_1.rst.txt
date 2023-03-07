@@ -5,11 +5,8 @@
 copy
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.copy_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.copy_1.copy
 
-.. autoclass:: copy
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ============================   ======================

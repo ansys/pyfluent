@@ -5,11 +5,8 @@
 cfl_type
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.cfl_type
+.. autoclass:: ansys.fluent.core.solver.settings_231.cfl_type.cfl_type
 
-.. autoclass:: cfl_type
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===============================

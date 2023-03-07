@@ -5,16 +5,13 @@
 auto_range_off
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.auto_range_off
+.. autoclass:: ansys.fluent.core.solver.settings_231.auto_range_off.auto_range_off
 
-.. autoclass:: auto_range_off
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================   ==========================
 
-Child                                                     Summary
+Attribute                                                 Summary
 
 ====================================   ==========================
 :ref:`clip_to_range <clip_to_range>`       'clip_to_range' child.

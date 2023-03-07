@@ -5,16 +5,13 @@
 picture
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.picture
+.. autoclass:: ansys.fluent.core.solver.settings_231.picture.picture
 
-.. autoclass:: picture
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   =======================================================================================================================
 
-Child                                                                                                                                                                  Summary
+Attribute                                                                                                                                                              Summary
 
 ====================================================   =======================================================================================================================
 :ref:`color_mode <color_mode>`                                                                                                                             'color_mode' child.
@@ -39,11 +36,11 @@ Child                                                                           
 
 ====================================================   =======================================================================================================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ========================================   ==========================================
 
-Command                                                                       Summary
+Method                                                                        Summary
 
 ========================================   ==========================================
 :ref:`preview <preview>`                       Display a preview image of a hardcopy.

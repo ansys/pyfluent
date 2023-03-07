@@ -5,11 +5,8 @@
 partially_catalytic
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.partially_catalytic
+.. autoclass:: ansys.fluent.core.solver.settings_231.partially_catalytic.partially_catalytic
 
-.. autoclass:: partially_catalytic
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

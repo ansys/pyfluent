@@ -5,11 +5,8 @@
 boundary_list
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.boundary_list
+.. autoclass:: ansys.fluent.core.solver.settings_231.boundary_list.boundary_list
 
-.. autoclass:: boundary_list
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   =====================

@@ -3,11 +3,11 @@
 meshing.tui.display.set.lights
 ==============================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.set.lights
-   :members: set_ambient_color, lighting_interpolation, headlight_on, lights_on, set_light
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.display.set.lights
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

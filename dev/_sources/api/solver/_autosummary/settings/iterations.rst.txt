@@ -5,11 +5,8 @@
 iterations
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.iterations
+.. autoclass:: ansys.fluent.core.solver.settings_231.iterations.iterations
 
-.. autoclass:: iterations
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   ==================================================================================================================

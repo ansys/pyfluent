@@ -5,11 +5,8 @@
 dpm_film_separation_model
 =========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_film_separation_model
+.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_film_separation_model.dpm_film_separation_model
 
-.. autoclass:: dpm_film_separation_model
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

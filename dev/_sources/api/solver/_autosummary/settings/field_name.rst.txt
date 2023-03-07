@@ -5,11 +5,8 @@
 field_name
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.field_name
+.. autoclass:: ansys.fluent.core.solver.settings_231.field_name.field_name
 
-.. autoclass:: field_name
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================================================================   ============================================================

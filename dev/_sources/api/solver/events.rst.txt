@@ -31,10 +31,8 @@ The following code triggers a callback at the end of every iteration.
 .. currentmodule:: ansys.fluent.core.streaming_services.events_streaming
 
 .. autosummary::
-   :toctree: _autosummary
+    :toctree: _autosummary
+    :template: flobject-class-template.rst
+    :recursive:
 
-.. automethod:: ansys.fluent.core.streaming_services.events_streaming.EventsManager.register_callback
-.. automethod:: ansys.fluent.core.streaming_services.events_streaming.EventsManager.unregister_callback
-
-
- 
+    EventsManager

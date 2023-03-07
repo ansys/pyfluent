@@ -5,11 +5,8 @@
 dpm_critical_temp_factor
 ========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_critical_temp_factor
+.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_critical_temp_factor.dpm_critical_temp_factor
 
-.. autoclass:: dpm_critical_temp_factor
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

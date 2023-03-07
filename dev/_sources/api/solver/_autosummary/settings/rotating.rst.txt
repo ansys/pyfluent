@@ -5,11 +5,8 @@
 rotating
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.rotating
+.. autoclass:: ansys.fluent.core.solver.settings_231.rotating.rotating
 
-.. autoclass:: rotating
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

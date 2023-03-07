@@ -5,16 +5,13 @@
 burn_stoichiometry
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.burn_stoichiometry
+.. autoclass:: ansys.fluent.core.solver.settings_231.burn_stoichiometry.burn_stoichiometry
 
-.. autoclass:: burn_stoichiometry
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

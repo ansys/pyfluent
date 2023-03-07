@@ -5,11 +5,8 @@
 title
 =====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.title
+.. autoclass:: ansys.fluent.core.solver.settings_231.title.title
 
-.. autoclass:: title
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

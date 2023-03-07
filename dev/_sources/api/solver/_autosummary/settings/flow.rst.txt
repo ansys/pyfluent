@@ -5,16 +5,13 @@
 flow
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.flow
+.. autoclass:: ansys.fluent.core.solver.settings_231.flow.flow
 
-.. autoclass:: flow
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Commands
+.. rubric:: Methods
 
 ============================================   ================================
 
-Command                                                                 Summary
+Method                                                                  Summary
 
 ============================================   ================================
 :ref:`species_mass_flow <species_mass_flow>`       'species_mass_flow' command.

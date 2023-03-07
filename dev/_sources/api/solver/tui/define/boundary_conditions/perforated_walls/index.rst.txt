@@ -3,11 +3,11 @@
 solver.tui.define.boundary\_conditions.perforated\_walls
 ========================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.boundary_conditions.perforated_walls
-   :members: read_input_file, model_setup
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.boundary_conditions.perforated_walls
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

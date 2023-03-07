@@ -5,11 +5,8 @@
 ak
 ==
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.ak
+.. autoclass:: ansys.fluent.core.solver.settings_231.ak.ak
 
-.. autoclass:: ak
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

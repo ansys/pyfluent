@@ -5,11 +5,8 @@
 update_viscous
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.update_viscous
+.. autoclass:: ansys.fluent.core.solver.settings_231.update_viscous.update_viscous
 
-.. autoclass:: update_viscous
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =======================================

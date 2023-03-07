@@ -5,11 +5,8 @@
 ia_grad_sym
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.ia_grad_sym
+.. autoclass:: ansys.fluent.core.solver.settings_231.ia_grad_sym.ia_grad_sym
 
-.. autoclass:: ia_grad_sym
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==================================

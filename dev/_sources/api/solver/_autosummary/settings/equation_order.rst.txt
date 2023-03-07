@@ -5,16 +5,13 @@
 equation_order
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.equation_order
+.. autoclass:: ansys.fluent.core.solver.settings_231.equation_order.equation_order
 
-.. autoclass:: equation_order
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================================   ==================================================================
 
-Child                                                                                                           Summary
+Attribute                                                                                                       Summary
 
 ==================================================   ==================================================================
 :ref:`solve_flow_last <solve_flow_last>`                 Solve flow equation at the end of iteration as an alternative.

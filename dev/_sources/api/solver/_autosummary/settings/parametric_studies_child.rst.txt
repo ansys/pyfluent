@@ -5,16 +5,13 @@
 parametric_studies_child
 ========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.parametric_studies_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.parametric_studies_child.parametric_studies_child
 
-.. autoclass:: parametric_studies_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================================   =================================
 
-Child                                                                          Summary
+Attribute                                                                      Summary
 
 ==================================================   =================================
 :ref:`design_points <design_points_1>`                          'design_points' child.

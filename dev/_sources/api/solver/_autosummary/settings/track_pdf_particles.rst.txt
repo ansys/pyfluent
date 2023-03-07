@@ -5,11 +5,8 @@
 track_pdf_particles
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.track_pdf_particles
+.. autoclass:: ansys.fluent.core.solver.settings_231.track_pdf_particles.track_pdf_particles
 
-.. autoclass:: track_pdf_particles
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

@@ -5,11 +5,8 @@
 free_surface_faces
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.free_surface_faces
+.. autoclass:: ansys.fluent.core.solver.settings_231.free_surface_faces.free_surface_faces
 
-.. autoclass:: free_surface_faces
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

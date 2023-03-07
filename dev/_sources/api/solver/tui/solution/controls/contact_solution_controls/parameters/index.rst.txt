@@ -3,11 +3,11 @@
 solver.tui.solution.controls.contact\_solution\_controls.parameters
 ===================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.controls.contact_solution_controls.parameters
-   :members: iterations, solution_stabilization_persistence, persistence_fixed_time_steps, persistence_fixed_duration, extrapolation_method
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.controls.contact_solution_controls.parameters
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

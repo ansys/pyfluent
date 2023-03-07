@@ -5,16 +5,13 @@
 outside_std_dev
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.outside_std_dev
+.. autoclass:: ansys.fluent.core.solver.settings_231.outside_std_dev.outside_std_dev
 
-.. autoclass:: outside_std_dev
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================   ==================
 
-Child                             Summary
+Attribute                         Summary
 
 ====================   ==================
 :ref:`lower <lower>`       'lower' child.

@@ -5,11 +5,8 @@
 clambda_scale
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.clambda_scale
+.. autoclass:: ansys.fluent.core.solver.settings_231.clambda_scale.clambda_scale
 
-.. autoclass:: clambda_scale
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   =====================================

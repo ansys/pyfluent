@@ -306,13 +306,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -750,7 +745,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.compressible_flow">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.solve.set.multiphase_numerics.compressible_flow
+     compressible_flow
     </span>
    </code>
   </a>
@@ -759,7 +754,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.compressible_flow.alternate_bc_formulation">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.solve.set.multiphase_numerics.compressible_flow.alternate_bc_formulation()
+       compressible_flow.alternate_bc_formulation()
       </span>
      </code>
     </a>
@@ -768,7 +763,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.compressible_flow.enhanced_numerics">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.solve.set.multiphase_numerics.compressible_flow.enhanced_numerics()
+       compressible_flow.enhanced_numerics()
       </span>
      </code>
     </a>
@@ -796,14 +791,22 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solve-set-multiphase-numerics-compressible-flow">
 <span id="ref-solver-tui-solve-set-multiphase-numerics-compressible-flow"></span><h1>solver.tui.solve.set.multiphase_numerics.compressible_flow<a class="headerlink" href="#solver-tui-solve-set-multiphase-numerics-compressible-flow" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.compressible_flow">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solve.set.multiphase_numerics.</span></span><span class="sig-name descname"><span class="pre">compressible_flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.compressible_flow" title="Permalink to this definition">#</a></dt>
-<dd><p>Enters the compressible multiphase flow numerics menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.</span></span><span class="sig-name descname"><span class="pre">compressible_flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.compressible_flow" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enters the compressible multiphase flow numerics menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.compressible_flow.alternate_bc_formulation" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.compressible_flow.alternate_bc_formulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alternate_bc_formulation</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables an alternative formulation for compressible phases at an  inlet boundary.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.compressible_flow.enhanced_numerics" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.compressible_flow.enhanced_numerics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enhanced_numerics</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables an enhanced numerical treatment that provides better  stability at startup and during calculation of compressible  flows.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.compressible_flow.alternate_bc_formulation">
 <span class="sig-name descname"><span class="pre">alternate_bc_formulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.compressible_flow.alternate_bc_formulation" title="Permalink to this definition">#</a></dt>

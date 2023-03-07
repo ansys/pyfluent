@@ -5,16 +5,13 @@
 tinf
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.tinf_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.tinf_1.tinf
 
-.. autoclass:: tinf
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

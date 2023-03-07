@@ -5,16 +5,13 @@
 neutral_involved_interaction
 ============================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.neutral_involved_interaction
+.. autoclass:: ansys.fluent.core.solver.settings_231.neutral_involved_interaction.neutral_involved_interaction
 
-.. autoclass:: neutral_involved_interaction
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================================================   =========================================
 
-Child                                                                                                  Summary
+Attribute                                                                                              Summary
 
 ==================================================================   =========================================
 :ref:`diffusion_collision_integral <diffusion_collision_integral>`       'diffusion_collision_integral' child.

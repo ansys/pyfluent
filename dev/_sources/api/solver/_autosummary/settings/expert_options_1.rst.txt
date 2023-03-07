@@ -5,16 +5,13 @@
 expert_options
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.expert_options_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.expert_options_1.expert_options
 
-.. autoclass:: expert_options
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================================================   =================================================================================================
 
-Child                                                                                                                                                          Summary
+Attribute                                                                                                                                                      Summary
 
 ==================================================================   =================================================================================================
 :ref:`re_randomize_every_iteration <re_randomize_every_iteration>`             Enable/disable changing the pseudo-random number sequences from iteration to iteration.

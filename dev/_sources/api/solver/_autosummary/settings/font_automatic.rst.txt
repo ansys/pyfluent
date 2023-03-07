@@ -5,11 +5,8 @@
 font_automatic
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.font_automatic
+.. autoclass:: ansys.fluent.core.solver.settings_231.font_automatic.font_automatic
 
-.. autoclass:: font_automatic
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

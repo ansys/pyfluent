@@ -5,11 +5,8 @@
 inlet_faces
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.inlet_faces
+.. autoclass:: ansys.fluent.core.solver.settings_231.inlet_faces.inlet_faces
 
-.. autoclass:: inlet_faces
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

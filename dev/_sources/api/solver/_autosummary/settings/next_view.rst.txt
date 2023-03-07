@@ -5,11 +5,8 @@
 next_view
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.next_view
+.. autoclass:: ansys.fluent.core.solver.settings_231.next_view.next_view
 
-.. autoclass:: next_view
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ==================

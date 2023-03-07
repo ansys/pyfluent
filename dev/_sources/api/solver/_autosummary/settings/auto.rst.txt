@@ -5,16 +5,13 @@
 auto
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.auto
+.. autoclass:: ansys.fluent.core.solver.settings_231.auto.auto
 
-.. autoclass:: auto
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   ==================================================
 
-Child                                                                           Summary
+Attribute                                                                       Summary
 
 ==================================   ==================================================
 :ref:`across_zones <across_zones>`       Enable auto partitioning by zone or by domain.
@@ -27,11 +24,11 @@ Child                                                                           
 
 ==================================   ==================================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ==================================================   ==========================================================
 
-Command                                                                                                 Summary
+Method                                                                                                  Summary
 
 ==================================================   ==========================================================
 :ref:`use_case_file_method <use_case_file_method>`       Enable the use-case-file method for auto partitioning.

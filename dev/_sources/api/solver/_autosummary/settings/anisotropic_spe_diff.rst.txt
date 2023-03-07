@@ -5,11 +5,8 @@
 anisotropic_spe_diff
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.anisotropic_spe_diff
+.. autoclass:: ansys.fluent.core.solver.settings_231.anisotropic_spe_diff.anisotropic_spe_diff
 
-.. autoclass:: anisotropic_spe_diff
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

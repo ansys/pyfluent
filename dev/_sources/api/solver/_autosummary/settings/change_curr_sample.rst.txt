@@ -5,11 +5,8 @@
 change_curr_sample
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.change_curr_sample
+.. autoclass:: ansys.fluent.core.solver.settings_231.change_curr_sample.change_curr_sample
 
-.. autoclass:: change_curr_sample
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ======================================================================================

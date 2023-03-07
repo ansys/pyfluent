@@ -5,11 +5,8 @@
 position
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.position
+.. autoclass:: ansys.fluent.core.solver.settings_231.position.position
 
-.. autoclass:: position
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

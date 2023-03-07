@@ -5,11 +5,8 @@
 reset_dpm_summaries
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.reset_dpm_summaries
+.. autoclass:: ansys.fluent.core.solver.settings_231.reset_dpm_summaries.reset_dpm_summaries
 
-.. autoclass:: reset_dpm_summaries
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================================   ============================================

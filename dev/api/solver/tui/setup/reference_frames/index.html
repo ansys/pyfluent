@@ -304,13 +304,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -609,7 +604,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.setup.reference_frames
+     reference_frames
     </span>
    </code>
   </a>
@@ -618,7 +613,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.add">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.reference_frames.add()
+       reference_frames.add()
       </span>
      </code>
     </a>
@@ -627,7 +622,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.reference_frames.delete()
+       reference_frames.delete()
       </span>
      </code>
     </a>
@@ -636,7 +631,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.display">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.reference_frames.display()
+       reference_frames.display()
       </span>
      </code>
     </a>
@@ -645,7 +640,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.display_edit">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.reference_frames.display_edit()
+       reference_frames.display_edit()
       </span>
      </code>
     </a>
@@ -654,7 +649,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.edit">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.reference_frames.edit()
+       reference_frames.edit()
       </span>
      </code>
     </a>
@@ -663,7 +658,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.hide">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.reference_frames.hide()
+       reference_frames.hide()
       </span>
      </code>
     </a>
@@ -672,7 +667,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.list">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.reference_frames.list()
+       reference_frames.list()
       </span>
      </code>
     </a>
@@ -681,7 +676,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.list_properties">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.reference_frames.list_properties()
+       reference_frames.list_properties()
       </span>
      </code>
     </a>
@@ -709,14 +704,40 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-reference-frames">
 <span id="ref-solver-tui-setup-reference-frames"></span><h1>solver.tui.setup.reference_frames<a class="headerlink" href="#solver-tui-setup-reference-frames" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.</span></span><span class="sig-name descname"><span class="pre">reference_frames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames" title="Permalink to this definition">#</a></dt>
-<dd><p>Manage reference frames.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.setup.</span></span><span class="sig-name descname"><span class="pre">reference_frames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Manage reference frames.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.add" title="ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Add a new object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.delete" title="ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Delete an object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.display" title="ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.display"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Display Reference Frame.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.display_edit" title="ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.display_edit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display_edit</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Display and edit reference frame from graphics.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.edit" title="ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.edit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edit</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Edit an object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.hide" title="ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.hide"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hide</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Hide Reference Frame.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.list" title="ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
+<td><p>List objects.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.list_properties" title="ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.list_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_properties</span></code></a>(*args, **kwargs)</p></td>
+<td><p>List properties of an object.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.add">
 <span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.reference_frames.add" title="Permalink to this definition">#</a></dt>

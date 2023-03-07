@@ -5,16 +5,13 @@
 premix_unburnt_fuel_mf
 ======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.premix_unburnt_fuel_mf
+.. autoclass:: ansys.fluent.core.solver.settings_231.premix_unburnt_fuel_mf.premix_unburnt_fuel_mf
 
-.. autoclass:: premix_unburnt_fuel_mf
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   ====================================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

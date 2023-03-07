@@ -5,16 +5,13 @@
 gauge_total_pressure
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.gauge_total_pressure
+.. autoclass:: ansys.fluent.core.solver.settings_231.gauge_total_pressure.gauge_total_pressure
 
-.. autoclass:: gauge_total_pressure
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

@@ -307,13 +307,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -723,7 +718,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options
+     time_scale_options
     </span>
    </code>
   </a>
@@ -732,7 +727,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options.acoustic_scale">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options.acoustic_scale()
+       time_scale_options.acoustic_scale()
       </span>
      </code>
     </a>
@@ -741,7 +736,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options.gravity_scale">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options.gravity_scale()
+       time_scale_options.gravity_scale()
       </span>
      </code>
     </a>
@@ -750,7 +745,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options.surface_tension_scale">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options.surface_tension_scale()
+       time_scale_options.surface_tension_scale()
       </span>
      </code>
     </a>
@@ -759,7 +754,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options.viscous_scale">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options.viscous_scale()
+       time_scale_options.viscous_scale()
       </span>
      </code>
     </a>
@@ -787,14 +782,28 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solve-set-transient-controls-multiphase-specific-time-constraints-time-scale-options">
 <span id="ref-solver-tui-solve-set-transient-controls-multiphase-specific-time-constraints-time-scale-options"></span><h1>solver.tui.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options<a class="headerlink" href="#solver-tui-solve-set-transient-controls-multiphase-specific-time-constraints-time-scale-options" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.</span></span><span class="sig-name descname"><span class="pre">time_scale_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options" title="Permalink to this definition">#</a></dt>
-<dd><p>Enters the menu for choosing the time-scale options. This menu  becomes available after you enable the physics-driven time-step  constraints using the solve/set/transient-controls/multiphase-specific-time-constraints/physics-based-constraint?  text command.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.</span></span><span class="sig-name descname"><span class="pre">time_scale_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enters the menu for choosing the time-scale options. This menu  becomes available after you enable the physics-driven time-step  constraints using the solve/set/transient-controls/multiphase-specific-time-constraints/physics-based-constraint?  text command.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options.acoustic_scale" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options.acoustic_scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">acoustic_scale</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Allows you to Include the acoustic time scale.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options.gravity_scale" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options.gravity_scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gravity_scale</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Allows you to Include the gravitational time scale.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options.surface_tension_scale" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options.surface_tension_scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">surface_tension_scale</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Allows you to Include the surface-tension-driven time scale.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options.viscous_scale" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options.viscous_scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">viscous_scale</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Allows you to Include the viscous time scale.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options.acoustic_scale">
 <span class="sig-name descname"><span class="pre">acoustic_scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.transient_controls.multiphase_specific_time_constraints.time_scale_options.acoustic_scale" title="Permalink to this definition">#</a></dt>

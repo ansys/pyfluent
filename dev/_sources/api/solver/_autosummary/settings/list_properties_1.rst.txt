@@ -5,11 +5,8 @@
 list_properties
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.list_properties_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.list_properties_1.list_properties
 
-.. autoclass:: list_properties
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ====================   =================

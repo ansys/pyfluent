@@ -5,11 +5,8 @@
 ctu_lowtu
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.ctu_lowtu
+.. autoclass:: ansys.fluent.core.solver.settings_231.ctu_lowtu.ctu_lowtu
 
-.. autoclass:: ctu_lowtu
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   =====================================

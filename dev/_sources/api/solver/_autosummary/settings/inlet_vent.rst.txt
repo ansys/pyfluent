@@ -5,11 +5,8 @@
 inlet_vent
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.inlet_vent
+.. autoclass:: ansys.fluent.core.solver.settings_231.inlet_vent.inlet_vent
 
-.. autoclass:: inlet_vent
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`inlet_vent_child <inlet_vent_child>`

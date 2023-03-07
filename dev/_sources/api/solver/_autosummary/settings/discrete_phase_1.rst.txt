@@ -5,16 +5,13 @@
 discrete_phase
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.discrete_phase_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.discrete_phase_1.discrete_phase
 
-.. autoclass:: discrete_phase
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ================================================   ================================
 
-Child                                                                       Summary
+Attribute                                                                   Summary
 
 ================================================   ================================
 :ref:`histogram <histogram>`                                     'histogram' child.
@@ -23,11 +20,11 @@ Child                                                                       Summ
 
 ================================================   ================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ==================================================================   =================================================================================
 
-Command                                                                                                                                        Summary
+Method                                                                                                                                         Summary
 
 ==================================================================   =================================================================================
 :ref:`summary <summary>`                                                                        Print discrete phase summary report of particle fates.

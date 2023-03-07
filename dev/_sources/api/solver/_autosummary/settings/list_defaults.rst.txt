@@ -5,11 +5,8 @@
 list_defaults
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.list_defaults
+.. autoclass:: ansys.fluent.core.solver.settings_231.list_defaults.list_defaults
 
-.. autoclass:: list_defaults
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ===========================

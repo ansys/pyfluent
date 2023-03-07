@@ -5,11 +5,8 @@
 roll
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.roll
+.. autoclass:: ansys.fluent.core.solver.settings_231.roll.roll
 
-.. autoclass:: roll
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ============================================   ==============================

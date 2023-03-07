@@ -5,16 +5,13 @@
 filter_settings
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.filter_settings
+.. autoclass:: ansys.fluent.core.solver.settings_231.filter_settings.filter_settings
 
-.. autoclass:: filter_settings
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ======================================   ===========================
 
-Child                                                        Summary
+Attribute                                                    Summary
 
 ======================================   ===========================
 :ref:`field <field>`                                  'field' child.

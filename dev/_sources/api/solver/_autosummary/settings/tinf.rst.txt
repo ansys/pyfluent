@@ -5,11 +5,8 @@
 tinf
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.tinf
+.. autoclass:: ansys.fluent.core.solver.settings_231.tinf.tinf
 
-.. autoclass:: tinf
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

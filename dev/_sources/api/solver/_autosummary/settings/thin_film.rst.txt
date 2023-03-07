@@ -5,11 +5,8 @@
 thin_film
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.thin_film
+.. autoclass:: ansys.fluent.core.solver.settings_231.thin_film.thin_film
 
-.. autoclass:: thin_film
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   =======================================

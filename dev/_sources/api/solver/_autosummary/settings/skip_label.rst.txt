@@ -5,11 +5,8 @@
 skip_label
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.skip_label
+.. autoclass:: ansys.fluent.core.solver.settings_231.skip_label.skip_label
 
-.. autoclass:: skip_label
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

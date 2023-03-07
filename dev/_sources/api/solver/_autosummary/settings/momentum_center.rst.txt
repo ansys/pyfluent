@@ -5,11 +5,8 @@
 momentum_center
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.momentum_center
+.. autoclass:: ansys.fluent.core.solver.settings_231.momentum_center.momentum_center
 
-.. autoclass:: momentum_center
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================   =====================

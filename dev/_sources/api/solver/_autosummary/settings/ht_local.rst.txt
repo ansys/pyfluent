@@ -5,16 +5,13 @@
 ht_local
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.ht_local
+.. autoclass:: ansys.fluent.core.solver.settings_231.ht_local.ht_local
 
-.. autoclass:: ht_local
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

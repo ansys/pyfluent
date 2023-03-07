@@ -305,13 +305,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -622,7 +617,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.set_fmg_options">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.solve.initialize.set_fmg_options
+     set_fmg_options
     </span>
    </code>
   </a>
@@ -631,7 +626,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.set_fmg_options.set_turbulent_viscosity_ratio">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.solve.initialize.set_fmg_options.set_turbulent_viscosity_ratio()
+       set_fmg_options.set_turbulent_viscosity_ratio()
       </span>
      </code>
     </a>
@@ -640,7 +635,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.set_fmg_options.species_reactions">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.solve.initialize.set_fmg_options.species_reactions()
+       set_fmg_options.species_reactions()
       </span>
      </code>
     </a>
@@ -649,7 +644,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.set_fmg_options.viscous_terms">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.solve.initialize.set_fmg_options.viscous_terms()
+       set_fmg_options.viscous_terms()
       </span>
      </code>
     </a>
@@ -677,14 +672,25 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solve-initialize-set-fmg-options">
 <span id="ref-solver-tui-solve-initialize-set-fmg-options"></span><h1>solver.tui.solve.initialize.set_fmg_options<a class="headerlink" href="#solver-tui-solve-initialize-set-fmg-options" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.set_fmg_options">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solve.initialize.</span></span><span class="sig-name descname"><span class="pre">set_fmg_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.set_fmg_options" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the full-multigrid option menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.</span></span><span class="sig-name descname"><span class="pre">set_fmg_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.set_fmg_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the full-multigrid option menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.set_fmg_options.set_turbulent_viscosity_ratio" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.set_fmg_options.set_turbulent_viscosity_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_turbulent_viscosity_ratio</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set turbulent viscosity ratio used during FMG initialization.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.set_fmg_options.species_reactions" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.set_fmg_options.species_reactions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">species_reactions</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable species volumetric reactions during FMG initialization.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.set_fmg_options.viscous_terms" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.set_fmg_options.viscous_terms"><code class="xref py py-obj docutils literal notranslate"><span class="pre">viscous_terms</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable viscous terms during FMG initialization.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.set_fmg_options.set_turbulent_viscosity_ratio">
 <span class="sig-name descname"><span class="pre">set_turbulent_viscosity_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.set_fmg_options.set_turbulent_viscosity_ratio" title="Permalink to this definition">#</a></dt>

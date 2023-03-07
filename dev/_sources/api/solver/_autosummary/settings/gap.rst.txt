@@ -5,11 +5,8 @@
 gap
 ===
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.gap
+.. autoclass:: ansys.fluent.core.solver.settings_231.gap.gap
 
-.. autoclass:: gap
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   ====================

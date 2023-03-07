@@ -5,11 +5,8 @@
 flowrate_frac
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.flowrate_frac
+.. autoclass:: ansys.fluent.core.solver.settings_231.flowrate_frac.flowrate_frac
 
-.. autoclass:: flowrate_frac
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ===================================

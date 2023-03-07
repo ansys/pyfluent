@@ -5,11 +5,8 @@
 flat_init
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.flat_init
+.. autoclass:: ansys.fluent.core.solver.settings_231.flat_init.flat_init
 
-.. autoclass:: flat_init
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ==========================================

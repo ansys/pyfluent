@@ -3,11 +3,11 @@
 meshing.tui.mesh.pyramid.controls
 =================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.pyramid.controls
-   :members: offset_scaling, neighbor_angle, offset_factor, vertex_method
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.mesh.pyramid.controls
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

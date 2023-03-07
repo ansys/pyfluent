@@ -5,11 +5,8 @@
 beach_id
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.beach_id
+.. autoclass:: ansys.fluent.core.solver.settings_231.beach_id.beach_id
 
-.. autoclass:: beach_id
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

@@ -5,11 +5,8 @@
 x_component
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.x_component
+.. autoclass:: ansys.fluent.core.solver.settings_231.x_component.x_component
 
-.. autoclass:: x_component
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =============================

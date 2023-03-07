@@ -5,11 +5,8 @@
 wall_faces
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.wall_faces
+.. autoclass:: ansys.fluent.core.solver.settings_231.wall_faces.wall_faces
 
-.. autoclass:: wall_faces
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

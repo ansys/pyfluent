@@ -3,13 +3,13 @@
 meshing.tui.file.import\_
 =========================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.file.import_
-   :members: ideas_surf_mesh, nastran_vol_mesh, hypermesh_surf_mesh, patran_vol_mesh, gambit_vol_mesh, ansys_vol_mesh, fluent_3d_mesh, ideas_vol_mesh, cgns_vol_mesh, cgns_surf_mesh, fl_uns2_mesh, fidap_vol_mesh, fidap_surf_mesh, reimport_last_with_cfd_surface_mesh, patran_surf_mesh, cad_geometry, hypermesh_vol_mesh, cad, fluent_2d_mesh, gambit_surf_mesh, stl, ansys_surf_mesh, nastran_surf_mesh
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.file.import_
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:

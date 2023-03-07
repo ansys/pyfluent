@@ -5,11 +5,8 @@
 c2
 ==
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.c2
+.. autoclass:: ansys.fluent.core.solver.settings_231.c2.c2
 
-.. autoclass:: c2
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =======================================

@@ -5,11 +5,8 @@
 step_size
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.step_size
+.. autoclass:: ansys.fluent.core.solver.settings_231.step_size.step_size
 
-.. autoclass:: step_size
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =============================

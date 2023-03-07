@@ -5,11 +5,8 @@
 structural_analysis
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.structural_analysis
+.. autoclass:: ansys.fluent.core.solver.settings_231.structural_analysis.structural_analysis
 
-.. autoclass:: structural_analysis
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ========================================

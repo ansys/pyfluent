@@ -5,16 +5,13 @@
 interface_child
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.interface_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.interface_child.interface_child
 
-.. autoclass:: interface_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   ==================================
 
-Child                                                                             Summary
+Attribute                                                                         Summary
 
 ====================================================   ==================================
 :ref:`phase <phase_7>`                                                     'phase' child.

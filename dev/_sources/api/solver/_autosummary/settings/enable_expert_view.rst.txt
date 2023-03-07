@@ -5,11 +5,8 @@
 enable_expert_view
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.enable_expert_view
+.. autoclass:: ansys.fluent.core.solver.settings_231.enable_expert_view.enable_expert_view
 
-.. autoclass:: enable_expert_view
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ==============================================================================================================================================================================================================

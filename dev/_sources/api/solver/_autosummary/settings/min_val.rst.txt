@@ -5,11 +5,8 @@
 min_val
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.min_val
+.. autoclass:: ansys.fluent.core.solver.settings_231.min_val.min_val
 
-.. autoclass:: min_val
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ======================================================================================================

@@ -5,16 +5,13 @@
 in_range
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.in_range
+.. autoclass:: ansys.fluent.core.solver.settings_231.in_range.in_range
 
-.. autoclass:: in_range
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ======================   ===================
 
-Child                                Summary
+Attribute                            Summary
 
 ======================   ===================
 :ref:`value1 <value1>`       'value1' child.

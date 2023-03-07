@@ -5,11 +5,8 @@
 volume_fraction_courant_number
 ==============================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.volume_fraction_courant_number
+.. autoclass:: ansys.fluent.core.solver.settings_231.volume_fraction_courant_number.volume_fraction_courant_number
 
-.. autoclass:: volume_fraction_courant_number
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =========================

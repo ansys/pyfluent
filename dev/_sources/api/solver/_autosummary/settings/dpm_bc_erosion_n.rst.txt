@@ -5,16 +5,13 @@
 dpm_bc_erosion_n
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_bc_erosion_n
+.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_bc_erosion_n.dpm_bc_erosion_n
 
-.. autoclass:: dpm_bc_erosion_n
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   =================================
 
-Child                                                                            Summary
+Attribute                                                                        Summary
 
 ====================================================   =================================
 :ref:`method <method_1>`                                                 'method' child.

@@ -5,11 +5,8 @@
 coarsen_by_size
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.coarsen_by_size
+.. autoclass:: ansys.fluent.core.solver.settings_231.coarsen_by_size.coarsen_by_size
 
-.. autoclass:: coarsen_by_size
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   =============================================

@@ -5,16 +5,13 @@
 pressure_outlet_child
 =====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.pressure_outlet_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.pressure_outlet_child.pressure_outlet_child
 
-.. autoclass:: pressure_outlet_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================================================   =========================================
 
-Child                                                                                                  Summary
+Attribute                                                                                              Summary
 
 ==================================================================   =========================================
 :ref:`phase <phase_18>`                                                                         'phase' child.

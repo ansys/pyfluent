@@ -1,0 +1,23 @@
+ansys.fluent.core.quantity.Dimension
+====================================
+
+.. currentmodule:: ansys.fluent.core.quantity
+
+.. autoclass:: Dimension
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      ~Dimension.__init__
+      ~Dimension.as_dict
+   
+   
+
+   
+   
+   

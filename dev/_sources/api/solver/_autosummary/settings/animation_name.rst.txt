@@ -5,11 +5,8 @@
 animation_name
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.animation_name
+.. autoclass:: ansys.fluent.core.solver.settings_231.animation_name.animation_name
 
-.. autoclass:: animation_name
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ===============================================================

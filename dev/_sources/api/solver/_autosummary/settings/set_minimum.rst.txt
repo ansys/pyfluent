@@ -5,11 +5,8 @@
 set_minimum
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.set_minimum
+.. autoclass:: ansys.fluent.core.solver.settings_231.set_minimum.set_minimum
 
-.. autoclass:: set_minimum
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ==============================   =======================

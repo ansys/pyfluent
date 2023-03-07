@@ -5,11 +5,8 @@
 multi_stage_parameter
 =====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.multi_stage_parameter
+.. autoclass:: ansys.fluent.core.solver.settings_231.multi_stage_parameter.multi_stage_parameter
 
-.. autoclass:: multi_stage_parameter
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   ====================================

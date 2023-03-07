@@ -5,11 +5,8 @@
 fast_mesh
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.fast_mesh
+.. autoclass:: ansys.fluent.core.solver.settings_231.fast_mesh.fast_mesh
 
-.. autoclass:: fast_mesh
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ==================   =================

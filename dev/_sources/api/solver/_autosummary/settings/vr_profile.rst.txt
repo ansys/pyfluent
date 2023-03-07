@@ -5,16 +5,13 @@
 vr_profile
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.vr_profile
+.. autoclass:: ansys.fluent.core.solver.settings_231.vr_profile.vr_profile
 
-.. autoclass:: vr_profile
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

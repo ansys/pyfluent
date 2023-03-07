@@ -307,13 +307,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -788,7 +783,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.sources_fft.fft_surface_variables">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.define.models.acoustics.sources_fft.fft_surface_variables
+     fft_surface_variables
     </span>
    </code>
   </a>
@@ -797,7 +792,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.sources_fft.fft_surface_variables.create_constant_width_bands">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.acoustics.sources_fft.fft_surface_variables.create_constant_width_bands()
+       fft_surface_variables.create_constant_width_bands()
       </span>
      </code>
     </a>
@@ -806,7 +801,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.sources_fft.fft_surface_variables.create_octave_bands">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.acoustics.sources_fft.fft_surface_variables.create_octave_bands()
+       fft_surface_variables.create_octave_bands()
       </span>
      </code>
     </a>
@@ -815,7 +810,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.sources_fft.fft_surface_variables.create_set_of_modes">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.acoustics.sources_fft.fft_surface_variables.create_set_of_modes()
+       fft_surface_variables.create_set_of_modes()
       </span>
      </code>
     </a>
@@ -824,7 +819,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.sources_fft.fft_surface_variables.create_third_bands">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.acoustics.sources_fft.fft_surface_variables.create_third_bands()
+       fft_surface_variables.create_third_bands()
       </span>
      </code>
     </a>
@@ -833,7 +828,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.sources_fft.fft_surface_variables.remove_variables">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.acoustics.sources_fft.fft_surface_variables.remove_variables()
+       fft_surface_variables.remove_variables()
       </span>
      </code>
     </a>
@@ -861,14 +856,31 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-define-models-acoustics-sources-fft-fft-surface-variables">
 <span id="ref-solver-tui-define-models-acoustics-sources-fft-fft-surface-variables"></span><h1>solver.tui.define.models.acoustics.sources_fft.fft_surface_variables<a class="headerlink" href="#solver-tui-define-models-acoustics-sources-fft-fft-surface-variables" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.sources_fft.fft_surface_variables">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.models.acoustics.sources_fft.</span></span><span class="sig-name descname"><span class="pre">fft_surface_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.sources_fft.fft_surface_variables" title="Permalink to this definition">#</a></dt>
-<dd><p>Enters the menu to create surface variables from the computed Fourier spectra for visualization.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.sources_fft.</span></span><span class="sig-name descname"><span class="pre">fft_surface_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.sources_fft.fft_surface_variables" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enters the menu to create surface variables from the computed Fourier spectra for visualization.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.sources_fft.fft_surface_variables.create_constant_width_bands" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.sources_fft.fft_surface_variables.create_constant_width_bands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_constant_width_bands</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Selects up to 20 constant width bands and creates either the surface pressures level (SPL) variables or the PSD of dp/dt variables for them.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.sources_fft.fft_surface_variables.create_octave_bands" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.sources_fft.fft_surface_variables.create_octave_bands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_octave_bands</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Creates either the surface pressure level (SPL) variables or the PSD of dp/dt variables for 17 technical octaves.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.sources_fft.fft_surface_variables.create_set_of_modes" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.sources_fft.fft_surface_variables.create_set_of_modes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_set_of_modes</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Selects up to 20 individual Fourier modes and create variable pairs for them, containing the real and the imaginary parts of the complex Fourier amplitudes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.sources_fft.fft_surface_variables.create_third_bands" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.sources_fft.fft_surface_variables.create_third_bands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_third_bands</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Creates either the surface pressure level (SPL) variables or the PSD of dp/dt variables for 54 technical thirds.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.sources_fft.fft_surface_variables.remove_variables" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.sources_fft.fft_surface_variables.remove_variables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_variables</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Removes all variables created in this menu.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.sources_fft.fft_surface_variables.create_constant_width_bands">
 <span class="sig-name descname"><span class="pre">create_constant_width_bands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.sources_fft.fft_surface_variables.create_constant_width_bands" title="Permalink to this definition">#</a></dt>

@@ -5,11 +5,8 @@
 zone_id
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.zone_id
+.. autoclass:: ansys.fluent.core.solver.settings_231.zone_id.zone_id
 
-.. autoclass:: zone_id
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   ========================================================

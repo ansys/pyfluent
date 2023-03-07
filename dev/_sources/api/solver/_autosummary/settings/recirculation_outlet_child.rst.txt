@@ -5,16 +5,13 @@
 recirculation_outlet_child
 ==========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.recirculation_outlet_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.recirculation_outlet_child.recirculation_outlet_child
 
-.. autoclass:: recirculation_outlet_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================================   =================================
 
-Child                                                                          Summary
+Attribute                                                                      Summary
 
 ==================================================   =================================
 :ref:`phase <phase_22>`                                                 'phase' child.

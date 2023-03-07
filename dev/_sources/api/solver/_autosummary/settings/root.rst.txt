@@ -5,16 +5,13 @@
 root
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.root
+.. autoclass:: ansys.fluent.core.solver.settings_231.root.root
 
-.. autoclass:: root
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==========================================================   =====================================
 
-Child                                                                                      Summary
+Attribute                                                                                  Summary
 
 ==========================================================   =====================================
 :ref:`file <file>`                                                                   'file' child.
@@ -39,11 +36,11 @@ Child                                                                           
 
 ==========================================================   =====================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ==================   =================
 
-Command                        Summary
+Method                         Summary
 
 ==================   =================
 :ref:`exit <exit>`       Exit program.

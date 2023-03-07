@@ -5,16 +5,13 @@
 partition
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.partition_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.partition_1.partition
 
-.. autoclass:: partition
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================   ====================================================
 
-Child                                                             Summary
+Attribute                                                         Summary
 
 ==================   ====================================================
 :ref:`auto <auto>`       Enter the menu to set auto partition parameters.
@@ -23,11 +20,11 @@ Child                                                             Summary
 
 ==================   ====================================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ==============================================================================   =======================================
 
-Command                                                                                                          Summary
+Method                                                                                                           Summary
 
 ==============================================================================   =======================================
 :ref:`combine_partition <combine_partition>`                                                   Merge every N partitions.

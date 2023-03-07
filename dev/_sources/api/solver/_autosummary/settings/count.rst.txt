@@ -5,11 +5,8 @@
 count
 =====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.count
+.. autoclass:: ansys.fluent.core.solver.settings_231.count.count
 
-.. autoclass:: count
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================   =========================

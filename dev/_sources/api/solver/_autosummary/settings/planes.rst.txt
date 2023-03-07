@@ -5,11 +5,8 @@
 planes
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.planes
+.. autoclass:: ansys.fluent.core.solver.settings_231.planes.planes
 
-.. autoclass:: planes
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================   =====================

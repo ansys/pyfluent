@@ -5,16 +5,13 @@
 roughness_const
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.roughness_const
+.. autoclass:: ansys.fluent.core.solver.settings_231.roughness_const.roughness_const
 
-.. autoclass:: roughness_const
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

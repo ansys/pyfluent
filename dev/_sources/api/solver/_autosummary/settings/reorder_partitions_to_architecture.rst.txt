@@ -5,11 +5,8 @@
 reorder_partitions_to_architecture
 ==================================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.reorder_partitions_to_architecture
+.. autoclass:: ansys.fluent.core.solver.settings_231.reorder_partitions_to_architecture.reorder_partitions_to_architecture
 
-.. autoclass:: reorder_partitions_to_architecture
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   ====================================

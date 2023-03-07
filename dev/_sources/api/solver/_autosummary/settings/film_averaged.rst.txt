@@ -5,16 +5,13 @@
 film_averaged
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.film_averaged
+.. autoclass:: ansys.fluent.core.solver.settings_231.film_averaged.film_averaged
 
-.. autoclass:: film_averaged
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   ==================================
 
-Child                                                                             Summary
+Attribute                                                                         Summary
 
 ====================================================   ==================================
 :ref:`averaging_coefficient <averaging_coefficient>`       'averaging_coefficient' child.

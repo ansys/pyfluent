@@ -305,13 +305,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -612,7 +607,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.manage_criteria">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.mesh.adapt.manage_criteria
+     manage_criteria
     </span>
    </code>
   </a>
@@ -621,7 +616,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.manage_criteria.add">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.adapt.manage_criteria.add()
+       manage_criteria.add()
       </span>
      </code>
     </a>
@@ -630,7 +625,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.manage_criteria.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.adapt.manage_criteria.delete()
+       manage_criteria.delete()
       </span>
      </code>
     </a>
@@ -639,7 +634,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.manage_criteria.edit">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.adapt.manage_criteria.edit()
+       manage_criteria.edit()
       </span>
      </code>
     </a>
@@ -648,7 +643,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.manage_criteria.list">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.adapt.manage_criteria.list()
+       manage_criteria.list()
       </span>
      </code>
     </a>
@@ -657,7 +652,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.manage_criteria.list_properties">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.adapt.manage_criteria.list_properties()
+       manage_criteria.list_properties()
       </span>
      </code>
     </a>
@@ -685,14 +680,31 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-mesh-adapt-manage-criteria">
 <span id="ref-solver-tui-mesh-adapt-manage-criteria"></span><h1>solver.tui.mesh.adapt.manage_criteria<a class="headerlink" href="#solver-tui-mesh-adapt-manage-criteria" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.manage_criteria">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.adapt.</span></span><span class="sig-name descname"><span class="pre">manage_criteria</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.manage_criteria" title="Permalink to this definition">#</a></dt>
-<dd><p>Enters the manage criteria menu, which provides text commands for managing automatic adaption criteria.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.</span></span><span class="sig-name descname"><span class="pre">manage_criteria</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.manage_criteria" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enters the manage criteria menu, which provides text commands for managing automatic adaption criteria.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.manage_criteria.add" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.manage_criteria.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Adds a new automatic adaption criterion.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.manage_criteria.delete" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.manage_criteria.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Deletes an existing automatic adaption criterion.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.manage_criteria.edit" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.manage_criteria.edit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edit</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Edits an existing automatic adaption criterion.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.manage_criteria.list" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.manage_criteria.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Lists all the existing automatic adaption criteria.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.manage_criteria.list_properties" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.manage_criteria.list_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_properties</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Lists the properties of an existing automatic adaption criterion.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.manage_criteria.add">
 <span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.adapt.manage_criteria.add" title="Permalink to this definition">#</a></dt>

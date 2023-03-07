@@ -5,11 +5,8 @@
 ddpm_phase
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.ddpm_phase
+.. autoclass:: ansys.fluent.core.solver.settings_231.ddpm_phase.ddpm_phase
 
-.. autoclass:: ddpm_phase
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   ================================

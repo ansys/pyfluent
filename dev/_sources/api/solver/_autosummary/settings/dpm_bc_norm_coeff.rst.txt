@@ -5,16 +5,13 @@
 dpm_bc_norm_coeff
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_bc_norm_coeff
+.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_bc_norm_coeff.dpm_bc_norm_coeff
 
-.. autoclass:: dpm_bc_norm_coeff
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   =================================
 
-Child                                                                            Summary
+Attribute                                                                        Summary
 
 ====================================================   =================================
 :ref:`method <method_1>`                                                 'method' child.

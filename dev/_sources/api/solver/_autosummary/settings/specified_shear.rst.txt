@@ -5,11 +5,8 @@
 specified_shear
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.specified_shear
+.. autoclass:: ansys.fluent.core.solver.settings_231.specified_shear.specified_shear
 
-.. autoclass:: specified_shear
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

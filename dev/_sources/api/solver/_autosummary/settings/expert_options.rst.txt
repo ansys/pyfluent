@@ -5,16 +5,13 @@
 expert_options
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.expert_options
+.. autoclass:: ansys.fluent.core.solver.settings_231.expert_options.expert_options
 
-.. autoclass:: expert_options
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==========================================================   =========================================================================================================
 
-Child                                                                                                                                                          Summary
+Attribute                                                                                                                                                      Summary
 
 ==========================================================   =========================================================================================================
 :ref:`parallel_verbosity_level <parallel_verbosity_level>`                                                                 Set the parallel verbosity level [0]: none.

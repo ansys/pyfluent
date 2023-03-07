@@ -5,11 +5,8 @@
 norm
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.norm
+.. autoclass:: ansys.fluent.core.solver.settings_231.norm.norm
 
-.. autoclass:: norm
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

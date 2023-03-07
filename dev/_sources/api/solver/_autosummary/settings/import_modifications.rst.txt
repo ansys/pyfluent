@@ -5,11 +5,8 @@
 import_modifications
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.import_modifications
+.. autoclass:: ansys.fluent.core.solver.settings_231.import_modifications.import_modifications
 
-.. autoclass:: import_modifications
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ==========================   =====================

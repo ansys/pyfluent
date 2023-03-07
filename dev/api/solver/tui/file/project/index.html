@@ -304,13 +304,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -599,7 +594,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.project">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.file.project
+     project
     </span>
    </code>
   </a>
@@ -608,7 +603,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.project.archive">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.file.project.archive()
+       project.archive()
       </span>
      </code>
     </a>
@@ -617,7 +612,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.project.new">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.file.project.new()
+       project.new()
       </span>
      </code>
     </a>
@@ -626,7 +621,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.project.open">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.file.project.open()
+       project.open()
       </span>
      </code>
     </a>
@@ -635,7 +630,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.project.save">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.file.project.save()
+       project.save()
       </span>
      </code>
     </a>
@@ -644,7 +639,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.project.save_as">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.file.project.save_as()
+       project.save_as()
       </span>
      </code>
     </a>
@@ -653,7 +648,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.project.save_as_copy">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.file.project.save_as_copy()
+       project.save_as_copy()
       </span>
      </code>
     </a>
@@ -681,14 +676,34 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-file-project">
 <span id="ref-solver-tui-file-project"></span><h1>solver.tui.file.project<a class="headerlink" href="#solver-tui-file-project" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.project">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.file.</span></span><span class="sig-name descname"><span class="pre">project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.project" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter to create new project, open project, save and archive project.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.file.</span></span><span class="sig-name descname"><span class="pre">project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.project" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter to create new project, open project, save and archive project.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.project.archive" title="ansys.fluent.core.solver.tui_231.main_menu.file.project.archive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">archive</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Archive Project.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.project.new" title="ansys.fluent.core.solver.tui_231.main_menu.file.project.new"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Create New Project.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.project.open" title="ansys.fluent.core.solver.tui_231.main_menu.file.project.open"><code class="xref py py-obj docutils literal notranslate"><span class="pre">open</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Open project.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.project.save" title="ansys.fluent.core.solver.tui_231.main_menu.file.project.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Save Project.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.project.save_as" title="ansys.fluent.core.solver.tui_231.main_menu.file.project.save_as"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_as</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Save As Project.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.project.save_as_copy" title="ansys.fluent.core.solver.tui_231.main_menu.file.project.save_as_copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_as_copy</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Save As Copy.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.project.archive">
 <span class="sig-name descname"><span class="pre">archive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.project.archive" title="Permalink to this definition">#</a></dt>

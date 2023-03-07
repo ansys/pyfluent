@@ -5,11 +5,8 @@
 principal_axes
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.principal_axes
+.. autoclass:: ansys.fluent.core.solver.settings_231.principal_axes.principal_axes
 
-.. autoclass:: principal_axes
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ==================================

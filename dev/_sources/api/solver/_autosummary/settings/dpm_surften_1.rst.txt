@@ -5,16 +5,13 @@
 dpm_surften
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_surften_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_surften_1.dpm_surften
 
-.. autoclass:: dpm_surften
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   ====================================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

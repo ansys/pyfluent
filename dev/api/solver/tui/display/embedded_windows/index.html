@@ -304,13 +304,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -609,7 +604,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.embedded_windows">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.display.embedded_windows
+     embedded_windows
     </span>
    </code>
   </a>
@@ -618,7 +613,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.embedded_windows.close">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.embedded_windows.close()
+       embedded_windows.close()
       </span>
      </code>
     </a>
@@ -627,7 +622,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.embedded_windows.close_all">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.embedded_windows.close_all()
+       embedded_windows.close_all()
       </span>
      </code>
     </a>
@@ -636,7 +631,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.embedded_windows.embed_in">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.embedded_windows.embed_in()
+       embedded_windows.embed_in()
       </span>
      </code>
     </a>
@@ -645,7 +640,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.embedded_windows.move_out">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.embedded_windows.move_out()
+       embedded_windows.move_out()
       </span>
      </code>
     </a>
@@ -654,7 +649,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.embedded_windows.move_out_all">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.embedded_windows.move_out_all()
+       embedded_windows.move_out_all()
       </span>
      </code>
     </a>
@@ -682,14 +677,31 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-display-embedded-windows">
 <span id="ref-solver-tui-display-embedded-windows"></span><h1>solver.tui.display.embedded_windows<a class="headerlink" href="#solver-tui-display-embedded-windows" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.embedded_windows">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.display.</span></span><span class="sig-name descname"><span class="pre">embedded_windows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.embedded_windows" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the embedded window menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.display.</span></span><span class="sig-name descname"><span class="pre">embedded_windows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.embedded_windows" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the embedded window menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.embedded_windows.close" title="ansys.fluent.core.solver.tui_231.main_menu.display.embedded_windows.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Close an embedded window.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.embedded_windows.close_all" title="ansys.fluent.core.solver.tui_231.main_menu.display.embedded_windows.close_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close_all</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Close all the embedded windows within the specified parent window.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.embedded_windows.embed_in" title="ansys.fluent.core.solver.tui_231.main_menu.display.embedded_windows.embed_in"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embed_in</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify a window to embed and a parent window to receive the embedded window.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.embedded_windows.move_out" title="ansys.fluent.core.solver.tui_231.main_menu.display.embedded_windows.move_out"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_out</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Move an embedded window out of the parent window, returning the embedded window to a non-embedded state.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.embedded_windows.move_out_all" title="ansys.fluent.core.solver.tui_231.main_menu.display.embedded_windows.move_out_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_out_all</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Move all the embedded windows out of the specified parent window.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.embedded_windows.close">
 <span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.embedded_windows.close" title="Permalink to this definition">#</a></dt>

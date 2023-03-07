@@ -5,11 +5,8 @@
 ruler
 =====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.ruler_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.ruler_1.ruler
 
-.. autoclass:: ruler
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ====================

@@ -3,11 +3,11 @@
 solver.tui.setup.models.eulerian\_wallfilm.coupled\_solution
 ============================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.eulerian_wallfilm.coupled_solution
-   :members: enable_coupled_solution, enable_curvature_smoothing
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.eulerian_wallfilm.coupled_solution
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

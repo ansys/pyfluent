@@ -304,13 +304,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -601,7 +596,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.preferences.meshing_workflow
+     meshing_workflow
     </span>
    </code>
   </a>
@@ -610,16 +605,54 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.checkpointing_option">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.meshing_workflow.checkpointing_option()
+       meshing_workflow.checkpointing_option()
       </span>
      </code>
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.draw_settings">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       meshing_workflow.draw_settings
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.draw_settings.auto_draw">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         meshing_workflow.draw_settings.auto_draw()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.draw_settings.face_zone_limit">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         meshing_workflow.draw_settings.face_zone_limit()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.draw_settings.facet_limit">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         meshing_workflow.draw_settings.facet_limit()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.save_checkpoint_files">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.meshing_workflow.save_checkpoint_files()
+       meshing_workflow.save_checkpoint_files()
       </span>
      </code>
     </a>
@@ -628,7 +661,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.temp_folder">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.meshing_workflow.temp_folder()
+       meshing_workflow.temp_folder()
       </span>
      </code>
     </a>
@@ -637,7 +670,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.templates_folder">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.meshing_workflow.templates_folder()
+       meshing_workflow.templates_folder()
       </span>
      </code>
     </a>
@@ -646,7 +679,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.verbosity">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.meshing_workflow.verbosity()
+       meshing_workflow.verbosity()
       </span>
      </code>
     </a>
@@ -674,18 +707,91 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-preferences-meshing-workflow">
 <span id="ref-solver-tui-preferences-meshing-workflow"></span><h1>solver.tui.preferences.meshing_workflow<a class="headerlink" href="#solver-tui-preferences-meshing-workflow" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.preferences.</span></span><span class="sig-name descname"><span class="pre">meshing_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow" title="Permalink to this definition">#</a></dt>
-<dd><p>.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.preferences.</span></span><span class="sig-name descname"><span class="pre">meshing_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.checkpointing_option" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.checkpointing_option"><code class="xref py py-obj docutils literal notranslate"><span class="pre">checkpointing_option</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.save_checkpoint_files" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.save_checkpoint_files"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_checkpoint_files</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.temp_folder" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.temp_folder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">temp_folder</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.templates_folder" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.templates_folder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">templates_folder</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.verbosity" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.verbosity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verbosity</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.draw_settings" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.draw_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_settings</span></code></a>(path, service)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.checkpointing_option">
 <span class="sig-name descname"><span class="pre">checkpointing_option</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.checkpointing_option" title="Permalink to this definition">#</a></dt>
 <dd><p>.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.draw_settings">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">draw_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.draw_settings" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.draw_settings.auto_draw" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.draw_settings.auto_draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_draw</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.draw_settings.face_zone_limit" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.draw_settings.face_zone_limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_zone_limit</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.draw_settings.facet_limit" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.draw_settings.facet_limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">facet_limit</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.draw_settings.auto_draw">
+<span class="sig-name descname"><span class="pre">auto_draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.draw_settings.auto_draw" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.draw_settings.face_zone_limit">
+<span class="sig-name descname"><span class="pre">face_zone_limit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.draw_settings.face_zone_limit" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.draw_settings.facet_limit">
+<span class="sig-name descname"><span class="pre">facet_limit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.meshing_workflow.draw_settings.facet_limit" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py method">

@@ -5,16 +5,13 @@
 o
 =
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.o
+.. autoclass:: ansys.fluent.core.solver.settings_231.o.o
 
-.. autoclass:: o
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

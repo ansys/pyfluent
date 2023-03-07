@@ -304,13 +304,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -574,7 +569,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.mesh.geometry
+     geometry
     </span>
    </code>
   </a>
@@ -583,7 +578,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry.add">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.geometry.add()
+       geometry.add()
       </span>
      </code>
     </a>
@@ -592,7 +587,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.geometry.delete()
+       geometry.delete()
       </span>
      </code>
     </a>
@@ -601,7 +596,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry.display">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.geometry.display()
+       geometry.display()
       </span>
      </code>
     </a>
@@ -610,7 +605,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry.edit">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.geometry.edit()
+       geometry.edit()
       </span>
      </code>
     </a>
@@ -619,7 +614,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry.list">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.geometry.list()
+       geometry.list()
       </span>
      </code>
     </a>
@@ -628,7 +623,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry.list_properties">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.mesh.geometry.list_properties()
+       geometry.list_properties()
       </span>
      </code>
     </a>
@@ -656,14 +651,34 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-mesh-geometry">
 <span id="ref-solver-tui-mesh-geometry"></span><h1>solver.tui.mesh.geometry<a class="headerlink" href="#solver-tui-mesh-geometry" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.</span></span><span class="sig-name descname"><span class="pre">geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the geometry menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.mesh.</span></span><span class="sig-name descname"><span class="pre">geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the geometry menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry.add" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Add a new object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry.delete" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Delete an object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry.display" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry.display"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Display geometry.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry.edit" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry.edit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edit</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Edit an object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry.list" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
+<td><p>List objects.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry.list_properties" title="ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry.list_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_properties</span></code></a>(*args, **kwargs)</p></td>
+<td><p>List properties of an object.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry.add">
 <span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.geometry.add" title="Permalink to this definition">#</a></dt>

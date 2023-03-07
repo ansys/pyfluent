@@ -5,16 +5,13 @@
 reactions
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.reactions
+.. autoclass:: ansys.fluent.core.solver.settings_231.reactions.reactions
 
-.. autoclass:: reactions
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

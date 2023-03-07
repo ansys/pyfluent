@@ -5,11 +5,8 @@
 temperature_minimum
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.temperature_minimum
+.. autoclass:: ansys.fluent.core.solver.settings_231.temperature_minimum.temperature_minimum
 
-.. autoclass:: temperature_minimum
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ==================================

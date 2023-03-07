@@ -5,11 +5,8 @@
 address
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.address
+.. autoclass:: ansys.fluent.core.solver.settings_231.address.address
 
-.. autoclass:: address
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ====================

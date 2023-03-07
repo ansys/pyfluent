@@ -306,13 +306,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -750,7 +745,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.porous_media">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.solve.set.multiphase_numerics.porous_media
+     porous_media
     </span>
    </code>
   </a>
@@ -759,7 +754,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.porous_media.capillary_pressure_as_diffusion">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.solve.set.multiphase_numerics.porous_media.capillary_pressure_as_diffusion()
+       porous_media.capillary_pressure_as_diffusion()
       </span>
      </code>
     </a>
@@ -768,7 +763,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.porous_media.relative_permeability">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.solve.set.multiphase_numerics.porous_media.relative_permeability()
+       porous_media.relative_permeability()
       </span>
      </code>
     </a>
@@ -796,14 +791,22 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solve-set-multiphase-numerics-porous-media">
 <span id="ref-solver-tui-solve-set-multiphase-numerics-porous-media"></span><h1>solver.tui.solve.set.multiphase_numerics.porous_media<a class="headerlink" href="#solver-tui-solve-set-multiphase-numerics-porous-media" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.porous_media">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solve.set.multiphase_numerics.</span></span><span class="sig-name descname"><span class="pre">porous_media</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.porous_media" title="Permalink to this definition">#</a></dt>
-<dd><p>Enters the porous media numerics menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.</span></span><span class="sig-name descname"><span class="pre">porous_media</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.porous_media" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enters the porous media numerics menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.porous_media.capillary_pressure_as_diffusion" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.porous_media.capillary_pressure_as_diffusion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">capillary_pressure_as_diffusion</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Model capillary pressure as diffusion.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.porous_media.relative_permeability" title="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.porous_media.relative_permeability"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_permeability</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Allows you to fix the saturation (volume fraction) of the phase at  its user-specified residual saturation value.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.porous_media.capillary_pressure_as_diffusion">
 <span class="sig-name descname"><span class="pre">capillary_pressure_as_diffusion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.set.multiphase_numerics.porous_media.capillary_pressure_as_diffusion" title="Permalink to this definition">#</a></dt>

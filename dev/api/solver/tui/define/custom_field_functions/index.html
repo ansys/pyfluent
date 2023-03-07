@@ -304,13 +304,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -649,7 +644,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.define.custom_field_functions
+     custom_field_functions
     </span>
    </code>
   </a>
@@ -658,7 +653,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions.define">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.custom_field_functions.define()
+       custom_field_functions.define()
       </span>
      </code>
     </a>
@@ -667,7 +662,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.custom_field_functions.delete()
+       custom_field_functions.delete()
       </span>
      </code>
     </a>
@@ -676,7 +671,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions.example_cff_definitions">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.custom_field_functions.example_cff_definitions()
+       custom_field_functions.example_cff_definitions()
       </span>
      </code>
     </a>
@@ -685,7 +680,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions.list_valid_cell_function_names">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.custom_field_functions.list_valid_cell_function_names()
+       custom_field_functions.list_valid_cell_function_names()
       </span>
      </code>
     </a>
@@ -694,7 +689,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions.load">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.custom_field_functions.load()
+       custom_field_functions.load()
       </span>
      </code>
     </a>
@@ -703,7 +698,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions.save">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.custom_field_functions.save()
+       custom_field_functions.save()
       </span>
      </code>
     </a>
@@ -731,14 +726,34 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-define-custom-field-functions">
 <span id="ref-solver-tui-define-custom-field-functions"></span><h1>solver.tui.define.custom_field_functions<a class="headerlink" href="#solver-tui-define-custom-field-functions" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.</span></span><span class="sig-name descname"><span class="pre">custom_field_functions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions" title="Permalink to this definition">#</a></dt>
-<dd><p>Enters the custom field functions menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.define.</span></span><span class="sig-name descname"><span class="pre">custom_field_functions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enters the custom field functions menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions.define" title="ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions.define"><code class="xref py py-obj docutils literal notranslate"><span class="pre">define</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Defines a custom field function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions.delete" title="ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Deletes a custom field function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions.example_cff_definitions" title="ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions.example_cff_definitions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">example_cff_definitions</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Lists example custom field functions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions.list_valid_cell_function_names" title="ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions.list_valid_cell_function_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_valid_cell_function_names</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Lists the names of cell functions that can be used in a custom field function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions.load" title="ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Loads a custom field function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions.save" title="ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Saves a custom field function.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions.define">
 <span class="sig-name descname"><span class="pre">define</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.custom_field_functions.define" title="Permalink to this definition">#</a></dt>

@@ -5,16 +5,13 @@
 strength
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.strength
+.. autoclass:: ansys.fluent.core.solver.settings_231.strength.strength
 
-.. autoclass:: strength
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

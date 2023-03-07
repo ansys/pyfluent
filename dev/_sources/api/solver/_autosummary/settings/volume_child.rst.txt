@@ -5,16 +5,13 @@
 volume_child
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.volume_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.volume_child.volume_child
 
-.. autoclass:: volume_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ================================================================   ========================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ================================================================   ========================================
 :ref:`report_type <report_type>`                                                       'report_type' child.

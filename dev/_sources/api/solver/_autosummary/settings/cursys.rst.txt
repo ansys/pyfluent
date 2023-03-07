@@ -5,11 +5,8 @@
 cursys
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.cursys
+.. autoclass:: ansys.fluent.core.solver.settings_231.cursys.cursys
 
-.. autoclass:: cursys
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

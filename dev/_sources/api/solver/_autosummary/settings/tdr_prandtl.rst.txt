@@ -5,11 +5,8 @@
 tdr_prandtl
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.tdr_prandtl
+.. autoclass:: ansys.fluent.core.solver.settings_231.tdr_prandtl.tdr_prandtl
 
-.. autoclass:: tdr_prandtl
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =========================

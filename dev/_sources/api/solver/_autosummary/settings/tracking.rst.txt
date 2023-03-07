@@ -5,16 +5,13 @@
 tracking
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.tracking
+.. autoclass:: ansys.fluent.core.solver.settings_231.tracking.tracking
 
-.. autoclass:: tracking
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ============================================   =====================================================================================
 
-Child                                                                                                                        Summary
+Attribute                                                                                                                    Summary
 
 ============================================   =====================================================================================
 :ref:`scheme <scheme>`                                                                        Select a tracking scheme used for DPM.

@@ -5,16 +5,13 @@
 views
 =====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.views
+.. autoclass:: ansys.fluent.core.solver.settings_231.views.views
 
-.. autoclass:: views
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ======================================   ===========================
 
-Child                                                        Summary
+Attribute                                                    Summary
 
 ======================================   ===========================
 :ref:`camera <camera>`                               'camera' child.
@@ -23,11 +20,11 @@ Child                                                        Summary
 
 ======================================   ===========================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ====================================================   ==========================================================================
 
-Command                                                                                                                   Summary
+Method                                                                                                                    Summary
 
 ====================================================   ==========================================================================
 :ref:`auto_scale <auto_scale_3>`                                                                            'auto_scale' command.

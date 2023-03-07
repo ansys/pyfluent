@@ -5,16 +5,13 @@
 piecewise_polynomial_child
 ==========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.piecewise_polynomial_child_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.piecewise_polynomial_child_1.piecewise_polynomial_child
 
-.. autoclass:: piecewise_polynomial_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================================   ============================
 
-Child                                                           Summary
+Attribute                                                       Summary
 
 ========================================   ============================
 :ref:`minimum <minimum_1>`                             'minimum' child.

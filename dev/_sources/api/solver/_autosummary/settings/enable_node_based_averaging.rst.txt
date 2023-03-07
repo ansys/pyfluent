@@ -5,11 +5,8 @@
 enable_node_based_averaging
 ===========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.enable_node_based_averaging
+.. autoclass:: ansys.fluent.core.solver.settings_231.enable_node_based_averaging.enable_node_based_averaging
 
-.. autoclass:: enable_node_based_averaging
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ==========================================================================================================

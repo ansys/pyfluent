@@ -5,11 +5,8 @@
 eve_accom_coef
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.eve_accom_coef
+.. autoclass:: ansys.fluent.core.solver.settings_231.eve_accom_coef.eve_accom_coef
 
-.. autoclass:: eve_accom_coef
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

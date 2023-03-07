@@ -5,11 +5,8 @@
 viscous_dissipation
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.viscous_dissipation
+.. autoclass:: ansys.fluent.core.solver.settings_231.viscous_dissipation.viscous_dissipation
 
-.. autoclass:: viscous_dissipation
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

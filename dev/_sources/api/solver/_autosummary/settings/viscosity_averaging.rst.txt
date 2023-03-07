@@ -5,11 +5,8 @@
 viscosity_averaging
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.viscosity_averaging
+.. autoclass:: ansys.fluent.core.solver.settings_231.viscosity_averaging.viscosity_averaging
 
-.. autoclass:: viscosity_averaging
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ==================================================

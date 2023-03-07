@@ -5,11 +5,8 @@
 cell_function
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.cell_function
+.. autoclass:: ansys.fluent.core.solver.settings_231.cell_function.cell_function
 
-.. autoclass:: cell_function
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =====================================================

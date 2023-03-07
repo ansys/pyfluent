@@ -5,16 +5,13 @@
 shear_modulus_12
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.shear_modulus_12
+.. autoclass:: ansys.fluent.core.solver.settings_231.shear_modulus_12.shear_modulus_12
 
-.. autoclass:: shear_modulus_12
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

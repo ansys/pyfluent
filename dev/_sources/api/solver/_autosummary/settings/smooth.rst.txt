@@ -5,11 +5,8 @@
 smooth
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.smooth
+.. autoclass:: ansys.fluent.core.solver.settings_231.smooth.smooth
 
-.. autoclass:: smooth
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   =====================

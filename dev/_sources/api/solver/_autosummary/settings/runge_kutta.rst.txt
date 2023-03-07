@@ -5,16 +5,13 @@
 runge_kutta
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.runge_kutta
+.. autoclass:: ansys.fluent.core.solver.settings_231.runge_kutta.runge_kutta
 
-.. autoclass:: runge_kutta
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ================================================   ================================
 
-Child                                                                       Summary
+Attribute                                                                   Summary
 
 ================================================   ================================
 :ref:`two_stage <two_stage>`                                     'two_stage' child.

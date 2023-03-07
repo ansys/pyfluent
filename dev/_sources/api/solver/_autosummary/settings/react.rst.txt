@@ -5,11 +5,8 @@
 react
 =====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.react
+.. autoclass:: ansys.fluent.core.solver.settings_231.react.react
 
-.. autoclass:: react
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

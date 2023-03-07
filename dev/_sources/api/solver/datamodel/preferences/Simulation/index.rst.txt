@@ -3,14 +3,13 @@
 solver.datamodel.preferences.Simulation
 =======================================
 
-.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.Simulation
-   :members: FlowModel, LocalResidualScaling
-   :noindex:
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences.Root.Simulation
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:

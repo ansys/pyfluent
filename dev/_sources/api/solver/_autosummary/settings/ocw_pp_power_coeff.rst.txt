@@ -5,11 +5,8 @@
 ocw_pp_power_coeff
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.ocw_pp_power_coeff
+.. autoclass:: ansys.fluent.core.solver.settings_231.ocw_pp_power_coeff.ocw_pp_power_coeff
 
-.. autoclass:: ocw_pp_power_coeff
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

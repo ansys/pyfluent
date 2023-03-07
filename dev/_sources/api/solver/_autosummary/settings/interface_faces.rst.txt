@@ -5,11 +5,8 @@
 interface_faces
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.interface_faces
+.. autoclass:: ansys.fluent.core.solver.settings_231.interface_faces.interface_faces
 
-.. autoclass:: interface_faces
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

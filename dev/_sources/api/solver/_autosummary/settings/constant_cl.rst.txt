@@ -5,11 +5,8 @@
 constant_cl
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.constant_cl
+.. autoclass:: ansys.fluent.core.solver.settings_231.constant_cl.constant_cl
 
-.. autoclass:: constant_cl
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================
