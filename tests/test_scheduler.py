@@ -161,7 +161,7 @@ class TestLoadMachines(unittest.TestCase):
     def test_machine_info(self):
         info = [
             {"machine": "M0", "core-count": 1},
-            {"machine": "M1", "core-count": 6},
+            {"machine-name": "M1", "core-count": 1},
         ]
         machineList = load_machines(machine_info=info)
         self.assertEqual(machineList.number_of_cores, 7)
