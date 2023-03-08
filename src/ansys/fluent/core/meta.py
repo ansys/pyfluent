@@ -9,7 +9,7 @@ from pprint import pformat
 
 
 class Attribute:
-    VALID_NAMES = ["range", "allowed_values", "help_str", "is_valid", "help_context", "display_text", "layout"]
+    VALID_NAMES = ["range", "allowed_values", "help_str", "is_valid", "help_context", "display_text", "layout", "work_flow"]
 
     def __init__(self, function):
         self.function = function
