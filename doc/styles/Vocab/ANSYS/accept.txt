@@ -12,6 +12,7 @@ Fluent's
 fullname
 hexahedral
 Journaling
+journaling
 matplotlib
 mesher
 meshing's
