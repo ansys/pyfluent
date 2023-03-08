@@ -180,13 +180,14 @@ class TestLoadMachines(unittest.TestCase):
 
     def test_pe_hostfile(self):
         with tempfile.NamedTemporaryFile(delete=False) as fp:
-            fp.write(b'm1 3 None None\r\nm2 3 None None')
+            fp.write(b'm1\r\n\r\nm2 3 None None\r\nm3 4\r\nm4 2 queueName1')
             os.environ["PE_HOSTFILE"] = fp.name
         machineList = load_machines()
         os.unlink(fp.name)
-        self.assertEqual(machineList.number_of_cores, 6)
+        self.assertEqual(machineList.number_of_cores, 10)
         self.assertEqual(machineList.machines[1].host_name, "m2")
-        self.assertEqual(os.path.exists(fp.name), False)
+        self.assertEqual(machineList.machines[2].number_of_cores, 4)
+        self.assertEqual(machineList.machines[3].queue_name, "queueName1")
         del os.environ["PE_HOSTFILE"] 
         
 

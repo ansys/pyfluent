@@ -260,8 +260,12 @@ def _construct_machine_list_uge(host_filename):
         peReader = csv.reader(peFile, dialect="pemachines")
         for row in peReader:
             if len(row) == 0:
-                break
-            m = Machine(row[0], int(row[1]), row[2], None if len(row) == 4 else row[3])
+                continue
+            numberOfCores = row[1] if len(row) >= 2 else 1
+            queueName = row[2] if len(row) >= 3 else None
+            coreList = row[3] if len(row) >= 4 else None
+            print(row, numberOfCores, queueName, coreList, len(row))
+            m = Machine(row[0], int(numberOfCores),queueName, coreList)
             machineList.add(m)
     return machineList
 
