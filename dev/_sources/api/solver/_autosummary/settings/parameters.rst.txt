@@ -5,8 +5,11 @@
 parameters
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.parameters.parameters
+.. currentmodule:: ansys.fluent.core.solver.settings_231.parameters
 
+.. autoclass:: parameters
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ======================================================

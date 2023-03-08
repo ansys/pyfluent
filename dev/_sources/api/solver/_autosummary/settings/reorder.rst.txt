@@ -5,13 +5,16 @@
 reorder
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.reorder.reorder
+.. currentmodule:: ansys.fluent.core.solver.settings_231.reorder
 
-.. rubric:: Methods
+.. autoclass:: reorder
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ======================================   =====================================================
 
-Method                                                                                 Summary
+Command                                                                                Summary
 
 ======================================   =====================================================
 :ref:`band_width <band_width>`                                           Print cell bandwidth.

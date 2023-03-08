@@ -5,8 +5,11 @@
 cust_vec_func
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.cust_vec_func.cust_vec_func
+.. currentmodule:: ansys.fluent.core.solver.settings_231.cust_vec_func
 
+.. autoclass:: cust_vec_func
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ================================

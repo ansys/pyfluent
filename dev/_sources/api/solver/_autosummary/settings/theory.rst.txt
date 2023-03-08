@@ -5,8 +5,11 @@
 theory
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.theory.theory
+.. currentmodule:: ansys.fluent.core.solver.settings_231.theory
 
+.. autoclass:: theory
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   =============================================

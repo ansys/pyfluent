@@ -302,8 +302,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -316,11 +321,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../tui/index.html">
      meshing.tui
@@ -419,82 +419,6 @@ function checkPageExistsAndRedirect(event) {
     </span>
    </code>
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.File">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       Root.File
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       Root.FileManager
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.Children">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         Root.FileManager.Children
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.DeleteCadKey">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         Root.FileManager.DeleteCadKey
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.LoadFiles">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         Root.FileManager.LoadFiles
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.Name">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         Root.FileManager.Name
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.Reload">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         Root.FileManager.Reload
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.Unload">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         Root.FileManager.Unload
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
  </li>
 </ul>
 
@@ -517,145 +441,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-datamodel-pmfilemanagement">
 <span id="ref-meshing-datamodel-pmfilemanagement"></span><h1>meshing.datamodel.PMFileManagement<a class="headerlink" href="#meshing-datamodel-pmfilemanagement" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PMFileManagement.Root">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.datamodel_231.PMFileManagement.</span></span><span class="sig-name descname"><span class="pre">Root</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
-<p>Singleton Root.</p>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.File" title="ansys.fluent.core.datamodel_231.PMFileManagement.Root.File"><code class="xref py py-obj docutils literal notranslate"><span class="pre">File</span></code></a>(service, rules[, path])</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager" title="ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FileManager</span></code></a>(service, rules, path)</p></td>
-<td><p>Singleton FileManager.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PMFileManagement.Root.File">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">File</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.File" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNamedObjectContainer</span></code></p>
-<p>.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FileManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
-<p>Singleton FileManager.</p>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.Children" title="ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.Children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Children</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Children of value type List[str].</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.DeleteCadKey" title="ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.DeleteCadKey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DeleteCadKey</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command DeleteCadKey.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.LoadFiles" title="ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.LoadFiles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LoadFiles</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command LoadFiles.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.Name" title="ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.Name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Name</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Name of value type str.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.Reload" title="ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.Reload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Reload</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Reload.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.Unload" title="ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.Unload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Unload</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Unload.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.Children">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.Children" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter Children of value type List[str].</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.DeleteCadKey">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DeleteCadKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.DeleteCadKey" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command DeleteCadKey.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>Key</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/functions.html#int" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd></dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.12)"><span class="xref std std-ref">bool</span></a></dt><dd></dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.LoadFiles">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LoadFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.LoadFiles" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command LoadFiles.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.12)"><span class="xref std std-ref">bool</span></a></dt><dd></dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.Name">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.Name" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter Name of value type str.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.Reload">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Reload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.Reload" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Reload.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>FileName</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd></dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.12)"><span class="xref std std-ref">bool</span></a></dt><dd></dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.Unload">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Unload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PMFileManagement.Root.FileManager.Unload" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Unload.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>FileName</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd></dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.12)"><span class="xref std std-ref">bool</span></a></dt><dd></dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+<dd><p>Singleton Root.</p>
 </dd></dl>
 
 <div class="toctree-wrapper compound">

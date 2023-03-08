@@ -5,24 +5,27 @@
 poor_mesh_numerics
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.poor_mesh_numerics.poor_mesh_numerics
+.. currentmodule:: ansys.fluent.core.solver.settings_231.poor_mesh_numerics
 
-.. rubric:: Attributes
+.. autoclass:: poor_mesh_numerics
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================   =======================================================
 
-Attribute                                                            Summary
+Child                                                                Summary
 
 ==================   =======================================================
 :ref:`set <set_1>`       Edit a definition for automatic poor mesh numerics.
 
 ==================   =======================================================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ==========================================   =========================================================================
 
-Method                                                                                                         Summary
+Command                                                                                                        Summary
 
 ==========================================   =========================================================================
 :ref:`list_properties <list_properties_2>`       List the properties of a definition for automatic poor mesh numerics.

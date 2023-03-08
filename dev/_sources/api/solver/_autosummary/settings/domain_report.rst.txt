@@ -5,8 +5,11 @@
 domain_report
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.domain_report.domain_report
+.. currentmodule:: ansys.fluent.core.solver.settings_231.domain_report
 
+.. autoclass:: domain_report
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ================================

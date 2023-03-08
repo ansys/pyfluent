@@ -55,7 +55,7 @@
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
-    <link rel="next" title="meshing.tui.file.checkpoint" href="../../checkpoint/index.html" />
+    <link rel="next" title="meshing.tui.objects" href="../../../objects/index.html" />
     <link rel="prev" title="meshing.tui.file.import_" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
@@ -304,8 +304,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -318,11 +323,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../../index.html">
      meshing.tui
@@ -334,18 +334,23 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../objects/index.html">
-       meshing.tui.objects
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../../../preferences/index.html">
        meshing.tui.preferences
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../parallel/index.html">
-       meshing.tui.parallel
+      <a class="reference internal" href="../../../boundary/index.html">
+       meshing.tui.boundary
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../mesh/index.html">
+       meshing.tui.mesh
       </a>
      </li>
      <li class="toctree-l3">
@@ -354,23 +359,13 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../display/index.html">
-       meshing.tui.display
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../report/index.html">
-       meshing.tui.report
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../../../scoped_sizing/index.html">
        meshing.tui.scoped_sizing
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
+      <a class="reference internal" href="../../../report/index.html">
+       meshing.tui.report
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -384,8 +379,18 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
+        <a class="reference internal" href="../../checkpoint/index.html">
+         meshing.tui.file.checkpoint
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../project/index.html">
          meshing.tui.file.project
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../export/index.html">
+         meshing.tui.file.export
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -405,31 +410,21 @@ function checkPageExistsAndRedirect(event) {
          </li>
         </ul>
        </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../checkpoint/index.html">
-         meshing.tui.file.checkpoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../export/index.html">
-         meshing.tui.file.export
-        </a>
-       </li>
       </ul>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../boundary/index.html">
-       meshing.tui.boundary
+      <a class="reference internal" href="../../../objects/index.html">
+       meshing.tui.objects
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../mesh/index.html">
-       meshing.tui.mesh
+      <a class="reference internal" href="../../../parallel/index.html">
+       meshing.tui.parallel
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../size_functions/index.html">
-       meshing.tui.size_functions
+      <a class="reference internal" href="../../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
       </a>
      </li>
      <li class="toctree-l3">
@@ -443,8 +438,13 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
+      <a class="reference internal" href="../../../display/index.html">
+       meshing.tui.display
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../size_functions/index.html">
+       meshing.tui.size_functions
       </a>
      </li>
     </ul>
@@ -489,7 +489,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options">
    <code class="docutils literal notranslate">
     <span class="pre">
-     cad_options
+     main_menu.file.import_.cad_options
     </span>
    </code>
   </a>
@@ -498,7 +498,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.continue_on_error">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.continue_on_error()
+       main_menu.file.import_.cad_options.continue_on_error()
       </span>
      </code>
     </a>
@@ -507,7 +507,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.create_cad_assemblies">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.create_cad_assemblies()
+       main_menu.file.import_.cad_options.create_cad_assemblies()
       </span>
      </code>
     </a>
@@ -516,7 +516,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.create_label_per_body_during_cad_faceting">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.create_label_per_body_during_cad_faceting()
+       main_menu.file.import_.cad_options.create_label_per_body_during_cad_faceting()
       </span>
      </code>
     </a>
@@ -525,7 +525,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.derive_zone_name_from_object_scope">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.derive_zone_name_from_object_scope()
+       main_menu.file.import_.cad_options.derive_zone_name_from_object_scope()
       </span>
      </code>
     </a>
@@ -534,7 +534,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.double_connected_face_label">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.double_connected_face_label()
+       main_menu.file.import_.cad_options.double_connected_face_label()
       </span>
      </code>
     </a>
@@ -543,7 +543,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.enclosure_symm_processing">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.enclosure_symm_processing()
+       main_menu.file.import_.cad_options.enclosure_symm_processing()
       </span>
      </code>
     </a>
@@ -552,7 +552,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.extract_features">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.extract_features()
+       main_menu.file.import_.cad_options.extract_features()
       </span>
      </code>
     </a>
@@ -561,7 +561,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.import_body_names">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.import_body_names()
+       main_menu.file.import_.cad_options.import_body_names()
       </span>
      </code>
     </a>
@@ -570,7 +570,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.import_curvature_data_from_CAD">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.import_curvature_data_from_CAD()
+       main_menu.file.import_.cad_options.import_curvature_data_from_CAD()
       </span>
      </code>
     </a>
@@ -579,7 +579,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.import_label_for_body_named_selection">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.import_label_for_body_named_selection()
+       main_menu.file.import_.cad_options.import_label_for_body_named_selection()
       </span>
      </code>
     </a>
@@ -588,7 +588,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.import_part_names">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.import_part_names()
+       main_menu.file.import_.cad_options.import_part_names()
       </span>
      </code>
     </a>
@@ -597,7 +597,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.merge_nodes">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.merge_nodes()
+       main_menu.file.import_.cad_options.merge_nodes()
       </span>
      </code>
     </a>
@@ -606,7 +606,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.merge_objects_per_body_named_selection">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.merge_objects_per_body_named_selection()
+       main_menu.file.import_.cad_options.merge_objects_per_body_named_selection()
       </span>
      </code>
     </a>
@@ -615,7 +615,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.modify_all_duplicate_names">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.modify_all_duplicate_names()
+       main_menu.file.import_.cad_options.modify_all_duplicate_names()
       </span>
      </code>
     </a>
@@ -624,7 +624,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.name_separator_character">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.name_separator_character()
+       main_menu.file.import_.cad_options.name_separator_character()
       </span>
      </code>
     </a>
@@ -633,7 +633,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.named_selection_tessellation_failure">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.named_selection_tessellation_failure()
+       main_menu.file.import_.cad_options.named_selection_tessellation_failure()
       </span>
      </code>
     </a>
@@ -642,7 +642,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.named_selections">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.named_selections()
+       main_menu.file.import_.cad_options.named_selections()
       </span>
      </code>
     </a>
@@ -651,7 +651,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.object_type">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.object_type()
+       main_menu.file.import_.cad_options.object_type()
       </span>
      </code>
     </a>
@@ -660,7 +660,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.one_face_zone_per">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.one_face_zone_per()
+       main_menu.file.import_.cad_options.one_face_zone_per()
       </span>
      </code>
     </a>
@@ -669,7 +669,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.one_object_per">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.one_object_per()
+       main_menu.file.import_.cad_options.one_object_per()
       </span>
      </code>
     </a>
@@ -678,7 +678,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.read_all_cad_in_subdirectories">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.read_all_cad_in_subdirectories()
+       main_menu.file.import_.cad_options.read_all_cad_in_subdirectories()
       </span>
      </code>
     </a>
@@ -687,7 +687,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.reconstruct_topology">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.reconstruct_topology()
+       main_menu.file.import_.cad_options.reconstruct_topology()
       </span>
      </code>
     </a>
@@ -696,7 +696,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.replacement_character">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.replacement_character()
+       main_menu.file.import_.cad_options.replacement_character()
       </span>
      </code>
     </a>
@@ -705,7 +705,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.save_PMDB">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.save_PMDB()
+       main_menu.file.import_.cad_options.save_PMDB()
       </span>
      </code>
     </a>
@@ -714,7 +714,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.separate_features_by_type">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.separate_features_by_type()
+       main_menu.file.import_.cad_options.separate_features_by_type()
       </span>
      </code>
     </a>
@@ -723,7 +723,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.single_connected_edge_label">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.single_connected_edge_label()
+       main_menu.file.import_.cad_options.single_connected_edge_label()
       </span>
      </code>
     </a>
@@ -732,7 +732,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.strip_file_name_extension_from_naming">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.strip_file_name_extension_from_naming()
+       main_menu.file.import_.cad_options.strip_file_name_extension_from_naming()
       </span>
      </code>
     </a>
@@ -741,7 +741,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.strip_path_prefix_from_names">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.strip_path_prefix_from_names()
+       main_menu.file.import_.cad_options.strip_path_prefix_from_names()
       </span>
      </code>
     </a>
@@ -750,7 +750,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.tessellation">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.tessellation()
+       main_menu.file.import_.cad_options.tessellation()
       </span>
      </code>
     </a>
@@ -759,7 +759,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.use_body_names">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.use_body_names()
+       main_menu.file.import_.cad_options.use_body_names()
       </span>
      </code>
     </a>
@@ -768,7 +768,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.use_collection_names">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.use_collection_names()
+       main_menu.file.import_.cad_options.use_collection_names()
       </span>
      </code>
     </a>
@@ -777,7 +777,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.use_component_names">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.use_component_names()
+       main_menu.file.import_.cad_options.use_component_names()
       </span>
      </code>
     </a>
@@ -786,7 +786,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.use_part_names">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.use_part_names()
+       main_menu.file.import_.cad_options.use_part_names()
       </span>
      </code>
     </a>
@@ -795,7 +795,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.use_part_or_body_names_as_suffix_to_named_selections">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cad_options.use_part_or_body_names_as_suffix_to_named_selections()
+       main_menu.file.import_.cad_options.use_part_or_body_names_as_suffix_to_named_selections()
       </span>
      </code>
     </a>
@@ -823,118 +823,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-file-import-cad-options">
 <span id="ref-meshing-tui-file-import-cad-options"></span><h1>meshing.tui.file.import_.cad_options<a class="headerlink" href="#meshing-tui-file-import-cad-options" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.file.import_.</span></span><span class="sig-name descname"><span class="pre">cad_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Contains additional options for importing CAD files.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.continue_on_error" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.continue_on_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">continue_on_error</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to continue the import of the CAD file(s), despite errors or problems creating the faceting on certain surfaces, or other issues.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.create_cad_assemblies" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.create_cad_assemblies"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_cad_assemblies</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables creating the CAD Assemblies tree on CAD import.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.create_label_per_body_during_cad_faceting" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.create_label_per_body_during_cad_faceting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_label_per_body_during_cad_faceting</span></code></a>(...)</p></td>
-<td><p>Create label Per Body during cad faceting.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.derive_zone_name_from_object_scope" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.derive_zone_name_from_object_scope"><code class="xref py py-obj docutils literal notranslate"><span class="pre">derive_zone_name_from_object_scope</span></code></a>(*args, ...)</p></td>
-<td><p>Enables zones without Named Selections to inherit the object name on import.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.double_connected_face_label" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.double_connected_face_label"><code class="xref py py-obj docutils literal notranslate"><span class="pre">double_connected_face_label</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Adds the specified label to the name of double-connected face zones (face zones shared by two bodies).</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.enclosure_symm_processing" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.enclosure_symm_processing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enclosure_symm_processing</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables processing of enclosure and symmetry named selections during import.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.extract_features" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.extract_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_features</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables feature extraction from the CAD model on import.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.import_body_names" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.import_body_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">import_body_names</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables import of Body names from the CAD files.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.import_curvature_data_from_CAD" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.import_curvature_data_from_CAD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">import_curvature_data_from_CAD</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables importing of the curvature data from the nodes of the CAD facets.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.import_label_for_body_named_selection" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.import_label_for_body_named_selection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">import_label_for_body_named_selection</span></code></a>(*args, ...)</p></td>
-<td><p>Import face zone labels for body named selections.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.import_part_names" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.import_part_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">import_part_names</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables import of Part names from the CAD file(s).</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.merge_nodes" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.merge_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_nodes</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables the merging of geometry object nodes during CAD import.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.merge_objects_per_body_named_selection" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.merge_objects_per_body_named_selection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_objects_per_body_named_selection</span></code></a>(...)</p></td>
-<td><p>Merge Objects per body named selection.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.modify_all_duplicate_names" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.modify_all_duplicate_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify_all_duplicate_names</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to modify all duplicate object/zone names by adding incremental integers as suffix.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.name_separator_character" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.name_separator_character"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name_separator_character</span></code></a>(*args, **kwargs)</p></td>
-<td><p>:.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.named_selection_tessellation_failure" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.named_selection_tessellation_failure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">named_selection_tessellation_failure</span></code></a>(*args, ...)</p></td>
-<td><p>Set named selection for CFD surface mesh failures.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.named_selections" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.named_selections"><code class="xref py py-obj docutils literal notranslate"><span class="pre">named_selections</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to import Named Selections from the CAD file(s), including Named Selections from Ansys DesignModeler, publications from CATIA, and so on.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.object_type" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.object_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">object_type</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables the setting of object type on import.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.one_face_zone_per" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.one_face_zone_per"><code class="xref py py-obj docutils literal notranslate"><span class="pre">one_face_zone_per</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to create one face zone per body/face/object to be imported.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.one_object_per" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.one_object_per"><code class="xref py py-obj docutils literal notranslate"><span class="pre">one_object_per</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to create one object per body/part/file/selection to be imported.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.read_all_cad_in_subdirectories" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.read_all_cad_in_subdirectories"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_all_cad_in_subdirectories</span></code></a>(*args, **kwargs)</p></td>
-<td><p>When enabled, all files in the specified directory as well as in its subdirectories will be imported.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.reconstruct_topology" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.reconstruct_topology"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reconstruct_topology</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reconstruct topology for STL files.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.replacement_character" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.replacement_character"><code class="xref py py-obj docutils literal notranslate"><span class="pre">replacement_character</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Name replacement character.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.save_PMDB" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.save_PMDB"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_PMDB</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Saves a PMDB (*.pmdb) file in the directory containing the CAD files imported.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.separate_features_by_type" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.separate_features_by_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">separate_features_by_type</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables separation of feature edges based on angle, connectivity, and named selections on import.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.single_connected_edge_label" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.single_connected_edge_label"><code class="xref py py-obj docutils literal notranslate"><span class="pre">single_connected_edge_label</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Adds the specified label to the name of single-connected edge zones (edge zones referenced by a single face).</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.strip_file_name_extension_from_naming" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.strip_file_name_extension_from_naming"><code class="xref py py-obj docutils literal notranslate"><span class="pre">strip_file_name_extension_from_naming</span></code></a>(*args, ...)</p></td>
-<td><p>Removes the extension of the CAD files from the object/face zone names on import.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.strip_path_prefix_from_names" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.strip_path_prefix_from_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">strip_path_prefix_from_names</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to remove the path prefix from the object/face zone names on import.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.tessellation" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.tessellation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tessellation</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to control the tessellation (faceting) during file import.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.use_body_names" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.use_body_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_body_names</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Use body names for CAD files.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.use_collection_names" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.use_collection_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_collection_names</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to use the Named Selections for the object/zone names on import.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.use_component_names" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.use_component_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_component_names</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to add the component (part or assembly) names to the object/zone names on import.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.use_part_names" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.use_part_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_part_names</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to choose whether to add the part names from the CAD file to the object and zone names on import.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.use_part_or_body_names_as_suffix_to_named_selections" title="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.use_part_or_body_names_as_suffix_to_named_selections"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_part_or_body_names_as_suffix_to_named_selections</span></code></a>(...)</p></td>
-<td><p>Part or Body names are used as suffix for named selections spanning over multiple parts or bodies.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.file.import_.</span></span><span class="sig-name descname"><span class="pre">cad_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Contains additional options for importing CAD files.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.continue_on_error">
 <span class="sig-name descname"><span class="pre">continue_on_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options.continue_on_error" title="Permalink to this definition">#</a></dt>

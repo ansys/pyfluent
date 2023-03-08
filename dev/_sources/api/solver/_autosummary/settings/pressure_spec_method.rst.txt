@@ -5,8 +5,11 @@
 pressure_spec_method
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.pressure_spec_method.pressure_spec_method
+.. currentmodule:: ansys.fluent.core.solver.settings_231.pressure_spec_method
 
+.. autoclass:: pressure_spec_method
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

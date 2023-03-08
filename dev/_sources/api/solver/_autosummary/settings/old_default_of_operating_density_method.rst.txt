@@ -5,8 +5,11 @@
 old_default_of_operating_density_method
 =======================================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.old_default_of_operating_density_method.old_default_of_operating_density_method
+.. currentmodule:: ansys.fluent.core.solver.settings_231.old_default_of_operating_density_method
 
+.. autoclass:: old_default_of_operating_density_method
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================================================   =========================================================

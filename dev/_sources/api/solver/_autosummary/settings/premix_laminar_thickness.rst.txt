@@ -5,13 +5,16 @@
 premix_laminar_thickness
 ========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.premix_laminar_thickness.premix_laminar_thickness
+.. currentmodule:: ansys.fluent.core.solver.settings_231.premix_laminar_thickness
 
-.. rubric:: Attributes
+.. autoclass:: premix_laminar_thickness
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   ====================================================
 
-Attribute                                                                                           Summary
+Child                                                                                               Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

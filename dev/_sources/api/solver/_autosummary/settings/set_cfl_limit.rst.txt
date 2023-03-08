@@ -5,8 +5,11 @@
 set_cfl_limit
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.set_cfl_limit.set_cfl_limit
+.. currentmodule:: ansys.fluent.core.solver.settings_231.set_cfl_limit
 
+.. autoclass:: set_cfl_limit
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==================================================

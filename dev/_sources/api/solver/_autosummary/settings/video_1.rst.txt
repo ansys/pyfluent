@@ -5,13 +5,16 @@
 video
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.video_1.video
+.. currentmodule:: ansys.fluent.core.solver.settings_231.video_1
 
-.. rubric:: Attributes
+.. autoclass:: video
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================   ========================================================
 
-Attribute                                                                                                   Summary
+Child                                                                                                       Summary
 
 ========================================================   ========================================================
 :ref:`fps <fps>`                                               Set the Frame Per Sec(FPS) for exporting video file.

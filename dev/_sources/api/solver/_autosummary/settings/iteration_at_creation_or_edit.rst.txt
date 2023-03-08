@@ -5,8 +5,11 @@
 iteration_at_creation_or_edit
 =============================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.iteration_at_creation_or_edit.iteration_at_creation_or_edit
+.. currentmodule:: ansys.fluent.core.solver.settings_231.iteration_at_creation_or_edit
 
+.. autoclass:: iteration_at_creation_or_edit
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

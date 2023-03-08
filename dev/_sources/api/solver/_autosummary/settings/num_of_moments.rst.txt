@@ -5,8 +5,11 @@
 num_of_moments
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.num_of_moments.num_of_moments
+.. currentmodule:: ansys.fluent.core.solver.settings_231.num_of_moments
 
+.. autoclass:: num_of_moments
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   =======================================

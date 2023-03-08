@@ -5,8 +5,11 @@
 moment
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.moment.moment
+.. currentmodule:: ansys.fluent.core.solver.settings_231.moment
 
+.. autoclass:: moment
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`moment_child <moment_child>`

@@ -5,8 +5,11 @@
 fslip
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fslip.fslip
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fslip
 
+.. autoclass:: fslip
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

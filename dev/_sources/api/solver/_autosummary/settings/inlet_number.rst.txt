@@ -5,8 +5,11 @@
 inlet_number
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.inlet_number.inlet_number
+.. currentmodule:: ansys.fluent.core.solver.settings_231.inlet_number
 
+.. autoclass:: inlet_number
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

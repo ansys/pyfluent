@@ -5,8 +5,11 @@
 rz_roughness
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.rz_roughness.rz_roughness
+.. currentmodule:: ansys.fluent.core.solver.settings_231.rz_roughness
 
+.. autoclass:: rz_roughness
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

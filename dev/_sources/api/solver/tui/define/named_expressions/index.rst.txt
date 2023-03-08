@@ -3,11 +3,11 @@
 solver.tui.define.named\_expressions
 ====================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.named_expressions
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.named_expressions
+   :members: delete, add, export_to_tsv, import_from_tsv, list_properties, copy, edit, compute, list
 

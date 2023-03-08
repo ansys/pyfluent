@@ -5,8 +5,11 @@
 dpm_bc_collision_partner
 ========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_bc_collision_partner.dpm_bc_collision_partner
+.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_bc_collision_partner
 
+.. autoclass:: dpm_bc_collision_partner
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

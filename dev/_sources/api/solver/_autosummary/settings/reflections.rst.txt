@@ -5,8 +5,11 @@
 reflections
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.reflections.reflections
+.. currentmodule:: ansys.fluent.core.solver.settings_231.reflections
 
+.. autoclass:: reflections
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

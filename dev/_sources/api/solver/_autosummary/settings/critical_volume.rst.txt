@@ -5,13 +5,16 @@
 critical_volume
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.critical_volume.critical_volume
+.. currentmodule:: ansys.fluent.core.solver.settings_231.critical_volume
 
-.. rubric:: Attributes
+.. autoclass:: critical_volume
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================   ====================================================
 
-Attribute                                                               Summary
+Child                                                                   Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

@@ -5,13 +5,16 @@
 fvar2
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fvar2.fvar2
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fvar2
 
-.. rubric:: Attributes
+.. autoclass:: fvar2
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

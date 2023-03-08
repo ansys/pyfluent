@@ -5,8 +5,11 @@
 cell_report
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.cell_report.cell_report
+.. currentmodule:: ansys.fluent.core.solver.settings_231.cell_report
 
+.. autoclass:: cell_report
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ================================

@@ -5,13 +5,16 @@
 scalar_parameters
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.scalar_parameters.scalar_parameters
+.. currentmodule:: ansys.fluent.core.solver.settings_231.scalar_parameters
 
-.. rubric:: Attributes
+.. autoclass:: scalar_parameters
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================================================   ===================================
 
-Attribute                                                                            Summary
+Child                                                                                Summary
 
 ======================================================   ===================================
 :ref:`fixed_cycle_parameters <fixed_cycle_parameters>`       'fixed_cycle_parameters' child.

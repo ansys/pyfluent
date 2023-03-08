@@ -5,8 +5,11 @@
 fensapice_drop_lwc
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fensapice_drop_lwc.fensapice_drop_lwc
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fensapice_drop_lwc
 
+.. autoclass:: fensapice_drop_lwc
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

@@ -5,8 +5,11 @@
 spe_diff_xy
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.spe_diff_xy.spe_diff_xy
+.. currentmodule:: ansys.fluent.core.solver.settings_231.spe_diff_xy
 
+.. autoclass:: spe_diff_xy
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

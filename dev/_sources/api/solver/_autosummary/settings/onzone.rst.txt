@@ -5,8 +5,11 @@
 onzone
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.onzone.onzone
+.. currentmodule:: ansys.fluent.core.solver.settings_231.onzone
 
+.. autoclass:: onzone
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

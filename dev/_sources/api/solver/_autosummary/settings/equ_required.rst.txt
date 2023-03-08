@@ -5,8 +5,11 @@
 equ_required
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.equ_required.equ_required
+.. currentmodule:: ansys.fluent.core.solver.settings_231.equ_required
 
+.. autoclass:: equ_required
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

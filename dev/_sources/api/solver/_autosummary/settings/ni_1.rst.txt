@@ -5,13 +5,16 @@
 ni
 ==
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.ni_1.ni
+.. currentmodule:: ansys.fluent.core.solver.settings_231.ni_1
 
-.. rubric:: Attributes
+.. autoclass:: ni
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

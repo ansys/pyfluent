@@ -5,8 +5,11 @@
 vm_nvortices
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.vm_nvortices.vm_nvortices
+.. currentmodule:: ansys.fluent.core.solver.settings_231.vm_nvortices
 
+.. autoclass:: vm_nvortices
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

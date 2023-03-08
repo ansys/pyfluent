@@ -5,8 +5,11 @@
 per_surface
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.per_surface.per_surface
+.. currentmodule:: ansys.fluent.core.solver.settings_231.per_surface
 
+.. autoclass:: per_surface
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ===================================

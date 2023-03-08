@@ -5,8 +5,11 @@
 landscape
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.landscape.landscape
+.. currentmodule:: ansys.fluent.core.solver.settings_231.landscape
 
+.. autoclass:: landscape
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   =================================================

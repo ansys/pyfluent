@@ -5,8 +5,11 @@
 flow_time_frequency
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.flow_time_frequency.flow_time_frequency
+.. currentmodule:: ansys.fluent.core.solver.settings_231.flow_time_frequency
 
+.. autoclass:: flow_time_frequency
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

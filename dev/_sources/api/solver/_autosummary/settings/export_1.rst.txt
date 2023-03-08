@@ -5,8 +5,11 @@
 export
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.export_1.export
+.. currentmodule:: ansys.fluent.core.solver.settings_231.export_1
 
+.. autoclass:: export
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ====================================   ==========================

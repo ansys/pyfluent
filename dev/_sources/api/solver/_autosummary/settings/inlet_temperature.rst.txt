@@ -5,8 +5,11 @@
 inlet_temperature
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.inlet_temperature.inlet_temperature
+.. currentmodule:: ansys.fluent.core.solver.settings_231.inlet_temperature
 
+.. autoclass:: inlet_temperature
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ======================================   ===========================

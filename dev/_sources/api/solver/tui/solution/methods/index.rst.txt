@@ -3,22 +3,22 @@
 solver.tui.solution.methods
 ===========================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.methods
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.methods
+   :members: unsteady_global_time, unsteady_2nd_order, residual_smoothing, set_solution_methods_to_default, reduced_rank_extrapolation, p_v_coupling, flux_type, phase_based_vof_discretization, unsteady_1st_order, discretization_scheme, convergence_acceleration_for_stretched_meshes, noniterative_time_advance, nb_gradient_boundary_option, vof_numerics, gradient_scheme, accelerated_non_iterative_time_marching, unsteady_2nd_order_bounded, reduced_rank_extrapolation_options, frozen_flux
 
 .. toctree::
    :hidden:
 
-   expert/index
-   high_order_term_relaxation/index
-   multiphase_numerics/index
-   nita_expert_controls/index
-   overset/index
-   pseudo_time_method/index
-   query/index
    warped_face_gradient_correction/index
+   nita_expert_controls/index
+   expert/index
+   pseudo_time_method/index
+   multiphase_numerics/index
+   query/index
+   high_order_term_relaxation/index
+   overset/index

@@ -5,8 +5,11 @@
 cbf_lam
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.cbf_lam.cbf_lam
+.. currentmodule:: ansys.fluent.core.solver.settings_231.cbf_lam
 
+.. autoclass:: cbf_lam
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =========================

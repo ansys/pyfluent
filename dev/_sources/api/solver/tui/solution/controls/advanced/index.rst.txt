@@ -3,13 +3,13 @@
 solver.tui.solution.controls.advanced
 =====================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.controls.advanced
+   :members: relaxation_method, correction_tolerance, multi_stage, multi_grid_amg, multi_grid_fas, slope_limiter_set, multi_grid_controls
 
 .. toctree::
    :hidden:

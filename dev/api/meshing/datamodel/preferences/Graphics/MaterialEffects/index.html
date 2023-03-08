@@ -304,8 +304,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -318,11 +323,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../../tui/index.html">
      meshing.tui
@@ -529,7 +529,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.MaterialEffects">
    <code class="docutils literal notranslate">
     <span class="pre">
-     MaterialEffects
+     Root.Graphics.MaterialEffects
     </span>
    </code>
   </a>
@@ -538,7 +538,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.MaterialEffects.DecimationFilter">
      <code class="docutils literal notranslate">
       <span class="pre">
-       MaterialEffects.DecimationFilter
+       Root.Graphics.MaterialEffects.DecimationFilter
       </span>
      </code>
     </a>
@@ -547,7 +547,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.MaterialEffects.ParameterizationSource">
      <code class="docutils literal notranslate">
       <span class="pre">
-       MaterialEffects.ParameterizationSource
+       Root.Graphics.MaterialEffects.ParameterizationSource
       </span>
      </code>
     </a>
@@ -556,7 +556,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.MaterialEffects.TilingStyle">
      <code class="docutils literal notranslate">
       <span class="pre">
-       MaterialEffects.TilingStyle
+       Root.Graphics.MaterialEffects.TilingStyle
       </span>
      </code>
     </a>
@@ -584,44 +584,30 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-datamodel-preferences-graphics-materialeffects">
 <span id="ref-meshing-datamodel-preferences-graphics-materialeffects"></span><h1>meshing.datamodel.preferences.Graphics.MaterialEffects<a class="headerlink" href="#meshing-datamodel-preferences-graphics-materialeffects" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.MaterialEffects">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.datamodel_231.preferences.Root.Graphics.</span></span><span class="sig-name descname"><span class="pre">MaterialEffects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.MaterialEffects" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
-<p>Singleton MaterialEffects.</p>
-<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.MaterialEffects.DecimationFilter" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.MaterialEffects.DecimationFilter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DecimationFilter</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter DecimationFilter of value type str.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.MaterialEffects.ParameterizationSource" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.MaterialEffects.ParameterizationSource"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ParameterizationSource</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter ParameterizationSource of value type str.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.MaterialEffects.TilingStyle" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.MaterialEffects.TilingStyle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TilingStyle</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter TilingStyle of value type str.</p></td>
-</tr>
 </tbody>
 </table>
 <dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.MaterialEffects">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Root.Graphics.</span></span><span class="sig-name descname"><span class="pre">MaterialEffects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.MaterialEffects" title="Permalink to this definition">#</a></dt>
+<dd><p>Singleton MaterialEffects.</p>
+<dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.MaterialEffects.DecimationFilter">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DecimationFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.MaterialEffects.DecimationFilter" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter DecimationFilter of value type str.</p>
+<dd><p>Parameter DecimationFilter of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.MaterialEffects.ParameterizationSource">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ParameterizationSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.MaterialEffects.ParameterizationSource" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter ParameterizationSource of value type str.</p>
+<dd><p>Parameter ParameterizationSource of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.MaterialEffects.TilingStyle">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TilingStyle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.MaterialEffects.TilingStyle" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter TilingStyle of value type str.</p>
+<dd><p>Parameter TilingStyle of value type str.</p>
 </dd></dl>
 
 </dd></dl>

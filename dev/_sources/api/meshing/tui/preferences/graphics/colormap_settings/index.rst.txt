@@ -3,11 +3,11 @@
 meshing.tui.preferences.graphics.colormap\_settings
 ===================================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.colormap_settings
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.graphics.colormap_settings
+   :members: text_font_automatic_vertical_size, isolines_position_offset, text_font_automatic_size, min_size_scale_factor, border_style, use_no_sub_windows, number_format_precision, levels, labels, text_truncation_limit_for_horizontal_colormaps, text_font_fixed_units, text_font_fixed_size, alignment, number_format_type, text_font_automatic_horizontal_size, text_truncation_limit_for_vertical_colormaps, text_font_fixed_vertical_size, major_length_to_screen_ratio_when_vertical, text_font_fixed_horizontal_size, type, automatic_resize, log_scale, aspect_ratio_when_vertical, text_behavior, major_length_to_screen_ratio_when_horizontal, colormap, margin_from_edge_to_screen_ratio, aspect_ratio_when_horizontal, text_font_automatic_units, skip_value, max_size_scale_factor, preserve_aspect_ratio_for_hardcopy, show_colormap, auto_refit_on_resize, text_font_name
 

@@ -5,8 +5,11 @@
 window_id
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.window_id.window_id
+.. currentmodule:: ansys.fluent.core.solver.settings_231.window_id
 
+.. autoclass:: window_id
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

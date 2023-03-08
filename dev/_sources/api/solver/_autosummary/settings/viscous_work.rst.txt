@@ -5,8 +5,11 @@
 viscous_work
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.viscous_work.viscous_work
+.. currentmodule:: ansys.fluent.core.solver.settings_231.viscous_work
 
+.. autoclass:: viscous_work
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ========================================   ===========================================

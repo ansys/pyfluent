@@ -5,8 +5,11 @@
 global_courant_number
 =====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.global_courant_number.global_courant_number
+.. currentmodule:: ansys.fluent.core.solver.settings_231.global_courant_number
 
+.. autoclass:: global_courant_number
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ======================================

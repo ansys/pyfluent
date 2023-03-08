@@ -5,13 +5,16 @@
 boiling
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.boiling.boiling
+.. currentmodule:: ansys.fluent.core.solver.settings_231.boiling
 
-.. rubric:: Attributes
+.. autoclass:: boiling
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==========================================================================   =====================================================================================
 
-Attribute                                                                                                                                                  Summary
+Child                                                                                                                                                      Summary
 
 ==========================================================================   =====================================================================================
 :ref:`heat_flux_relaxation_factor <heat_flux_relaxation_factor>`                                                    Under-relaxation factor for boiling heat flux.

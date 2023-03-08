@@ -5,13 +5,16 @@
 local_dt_child
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.local_dt_child.local_dt_child
+.. currentmodule:: ansys.fluent.core.solver.settings_231.local_dt_child
 
-.. rubric:: Attributes
+.. autoclass:: local_dt_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==========================================================================   =============================================
 
-Attribute                                                                                                          Summary
+Child                                                                                                              Summary
 
 ==========================================================================   =============================================
 :ref:`enable_pseudo_time_method <enable_pseudo_time_method>`                            'enable_pseudo_time_method' child.

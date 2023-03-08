@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
-    <link rel="next" title="solver.tui.solve.cell_registers" href="../cell_registers/index.html" />
-    <link rel="prev" title="solver.tui.solve.report_definitions" href="../report_definitions/index.html" />
+    <link rel="next" title="solver.tui.solve.report_files" href="../report_files/index.html" />
+    <link rel="prev" title="solver.tui.solve.monitors.report_files" href="../monitors/report_files/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -304,8 +304,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -349,13 +354,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
        <li class="toctree-l4">
@@ -364,13 +364,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../file/index.html">
-         solver.tui.file
+        <a class="reference internal" href="../../adjoint/index.html">
+         solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../icing/index.html">
-         solver.tui.icing
+        <a class="reference internal" href="../../surface/index.html">
+         solver.tui.surface
         </a>
        </li>
        <li class="toctree-l4">
@@ -379,18 +379,18 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../views/index.html">
+         solver.tui.views
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../parallel/index.html">
-         solver.tui.parallel
+        <a class="reference internal" href="../../turbo_post/index.html">
+         solver.tui.turbo_post
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../plot/index.html">
-         solver.tui.plot
+        <a class="reference internal" href="../../file/index.html">
+         solver.tui.file
         </a>
        </li>
        <li class="toctree-l4">
@@ -399,13 +399,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../report/index.html">
-         solver.tui.report
+        <a class="reference internal" href="../../plot/index.html">
+         solver.tui.plot
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../results/index.html">
-         solver.tui.results
+        <a class="reference internal" href="../../icing/index.html">
+         solver.tui.icing
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -419,33 +419,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../animate/index.html">
-           solver.tui.solve.animate
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../initialize/index.html">
-           solver.tui.solve.initialize
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../monitors/index.html">
-           solver.tui.solve.monitors
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../report_files/index.html">
-           solver.tui.solve.report_files
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="../report_definitions/index.html">
            solver.tui.solve.report_definitions
-          </a>
-         </li>
-         <li class="toctree-l5 current active">
-          <a class="current reference internal" href="#">
-           solver.tui.solve.report_plots
           </a>
          </li>
          <li class="toctree-l5">
@@ -454,13 +429,38 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
+          <a class="reference internal" href="../animate/index.html">
+           solver.tui.solve.animate
+          </a>
+         </li>
+         <li class="toctree-l5">
           <a class="reference internal" href="../cell_register_operations/index.html">
            solver.tui.solve.cell_register_operations
           </a>
          </li>
          <li class="toctree-l5">
+          <a class="reference internal" href="../monitors/index.html">
+           solver.tui.solve.monitors
+          </a>
+         </li>
+         <li class="toctree-l5 current active">
+          <a class="current reference internal" href="#">
+           solver.tui.solve.report_plots
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../report_files/index.html">
+           solver.tui.solve.report_files
+          </a>
+         </li>
+         <li class="toctree-l5">
           <a class="reference internal" href="../set/index.html">
            solver.tui.solve.set
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../initialize/index.html">
+           solver.tui.solve.initialize
           </a>
          </li>
          <li class="toctree-l5">
@@ -471,8 +471,13 @@ function checkPageExistsAndRedirect(event) {
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../solution/index.html">
-         solver.tui.solution
+        <a class="reference internal" href="../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
        <li class="toctree-l4">
@@ -481,8 +486,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../report/index.html">
+         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4">
@@ -491,28 +501,23 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../parametric_study/index.html">
          solver.tui.parametric_study
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
+        <a class="reference internal" href="../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../server/index.html">
+         solver.tui.server
         </a>
        </li>
       </ul>
@@ -584,7 +589,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots">
    <code class="docutils literal notranslate">
     <span class="pre">
-     report_plots
+     main_menu.solve.report_plots
     </span>
    </code>
   </a>
@@ -593,7 +598,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.add">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_plots.add()
+       main_menu.solve.report_plots.add()
       </span>
      </code>
     </a>
@@ -602,7 +607,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.axes">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_plots.axes()
+       main_menu.solve.report_plots.axes()
       </span>
      </code>
     </a>
@@ -611,7 +616,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.clear_data">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_plots.clear_data()
+       main_menu.solve.report_plots.clear_data()
       </span>
      </code>
     </a>
@@ -620,7 +625,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.curves">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_plots.curves()
+       main_menu.solve.report_plots.curves()
       </span>
      </code>
     </a>
@@ -629,7 +634,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_plots.delete()
+       main_menu.solve.report_plots.delete()
       </span>
      </code>
     </a>
@@ -638,7 +643,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.delete_all">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_plots.delete_all()
+       main_menu.solve.report_plots.delete_all()
       </span>
      </code>
     </a>
@@ -647,7 +652,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.edit">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_plots.edit()
+       main_menu.solve.report_plots.edit()
       </span>
      </code>
     </a>
@@ -656,7 +661,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.list">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_plots.list()
+       main_menu.solve.report_plots.list()
       </span>
      </code>
     </a>
@@ -665,7 +670,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.list_properties">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_plots.list_properties()
+       main_menu.solve.report_plots.list_properties()
       </span>
      </code>
     </a>
@@ -674,7 +679,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.plot">
      <code class="docutils literal notranslate">
       <span class="pre">
-       report_plots.plot()
+       main_menu.solve.report_plots.plot()
       </span>
      </code>
     </a>
@@ -702,46 +707,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solve-report-plots">
 <span id="ref-solver-tui-solve-report-plots"></span><h1>solver.tui.solve.report_plots<a class="headerlink" href="#solver-tui-solve-report-plots" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.solve.</span></span><span class="sig-name descname"><span class="pre">report_plots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the report plots menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.add" title="ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Creates a report plot.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.axes" title="ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axes</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Defines the axes for a report plot.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.clear_data" title="ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.clear_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_data</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Clears the data associated with a report plot.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.curves" title="ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.curves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">curves</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Defines the curves for a report plot.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.delete" title="ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Deletes a report plot object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.delete_all" title="ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.delete_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_all</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Deletes all of the report plot objects.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.edit" title="ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.edit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edit</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Edits a report plot.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.list" title="ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Lists all defined report plots.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.list_properties" title="ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.list_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_properties</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Lists the properties of a report plot.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.plot" title="ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Plots the specified report plot.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solve.</span></span><span class="sig-name descname"><span class="pre">report_plots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the report plots menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.add">
 <span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.report_plots.add" title="Permalink to this definition">#</a></dt>

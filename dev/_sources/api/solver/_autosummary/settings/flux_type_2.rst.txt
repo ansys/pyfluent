@@ -5,13 +5,16 @@
 flux_type
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.flux_type_2.flux_type
+.. currentmodule:: ansys.fluent.core.solver.settings_231.flux_type_2
 
-.. rubric:: Attributes
+.. autoclass:: flux_type
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================   =======================
 
-Attribute                                        Summary
+Child                                            Summary
 
 ==============================   =======================
 :ref:`dbns_cases <dbns_cases>`       'dbns_cases' child.

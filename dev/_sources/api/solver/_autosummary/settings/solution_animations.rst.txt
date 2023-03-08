@@ -5,13 +5,16 @@
 solution_animations
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.solution_animations.solution_animations
+.. currentmodule:: ansys.fluent.core.solver.settings_231.solution_animations
 
-.. rubric:: Methods
+.. autoclass:: solution_animations
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ========================================   =============================================
 
-Method                                                                           Summary
+Command                                                                          Summary
 
 ========================================   =============================================
 :ref:`display <display_1>`                                      Display graphics object.

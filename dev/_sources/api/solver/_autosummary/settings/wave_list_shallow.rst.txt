@@ -5,8 +5,11 @@
 wave_list_shallow
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.wave_list_shallow.wave_list_shallow
+.. currentmodule:: ansys.fluent.core.solver.settings_231.wave_list_shallow
 
+.. autoclass:: wave_list_shallow
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`wave_list_shallow_child <wave_list_shallow_child>`

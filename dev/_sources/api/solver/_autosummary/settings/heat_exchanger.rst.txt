@@ -5,8 +5,11 @@
 heat_exchanger
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.heat_exchanger.heat_exchanger
+.. currentmodule:: ansys.fluent.core.solver.settings_231.heat_exchanger
 
+.. autoclass:: heat_exchanger
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   ======================================

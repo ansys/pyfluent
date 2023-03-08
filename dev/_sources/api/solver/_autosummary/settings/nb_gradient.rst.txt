@@ -5,8 +5,11 @@
 nb_gradient
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.nb_gradient.nb_gradient
+.. currentmodule:: ansys.fluent.core.solver.settings_231.nb_gradient
 
+.. autoclass:: nb_gradient
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================================   =====================

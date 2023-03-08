@@ -5,8 +5,11 @@
 gradient
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.gradient.gradient
+.. currentmodule:: ansys.fluent.core.solver.settings_231.gradient
 
+.. autoclass:: gradient
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================================   ============================================

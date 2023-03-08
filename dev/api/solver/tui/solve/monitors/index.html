@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
-    <link rel="next" title="solver.tui.solve.monitors.report_files" href="report_files/index.html" />
-    <link rel="prev" title="solver.tui.solve.initialize.set_hyb_initialization" href="../initialize/set_hyb_initialization/index.html" />
+    <link rel="next" title="solver.tui.solve.monitors.residual" href="residual/index.html" />
+    <link rel="prev" title="solver.tui.solve.cell_register_operations" href="../cell_register_operations/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -304,8 +304,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -349,13 +354,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
        <li class="toctree-l4">
@@ -364,13 +364,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../file/index.html">
-         solver.tui.file
+        <a class="reference internal" href="../../adjoint/index.html">
+         solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../icing/index.html">
-         solver.tui.icing
+        <a class="reference internal" href="../../surface/index.html">
+         solver.tui.surface
         </a>
        </li>
        <li class="toctree-l4">
@@ -379,18 +379,18 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../views/index.html">
+         solver.tui.views
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../parallel/index.html">
-         solver.tui.parallel
+        <a class="reference internal" href="../../turbo_post/index.html">
+         solver.tui.turbo_post
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../plot/index.html">
-         solver.tui.plot
+        <a class="reference internal" href="../../file/index.html">
+         solver.tui.file
         </a>
        </li>
        <li class="toctree-l4">
@@ -399,13 +399,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../report/index.html">
-         solver.tui.report
+        <a class="reference internal" href="../../plot/index.html">
+         solver.tui.plot
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../results/index.html">
-         solver.tui.results
+        <a class="reference internal" href="../../icing/index.html">
+         solver.tui.icing
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -419,13 +419,23 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
+          <a class="reference internal" href="../report_definitions/index.html">
+           solver.tui.solve.report_definitions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../cell_registers/index.html">
+           solver.tui.solve.cell_registers
+          </a>
+         </li>
+         <li class="toctree-l5">
           <a class="reference internal" href="../animate/index.html">
            solver.tui.solve.animate
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../initialize/index.html">
-           solver.tui.solve.initialize
+          <a class="reference internal" href="../cell_register_operations/index.html">
+           solver.tui.solve.cell_register_operations
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -439,8 +449,8 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul>
            <li class="toctree-l6">
-            <a class="reference internal" href="report_files/index.html">
-             solver.tui.solve.monitors.report_files
+            <a class="reference internal" href="residual/index.html">
+             solver.tui.solve.monitors.residual
             </a>
            </li>
            <li class="toctree-l6">
@@ -449,21 +459,11 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="residual/index.html">
-             solver.tui.solve.monitors.residual
+            <a class="reference internal" href="report_files/index.html">
+             solver.tui.solve.monitors.report_files
             </a>
            </li>
           </ul>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../report_files/index.html">
-           solver.tui.solve.report_files
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../report_definitions/index.html">
-           solver.tui.solve.report_definitions
-          </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../report_plots/index.html">
@@ -471,18 +471,18 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../cell_registers/index.html">
-           solver.tui.solve.cell_registers
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../cell_register_operations/index.html">
-           solver.tui.solve.cell_register_operations
+          <a class="reference internal" href="../report_files/index.html">
+           solver.tui.solve.report_files
           </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../set/index.html">
            solver.tui.solve.set
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../initialize/index.html">
+           solver.tui.solve.initialize
           </a>
          </li>
          <li class="toctree-l5">
@@ -493,8 +493,13 @@ function checkPageExistsAndRedirect(event) {
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../solution/index.html">
-         solver.tui.solution
+        <a class="reference internal" href="../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
        <li class="toctree-l4">
@@ -503,8 +508,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../report/index.html">
+         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4">
@@ -513,28 +523,23 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../parametric_study/index.html">
          solver.tui.parametric_study
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
+        <a class="reference internal" href="../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../server/index.html">
+         solver.tui.server
         </a>
        </li>
       </ul>
@@ -606,7 +611,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors">
    <code class="docutils literal notranslate">
     <span class="pre">
-     monitors
+     main_menu.solve.monitors
     </span>
    </code>
   </a>
@@ -615,346 +620,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.convergence_conditions">
      <code class="docutils literal notranslate">
       <span class="pre">
-       monitors.convergence_conditions()
+       main_menu.solve.monitors.convergence_conditions()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       monitors.report_files
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.add">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.report_files.add()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.clear_data">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.report_files.clear_data()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.delete">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.report_files.delete()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.delete_all">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.report_files.delete_all()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.edit">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.report_files.edit()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.list">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.report_files.list()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.list_properties">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.report_files.list_properties()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       monitors.report_plots
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.add">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.report_plots.add()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.axes">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.report_plots.axes()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.clear_data">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.report_plots.clear_data()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.curves">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.report_plots.curves()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.delete">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.report_plots.delete()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.delete_all">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.report_plots.delete_all()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.edit">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.report_plots.edit()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.list">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.report_plots.list()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.list_properties">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.report_plots.list_properties()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.plot">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.report_plots.plot()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       monitors.residual
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.check_convergence">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.residual.check_convergence()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.convergence_criteria">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.residual.convergence_criteria()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.criterion_type">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.residual.criterion_type()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.enhanced_continuity_residual">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.residual.enhanced_continuity_residual()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.monitor">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.residual.monitor()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.n_display">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.residual.n_display()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.n_maximize_norms">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.residual.n_maximize_norms()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.n_save">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.residual.n_save()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.normalization_factors">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.residual.normalization_factors()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.normalize">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.residual.normalize()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.plot">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.residual.plot()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.print">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.residual.print()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.re_normalize">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.residual.re_normalize()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.relative_conv_criteria">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.residual.relative_conv_criteria()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.reset">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.residual.reset()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.scale_by_coefficient">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         monitors.residual.scale_by_coefficient()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.set_average_over">
      <code class="docutils literal notranslate">
       <span class="pre">
-       monitors.set_average_over()
+       main_menu.solve.monitors.set_average_over()
       </span>
      </code>
     </a>
@@ -982,373 +657,18 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solve-monitors">
 <span id="ref-solver-tui-solve-monitors"></span><h1>solver.tui.solve.monitors<a class="headerlink" href="#solver-tui-solve-monitors" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.solve.</span></span><span class="sig-name descname"><span class="pre">monitors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Sets solution monitors.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.convergence_conditions" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.convergence_conditions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convergence_conditions</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Manage convergence report.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.set_average_over" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.set_average_over"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_average_over</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the average over input for monitors.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files"><code class="xref py py-obj docutils literal notranslate"><span class="pre">report_files</span></code></a>(path, service)</p></td>
-<td><p>Manage report files.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots"><code class="xref py py-obj docutils literal notranslate"><span class="pre">report_plots</span></code></a>(path, service)</p></td>
-<td><p>Manage report plots.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">residual</span></code></a>(path, service)</p></td>
-<td><p>Enters the residual monitors menu.</p></td>
-</tr>
-</tbody>
-</table>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solve.</span></span><span class="sig-name descname"><span class="pre">monitors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets solution monitors.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.convergence_conditions">
 <span class="sig-name descname"><span class="pre">convergence_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.convergence_conditions" title="Permalink to this definition">#</a></dt>
 <dd><p>Manage convergence report.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">report_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Manage report files.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.add" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Add a new object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.clear_data" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.clear_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_data</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete the report file from the system.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.delete" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete an object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.delete_all" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.delete_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_all</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete all report file objects.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.edit" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.edit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edit</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Edit an object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.list" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List objects.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.list_properties" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.list_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_properties</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List properties of an object.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.add">
-<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.add" title="Permalink to this definition">#</a></dt>
-<dd><p>Add a new object.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.clear_data">
-<span class="sig-name descname"><span class="pre">clear_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.clear_data" title="Permalink to this definition">#</a></dt>
-<dd><p>Delete the report file from the system.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.delete">
-<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.delete" title="Permalink to this definition">#</a></dt>
-<dd><p>Delete an object.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.delete_all">
-<span class="sig-name descname"><span class="pre">delete_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.delete_all" title="Permalink to this definition">#</a></dt>
-<dd><p>Delete all report file objects.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.edit">
-<span class="sig-name descname"><span class="pre">edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.edit" title="Permalink to this definition">#</a></dt>
-<dd><p>Edit an object.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.list">
-<span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.list" title="Permalink to this definition">#</a></dt>
-<dd><p>List objects.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.list_properties">
-<span class="sig-name descname"><span class="pre">list_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_files.list_properties" title="Permalink to this definition">#</a></dt>
-<dd><p>List properties of an object.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">report_plots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Manage report plots.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.add" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Add a new object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.axes" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axes</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set axes options of an object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.clear_data" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.clear_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_data</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Clear report plot data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.curves" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.curves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">curves</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set curves options of an object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.delete" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete an object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.delete_all" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.delete_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_all</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete all plot objects.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.edit" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.edit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edit</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Edit an object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.list" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List objects.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.list_properties" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.list_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_properties</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List properties of an object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.plot" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Plot.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.add">
-<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.add" title="Permalink to this definition">#</a></dt>
-<dd><p>Add a new object.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.axes">
-<span class="sig-name descname"><span class="pre">axes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.axes" title="Permalink to this definition">#</a></dt>
-<dd><p>Set axes options of an object.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.clear_data">
-<span class="sig-name descname"><span class="pre">clear_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.clear_data" title="Permalink to this definition">#</a></dt>
-<dd><p>Clear report plot data.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.curves">
-<span class="sig-name descname"><span class="pre">curves</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.curves" title="Permalink to this definition">#</a></dt>
-<dd><p>Set curves options of an object.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.delete">
-<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.delete" title="Permalink to this definition">#</a></dt>
-<dd><p>Delete an object.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.delete_all">
-<span class="sig-name descname"><span class="pre">delete_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.delete_all" title="Permalink to this definition">#</a></dt>
-<dd><p>Delete all plot objects.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.edit">
-<span class="sig-name descname"><span class="pre">edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.edit" title="Permalink to this definition">#</a></dt>
-<dd><p>Edit an object.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.list">
-<span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.list" title="Permalink to this definition">#</a></dt>
-<dd><p>List objects.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.list_properties">
-<span class="sig-name descname"><span class="pre">list_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.list_properties" title="Permalink to this definition">#</a></dt>
-<dd><p>List properties of an object.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.report_plots.plot" title="Permalink to this definition">#</a></dt>
-<dd><p>Plot.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the residual monitors menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.check_convergence" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.check_convergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_convergence</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Chooses which currently monitored residuals should be checked for convergence.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.convergence_criteria" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.convergence_criteria"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convergence_criteria</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets convergence criteria for residuals that are currently being both monitored and checked.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.criterion_type" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.criterion_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">criterion_type</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets convergence criterion type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.enhanced_continuity_residual" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.enhanced_continuity_residual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enhanced_continuity_residual</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables an enhanced formulation for the local scaling of the continuity residuals with the pressure-based solver, so that the absolute mass flow rate at each cell is used.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.monitor" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.monitor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">monitor</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Chooses which residuals to monitor as printed and/or plotted output.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.n_display" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.n_display"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_display</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets the number of most recent residuals to display in plots.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.n_maximize_norms" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.n_maximize_norms"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_maximize_norms</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets the number of iterations through which normalization factors will be maximized.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.n_save" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.n_save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_save</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets number of residuals to be saved with data.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.normalization_factors" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.normalization_factors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normalization_factors</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets normalization factors for currently monitored residuals (if normalize? is set to yes).</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.normalize" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.normalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normalize</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Chooses whether to normalize residuals in printed and plotted output.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.plot" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Chooses whether residuals will be plotted during iteration.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.print" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.print"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Chooses whether residuals will be printed during iteration.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.re_normalize" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.re_normalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">re_normalize</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Re-normalize residuals by maximum values.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.relative_conv_criteria" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.relative_conv_criteria"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_conv_criteria</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets relative convergence criteria for residuals that are currently being both monitored and checked.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.reset" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Chooses whether to delete the residual history and reset iteration counter to 1.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.scale_by_coefficient" title="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.scale_by_coefficient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale_by_coefficient</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Chooses whether to scale residuals by coefficient sum in printed and plotted output.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.check_convergence">
-<span class="sig-name descname"><span class="pre">check_convergence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.check_convergence" title="Permalink to this definition">#</a></dt>
-<dd><p>Chooses which currently monitored residuals should be checked for convergence.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.convergence_criteria">
-<span class="sig-name descname"><span class="pre">convergence_criteria</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.convergence_criteria" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets convergence criteria for residuals that are currently being both monitored and checked.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.criterion_type">
-<span class="sig-name descname"><span class="pre">criterion_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.criterion_type" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets convergence criterion type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.enhanced_continuity_residual">
-<span class="sig-name descname"><span class="pre">enhanced_continuity_residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.enhanced_continuity_residual" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables/disables an enhanced formulation for the local scaling of the continuity residuals with the pressure-based solver, so that the absolute mass flow rate at each cell is used. This text command is only available when the computing of the local scale is enabled through the solve/monitors/residual/scale-by-coefficient? text command.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.monitor">
-<span class="sig-name descname"><span class="pre">monitor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.monitor" title="Permalink to this definition">#</a></dt>
-<dd><p>Chooses which residuals to monitor as printed and/or plotted output.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.n_display">
-<span class="sig-name descname"><span class="pre">n_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.n_display" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets the number of most recent residuals to display in plots.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.n_maximize_norms">
-<span class="sig-name descname"><span class="pre">n_maximize_norms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.n_maximize_norms" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets the number of iterations through which normalization factors will be maximized.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.n_save">
-<span class="sig-name descname"><span class="pre">n_save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.n_save" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets number of residuals to be saved with data. History is automatically compacted when buffer becomes full.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.normalization_factors">
-<span class="sig-name descname"><span class="pre">normalization_factors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.normalization_factors" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets normalization factors for currently monitored residuals (if normalize? is set to yes).</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.normalize">
-<span class="sig-name descname"><span class="pre">normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.normalize" title="Permalink to this definition">#</a></dt>
-<dd><p>Chooses whether to normalize residuals in printed and plotted output.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.plot" title="Permalink to this definition">#</a></dt>
-<dd><p>Chooses whether residuals will be plotted during iteration.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.print">
-<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.print" title="Permalink to this definition">#</a></dt>
-<dd><p>Chooses whether residuals will be printed during iteration.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.re_normalize">
-<span class="sig-name descname"><span class="pre">re_normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.re_normalize" title="Permalink to this definition">#</a></dt>
-<dd><p>Re-normalize residuals by maximum values.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.relative_conv_criteria">
-<span class="sig-name descname"><span class="pre">relative_conv_criteria</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.relative_conv_criteria" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets relative convergence criteria for residuals that are currently being both monitored and checked.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.reset">
-<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.reset" title="Permalink to this definition">#</a></dt>
-<dd><p>Chooses whether to delete the residual history and reset iteration counter to 1.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.scale_by_coefficient">
-<span class="sig-name descname"><span class="pre">scale_by_coefficient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.monitors.residual.scale_by_coefficient" title="Permalink to this definition">#</a></dt>
-<dd><p>Chooses whether to scale residuals by coefficient sum in printed and plotted output.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">

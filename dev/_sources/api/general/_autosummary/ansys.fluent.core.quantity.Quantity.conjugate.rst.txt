@@ -1,6 +1,0 @@
-conjugate
-=========
-
-.. currentmodule:: ansys.fluent.core.quantity
-
-.. automethod:: Quantity.conjugate

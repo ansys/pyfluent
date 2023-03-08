@@ -5,8 +5,11 @@
 zoom
 ====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.zoom.zoom
+.. currentmodule:: ansys.fluent.core.solver.settings_231.zoom
 
+.. autoclass:: zoom
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ======================   ===================

@@ -5,8 +5,11 @@
 colormap_bottom
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.colormap_bottom.colormap_bottom
+.. currentmodule:: ansys.fluent.core.solver.settings_231.colormap_bottom
 
+.. autoclass:: colormap_bottom
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ============================================

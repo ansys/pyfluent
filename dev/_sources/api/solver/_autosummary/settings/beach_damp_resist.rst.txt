@@ -5,8 +5,11 @@
 beach_damp_resist
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.beach_damp_resist.beach_damp_resist
+.. currentmodule:: ansys.fluent.core.solver.settings_231.beach_damp_resist
 
+.. autoclass:: beach_damp_resist
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

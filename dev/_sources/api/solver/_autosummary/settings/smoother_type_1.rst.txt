@@ -5,8 +5,11 @@
 smoother_type
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.smoother_type_1.smoother_type
+.. currentmodule:: ansys.fluent.core.solver.settings_231.smoother_type_1
 
+.. autoclass:: smoother_type
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===============================

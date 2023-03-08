@@ -5,8 +5,11 @@
 overwrite
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.overwrite.overwrite
+.. currentmodule:: ansys.fluent.core.solver.settings_231.overwrite
 
+.. autoclass:: overwrite
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   ====================================================================================================

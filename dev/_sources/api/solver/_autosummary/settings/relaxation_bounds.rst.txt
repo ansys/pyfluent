@@ -5,8 +5,11 @@
 relaxation_bounds
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.relaxation_bounds.relaxation_bounds
+.. currentmodule:: ansys.fluent.core.solver.settings_231.relaxation_bounds
 
+.. autoclass:: relaxation_bounds
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ================================================================================   ================================================

@@ -5,8 +5,11 @@
 disk_pitch_angle
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.disk_pitch_angle.disk_pitch_angle
+.. currentmodule:: ansys.fluent.core.solver.settings_231.disk_pitch_angle
 
+.. autoclass:: disk_pitch_angle
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   ==============================================

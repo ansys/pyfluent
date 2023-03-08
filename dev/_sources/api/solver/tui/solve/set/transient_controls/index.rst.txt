@@ -3,13 +3,13 @@
 solver.tui.solve.set.transient\_controls
 ========================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solve.set.transient_controls
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.transient_controls
+   :members: time_step_size_for_acoustic_export, incremental_time, extrapolate_eqn_vars, number_of_time_steps, fixed_periodic, total_time, max_flow_time, extrapolate_vars, predict_next_time, undo_timestep, cfl_based_time_stepping_advanced_options, udf_based_time_stepping, error_based_time_stepping, duration_specification_method, max_iterations_per_time_step, solid_time_step_size, cfl_based_time_stepping, total_number_of_time_steps, time_step_size, rotating_mesh_flow_predictor, solution_status, specified_time_step, multiphase_specific_time_stepping, fixed_user_specified
 
 .. toctree::
    :hidden:

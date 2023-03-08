@@ -5,8 +5,11 @@
 segregated_solver
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.segregated_solver.segregated_solver
+.. currentmodule:: ansys.fluent.core.solver.settings_231.segregated_solver
 
+.. autoclass:: segregated_solver
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   ============================================================================

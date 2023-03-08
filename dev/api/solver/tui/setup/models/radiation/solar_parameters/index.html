@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../search.html" />
-    <link rel="next" title="solver.tui.setup.models.solver" href="../../solver/index.html" />
-    <link rel="prev" title="solver.tui.setup.models.radiation.dtrm_parameters" href="../dtrm_parameters/index.html" />
+    <link rel="next" title="solver.tui.setup.models.acoustics" href="../../acoustics/index.html" />
+    <link rel="prev" title="solver.tui.setup.models.radiation.s2s_parameters" href="../s2s_parameters/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -306,8 +306,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -351,13 +356,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
        <li class="toctree-l4">
@@ -366,13 +366,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../file/index.html">
-         solver.tui.file
+        <a class="reference internal" href="../../../../adjoint/index.html">
+         solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../icing/index.html">
-         solver.tui.icing
+        <a class="reference internal" href="../../../../surface/index.html">
+         solver.tui.surface
         </a>
        </li>
        <li class="toctree-l4">
@@ -381,18 +381,18 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../../views/index.html">
+         solver.tui.views
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parallel/index.html">
-         solver.tui.parallel
+        <a class="reference internal" href="../../../../turbo_post/index.html">
+         solver.tui.turbo_post
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../plot/index.html">
-         solver.tui.plot
+        <a class="reference internal" href="../../../../file/index.html">
+         solver.tui.file
         </a>
        </li>
        <li class="toctree-l4">
@@ -401,13 +401,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../report/index.html">
-         solver.tui.report
+        <a class="reference internal" href="../../../../plot/index.html">
+         solver.tui.plot
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../results/index.html">
-         solver.tui.results
+        <a class="reference internal" href="../../../../icing/index.html">
+         solver.tui.icing
         </a>
        </li>
        <li class="toctree-l4">
@@ -416,8 +416,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solution/index.html">
-         solver.tui.solution
+        <a class="reference internal" href="../../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -431,18 +436,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../boundary_conditions/index.html">
-           solver.tui.setup.boundary_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../dynamic_mesh/index.html">
-           solver.tui.setup.dynamic_mesh
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../expert/index.html">
-           solver.tui.setup.expert
+          <a class="reference internal" href="../../../mixing_planes/index.html">
+           solver.tui.setup.mixing_planes
           </a>
          </li>
          <li class="toctree-l5">
@@ -451,18 +446,48 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
+          <a class="reference internal" href="../../../boundary_conditions/index.html">
+           solver.tui.setup.boundary_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../overset_interfaces/index.html">
+           solver.tui.setup.overset_interfaces
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../dynamic_mesh/index.html">
+           solver.tui.setup.dynamic_mesh
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../named_expressions/index.html">
+           solver.tui.setup.named_expressions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../turbo_model/index.html">
+           solver.tui.setup.turbo_model
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../expert/index.html">
+           solver.tui.setup.expert
+          </a>
+         </li>
+         <li class="toctree-l5">
           <a class="reference internal" href="../../../materials/index.html">
            solver.tui.setup.materials
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../mesh_interfaces/index.html">
-           solver.tui.setup.mesh_interfaces
+          <a class="reference internal" href="../../../reference_values/index.html">
+           solver.tui.setup.reference_values
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../mixing_planes/index.html">
-           solver.tui.setup.mixing_planes
+          <a class="reference internal" href="../../../mesh_interfaces/index.html">
+           solver.tui.setup.mesh_interfaces
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -476,18 +501,13 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul class="current">
            <li class="toctree-l6">
-            <a class="reference internal" href="../../acoustics/index.html">
-             solver.tui.setup.models.acoustics
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../optics/index.html">
-             solver.tui.setup.models.optics
-            </a>
-           </li>
-           <li class="toctree-l6">
             <a class="reference internal" href="../../eulerian_wallfilm/index.html">
              solver.tui.setup.models.eulerian_wallfilm
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../species/index.html">
+             solver.tui.setup.models.species
             </a>
            </li>
            <li class="toctree-l6">
@@ -496,8 +516,8 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../shell_conduction/index.html">
-             solver.tui.setup.models.shell_conduction
+            <a class="reference internal" href="../../electrolysis/index.html">
+             solver.tui.setup.models.electrolysis
             </a>
            </li>
            <li class="toctree-l6">
@@ -506,13 +526,13 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../cht/index.html">
-             solver.tui.setup.models.cht
+            <a class="reference internal" href="../../soot_parameters/index.html">
+             solver.tui.setup.models.soot_parameters
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../two_temperature/index.html">
-             solver.tui.setup.models.two_temperature
+            <a class="reference internal" href="../../heat_exchanger/index.html">
+             solver.tui.setup.models.heat_exchanger
             </a>
            </li>
            <li class="toctree-l6">
@@ -521,50 +541,18 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../nox_parameters/index.html">
-             solver.tui.setup.models.nox_parameters
+            <a class="reference internal" href="../../two_temperature/index.html">
+             solver.tui.setup.models.two_temperature
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../soot_parameters/index.html">
-             solver.tui.setup.models.soot_parameters
+            <a class="reference internal" href="../../optics/index.html">
+             solver.tui.setup.models.optics
             </a>
-           </li>
-           <li class="toctree-l6 current active has-children">
-            <a class="reference internal" href="../index.html">
-             solver.tui.setup.models.radiation
-            </a>
-            <input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-            <label for="toctree-checkbox-6">
-             <i class="fas fa-chevron-down">
-             </i>
-            </label>
-            <ul class="current">
-             <li class="toctree-l7">
-              <a class="reference internal" href="../s2s_parameters/index.html">
-               solver.tui.setup.models.radiation.s2s_parameters
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../dtrm_parameters/index.html">
-               solver.tui.setup.models.radiation.dtrm_parameters
-              </a>
-             </li>
-             <li class="toctree-l7 current active">
-              <a class="current reference internal" href="#">
-               solver.tui.setup.models.radiation.solar_parameters
-              </a>
-             </li>
-            </ul>
            </li>
            <li class="toctree-l6">
             <a class="reference internal" href="../../solver/index.html">
              solver.tui.setup.models.solver
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../species/index.html">
-             solver.tui.setup.models.species
             </a>
            </li>
            <li class="toctree-l6">
@@ -578,21 +566,53 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../heat_exchanger/index.html">
-             solver.tui.setup.models.heat_exchanger
+            <a class="reference internal" href="../../shell_conduction/index.html">
+             solver.tui.setup.models.shell_conduction
+            </a>
+           </li>
+           <li class="toctree-l6 current active has-children">
+            <a class="reference internal" href="../index.html">
+             solver.tui.setup.models.radiation
+            </a>
+            <input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+            <label for="toctree-checkbox-6">
+             <i class="fas fa-chevron-down">
+             </i>
+            </label>
+            <ul class="current">
+             <li class="toctree-l7">
+              <a class="reference internal" href="../dtrm_parameters/index.html">
+               solver.tui.setup.models.radiation.dtrm_parameters
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../s2s_parameters/index.html">
+               solver.tui.setup.models.radiation.s2s_parameters
+              </a>
+             </li>
+             <li class="toctree-l7 current active">
+              <a class="current reference internal" href="#">
+               solver.tui.setup.models.radiation.solar_parameters
+              </a>
+             </li>
+            </ul>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../acoustics/index.html">
+             solver.tui.setup.models.acoustics
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../electrolysis/index.html">
-             solver.tui.setup.models.electrolysis
+            <a class="reference internal" href="../../cht/index.html">
+             solver.tui.setup.models.cht
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../nox_parameters/index.html">
+             solver.tui.setup.models.nox_parameters
             </a>
            </li>
           </ul>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../named_expressions/index.html">
-           solver.tui.setup.named_expressions
-          </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../../operating_conditions/index.html">
@@ -600,30 +620,20 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../overset_interfaces/index.html">
-           solver.tui.setup.overset_interfaces
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="../../../reference_frames/index.html">
            solver.tui.setup.reference_frames
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../reference_values/index.html">
-           solver.tui.setup.reference_values
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../turbo_model/index.html">
-           solver.tui.setup.turbo_model
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../report/index.html">
+         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4">
@@ -632,28 +642,23 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../../parametric_study/index.html">
          solver.tui.parametric_study
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
+        <a class="reference internal" href="../../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../server/index.html">
+         solver.tui.server
         </a>
        </li>
       </ul>
@@ -725,7 +730,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters">
    <code class="docutils literal notranslate">
     <span class="pre">
-     solar_parameters
+     main_menu.setup.models.radiation.solar_parameters
     </span>
    </code>
   </a>
@@ -734,7 +739,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.autoread_solar_data">
      <code class="docutils literal notranslate">
       <span class="pre">
-       solar_parameters.autoread_solar_data()
+       main_menu.setup.models.radiation.solar_parameters.autoread_solar_data()
       </span>
      </code>
     </a>
@@ -743,7 +748,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.autosave_solar_data">
      <code class="docutils literal notranslate">
       <span class="pre">
-       solar_parameters.autosave_solar_data()
+       main_menu.setup.models.radiation.solar_parameters.autosave_solar_data()
       </span>
      </code>
     </a>
@@ -752,7 +757,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.ground_reflectivity">
      <code class="docutils literal notranslate">
       <span class="pre">
-       solar_parameters.ground_reflectivity()
+       main_menu.setup.models.radiation.solar_parameters.ground_reflectivity()
       </span>
      </code>
     </a>
@@ -761,7 +766,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.illumination_parameters">
      <code class="docutils literal notranslate">
       <span class="pre">
-       solar_parameters.illumination_parameters()
+       main_menu.setup.models.radiation.solar_parameters.illumination_parameters()
       </span>
      </code>
     </a>
@@ -770,7 +775,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.iteration_parameters">
      <code class="docutils literal notranslate">
       <span class="pre">
-       solar_parameters.iteration_parameters()
+       main_menu.setup.models.radiation.solar_parameters.iteration_parameters()
       </span>
      </code>
     </a>
@@ -779,7 +784,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.quad_tree_parameters">
      <code class="docutils literal notranslate">
       <span class="pre">
-       solar_parameters.quad_tree_parameters()
+       main_menu.setup.models.radiation.solar_parameters.quad_tree_parameters()
       </span>
      </code>
     </a>
@@ -788,7 +793,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.scattering_fraction">
      <code class="docutils literal notranslate">
       <span class="pre">
-       solar_parameters.scattering_fraction()
+       main_menu.setup.models.radiation.solar_parameters.scattering_fraction()
       </span>
      </code>
     </a>
@@ -797,7 +802,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.sol_adjacent_fluidcells">
      <code class="docutils literal notranslate">
       <span class="pre">
-       solar_parameters.sol_adjacent_fluidcells()
+       main_menu.setup.models.radiation.solar_parameters.sol_adjacent_fluidcells()
       </span>
      </code>
     </a>
@@ -806,7 +811,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.sol_camera_pos">
      <code class="docutils literal notranslate">
       <span class="pre">
-       solar_parameters.sol_camera_pos()
+       main_menu.setup.models.radiation.solar_parameters.sol_camera_pos()
       </span>
      </code>
     </a>
@@ -815,7 +820,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.sol_on_demand">
      <code class="docutils literal notranslate">
       <span class="pre">
-       solar_parameters.sol_on_demand()
+       main_menu.setup.models.radiation.solar_parameters.sol_on_demand()
       </span>
      </code>
     </a>
@@ -824,7 +829,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.solar_thread_control">
      <code class="docutils literal notranslate">
       <span class="pre">
-       solar_parameters.solar_thread_control()
+       main_menu.setup.models.radiation.solar_parameters.solar_thread_control()
       </span>
      </code>
     </a>
@@ -833,7 +838,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.sun_direction_vector">
      <code class="docutils literal notranslate">
       <span class="pre">
-       solar_parameters.sun_direction_vector()
+       main_menu.setup.models.radiation.solar_parameters.sun_direction_vector()
       </span>
      </code>
     </a>
@@ -842,7 +847,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.use_direction_from_sol_calc">
      <code class="docutils literal notranslate">
       <span class="pre">
-       solar_parameters.use_direction_from_sol_calc()
+       main_menu.setup.models.radiation.solar_parameters.use_direction_from_sol_calc()
       </span>
      </code>
     </a>
@@ -870,55 +875,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-models-radiation-solar-parameters">
 <span id="ref-solver-tui-setup-models-radiation-solar-parameters"></span><h1>solver.tui.setup.models.radiation.solar_parameters<a class="headerlink" href="#solver-tui-setup-models-radiation-solar-parameters" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.</span></span><span class="sig-name descname"><span class="pre">solar_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the solar parameters menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.autoread_solar_data" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.autoread_solar_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">autoread_solar_data</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set autoread solar data parameters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.autosave_solar_data" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.autosave_solar_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">autosave_solar_data</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set autosave solar data parameters.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.ground_reflectivity" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.ground_reflectivity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ground_reflectivity</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set ground reflectivity parameters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.illumination_parameters" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.illumination_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">illumination_parameters</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set illumination parameters.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.iteration_parameters" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.iteration_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iteration_parameters</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set update parameters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.quad_tree_parameters" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.quad_tree_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quad_tree_parameters</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set quad-tree refinement parameters.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.scattering_fraction" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.scattering_fraction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scattering_fraction</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set scattering fraction parameters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.sol_adjacent_fluidcells" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.sol_adjacent_fluidcells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sol_adjacent_fluidcells</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable solar load for adjacent fluid cells.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.sol_camera_pos" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.sol_camera_pos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sol_camera_pos</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set camera position based on sun direction vector.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.sol_on_demand" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.sol_on_demand"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sol_on_demand</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable  solar load on demand.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.solar_thread_control" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.solar_thread_control"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solar_thread_control</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Solar thread control.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.sun_direction_vector" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.sun_direction_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sun_direction_vector</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set sun direction vector.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.use_direction_from_sol_calc" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.use_direction_from_sol_calc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_direction_from_sol_calc</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set direction computed from solar calculator.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.models.radiation.</span></span><span class="sig-name descname"><span class="pre">solar_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the solar parameters menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.autoread_solar_data">
 <span class="sig-name descname"><span class="pre">autoread_solar_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.radiation.solar_parameters.autoread_solar_data" title="Permalink to this definition">#</a></dt>

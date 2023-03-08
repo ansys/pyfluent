@@ -5,8 +5,11 @@
 logo
 ====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.logo.logo
+.. currentmodule:: ansys.fluent.core.solver.settings_231.logo
 
+.. autoclass:: logo
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ====================

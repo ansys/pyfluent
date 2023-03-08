@@ -5,8 +5,11 @@
 wall_prandtl
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.wall_prandtl.wall_prandtl
+.. currentmodule:: ansys.fluent.core.solver.settings_231.wall_prandtl
 
+.. autoclass:: wall_prandtl
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =========================

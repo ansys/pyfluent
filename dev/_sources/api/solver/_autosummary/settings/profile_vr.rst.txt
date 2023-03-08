@@ -5,8 +5,11 @@
 profile_vr
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.profile_vr.profile_vr
+.. currentmodule:: ansys.fluent.core.solver.settings_231.profile_vr
 
+.. autoclass:: profile_vr
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

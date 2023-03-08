@@ -307,8 +307,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -352,13 +357,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
        <li class="toctree-l4">
@@ -367,13 +367,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../file/index.html">
-         solver.tui.file
+        <a class="reference internal" href="../../../../../adjoint/index.html">
+         solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../icing/index.html">
-         solver.tui.icing
+        <a class="reference internal" href="../../../../../surface/index.html">
+         solver.tui.surface
         </a>
        </li>
        <li class="toctree-l4">
@@ -382,18 +382,18 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../../../views/index.html">
+         solver.tui.views
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../parallel/index.html">
-         solver.tui.parallel
+        <a class="reference internal" href="../../../../../turbo_post/index.html">
+         solver.tui.turbo_post
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../plot/index.html">
-         solver.tui.plot
+        <a class="reference internal" href="../../../../../file/index.html">
+         solver.tui.file
         </a>
        </li>
        <li class="toctree-l4">
@@ -402,13 +402,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../report/index.html">
-         solver.tui.report
+        <a class="reference internal" href="../../../../../plot/index.html">
+         solver.tui.plot
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../results/index.html">
-         solver.tui.results
+        <a class="reference internal" href="../../../../../icing/index.html">
+         solver.tui.icing
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -421,6 +421,16 @@ function checkPageExistsAndRedirect(event) {
          </i>
         </label>
         <ul class="current">
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../report_definitions/index.html">
+           solver.tui.solve.report_definitions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../cell_registers/index.html">
+           solver.tui.solve.cell_registers
+          </a>
+         </li>
          <li class="toctree-l5 current active has-children">
           <a class="reference internal" href="../../../index.html">
            solver.tui.solve.animate
@@ -431,21 +441,6 @@ function checkPageExistsAndRedirect(event) {
            </i>
           </label>
           <ul class="current">
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../define/index.html">
-             solver.tui.solve.animate.define
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../playback/index.html">
-             solver.tui.solve.animate.playback
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../objects/index.html">
-             solver.tui.solve.animate.objects
-            </a>
-           </li>
            <li class="toctree-l6 current active has-children">
             <a class="reference internal" href="../../index.html">
              solver.tui.solve.animate.pulse
@@ -480,11 +475,26 @@ function checkPageExistsAndRedirect(event) {
              </li>
             </ul>
            </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../playback/index.html">
+             solver.tui.solve.animate.playback
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../objects/index.html">
+             solver.tui.solve.animate.objects
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../define/index.html">
+             solver.tui.solve.animate.define
+            </a>
+           </li>
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../initialize/index.html">
-           solver.tui.solve.initialize
+          <a class="reference internal" href="../../../../cell_register_operations/index.html">
+           solver.tui.solve.cell_register_operations
           </a>
          </li>
          <li class="toctree-l5">
@@ -493,33 +503,23 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../report_files/index.html">
-           solver.tui.solve.report_files
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../report_definitions/index.html">
-           solver.tui.solve.report_definitions
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="../../../../report_plots/index.html">
            solver.tui.solve.report_plots
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../cell_registers/index.html">
-           solver.tui.solve.cell_registers
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../cell_register_operations/index.html">
-           solver.tui.solve.cell_register_operations
+          <a class="reference internal" href="../../../../report_files/index.html">
+           solver.tui.solve.report_files
           </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../../../set/index.html">
            solver.tui.solve.set
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../initialize/index.html">
+           solver.tui.solve.initialize
           </a>
          </li>
          <li class="toctree-l5">
@@ -530,8 +530,13 @@ function checkPageExistsAndRedirect(event) {
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../solution/index.html">
-         solver.tui.solution
+        <a class="reference internal" href="../../../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
        <li class="toctree-l4">
@@ -540,8 +545,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../report/index.html">
+         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4">
@@ -550,28 +560,23 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../../../parametric_study/index.html">
          solver.tui.parametric_study
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
+        <a class="reference internal" href="../../../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../server/index.html">
+         solver.tui.server
         </a>
        </li>
       </ul>
@@ -643,7 +648,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.animate.pulse.video.advance_quality">
    <code class="docutils literal notranslate">
     <span class="pre">
-     advance_quality
+     main_menu.solve.animate.pulse.video.advance_quality
     </span>
    </code>
   </a>
@@ -652,7 +657,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.animate.pulse.video.advance_quality.bitrate">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advance_quality.bitrate()
+       main_menu.solve.animate.pulse.video.advance_quality.bitrate()
       </span>
      </code>
     </a>
@@ -661,7 +666,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.animate.pulse.video.advance_quality.bitrate_scale">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advance_quality.bitrate_scale()
+       main_menu.solve.animate.pulse.video.advance_quality.bitrate_scale()
       </span>
      </code>
     </a>
@@ -670,7 +675,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.animate.pulse.video.advance_quality.compression_method">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advance_quality.compression_method()
+       main_menu.solve.animate.pulse.video.advance_quality.compression_method()
       </span>
      </code>
     </a>
@@ -679,7 +684,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.animate.pulse.video.advance_quality.enable_h264">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advance_quality.enable_h264()
+       main_menu.solve.animate.pulse.video.advance_quality.enable_h264()
       </span>
      </code>
     </a>
@@ -707,28 +712,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solve-animate-pulse-video-advance-quality">
 <span id="ref-solver-tui-solve-animate-pulse-video-advance-quality"></span><h1>solver.tui.solve.animate.pulse.video.advance_quality<a class="headerlink" href="#solver-tui-solve-animate-pulse-video-advance-quality" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.animate.pulse.video.advance_quality">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.solve.animate.pulse.video.</span></span><span class="sig-name descname"><span class="pre">advance_quality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.animate.pulse.video.advance_quality" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Advance Quality setting.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.animate.pulse.video.advance_quality.bitrate" title="ansys.fluent.core.solver.tui_231.main_menu.solve.animate.pulse.video.advance_quality.bitrate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bitrate</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set video bitrate(kbits/sec) for exporting video file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.animate.pulse.video.advance_quality.bitrate_scale" title="ansys.fluent.core.solver.tui_231.main_menu.solve.animate.pulse.video.advance_quality.bitrate_scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bitrate_scale</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Mp4 bitrate scale - Best-64000 High-32000 Medium-16000 Low-8000.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.animate.pulse.video.advance_quality.compression_method" title="ansys.fluent.core.solver.tui_231.main_menu.solve.animate.pulse.video.advance_quality.compression_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compression_method</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compression methode for Microsoft AVI movie.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.animate.pulse.video.advance_quality.enable_h264" title="ansys.fluent.core.solver.tui_231.main_menu.solve.animate.pulse.video.advance_quality.enable_h264"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_h264</span></code></a>(*args, **kwargs)</p></td>
-<td><p>H264 encoding flag.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.animate.pulse.video.advance_quality">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solve.animate.pulse.video.</span></span><span class="sig-name descname"><span class="pre">advance_quality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.animate.pulse.video.advance_quality" title="Permalink to this definition">#</a></dt>
+<dd><p>Advance Quality setting.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.animate.pulse.video.advance_quality.bitrate">
 <span class="sig-name descname"><span class="pre">bitrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.animate.pulse.video.advance_quality.bitrate" title="Permalink to this definition">#</a></dt>

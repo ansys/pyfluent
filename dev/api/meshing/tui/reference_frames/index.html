@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="meshing.tui.display" href="../display/index.html" />
-    <link rel="prev" title="meshing.tui.parallel" href="../parallel/index.html" />
+    <link rel="next" title="meshing.tui.scoped_sizing" href="../scoped_sizing/index.html" />
+    <link rel="prev" title="meshing.tui.mesh.auto_mesh_controls" href="../mesh/auto_mesh_controls/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -302,8 +302,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -316,11 +321,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../index.html">
      meshing.tui
@@ -332,48 +332,8 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../objects/index.html">
-       meshing.tui.objects
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../preferences/index.html">
        meshing.tui.preferences
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../parallel/index.html">
-       meshing.tui.parallel
-      </a>
-     </li>
-     <li class="toctree-l3 current active">
-      <a class="current reference internal" href="#">
-       meshing.tui.reference_frames
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../display/index.html">
-       meshing.tui.display
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../report/index.html">
-       meshing.tui.report
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../file/index.html">
-       meshing.tui.file
       </a>
      </li>
      <li class="toctree-l3">
@@ -382,13 +342,48 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../openmp_controls/index.html">
+       meshing.tui.openmp_controls
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../mesh/index.html">
        meshing.tui.mesh
       </a>
      </li>
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
+       meshing.tui.reference_frames
+      </a>
+     </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../size_functions/index.html">
-       meshing.tui.size_functions
+      <a class="reference internal" href="../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../report/index.html">
+       meshing.tui.report
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../file/index.html">
+       meshing.tui.file
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../objects/index.html">
+       meshing.tui.objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../parallel/index.html">
+       meshing.tui.parallel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
       </a>
      </li>
      <li class="toctree-l3">
@@ -402,8 +397,13 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../openmp_controls/index.html">
-       meshing.tui.openmp_controls
+      <a class="reference internal" href="../display/index.html">
+       meshing.tui.display
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../size_functions/index.html">
+       meshing.tui.size_functions
       </a>
      </li>
     </ul>
@@ -448,7 +448,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.reference_frames">
    <code class="docutils literal notranslate">
     <span class="pre">
-     reference_frames
+     main_menu.reference_frames
     </span>
    </code>
   </a>
@@ -457,7 +457,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.add">
      <code class="docutils literal notranslate">
       <span class="pre">
-       reference_frames.add()
+       main_menu.reference_frames.add()
       </span>
      </code>
     </a>
@@ -466,7 +466,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
-       reference_frames.delete()
+       main_menu.reference_frames.delete()
       </span>
      </code>
     </a>
@@ -475,7 +475,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.display">
      <code class="docutils literal notranslate">
       <span class="pre">
-       reference_frames.display()
+       main_menu.reference_frames.display()
       </span>
      </code>
     </a>
@@ -484,7 +484,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.display_edit">
      <code class="docutils literal notranslate">
       <span class="pre">
-       reference_frames.display_edit()
+       main_menu.reference_frames.display_edit()
       </span>
      </code>
     </a>
@@ -493,7 +493,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.edit">
      <code class="docutils literal notranslate">
       <span class="pre">
-       reference_frames.edit()
+       main_menu.reference_frames.edit()
       </span>
      </code>
     </a>
@@ -502,7 +502,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.hide">
      <code class="docutils literal notranslate">
       <span class="pre">
-       reference_frames.hide()
+       main_menu.reference_frames.hide()
       </span>
      </code>
     </a>
@@ -511,7 +511,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.list">
      <code class="docutils literal notranslate">
       <span class="pre">
-       reference_frames.list()
+       main_menu.reference_frames.list()
       </span>
      </code>
     </a>
@@ -520,7 +520,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.list_properties">
      <code class="docutils literal notranslate">
       <span class="pre">
-       reference_frames.list_properties()
+       main_menu.reference_frames.list_properties()
       </span>
      </code>
     </a>
@@ -548,40 +548,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-reference-frames">
 <span id="ref-meshing-tui-reference-frames"></span><h1>meshing.tui.reference_frames<a class="headerlink" href="#meshing-tui-reference-frames" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.reference_frames">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.</span></span><span class="sig-name descname"><span class="pre">reference_frames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.reference_frames" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Manage reference frames.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.add" title="ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Add a new object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.delete" title="ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete an object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.display" title="ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.display"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Display Reference Frame.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.display_edit" title="ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.display_edit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display_edit</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Display and edit reference frame from graphics.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.edit" title="ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.edit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edit</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Edit an object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.hide" title="ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.hide"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hide</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Hide Reference Frame.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.list" title="ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List objects.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.list_properties" title="ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.list_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_properties</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List properties of an object.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.reference_frames">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.</span></span><span class="sig-name descname"><span class="pre">reference_frames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.reference_frames" title="Permalink to this definition">#</a></dt>
+<dd><p>Manage reference frames.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.add">
 <span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.reference_frames.add" title="Permalink to this definition">#</a></dt>

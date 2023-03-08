@@ -5,8 +5,11 @@
 fixed_time_step_count
 =====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fixed_time_step_count.fixed_time_step_count
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fixed_time_step_count
 
+.. autoclass:: fixed_time_step_count
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ===================================

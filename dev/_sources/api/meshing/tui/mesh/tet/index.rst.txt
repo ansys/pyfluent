@@ -3,17 +3,17 @@
 meshing.tui.mesh.tet
 ====================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.mesh.tet
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.tet
+   :members: preserve_cell_zone, delete_virtual_cells, refine, trace_path_between_cells, init_refine, un_preserve_cell_zone, mesh_object, init
 
 .. toctree::
    :hidden:
 
-   local_regions/index
-   improve/index
    controls/index
+   improve/index
+   local_regions/index

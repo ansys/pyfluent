@@ -304,8 +304,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -539,61 +544,9 @@ function checkPageExistsAndRedirect(event) {
     
     <div class="toc-item">
       
-<div class="tocsection onthispage mt-5 pt-1 pb-3">
-    <i class="fas fa-list"></i> On this page
-</div>
 
 <nav id="bd-toc-nav">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting">
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     Lighting
-    </span>
-   </code>
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting.AmbientLightIntensity">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       Lighting.AmbientLightIntensity
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting.Headlight">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       Lighting.Headlight
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting.HeadlightIntensity">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       Lighting.HeadlightIntensity
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting.LightingMethod">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       Lighting.LightingMethod
-      </span>
-     </code>
-    </a>
-   </li>
-  </ul>
- </li>
-</ul>
-
+    
 </nav>
     </div>
     
@@ -613,54 +566,36 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-datamodel-preferences-graphics-lighting">
 <span id="ref-solver-datamodel-preferences-graphics-lighting"></span><h1>solver.datamodel.preferences.Graphics.Lighting<a class="headerlink" href="#solver-datamodel-preferences-graphics-lighting" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.datamodel_231.preferences.Root.Graphics.</span></span><span class="sig-name descname"><span class="pre">Lighting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
-<p>Singleton Lighting.</p>
-<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting.AmbientLightIntensity" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting.AmbientLightIntensity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AmbientLightIntensity</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter AmbientLightIntensity of value type float.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting.Headlight" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting.Headlight"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Headlight</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Headlight of value type str.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting.HeadlightIntensity" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting.HeadlightIntensity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HeadlightIntensity</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter HeadlightIntensity of value type float.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting.LightingMethod" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting.LightingMethod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LightingMethod</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter LightingMethod of value type str.</p></td>
-</tr>
 </tbody>
 </table>
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting.AmbientLightIntensity">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AmbientLightIntensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting.AmbientLightIntensity" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter AmbientLightIntensity of value type float.</p>
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Root.Graphics.</span></span><span class="sig-name descname"><span class="pre">Lighting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Singleton Lighting.</p>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AmbientLightIntensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Parameter AmbientLightIntensity of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting.Headlight">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Headlight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting.Headlight" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter Headlight of value type str.</p>
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Headlight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Parameter Headlight of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting.HeadlightIntensity">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">HeadlightIntensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting.HeadlightIntensity" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter HeadlightIntensity of value type float.</p>
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">HeadlightIntensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Parameter HeadlightIntensity of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting.LightingMethod">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LightingMethod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Lighting.LightingMethod" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter LightingMethod of value type str.</p>
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LightingMethod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Parameter LightingMethod of value type str.</p>
 </dd></dl>
 
 </dd></dl>

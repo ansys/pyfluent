@@ -5,13 +5,16 @@
 per_imagx
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.per_imagx.per_imagx
+.. currentmodule:: ansys.fluent.core.solver.settings_231.per_imagx
 
-.. rubric:: Attributes
+.. autoclass:: per_imagx
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

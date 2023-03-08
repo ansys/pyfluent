@@ -3,24 +3,24 @@
 solver.tui.display.set
 ======================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.display.set
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set
+   :members: marker_symbol, proximity_zones, periodic_instancing, reset_graphics, zero_angle_dir, mirror_zones, element_shrink, mesh_zones, filled_mesh, color_map, overlays, mesh_display_configuration, render_mesh, mesh_partitions, nodewt_based_interp, duplicate_node_display, n_stream_func, marker_size, line_weight, mesh_level, mesh_surfaces
 
 .. toctree::
    :hidden:
 
-   colors/index
-   contours/index
-   picture/index
-   lights/index
-   particle_tracks/index
-   path_lines/index
-   rendering_options/index
-   titles/index
    velocity_vectors/index
    windows/index
+   titles/index
+   lights/index
+   contours/index
+   rendering_options/index
+   particle_tracks/index
+   path_lines/index
+   picture/index
+   colors/index

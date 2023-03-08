@@ -5,8 +5,11 @@
 cell_cy
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.cell_cy.cell_cy
+.. currentmodule:: ansys.fluent.core.solver.settings_231.cell_cy
 
+.. autoclass:: cell_cy
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ================================

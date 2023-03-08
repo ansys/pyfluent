@@ -5,8 +5,11 @@
 pressure_outlet
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.pressure_outlet.pressure_outlet
+.. currentmodule:: ansys.fluent.core.solver.settings_231.pressure_outlet
 
+.. autoclass:: pressure_outlet
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`pressure_outlet_child <pressure_outlet_child>`

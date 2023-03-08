@@ -5,13 +5,16 @@
 set_custom_frames
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.set_custom_frames.set_custom_frames
+.. currentmodule:: ansys.fluent.core.solver.settings_231.set_custom_frames
 
-.. rubric:: Attributes
+.. autoclass:: set_custom_frames
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================   ========================
 
-Attribute                                           Summary
+Child                                               Summary
 
 ================================   ========================
 :ref:`start_frame <start_frame>`       'start_frame' child.

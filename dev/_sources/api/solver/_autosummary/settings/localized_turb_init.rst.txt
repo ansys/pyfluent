@@ -5,13 +5,16 @@
 localized_turb_init
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.localized_turb_init.localized_turb_init
+.. currentmodule:: ansys.fluent.core.solver.settings_231.localized_turb_init
 
-.. rubric:: Attributes
+.. autoclass:: localized_turb_init
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ============================================================   ========================================================================
 
-Attribute                                                                                                                       Summary
+Child                                                                                                                           Summary
 
 ============================================================   ========================================================================
 :ref:`enabled <enabled_1>`                                         Enable/disable localized initialization of turbulent flow variables.

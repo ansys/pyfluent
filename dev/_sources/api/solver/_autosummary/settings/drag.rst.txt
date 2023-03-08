@@ -5,8 +5,11 @@
 drag
 ====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.drag.drag
+.. currentmodule:: ansys.fluent.core.solver.settings_231.drag
 
+.. autoclass:: drag
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`force_child <force_child>`

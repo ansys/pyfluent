@@ -5,13 +5,16 @@
 wall_child
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.wall_child.wall_child
+.. currentmodule:: ansys.fluent.core.solver.settings_231.wall_child
 
-.. rubric:: Attributes
+.. autoclass:: wall_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================================================================   ============================================================
 
-Attribute                                                                                                                                                       Summary
+Child                                                                                                                                                           Summary
 
 ========================================================================================================   ============================================================
 :ref:`phase <phase_24>`                                                                                                                                  'phase' child.

@@ -5,8 +5,11 @@
 film_vof_coupling_high
 ======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.film_vof_coupling_high.film_vof_coupling_high
+.. currentmodule:: ansys.fluent.core.solver.settings_231.film_vof_coupling_high
 
+.. autoclass:: film_vof_coupling_high
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

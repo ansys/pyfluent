@@ -5,13 +5,16 @@
 near_wall_treatment
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.near_wall_treatment.near_wall_treatment
+.. currentmodule:: ansys.fluent.core.solver.settings_231.near_wall_treatment
 
-.. rubric:: Attributes
+.. autoclass:: near_wall_treatment
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================================   ============================================
 
-Attribute                                                                                                       Summary
+Child                                                                                                           Summary
 
 ========================================================================   ============================================
 :ref:`wall_function <wall_function_1>`                                                           'wall_function' child.

@@ -55,7 +55,7 @@
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
-    <link rel="next" title="solver.tui.define.mixing_planes.set.conserve_swirl" href="conserve_swirl/index.html" />
+    <link rel="next" title="solver.tui.define.mixing_planes.set.conserve_total_enthalpy" href="conserve_total_enthalpy/index.html" />
     <link rel="prev" title="solver.tui.define.mixing_planes" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
@@ -305,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -350,13 +355,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -370,18 +370,23 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../boundary_conditions/index.html">
-           solver.tui.define.boundary_conditions
+          <a class="reference internal" href="../../turbo_model/index.html">
+           solver.tui.define.turbo_model
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../spectral/index.html">
-           solver.tui.define.spectral
+          <a class="reference internal" href="../../materials/index.html">
+           solver.tui.define.materials
           </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../custom_field_functions/index.html">
            solver.tui.define.custom_field_functions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../spectral/index.html">
+           solver.tui.define.spectral
           </a>
          </li>
          <li class="toctree-l5">
@@ -395,13 +400,68 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../gap_model/index.html">
-           solver.tui.define.gap_model
+          <a class="reference internal" href="../../phases/index.html">
+           solver.tui.define.phases
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../materials/index.html">
-           solver.tui.define.materials
+          <a class="reference internal" href="../../periodic_conditions/index.html">
+           solver.tui.define.periodic_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../virtual_boundary/index.html">
+           solver.tui.define.virtual_boundary
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../curvilinear_coordinate_system/index.html">
+           solver.tui.define.curvilinear_coordinate_system
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../boundary_conditions/index.html">
+           solver.tui.define.boundary_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../parameters/index.html">
+           solver.tui.define.parameters
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../named_expressions/index.html">
+           solver.tui.define.named_expressions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../user_defined/index.html">
+           solver.tui.define.user_defined
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../reference_frames/index.html">
+           solver.tui.define.reference_frames
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../operating_conditions/index.html">
+           solver.tui.define.operating_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../solution_strategy/index.html">
+           solver.tui.define.solution_strategy
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../overset_interfaces/index.html">
+           solver.tui.define.overset_interfaces
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../models/index.html">
+           solver.tui.define.models
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -425,13 +485,13 @@ function checkPageExistsAndRedirect(event) {
             </label>
             <ul>
              <li class="toctree-l7">
-              <a class="reference internal" href="conserve_swirl/index.html">
-               solver.tui.define.mixing_planes.set.conserve_swirl
+              <a class="reference internal" href="conserve_total_enthalpy/index.html">
+               solver.tui.define.mixing_planes.set.conserve_total_enthalpy
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="conserve_total_enthalpy/index.html">
-               solver.tui.define.mixing_planes.set.conserve_total_enthalpy
+              <a class="reference internal" href="conserve_swirl/index.html">
+               solver.tui.define.mixing_planes.set.conserve_swirl
               </a>
              </li>
             </ul>
@@ -439,38 +499,8 @@ function checkPageExistsAndRedirect(event) {
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../models/index.html">
-           solver.tui.define.models
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../overset_interfaces/index.html">
-           solver.tui.define.overset_interfaces
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../operating_conditions/index.html">
-           solver.tui.define.operating_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../parameters/index.html">
-           solver.tui.define.parameters
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../periodic_conditions/index.html">
-           solver.tui.define.periodic_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../turbo_model/index.html">
-           solver.tui.define.turbo_model
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../phases/index.html">
-           solver.tui.define.phases
+          <a class="reference internal" href="../../gap_model/index.html">
+           solver.tui.define.gap_model
           </a>
          </li>
          <li class="toctree-l5">
@@ -478,96 +508,11 @@ function checkPageExistsAndRedirect(event) {
            solver.tui.define.profiles
           </a>
          </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../solution_strategy/index.html">
-           solver.tui.define.solution_strategy
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../reference_frames/index.html">
-           solver.tui.define.reference_frames
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../user_defined/index.html">
-           solver.tui.define.user_defined
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../named_expressions/index.html">
-           solver.tui.define.named_expressions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../virtual_boundary/index.html">
-           solver.tui.define.virtual_boundary
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../curvilinear_coordinate_system/index.html">
-           solver.tui.define.curvilinear_coordinate_system
-          </a>
-         </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../preferences/index.html">
-         solver.tui.preferences
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../solution/index.html">
-         solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../setup/index.html">
-         solver.tui.setup
+        <a class="reference internal" href="../../../adjoint/index.html">
+         solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4">
@@ -576,18 +521,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
+        <a class="reference internal" href="../../../mesh/index.html">
+         solver.tui.mesh
         </a>
        </li>
        <li class="toctree-l4">
@@ -596,13 +531,83 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parametric_study/index.html">
-         solver.tui.parametric_study
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../preferences/index.html">
+         solver.tui.preferences
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../results/index.html">
+         solver.tui.results
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../turbo_workflow/index.html">
          solver.tui.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../server/index.html">
+         solver.tui.server
         </a>
        </li>
       </ul>
@@ -674,7 +679,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set">
    <code class="docutils literal notranslate">
     <span class="pre">
-     set
+     main_menu.define.mixing_planes.set
     </span>
    </code>
   </a>
@@ -683,83 +688,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.averaging_method">
      <code class="docutils literal notranslate">
       <span class="pre">
-       set.averaging_method()
+       main_menu.define.mixing_planes.set.averaging_method()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_swirl">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       set.conserve_swirl
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_swirl.enable">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         set.conserve_swirl.enable()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_swirl.report_swirl_integration">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         set.conserve_swirl.report_swirl_integration()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_swirl.verbosity">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         set.conserve_swirl.verbosity()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_total_enthalpy">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       set.conserve_total_enthalpy
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_total_enthalpy.enable">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         set.conserve_total_enthalpy.enable()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_total_enthalpy.verbosity">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         set.conserve_total_enthalpy.verbosity()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.fix_pressure_level">
      <code class="docutils literal notranslate">
       <span class="pre">
-       set.fix_pressure_level()
+       main_menu.define.mixing_planes.set.fix_pressure_level()
       </span>
      </code>
     </a>
@@ -768,7 +706,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.under_relaxation">
      <code class="docutils literal notranslate">
       <span class="pre">
-       set.under_relaxation()
+       main_menu.define.mixing_planes.set.under_relaxation()
       </span>
      </code>
     </a>
@@ -796,109 +734,18 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-define-mixing-planes-set">
 <span id="ref-solver-tui-define-mixing-planes-set"></span><h1>solver.tui.define.mixing_planes.set<a class="headerlink" href="#solver-tui-define-mixing-planes-set" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.</span></span><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Sets global parameters relevant to mixing planes.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.averaging_method" title="ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.averaging_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">averaging_method</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets the mixing plane profile averaging method.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.fix_pressure_level" title="ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.fix_pressure_level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fix_pressure_level</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets fixed pressure level using value based on define/reference-pressure-location.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.under_relaxation" title="ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.under_relaxation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">under_relaxation</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets mixing plane under-relaxation factor.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_swirl" title="ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_swirl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">conserve_swirl</span></code></a>(path, service)</p></td>
-<td><p>Enters the menu to set swirl conservation in mixing plane menu.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_total_enthalpy" title="ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_total_enthalpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">conserve_total_enthalpy</span></code></a>(path, service)</p></td>
-<td><p>Enters the menu to set total enthalpy conservation in mixing plane menu.</p></td>
-</tr>
-</tbody>
-</table>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.mixing_planes.</span></span><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets global parameters relevant to mixing planes.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.averaging_method">
 <span class="sig-name descname"><span class="pre">averaging_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.averaging_method" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the mixing plane profile averaging method.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_swirl">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">conserve_swirl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_swirl" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the menu to set swirl conservation in mixing plane menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_swirl.enable" title="ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_swirl.enable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables swirl conservation in mixing plane.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_swirl.report_swirl_integration" title="ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_swirl.report_swirl_integration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">report_swirl_integration</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reports swirl integration (Torque) on inflow and outflow zones.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_swirl.verbosity" title="ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_swirl.verbosity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verbosity</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables verbosity in swirl conservation calculations.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_swirl.enable">
-<span class="sig-name descname"><span class="pre">enable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_swirl.enable" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables/disables swirl conservation in mixing plane.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_swirl.report_swirl_integration">
-<span class="sig-name descname"><span class="pre">report_swirl_integration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_swirl.report_swirl_integration" title="Permalink to this definition">#</a></dt>
-<dd><p>Reports swirl integration (Torque) on inflow and outflow zones.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_swirl.verbosity">
-<span class="sig-name descname"><span class="pre">verbosity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_swirl.verbosity" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables/disables verbosity in swirl conservation calculations.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_total_enthalpy">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">conserve_total_enthalpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_total_enthalpy" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the menu to set total enthalpy conservation in mixing plane menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_total_enthalpy.enable" title="ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_total_enthalpy.enable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables total enthalpy conservation in mixing plane.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_total_enthalpy.verbosity" title="ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_total_enthalpy.verbosity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verbosity</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables verbosity in total-enthalpy conservation calculations.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_total_enthalpy.enable">
-<span class="sig-name descname"><span class="pre">enable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_total_enthalpy.enable" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables/disables total enthalpy conservation in mixing plane.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_total_enthalpy.verbosity">
-<span class="sig-name descname"><span class="pre">verbosity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.mixing_planes.set.conserve_total_enthalpy.verbosity" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables/disables verbosity in total-enthalpy conservation calculations.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">

@@ -5,8 +5,11 @@
 ray_points_count
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.ray_points_count.ray_points_count
+.. currentmodule:: ansys.fluent.core.solver.settings_231.ray_points_count
 
+.. autoclass:: ray_points_count
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   =================================

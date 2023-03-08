@@ -5,8 +5,11 @@
 archive
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.archive.archive
+.. currentmodule:: ansys.fluent.core.solver.settings_231.archive
 
+.. autoclass:: archive
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==================================   =========================

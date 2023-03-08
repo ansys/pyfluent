@@ -5,13 +5,16 @@
 cyl_orthotropic
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.cyl_orthotropic_1.cyl_orthotropic
+.. currentmodule:: ansys.fluent.core.solver.settings_231.cyl_orthotropic_1
 
-.. rubric:: Attributes
+.. autoclass:: cyl_orthotropic
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================   ====================================
 
-Attribute                                                                               Summary
+Child                                                                                   Summary
 
 ========================================================   ====================================
 :ref:`axis_origin <axis_origin>`                                           'axis_origin' child.

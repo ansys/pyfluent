@@ -5,8 +5,11 @@
 pb_dqmom
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.pb_dqmom.pb_dqmom
+.. currentmodule:: ansys.fluent.core.solver.settings_231.pb_dqmom
 
+.. autoclass:: pb_dqmom
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`child_object_type_child <child_object_type_child_1>`

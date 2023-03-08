@@ -5,13 +5,16 @@
 merge
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.merge.merge
+.. currentmodule:: ansys.fluent.core.solver.settings_231.merge
 
-.. rubric:: Attributes
+.. autoclass:: merge
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================================   =================================
 
-Attribute                                                                      Summary
+Child                                                                          Summary
 
 ==================================================   =================================
 :ref:`merge_small_regions <merge_small_regions>`          'merge_small_regions' child.

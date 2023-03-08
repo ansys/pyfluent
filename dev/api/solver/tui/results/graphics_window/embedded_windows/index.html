@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
-    <link rel="next" title="solver.tui.results.graphics_window.picture" href="../picture/index.html" />
-    <link rel="prev" title="solver.tui.results.graphics_window" href="../index.html" />
+    <link rel="next" title="solver.tui.results.graphics_window.view_sync" href="../view_sync/index.html" />
+    <link rel="prev" title="solver.tui.results.graphics_window.picture.color_mode" href="../picture/color_mode/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -305,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -350,13 +355,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
        <li class="toctree-l4">
@@ -365,13 +365,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../file/index.html">
-         solver.tui.file
+        <a class="reference internal" href="../../../adjoint/index.html">
+         solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../icing/index.html">
-         solver.tui.icing
+        <a class="reference internal" href="../../../surface/index.html">
+         solver.tui.surface
         </a>
        </li>
        <li class="toctree-l4">
@@ -380,18 +380,18 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../views/index.html">
+         solver.tui.views
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parallel/index.html">
-         solver.tui.parallel
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../plot/index.html">
-         solver.tui.plot
+        <a class="reference internal" href="../../../file/index.html">
+         solver.tui.file
         </a>
        </li>
        <li class="toctree-l4">
@@ -400,8 +400,18 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../report/index.html">
-         solver.tui.report
+        <a class="reference internal" href="../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solve/index.html">
+         solver.tui.solve
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -415,13 +425,13 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../animate/index.html">
-           solver.tui.results.animate
+          <a class="reference internal" href="../../graphics/index.html">
+           solver.tui.results.graphics
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../graphics/index.html">
-           solver.tui.results.graphics
+          <a class="reference internal" href="../../surface/index.html">
+           solver.tui.results.surface
           </a>
          </li>
          <li class="toctree-l5">
@@ -430,13 +440,8 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../report/index.html">
-           solver.tui.results.report
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../surface/index.html">
-           solver.tui.results.surface
+          <a class="reference internal" href="../../animate/index.html">
+           solver.tui.results.animate
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -449,29 +454,9 @@ function checkPageExistsAndRedirect(event) {
            </i>
           </label>
           <ul class="current">
-           <li class="toctree-l6 current active">
-            <a class="current reference internal" href="#">
-             solver.tui.results.graphics_window.embedded_windows
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../picture/index.html">
-             solver.tui.results.graphics_window.picture
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../windows/index.html">
-             solver.tui.results.graphics_window.windows
-            </a>
-           </li>
            <li class="toctree-l6">
             <a class="reference internal" href="../titles/index.html">
              solver.tui.results.graphics_window.titles
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../views/index.html">
-             solver.tui.results.graphics_window.views
             </a>
            </li>
            <li class="toctree-l6">
@@ -480,22 +465,42 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
+            <a class="reference internal" href="../picture/index.html">
+             solver.tui.results.graphics_window.picture
+            </a>
+           </li>
+           <li class="toctree-l6 current active">
+            <a class="current reference internal" href="#">
+             solver.tui.results.graphics_window.embedded_windows
+            </a>
+           </li>
+           <li class="toctree-l6">
             <a class="reference internal" href="../view_sync/index.html">
              solver.tui.results.graphics_window.view_sync
             </a>
            </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../windows/index.html">
+             solver.tui.results.graphics_window.windows
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../views/index.html">
+             solver.tui.results.graphics_window.views
+            </a>
+           </li>
           </ul>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../report/index.html">
+           solver.tui.results.report
+          </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../solution/index.html">
-         solver.tui.solution
+        <a class="reference internal" href="../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
        <li class="toctree-l4">
@@ -504,8 +509,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../report/index.html">
+         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4">
@@ -514,28 +524,23 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../parametric_study/index.html">
          solver.tui.parametric_study
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
+        <a class="reference internal" href="../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../server/index.html">
+         solver.tui.server
         </a>
        </li>
       </ul>
@@ -607,7 +612,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.embedded_windows">
    <code class="docutils literal notranslate">
     <span class="pre">
-     embedded_windows
+     main_menu.results.graphics_window.embedded_windows
     </span>
    </code>
   </a>
@@ -616,7 +621,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.embedded_windows.close">
      <code class="docutils literal notranslate">
       <span class="pre">
-       embedded_windows.close()
+       main_menu.results.graphics_window.embedded_windows.close()
       </span>
      </code>
     </a>
@@ -625,7 +630,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.embedded_windows.close_all">
      <code class="docutils literal notranslate">
       <span class="pre">
-       embedded_windows.close_all()
+       main_menu.results.graphics_window.embedded_windows.close_all()
       </span>
      </code>
     </a>
@@ -634,7 +639,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.embedded_windows.embed_in">
      <code class="docutils literal notranslate">
       <span class="pre">
-       embedded_windows.embed_in()
+       main_menu.results.graphics_window.embedded_windows.embed_in()
       </span>
      </code>
     </a>
@@ -643,7 +648,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.embedded_windows.move_out">
      <code class="docutils literal notranslate">
       <span class="pre">
-       embedded_windows.move_out()
+       main_menu.results.graphics_window.embedded_windows.move_out()
       </span>
      </code>
     </a>
@@ -652,7 +657,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.embedded_windows.move_out_all">
      <code class="docutils literal notranslate">
       <span class="pre">
-       embedded_windows.move_out_all()
+       main_menu.results.graphics_window.embedded_windows.move_out_all()
       </span>
      </code>
     </a>
@@ -680,31 +685,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-results-graphics-window-embedded-windows">
 <span id="ref-solver-tui-results-graphics-window-embedded-windows"></span><h1>solver.tui.results.graphics_window.embedded_windows<a class="headerlink" href="#solver-tui-results-graphics-window-embedded-windows" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.embedded_windows">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.</span></span><span class="sig-name descname"><span class="pre">embedded_windows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.embedded_windows" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter to embed, close, move-out embedded windows.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.embedded_windows.close" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.embedded_windows.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Close an embedded window.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.embedded_windows.close_all" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.embedded_windows.close_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close_all</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Close all embedded windows for given parent window.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.embedded_windows.embed_in" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.embedded_windows.embed_in"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embed_in</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Embed Window into another window.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.embedded_windows.move_out" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.embedded_windows.move_out"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_out</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Move out an embedded window.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.embedded_windows.move_out_all" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.embedded_windows.move_out_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_out_all</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Move out all embedded windows for given parent window.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.embedded_windows">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.results.graphics_window.</span></span><span class="sig-name descname"><span class="pre">embedded_windows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.embedded_windows" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter to embed, close, move-out embedded windows.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.embedded_windows.close">
 <span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics_window.embedded_windows.close" title="Permalink to this definition">#</a></dt>

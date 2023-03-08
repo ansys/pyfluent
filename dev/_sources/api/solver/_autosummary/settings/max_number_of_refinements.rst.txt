@@ -5,8 +5,11 @@
 max_number_of_refinements
 =========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.max_number_of_refinements.max_number_of_refinements
+.. currentmodule:: ansys.fluent.core.solver.settings_231.max_number_of_refinements
 
+.. autoclass:: max_number_of_refinements
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =============================

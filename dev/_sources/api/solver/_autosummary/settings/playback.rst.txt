@@ -5,13 +5,16 @@
 playback
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.playback.playback
+.. currentmodule:: ansys.fluent.core.solver.settings_231.playback
 
-.. rubric:: Attributes
+.. autoclass:: playback
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ============================================   ===============================================================
 
-Attribute                                                                                              Summary
+Child                                                                                                  Summary
 
 ============================================   ===============================================================
 :ref:`set_custom_frames <set_custom_frames>`       Set custom frames start, end, skip frames for video export.
@@ -20,11 +23,11 @@ Attribute                                                                       
 
 ============================================   ===============================================================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ========================================   =========================================================================
 
-Method                                                                                                       Summary
+Command                                                                                                      Summary
 
 ========================================   =========================================================================
 :ref:`read_animation <read_animation>`                   Read new animation from file or already-defined animations.

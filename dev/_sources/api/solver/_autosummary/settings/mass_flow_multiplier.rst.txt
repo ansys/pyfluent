@@ -5,8 +5,11 @@
 mass_flow_multiplier
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.mass_flow_multiplier.mass_flow_multiplier
+.. currentmodule:: ansys.fluent.core.solver.settings_231.mass_flow_multiplier
 
+.. autoclass:: mass_flow_multiplier
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`child_object_type_child <child_object_type_child_1>`

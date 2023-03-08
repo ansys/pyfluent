@@ -5,8 +5,11 @@
 shell_conduction
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.shell_conduction.shell_conduction
+.. currentmodule:: ansys.fluent.core.solver.settings_231.shell_conduction
 
+.. autoclass:: shell_conduction
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`shell_conduction_child <shell_conduction_child>`

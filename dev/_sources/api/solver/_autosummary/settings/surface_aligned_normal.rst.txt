@@ -5,8 +5,11 @@
 surface_aligned_normal
 ======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.surface_aligned_normal.surface_aligned_normal
+.. currentmodule:: ansys.fluent.core.solver.settings_231.surface_aligned_normal
 
+.. autoclass:: surface_aligned_normal
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================

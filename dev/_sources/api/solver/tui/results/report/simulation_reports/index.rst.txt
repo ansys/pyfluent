@@ -3,13 +3,13 @@
 solver.tui.results.report.simulation\_reports
 =============================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.report.simulation_reports
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.report.simulation_reports
+   :members: write_simulation_report_template_file, write_report_names_to_file, duplicate_simulation_report, export_simulation_report_as_pdf, view_simulation_report, delete_simulation_report, list_simulation_reports, reset_report_to_defaults, rename_simulation_report, export_simulation_report_as_pptx, generate_simulation_report, read_simulation_report_template_file, export_simulation_report_as_html
 
 .. toctree::
    :hidden:

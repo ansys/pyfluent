@@ -5,13 +5,16 @@
 additional_stabilization_controls
 =================================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.additional_stabilization_controls.additional_stabilization_controls
+.. currentmodule:: ansys.fluent.core.solver.settings_231.additional_stabilization_controls
 
-.. rubric:: Attributes
+.. autoclass:: additional_stabilization_controls
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================================================   =========================================================================================
 
-Attribute                                                                                                                                          Summary
+Child                                                                                                                                              Summary
 
 ==============================================================   =========================================================================================
 :ref:`blended_compressive_scheme <blended_compressive_scheme>`                                          Blended Compressive discretization scheme for VOF.

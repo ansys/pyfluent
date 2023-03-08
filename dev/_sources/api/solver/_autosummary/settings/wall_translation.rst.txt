@@ -5,8 +5,11 @@
 wall_translation
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.wall_translation.wall_translation
+.. currentmodule:: ansys.fluent.core.solver.settings_231.wall_translation
 
+.. autoclass:: wall_translation
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`axis_direction_child <axis_direction_child>`

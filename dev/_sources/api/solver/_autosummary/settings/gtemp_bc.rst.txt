@@ -5,8 +5,11 @@
 gtemp_bc
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.gtemp_bc.gtemp_bc
+.. currentmodule:: ansys.fluent.core.solver.settings_231.gtemp_bc
 
+.. autoclass:: gtemp_bc
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

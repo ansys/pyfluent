@@ -3,13 +3,13 @@
 meshing.tui.mesh.hexcore.controls
 =================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.mesh.hexcore.controls
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.hexcore.controls
+   :members: delete_dead_zones, skip_tet_refinement, buffer_layers, non_fluid_type, merge_tets_to_pyramids, avoid_1_by_8_cell_jump_in_hexcore, set_region_based_sizing, peel_layers, compute_max_cell_length, define_hexcore_extents, octree_hexcore, maximum_initial_cells, print_region_based_sizing, maximum_cell_length
 
 .. toctree::
    :hidden:

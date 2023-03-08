@@ -5,8 +5,11 @@
 damping_factor
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.damping_factor.damping_factor
+.. currentmodule:: ansys.fluent.core.solver.settings_231.damping_factor
 
+.. autoclass:: damping_factor
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   =========================================

@@ -5,8 +5,11 @@
 face_area_as_weights
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.face_area_as_weights.face_area_as_weights
+.. currentmodule:: ansys.fluent.core.solver.settings_231.face_area_as_weights
 
+.. autoclass:: face_area_as_weights
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   ===============================================

@@ -5,8 +5,11 @@
 restore_state
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.restore_state.restore_state
+.. currentmodule:: ansys.fluent.core.solver.settings_231.restore_state
 
+.. autoclass:: restore_state
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==============================   =======================

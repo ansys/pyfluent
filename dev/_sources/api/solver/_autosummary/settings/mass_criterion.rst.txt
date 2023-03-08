@@ -5,8 +5,11 @@
 mass_criterion
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.mass_criterion.mass_criterion
+.. currentmodule:: ansys.fluent.core.solver.settings_231.mass_criterion
 
+.. autoclass:: mass_criterion
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   =====================================

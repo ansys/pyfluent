@@ -5,8 +5,11 @@
 beach_dir_list
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.beach_dir_list.beach_dir_list
+.. currentmodule:: ansys.fluent.core.solver.settings_231.beach_dir_list
 
+.. autoclass:: beach_dir_list
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`beach_dir_list_child <beach_dir_list_child>`

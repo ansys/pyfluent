@@ -5,8 +5,11 @@
 wave_spect_method_freq
 ======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.wave_spect_method_freq.wave_spect_method_freq
+.. currentmodule:: ansys.fluent.core.solver.settings_231.wave_spect_method_freq
 
+.. autoclass:: wave_spect_method_freq
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

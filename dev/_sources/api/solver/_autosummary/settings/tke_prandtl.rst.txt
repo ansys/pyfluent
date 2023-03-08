@@ -5,8 +5,11 @@
 tke_prandtl
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.tke_prandtl.tke_prandtl
+.. currentmodule:: ansys.fluent.core.solver.settings_231.tke_prandtl
 
+.. autoclass:: tke_prandtl
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =========================

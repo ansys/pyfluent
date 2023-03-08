@@ -5,8 +5,11 @@
 cell_cx
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.cell_cx.cell_cx
+.. currentmodule:: ansys.fluent.core.solver.settings_231.cell_cx
 
+.. autoclass:: cell_cx
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ================================

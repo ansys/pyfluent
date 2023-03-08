@@ -5,8 +5,11 @@
 pre_test
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.pre_test.pre_test
+.. currentmodule:: ansys.fluent.core.solver.settings_231.pre_test
 
+.. autoclass:: pre_test
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   ====================================================

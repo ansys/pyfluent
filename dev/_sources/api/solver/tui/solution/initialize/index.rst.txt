@@ -3,19 +3,18 @@
 solver.tui.solution.initialize
 ==============================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.initialize
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.initialize
+   :members: hyb_initialization, levelset_auto_init, fmg_initialization, set_hyb_initialization, init_turb_vel_fluctuations, dpm_reset, set_defaults, reference_frame, show_iterations_sampled, init_flow_statistics, open_channel_auto_init, set_fmg_initialization, init_acoustics_options, initialize_flow, list_defaults, repair_wall_distance, lwf_initialization, show_time_sampled, patch
 
 .. toctree::
    :hidden:
 
-   compute_defaults/index
    mp_localized_turb_init/index
    vof_patch_smooth_options/index
    set_fmg_options/index
-   set_hyb_initialization/index
+   compute_defaults/index

@@ -5,13 +5,16 @@
 direction_1_x
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.direction_1_x.direction_1_x
+.. currentmodule:: ansys.fluent.core.solver.settings_231.direction_1_x
 
-.. rubric:: Attributes
+.. autoclass:: direction_1_x
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

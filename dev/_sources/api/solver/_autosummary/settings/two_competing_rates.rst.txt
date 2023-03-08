@@ -5,13 +5,16 @@
 two_competing_rates
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.two_competing_rates.two_competing_rates
+.. currentmodule:: ansys.fluent.core.solver.settings_231.two_competing_rates
 
-.. rubric:: Attributes
+.. autoclass:: two_competing_rates
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================   ========================
 
-Attribute                                           Summary
+Child                                               Summary
 
 ================================   ========================
 :ref:`first_rate <first_rate>`          'first_rate' child.

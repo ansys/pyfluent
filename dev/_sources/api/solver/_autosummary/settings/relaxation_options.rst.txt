@@ -5,8 +5,11 @@
 relaxation_options
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.relaxation_options.relaxation_options
+.. currentmodule:: ansys.fluent.core.solver.settings_231.relaxation_options
 
+.. autoclass:: relaxation_options
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   =======================================

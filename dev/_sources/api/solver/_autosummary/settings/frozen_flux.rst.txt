@@ -5,8 +5,11 @@
 frozen_flux
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.frozen_flux.frozen_flux
+.. currentmodule:: ansys.fluent.core.solver.settings_231.frozen_flux
 
+.. autoclass:: frozen_flux
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   ====================

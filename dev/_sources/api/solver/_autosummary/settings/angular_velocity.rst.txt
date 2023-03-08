@@ -5,13 +5,16 @@
 angular_velocity
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.angular_velocity.angular_velocity
+.. currentmodule:: ansys.fluent.core.solver.settings_231.angular_velocity
 
-.. rubric:: Attributes
+.. autoclass:: angular_velocity
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ============================   ======================
 
-Attribute                                     Summary
+Child                                         Summary
 
 ============================   ======================
 :ref:`x <x>`                               'x' child.

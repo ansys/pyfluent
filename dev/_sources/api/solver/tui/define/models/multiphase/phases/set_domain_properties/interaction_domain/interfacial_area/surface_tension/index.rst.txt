@@ -3,11 +3,11 @@
 solver.tui.define.models.multiphase.phases.set\_domain\_properties.interaction\_domain.interfacial\_area.surface\_tension
 =========================================================================================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.models.multiphase.phases.set_domain_properties.interaction_domain.interfacial_area.surface_tension
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.multiphase.phases.set_domain_properties.interaction_domain.interfacial_area.surface_tension
+   :members: wall_adhesion, cavitation, visc_disp_factor, lift_shaver_podowski, sfc_model_type, interphase_visc_disp, sfc_tension_coeff, lift_montoya, sfc_modeling, slope_limiter, vmass_implicit, lift, vmass_implicit_options, interphase_discr, virtual_mass, jump_adhesion, vmass_coeff
 

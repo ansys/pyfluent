@@ -5,8 +5,11 @@
 viscous_scale
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.viscous_scale.viscous_scale
+.. currentmodule:: ansys.fluent.core.solver.settings_231.viscous_scale
 
+.. autoclass:: viscous_scale
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===============================

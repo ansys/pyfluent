@@ -5,8 +5,11 @@
 zone_summaries_per_injection
 ============================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.zone_summaries_per_injection.zone_summaries_per_injection
+.. currentmodule:: ansys.fluent.core.solver.settings_231.zone_summaries_per_injection
 
+.. autoclass:: zone_summaries_per_injection
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ================================================   ================================

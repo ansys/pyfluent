@@ -5,8 +5,11 @@
 primary_phase_direction
 =======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.primary_phase_direction.primary_phase_direction
+.. currentmodule:: ansys.fluent.core.solver.settings_231.primary_phase_direction
 
+.. autoclass:: primary_phase_direction
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`child_object_type_child <child_object_type_child_1>`

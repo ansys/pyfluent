@@ -5,13 +5,16 @@
 single_val_expression_child
 ===========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.single_val_expression_child.single_val_expression_child
+.. currentmodule:: ansys.fluent.core.solver.settings_231.single_val_expression_child
 
-.. rubric:: Attributes
+.. autoclass:: single_val_expression_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================================================   ========================================
 
-Attribute                                                                                           Summary
+Child                                                                                               Summary
 
 ================================================================   ========================================
 :ref:`retain_instantaneous_values <retain_instantaneous_values>`       'retain_instantaneous_values' child.

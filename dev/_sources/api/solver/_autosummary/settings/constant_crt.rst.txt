@@ -5,8 +5,11 @@
 constant_crt
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.constant_crt.constant_crt
+.. currentmodule:: ansys.fluent.core.solver.settings_231.constant_crt
 
+.. autoclass:: constant_crt
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

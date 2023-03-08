@@ -5,13 +5,16 @@
 interaction
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.interaction_1.interaction
+.. currentmodule:: ansys.fluent.core.solver.settings_231.interaction_1
 
-.. rubric:: Attributes
+.. autoclass:: interaction
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================================================   ========================================
 
-Attribute                                                                                           Summary
+Child                                                                                               Summary
 
 ================================================================   ========================================
 :ref:`continuous_phase <continuous_phase>`                                        'continuous_phase' child.

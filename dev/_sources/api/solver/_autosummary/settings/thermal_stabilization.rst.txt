@@ -5,8 +5,11 @@
 thermal_stabilization
 =====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.thermal_stabilization.thermal_stabilization
+.. currentmodule:: ansys.fluent.core.solver.settings_231.thermal_stabilization
 
+.. autoclass:: thermal_stabilization
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

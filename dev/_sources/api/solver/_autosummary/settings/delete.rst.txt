@@ -5,8 +5,11 @@
 delete
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.delete.delete
+.. currentmodule:: ansys.fluent.core.solver.settings_231.delete
 
+.. autoclass:: delete
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ========================   ====================

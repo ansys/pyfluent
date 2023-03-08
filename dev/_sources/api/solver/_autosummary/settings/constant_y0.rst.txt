@@ -5,8 +5,11 @@
 constant_y0
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.constant_y0.constant_y0
+.. currentmodule:: ansys.fluent.core.solver.settings_231.constant_y0
 
+.. autoclass:: constant_y0
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

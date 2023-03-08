@@ -5,13 +5,16 @@
 histogram
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.histogram.histogram
+.. currentmodule:: ansys.fluent.core.solver.settings_231.histogram
 
-.. rubric:: Attributes
+.. autoclass:: histogram
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==========================================================   ===============================================
 
-Attribute                                                                                            Summary
+Child                                                                                                Summary
 
 ==========================================================   ===============================================
 :ref:`histogram_options <histogram_options>`                      Enter the settings menu for the histogram.
@@ -26,11 +29,11 @@ Attribute                                                                       
 
 ==========================================================   ===============================================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ==========================================   =====================================================
 
-Method                                                                                     Summary
+Command                                                                                    Summary
 
 ==========================================   =====================================================
 :ref:`compute_sample <compute_sample>`               Compute minimum/maximum of a sample variable.

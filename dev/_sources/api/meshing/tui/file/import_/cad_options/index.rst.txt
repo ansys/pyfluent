@@ -3,11 +3,11 @@
 meshing.tui.file.import\_.cad\_options
 ======================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.file.import_.cad_options
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.file.import_.cad_options
+   :members: import_label_for_body_named_selection, separate_features_by_type, replacement_character, import_body_names, merge_objects_per_body_named_selection, one_object_per, named_selection_tessellation_failure, reconstruct_topology, modify_all_duplicate_names, name_separator_character, strip_path_prefix_from_names, use_body_names, read_all_cad_in_subdirectories, single_connected_edge_label, import_curvature_data_from_CAD, object_type, named_selections, extract_features, derive_zone_name_from_object_scope, use_part_or_body_names_as_suffix_to_named_selections, enclosure_symm_processing, merge_nodes, tessellation, import_part_names, one_face_zone_per, strip_file_name_extension_from_naming, save_PMDB, create_cad_assemblies, use_component_names, use_collection_names, create_label_per_body_during_cad_faceting, continue_on_error, double_connected_face_label, use_part_names
 

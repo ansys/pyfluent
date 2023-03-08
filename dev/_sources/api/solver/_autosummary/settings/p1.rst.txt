@@ -5,8 +5,11 @@
 p1
 ==
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.p1.p1
+.. currentmodule:: ansys.fluent.core.solver.settings_231.p1
 
+.. autoclass:: p1
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================

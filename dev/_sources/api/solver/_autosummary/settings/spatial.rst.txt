@@ -5,13 +5,16 @@
 spatial
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.spatial.spatial
+.. currentmodule:: ansys.fluent.core.solver.settings_231.spatial
 
-.. rubric:: Attributes
+.. autoclass:: spatial
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================================================================   ====================================================================
 
-Attribute                                                                                                                                       Summary
+Child                                                                                                                                           Summary
 
 ================================================================================   ====================================================================
 :ref:`first_to_second_order_blending <first_to_second_order_blending>`                      Set factor to control first order to second order blending.

@@ -3,15 +3,11 @@
 solver.tui.display.set.lights
 =============================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.display.set.lights
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
 
-.. toctree::
-   :hidden:
+.. autosummary::
+   :toctree: _autosummary
 
-   lighting_interpolation/index
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.lights
+   :members: headlight_on, lights_on, lighting_interpolation, set_ambient_color, set_light
+

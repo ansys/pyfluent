@@ -5,8 +5,11 @@
 outlet_faces
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.outlet_faces.outlet_faces
+.. currentmodule:: ansys.fluent.core.solver.settings_231.outlet_faces
 
+.. autoclass:: outlet_faces
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

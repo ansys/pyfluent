@@ -5,8 +5,11 @@
 nj
 ==
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.nj.nj
+.. currentmodule:: ansys.fluent.core.solver.settings_231.nj
 
+.. autoclass:: nj
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

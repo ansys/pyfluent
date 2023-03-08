@@ -5,8 +5,11 @@
 ordered_accumulation
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.ordered_accumulation.ordered_accumulation
+.. currentmodule:: ansys.fluent.core.solver.settings_231.ordered_accumulation
 
+.. autoclass:: ordered_accumulation
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ===========================

@@ -56,7 +56,7 @@
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
     <link rel="next" title="solver.tui.solution.report_definitions" href="../../report_definitions/index.html" />
-    <link rel="prev" title="solver.tui.solution.monitors.report_plots" href="../report_plots/index.html" />
+    <link rel="prev" title="solver.tui.solution.monitors.report_files" href="../report_files/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -305,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -350,13 +355,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
        <li class="toctree-l4">
@@ -365,13 +365,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../file/index.html">
-         solver.tui.file
+        <a class="reference internal" href="../../../adjoint/index.html">
+         solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../icing/index.html">
-         solver.tui.icing
+        <a class="reference internal" href="../../../surface/index.html">
+         solver.tui.surface
         </a>
        </li>
        <li class="toctree-l4">
@@ -380,18 +380,18 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../views/index.html">
+         solver.tui.views
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parallel/index.html">
-         solver.tui.parallel
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../plot/index.html">
-         solver.tui.plot
+        <a class="reference internal" href="../../../file/index.html">
+         solver.tui.file
         </a>
        </li>
        <li class="toctree-l4">
@@ -400,8 +400,18 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../report/index.html">
-         solver.tui.report
+        <a class="reference internal" href="../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solve/index.html">
+         solver.tui.solve
         </a>
        </li>
        <li class="toctree-l4">
@@ -410,8 +420,38 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../solve/index.html">
-         solver.tui.solve
+        <a class="reference internal" href="../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -430,23 +470,18 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../cell_registers/index.html">
-           solver.tui.solution.cell_registers
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="../../controls/index.html">
            solver.tui.solution.controls
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../expert/index.html">
-           solver.tui.solution.expert
+          <a class="reference internal" href="../../initialize/index.html">
+           solver.tui.solution.initialize
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../initialize/index.html">
-           solver.tui.solution.initialize
+          <a class="reference internal" href="../../run_calculation/index.html">
+           solver.tui.solution.run_calculation
           </a>
          </li>
          <li class="toctree-l5">
@@ -465,13 +500,13 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul class="current">
            <li class="toctree-l6">
-            <a class="reference internal" href="../report_files/index.html">
-             solver.tui.solution.monitors.report_files
+            <a class="reference internal" href="../report_plots/index.html">
+             solver.tui.solution.monitors.report_plots
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../report_plots/index.html">
-             solver.tui.solution.monitors.report_plots
+            <a class="reference internal" href="../report_files/index.html">
+             solver.tui.solution.monitors.report_files
             </a>
            </li>
            <li class="toctree-l6 current active">
@@ -487,50 +522,20 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../run_calculation/index.html">
-           solver.tui.solution.run_calculation
+          <a class="reference internal" href="../../cell_registers/index.html">
+           solver.tui.solution.cell_registers
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../expert/index.html">
+           solver.tui.solution.expert
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../setup/index.html">
-         solver.tui.setup
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../surface/index.html">
-         solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../server/index.html">
          solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
         </a>
        </li>
       </ul>
@@ -602,7 +607,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual">
    <code class="docutils literal notranslate">
     <span class="pre">
-     residual
+     main_menu.solution.monitors.residual
     </span>
    </code>
   </a>
@@ -611,7 +616,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.check_convergence">
      <code class="docutils literal notranslate">
       <span class="pre">
-       residual.check_convergence()
+       main_menu.solution.monitors.residual.check_convergence()
       </span>
      </code>
     </a>
@@ -620,7 +625,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.convergence_criteria">
      <code class="docutils literal notranslate">
       <span class="pre">
-       residual.convergence_criteria()
+       main_menu.solution.monitors.residual.convergence_criteria()
       </span>
      </code>
     </a>
@@ -629,7 +634,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.criterion_type">
      <code class="docutils literal notranslate">
       <span class="pre">
-       residual.criterion_type()
+       main_menu.solution.monitors.residual.criterion_type()
       </span>
      </code>
     </a>
@@ -638,7 +643,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.enhanced_continuity_residual">
      <code class="docutils literal notranslate">
       <span class="pre">
-       residual.enhanced_continuity_residual()
+       main_menu.solution.monitors.residual.enhanced_continuity_residual()
       </span>
      </code>
     </a>
@@ -647,7 +652,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.monitor">
      <code class="docutils literal notranslate">
       <span class="pre">
-       residual.monitor()
+       main_menu.solution.monitors.residual.monitor()
       </span>
      </code>
     </a>
@@ -656,7 +661,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.n_display">
      <code class="docutils literal notranslate">
       <span class="pre">
-       residual.n_display()
+       main_menu.solution.monitors.residual.n_display()
       </span>
      </code>
     </a>
@@ -665,7 +670,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.n_maximize_norms">
      <code class="docutils literal notranslate">
       <span class="pre">
-       residual.n_maximize_norms()
+       main_menu.solution.monitors.residual.n_maximize_norms()
       </span>
      </code>
     </a>
@@ -674,7 +679,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.n_save">
      <code class="docutils literal notranslate">
       <span class="pre">
-       residual.n_save()
+       main_menu.solution.monitors.residual.n_save()
       </span>
      </code>
     </a>
@@ -683,7 +688,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.normalization_factors">
      <code class="docutils literal notranslate">
       <span class="pre">
-       residual.normalization_factors()
+       main_menu.solution.monitors.residual.normalization_factors()
       </span>
      </code>
     </a>
@@ -692,7 +697,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.normalize">
      <code class="docutils literal notranslate">
       <span class="pre">
-       residual.normalize()
+       main_menu.solution.monitors.residual.normalize()
       </span>
      </code>
     </a>
@@ -701,7 +706,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.plot">
      <code class="docutils literal notranslate">
       <span class="pre">
-       residual.plot()
+       main_menu.solution.monitors.residual.plot()
       </span>
      </code>
     </a>
@@ -710,7 +715,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.print">
      <code class="docutils literal notranslate">
       <span class="pre">
-       residual.print()
+       main_menu.solution.monitors.residual.print()
       </span>
      </code>
     </a>
@@ -719,7 +724,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.re_normalize">
      <code class="docutils literal notranslate">
       <span class="pre">
-       residual.re_normalize()
+       main_menu.solution.monitors.residual.re_normalize()
       </span>
      </code>
     </a>
@@ -728,7 +733,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.relative_conv_criteria">
      <code class="docutils literal notranslate">
       <span class="pre">
-       residual.relative_conv_criteria()
+       main_menu.solution.monitors.residual.relative_conv_criteria()
       </span>
      </code>
     </a>
@@ -737,7 +742,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.reset">
      <code class="docutils literal notranslate">
       <span class="pre">
-       residual.reset()
+       main_menu.solution.monitors.residual.reset()
       </span>
      </code>
     </a>
@@ -746,7 +751,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.scale_by_coefficient">
      <code class="docutils literal notranslate">
       <span class="pre">
-       residual.scale_by_coefficient()
+       main_menu.solution.monitors.residual.scale_by_coefficient()
       </span>
      </code>
     </a>
@@ -774,64 +779,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solution-monitors-residual">
 <span id="ref-solver-tui-solution-monitors-residual"></span><h1>solver.tui.solution.monitors.residual<a class="headerlink" href="#solver-tui-solution-monitors-residual" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.</span></span><span class="sig-name descname"><span class="pre">residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the residual monitors menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.check_convergence" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.check_convergence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_convergence</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Choose which currently-monitored residuals should be checked for convergence.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.convergence_criteria" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.convergence_criteria"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convergence_criteria</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set convergence criteria for residuals which are currently being both monitored and checked.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.criterion_type" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.criterion_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">criterion_type</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set convergence criterion type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.enhanced_continuity_residual" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.enhanced_continuity_residual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enhanced_continuity_residual</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Scale the continuity residuals locally based on the enhanced formulation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.monitor" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.monitor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">monitor</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Choose which residuals to monitor as printed and/or plotted output.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.n_display" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.n_display"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_display</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the number of most recent residuals to display in plots.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.n_maximize_norms" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.n_maximize_norms"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_maximize_norms</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the number of iterations through which normalization factors will be maximized.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.n_save" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.n_save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_save</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set number of residuals to be saved with data.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.normalization_factors" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.normalization_factors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normalization_factors</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set normalization factors for currently-monitored residuals.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.normalize" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.normalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normalize</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Choose whether or not to normalize residuals in printed and plotted output.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.plot" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Choose whether or not residuals will be plotted during iteration.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.print" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.print"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Choose whether or not residuals will be printed during iteration.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.re_normalize" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.re_normalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">re_normalize</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Renormalize residuals by maximum values.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.relative_conv_criteria" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.relative_conv_criteria"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_conv_criteria</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set relative convergence criteria for residuals which are currently being both monitored and checked.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.reset" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete the residual history and reset iteration counter to unity.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.scale_by_coefficient" title="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.scale_by_coefficient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale_by_coefficient</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable scaling of residuals by coefficient sum in printed and plotted output.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solution.monitors.</span></span><span class="sig-name descname"><span class="pre">residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the residual monitors menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.check_convergence">
 <span class="sig-name descname"><span class="pre">check_convergence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.monitors.residual.check_convergence" title="Permalink to this definition">#</a></dt>

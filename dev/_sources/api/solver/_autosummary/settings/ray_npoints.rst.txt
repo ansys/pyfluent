@@ -5,8 +5,11 @@
 ray_npoints
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.ray_npoints.ray_npoints
+.. currentmodule:: ansys.fluent.core.solver.settings_231.ray_npoints
 
+.. autoclass:: ray_npoints
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   ===========================

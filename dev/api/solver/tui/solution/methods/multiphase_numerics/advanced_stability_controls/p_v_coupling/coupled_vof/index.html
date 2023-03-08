@@ -56,7 +56,7 @@
     <link rel="index" title="Index" href="../../../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../../../search.html" />
     <link rel="next" title="solver.tui.solution.methods.multiphase_numerics.advanced_stability_controls.p_v_coupling.rhie_chow_flux" href="../rhie_chow_flux/index.html" />
-    <link rel="prev" title="solver.tui.solution.methods.multiphase_numerics.advanced_stability_controls.p_v_coupling" href="../index.html" />
+    <link rel="prev" title="solver.tui.solution.methods.multiphase_numerics.advanced_stability_controls.p_v_coupling.skewness_correction" href="../skewness_correction/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -308,8 +308,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -353,13 +358,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
        <li class="toctree-l4">
@@ -368,13 +368,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../file/index.html">
-         solver.tui.file
+        <a class="reference internal" href="../../../../../../adjoint/index.html">
+         solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../icing/index.html">
-         solver.tui.icing
+        <a class="reference internal" href="../../../../../../surface/index.html">
+         solver.tui.surface
         </a>
        </li>
        <li class="toctree-l4">
@@ -383,18 +383,18 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../../../../views/index.html">
+         solver.tui.views
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../parallel/index.html">
-         solver.tui.parallel
+        <a class="reference internal" href="../../../../../../turbo_post/index.html">
+         solver.tui.turbo_post
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../plot/index.html">
-         solver.tui.plot
+        <a class="reference internal" href="../../../../../../file/index.html">
+         solver.tui.file
         </a>
        </li>
        <li class="toctree-l4">
@@ -403,8 +403,18 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../report/index.html">
-         solver.tui.report
+        <a class="reference internal" href="../../../../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../solve/index.html">
+         solver.tui.solve
         </a>
        </li>
        <li class="toctree-l4">
@@ -413,8 +423,38 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../solve/index.html">
-         solver.tui.solve
+        <a class="reference internal" href="../../../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -433,23 +473,18 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../cell_registers/index.html">
-           solver.tui.solution.cell_registers
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="../../../../../controls/index.html">
            solver.tui.solution.controls
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../expert/index.html">
-           solver.tui.solution.expert
+          <a class="reference internal" href="../../../../../initialize/index.html">
+           solver.tui.solution.initialize
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../initialize/index.html">
-           solver.tui.solution.initialize
+          <a class="reference internal" href="../../../../../run_calculation/index.html">
+           solver.tui.solution.run_calculation
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -463,13 +498,23 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul class="current">
            <li class="toctree-l6">
+            <a class="reference internal" href="../../../../warped_face_gradient_correction/index.html">
+             solver.tui.solution.methods.warped_face_gradient_correction
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../nita_expert_controls/index.html">
+             solver.tui.solution.methods.nita_expert_controls
+            </a>
+           </li>
+           <li class="toctree-l6">
             <a class="reference internal" href="../../../../expert/index.html">
              solver.tui.solution.methods.expert
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../../../high_order_term_relaxation/index.html">
-             solver.tui.solution.methods.high_order_term_relaxation
+            <a class="reference internal" href="../../../../pseudo_time_method/index.html">
+             solver.tui.solution.methods.pseudo_time_method
             </a>
            </li>
            <li class="toctree-l6 current active has-children">
@@ -483,18 +528,18 @@ function checkPageExistsAndRedirect(event) {
             </label>
             <ul class="current">
              <li class="toctree-l7">
-              <a class="reference internal" href="../../../porous_media/index.html">
-               solver.tui.solution.methods.multiphase_numerics.porous_media
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../../../compressible_flow/index.html">
-               solver.tui.solution.methods.multiphase_numerics.compressible_flow
-              </a>
-             </li>
-             <li class="toctree-l7">
               <a class="reference internal" href="../../../boiling_parameters/index.html">
                solver.tui.solution.methods.multiphase_numerics.boiling_parameters
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../../../face_pressure_controls/index.html">
+               solver.tui.solution.methods.multiphase_numerics.face_pressure_controls
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../../../heat_mass_transfer/index.html">
+               solver.tui.solution.methods.multiphase_numerics.heat_mass_transfer
               </a>
              </li>
              <li class="toctree-l7">
@@ -503,8 +548,23 @@ function checkPageExistsAndRedirect(event) {
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../../../heat_mass_transfer/index.html">
-               solver.tui.solution.methods.multiphase_numerics.heat_mass_transfer
+              <a class="reference internal" href="../../../solution_stabilization/index.html">
+               solver.tui.solution.methods.multiphase_numerics.solution_stabilization
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../../../compressible_flow/index.html">
+               solver.tui.solution.methods.multiphase_numerics.compressible_flow
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../../../porous_media/index.html">
+               solver.tui.solution.methods.multiphase_numerics.porous_media
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../../../default_controls/index.html">
+               solver.tui.solution.methods.multiphase_numerics.default_controls
               </a>
              </li>
              <li class="toctree-l7 current active has-children">
@@ -518,8 +578,13 @@ function checkPageExistsAndRedirect(event) {
               </label>
               <ul class="current">
                <li class="toctree-l8">
-                <a class="reference internal" href="../../pseudo_time/index.html">
-                 solver.tui.solution.methods.multiphase_numerics.advanced_stability_controls.pseudo_time
+                <a class="reference internal" href="../../anti_diffusion/index.html">
+                 solver.tui.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion
+                </a>
+               </li>
+               <li class="toctree-l8">
+                <a class="reference internal" href="../../hybrid_nita/index.html">
+                 solver.tui.solution.methods.multiphase_numerics.advanced_stability_controls.hybrid_nita
                 </a>
                </li>
                <li class="toctree-l8 current active has-children">
@@ -532,6 +597,11 @@ function checkPageExistsAndRedirect(event) {
                  </i>
                 </label>
                 <ul class="current">
+                 <li class="toctree-l9">
+                  <a class="reference internal" href="../skewness_correction/index.html">
+                   solver.tui.solution.methods.multiphase_numerics.advanced_stability_controls.p_v_coupling.skewness_correction
+                  </a>
+                 </li>
                  <li class="toctree-l9 current active">
                   <a class="current reference internal" href="#">
                    solver.tui.solution.methods.multiphase_numerics.advanced_stability_controls.p_v_coupling.coupled_vof
@@ -542,16 +612,11 @@ function checkPageExistsAndRedirect(event) {
                    solver.tui.solution.methods.multiphase_numerics.advanced_stability_controls.p_v_coupling.rhie_chow_flux
                   </a>
                  </li>
-                 <li class="toctree-l9">
-                  <a class="reference internal" href="../skewness_correction/index.html">
-                   solver.tui.solution.methods.multiphase_numerics.advanced_stability_controls.p_v_coupling.skewness_correction
-                  </a>
-                 </li>
                 </ul>
                </li>
                <li class="toctree-l8">
-                <a class="reference internal" href="../../hybrid_nita/index.html">
-                 solver.tui.solution.methods.multiphase_numerics.advanced_stability_controls.hybrid_nita
+                <a class="reference internal" href="../../num_ventilation/index.html">
+                 solver.tui.solution.methods.multiphase_numerics.advanced_stability_controls.num_ventilation
                 </a>
                </li>
                <li class="toctree-l8">
@@ -560,48 +625,13 @@ function checkPageExistsAndRedirect(event) {
                 </a>
                </li>
                <li class="toctree-l8">
-                <a class="reference internal" href="../../anti_diffusion/index.html">
-                 solver.tui.solution.methods.multiphase_numerics.advanced_stability_controls.anti_diffusion
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="../../num_ventilation/index.html">
-                 solver.tui.solution.methods.multiphase_numerics.advanced_stability_controls.num_ventilation
+                <a class="reference internal" href="../../pseudo_time/index.html">
+                 solver.tui.solution.methods.multiphase_numerics.advanced_stability_controls.pseudo_time
                 </a>
                </li>
               </ul>
              </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../../../default_controls/index.html">
-               solver.tui.solution.methods.multiphase_numerics.default_controls
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../../../face_pressure_controls/index.html">
-               solver.tui.solution.methods.multiphase_numerics.face_pressure_controls
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../../../solution_stabilization/index.html">
-               solver.tui.solution.methods.multiphase_numerics.solution_stabilization
-              </a>
-             </li>
             </ul>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../nita_expert_controls/index.html">
-             solver.tui.solution.methods.nita_expert_controls
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../overset/index.html">
-             solver.tui.solution.methods.overset
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../pseudo_time_method/index.html">
-             solver.tui.solution.methods.pseudo_time_method
-            </a>
            </li>
            <li class="toctree-l6">
             <a class="reference internal" href="../../../../query/index.html">
@@ -609,8 +639,13 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../../../warped_face_gradient_correction/index.html">
-             solver.tui.solution.methods.warped_face_gradient_correction
+            <a class="reference internal" href="../../../../high_order_term_relaxation/index.html">
+             solver.tui.solution.methods.high_order_term_relaxation
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../overset/index.html">
+             solver.tui.solution.methods.overset
             </a>
            </li>
           </ul>
@@ -626,50 +661,20 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../run_calculation/index.html">
-           solver.tui.solution.run_calculation
+          <a class="reference internal" href="../../../../../cell_registers/index.html">
+           solver.tui.solution.cell_registers
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../../expert/index.html">
+           solver.tui.solution.expert
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../setup/index.html">
-         solver.tui.setup
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../surface/index.html">
-         solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../../../../server/index.html">
          solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
         </a>
        </li>
       </ul>
@@ -741,7 +746,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.p_v_coupling.coupled_vof">
    <code class="docutils literal notranslate">
     <span class="pre">
-     coupled_vof
+     main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.p_v_coupling.coupled_vof
     </span>
    </code>
   </a>
@@ -750,7 +755,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.p_v_coupling.coupled_vof.buoyancy_force_linearization">
      <code class="docutils literal notranslate">
       <span class="pre">
-       coupled_vof.buoyancy_force_linearization()
+       main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.p_v_coupling.coupled_vof.buoyancy_force_linearization()
       </span>
      </code>
     </a>
@@ -778,19 +783,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solution-methods-multiphase-numerics-advanced-stability-controls-p-v-coupling-coupled-vof">
 <span id="ref-solver-tui-solution-methods-multiphase-numerics-advanced-stability-controls-p-v-coupling-coupled-vof"></span><h1>solver.tui.solution.methods.multiphase_numerics.advanced_stability_controls.p_v_coupling.coupled_vof<a class="headerlink" href="#solver-tui-solution-methods-multiphase-numerics-advanced-stability-controls-p-v-coupling-coupled-vof" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.p_v_coupling.coupled_vof">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.p_v_coupling.</span></span><span class="sig-name descname"><span class="pre">coupled_vof</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.p_v_coupling.coupled_vof" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Set Coupled VOF stability controls.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.p_v_coupling.coupled_vof.buoyancy_force_linearization" title="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.p_v_coupling.coupled_vof.buoyancy_force_linearization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">buoyancy_force_linearization</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set buoynacy force linerization options in coupled vof.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.p_v_coupling.coupled_vof">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.p_v_coupling.</span></span><span class="sig-name descname"><span class="pre">coupled_vof</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.p_v_coupling.coupled_vof" title="Permalink to this definition">#</a></dt>
+<dd><p>Set Coupled VOF stability controls.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.p_v_coupling.coupled_vof.buoyancy_force_linearization">
 <span class="sig-name descname"><span class="pre">buoyancy_force_linearization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.p_v_coupling.coupled_vof.buoyancy_force_linearization" title="Permalink to this definition">#</a></dt>

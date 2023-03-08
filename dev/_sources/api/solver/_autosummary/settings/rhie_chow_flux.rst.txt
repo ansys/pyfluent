@@ -5,13 +5,16 @@
 rhie_chow_flux
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.rhie_chow_flux.rhie_chow_flux
+.. currentmodule:: ansys.fluent.core.solver.settings_231.rhie_chow_flux
 
-.. rubric:: Attributes
+.. autoclass:: rhie_chow_flux
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================================   =============================================================
 
-Attribute                                                                                                Summary
+Child                                                                                                    Summary
 
 ================================================   =============================================================
 :ref:`low_order_rhie_chow <low_order_rhie_chow>`       Use low order velocity interpolation in flux calculation.

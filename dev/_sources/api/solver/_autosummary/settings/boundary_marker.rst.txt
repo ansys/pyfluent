@@ -5,8 +5,11 @@
 boundary_marker
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.boundary_marker.boundary_marker
+.. currentmodule:: ansys.fluent.core.solver.settings_231.boundary_marker
 
+.. autoclass:: boundary_marker
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

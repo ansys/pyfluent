@@ -5,8 +5,11 @@
 averaged_turbulent_parameters
 =============================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.averaged_turbulent_parameters.averaged_turbulent_parameters
+.. currentmodule:: ansys.fluent.core.solver.settings_231.averaged_turbulent_parameters
 
+.. autoclass:: averaged_turbulent_parameters
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ======================================

@@ -5,8 +5,11 @@
 film_laplace_number_constant
 ============================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.film_laplace_number_constant.film_laplace_number_constant
+.. currentmodule:: ansys.fluent.core.solver.settings_231.film_laplace_number_constant
 
+.. autoclass:: film_laplace_number_constant
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -5,8 +5,11 @@
 rough_shin_et_al
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.rough_shin_et_al.rough_shin_et_al
+.. currentmodule:: ansys.fluent.core.solver.settings_231.rough_shin_et_al
 
+.. autoclass:: rough_shin_et_al
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

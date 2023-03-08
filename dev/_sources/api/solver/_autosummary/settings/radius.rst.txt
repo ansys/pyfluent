@@ -5,8 +5,11 @@
 radius
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.radius.radius
+.. currentmodule:: ansys.fluent.core.solver.settings_231.radius
 
+.. autoclass:: radius
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   ============================

@@ -5,8 +5,11 @@
 use_logarithmic
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.use_logarithmic.use_logarithmic
+.. currentmodule:: ansys.fluent.core.solver.settings_231.use_logarithmic
 
+.. autoclass:: use_logarithmic
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==============================   =======================

@@ -5,13 +5,16 @@
 a
 =
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.a_1.a
+.. currentmodule:: ansys.fluent.core.solver.settings_231.a_1
 
-.. rubric:: Attributes
+.. autoclass:: a
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   =================================
 
-Attribute                                                                        Summary
+Child                                                                            Summary
 
 ====================================================   =================================
 :ref:`method <method_1>`                                                 'method' child.

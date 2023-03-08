@@ -5,8 +5,11 @@
 read
 ====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.read_3.read
+.. currentmodule:: ansys.fluent.core.solver.settings_231.read_3
 
+.. autoclass:: read
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==============================   ======================

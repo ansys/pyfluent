@@ -5,8 +5,11 @@
 azimuthal_start_angle
 =====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.azimuthal_start_angle.azimuthal_start_angle
+.. currentmodule:: ansys.fluent.core.solver.settings_231.azimuthal_start_angle
 
+.. autoclass:: azimuthal_start_angle
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   =====================

@@ -5,8 +5,11 @@
 username
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.username.username
+.. currentmodule:: ansys.fluent.core.solver.settings_231.username
 
+.. autoclass:: username
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   ========================================================

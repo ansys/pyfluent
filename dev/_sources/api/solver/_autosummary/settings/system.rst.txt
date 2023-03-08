@@ -5,13 +5,16 @@
 system
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.system.system
+.. currentmodule:: ansys.fluent.core.solver.settings_231.system
 
-.. rubric:: Methods
+.. autoclass:: system
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ==========================================   ===============================
 
-Method                                                               Summary
+Command                                                              Summary
 
 ==========================================   ===============================
 :ref:`proc_statistics <proc_statistics>`         Fluent process information.

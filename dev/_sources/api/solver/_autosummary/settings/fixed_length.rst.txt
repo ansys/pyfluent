@@ -5,8 +5,11 @@
 fixed_length
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fixed_length.fixed_length
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fixed_length
 
+.. autoclass:: fixed_length
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =======================

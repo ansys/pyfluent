@@ -5,8 +5,11 @@
 fixed
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fixed.fixed
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fixed
 
+.. autoclass:: fixed
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

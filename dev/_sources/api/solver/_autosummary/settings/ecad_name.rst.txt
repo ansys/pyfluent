@@ -5,8 +5,11 @@
 ecad_name
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.ecad_name.ecad_name
+.. currentmodule:: ansys.fluent.core.solver.settings_231.ecad_name
 
+.. autoclass:: ecad_name
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

@@ -5,8 +5,11 @@
 residual_reduction_tolerance
 ============================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.residual_reduction_tolerance.residual_reduction_tolerance
+.. currentmodule:: ansys.fluent.core.solver.settings_231.residual_reduction_tolerance
 
+.. autoclass:: residual_reduction_tolerance
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =======================================

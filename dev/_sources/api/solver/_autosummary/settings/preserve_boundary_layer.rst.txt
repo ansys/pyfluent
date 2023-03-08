@@ -5,8 +5,11 @@
 preserve_boundary_layer
 =======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.preserve_boundary_layer.preserve_boundary_layer
+.. currentmodule:: ansys.fluent.core.solver.settings_231.preserve_boundary_layer
 
+.. autoclass:: preserve_boundary_layer
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   =======================

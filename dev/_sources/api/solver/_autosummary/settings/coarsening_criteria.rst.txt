@@ -5,8 +5,11 @@
 coarsening_criteria
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.coarsening_criteria.coarsening_criteria
+.. currentmodule:: ansys.fluent.core.solver.settings_231.coarsening_criteria
 
+.. autoclass:: coarsening_criteria
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ==================

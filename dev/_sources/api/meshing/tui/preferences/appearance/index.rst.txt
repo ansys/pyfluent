@@ -3,17 +3,17 @@
 meshing.tui.preferences.appearance
 ==================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.preferences.appearance
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.appearance
+   :members: graphics_view, graphics_wall_face_color, model_color_scheme, show_model_edges, graphics_background_color1, default_view, solution_mode_edge_color_in_meshing_mode, graphics_title_window_framecolor, graphics_color_theme, graphics_background_style, group_by_tree_view, pastel_color_saturation, graphics_default_manual_face_color, graphics_background_color2, graphics_default_manual_node_color, application_font_size, surface_specularity_for_contours, graphics_partition_boundary_color, graphics_edge_color, ruler, surface_specularity, pastel_color_value, titles, surface_emissivity, titles_border_offset, quick_property_view, show_interface_children_zone, graphics_foreground_color, graphics_surface_color, show_enabled_models, number_of_pastel_colors, axis_triad, color_theme, number_of_files_recently_used, completer, custom_title_bar
 
 .. toctree::
    :hidden:
 
-   selections/index
    ansys_logo/index
+   selections/index
    charts/index

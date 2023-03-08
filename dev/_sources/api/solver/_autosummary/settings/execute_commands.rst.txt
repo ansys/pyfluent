@@ -5,13 +5,16 @@
 execute_commands
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.execute_commands.execute_commands
+.. currentmodule:: ansys.fluent.core.solver.settings_231.execute_commands
 
-.. rubric:: Methods
+.. autoclass:: execute_commands
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ==========================   ============================================
 
-Method                                                            Summary
+Command                                                           Summary
 
 ==========================   ============================================
 :ref:`enable <enable_9>`                       Enable an execute-command.

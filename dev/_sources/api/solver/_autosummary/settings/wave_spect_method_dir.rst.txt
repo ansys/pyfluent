@@ -5,8 +5,11 @@
 wave_spect_method_dir
 =====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.wave_spect_method_dir.wave_spect_method_dir
+.. currentmodule:: ansys.fluent.core.solver.settings_231.wave_spect_method_dir
 
+.. autoclass:: wave_spect_method_dir
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

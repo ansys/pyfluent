@@ -5,8 +5,11 @@
 species_reactions
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.species_reactions.species_reactions
+.. currentmodule:: ansys.fluent.core.solver.settings_231.species_reactions
 
+.. autoclass:: species_reactions
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   =========================================

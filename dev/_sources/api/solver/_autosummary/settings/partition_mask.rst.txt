@@ -5,8 +5,11 @@
 partition_mask
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.partition_mask.partition_mask
+.. currentmodule:: ansys.fluent.core.solver.settings_231.partition_mask
 
+.. autoclass:: partition_mask
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   ================

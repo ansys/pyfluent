@@ -5,8 +5,11 @@
 les_spec_name
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.les_spec_name.les_spec_name
+.. currentmodule:: ansys.fluent.core.solver.settings_231.les_spec_name
 
+.. autoclass:: les_spec_name
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

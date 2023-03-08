@@ -5,8 +5,11 @@
 start_time
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.start_time.start_time
+.. currentmodule:: ansys.fluent.core.solver.settings_231.start_time
 
+.. autoclass:: start_time
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ==================

@@ -5,13 +5,16 @@
 pollut_ctar
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.pollut_ctar.pollut_ctar
+.. currentmodule:: ansys.fluent.core.solver.settings_231.pollut_ctar
 
-.. rubric:: Attributes
+.. autoclass:: pollut_ctar
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

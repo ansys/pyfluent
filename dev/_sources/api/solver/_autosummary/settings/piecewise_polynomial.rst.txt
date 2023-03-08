@@ -5,8 +5,11 @@
 piecewise_polynomial
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.piecewise_polynomial.piecewise_polynomial
+.. currentmodule:: ansys.fluent.core.solver.settings_231.piecewise_polynomial
 
+.. autoclass:: piecewise_polynomial
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`piecewise_polynomial_child <piecewise_polynomial_child>`

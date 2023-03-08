@@ -5,13 +5,16 @@
 energy
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.energy.energy
+.. currentmodule:: ansys.fluent.core.solver.settings_231.energy
 
-.. rubric:: Attributes
+.. autoclass:: energy
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================================   ================================
 
-Attribute                                                                   Summary
+Child                                                                       Summary
 
 ================================================   ================================
 :ref:`enabled <enabled>`                                           'enabled' child.

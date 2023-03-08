@@ -302,8 +302,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -435,26 +440,6 @@ function checkPageExistsAndRedirect(event) {
    </code>
   </a>
   <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.GlobalSettings">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       Root.GlobalSettings
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.GlobalSettings.EnableTurboMeshing">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         Root.GlobalSettings.EnableTurboMeshing
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.JournalCommand">
      <code class="docutils literal notranslate">
@@ -595,85 +580,18 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-datamodel-solverworkflow">
 <span id="ref-solver-datamodel-solverworkflow"></span><h1>solver.datamodel.solverworkflow<a class="headerlink" href="#solver-datamodel-solverworkflow" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.solverworkflow.Root">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.datamodel_231.solverworkflow.</span></span><span class="sig-name descname"><span class="pre">Root</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
-<p>Singleton Root.</p>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.GlobalSettings" title="ansys.fluent.core.datamodel_231.solverworkflow.Root.GlobalSettings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GlobalSettings</span></code></a>(service, rules, path)</p></td>
-<td><p>Singleton GlobalSettings.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.JournalCommand" title="ansys.fluent.core.datamodel_231.solverworkflow.Root.JournalCommand"><code class="xref py py-obj docutils literal notranslate"><span class="pre">JournalCommand</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command JournalCommand.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_AssociateMesh" title="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_AssociateMesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TWF_AssociateMesh</span></code></a>(service, rules, command[, ...])</p></td>
-<td><p>Command TWF_AssociateMesh.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_BasicMachineDescription" title="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_BasicMachineDescription"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TWF_BasicMachineDescription</span></code></a>(service, rules, ...)</p></td>
-<td><p>Command TWF_BasicMachineDescription.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_BladeRowAnalysisScope" title="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_BladeRowAnalysisScope"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TWF_BladeRowAnalysisScope</span></code></a>(service, rules, ...)</p></td>
-<td><p>Command TWF_BladeRowAnalysisScope.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_CompleteWorkflowSetup" title="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_CompleteWorkflowSetup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TWF_CompleteWorkflowSetup</span></code></a>(service, rules, ...)</p></td>
-<td><p>Command TWF_CompleteWorkflowSetup.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_CreateCFDModel" title="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_CreateCFDModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TWF_CreateCFDModel</span></code></a>(service, rules, command)</p></td>
-<td><p>Command TWF_CreateCFDModel.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_ImportMesh" title="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_ImportMesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TWF_ImportMesh</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command TWF_ImportMesh.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_MapRegionInfo" title="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_MapRegionInfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TWF_MapRegionInfo</span></code></a>(service, rules, command[, ...])</p></td>
-<td><p>Command TWF_MapRegionInfo.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_ReportDefMonitors" title="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_ReportDefMonitors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TWF_ReportDefMonitors</span></code></a>(service, rules, command)</p></td>
-<td><p>Command TWF_ReportDefMonitors.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_TurboPhysics" title="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_TurboPhysics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TWF_TurboPhysics</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command TWF_TurboPhysics.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_TurboRegionsZones" title="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_TurboRegionsZones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TWF_TurboRegionsZones</span></code></a>(service, rules, command)</p></td>
-<td><p>Command TWF_TurboRegionsZones.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_TurboSurfaces" title="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_TurboSurfaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TWF_TurboSurfaces</span></code></a>(service, rules, command[, ...])</p></td>
-<td><p>Command TWF_TurboSurfaces.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_TurboTopology" title="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_TurboTopology"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TWF_TurboTopology</span></code></a>(service, rules, command[, ...])</p></td>
-<td><p>Command TWF_TurboTopology.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.solverworkflow.Root.GlobalSettings">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GlobalSettings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.GlobalSettings" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
-<p>Singleton GlobalSettings.</p>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.GlobalSettings.EnableTurboMeshing" title="ansys.fluent.core.datamodel_231.solverworkflow.Root.GlobalSettings.EnableTurboMeshing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EnableTurboMeshing</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter EnableTurboMeshing of value type bool.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.solverworkflow.Root.GlobalSettings.EnableTurboMeshing">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EnableTurboMeshing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.GlobalSettings.EnableTurboMeshing" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter EnableTurboMeshing of value type bool.</p>
-</dd></dl>
-
-</dd></dl>
-
+<dd><p>Singleton Root.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.solverworkflow.Root.JournalCommand">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">JournalCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.JournalCommand" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command JournalCommand.</p>
+<dd><p>Command JournalCommand.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -691,8 +609,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_AssociateMesh">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TWF_AssociateMesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_AssociateMesh" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command TWF_AssociateMesh.</p>
+<dd><p>Command TWF_AssociateMesh.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -718,8 +635,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_BasicMachineDescription">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TWF_BasicMachineDescription</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_BasicMachineDescription" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command TWF_BasicMachineDescription.</p>
+<dd><p>Command TWF_BasicMachineDescription.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -749,8 +665,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_BladeRowAnalysisScope">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TWF_BladeRowAnalysisScope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_BladeRowAnalysisScope" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command TWF_BladeRowAnalysisScope.</p>
+<dd><p>Command TWF_BladeRowAnalysisScope.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -772,8 +687,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_CompleteWorkflowSetup">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TWF_CompleteWorkflowSetup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_CompleteWorkflowSetup" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command TWF_CompleteWorkflowSetup.</p>
+<dd><p>Command TWF_CompleteWorkflowSetup.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -786,8 +700,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_CreateCFDModel">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TWF_CreateCFDModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_CreateCFDModel" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command TWF_CreateCFDModel.</p>
+<dd><p>Command TWF_CreateCFDModel.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -819,8 +732,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_ImportMesh">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TWF_ImportMesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_ImportMesh" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command TWF_ImportMesh.</p>
+<dd><p>Command TWF_ImportMesh.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -845,8 +757,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_MapRegionInfo">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TWF_MapRegionInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_MapRegionInfo" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command TWF_MapRegionInfo.</p>
+<dd><p>Command TWF_MapRegionInfo.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -871,8 +782,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_ReportDefMonitors">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TWF_ReportDefMonitors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_ReportDefMonitors" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command TWF_ReportDefMonitors.</p>
+<dd><p>Command TWF_ReportDefMonitors.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -893,8 +803,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_TurboPhysics">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TWF_TurboPhysics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_TurboPhysics" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command TWF_TurboPhysics.</p>
+<dd><p>Command TWF_TurboPhysics.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -912,8 +821,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_TurboRegionsZones">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TWF_TurboRegionsZones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_TurboRegionsZones" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command TWF_TurboRegionsZones.</p>
+<dd><p>Command TWF_TurboRegionsZones.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -931,8 +839,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_TurboSurfaces">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TWF_TurboSurfaces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_TurboSurfaces" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command TWF_TurboSurfaces.</p>
+<dd><p>Command TWF_TurboSurfaces.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -956,8 +863,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_TurboTopology">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TWF_TurboTopology</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.solverworkflow.Root.TWF_TurboTopology" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command TWF_TurboTopology.</p>
+<dd><p>Command TWF_TurboTopology.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>

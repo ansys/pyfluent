@@ -5,8 +5,11 @@
 solar_shining_factor
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.solar_shining_factor.solar_shining_factor
+.. currentmodule:: ansys.fluent.core.solver.settings_231.solar_shining_factor
 
+.. autoclass:: solar_shining_factor
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================================   ================================================

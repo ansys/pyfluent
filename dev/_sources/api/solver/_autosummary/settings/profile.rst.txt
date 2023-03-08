@@ -5,13 +5,16 @@
 profile
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.profile.profile
+.. currentmodule:: ansys.fluent.core.solver.settings_231.profile
 
-.. rubric:: Methods
+.. autoclass:: profile
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ========================   ======================================
 
-Method                                                    Summary
+Command                                                   Summary
 
 ========================   ======================================
 :ref:`enable <enable_1>`               Enable adaption profiling.

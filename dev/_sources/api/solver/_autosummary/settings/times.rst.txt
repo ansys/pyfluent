@@ -5,13 +5,16 @@
 times
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.times.times
+.. currentmodule:: ansys.fluent.core.solver.settings_231.times
 
-.. rubric:: Attributes
+.. autoclass:: times
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================   =======================
 
-Attribute                                        Summary
+Child                                            Summary
 
 ==============================   =======================
 :ref:`start_time <start_time>`       'start_time' child.

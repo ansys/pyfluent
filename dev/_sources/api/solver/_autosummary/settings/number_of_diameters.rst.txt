@@ -5,8 +5,11 @@
 number_of_diameters
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.number_of_diameters.number_of_diameters
+.. currentmodule:: ansys.fluent.core.solver.settings_231.number_of_diameters
 
+.. autoclass:: number_of_diameters
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ===================================

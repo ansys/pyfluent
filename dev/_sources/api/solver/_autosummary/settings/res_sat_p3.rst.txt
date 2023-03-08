@@ -5,8 +5,11 @@
 res_sat_p3
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.res_sat_p3.res_sat_p3
+.. currentmodule:: ansys.fluent.core.solver.settings_231.res_sat_p3
 
+.. autoclass:: res_sat_p3
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

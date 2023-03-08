@@ -5,8 +5,11 @@
 disable_rhie_chow_flux
 ======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.disable_rhie_chow_flux.disable_rhie_chow_flux
+.. currentmodule:: ansys.fluent.core.solver.settings_231.disable_rhie_chow_flux
 
+.. autoclass:: disable_rhie_chow_flux
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ========================

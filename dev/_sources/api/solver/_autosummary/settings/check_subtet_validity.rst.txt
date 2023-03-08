@@ -5,8 +5,11 @@
 check_subtet_validity
 =====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.check_subtet_validity.check_subtet_validity
+.. currentmodule:: ansys.fluent.core.solver.settings_231.check_subtet_validity
 
+.. autoclass:: check_subtet_validity
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ============================================================================

@@ -5,8 +5,11 @@
 radiating
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.radiating.radiating
+.. currentmodule:: ansys.fluent.core.solver.settings_231.radiating
 
+.. autoclass:: radiating
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

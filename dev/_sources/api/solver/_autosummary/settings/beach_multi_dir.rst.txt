@@ -5,8 +5,11 @@
 beach_multi_dir
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.beach_multi_dir.beach_multi_dir
+.. currentmodule:: ansys.fluent.core.solver.settings_231.beach_multi_dir
 
+.. autoclass:: beach_multi_dir
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

@@ -5,8 +5,11 @@
 adhesion_constrained
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.adhesion_constrained.adhesion_constrained
+.. currentmodule:: ansys.fluent.core.solver.settings_231.adhesion_constrained
 
+.. autoclass:: adhesion_constrained
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =======================================

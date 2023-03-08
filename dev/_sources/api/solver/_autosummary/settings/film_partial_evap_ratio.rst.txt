@@ -5,8 +5,11 @@
 film_partial_evap_ratio
 =======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.film_partial_evap_ratio.film_partial_evap_ratio
+.. currentmodule:: ansys.fluent.core.solver.settings_231.film_partial_evap_ratio
 
+.. autoclass:: film_partial_evap_ratio
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

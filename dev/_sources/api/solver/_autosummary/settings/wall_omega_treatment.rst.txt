@@ -5,8 +5,11 @@
 wall_omega_treatment
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.wall_omega_treatment.wall_omega_treatment
+.. currentmodule:: ansys.fluent.core.solver.settings_231.wall_omega_treatment
 
+.. autoclass:: wall_omega_treatment
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   ================================

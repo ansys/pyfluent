@@ -5,13 +5,16 @@
 text
 ====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.text.text
+.. currentmodule:: ansys.fluent.core.solver.settings_231.text
 
-.. rubric:: Attributes
+.. autoclass:: text
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================   =========================================================
 
-Attribute                                                                            Summary
+Child                                                                                Summary
 
 ================================   =========================================================
 :ref:`application <application>`              Show/hide the application name in the picture.

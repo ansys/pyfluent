@@ -3,13 +3,13 @@
 meshing.tui.mesh.poly.controls
 ==============================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.mesh.poly.controls
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.poly.controls
+   :members: merge_skew, face_size_ratio, improve, feature_angle, sliver_cell_area_fraction, edge_size_ratio, non_fluid_type, cell_sizing, remesh_skew
 
 .. toctree::
    :hidden:

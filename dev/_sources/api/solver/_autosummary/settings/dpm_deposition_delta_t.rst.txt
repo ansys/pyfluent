@@ -5,8 +5,11 @@
 dpm_deposition_delta_t
 ======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_deposition_delta_t.dpm_deposition_delta_t
+.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_deposition_delta_t
 
+.. autoclass:: dpm_deposition_delta_t
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

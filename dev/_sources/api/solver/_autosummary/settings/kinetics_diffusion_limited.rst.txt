@@ -5,13 +5,16 @@
 kinetics_diffusion_limited
 ==========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.kinetics_diffusion_limited.kinetics_diffusion_limited
+.. currentmodule:: ansys.fluent.core.solver.settings_231.kinetics_diffusion_limited
 
-.. rubric:: Attributes
+.. autoclass:: kinetics_diffusion_limited
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================   ====================================
 
-Attribute                                                                               Summary
+Child                                                                                   Summary
 
 ========================================================   ====================================
 :ref:`diffusion_rate_constant <diffusion_rate_constant>`       'diffusion_rate_constant' child.

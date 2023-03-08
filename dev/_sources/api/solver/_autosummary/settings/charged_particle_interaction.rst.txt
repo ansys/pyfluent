@@ -5,8 +5,11 @@
 charged_particle_interaction
 ============================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.charged_particle_interaction.charged_particle_interaction
+.. currentmodule:: ansys.fluent.core.solver.settings_231.charged_particle_interaction
 
+.. autoclass:: charged_particle_interaction
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   =============================================

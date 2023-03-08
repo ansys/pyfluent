@@ -3,13 +3,13 @@
 solver.tui.define.models.acoustics.sources\_fft
 ===============================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.models.acoustics.sources_fft
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.acoustics.sources_fft
+   :members: write_cgns_files, read_asd_files, compute_fft_fields, clean_up_storage_area
 
 .. toctree::
    :hidden:

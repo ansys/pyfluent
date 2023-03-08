@@ -3,11 +3,11 @@
 solver.tui.preferences.graphics.colormap\_settings
 ==================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.graphics.colormap_settings
+   :members: text_font_name, text_font_fixed_vertical_size, automatic_resize, border_style, log_scale, skip_value, type, aspect_ratio_when_horizontal, labels, text_font_fixed_horizontal_size, text_font_automatic_units, text_font_fixed_units, text_truncation_limit_for_horizontal_colormaps, show_colormap, levels, text_font_automatic_vertical_size, text_behavior, preserve_aspect_ratio_for_hardcopy, margin_from_edge_to_screen_ratio, use_no_sub_windows, max_size_scale_factor, number_format_precision, text_truncation_limit_for_vertical_colormaps, auto_refit_on_resize, text_font_automatic_horizontal_size, text_font_automatic_size, major_length_to_screen_ratio_when_vertical, colormap, alignment, major_length_to_screen_ratio_when_horizontal, number_format_type, text_font_fixed_size, aspect_ratio_when_vertical, isolines_position_offset, min_size_scale_factor
 

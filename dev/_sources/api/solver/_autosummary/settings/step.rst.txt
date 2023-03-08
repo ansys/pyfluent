@@ -5,8 +5,11 @@
 step
 ====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.step.step
+.. currentmodule:: ansys.fluent.core.solver.settings_231.step
 
+.. autoclass:: step
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

@@ -5,8 +5,11 @@
 udf_cf_names
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.udf_cf_names.udf_cf_names
+.. currentmodule:: ansys.fluent.core.solver.settings_231.udf_cf_names
 
+.. autoclass:: udf_cf_names
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ========================================

@@ -5,8 +5,11 @@
 vector_field
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.vector_field.vector_field
+.. currentmodule:: ansys.fluent.core.solver.settings_231.vector_field
 
+.. autoclass:: vector_field
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ==================================

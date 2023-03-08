@@ -5,13 +5,16 @@
 capillary_pressure
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.capillary_pressure.capillary_pressure
+.. currentmodule:: ansys.fluent.core.solver.settings_231.capillary_pressure
 
-.. rubric:: Attributes
+.. autoclass:: capillary_pressure
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   =================================
 
-Attribute                                                                        Summary
+Child                                                                            Summary
 
 ====================================================   =================================
 :ref:`method <method_1>`                                                 'method' child.

@@ -5,8 +5,11 @@
 solar_direction
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.solar_direction.solar_direction
+.. currentmodule:: ansys.fluent.core.solver.settings_231.solar_direction
 
+.. autoclass:: solar_direction
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

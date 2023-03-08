@@ -5,8 +5,11 @@
 outflow
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.outflow.outflow
+.. currentmodule:: ansys.fluent.core.solver.settings_231.outflow
 
+.. autoclass:: outflow
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`outflow_child <outflow_child>`

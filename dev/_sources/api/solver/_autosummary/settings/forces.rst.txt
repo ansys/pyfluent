@@ -5,8 +5,11 @@
 forces
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.forces.forces
+.. currentmodule:: ansys.fluent.core.solver.settings_231.forces
 
+.. autoclass:: forces
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ================================================   ====================================

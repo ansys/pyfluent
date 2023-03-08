@@ -5,8 +5,11 @@
 stabilization
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.stabilization.stabilization
+.. currentmodule:: ansys.fluent.core.solver.settings_231.stabilization
 
+.. autoclass:: stabilization
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =======================================

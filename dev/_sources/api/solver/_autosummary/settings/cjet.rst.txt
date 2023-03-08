@@ -5,8 +5,11 @@
 cjet
 ====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.cjet.cjet
+.. currentmodule:: ansys.fluent.core.solver.settings_231.cjet
 
+.. autoclass:: cjet
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =========================

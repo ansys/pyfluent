@@ -5,8 +5,11 @@
 interval
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.interval.interval
+.. currentmodule:: ansys.fluent.core.solver.settings_231.interval
 
+.. autoclass:: interval
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ============================================

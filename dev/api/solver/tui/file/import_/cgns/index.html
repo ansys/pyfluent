@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
-    <link rel="next" title="solver.tui.file.import_.lstc" href="../lstc/index.html" />
-    <link rel="prev" title="solver.tui.file.import_.cfx" href="../cfx/index.html" />
+    <link rel="next" title="solver.tui.file.import_.abaqus" href="../abaqus/index.html" />
+    <link rel="prev" title="solver.tui.file.import_.plot3d" href="../plot3d/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -305,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -350,18 +355,38 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../define/index.html">
          solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../views/index.html">
+         solver.tui.views
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -375,23 +400,18 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
+          <a class="reference internal" href="../../interpolate/index.html">
+           solver.tui.file.interpolate
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../parametric_project/index.html">
+           solver.tui.file.parametric_project
+          </a>
+         </li>
+         <li class="toctree-l5">
           <a class="reference internal" href="../../auto_save/index.html">
            solver.tui.file.auto_save
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../cffio_options/index.html">
-           solver.tui.file.cffio_options
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../export/index.html">
-           solver.tui.file.export
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../transient_export/index.html">
-           solver.tui.file.transient_export
           </a>
          </li>
          <li class="toctree-l5">
@@ -410,28 +430,18 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul class="current">
            <li class="toctree-l6">
-            <a class="reference internal" href="../mechanical_apdl/index.html">
-             solver.tui.file.import_.mechanical_apdl
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../abaqus/index.html">
-             solver.tui.file.import_.abaqus
-            </a>
-           </li>
-           <li class="toctree-l6">
             <a class="reference internal" href="../cfx/index.html">
              solver.tui.file.import_.cfx
             </a>
            </li>
-           <li class="toctree-l6 current active">
-            <a class="current reference internal" href="#">
-             solver.tui.file.import_.cgns
+           <li class="toctree-l6">
+            <a class="reference internal" href="../tecplot/index.html">
+             solver.tui.file.import_.tecplot
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../lstc/index.html">
-             solver.tui.file.import_.lstc
+            <a class="reference internal" href="../patran/index.html">
+             solver.tui.file.import_.patran
             </a>
            </li>
            <li class="toctree-l6">
@@ -445,50 +455,35 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../patran/index.html">
-             solver.tui.file.import_.patran
-            </a>
-           </li>
-           <li class="toctree-l6">
             <a class="reference internal" href="../plot3d/index.html">
              solver.tui.file.import_.plot3d
             </a>
            </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../tecplot/index.html">
-             solver.tui.file.import_.tecplot
+           <li class="toctree-l6 current active">
+            <a class="current reference internal" href="#">
+             solver.tui.file.import_.cgns
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../fmu_file/index.html">
-             solver.tui.file.import_.fmu_file
+            <a class="reference internal" href="../abaqus/index.html">
+             solver.tui.file.import_.abaqus
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../flamelet/index.html">
-             solver.tui.file.import_.flamelet
+            <a class="reference internal" href="../mechanical_apdl/index.html">
+             solver.tui.file.import_.mechanical_apdl
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../lstc/index.html">
+             solver.tui.file.import_.lstc
             </a>
            </li>
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../interpolate/index.html">
-           solver.tui.file.interpolate
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="../../fsi/index.html">
            solver.tui.file.fsi
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../parametric_project/index.html">
-           solver.tui.file.parametric_project
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../project/index.html">
-           solver.tui.file.project
           </a>
          </li>
          <li class="toctree-l5">
@@ -501,26 +496,31 @@ function checkPageExistsAndRedirect(event) {
            solver.tui.file.solution_files
           </a>
          </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../export/index.html">
+           solver.tui.file.export
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../project/index.html">
+           solver.tui.file.project
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../transient_export/index.html">
+           solver.tui.file.transient_export
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../cffio_options/index.html">
+           solver.tui.file.cffio_options
+          </a>
+         </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parallel/index.html">
-         solver.tui.parallel
+        <a class="reference internal" href="../../../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
        <li class="toctree-l4">
@@ -529,18 +529,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../preferences/index.html">
-         solver.tui.preferences
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../results/index.html">
-         solver.tui.results
+        <a class="reference internal" href="../../../icing/index.html">
+         solver.tui.icing
         </a>
        </li>
        <li class="toctree-l4">
@@ -549,8 +539,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../solution/index.html">
-         solver.tui.solution
+        <a class="reference internal" href="../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
        <li class="toctree-l4">
@@ -559,8 +554,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../report/index.html">
+         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4">
@@ -569,28 +569,23 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../parametric_study/index.html">
          solver.tui.parametric_study
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
+        <a class="reference internal" href="../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../server/index.html">
+         solver.tui.server
         </a>
        </li>
       </ul>
@@ -662,7 +657,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns">
    <code class="docutils literal notranslate">
     <span class="pre">
-     cgns
+     main_menu.file.import_.cgns
     </span>
    </code>
   </a>
@@ -671,7 +666,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.data">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cgns.data()
+       main_menu.file.import_.cgns.data()
       </span>
      </code>
     </a>
@@ -680,7 +675,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.mesh">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cgns.mesh()
+       main_menu.file.import_.cgns.mesh()
       </span>
      </code>
     </a>
@@ -689,7 +684,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.mesh_data">
      <code class="docutils literal notranslate">
       <span class="pre">
-       cgns.mesh_data()
+       main_menu.file.import_.cgns.mesh_data()
       </span>
      </code>
     </a>
@@ -717,25 +712,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-file-import-cgns">
 <span id="ref-solver-tui-file-import-cgns"></span><h1>solver.tui.file.import_.cgns<a class="headerlink" href="#solver-tui-file-import-cgns" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.file.import_.</span></span><span class="sig-name descname"><span class="pre">cgns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Imports a CGNS file.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.data" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads data from CGNS file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.mesh" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Imports a CGNS mesh file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.mesh_data" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.mesh_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_data</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Imports a CGNS mesh file and data file.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.file.import_.</span></span><span class="sig-name descname"><span class="pre">cgns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns" title="Permalink to this definition">#</a></dt>
+<dd><p>Imports a CGNS file.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.data">
 <span class="sig-name descname"><span class="pre">data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.data" title="Permalink to this definition">#</a></dt>

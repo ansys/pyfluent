@@ -1,6 +1,0 @@
-upload
-======
-
-.. currentmodule:: ansys.fluent.core.session_pure_meshing
-
-.. automethod:: PureMeshing.upload

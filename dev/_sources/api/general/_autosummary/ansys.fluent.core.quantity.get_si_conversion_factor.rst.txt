@@ -1,6 +1,0 @@
-get\_si\_conversion\_factor
-===========================
-
-.. currentmodule:: ansys.fluent.core.quantity
-
-.. autofunction:: get_si_conversion_factor

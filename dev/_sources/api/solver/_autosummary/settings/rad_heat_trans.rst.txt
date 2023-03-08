@@ -5,8 +5,11 @@
 rad_heat_trans
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.rad_heat_trans.rad_heat_trans
+.. currentmodule:: ansys.fluent.core.solver.settings_231.rad_heat_trans
 
+.. autoclass:: rad_heat_trans
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ========================================   ===========================================

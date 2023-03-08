@@ -5,8 +5,11 @@
 encapsulate_children
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.encapsulate_children.encapsulate_children
+.. currentmodule:: ansys.fluent.core.solver.settings_231.encapsulate_children
 
+.. autoclass:: encapsulate_children
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================   ================================

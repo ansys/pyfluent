@@ -5,8 +5,11 @@
 film_relative_vel
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.film_relative_vel.film_relative_vel
+.. currentmodule:: ansys.fluent.core.solver.settings_231.film_relative_vel
 
+.. autoclass:: film_relative_vel
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

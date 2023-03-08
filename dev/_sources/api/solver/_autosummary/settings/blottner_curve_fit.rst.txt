@@ -5,13 +5,16 @@
 blottner_curve_fit
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.blottner_curve_fit.blottner_curve_fit
+.. currentmodule:: ansys.fluent.core.solver.settings_231.blottner_curve_fit
 
-.. rubric:: Attributes
+.. autoclass:: blottner_curve_fit
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ============   ==============
 
-Attribute             Summary
+Child                 Summary
 
 ============   ==============
 :ref:`a <a>`       'a' child.

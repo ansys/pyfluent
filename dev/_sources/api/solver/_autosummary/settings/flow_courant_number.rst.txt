@@ -5,8 +5,11 @@
 flow_courant_number
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.flow_courant_number.flow_courant_number
+.. currentmodule:: ansys.fluent.core.solver.settings_231.flow_courant_number
 
+.. autoclass:: flow_courant_number
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =========================

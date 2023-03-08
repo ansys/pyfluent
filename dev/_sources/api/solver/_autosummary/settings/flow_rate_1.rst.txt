@@ -5,13 +5,16 @@
 flow_rate
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.flow_rate_1.flow_rate
+.. currentmodule:: ansys.fluent.core.solver.settings_231.flow_rate_1
 
-.. rubric:: Attributes
+.. autoclass:: flow_rate
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================   ============================
 
-Attribute                                                       Summary
+Child                                                           Summary
 
 ========================================   ============================
 :ref:`flow_rate <flow_rate>`                         'flow_rate' child.

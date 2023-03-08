@@ -5,13 +5,16 @@
 skewness_correction
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.skewness_correction.skewness_correction
+.. currentmodule:: ansys.fluent.core.solver.settings_231.skewness_correction
 
-.. rubric:: Attributes
+.. autoclass:: skewness_correction
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================================================================   ==========================================================================================
 
-Attribute                                                                                                                                                           Summary
+Child                                                                                                                                                               Summary
 
 ==============================================================================   ==========================================================================================
 :ref:`limit_pressure_correction_gradient <limit_pressure_correction_gradient>`       Use limited pressure correction gradient in skewness corrections for better stability.

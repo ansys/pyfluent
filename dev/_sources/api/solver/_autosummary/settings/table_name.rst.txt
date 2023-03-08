@@ -5,8 +5,11 @@
 table_name
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.table_name.table_name
+.. currentmodule:: ansys.fluent.core.solver.settings_231.table_name
 
+.. autoclass:: table_name
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   ====================================

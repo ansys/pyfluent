@@ -5,8 +5,11 @@
 onphysics
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.onphysics.onphysics
+.. currentmodule:: ansys.fluent.core.solver.settings_231.onphysics
 
+.. autoclass:: onphysics
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

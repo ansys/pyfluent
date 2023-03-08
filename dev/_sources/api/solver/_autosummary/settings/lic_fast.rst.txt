@@ -5,8 +5,11 @@
 lic_fast
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.lic_fast.lic_fast
+.. currentmodule:: ansys.fluent.core.solver.settings_231.lic_fast
 
+.. autoclass:: lic_fast
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ===============================

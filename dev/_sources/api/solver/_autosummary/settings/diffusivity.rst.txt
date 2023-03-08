@@ -5,13 +5,16 @@
 diffusivity
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.diffusivity.diffusivity
+.. currentmodule:: ansys.fluent.core.solver.settings_231.diffusivity
 
-.. rubric:: Attributes
+.. autoclass:: diffusivity
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   ====================================================
 
-Attribute                                                                                           Summary
+Child                                                                                               Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

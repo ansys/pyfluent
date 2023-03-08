@@ -5,13 +5,16 @@
 numerics
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.numerics.numerics
+.. currentmodule:: ansys.fluent.core.solver.settings_231.numerics
 
-.. rubric:: Attributes
+.. autoclass:: numerics
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   ==========================================================================================================
 
-Attribute                                                                                                                               Summary
+Child                                                                                                                                   Summary
 
 ==================================   ==========================================================================================================
 :ref:`averaging <averaging>`             Menu containing options to enable/disable node-based averaging of DPM variables and DPM source terms. 

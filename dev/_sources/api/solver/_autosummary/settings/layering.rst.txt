@@ -5,13 +5,16 @@
 layering
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.layering.layering
+.. currentmodule:: ansys.fluent.core.solver.settings_231.layering
 
-.. rubric:: Attributes
+.. autoclass:: layering
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================================   ============================================
 
-Attribute                                                                                                       Summary
+Child                                                                                                           Summary
 
 ========================================================================   ============================================
 :ref:`use_layering <use_layering>`                                                                'use_layering' child.

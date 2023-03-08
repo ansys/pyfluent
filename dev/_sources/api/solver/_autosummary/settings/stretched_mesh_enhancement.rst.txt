@@ -5,13 +5,16 @@
 stretched_mesh_enhancement
 ==========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.stretched_mesh_enhancement.stretched_mesh_enhancement
+.. currentmodule:: ansys.fluent.core.solver.settings_231.stretched_mesh_enhancement
 
-.. rubric:: Attributes
+.. autoclass:: stretched_mesh_enhancement
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================   ==============================================
 
-Attribute                                                                         Summary
+Child                                                                             Summary
 
 ========================================   ==============================================
 :ref:`use_enhancement <use_enhancement>`       Enhancement for mesh with stretched cells.

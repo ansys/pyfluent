@@ -5,13 +5,16 @@
 electric_conductivity
 =====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.electric_conductivity_1.electric_conductivity
+.. currentmodule:: ansys.fluent.core.solver.settings_231.electric_conductivity_1
 
-.. rubric:: Attributes
+.. autoclass:: electric_conductivity
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   ====================================================
 
-Attribute                                                                                           Summary
+Child                                                                                               Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

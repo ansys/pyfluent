@@ -5,13 +5,16 @@
 pressure_far_field_child
 ========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.pressure_far_field_child.pressure_far_field_child
+.. currentmodule:: ansys.fluent.core.solver.settings_231.pressure_far_field_child
 
-.. rubric:: Attributes
+.. autoclass:: pressure_far_field_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================================   ============================================
 
-Attribute                                                                                                       Summary
+Child                                                                                                           Summary
 
 ========================================================================   ============================================
 :ref:`phase <phase_16>`                                                                                  'phase' child.

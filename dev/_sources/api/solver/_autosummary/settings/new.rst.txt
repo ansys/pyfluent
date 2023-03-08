@@ -5,8 +5,11 @@
 new
 ===
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.new.new
+.. currentmodule:: ansys.fluent.core.solver.settings_231.new
 
+.. autoclass:: new
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==========================================   =============================

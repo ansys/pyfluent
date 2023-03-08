@@ -5,8 +5,11 @@
 on
 ==
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.on.on
+.. currentmodule:: ansys.fluent.core.solver.settings_231.on
 
+.. autoclass:: on
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ========================================

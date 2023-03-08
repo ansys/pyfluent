@@ -3,13 +3,13 @@
 solver.tui.define.boundary\_conditions.bc\_settings
 ===================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.boundary_conditions.bc_settings
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.boundary_conditions.bc_settings
+   :members: mass_flow, pressure_outlet
 
 .. toctree::
    :hidden:

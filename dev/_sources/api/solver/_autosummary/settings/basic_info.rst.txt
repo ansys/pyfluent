@@ -5,13 +5,16 @@
 basic_info
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.basic_info.basic_info
+.. currentmodule:: ansys.fluent.core.solver.settings_231.basic_info
 
-.. rubric:: Attributes
+.. autoclass:: basic_info
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==========================================   =================================
 
-Attribute                                                              Summary
+Child                                                                  Summary
 
 ==========================================   =================================
 :ref:`number_of_blades <number_of_blades>`           Set the number of blades.

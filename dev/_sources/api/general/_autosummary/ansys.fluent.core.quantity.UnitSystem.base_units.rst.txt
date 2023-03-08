@@ -1,6 +1,0 @@
-base\_units
-===========
-
-.. currentmodule:: ansys.fluent.core.quantity
-
-.. automethod:: UnitSystem.base_units

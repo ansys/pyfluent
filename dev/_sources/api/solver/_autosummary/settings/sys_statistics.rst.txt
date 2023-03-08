@@ -5,8 +5,11 @@
 sys_statistics
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.sys_statistics.sys_statistics
+.. currentmodule:: ansys.fluent.core.solver.settings_231.sys_statistics
 
+.. autoclass:: sys_statistics
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

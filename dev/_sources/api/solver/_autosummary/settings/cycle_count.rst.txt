@@ -5,8 +5,11 @@
 cycle_count
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.cycle_count.cycle_count
+.. currentmodule:: ansys.fluent.core.solver.settings_231.cycle_count
 
+.. autoclass:: cycle_count
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================================   ===========================================

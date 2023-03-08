@@ -5,8 +5,11 @@
 dynamic_energy_flux
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.dynamic_energy_flux.dynamic_energy_flux
+.. currentmodule:: ansys.fluent.core.solver.settings_231.dynamic_energy_flux
 
+.. autoclass:: dynamic_energy_flux
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================

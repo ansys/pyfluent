@@ -5,8 +5,11 @@
 spe_diff_zz
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.spe_diff_zz.spe_diff_zz
+.. currentmodule:: ansys.fluent.core.solver.settings_231.spe_diff_zz
 
+.. autoclass:: spe_diff_zz
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

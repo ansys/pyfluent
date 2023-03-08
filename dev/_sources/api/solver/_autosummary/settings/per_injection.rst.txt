@@ -5,8 +5,11 @@
 per_injection
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.per_injection.per_injection
+.. currentmodule:: ansys.fluent.core.solver.settings_231.per_injection
 
+.. autoclass:: per_injection
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   =====================================

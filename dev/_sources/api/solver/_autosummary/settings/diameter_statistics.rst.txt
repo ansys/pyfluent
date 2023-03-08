@@ -5,8 +5,11 @@
 diameter_statistics
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.diameter_statistics.diameter_statistics
+.. currentmodule:: ansys.fluent.core.solver.settings_231.diameter_statistics
 
+.. autoclass:: diameter_statistics
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================================

@@ -5,8 +5,11 @@
 velocity
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.velocity_2.velocity
+.. currentmodule:: ansys.fluent.core.solver.settings_231.velocity_2
 
+.. autoclass:: velocity
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =============================

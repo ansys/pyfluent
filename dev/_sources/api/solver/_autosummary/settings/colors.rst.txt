@@ -5,13 +5,16 @@
 colors
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.colors.colors
+.. currentmodule:: ansys.fluent.core.solver.settings_231.colors
 
-.. rubric:: Attributes
+.. autoclass:: colors
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==========================================================   =========================================================================
 
-Attribute                                                                                                                      Summary
+Child                                                                                                                          Summary
 
 ==========================================================   =========================================================================
 :ref:`background <background>`                                                                      Set the background (window) color.
@@ -60,11 +63,11 @@ Attribute                                                                       
 
 ==========================================================   =========================================================================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ==================================   =========================================================
 
-Method                                                                                 Summary
+Command                                                                                Summary
 
 ==================================   =========================================================
 :ref:`reset_colors <reset_colors>`       Reset individual mesh surface colors to the defaults.

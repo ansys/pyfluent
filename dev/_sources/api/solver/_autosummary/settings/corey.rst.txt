@@ -5,8 +5,11 @@
 corey
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.corey.corey
+.. currentmodule:: ansys.fluent.core.solver.settings_231.corey
 
+.. autoclass:: corey
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

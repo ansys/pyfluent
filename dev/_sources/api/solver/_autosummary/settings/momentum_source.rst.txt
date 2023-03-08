@@ -5,8 +5,11 @@
 momentum_source
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.momentum_source.momentum_source
+.. currentmodule:: ansys.fluent.core.solver.settings_231.momentum_source
 
+.. autoclass:: momentum_source
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`child_object_type_child <child_object_type_child_1>`

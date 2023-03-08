@@ -3,11 +3,11 @@
 solver.tui.views.camera
 =======================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.views.camera
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.views.camera
+   :members: up_vector, pan_camera, target, dolly_camera, field, zoom_camera, roll_camera, position, orbit_camera, projection
 

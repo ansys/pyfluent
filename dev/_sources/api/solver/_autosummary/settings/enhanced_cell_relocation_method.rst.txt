@@ -5,8 +5,11 @@
 enhanced_cell_relocation_method
 ===============================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.enhanced_cell_relocation_method.enhanced_cell_relocation_method
+.. currentmodule:: ansys.fluent.core.solver.settings_231.enhanced_cell_relocation_method
 
+.. autoclass:: enhanced_cell_relocation_method
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================================================================================================

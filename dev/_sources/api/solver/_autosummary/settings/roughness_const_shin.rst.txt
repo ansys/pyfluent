@@ -5,13 +5,16 @@
 roughness_const_shin
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.roughness_const_shin.roughness_const_shin
+.. currentmodule:: ansys.fluent.core.solver.settings_231.roughness_const_shin
 
-.. rubric:: Attributes
+.. autoclass:: roughness_const_shin
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

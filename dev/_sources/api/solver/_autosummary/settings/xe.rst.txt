@@ -5,8 +5,11 @@
 xe
 ==
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.xe.xe
+.. currentmodule:: ansys.fluent.core.solver.settings_231.xe
 
+.. autoclass:: xe
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

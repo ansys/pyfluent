@@ -5,13 +5,16 @@
 multi_stage_child
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.multi_stage_child.multi_stage_child
+.. currentmodule:: ansys.fluent.core.solver.settings_231.multi_stage_child
 
-.. rubric:: Attributes
+.. autoclass:: multi_stage_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================================   ===========================================
 
-Attribute                                                                            Summary
+Child                                                                                Summary
 
 ==============================================   ===========================================
 :ref:`coefficient <coefficient>`                                    Multi-stage coefficient.

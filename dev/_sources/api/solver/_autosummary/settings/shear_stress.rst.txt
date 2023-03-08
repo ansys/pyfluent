@@ -5,8 +5,11 @@
 shear_stress
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.shear_stress.shear_stress
+.. currentmodule:: ansys.fluent.core.solver.settings_231.shear_stress
 
+.. autoclass:: shear_stress
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`child_object_type_child <child_object_type_child_1>`

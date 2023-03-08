@@ -3,11 +3,11 @@
 meshing.tui.mesh.prism.post\_ignore
 ===================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.mesh.prism.post_ignore
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.prism.post_ignore
+   :members: mark_cavity_prism_cap, post_remove_cells, mark_prism_cap, create_cavity
 

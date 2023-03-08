@@ -5,8 +5,11 @@
 lic_color
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.lic_color.lic_color
+.. currentmodule:: ansys.fluent.core.solver.settings_231.lic_color
 
+.. autoclass:: lic_color
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ===============================

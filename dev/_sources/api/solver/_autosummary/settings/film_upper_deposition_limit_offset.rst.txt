@@ -5,8 +5,11 @@
 film_upper_deposition_limit_offset
 ==================================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.film_upper_deposition_limit_offset.film_upper_deposition_limit_offset
+.. currentmodule:: ansys.fluent.core.solver.settings_231.film_upper_deposition_limit_offset
 
+.. autoclass:: film_upper_deposition_limit_offset
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -5,8 +5,11 @@
 color
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.color.color
+.. currentmodule:: ansys.fluent.core.solver.settings_231.color
 
+.. autoclass:: color
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ===================================

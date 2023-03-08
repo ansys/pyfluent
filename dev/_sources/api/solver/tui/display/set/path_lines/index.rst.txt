@@ -3,11 +3,11 @@
 solver.tui.display.set.path\_lines
 ==================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.path_lines
+   :members: arrow_scale, twist_factor, track_in_phase, line_width, style, display_steps, radius, arrow_space, reverse, maximum_steps, relative_pathlines, step_size, error_control, marker_size, maximum_error, sphere_attrib
 

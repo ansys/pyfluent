@@ -1,6 +1,0 @@
-read\_case
-==========
-
-.. currentmodule:: ansys.fluent.core.session_solver_icing
-
-.. automethod:: SolverIcing.read_case

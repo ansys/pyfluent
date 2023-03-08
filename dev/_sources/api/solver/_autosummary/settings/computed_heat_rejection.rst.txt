@@ -5,8 +5,11 @@
 computed_heat_rejection
 =======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.computed_heat_rejection.computed_heat_rejection
+.. currentmodule:: ansys.fluent.core.solver.settings_231.computed_heat_rejection
 
+.. autoclass:: computed_heat_rejection
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ======================================   ===========================

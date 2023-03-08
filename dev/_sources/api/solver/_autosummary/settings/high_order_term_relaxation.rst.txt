@@ -5,13 +5,16 @@
 high_order_term_relaxation
 ==========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.high_order_term_relaxation.high_order_term_relaxation
+.. currentmodule:: ansys.fluent.core.solver.settings_231.high_order_term_relaxation
 
-.. rubric:: Attributes
+.. autoclass:: high_order_term_relaxation
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==========================   ==============================================
 
-Attribute                                                           Summary
+Child                                                               Summary
 
 ==========================   ==============================================
 :ref:`enable <enable_5>`         Enable/Disable High Order Term Relaxation.

@@ -5,8 +5,11 @@
 angle
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.angle.angle
+.. currentmodule:: ansys.fluent.core.solver.settings_231.angle
 
+.. autoclass:: angle
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ====================

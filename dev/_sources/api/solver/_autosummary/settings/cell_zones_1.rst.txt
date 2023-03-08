@@ -5,8 +5,11 @@
 cell_zones
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.cell_zones_1.cell_zones
+.. currentmodule:: ansys.fluent.core.solver.settings_231.cell_zones_1
 
+.. autoclass:: cell_zones
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ====================================================

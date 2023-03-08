@@ -3,11 +3,11 @@
 solver.tui.display.pdf\_data
 ============================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.display.pdf_data
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.pdf_data
+   :members: plot_1d_slice, carpet_plot, write_to_file, draw_number_box
 

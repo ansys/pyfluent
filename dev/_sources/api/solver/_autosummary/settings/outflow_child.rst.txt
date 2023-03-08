@@ -5,13 +5,16 @@
 outflow_child
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.outflow_child.outflow_child
+.. currentmodule:: ansys.fluent.core.solver.settings_231.outflow_child
 
-.. rubric:: Attributes
+.. autoclass:: outflow_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==========================================================   =====================================
 
-Attribute                                                                                  Summary
+Child                                                                                      Summary
 
 ==========================================================   =====================================
 :ref:`phase <phase_12>`                                                             'phase' child.

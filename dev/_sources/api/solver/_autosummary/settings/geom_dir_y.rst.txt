@@ -5,8 +5,11 @@
 geom_dir_y
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.geom_dir_y.geom_dir_y
+.. currentmodule:: ansys.fluent.core.solver.settings_231.geom_dir_y
 
+.. autoclass:: geom_dir_y
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================================   ================================================

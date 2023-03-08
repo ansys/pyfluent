@@ -3,11 +3,11 @@
 solver.tui.solve.set.contact\_solution\_controls.amg
 ====================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solve.set.contact_solution_controls.amg
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.contact_solution_controls.amg
+   :members: increase_pre_sweeps, coarsen_rate, enforce_laplace_coarsening, pre_sweeps, specify_coarsening_rate
 

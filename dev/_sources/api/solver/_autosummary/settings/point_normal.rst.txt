@@ -5,8 +5,11 @@
 point_normal
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.point_normal.point_normal
+.. currentmodule:: ansys.fluent.core.solver.settings_231.point_normal
 
+.. autoclass:: point_normal
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================

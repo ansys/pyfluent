@@ -5,13 +5,16 @@
 plot
 ====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.plot_2.plot
+.. currentmodule:: ansys.fluent.core.solver.settings_231.plot_2
 
-.. rubric:: Attributes
+.. autoclass:: plot
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================   ====================
 
-Attribute                               Summary
+Child                                   Summary
 
 ========================   ====================
 :ref:`xy_plot <xy_plot>`       'xy_plot' child.

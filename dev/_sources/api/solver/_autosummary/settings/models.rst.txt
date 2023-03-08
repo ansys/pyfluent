@@ -5,8 +5,11 @@
 models
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.models.models
+.. currentmodule:: ansys.fluent.core.solver.settings_231.models
 
+.. autoclass:: models
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =======================

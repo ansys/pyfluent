@@ -5,13 +5,16 @@
 style_attribute
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.style_attribute.style_attribute
+.. currentmodule:: ansys.fluent.core.solver.settings_231.style_attribute
 
-.. rubric:: Attributes
+.. autoclass:: style_attribute
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================   ========================
 
-Attribute                                           Summary
+Child                                               Summary
 
 ================================   ========================
 :ref:`style <style>`                         'style' child.

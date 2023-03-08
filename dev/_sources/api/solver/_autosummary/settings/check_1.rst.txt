@@ -5,8 +5,11 @@
 check
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.check_1.check
+.. currentmodule:: ansys.fluent.core.solver.settings_231.check_1
 
+.. autoclass:: check
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   =====================

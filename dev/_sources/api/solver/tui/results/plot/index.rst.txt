@@ -3,17 +3,17 @@
 solver.tui.results.plot
 =======================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.plot
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.plot
+   :members: change_fft_ref_pressure, residuals_set, file, set_boundary_val_off, file_list, file_set, plot_direction, histogram, display_profile_data, circum_avg_radial, label_alignment, circum_avg_axial, datasources, plot, fft_set, solution, histogram_set, solution_set, residuals, fft
 
 .. toctree::
    :hidden:
 
    ansys_sound_analysis/index
-   cumulative_plot/index
    flamelet_curves/index
+   cumulative_plot/index

@@ -5,8 +5,11 @@
 list_color_mode
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.list_color_mode.list_color_mode
+.. currentmodule:: ansys.fluent.core.solver.settings_231.list_color_mode
 
+.. autoclass:: list_color_mode
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   =================================================

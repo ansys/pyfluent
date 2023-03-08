@@ -5,8 +5,11 @@
 x_label
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.x_label.x_label
+.. currentmodule:: ansys.fluent.core.solver.settings_231.x_label
 
+.. autoclass:: x_label
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

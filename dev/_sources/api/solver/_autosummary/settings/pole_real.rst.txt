@@ -5,8 +5,11 @@
 pole_real
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.pole_real.pole_real
+.. currentmodule:: ansys.fluent.core.solver.settings_231.pole_real
 
+.. autoclass:: pole_real
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =======================================

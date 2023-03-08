@@ -5,8 +5,11 @@
 x_resolution
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.x_resolution.x_resolution
+.. currentmodule:: ansys.fluent.core.solver.settings_231.x_resolution
 
+.. autoclass:: x_resolution
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   =================================================

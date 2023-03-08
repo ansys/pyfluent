@@ -5,8 +5,11 @@
 marker_size
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.marker_size.marker_size
+.. currentmodule:: ansys.fluent.core.solver.settings_231.marker_size
 
+.. autoclass:: marker_size
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   ============================

@@ -5,8 +5,11 @@
 pole_imag
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.pole_imag.pole_imag
+.. currentmodule:: ansys.fluent.core.solver.settings_231.pole_imag
 
+.. autoclass:: pole_imag
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =======================================

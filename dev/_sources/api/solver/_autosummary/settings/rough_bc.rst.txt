@@ -5,8 +5,11 @@
 rough_bc
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.rough_bc.rough_bc
+.. currentmodule:: ansys.fluent.core.solver.settings_231.rough_bc
 
+.. autoclass:: rough_bc
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

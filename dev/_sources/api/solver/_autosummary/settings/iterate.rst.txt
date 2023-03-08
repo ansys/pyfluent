@@ -5,8 +5,11 @@
 iterate
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.iterate.iterate
+.. currentmodule:: ansys.fluent.core.solver.settings_231.iterate
 
+.. autoclass:: iterate
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ================================   =========================================

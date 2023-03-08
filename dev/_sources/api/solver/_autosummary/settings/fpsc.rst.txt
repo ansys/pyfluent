@@ -5,8 +5,11 @@
 fpsc
 ====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fpsc.fpsc
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fpsc
 
+.. autoclass:: fpsc
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -5,8 +5,11 @@
 save_hosts
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.save_hosts.save_hosts
+.. currentmodule:: ansys.fluent.core.solver.settings_231.save_hosts
 
+.. autoclass:: save_hosts
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ============================   ======================
