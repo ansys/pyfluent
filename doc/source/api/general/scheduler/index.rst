@@ -7,8 +7,13 @@ Scheduler
 
 .. autosummary::
     :toctree: _autosummary
+    :recursive:
+
+    load_machines.load_machines
+
+.. autosummary::
+    :toctree: _autosummary
     :template: flobject-module-template.rst
     :recursive:
 
-    load_machines
     machine_list
