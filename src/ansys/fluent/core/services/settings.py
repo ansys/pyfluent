@@ -1,5 +1,6 @@
 """Wrapper to settings gRPC service of Fluent."""
 import collections.abc
+from functools import wraps
 from typing import Any, List
 
 import grpc
@@ -76,6 +77,7 @@ _indent = 0
 
 
 def _trace(fn):
+    @wraps(fn)
     def _fn(self, *args, **kwds):
         global _indent
         if trace:
@@ -104,6 +106,7 @@ class SettingsService:
     """Service for accessing and modifying Fluent settings."""
 
     def __init__(self, channel, metadata, scheme_eval):
+        """__init__ method of SettingsService class."""
         self._service_impl = _SettingsServiceImpl(channel, metadata)
         self._scheme_eval = scheme_eval
 
@@ -265,6 +268,7 @@ class SettingsService:
 
     @_trace
     def get_static_info(self):
+        """Get static-info for settings."""
         request = SettingsModule.GetStaticInfoRequest()
         request.root = "fluent"
         response = self._service_impl.get_static_info(request)
@@ -346,4 +350,5 @@ class SettingsService:
 
     @_trace
     def has_wildcard(self, name: str) -> bool:
+        """Checks whether a name has a wildcard pattern."""
         return self._scheme_eval.scheme_eval(f'(has-wild-card? "{name}")')

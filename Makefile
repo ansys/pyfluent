@@ -60,7 +60,18 @@ api-codegen:
 	@python codegen/allapigen.py
 	@rm -rf env
 
-build-doc:
+build-doc-source:
+	@sudo rm -rf doc/source/api/meshing/datamodel
+	@sudo rm -rf doc/source/api/meshing/tui
+	@sudo rm -rf doc/source/api/solver/datamodel
+	@sudo rm -rf doc/source/api/solver/tui
+	@sudo rm -rf doc/source/api/solver/_autosummary/settings
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
+	@pip install -r requirements/requirements_doc.txt
+	@xvfb-run make -C doc html
+
+build-all-docs:
+	@python doc/settings_rstgen.py
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@pip install -r requirements/requirements_doc.txt
 	@xvfb-run make -C doc html

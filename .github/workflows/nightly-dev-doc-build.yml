@@ -61,8 +61,8 @@ jobs:
           PYFLUENT_LAUNCH_CONTAINER: 1
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Build Documentation
-        run: make build-doc
+      - name: Build All Documentation
+        run: make build-all-docs
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0

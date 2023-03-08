@@ -7,6 +7,7 @@ class StreamingService:
     """Encapsulates a Fluent streaming service."""
 
     def __init__(self, target, streaming_service):
+        """__init__ method of StreamingService class."""
         self._lock: threading.RLock = threading.RLock()
         self._streaming: bool = False
         self._target = target
@@ -18,6 +19,7 @@ class StreamingService:
 
     @property
     def is_streaming(self):
+        """Checks whether it is streaming."""
         with self._lock:
             return self._streaming
 

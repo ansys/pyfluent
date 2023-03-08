@@ -1,7 +1,13 @@
+"""
+Module for creating quantities in terms of real values with units.
+"""
+
 from collections import OrderedDict
 
 
 class _UnitsTable(object):
+    """Units mappings"""
+
     fundamental_units = {
         "kg": "M",
         "g": "M",
@@ -179,7 +185,20 @@ class _UnitsTable(object):
     }
 
 
-def get_si_conversion_factor(unit_str):
+def get_si_conversion_factor(unit_str: str):
+    """
+    SI conversion factor.
+
+    Parameters
+    ----------
+    unit_str : str
+        To get required conversion factor
+
+    Returns
+    -------
+    conversion_map
+        A conversion map.
+    """
     return (
         _UnitsTable.conversion_map[unit_str]
         if unit_str in _UnitsTable.conversion_map.keys()
@@ -187,7 +206,22 @@ def get_si_conversion_factor(unit_str):
     )
 
 
-def filter_multiplier(unit_str, predicate=None):
+def filter_multiplier(unit_str: str, predicate=None):
+    """
+    Separate multiplier from unit terms.
+
+    Parameters
+    ----------
+    unit_str : str
+        Unit of quantity.
+    predicate
+        Performs multiplier filtering.
+
+    Returns
+    -------
+        matched
+            A multiplier
+    """
     result = False
     matched = ""
     for item in _UnitsTable.multipliers.keys():
@@ -207,7 +241,20 @@ def filter_multiplier(unit_str, predicate=None):
     return result, matched
 
 
-def remove_multiplier(unit_str):
+def remove_multiplier(unit_str: str) -> str:
+    """
+    Remove multiplier.
+
+    Parameters
+    ----------
+    unit_str : str
+        Unit of quantity.
+
+    Returns
+    -------
+    str
+        Unit with removed multiplier.
+    """
     has_multiplier, prefix = filter_multiplier(
         unit_str, lambda item, unit: len(unit) > 0.0 and unit.startswith(item)
     )
@@ -216,14 +263,37 @@ def remove_multiplier(unit_str):
     return unit_str
 
 
-def is_temperature_quantity(dim_obj):
+def is_temperature_quantity(dim_obj: dict) -> bool:
+    """
+    Checks if it is a temperature.
+
+    Parameters
+    ----------
+    dim_obj : dict
+        Mapping of fundamental quantities
+
+    Returns
+    -------
+    bool
+        Whether is it a temperature or not.
+    """
     temp_dim = dim_obj["Temp"]
     total_dims_sum = sum([abs(val) for val in dim_obj.values()])
     return temp_dim == 1 and total_dims_sum == temp_dim
 
 
 class Unit(object):
+    """Unit postprocessing."""
+
     def __init__(self, unit_str):
+        """
+        Unit properties.
+
+        Parameters
+        ----------
+        unit_str: str
+            Unit of quantity
+        """
         self._unit = unit_str
         self._si_multiplier = 1
         self._si_offset = 0
@@ -235,28 +305,41 @@ class Unit(object):
 
     @property
     def user_unit(self):
+        """User unit."""
         return self._unit
 
     @property
     def si_factor(self):
+        """SI factor."""
         return self._si_multiplier
 
     @property
     def si_unit(self):
+        """SI unit."""
         return self._si_unit
 
     @property
     def si_offset(self):
+        """SI offset."""
         return self._si_offset
 
     @property
     def offset_power(self):
+        """Offset power."""
         return self._offset_power
 
     def __call__(self):
         return self.user_unit
 
-    def _reduce_to_si_unit(self, unit_str):
+    def _reduce_to_si_unit(self, unit_str: str):
+        """
+        Reduce input unit to SI unit.
+
+        Parameters
+        ----------
+        unit_str : str
+            Unit of quantity
+        """
         term_power_dict = OrderedDict()
         unit_split = unit_str.split(" ")
 
@@ -290,7 +373,17 @@ class Unit(object):
             else:
                 self._si_unit += spacechar + key
 
-    def _compute_multipliers(self, unit_str, power):
+    def _compute_multipliers(self, unit_str: str, power: float):
+        """
+        Compute multipliers.
+
+        Parameters
+        ----------
+        unit_str: str
+            Unit of quantity
+        power: float
+            Power of unit terms
+        """
         if len(unit_str) == 0:
             return
 
@@ -352,6 +445,21 @@ class Unit(object):
 
     @staticmethod
     def _power_sum(base, unit_str):
+        """
+        Sum of powers.
+
+        Parameters
+        ----------
+        base: str
+            Unit term
+        unit_str: str
+            Unit of quantity
+
+        Returns
+        -------
+        power_sum: float
+            Sum of powers with common unit terms
+        """
         if unit_str in ["K", "C", "F", "R"]:
             if "^" in unit_str:
                 return sum(
@@ -364,7 +472,20 @@ class Unit(object):
             else:
                 return 1.0
 
-    def _compute_offset(self, unit_str):
+    def _compute_offset(self, unit_str: str) -> float:
+        """
+        Compute offset.
+
+        Parameters
+        ----------
+        unit_str: str
+            unit of quantity
+
+        Returns
+        -------
+        offset: float
+            Temperature conversion offset
+        """
         if unit_str == "C":
             self._si_offset = 273.15
             self._offset_power = self._power_sum("C", unit_str)
@@ -376,6 +497,14 @@ class Unit(object):
             self._offset_power = 1.0
 
     def _quantity_type(self):
+        """
+        Quantity type base on temperature unit.
+
+        Returns
+        -------
+        qty_type: str
+            Type of temperature quantity
+        """
         temperature_units = ["K", "C", "F", "R"]
         qty_type = None
         for temp_unit in temperature_units:
@@ -390,7 +519,17 @@ class Unit(object):
 
 
 class Dimension(object):
+    """Dimension of unit."""
+
     def __init__(self, unit_str):
+        """
+        Dimension properties.
+
+        Parameters
+        ----------
+        unit_str: str
+            Unit of quantity
+        """
         self._dimensions = {
             "M": 0.0,
             "L": 0.0,
@@ -405,10 +544,21 @@ class Dimension(object):
         self._parser(unit_str)
 
     def _add_or_update_dimension(self, dim_dict):
+        """Add or update dimension."""
         for key in dim_dict.keys():
             self._dimensions[key] += dim_dict[key]
 
-    def _parser(self, unit, power=1):
+    def _parser(self, unit: str, power=1):
+        """
+        Unit string parser.
+
+        Parameters
+        ----------
+        unit: str
+            Unit term
+        power: float
+            Power of unit term
+        """
         if len(unit) == 0:
             return
 
@@ -439,9 +589,11 @@ class Dimension(object):
                 self._add_or_update_dimension(unit_dim)
 
     def as_dict(self):
+        """Dimension map."""
         return self._dimensions
 
     def _get_dim(self, unit_str, power):
+        """Get dimensions"""
         if unit_str in _UnitsTable.fundamental_units:
             return {_UnitsTable.fundamental_units[unit_str]: power}
         elif unit_str in _UnitsTable.derived_units:
@@ -453,7 +605,20 @@ class Dimension(object):
             raise ValueError("Not implemented")
 
 
-def get_si_unit_from_dim(dim_list):
+def get_si_unit_from_dim(dim_list: list) -> str:
+    """
+    Get SI unit from dimensions.
+
+    Parameters
+    ----------
+    dim_list: list
+        list of dimensions
+
+    Returns
+    -------
+    si_unit: str
+        SI unit
+    """
     dims_to_float = [float(dim) for dim in dim_list]
     dim_list = dims_to_float + ((9 - len(dims_to_float)) * [0.0])
     si_unit = ""
@@ -475,6 +640,8 @@ def get_si_unit_from_dim(dim_list):
 
 
 class UnitSystem:
+    """Unit systems."""
+
     _dim_to_unit_sys_map = {
         "SI": {
             "M": "kg",
@@ -514,6 +681,14 @@ class UnitSystem:
     _supported_unit_sys = ("SI", "CGS", "BT")
 
     def __init__(self, unit_sys):
+        """
+        Basic unit systems.
+
+        Parameters
+        ----------
+        unit_sys: str
+            System name
+        """
         self._unit_system = unit_sys.upper()
 
         if self._unit_system not in UnitSystem._supported_unit_sys:
@@ -521,7 +696,20 @@ class UnitSystem:
                 "Unsupported unit system, only 'SI', 'CGS', 'BT' is allowed."
             )
 
-    def _get_unit_from_dim(self, dim_list):
+    def _get_unit_from_dim(self, dim_list: list) -> str:
+        """
+        Get unit from dimensions.
+
+        Parameters
+        ----------
+        dim_list: list
+            List of dimensions
+
+        Returns
+        -------
+        unit: str
+            Unit using dimensions
+        """
         unit = ""
 
         base_units = UnitSystem._dim_to_unit_sys_map[self._unit_system]
@@ -539,6 +727,19 @@ class UnitSystem:
         return unit
 
     def convert(self, quantity):
+        """
+        Convert to a system.
+
+        Parameters
+        ----------
+        quantity: Quantity
+            Quantity instance
+
+        Returns
+        -------
+        quantity: Quantity
+            Quantity instance
+        """
         if not isinstance(quantity, Quantity):
             raise TypeError("Not instance of Quantity.")
         dims = quantity.get_dimensions_list()
@@ -546,11 +747,24 @@ class UnitSystem:
         return quantity.to(unit_str)
 
     def base_units(self):
+        """Base units."""
         return UnitSystem._dim_to_unit_sys_map[self._unit_system]
 
 
 class QuantityError(ValueError):
+    """Custom quantity errors."""
+
     def __init__(self, from_unit, to_unit):
+        """
+        Quantity errors with custom messages.
+
+        Parameters
+        ----------
+        from_unit: str
+            Unit of quantity
+        to_unit: str
+            Desired conversion unit
+        """
         self.from_unit = from_unit
         self.to_unit = to_unit
 
@@ -747,6 +961,19 @@ unit_quantity_map = {
 
 
 def get_unit_from_map(quantity_map_from_settings_api):
+    """
+    Get unit from quantity map.
+
+    Parameters
+    ----------
+    quantity_map_from_settings_api: dict
+        Map of quantity and it's unit
+
+    Returns
+    -------
+    unit: str
+        Unit of quantity using quantity map
+    """
     terms = []
     term_power_list = []
     final_unit = ""
@@ -835,7 +1062,8 @@ def get_unit_from_map(quantity_map_from_settings_api):
 
 class Quantity(float):
     """This class instantiates physical quantities using their real values and
-    units.
+    units. All the instances of this class are converted to base SI units system to have
+    consistency in all arithmetic operations.
 
     Attributes
     ----------
@@ -859,12 +1087,24 @@ class Quantity(float):
     Returns
     -------
     Quantity instance.
-
-    All the instances of this class are converted to base SI units system to have
-    consistency in all arithmetic operations.
     """
 
     def __init__(self, real_value, unit_str=None, quantity_map=None, dimensions=None):
+        """
+        Quantity using unit string, quantity map or dimensions.
+
+        Parameters
+        ----------
+        real_value: float
+            Value of quantity
+        unit_str: str
+            Unit of quantity
+        quantity_map: dict
+            Map of quantity and it's unit
+        dimensions: list
+            array of dimensions
+
+        """
         self._value = float(real_value)
         if (
             (unit_str and quantity_map)
@@ -902,10 +1142,12 @@ class Quantity(float):
 
     @property
     def value(self):
+        """Value of quantity."""
         return self._value
 
     @property
     def unit(self):
+        """Unit of quantity."""
         return self._unit.user_unit
 
     @value.setter
@@ -914,10 +1156,12 @@ class Quantity(float):
 
     @property
     def dimension(self):
+        """Dimensions of quantity."""
         return self._dimension
 
     @property
     def type(self):
+        """Quantity type."""
         return self._type
 
     @type.setter
@@ -925,9 +1169,11 @@ class Quantity(float):
         self._type = type_str
 
     def is_dimensionless(self):
+        """Determines whether quantity is dimensionsless or not."""
         return all([value == 0 for value in self.get_dimensions_list()])
 
     def get_dimensions_list(self):
+        """Dimensions list."""
         dims = self._dimension.as_dict()
         return [
             dims[_UnitsTable.dimension_order[key]]
@@ -935,6 +1181,19 @@ class Quantity(float):
         ]
 
     def to(self, to_unit_str):
+        """
+        Convert quantity to desired unit.
+
+        Parameters
+        ----------
+        to_unit_str: str
+            Desired unit of conversion
+
+        Returns
+        -------
+        temp_quantity: Quantity
+            Instance of converted quantity
+        """
         if not isinstance(to_unit_str, str):
             raise TypeError("Unit should be of 'str' type.")
 
@@ -959,6 +1218,7 @@ class Quantity(float):
             return temp_quantity
 
     def _get_converted_temperature(self, to_unit_str):
+        """Get converted temperature."""
         from_unit_str = self.unit
 
         if "^" in from_unit_str:
@@ -993,6 +1253,7 @@ class Quantity(float):
         )
 
     def _get_si_unit(self, other, func):
+        """Get SI unit."""
         curr_dim = self.get_dimensions_list()
         other_dim = other.get_dimensions_list()
         temp_dim = [func(curr_dim[i], other_dim[i]) for i in range(len(other_dim))]
@@ -1042,6 +1303,7 @@ class Quantity(float):
             return other / self
 
     def validate_matching_dimensions(self, other):
+        """Validate dimensions of quantities."""
         if isinstance(other, Quantity) and (
             self.get_dimensions_list() != other.get_dimensions_list()
         ):
