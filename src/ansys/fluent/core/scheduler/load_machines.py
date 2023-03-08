@@ -261,11 +261,11 @@ def _construct_machine_list_uge(host_filename):
         for row in peReader:
             if len(row) == 0:
                 continue
-            numberOfCores = row[1] if len(row) >= 2 else 1
-            queueName = row[2] if len(row) >= 3 else None
-            coreList = row[3] if len(row) >= 4 else None
-            print(row, numberOfCores, queueName, coreList, len(row))
-            m = Machine(row[0], int(numberOfCores),queueName, coreList)
+            if len(row) == 1:
+                row.append(1)
+            row[1] = int(row[1])
+            print(row)
+            m = Machine(*row)
             machineList.add(m)
     return machineList
 
