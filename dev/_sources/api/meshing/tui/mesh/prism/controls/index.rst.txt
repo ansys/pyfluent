@@ -15,10 +15,10 @@ meshing.tui.mesh.prism.controls
    :hidden:
 
    adjacent_zone/index
-   normal/index
    zone_specific_growth/index
-   proximity/index
    offset/index
+   proximity/index
+   normal/index
    post_ignore/index
    improve/index
    morph/index

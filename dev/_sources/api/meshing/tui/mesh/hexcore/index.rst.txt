@@ -14,5 +14,5 @@ meshing.tui.mesh.hexcore
 .. toctree::
    :hidden:
 
-   local_regions/index
    controls/index
+   local_regions/index
