@@ -1,6 +1,6 @@
 .. _ref_journaling:
 
-journaling
+Journaling
 ==========
 
 .. currentmodule:: ansys.fluent.core

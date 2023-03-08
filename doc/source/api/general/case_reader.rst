@@ -1,7 +1,7 @@
 .. _ref_case_reader:
 
-Use case reader
-===============
+Case reader
+===========
 
 The case reader provides a reader for Fluent case files.
 

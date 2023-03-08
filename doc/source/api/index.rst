@@ -3,16 +3,13 @@ API reference
 
 
 :ref:`ref_general`
--------------------
+##################
 
 :ref:`ref_meshing`
-------------------
+##################
 
 :ref:`ref_solver`
------------------
-
-.. autosummary::
-   :toctree: _autosummary
+#################
 
 .. toctree::
     :maxdepth: 2

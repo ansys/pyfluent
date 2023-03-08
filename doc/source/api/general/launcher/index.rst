@@ -3,11 +3,10 @@
 Launcher
 ========
 
-.. currentmodule:: ansys.fluent.core.launcher
-
-.. autosummary::
-    :toctree: _autosummary
-    :template: flobject-module-template.rst
-    :recursive:
-
-    launcher
+.. automodule:: ansys.fluent.core.launcher.launcher
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:

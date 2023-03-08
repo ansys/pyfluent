@@ -11,7 +11,7 @@ fluent
 Fluent's
 fullname
 hexahedral
-journaling
+Journaling
 matplotlib
 mesher
 meshing's

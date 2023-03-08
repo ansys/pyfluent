@@ -1,7 +1,7 @@
 .. _ref_services:
 
 Services
-=========
+========
 
 .. currentmodule:: ansys.fluent.core.services
 
