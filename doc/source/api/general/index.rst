@@ -3,54 +3,76 @@
 General
 =======
 
-*******************
-:ref:`ref_launcher`
-*******************
+Launcher
+########
 
-****************
-:ref:`ref_utils`
-****************
+:ref:`ref_launcher` provides access to starting Fluent locally in server mode or connecting to a running Fluent
+server instance.
 
-*******************
-:ref:`ref_sessions`
-*******************
-
-*******************
-:ref:`ref_services`
-*******************
-
-*****************************
-:ref:`ref_streaming_services`
-*****************************
-
-***********************
-:ref:`ref_post_objects`
-***********************
-
-********************
-:ref:`ref_scheduler`
-********************
-
-:ref:`ref_case_reader`
+Asynchronous execution
 ######################
 
-:ref:`ref_data_transfer`
-########################
+:ref:`ref_utils` consists solely of a function to allow for asynchronous execution.
 
-:ref:`ref_journaling`
-#####################
+Sessions
+########
 
-:ref:`ref_meta`
-###############
+:ref:`ref_sessions` consists of available Fluent sessions.
 
-:ref:`ref_quantity`
-###################
+Services
+########
 
-:ref:`ref_rpvars`
-#################
+:ref:`ref_services` consists of gRPC services for Fluent sessions.
 
-:ref:`ref_workflow`
-###################
+Streaming services
+##################
+
+:ref:`ref_streaming_services` consists of streaming services for management of gRPC services.
+
+Post objects
+############
+
+:ref:`ref_post_objects` consists of visualization objects for Matplotlib.
+
+Scheduler
+#########
+
+:ref:`ref_scheduler` consists of abstract machine objects and their use for queue system interface.
+
+Case reader
+###########
+
+:ref:`ref_case_reader` demonstrates reading of Fluent's case files.
+
+Data transfer
+#############
+
+:ref:`ref_data_transfer` demonstrates transfer of Fluent's case files.
+
+Journaling
+##########
+
+:ref:`ref_journaling` consists of read-write of journal.
+
+Meta
+####
+
+:ref:`ref_meta` consists of used meta classes.
+
+Quantity
+########
+
+:ref:`ref_quantity` is a module for creation and manipulation of physical quantities.
+
+rpvars
+######
+
+:ref:`ref_rpvars` shows access and modification of rpvars.
+
+Workflow
+########
+
+:ref:`ref_workflow` used for creation of TaskObject instance.
 
 .. currentmodule:: ansys.fluent.core
 
