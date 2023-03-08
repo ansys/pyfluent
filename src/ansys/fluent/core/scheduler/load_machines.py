@@ -264,7 +264,6 @@ def _construct_machine_list_uge(host_filename):
             if len(row) == 1:
                 row.append(1)
             row[1] = int(row[1])
-            print(row)
             m = Machine(*row)
             machineList.add(m)
     return machineList
