@@ -219,11 +219,7 @@ class _FluentConnection:
         
         self._svar_service = SvarService(self._channel, self._metadata)
         self.svar_info = SvarInfo(self._svar_service)
-        self.svar_data = SvarData(
-            self._svar_service, self.svar_info
-        )        
-        
-
+              
         self.journal = Journal(self.scheme_eval)
 
         self._cleanup_on_exit = cleanup_on_exit
@@ -248,6 +244,14 @@ class _FluentConnection:
             self._remote_instance,
         )
         _FluentConnection._monitor_thread.cbs.append(self._finalizer)
+        
+    @property
+    def svar_data(self) -> SvarData:
+        """Return the SvarData handle."""
+        try:
+            return SvarData(self._svar_service, self.svar_info)                    
+        except RuntimeError:
+            return None         
 
     @property
     def id(self) -> str:
