@@ -5,11 +5,8 @@
 symbol
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.symbol
+.. autoclass:: ansys.fluent.core.solver.settings_231.symbol.symbol
 
-.. autoclass:: symbol
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ===================================

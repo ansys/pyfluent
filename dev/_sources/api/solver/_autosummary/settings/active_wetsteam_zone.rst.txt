@@ -5,11 +5,8 @@
 active_wetsteam_zone
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.active_wetsteam_zone
+.. autoclass:: ansys.fluent.core.solver.settings_231.active_wetsteam_zone.active_wetsteam_zone
 
-.. autoclass:: active_wetsteam_zone
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

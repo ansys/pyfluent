@@ -5,11 +5,8 @@
 overset_faces
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.overset_faces
+.. autoclass:: ansys.fluent.core.solver.settings_231.overset_faces.overset_faces
 
-.. autoclass:: overset_faces
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

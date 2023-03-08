@@ -3,13 +3,13 @@
 solver.tui.solution.controls.acoustics\_wave\_equation\_controls
 ================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.controls.acoustics_wave_equation_controls
-   :members: max_iterations_per_timestep, relative_convergence_criterion
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.controls.acoustics_wave_equation_controls
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:

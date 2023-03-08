@@ -5,11 +5,8 @@
 pressure_work
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.pressure_work
+.. autoclass:: ansys.fluent.core.solver.settings_231.pressure_work.pressure_work
 
-.. autoclass:: pressure_work
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

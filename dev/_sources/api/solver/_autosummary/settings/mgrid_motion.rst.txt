@@ -5,11 +5,8 @@
 mgrid_motion
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.mgrid_motion
+.. autoclass:: ansys.fluent.core.solver.settings_231.mgrid_motion.mgrid_motion
 
-.. autoclass:: mgrid_motion
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

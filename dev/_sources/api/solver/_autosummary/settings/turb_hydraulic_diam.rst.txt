@@ -5,11 +5,8 @@
 turb_hydraulic_diam
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.turb_hydraulic_diam
+.. autoclass:: ansys.fluent.core.solver.settings_231.turb_hydraulic_diam.turb_hydraulic_diam
 
-.. autoclass:: turb_hydraulic_diam
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

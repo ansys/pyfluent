@@ -5,11 +5,8 @@
 desired_cfl
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.desired_cfl
+.. autoclass:: ansys.fluent.core.solver.settings_231.desired_cfl.desired_cfl
 
-.. autoclass:: desired_cfl
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================================   =============================================

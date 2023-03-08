@@ -3,11 +3,29 @@
 solver.tui.results.graphics.expert.set.colors.by\_type.type\_name
 =================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.colors.by_type.type_name
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
-.. autosummary::
-   :toctree: _autosummary
+.. toctree::
+   :hidden:
 
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.colors.by_type.type_name
-   :members: periodic, overset, interface, rans_les_interface, axis, traction, free_surface, symmetry, wall, outlet, internal, inlet, surface, interior, far_field
-
+   axis/index
+   far_field/index
+   free_surface/index
+   inlet/index
+   interface/index
+   interior/index
+   internal/index
+   outlet/index
+   overset/index
+   periodic/index
+   rans_les_interface/index
+   surface/index
+   symmetry/index
+   traction/index
+   wall/index

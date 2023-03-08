@@ -5,11 +5,8 @@
 moving
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.moving
+.. autoclass:: ansys.fluent.core.solver.settings_231.moving.moving
 
-.. autoclass:: moving
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

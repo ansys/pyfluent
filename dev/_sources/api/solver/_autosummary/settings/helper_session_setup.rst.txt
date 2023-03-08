@@ -5,16 +5,13 @@
 helper_session_setup
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.helper_session_setup
+.. autoclass:: ansys.fluent.core.solver.settings_231.helper_session_setup.helper_session_setup
 
-.. autoclass:: helper_session_setup
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================   ==========================
 
-Child                                                     Summary
+Attribute                                                 Summary
 
 ====================================   ==========================
 :ref:`process_count <process_count>`       'process_count' child.

@@ -1,0 +1,6 @@
+\_\_init\_\_
+============
+
+.. currentmodule:: ansys.fluent.core.session_solver
+
+.. automethod:: Solver.__init__

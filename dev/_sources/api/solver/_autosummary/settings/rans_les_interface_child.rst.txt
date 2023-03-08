@@ -5,16 +5,13 @@
 rans_les_interface_child
 ========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.rans_les_interface_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.rans_les_interface_child.rans_les_interface_child
 
-.. autoclass:: rans_les_interface_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ============================================================   ======================================
 
-Child                                                                                         Summary
+Attribute                                                                                     Summary
 
 ============================================================   ======================================
 :ref:`phase <phase_20>`                                                                'phase' child.

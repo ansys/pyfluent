@@ -5,11 +5,8 @@
 jump_adhesion
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.jump_adhesion
+.. autoclass:: ansys.fluent.core.solver.settings_231.jump_adhesion.jump_adhesion
 
-.. autoclass:: jump_adhesion
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =======================================

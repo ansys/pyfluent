@@ -5,11 +5,8 @@
 logo_color
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.logo_color
+.. autoclass:: ansys.fluent.core.solver.settings_231.logo_color.logo_color
 
-.. autoclass:: logo_color
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ====================

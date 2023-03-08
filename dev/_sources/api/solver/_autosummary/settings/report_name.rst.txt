@@ -5,11 +5,8 @@
 report_name
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.report_name
+.. autoclass:: ansys.fluent.core.solver.settings_231.report_name.report_name
 
-.. autoclass:: report_name
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================================   =============================================================================================================

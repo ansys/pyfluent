@@ -5,11 +5,8 @@
 x_axis_max
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.x_axis_max
+.. autoclass:: ansys.fluent.core.solver.settings_231.x_axis_max.x_axis_max
 
-.. autoclass:: x_axis_max
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================   =======================

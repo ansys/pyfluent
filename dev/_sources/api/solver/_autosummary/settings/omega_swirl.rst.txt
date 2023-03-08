@@ -5,11 +5,8 @@
 omega_swirl
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.omega_swirl
+.. autoclass:: ansys.fluent.core.solver.settings_231.omega_swirl.omega_swirl
 
-.. autoclass:: omega_swirl
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

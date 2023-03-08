@@ -5,16 +5,13 @@
 film_vapo_rate
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.film_vapo_rate
+.. autoclass:: ansys.fluent.core.solver.settings_231.film_vapo_rate.film_vapo_rate
 
-.. autoclass:: film_vapo_rate
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

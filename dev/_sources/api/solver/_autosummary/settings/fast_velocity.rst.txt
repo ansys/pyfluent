@@ -5,11 +5,8 @@
 fast_velocity
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.fast_velocity
+.. autoclass:: ansys.fluent.core.solver.settings_231.fast_velocity.fast_velocity
 
-.. autoclass:: fast_velocity
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ==================   =================

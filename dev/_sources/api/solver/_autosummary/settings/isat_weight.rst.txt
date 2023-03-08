@@ -5,16 +5,13 @@
 isat_weight
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.isat_weight
+.. autoclass:: ansys.fluent.core.solver.settings_231.isat_weight.isat_weight
 
-.. autoclass:: isat_weight
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================   =========================
 
-Child                                                    Summary
+Attribute                                                Summary
 
 ====================================   =========================
 :ref:`use <use>`                                    'use' child.

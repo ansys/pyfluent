@@ -5,16 +5,13 @@
 vector_opt
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.vector_opt
+.. autoclass:: ansys.fluent.core.solver.settings_231.vector_opt.vector_opt
 
-.. autoclass:: vector_opt
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`in_plane <in_plane>`                   'in_plane' child.

@@ -5,16 +5,13 @@
 adaptive_time_stepping
 ======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.adaptive_time_stepping
+.. autoclass:: ansys.fluent.core.solver.settings_231.adaptive_time_stepping.adaptive_time_stepping
 
-.. autoclass:: adaptive_time_stepping
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ======================================================   ====================================
 
-Child                                                                                 Summary
+Attribute                                                                             Summary
 
 ======================================================   ====================================
 :ref:`enabled <enabled_2>`                                                   'enabled' child.

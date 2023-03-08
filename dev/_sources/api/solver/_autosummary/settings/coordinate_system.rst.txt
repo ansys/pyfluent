@@ -5,11 +5,8 @@
 coordinate_system
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.coordinate_system
+.. autoclass:: ansys.fluent.core.solver.settings_231.coordinate_system.coordinate_system
 
-.. autoclass:: coordinate_system
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

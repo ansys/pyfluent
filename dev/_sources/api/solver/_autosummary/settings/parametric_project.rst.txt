@@ -5,16 +5,13 @@
 parametric_project
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.parametric_project
+.. autoclass:: ansys.fluent.core.solver.settings_231.parametric_project.parametric_project
 
-.. autoclass:: parametric_project
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Commands
+.. rubric:: Methods
 
 ==================================   =======================
 
-Command                                              Summary
+Method                                               Summary
 
 ==================================   =======================
 :ref:`new <new>`                         Create New Project.

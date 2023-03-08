@@ -5,16 +5,13 @@
 first_rate
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.first_rate
+.. autoclass:: ansys.fluent.core.solver.settings_231.first_rate.first_rate
 
-.. autoclass:: first_rate
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ======================================================   ===================================
 
-Child                                                                                Summary
+Attribute                                                                            Summary
 
 ======================================================   ===================================
 :ref:`pre_exponential_factor <pre_exponential_factor>`       'pre_exponential_factor' child.

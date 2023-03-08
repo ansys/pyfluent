@@ -5,11 +5,8 @@
 reset
 =====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.reset_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.reset_1.reset
 
-.. autoclass:: reset
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ==================

@@ -5,16 +5,13 @@
 phase_child
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.phase_child_11
+.. autoclass:: ansys.fluent.core.solver.settings_231.phase_child_11.phase_child
 
-.. autoclass:: phase_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   ========================
 
-Child                                                 Summary
+Attribute                                             Summary
 
 ==================================   ========================
 :ref:`thermal_bc <thermal_bc>`            'thermal_bc' child.

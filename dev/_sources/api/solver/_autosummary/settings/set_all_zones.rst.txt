@@ -5,11 +5,8 @@
 set_all_zones
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.set_all_zones
+.. autoclass:: ansys.fluent.core.solver.settings_231.set_all_zones.set_all_zones
 
-.. autoclass:: set_all_zones
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   =====================================================

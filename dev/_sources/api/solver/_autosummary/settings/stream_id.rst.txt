@@ -5,11 +5,8 @@
 stream_id
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.stream_id
+.. autoclass:: ansys.fluent.core.solver.settings_231.stream_id.stream_id
 
-.. autoclass:: stream_id
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================================   =========================================

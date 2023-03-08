@@ -5,16 +5,13 @@
 liquidus_slope
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.liquidus_slope
+.. autoclass:: ansys.fluent.core.solver.settings_231.liquidus_slope.liquidus_slope
 
-.. autoclass:: liquidus_slope
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

@@ -5,16 +5,13 @@
 targeted_mf
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.targeted_mf
+.. autoclass:: ansys.fluent.core.solver.settings_231.targeted_mf.targeted_mf
 
-.. autoclass:: targeted_mf
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

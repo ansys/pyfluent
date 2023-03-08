@@ -5,11 +5,8 @@
 marker
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.marker
+.. autoclass:: ansys.fluent.core.solver.settings_231.marker.marker
 
-.. autoclass:: marker
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

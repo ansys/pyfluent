@@ -5,16 +5,13 @@
 scale
 =====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.scale_3
+.. autoclass:: ansys.fluent.core.solver.settings_231.scale_3.scale
 
-.. autoclass:: scale
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==============================   =====================================================================
 
-Child                                                                                          Summary
+Attribute                                                                                      Summary
 
 ==============================   =====================================================================
 :ref:`border <border_2>`             Enable/disable drawing of a border around the color scale window.

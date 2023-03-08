@@ -5,11 +5,8 @@
 flow_scheme
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.flow_scheme
+.. autoclass:: ansys.fluent.core.solver.settings_231.flow_scheme.flow_scheme
 
-.. autoclass:: flow_scheme
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   =================================================

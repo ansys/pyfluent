@@ -5,11 +5,8 @@
 transient_parameters_specify
 ============================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.transient_parameters_specify
+.. autoclass:: ansys.fluent.core.solver.settings_231.transient_parameters_specify.transient_parameters_specify
 
-.. autoclass:: transient_parameters_specify
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

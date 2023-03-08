@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="meshing.tui.file" href="../file/index.html" />
-    <link rel="prev" title="meshing.tui.scoped_sizing" href="../scoped_sizing/index.html" />
+    <link rel="next" title="meshing.tui.mesh" href="../mesh/index.html" />
+    <link rel="prev" title="meshing.tui.file.checkpoint" href="../file/checkpoint/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -302,13 +302,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -321,6 +316,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../index.html">
      meshing.tui
@@ -337,28 +337,8 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../boundary/index.html">
-       meshing.tui.boundary
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../openmp_controls/index.html">
-       meshing.tui.openmp_controls
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../mesh/index.html">
-       meshing.tui.mesh
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../reference_frames/index.html">
-       meshing.tui.reference_frames
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
+      <a class="reference internal" href="../file/index.html">
+       meshing.tui.file
       </a>
      </li>
      <li class="toctree-l3 current active">
@@ -367,13 +347,38 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../file/index.html">
-       meshing.tui.file
+      <a class="reference internal" href="../mesh/index.html">
+       meshing.tui.mesh
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../boundary/index.html">
+       meshing.tui.boundary
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../reference_frames/index.html">
+       meshing.tui.reference_frames
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../size_functions/index.html">
+       meshing.tui.size_functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
       </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../objects/index.html">
        meshing.tui.objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../openmp_controls/index.html">
+       meshing.tui.openmp_controls
       </a>
      </li>
      <li class="toctree-l3">
@@ -387,11 +392,6 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../diagnostics/index.html">
-       meshing.tui.diagnostics
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../material_point/index.html">
        meshing.tui.material_point
       </a>
@@ -402,8 +402,8 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../size_functions/index.html">
-       meshing.tui.size_functions
+      <a class="reference internal" href="../diagnostics/index.html">
+       meshing.tui.diagnostics
       </a>
      </li>
     </ul>
@@ -448,7 +448,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.report
+     report
     </span>
    </code>
   </a>
@@ -457,7 +457,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.boundary_cell_quality">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.boundary_cell_quality()
+       report.boundary_cell_quality()
       </span>
      </code>
     </a>
@@ -466,7 +466,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.cell_distribution">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.cell_distribution()
+       report.cell_distribution()
       </span>
      </code>
     </a>
@@ -475,7 +475,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.cell_quality_limits">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.cell_quality_limits()
+       report.cell_quality_limits()
       </span>
      </code>
     </a>
@@ -484,7 +484,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.cell_size_limits">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.cell_size_limits()
+       report.cell_size_limits()
       </span>
      </code>
     </a>
@@ -493,7 +493,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.cell_zone_at_location">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.cell_zone_at_location()
+       report.cell_zone_at_location()
       </span>
      </code>
     </a>
@@ -502,7 +502,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.cell_zone_volume">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.cell_zone_volume()
+       report.cell_zone_volume()
       </span>
      </code>
     </a>
@@ -511,7 +511,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.edge_size_limits">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.edge_size_limits()
+       report.edge_size_limits()
       </span>
      </code>
     </a>
@@ -520,7 +520,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.enhanced_orthogonal_quality">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.enhanced_orthogonal_quality()
+       report.enhanced_orthogonal_quality()
       </span>
      </code>
     </a>
@@ -529,7 +529,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.face_distribution">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.face_distribution()
+       report.face_distribution()
       </span>
      </code>
     </a>
@@ -538,7 +538,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.face_node_degree_distribution">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.face_node_degree_distribution()
+       report.face_node_degree_distribution()
       </span>
      </code>
     </a>
@@ -547,7 +547,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.face_quality_limits">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.face_quality_limits()
+       report.face_quality_limits()
       </span>
      </code>
     </a>
@@ -556,7 +556,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.face_size_limits">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.face_size_limits()
+       report.face_size_limits()
       </span>
      </code>
     </a>
@@ -565,7 +565,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.face_zone_area">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.face_zone_area()
+       report.face_zone_area()
       </span>
      </code>
     </a>
@@ -574,7 +574,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.face_zone_at_location">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.face_zone_at_location()
+       report.face_zone_at_location()
       </span>
      </code>
     </a>
@@ -583,7 +583,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.list_cell_quality">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.list_cell_quality()
+       report.list_cell_quality()
       </span>
      </code>
     </a>
@@ -592,7 +592,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.memory_usage">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.memory_usage()
+       report.memory_usage()
       </span>
      </code>
     </a>
@@ -601,7 +601,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.mesh_size">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.mesh_size()
+       report.mesh_size()
       </span>
      </code>
     </a>
@@ -610,7 +610,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.mesh_statistics">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.mesh_statistics()
+       report.mesh_statistics()
       </span>
      </code>
     </a>
@@ -619,7 +619,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.meshing_time">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.meshing_time()
+       report.meshing_time()
       </span>
      </code>
     </a>
@@ -628,7 +628,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.neighborhood_quality">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.neighborhood_quality()
+       report.neighborhood_quality()
       </span>
      </code>
     </a>
@@ -637,7 +637,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.number_meshed">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.number_meshed()
+       report.number_meshed()
       </span>
      </code>
     </a>
@@ -646,7 +646,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.print_info">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.print_info()
+       report.print_info()
       </span>
      </code>
     </a>
@@ -655,7 +655,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.quality_method">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.quality_method()
+       report.quality_method()
       </span>
      </code>
     </a>
@@ -664,7 +664,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.spy_level">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.spy_level()
+       report.spy_level()
       </span>
      </code>
     </a>
@@ -673,7 +673,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.unrefined_cells">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.unrefined_cells()
+       report.unrefined_cells()
       </span>
      </code>
     </a>
@@ -682,7 +682,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.update_bounding_box">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.update_bounding_box()
+       report.update_bounding_box()
       </span>
      </code>
     </a>
@@ -691,7 +691,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.verbosity_level">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.report.verbosity_level()
+       report.verbosity_level()
       </span>
      </code>
     </a>
@@ -719,14 +719,97 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-report">
 <span id="ref-meshing-tui-report"></span><h1>meshing.tui.report<a class="headerlink" href="#meshing-tui-report" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.report">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.</span></span><span class="sig-name descname"><span class="pre">report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.report" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the report menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.</span></span><span class="sig-name descname"><span class="pre">report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.report" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the report menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.boundary_cell_quality" title="ansys.fluent.core.meshing.tui_231.main_menu.report.boundary_cell_quality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boundary_cell_quality</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reports the number and quality limits of boundary cells containing the specified number of boundary faces.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.cell_distribution" title="ansys.fluent.core.meshing.tui_231.main_menu.report.cell_distribution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_distribution</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reports the distribution of cell quality or size based on the bounding limits and number of partitions specified.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.cell_quality_limits" title="ansys.fluent.core.meshing.tui_231.main_menu.report.cell_quality_limits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_quality_limits</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reports the cell quality limits.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.cell_size_limits" title="ansys.fluent.core.meshing.tui_231.main_menu.report.cell_size_limits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_size_limits</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reports the cell size limits.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.cell_zone_at_location" title="ansys.fluent.core.meshing.tui_231.main_menu.report.cell_zone_at_location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_zone_at_location</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Returns the cell zone at or closest to the specified location.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.cell_zone_volume" title="ansys.fluent.core.meshing.tui_231.main_menu.report.cell_zone_volume"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_zone_volume</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reports the volume of the specified cell zone.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.edge_size_limits" title="ansys.fluent.core.meshing.tui_231.main_menu.report.edge_size_limits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_size_limits</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reports the edge size limits.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.enhanced_orthogonal_quality" title="ansys.fluent.core.meshing.tui_231.main_menu.report.enhanced_orthogonal_quality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enhanced_orthogonal_quality</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Employs an enhanced definition of the orthogonal quality measure that combines a variety of quality measures, including: the orthogonality of a face relative to a vector between the face and cell centroids; a metric that detects poor cell shape at a local edge (such as twisting and/or concavity); and the variation of normals between the faces that can be constructed from the cell face.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.face_distribution" title="ansys.fluent.core.meshing.tui_231.main_menu.report.face_distribution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_distribution</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reports the distribution of face quality or size based on the bounding limits and number of partitions specified.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.face_node_degree_distribution" title="ansys.fluent.core.meshing.tui_231.main_menu.report.face_node_degree_distribution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_node_degree_distribution</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reports the distribution of boundary faces based on face node degree.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.face_quality_limits" title="ansys.fluent.core.meshing.tui_231.main_menu.report.face_quality_limits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_quality_limits</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reports the face quality limits.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.face_size_limits" title="ansys.fluent.core.meshing.tui_231.main_menu.report.face_size_limits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_size_limits</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reports the face size limits.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.face_zone_area" title="ansys.fluent.core.meshing.tui_231.main_menu.report.face_zone_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_zone_area</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reports the area of the specified face zone.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.face_zone_at_location" title="ansys.fluent.core.meshing.tui_231.main_menu.report.face_zone_at_location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_zone_at_location</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reports the face zone at the given location.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.list_cell_quality" title="ansys.fluent.core.meshing.tui_231.main_menu.report.list_cell_quality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_cell_quality</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reports a list of cells with the specified quality measure within a specified range.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.memory_usage" title="ansys.fluent.core.meshing.tui_231.main_menu.report.memory_usage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">memory_usage</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reports the amount of memory used for all nodes, faces, and cells, and the total memory allocated.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.mesh_size" title="ansys.fluent.core.meshing.tui_231.main_menu.report.mesh_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_size</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reports the number of nodes, faces, and cells in the mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.mesh_statistics" title="ansys.fluent.core.meshing.tui_231.main_menu.report.mesh_statistics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_statistics</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Writes mesh statistics (such as zone information, number of cells, faces, and nodes, range of quality and size) to an external file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.meshing_time" title="ansys.fluent.core.meshing.tui_231.main_menu.report.meshing_time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">meshing_time</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Report meshing time.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.neighborhood_quality" title="ansys.fluent.core.meshing.tui_231.main_menu.report.neighborhood_quality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">neighborhood_quality</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reports the maximum skewness, aspect ratio, or size change of all cells using a specified node.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.number_meshed" title="ansys.fluent.core.meshing.tui_231.main_menu.report.number_meshed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_meshed</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reports the number of elements that have been meshed.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.print_info" title="ansys.fluent.core.meshing.tui_231.main_menu.report.print_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_info</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints information about individual components of the mesh.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.quality_method" title="ansys.fluent.core.meshing.tui_231.main_menu.report.quality_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quality_method</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the method to be used for reporting face and cell quality.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.spy_level" title="ansys.fluent.core.meshing.tui_231.main_menu.report.spy_level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spy_level</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Spy on meshing process.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.unrefined_cells" title="ansys.fluent.core.meshing.tui_231.main_menu.report.unrefined_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unrefined_cells</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reports the number of cells that have not been refined.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.update_bounding_box" title="ansys.fluent.core.meshing.tui_231.main_menu.report.update_bounding_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_bounding_box</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Updates the bounding box.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.report.verbosity_level" title="ansys.fluent.core.meshing.tui_231.main_menu.report.verbosity_level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verbosity_level</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies how much information should be displayed during mesh initialization, refinement and other operations.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.report.boundary_cell_quality">
 <span class="sig-name descname"><span class="pre">boundary_cell_quality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.report.boundary_cell_quality" title="Permalink to this definition">#</a></dt>

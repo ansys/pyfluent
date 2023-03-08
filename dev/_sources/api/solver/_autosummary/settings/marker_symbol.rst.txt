@@ -5,11 +5,8 @@
 marker_symbol
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.marker_symbol
+.. autoclass:: ansys.fluent.core.solver.settings_231.marker_symbol.marker_symbol
 
-.. autoclass:: marker_symbol
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

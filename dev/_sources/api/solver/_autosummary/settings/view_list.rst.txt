@@ -5,11 +5,8 @@
 view_list
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.view_list
+.. autoclass:: ansys.fluent.core.solver.settings_231.view_list.view_list
 
-.. autoclass:: view_list
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================   ========================================

@@ -5,11 +5,8 @@
 beach_wave_len
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.beach_wave_len
+.. autoclass:: ansys.fluent.core.solver.settings_231.beach_wave_len.beach_wave_len
 
-.. autoclass:: beach_wave_len
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

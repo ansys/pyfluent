@@ -5,11 +5,8 @@
 swap_mesh_faces
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.swap_mesh_faces
+.. autoclass:: ansys.fluent.core.solver.settings_231.swap_mesh_faces.swap_mesh_faces
 
-.. autoclass:: swap_mesh_faces
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================   =================

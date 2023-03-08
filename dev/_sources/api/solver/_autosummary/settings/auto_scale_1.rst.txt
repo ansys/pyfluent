@@ -5,16 +5,13 @@
 auto_scale
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.auto_scale_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.auto_scale_1.auto_scale
 
-.. autoclass:: auto_scale
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==============================   =======================
 
-Child                                            Summary
+Attribute                                        Summary
 
 ==============================   =======================
 :ref:`x_axis <x_axis_2>`                 'x_axis' child.

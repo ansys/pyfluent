@@ -5,11 +5,8 @@
 enhanced_numerics
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.enhanced_numerics
+.. autoclass:: ansys.fluent.core.solver.settings_231.enhanced_numerics.enhanced_numerics
 
-.. autoclass:: enhanced_numerics
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==================================================

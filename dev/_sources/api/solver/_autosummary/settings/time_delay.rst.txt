@@ -5,11 +5,8 @@
 time_delay
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.time_delay
+.. autoclass:: ansys.fluent.core.solver.settings_231.time_delay.time_delay
 
-.. autoclass:: time_delay
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   ================================

@@ -3,11 +3,11 @@
 meshing.tui.objects.volumetric\_regions.scoped\_prism.set
 =========================================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects.volumetric_regions.scoped_prism.set
-   :members: poly_keep_nlayer_prism_characteristics, set_overset_prism_controls, set_advanced_controls, read, modify, delete, list, growth_options, create, set_no_imprint_zones, write
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.scoped_prism.set
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

@@ -5,11 +5,8 @@
 density_based_solver
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.density_based_solver
+.. autoclass:: ansys.fluent.core.solver.settings_231.density_based_solver.density_based_solver
 
-.. autoclass:: density_based_solver
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================   ============================================================================

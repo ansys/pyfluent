@@ -3,20 +3,20 @@
 solver.tui.define.phases.set\_domain\_properties.interaction\_domain.numerics
 =============================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.phases.set_domain_properties.interaction_domain.numerics
-   :members: turbulent_dispersion, wall_lubrication, restitution, slip_velocity, interfacial_area, mass_transfer, model_transition, reactions, heat_coeff, drag, turbulence_interaction
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.phases.set_domain_properties.interaction_domain.numerics
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:
 
-   interphase_discretization/index
-   lift/index
    cavitation/index
+   interphase_discretization/index
+   interphase_viscous_dissipation/index
+   lift/index
    surface_tension/index
    virtual_mass/index
-   interphase_viscous_dissipation/index

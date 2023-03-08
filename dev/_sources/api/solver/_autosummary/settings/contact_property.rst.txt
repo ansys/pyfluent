@@ -5,11 +5,8 @@
 contact_property
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.contact_property
+.. autoclass:: ansys.fluent.core.solver.settings_231.contact_property.contact_property
 
-.. autoclass:: contact_property
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

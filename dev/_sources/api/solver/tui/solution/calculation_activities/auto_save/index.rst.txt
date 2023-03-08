@@ -3,11 +3,11 @@
 solver.tui.solution.calculation\_activities.auto\_save
 ======================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.calculation_activities.auto_save
-   :members: save_data_file_every, case_frequency, append_file_name_with, root_name, data_frequency, max_files, retain_most_recent_files
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.calculation_activities.auto_save
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

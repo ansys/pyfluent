@@ -5,11 +5,8 @@
 hardcopy_options
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.hardcopy_options
+.. autoclass:: ansys.fluent.core.solver.settings_231.hardcopy_options.hardcopy_options
 
-.. autoclass:: hardcopy_options
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ===========================

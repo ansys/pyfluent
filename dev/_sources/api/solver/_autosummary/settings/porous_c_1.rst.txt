@@ -5,16 +5,13 @@
 porous_c_1
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.porous_c_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.porous_c_1.porous_c_1
 
-.. autoclass:: porous_c_1
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

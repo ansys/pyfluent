@@ -5,16 +5,13 @@
 dpm_sample_contour_plots
 ========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_sample_contour_plots
+.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_sample_contour_plots.dpm_sample_contour_plots
 
-.. autoclass:: dpm_sample_contour_plots
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ================================================================   ========================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ================================================================   ========================================
 :ref:`select_sample <select_sample>`                                                 'select_sample' child.
@@ -23,11 +20,11 @@ Child                                                                           
 
 ================================================================   ========================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ================================================   ==================================
 
-Command                                                                       Summary
+Method                                                                        Summary
 
 ================================================   ==================================
 :ref:`prepare_expressions <prepare_expressions>`       'prepare_expressions' command.

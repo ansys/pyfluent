@@ -5,11 +5,8 @@
 geom_levels
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.geom_levels
+.. autoclass:: ansys.fluent.core.solver.settings_231.geom_levels.geom_levels
 
-.. autoclass:: geom_levels
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================================   ================================================

@@ -5,16 +5,13 @@
 wall_film_temperature_limiter
 =============================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.wall_film_temperature_limiter
+.. autoclass:: ansys.fluent.core.solver.settings_231.wall_film_temperature_limiter.wall_film_temperature_limiter
 
-.. autoclass:: wall_film_temperature_limiter
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ============================================================================================   ================================================================================
 
-Child                                                                                                                                                                   Summary
+Attribute                                                                                                                                                               Summary
 
 ============================================================================================   ================================================================================
 :ref:`remove_limiter <remove_limiter>`                                                                            Enable/disable the Leidenfrost wall film temperature limiter.

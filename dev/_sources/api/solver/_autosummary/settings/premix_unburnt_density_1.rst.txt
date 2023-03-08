@@ -5,16 +5,13 @@
 premix_unburnt_density
 ======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.premix_unburnt_density_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.premix_unburnt_density_1.premix_unburnt_density
 
-.. autoclass:: premix_unburnt_density
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   ====================================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

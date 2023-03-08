@@ -5,16 +5,13 @@
 solid_child
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.solid_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.solid_child.solid_child
 
-.. autoclass:: solid_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==============================================================   =======================================
 
-Child                                                                                            Summary
+Attribute                                                                                        Summary
 
 ==============================================================   =======================================
 :ref:`density <density_1>`                                                              'density' child.

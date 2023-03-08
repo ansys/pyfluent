@@ -5,16 +5,13 @@
 coloring
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.coloring_2
+.. autoclass:: ansys.fluent.core.solver.settings_231.coloring_2.coloring
 
-.. autoclass:: coloring
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================================   ========================================================
 
-Child                                                                                       Summary
+Attribute                                                                                   Summary
 
 ========================================   ========================================================
 :ref:`banded_coloring <banded_coloring>`            Specify if contours should be colored in bands.

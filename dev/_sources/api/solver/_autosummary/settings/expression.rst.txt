@@ -5,11 +5,8 @@
 expression
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.expression
+.. autoclass:: ansys.fluent.core.solver.settings_231.expression.expression
 
-.. autoclass:: expression
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================================   =============================================

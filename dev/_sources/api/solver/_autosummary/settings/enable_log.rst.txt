@@ -5,11 +5,8 @@
 enable_log
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.enable_log
+.. autoclass:: ansys.fluent.core.solver.settings_231.enable_log.enable_log
 
-.. autoclass:: enable_log
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ==================================================================================================

@@ -5,16 +5,13 @@
 volume_fraction
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.volume_fraction
+.. autoclass:: ansys.fluent.core.solver.settings_231.volume_fraction.volume_fraction
 
-.. autoclass:: volume_fraction
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

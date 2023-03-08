@@ -5,11 +5,8 @@
 laplace_coarsening
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.laplace_coarsening
+.. autoclass:: ansys.fluent.core.solver.settings_231.laplace_coarsening.laplace_coarsening
 
-.. autoclass:: laplace_coarsening
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ==================================

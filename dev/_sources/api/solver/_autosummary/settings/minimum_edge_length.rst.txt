@@ -5,11 +5,8 @@
 minimum_edge_length
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.minimum_edge_length
+.. autoclass:: ansys.fluent.core.solver.settings_231.minimum_edge_length.minimum_edge_length
 
-.. autoclass:: minimum_edge_length
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================   ================================

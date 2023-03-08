@@ -5,16 +5,13 @@
 polar_pair_list_child
 =====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.polar_pair_list_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.polar_pair_list_child.polar_pair_list_child
 
-.. autoclass:: polar_pair_list_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================================   =================================
 
-Child                                                                          Summary
+Attribute                                                                      Summary
 
 ==================================================   =================================
 :ref:`polar_real_angle <polar_real_angle>`                   'polar_real_angle' child.

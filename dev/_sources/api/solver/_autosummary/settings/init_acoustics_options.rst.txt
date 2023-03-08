@@ -5,11 +5,8 @@
 init_acoustics_options
 ======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.init_acoustics_options
+.. autoclass:: ansys.fluent.core.solver.settings_231.init_acoustics_options.init_acoustics_options
 
-.. autoclass:: init_acoustics_options
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ==============================================   ===========================================================

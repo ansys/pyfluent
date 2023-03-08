@@ -5,11 +5,8 @@
 translate
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.translate
+.. autoclass:: ansys.fluent.core.solver.settings_231.translate.translate
 
-.. autoclass:: translate
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ======================   ===================

@@ -5,11 +5,8 @@
 ablation_vielle_n
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.ablation_vielle_n
+.. autoclass:: ansys.fluent.core.solver.settings_231.ablation_vielle_n.ablation_vielle_n
 
-.. autoclass:: ablation_vielle_n
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

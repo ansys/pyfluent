@@ -5,16 +5,13 @@
 controls
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.controls
+.. autoclass:: ansys.fluent.core.solver.settings_231.controls.controls
 
-.. autoclass:: controls
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ======================================================================================   ===========================================================
 
-Child                                                                                                                                        Summary
+Attribute                                                                                                                                    Summary
 
 ======================================================================================   ===========================================================
 :ref:`acoustics_wave_eqn_controls <acoustics_wave_eqn_controls>`                             Enter menu for acoustics wave equation solver controls.

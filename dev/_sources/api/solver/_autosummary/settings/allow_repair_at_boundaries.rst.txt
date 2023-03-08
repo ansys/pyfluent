@@ -5,11 +5,8 @@
 allow_repair_at_boundaries
 ==========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.allow_repair_at_boundaries
+.. autoclass:: ansys.fluent.core.solver.settings_231.allow_repair_at_boundaries.allow_repair_at_boundaries
 
-.. autoclass:: allow_repair_at_boundaries
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ==============================================

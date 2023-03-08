@@ -5,11 +5,8 @@
 profile_vt
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.profile_vt
+.. autoclass:: ansys.fluent.core.solver.settings_231.profile_vt.profile_vt
 
-.. autoclass:: profile_vt
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

@@ -5,11 +5,8 @@
 current_driver
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.current_driver
+.. autoclass:: ansys.fluent.core.solver.settings_231.current_driver.current_driver
 
-.. autoclass:: current_driver
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ===========================

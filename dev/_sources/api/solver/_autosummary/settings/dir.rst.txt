@@ -5,11 +5,8 @@
 dir
 ===
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dir
+.. autoclass:: ansys.fluent.core.solver.settings_231.dir.dir
 
-.. autoclass:: dir
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

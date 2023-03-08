@@ -5,11 +5,8 @@
 texture_spacing
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.texture_spacing
+.. autoclass:: ansys.fluent.core.solver.settings_231.texture_spacing.texture_spacing
 
-.. autoclass:: texture_spacing
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ===============================

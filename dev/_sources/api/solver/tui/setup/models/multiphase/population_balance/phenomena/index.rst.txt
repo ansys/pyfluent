@@ -3,11 +3,11 @@
 solver.tui.setup.models.multiphase.population\_balance.phenomena
 ================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.multiphase.population_balance.phenomena
-   :members: breakage, aggregation_factor, aggregation, nucleation, breakage_aggregation_vof_cutoff, breakage_factor, growth
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.population_balance.phenomena
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

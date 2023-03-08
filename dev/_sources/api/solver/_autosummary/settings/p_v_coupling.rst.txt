@@ -5,16 +5,13 @@
 p_v_coupling
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.p_v_coupling
+.. autoclass:: ansys.fluent.core.solver.settings_231.p_v_coupling.p_v_coupling
 
-.. autoclass:: p_v_coupling
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ================================================   ======================================================================
 
-Child                                                                                                             Summary
+Attribute                                                                                                         Summary
 
 ================================================   ======================================================================
 :ref:`coupled_vof <coupled_vof>`                                                      Set Coupled VOF stability controls.

@@ -5,16 +5,13 @@
 scattering_factor
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.scattering_factor_2
+.. autoclass:: ansys.fluent.core.solver.settings_231.scattering_factor_2.scattering_factor
 
-.. autoclass:: scattering_factor
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

@@ -5,16 +5,13 @@
 d_st_absorbtivity
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.d_st_absorbtivity
+.. autoclass:: ansys.fluent.core.solver.settings_231.d_st_absorbtivity.d_st_absorbtivity
 
-.. autoclass:: d_st_absorbtivity
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

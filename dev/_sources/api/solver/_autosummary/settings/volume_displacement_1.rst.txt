@@ -5,16 +5,13 @@
 volume_displacement
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.volume_displacement_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.volume_displacement_1.volume_displacement
 
-.. autoclass:: volume_displacement
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ================================================================   ================================================================================================================================
 
-Child                                                                                                                                                                                       Summary
+Attribute                                                                                                                                                                                   Summary
 
 ================================================================   ================================================================================================================================
 :ref:`option <option_8>`                                                                                                      Enable/disable displacement of the continuous phase due to particles.

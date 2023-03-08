@@ -5,11 +5,8 @@
 frequency
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.frequency_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.frequency_1.frequency
 
-.. autoclass:: frequency
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

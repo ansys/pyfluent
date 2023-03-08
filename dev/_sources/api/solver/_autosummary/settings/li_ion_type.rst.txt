@@ -5,11 +5,8 @@
 li_ion_type
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.li_ion_type
+.. autoclass:: ansys.fluent.core.solver.settings_231.li_ion_type.li_ion_type
 
-.. autoclass:: li_ion_type
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

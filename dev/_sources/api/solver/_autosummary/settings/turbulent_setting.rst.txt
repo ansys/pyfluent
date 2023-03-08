@@ -5,16 +5,13 @@
 turbulent_setting
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.turbulent_setting
+.. autoclass:: ansys.fluent.core.solver.settings_231.turbulent_setting.turbulent_setting
 
-.. autoclass:: turbulent_setting
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================================   =================================================
 
-Child                                                                                                            Summary
+Attribute                                                                                                        Summary
 
 ====================================================================   =================================================
 :ref:`averaged_turbulent_parameters <averaged_turbulent_parameters>`       Enable/Disable averaged turbulent parameters.

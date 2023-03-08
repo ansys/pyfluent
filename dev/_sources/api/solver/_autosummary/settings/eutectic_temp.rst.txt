@@ -5,16 +5,13 @@
 eutectic_temp
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.eutectic_temp
+.. autoclass:: ansys.fluent.core.solver.settings_231.eutectic_temp.eutectic_temp
 
-.. autoclass:: eutectic_temp
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

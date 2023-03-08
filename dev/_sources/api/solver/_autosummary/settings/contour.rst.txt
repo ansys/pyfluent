@@ -5,16 +5,13 @@
 contour
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.contour
+.. autoclass:: ansys.fluent.core.solver.settings_231.contour.contour
 
-.. autoclass:: contour
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Commands
+.. rubric:: Methods
 
 ========================================   =============================================
 
-Command                                                                          Summary
+Method                                                                           Summary
 
 ========================================   =============================================
 :ref:`display <display_1>`                                      Display graphics object.

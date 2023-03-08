@@ -5,16 +5,13 @@
 tangential_diffusivity
 ======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.tangential_diffusivity
+.. autoclass:: ansys.fluent.core.solver.settings_231.tangential_diffusivity.tangential_diffusivity
 
-.. autoclass:: tangential_diffusivity
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   ====================================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

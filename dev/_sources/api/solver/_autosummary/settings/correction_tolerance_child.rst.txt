@@ -5,11 +5,8 @@
 correction_tolerance_child
 ==========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.correction_tolerance_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.correction_tolerance_child.correction_tolerance_child
 
-.. autoclass:: correction_tolerance_child
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   =================================

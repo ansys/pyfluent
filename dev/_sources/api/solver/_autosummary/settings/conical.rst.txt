@@ -5,11 +5,8 @@
 conical
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.conical
+.. autoclass:: ansys.fluent.core.solver.settings_231.conical.conical
 
-.. autoclass:: conical
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

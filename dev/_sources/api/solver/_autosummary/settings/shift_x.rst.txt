@@ -5,11 +5,8 @@
 shift_x
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.shift_x
+.. autoclass:: ansys.fluent.core.solver.settings_231.shift_x.shift_x
 
-.. autoclass:: shift_x
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

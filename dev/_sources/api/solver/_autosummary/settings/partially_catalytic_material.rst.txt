@@ -5,11 +5,8 @@
 partially_catalytic_material
 ============================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.partially_catalytic_material
+.. autoclass:: ansys.fluent.core.solver.settings_231.partially_catalytic_material.partially_catalytic_material
 
-.. autoclass:: partially_catalytic_material
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -5,11 +5,8 @@
 set_as_current
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.set_as_current
+.. autoclass:: ansys.fluent.core.solver.settings_231.set_as_current.set_as_current
 
-.. autoclass:: set_as_current
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ==============================   =======================

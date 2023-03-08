@@ -5,11 +5,8 @@
 band_q_irrad_diffuse
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.band_q_irrad_diffuse
+.. autoclass:: ansys.fluent.core.solver.settings_231.band_q_irrad_diffuse.band_q_irrad_diffuse
 
-.. autoclass:: band_q_irrad_diffuse
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`child_object_type_child <child_object_type_child_1>`

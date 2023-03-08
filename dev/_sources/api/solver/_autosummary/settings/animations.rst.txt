@@ -5,16 +5,13 @@
 animations
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.animations
+.. autoclass:: ansys.fluent.core.solver.settings_231.animations.animations
 
-.. autoclass:: animations
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==========================   =====================
 
-Child                                      Summary
+Attribute                                  Summary
 
 ==========================   =====================
 :ref:`playback <playback>`       'playback' child.

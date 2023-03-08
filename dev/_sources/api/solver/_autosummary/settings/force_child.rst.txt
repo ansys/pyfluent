@@ -5,16 +5,13 @@
 force_child
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.force_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.force_child.force_child
 
-.. autoclass:: force_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ================================================================   ========================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ================================================================   ========================================
 :ref:`report_type <report_type>`                                                       'report_type' child.

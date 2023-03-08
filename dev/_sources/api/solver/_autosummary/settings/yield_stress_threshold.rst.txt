@@ -5,11 +5,8 @@
 yield_stress_threshold
 ======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.yield_stress_threshold
+.. autoclass:: ansys.fluent.core.solver.settings_231.yield_stress_threshold.yield_stress_threshold
 
-.. autoclass:: yield_stress_threshold
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =============================

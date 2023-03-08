@@ -5,16 +5,13 @@
 smooth
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.smooth_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.smooth_1.smooth
 
-.. autoclass:: smooth
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==========================================================   =====================================
 
-Child                                                                                      Summary
+Attribute                                                                                  Summary
 
 ==========================================================   =====================================
 :ref:`smooth_partitioning <smooth_partitioning>`                      'smooth_partitioning' child.

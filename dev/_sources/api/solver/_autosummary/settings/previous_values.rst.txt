@@ -5,11 +5,8 @@
 previous_values
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.previous_values
+.. autoclass:: ansys.fluent.core.solver.settings_231.previous_values.previous_values
 
-.. autoclass:: previous_values
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

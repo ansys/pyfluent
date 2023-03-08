@@ -5,16 +5,13 @@
 averaging_coefficient_y
 =======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.averaging_coefficient_y
+.. autoclass:: ansys.fluent.core.solver.settings_231.averaging_coefficient_y.averaging_coefficient_y
 
-.. autoclass:: averaging_coefficient_y
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

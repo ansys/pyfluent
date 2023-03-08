@@ -5,11 +5,8 @@
 aspect_ratio
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.aspect_ratio
+.. autoclass:: ansys.fluent.core.solver.settings_231.aspect_ratio.aspect_ratio
 
-.. autoclass:: aspect_ratio
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ======================   ===================

@@ -5,11 +5,8 @@
 dt_factor_min
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dt_factor_min
+.. autoclass:: ansys.fluent.core.solver.settings_231.dt_factor_min.dt_factor_min
 
-.. autoclass:: dt_factor_min
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   =======================================================================

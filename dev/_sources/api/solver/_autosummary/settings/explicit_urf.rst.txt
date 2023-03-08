@@ -5,11 +5,8 @@
 explicit_urf
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.explicit_urf
+.. autoclass:: ansys.fluent.core.solver.settings_231.explicit_urf.explicit_urf
 
-.. autoclass:: explicit_urf
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ====================================

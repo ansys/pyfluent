@@ -5,16 +5,13 @@
 transverse_conductivity
 =======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.transverse_conductivity
+.. autoclass:: ansys.fluent.core.solver.settings_231.transverse_conductivity.transverse_conductivity
 
-.. autoclass:: transverse_conductivity
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   ====================================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

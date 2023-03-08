@@ -5,11 +5,8 @@
 markers
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.markers
+.. autoclass:: ansys.fluent.core.solver.settings_231.markers.markers
 
-.. autoclass:: markers
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`markers_child <markers_child>`

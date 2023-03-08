@@ -5,11 +5,8 @@
 plane_surface
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.plane_surface
+.. autoclass:: ansys.fluent.core.solver.settings_231.plane_surface.plane_surface
 
-.. autoclass:: plane_surface
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`plane_surface_child <plane_surface_child>`

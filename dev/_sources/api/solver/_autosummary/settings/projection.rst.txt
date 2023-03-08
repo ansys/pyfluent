@@ -5,11 +5,8 @@
 projection
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.projection
+.. autoclass:: ansys.fluent.core.solver.settings_231.projection.projection
 
-.. autoclass:: projection
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ====================   =================

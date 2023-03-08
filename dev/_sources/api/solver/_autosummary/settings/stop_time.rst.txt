@@ -5,11 +5,8 @@
 stop_time
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.stop_time
+.. autoclass:: ansys.fluent.core.solver.settings_231.stop_time.stop_time
 
-.. autoclass:: stop_time
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ==================

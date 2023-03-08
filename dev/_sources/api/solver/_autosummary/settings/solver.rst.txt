@@ -5,16 +5,13 @@
 solver
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.solver
+.. autoclass:: ansys.fluent.core.solver.settings_231.solver.solver
 
-.. autoclass:: solver
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================================   =============================
 
-Child                                                                      Summary
+Attribute                                                                  Summary
 
 ==================================================   =============================
 :ref:`type <type>`                                             Select solver type.

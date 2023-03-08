@@ -5,11 +5,8 @@
 run_index
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.run_index
+.. autoclass:: ansys.fluent.core.solver.settings_231.run_index.run_index
 
-.. autoclass:: run_index
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ========================================

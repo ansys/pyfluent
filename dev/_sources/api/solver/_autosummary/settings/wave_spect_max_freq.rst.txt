@@ -5,16 +5,13 @@
 wave_spect_max_freq
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.wave_spect_max_freq
+.. autoclass:: ansys.fluent.core.solver.settings_231.wave_spect_max_freq.wave_spect_max_freq
 
-.. autoclass:: wave_spect_max_freq
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

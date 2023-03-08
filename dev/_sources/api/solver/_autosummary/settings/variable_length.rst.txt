@@ -5,11 +5,8 @@
 variable_length
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.variable_length
+.. autoclass:: ansys.fluent.core.solver.settings_231.variable_length.variable_length
 
-.. autoclass:: variable_length
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

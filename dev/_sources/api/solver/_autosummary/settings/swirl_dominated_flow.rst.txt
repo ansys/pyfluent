@@ -5,11 +5,8 @@
 swirl_dominated_flow
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.swirl_dominated_flow
+.. autoclass:: ansys.fluent.core.solver.settings_231.swirl_dominated_flow.swirl_dominated_flow
 
-.. autoclass:: swirl_dominated_flow
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================   ========================

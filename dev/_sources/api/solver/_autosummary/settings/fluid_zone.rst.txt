@@ -5,11 +5,8 @@
 fluid_zone
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.fluid_zone
+.. autoclass:: ansys.fluent.core.solver.settings_231.fluid_zone.fluid_zone
 
-.. autoclass:: fluid_zone
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   ======================================

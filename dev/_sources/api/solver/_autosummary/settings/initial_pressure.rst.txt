@@ -5,11 +5,8 @@
 initial_pressure
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.initial_pressure
+.. autoclass:: ansys.fluent.core.solver.settings_231.initial_pressure.initial_pressure
 
-.. autoclass:: initial_pressure
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ====================================

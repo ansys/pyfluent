@@ -5,11 +5,8 @@
 summary
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.summary_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.summary_1.summary
 
-.. autoclass:: summary
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ====================================   ==========================

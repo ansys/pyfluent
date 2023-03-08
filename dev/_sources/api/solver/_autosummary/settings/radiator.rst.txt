@@ -5,11 +5,8 @@
 radiator
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.radiator
+.. autoclass:: ansys.fluent.core.solver.settings_231.radiator.radiator
 
-.. autoclass:: radiator
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`radiator_child <radiator_child>`

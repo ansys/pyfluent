@@ -5,16 +5,13 @@
 pollut_hg
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.pollut_hg
+.. autoclass:: ansys.fluent.core.solver.settings_231.pollut_hg.pollut_hg
 
-.. autoclass:: pollut_hg
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

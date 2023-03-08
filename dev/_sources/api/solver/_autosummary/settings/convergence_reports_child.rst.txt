@@ -5,16 +5,13 @@
 convergence_reports_child
 =========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.convergence_reports_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.convergence_reports_child.convergence_reports_child
 
-.. autoclass:: convergence_reports_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================================   =======================================================
 
-Child                                                                                                                  Summary
+Attribute                                                                                                              Summary
 
 ====================================================================   =======================================================
 :ref:`name <name_1>`                                                                                             'name' child.

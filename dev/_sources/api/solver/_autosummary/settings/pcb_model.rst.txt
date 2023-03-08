@@ -5,11 +5,8 @@
 pcb_model
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.pcb_model
+.. autoclass:: ansys.fluent.core.solver.settings_231.pcb_model.pcb_model
 
-.. autoclass:: pcb_model
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

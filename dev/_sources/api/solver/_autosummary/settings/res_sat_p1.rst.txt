@@ -5,11 +5,8 @@
 res_sat_p1
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.res_sat_p1
+.. autoclass:: ansys.fluent.core.solver.settings_231.res_sat_p1.res_sat_p1
 
-.. autoclass:: res_sat_p1
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

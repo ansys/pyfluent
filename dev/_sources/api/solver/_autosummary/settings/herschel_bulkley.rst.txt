@@ -5,16 +5,13 @@
 herschel_bulkley
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.herschel_bulkley
+.. autoclass:: ansys.fluent.core.solver.settings_231.herschel_bulkley.herschel_bulkley
 
-.. autoclass:: herschel_bulkley
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ======================================================   ===================================
 
-Child                                                                                Summary
+Attribute                                                                            Summary
 
 ======================================================   ===================================
 :ref:`option <option_2>`                                                     'option' child.

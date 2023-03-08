@@ -5,11 +5,8 @@
 pb_smm_bc
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.pb_smm_bc
+.. autoclass:: ansys.fluent.core.solver.settings_231.pb_smm_bc.pb_smm_bc
 
-.. autoclass:: pb_smm_bc
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`turb_visc_func_mf_child <turb_visc_func_mf_child>`

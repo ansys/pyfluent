@@ -5,11 +5,8 @@
 q
 =
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.q_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.q_1.q
 
-.. autoclass:: q
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

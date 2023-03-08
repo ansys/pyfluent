@@ -5,11 +5,8 @@
 domain_cx
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.domain_cx
+.. autoclass:: ansys.fluent.core.solver.settings_231.domain_cx.domain_cx
 
-.. autoclass:: domain_cx
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ================================

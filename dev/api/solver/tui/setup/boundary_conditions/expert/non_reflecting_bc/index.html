@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../search.html" />
-    <link rel="next" title="solver.tui.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc" href="turbo_specific_nrbc/index.html" />
-    <link rel="prev" title="solver.tui.setup.boundary_conditions.expert" href="../index.html" />
+    <link rel="next" title="solver.tui.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc" href="general_nrbc/index.html" />
+    <link rel="prev" title="solver.tui.setup.boundary_conditions.expert.impedance_data_fitting" href="../impedance_data_fitting/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -306,13 +306,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -356,8 +351,13 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parallel/index.html">
-         solver.tui.parallel
+        <a class="reference internal" href="../../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../display/index.html">
+         solver.tui.display
         </a>
        </li>
        <li class="toctree-l4">
@@ -366,43 +366,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../surface/index.html">
-         solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../../file/index.html">
          solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../preferences/index.html">
-         solver.tui.preferences
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../plot/index.html">
-         solver.tui.plot
         </a>
        </li>
        <li class="toctree-l4">
@@ -411,8 +376,33 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solve/index.html">
-         solver.tui.solve
+        <a class="reference internal" href="../../../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parallel/index.html">
+         solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../preferences/index.html">
+         solver.tui.preferences
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../report/index.html">
+         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4">
@@ -421,8 +411,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
+        <a class="reference internal" href="../../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../solution/index.html">
+         solver.tui.solution
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -435,16 +430,6 @@ function checkPageExistsAndRedirect(event) {
          </i>
         </label>
         <ul class="current">
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../mixing_planes/index.html">
-           solver.tui.setup.mixing_planes
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../gap_model/index.html">
-           solver.tui.setup.gap_model
-          </a>
-         </li>
          <li class="toctree-l5 current active has-children">
           <a class="reference internal" href="../../index.html">
            solver.tui.setup.boundary_conditions
@@ -455,6 +440,11 @@ function checkPageExistsAndRedirect(event) {
            </i>
           </label>
           <ul class="current">
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../bc_settings/index.html">
+             solver.tui.setup.boundary_conditions.bc_settings
+            </a>
+           </li>
            <li class="toctree-l6 current active has-children">
             <a class="reference internal" href="../index.html">
              solver.tui.setup.boundary_conditions.expert
@@ -465,6 +455,11 @@ function checkPageExistsAndRedirect(event) {
              </i>
             </label>
             <ul class="current">
+             <li class="toctree-l7">
+              <a class="reference internal" href="../impedance_data_fitting/index.html">
+               solver.tui.setup.boundary_conditions.expert.impedance_data_fitting
+              </a>
+             </li>
              <li class="toctree-l7 current active has-children">
               <a class="current reference internal" href="#">
                solver.tui.setup.boundary_conditions.expert.non_reflecting_bc
@@ -476,13 +471,13 @@ function checkPageExistsAndRedirect(event) {
               </label>
               <ul>
                <li class="toctree-l8">
-                <a class="reference internal" href="turbo_specific_nrbc/index.html">
-                 solver.tui.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc
+                <a class="reference internal" href="general_nrbc/index.html">
+                 solver.tui.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc
                 </a>
                </li>
                <li class="toctree-l8">
-                <a class="reference internal" href="general_nrbc/index.html">
-                 solver.tui.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc
+                <a class="reference internal" href="turbo_specific_nrbc/index.html">
+                 solver.tui.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc
                 </a>
                </li>
               </ul>
@@ -493,11 +488,6 @@ function checkPageExistsAndRedirect(event) {
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../impedance_data_fitting/index.html">
-               solver.tui.setup.boundary_conditions.expert.impedance_data_fitting
-              </a>
-             </li>
-             <li class="toctree-l7">
               <a class="reference internal" href="../periodic_conditions/index.html">
                solver.tui.setup.boundary_conditions.expert.periodic_conditions
               </a>
@@ -505,18 +495,8 @@ function checkPageExistsAndRedirect(event) {
             </ul>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../set/index.html">
-             solver.tui.setup.boundary_conditions.set
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../rename_zone/index.html">
-             solver.tui.setup.boundary_conditions.rename_zone
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../query/index.html">
-             solver.tui.setup.boundary_conditions.query
+            <a class="reference internal" href="../../modify_zones/index.html">
+             solver.tui.setup.boundary_conditions.modify_zones
             </a>
            </li>
            <li class="toctree-l6">
@@ -525,35 +505,25 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../bc_settings/index.html">
-             solver.tui.setup.boundary_conditions.bc_settings
+            <a class="reference internal" href="../../query/index.html">
+             solver.tui.setup.boundary_conditions.query
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../modify_zones/index.html">
-             solver.tui.setup.boundary_conditions.modify_zones
+            <a class="reference internal" href="../../rename_zone/index.html">
+             solver.tui.setup.boundary_conditions.rename_zone
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../set/index.html">
+             solver.tui.setup.boundary_conditions.set
             </a>
            </li>
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../overset_interfaces/index.html">
-           solver.tui.setup.overset_interfaces
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="../../../dynamic_mesh/index.html">
            solver.tui.setup.dynamic_mesh
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../named_expressions/index.html">
-           solver.tui.setup.named_expressions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../turbo_model/index.html">
-           solver.tui.setup.turbo_model
           </a>
          </li>
          <li class="toctree-l5">
@@ -562,13 +532,13 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../materials/index.html">
-           solver.tui.setup.materials
+          <a class="reference internal" href="../../../gap_model/index.html">
+           solver.tui.setup.gap_model
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../reference_values/index.html">
-           solver.tui.setup.reference_values
+          <a class="reference internal" href="../../../materials/index.html">
+           solver.tui.setup.materials
           </a>
          </li>
          <li class="toctree-l5">
@@ -577,8 +547,18 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
+          <a class="reference internal" href="../../../mixing_planes/index.html">
+           solver.tui.setup.mixing_planes
+          </a>
+         </li>
+         <li class="toctree-l5">
           <a class="reference internal" href="../../../models/index.html">
            solver.tui.setup.models
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../named_expressions/index.html">
+           solver.tui.setup.named_expressions
           </a>
          </li>
          <li class="toctree-l5">
@@ -587,20 +567,30 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
+          <a class="reference internal" href="../../../overset_interfaces/index.html">
+           solver.tui.setup.overset_interfaces
+          </a>
+         </li>
+         <li class="toctree-l5">
           <a class="reference internal" href="../../../reference_frames/index.html">
            solver.tui.setup.reference_frames
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../reference_values/index.html">
+           solver.tui.setup.reference_values
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../turbo_model/index.html">
+           solver.tui.setup.turbo_model
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../display/index.html">
-         solver.tui.display
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../report/index.html">
-         solver.tui.report
+        <a class="reference internal" href="../../../../surface/index.html">
+         solver.tui.surface
         </a>
        </li>
        <li class="toctree-l4">
@@ -609,23 +599,28 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../views/index.html">
+         solver.tui.views
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../../parametric_study/index.html">
          solver.tui.parametric_study
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solution/index.html">
-         solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../server/index.html">
-         solver.tui.server
+        <a class="reference internal" href="../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
       </ul>
@@ -697,10 +692,155 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.setup.boundary_conditions.expert.non_reflecting_bc
+     non_reflecting_bc
     </span>
    </code>
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       non_reflecting_bc.general_nrbc
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         non_reflecting_bc.general_nrbc.set
+        </span>
+       </code>
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.relax">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           non_reflecting_bc.general_nrbc.set.relax()
+          </span>
+         </code>
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.sigma">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           non_reflecting_bc.general_nrbc.set.sigma()
+          </span>
+         </code>
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.sigma2">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           non_reflecting_bc.general_nrbc.set.sigma2()
+          </span>
+         </code>
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.tangential_source">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           non_reflecting_bc.general_nrbc.set.tangential_source()
+          </span>
+         </code>
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.verbosity">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           non_reflecting_bc.general_nrbc.set.verbosity()
+          </span>
+         </code>
+        </a>
+       </li>
+      </ul>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       non_reflecting_bc.turbo_specific_nrbc
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.enable">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         non_reflecting_bc.turbo_specific_nrbc.enable()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.initialize">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         non_reflecting_bc.turbo_specific_nrbc.initialize()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.set">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         non_reflecting_bc.turbo_specific_nrbc.set
+        </span>
+       </code>
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.set.discretization">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           non_reflecting_bc.turbo_specific_nrbc.set.discretization()
+          </span>
+         </code>
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.set.under_relaxation">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           non_reflecting_bc.turbo_specific_nrbc.set.under_relaxation()
+          </span>
+         </code>
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.set.verbosity">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           non_reflecting_bc.turbo_specific_nrbc.set.verbosity()
+          </span>
+         </code>
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.show_status">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         non_reflecting_bc.turbo_specific_nrbc.show_status()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -723,14 +863,187 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-boundary-conditions-expert-non-reflecting-bc">
 <span id="ref-solver-tui-setup-boundary-conditions-expert-non-reflecting-bc"></span><h1>solver.tui.setup.boundary_conditions.expert.non_reflecting_bc<a class="headerlink" href="#solver-tui-setup-boundary-conditions-expert-non-reflecting-bc" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.</span></span><span class="sig-name descname"><span class="pre">non_reflecting_bc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the non-reflecting b.c. menu.</p>
+<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">general_nrbc</span></code></a>(path, service)</p></td>
+<td><p>Enter the menu for setting general non-reflecting boundary conditions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">turbo_specific_nrbc</span></code></a>(path, service)</p></td>
+<td><p>Enter the turbo-specific n.r.b.c.</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.boundary_conditions.expert.</span></span><span class="sig-name descname"><span class="pre">non_reflecting_bc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the non-reflecting b.c. menu.</p>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">general_nrbc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the menu for setting general non-reflecting boundary conditions.</p>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a>(path, service)</p></td>
+<td><p>Enter the general non-reflecting b.c.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the general non-reflecting b.c. menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.relax" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.relax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relax</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set NRBC relaxation factor (default value 0.5).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.sigma" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.sigma"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sigma</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set nrbc sigma factor (default value 0.15).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.sigma2" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.sigma2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sigma2</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set nrbc sigma2 factor (default value 5.0).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.tangential_source" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.tangential_source"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tangential_source</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Include or not NRBC tangential source (default value #t).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.verbosity" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.verbosity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verbosity</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Print boundary equations convergence info.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.relax">
+<span class="sig-name descname"><span class="pre">relax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.relax" title="Permalink to this definition">#</a></dt>
+<dd><p>Set NRBC relaxation factor (default value 0.5).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.sigma">
+<span class="sig-name descname"><span class="pre">sigma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.sigma" title="Permalink to this definition">#</a></dt>
+<dd><p>Set nrbc sigma factor (default value 0.15).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.sigma2">
+<span class="sig-name descname"><span class="pre">sigma2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.sigma2" title="Permalink to this definition">#</a></dt>
+<dd><p>Set nrbc sigma2 factor (default value 5.0).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.tangential_source">
+<span class="sig-name descname"><span class="pre">tangential_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.tangential_source" title="Permalink to this definition">#</a></dt>
+<dd><p>Include or not NRBC tangential source (default value #t).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.verbosity">
+<span class="sig-name descname"><span class="pre">verbosity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set.verbosity" title="Permalink to this definition">#</a></dt>
+<dd><p>Print boundary equations convergence info.</p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">turbo_specific_nrbc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the turbo-specific n.r.b.c. menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.enable" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.enable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable turbo-specific non-reflecting b.c.'s.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.initialize" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.initialize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialize</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Initialize turbo-specific non-reflecting b.c.'s.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.show_status" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.show_status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_status</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Show current status of turbo-specific non-reflecting b.c.'s.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.set" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a>(path, service)</p></td>
+<td><p>Enter the set menu for turbo-specific non-reflecting b.c.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.enable">
+<span class="sig-name descname"><span class="pre">enable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.enable" title="Permalink to this definition">#</a></dt>
+<dd><p>Enable/disable turbo-specific non-reflecting b.c.’s.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.initialize" title="Permalink to this definition">#</a></dt>
+<dd><p>Initialize turbo-specific non-reflecting b.c.’s.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.set">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.set" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the set menu for turbo-specific non-reflecting b.c. parameters.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.set.discretization" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.set.discretization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">discretization</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable use of higher-order reconstruction at boundaries if available.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.set.under_relaxation" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.set.under_relaxation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">under_relaxation</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set turbo-specific non-reflecting b.c.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.set.verbosity" title="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.set.verbosity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verbosity</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set turbo-specific non-reflecting b.c.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.set.discretization">
+<span class="sig-name descname"><span class="pre">discretization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.set.discretization" title="Permalink to this definition">#</a></dt>
+<dd><p>Enable use of higher-order reconstruction at boundaries if available.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.set.under_relaxation">
+<span class="sig-name descname"><span class="pre">under_relaxation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.set.under_relaxation" title="Permalink to this definition">#</a></dt>
+<dd><p>Set turbo-specific non-reflecting b.c. under-relaxation factor.
+specify &lt; 0 =&gt; use P/a_ave
+specify = 0 =&gt; use 1/N
+specify &gt; 0 =&gt; use specified.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.set.verbosity">
+<span class="sig-name descname"><span class="pre">verbosity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.set.verbosity" title="Permalink to this definition">#</a></dt>
+<dd><p>Set turbo-specific non-reflecting b.c. verbosity level.
+0 : silent
+1 : basic info. default
+2 : detailed info. for debugging
+.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.show_status">
+<span class="sig-name descname"><span class="pre">show_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.boundary_conditions.expert.non_reflecting_bc.turbo_specific_nrbc.show_status" title="Permalink to this definition">#</a></dt>
+<dd><p>Show current status of turbo-specific non-reflecting b.c.’s.</p>
+</dd></dl>
+
+</dd></dl>
+
 </dd></dl>
 
 <div class="toctree-wrapper compound">

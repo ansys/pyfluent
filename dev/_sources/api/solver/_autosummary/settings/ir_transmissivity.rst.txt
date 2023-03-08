@@ -5,16 +5,13 @@
 ir_transmissivity
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.ir_transmissivity
+.. autoclass:: ansys.fluent.core.solver.settings_231.ir_transmissivity.ir_transmissivity
 
-.. autoclass:: ir_transmissivity
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

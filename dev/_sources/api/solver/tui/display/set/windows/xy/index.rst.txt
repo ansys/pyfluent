@@ -3,11 +3,11 @@
 solver.tui.display.set.windows.xy
 =================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.windows.xy
-   :members: right, border, bottom, visible, left, top
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.display.set.windows.xy
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

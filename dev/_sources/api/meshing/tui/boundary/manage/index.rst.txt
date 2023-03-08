@@ -3,13 +3,13 @@
 meshing.tui.boundary.manage
 ===========================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.boundary.manage
-   :members: type, id, auto_delete_nodes, translate, rotate_model, list, merge, flip, change_suffix, origin, remove_suffix, create, scale, orient, scale_model, translate_model, change_prefix, rotate, copy, name, delete
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.boundary.manage
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:

@@ -5,11 +5,8 @@
 gravity_scale
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.gravity_scale
+.. autoclass:: ansys.fluent.core.solver.settings_231.gravity_scale.gravity_scale
 
-.. autoclass:: gravity_scale
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===============================

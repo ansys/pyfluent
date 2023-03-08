@@ -5,11 +5,8 @@
 periodic_faces
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.periodic_faces
+.. autoclass:: ansys.fluent.core.solver.settings_231.periodic_faces.periodic_faces
 
-.. autoclass:: periodic_faces
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

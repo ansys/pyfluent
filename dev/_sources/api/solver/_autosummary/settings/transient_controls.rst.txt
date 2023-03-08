@@ -5,16 +5,13 @@
 transient_controls
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.transient_controls
+.. autoclass:: ansys.fluent.core.solver.settings_231.transient_controls.transient_controls
 
-.. autoclass:: transient_controls
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================================================================   ===================================================================================
 
-Child                                                                                                                                                            Summary
+Attribute                                                                                                                                                        Summary
 
 ==================================================================================   ===================================================================================
 :ref:`type <type_1>`                                                                                                                                       'type' child.

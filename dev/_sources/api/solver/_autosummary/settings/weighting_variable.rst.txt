@@ -5,11 +5,8 @@
 weighting_variable
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.weighting_variable
+.. autoclass:: ansys.fluent.core.solver.settings_231.weighting_variable.weighting_variable
 
-.. autoclass:: weighting_variable
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ==============================================   ===============================

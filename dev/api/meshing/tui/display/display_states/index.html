@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
-    <link rel="next" title="meshing.tui.display.objects" href="../objects/index.html" />
-    <link rel="prev" title="meshing.tui.display.advanced_rendering" href="../advanced_rendering/index.html" />
+    <link rel="next" title="meshing.tui.diagnostics" href="../../diagnostics/index.html" />
+    <link rel="prev" title="meshing.tui.display.xy_plot" href="../xy_plot/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -303,13 +303,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -322,6 +317,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -338,28 +338,8 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../boundary/index.html">
-       meshing.tui.boundary
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../mesh/index.html">
-       meshing.tui.mesh
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../reference_frames/index.html">
-       meshing.tui.reference_frames
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
+      <a class="reference internal" href="../../file/index.html">
+       meshing.tui.file
       </a>
      </li>
      <li class="toctree-l3">
@@ -368,13 +348,38 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../file/index.html">
-       meshing.tui.file
+      <a class="reference internal" href="../../mesh/index.html">
+       meshing.tui.mesh
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../boundary/index.html">
+       meshing.tui.boundary
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../reference_frames/index.html">
+       meshing.tui.reference_frames
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../size_functions/index.html">
+       meshing.tui.size_functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
       </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../../objects/index.html">
        meshing.tui.objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
       </a>
      </li>
      <li class="toctree-l3">
@@ -385,11 +390,6 @@ function checkPageExistsAndRedirect(event) {
      <li class="toctree-l3">
       <a class="reference internal" href="../../cad_assemblies/index.html">
        meshing.tui.cad_assemblies
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../diagnostics/index.html">
-       meshing.tui.diagnostics
       </a>
      </li>
      <li class="toctree-l3">
@@ -408,13 +408,28 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../advanced_rendering/index.html">
-         meshing.tui.display.advanced_rendering
+        <a class="reference internal" href="../zones/index.html">
+         meshing.tui.display.zones
         </a>
        </li>
-       <li class="toctree-l4 current active">
-        <a class="current reference internal" href="#">
-         meshing.tui.display.display_states
+       <li class="toctree-l4">
+        <a class="reference internal" href="../set/index.html">
+         meshing.tui.display.set
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../set_grid/index.html">
+         meshing.tui.display.set_grid
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../update_scene/index.html">
+         meshing.tui.display.update_scene
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../advanced_rendering/index.html">
+         meshing.tui.display.advanced_rendering
         </a>
        </li>
        <li class="toctree-l4">
@@ -427,31 +442,16 @@ function checkPageExistsAndRedirect(event) {
          meshing.tui.display.xy_plot
         </a>
        </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../zones/index.html">
-         meshing.tui.display.zones
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../update_scene/index.html">
-         meshing.tui.display.update_scene
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../set_grid/index.html">
-         meshing.tui.display.set_grid
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../set/index.html">
-         meshing.tui.display.set
+       <li class="toctree-l4 current active">
+        <a class="current reference internal" href="#">
+         meshing.tui.display.display_states
         </a>
        </li>
       </ul>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../size_functions/index.html">
-       meshing.tui.size_functions
+      <a class="reference internal" href="../../diagnostics/index.html">
+       meshing.tui.diagnostics
       </a>
      </li>
     </ul>
@@ -496,7 +496,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.display_states">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.display.display_states
+     display_states
     </span>
    </code>
   </a>
@@ -505,7 +505,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.apply">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.display_states.apply()
+       display_states.apply()
       </span>
      </code>
     </a>
@@ -514,7 +514,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.copy">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.display_states.copy()
+       display_states.copy()
       </span>
      </code>
     </a>
@@ -523,7 +523,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.create">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.display_states.create()
+       display_states.create()
       </span>
      </code>
     </a>
@@ -532,7 +532,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.display_states.delete()
+       display_states.delete()
       </span>
      </code>
     </a>
@@ -541,7 +541,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.edit">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.display_states.edit()
+       display_states.edit()
       </span>
      </code>
     </a>
@@ -550,7 +550,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.list">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.display_states.list()
+       display_states.list()
       </span>
      </code>
     </a>
@@ -559,7 +559,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.read">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.display_states.read()
+       display_states.read()
       </span>
      </code>
     </a>
@@ -568,7 +568,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.use_active">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.display_states.use_active()
+       display_states.use_active()
       </span>
      </code>
     </a>
@@ -577,7 +577,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.write">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.display_states.write()
+       display_states.write()
       </span>
      </code>
     </a>
@@ -605,14 +605,43 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-display-display-states">
 <span id="ref-meshing-tui-display-display-states"></span><h1>meshing.tui.display.display_states<a class="headerlink" href="#meshing-tui-display-display-states" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.display_states">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.display.</span></span><span class="sig-name descname"><span class="pre">display_states</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.display_states" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the display states menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.display.</span></span><span class="sig-name descname"><span class="pre">display_states</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.display_states" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the display states menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.apply" title="ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.apply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Apply a display state to the active graphics window.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.copy" title="ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Copy the settings of an existing display state to another existing display state.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.create" title="ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Create a new display state.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.delete" title="ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Delete a display state.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.edit" title="ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.edit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edit</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Edit a display state.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.list" title="ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Print the names of the existing display states to the console.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.read" title="ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Read in display states from a file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.use_active" title="ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.use_active"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_active</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Save the display state settings of the active graphics window to an existing display state.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.write" title="ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Write one or more of the saved display states to a file.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.display_states.apply" title="Permalink to this definition">#</a></dt>

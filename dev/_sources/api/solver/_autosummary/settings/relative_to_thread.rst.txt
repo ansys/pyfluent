@@ -5,11 +5,8 @@
 relative_to_thread
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.relative_to_thread
+.. autoclass:: ansys.fluent.core.solver.settings_231.relative_to_thread.relative_to_thread
 
-.. autoclass:: relative_to_thread
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

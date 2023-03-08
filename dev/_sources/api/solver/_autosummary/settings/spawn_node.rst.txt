@@ -5,11 +5,8 @@
 spawn_node
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.spawn_node
+.. autoclass:: ansys.fluent.core.solver.settings_231.spawn_node.spawn_node
 
-.. autoclass:: spawn_node
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ==========================   =====================

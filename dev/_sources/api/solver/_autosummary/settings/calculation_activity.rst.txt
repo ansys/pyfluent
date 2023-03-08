@@ -5,16 +5,13 @@
 calculation_activity
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.calculation_activity
+.. autoclass:: ansys.fluent.core.solver.settings_231.calculation_activity.calculation_activity
 
-.. autoclass:: calculation_activity
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ================================================   ================================
 
-Child                                                                       Summary
+Attribute                                                                   Summary
 
 ================================================   ================================
 :ref:`execute_commands <execute_commands>`                'execute_commands' child.
@@ -25,11 +22,11 @@ Child                                                                       Summ
 
 ================================================   ================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ================================================================   =========================================================================================================
 
-Command                                                                                                                                                              Summary
+Method                                                                                                                                                               Summary
 
 ================================================================   =========================================================================================================
 :ref:`enable_strategy <enable_strategy>`                                                   Specify whether automatic initialization and case modification should be enabled.

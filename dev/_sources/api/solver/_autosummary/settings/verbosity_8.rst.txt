@@ -5,11 +5,8 @@
 verbosity
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.verbosity_8
+.. autoclass:: ansys.fluent.core.solver.settings_231.verbosity_8.verbosity
 
-.. autoclass:: verbosity
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   =================================

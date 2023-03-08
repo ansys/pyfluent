@@ -5,16 +5,13 @@
 beams_child
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.beams_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.beams_child.beams_child
 
-.. autoclass:: beams_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==========================================   ====================================================================
 
-Child                                                                                                     Summary
+Attribute                                                                                                 Summary
 
 ==========================================   ====================================================================
 :ref:`ap_face_zone <ap_face_zone>`               Set the wall face zones to specify the optical aperture surface.

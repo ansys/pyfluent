@@ -5,16 +5,13 @@
 reaction_mechs
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.reaction_mechs
+.. autoclass:: ansys.fluent.core.solver.settings_231.reaction_mechs.reaction_mechs
 
-.. autoclass:: reaction_mechs
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

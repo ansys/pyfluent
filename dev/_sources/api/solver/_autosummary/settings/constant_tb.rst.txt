@@ -5,11 +5,8 @@
 constant_tb
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.constant_tb
+.. autoclass:: ansys.fluent.core.solver.settings_231.constant_tb.constant_tb
 
-.. autoclass:: constant_tb
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

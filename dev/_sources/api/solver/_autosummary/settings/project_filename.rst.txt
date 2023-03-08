@@ -5,11 +5,8 @@
 project_filename
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.project_filename
+.. autoclass:: ansys.fluent.core.solver.settings_231.project_filename.project_filename
 
-.. autoclass:: project_filename
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ===========================

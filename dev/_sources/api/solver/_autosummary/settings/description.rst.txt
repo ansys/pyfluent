@@ -5,11 +5,8 @@
 description
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.description
+.. autoclass:: ansys.fluent.core.solver.settings_231.description.description
 
-.. autoclass:: description
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   =============================================

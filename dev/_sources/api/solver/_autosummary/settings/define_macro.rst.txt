@@ -5,11 +5,8 @@
 define_macro
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.define_macro
+.. autoclass:: ansys.fluent.core.solver.settings_231.define_macro.define_macro
 
-.. autoclass:: define_macro
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ==========================   =====================

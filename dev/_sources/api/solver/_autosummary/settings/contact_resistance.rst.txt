@@ -5,16 +5,13 @@
 contact_resistance
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.contact_resistance
+.. autoclass:: ansys.fluent.core.solver.settings_231.contact_resistance.contact_resistance
 
-.. autoclass:: contact_resistance
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

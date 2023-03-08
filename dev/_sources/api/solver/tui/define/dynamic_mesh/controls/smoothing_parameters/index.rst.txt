@@ -3,11 +3,11 @@
 solver.tui.define.dynamic\_mesh.controls.smoothing\_parameters
 ==============================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.dynamic_mesh.controls.smoothing_parameters
-   :members: diffusion_coeff_function, bnd_stiffness_factor, laplace_node_relaxation, smooth_from_reference_position, relative_convergence_tolerance, skew_smooth_cell_skew_max, amg_stabilization, poisson_ratio, diffusion_fvm, smoothing_method, spring_on_simplex_elements, skew_smooth_face_skew_max, constant_factor, max_iter, spring_on_all_elements, boundary_distance_method, diffusion_coeff_parameter, convergence_tolerance, verbosity, skew_smooth_all_deforming_boundaries, skew_smooth_niter, bnd_node_relaxation
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.controls.smoothing_parameters
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

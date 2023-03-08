@@ -5,11 +5,8 @@
 replace
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.replace
+.. autoclass:: ansys.fluent.core.solver.settings_231.replace.replace
 
-.. autoclass:: replace
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ====================   ==================

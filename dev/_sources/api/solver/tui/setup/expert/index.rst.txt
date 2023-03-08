@@ -3,13 +3,13 @@
 solver.tui.setup.expert
 =======================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.expert
-   :members: heterogeneous_stiff_chemistry, enable_mesh_morpher_optimizer, stiff_chemistry, beta_feature_access
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.expert
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:

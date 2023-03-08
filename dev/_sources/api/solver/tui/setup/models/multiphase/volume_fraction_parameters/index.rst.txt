@@ -1,0 +1,13 @@
+.. _ref_solver_tui_setup_models_multiphase_volume_fraction_parameters:
+
+solver.tui.setup.models.multiphase.volume\_fraction\_parameters
+===============================================================
+
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.volume_fraction_parameters
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
+

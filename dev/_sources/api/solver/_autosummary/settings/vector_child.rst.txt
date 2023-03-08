@@ -5,16 +5,13 @@
 vector_child
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.vector_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.vector_child.vector_child
 
-.. autoclass:: vector_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==============================================   ===============================
 
-Child                                                                    Summary
+Attribute                                                                Summary
 
 ==============================================   ===============================
 :ref:`name <name_1>`                                               'name' child.
@@ -51,11 +48,11 @@ Child                                                                    Summary
 
 ==============================================   ===============================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ==========================   ======================
 
-Command                                     Summary
+Method                                      Summary
 
 ==========================   ======================
 :ref:`display <display_2>`       'display' command.

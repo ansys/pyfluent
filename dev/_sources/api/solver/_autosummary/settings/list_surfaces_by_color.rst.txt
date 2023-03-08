@@ -5,11 +5,8 @@
 list_surfaces_by_color
 ======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.list_surfaces_by_color
+.. autoclass:: ansys.fluent.core.solver.settings_231.list_surfaces_by_color.list_surfaces_by_color
 
-.. autoclass:: list_surfaces_by_color
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =======================

@@ -3,22 +3,22 @@
 solver.tui.define.boundary\_conditions
 ======================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.boundary_conditions
-   :members: inlet_vent, radiator, degassing, axis, network_end, zone_name, openchannel_threads, rans_les_interface, interior, list_zones, non_overlapping_zone_name, interface, symmetry, intake_fan, network, porous_jump, copy_bc, outflow, zone_type, pressure_inlet, pressure_outlet, recirculation_outlet, wall, mass_flow_inlet, periodic, velocity_inlet, pressure_far_field, fluid, mass_flow_outlet, open_channel_wave_settings, recirculation_inlet, outlet_vent, overset, fan, geometry, target_mass_flow_rate_settings, shadow, exhaust_fan, solid, knudsen_number_calculator
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.boundary_conditions
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:
 
-   impedance_data_fitting/index
-   rename_zone/index
    advanced/index
-   perforated_walls/index
-   bc_settings/index
-   non_reflecting_bc/index
    modify_zones/index
+   non_reflecting_bc/index
+   rename_zone/index
+   bc_settings/index
+   perforated_walls/index
    set/index
+   impedance_data_fitting/index

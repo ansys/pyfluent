@@ -5,11 +5,8 @@
 fwd
 ===
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.fwd
+.. autoclass:: ansys.fluent.core.solver.settings_231.fwd.fwd
 
-.. autoclass:: fwd
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -5,16 +5,13 @@
 youngs_modulus_1
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.youngs_modulus_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.youngs_modulus_1.youngs_modulus_1
 
-.. autoclass:: youngs_modulus_1
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

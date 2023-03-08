@@ -5,16 +5,13 @@
 multi_phase_setting
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.multi_phase_setting
+.. autoclass:: ansys.fluent.core.solver.settings_231.multi_phase_setting.multi_phase_setting
 
-.. autoclass:: multi_phase_setting
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==========================   ========================================
 
-Child                                                         Summary
+Attribute                                                     Summary
 
 ==========================   ========================================
 :ref:`enable <enable_7>`         Enable/disable hybrid nita settings.

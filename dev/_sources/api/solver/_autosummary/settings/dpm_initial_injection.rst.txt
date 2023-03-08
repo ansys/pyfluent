@@ -5,11 +5,8 @@
 dpm_initial_injection
 =====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_initial_injection
+.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_initial_injection.dpm_initial_injection
 
-.. autoclass:: dpm_initial_injection
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -5,11 +5,8 @@
 max_diam
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.max_diam
+.. autoclass:: ansys.fluent.core.solver.settings_231.max_diam.max_diam
 
-.. autoclass:: max_diam
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ===================================

@@ -5,11 +5,8 @@
 realcomponent
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.realcomponent
+.. autoclass:: ansys.fluent.core.solver.settings_231.realcomponent.realcomponent
 
-.. autoclass:: realcomponent
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================

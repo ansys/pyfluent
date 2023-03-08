@@ -5,11 +5,8 @@
 slit_face_zone
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.slit_face_zone
+.. autoclass:: ansys.fluent.core.solver.settings_231.slit_face_zone.slit_face_zone
 
-.. autoclass:: slit_face_zone
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ========================   ====================

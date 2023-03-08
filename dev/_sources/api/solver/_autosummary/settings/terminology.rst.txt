@@ -5,11 +5,8 @@
 terminology
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.terminology
+.. autoclass:: ansys.fluent.core.solver.settings_231.terminology.terminology
 
-.. autoclass:: terminology
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   ==============================================

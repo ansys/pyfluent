@@ -5,16 +5,13 @@
 convergence_conditions
 ======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.convergence_conditions
+.. autoclass:: ansys.fluent.core.solver.settings_231.convergence_conditions.convergence_conditions
 
-.. autoclass:: convergence_conditions
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ================================================   ================================
 
-Child                                                                       Summary
+Attribute                                                                   Summary
 
 ================================================   ================================
 :ref:`convergence_reports <convergence_reports>`       'convergence_reports' child.

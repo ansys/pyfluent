@@ -5,11 +5,8 @@
 aero
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.aero
+.. autoclass:: ansys.fluent.core.solver.settings_231.aero.aero
 
-.. autoclass:: aero
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

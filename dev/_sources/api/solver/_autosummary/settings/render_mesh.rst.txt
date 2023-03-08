@@ -5,11 +5,8 @@
 render_mesh
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.render_mesh
+.. autoclass:: ansys.fluent.core.solver.settings_231.render_mesh.render_mesh
 
-.. autoclass:: render_mesh
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   =====================

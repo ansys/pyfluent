@@ -5,11 +5,8 @@
 read_data
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.read_data
+.. autoclass:: ansys.fluent.core.solver.settings_231.read_data.read_data
 
-.. autoclass:: read_data
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ============================================   ==============================

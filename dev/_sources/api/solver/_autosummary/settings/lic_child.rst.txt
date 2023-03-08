@@ -5,16 +5,13 @@
 lic_child
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.lic_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.lic_child.lic_child
 
-.. autoclass:: lic_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================================================   ====================================
 
-Child                                                                                   Summary
+Attribute                                                                               Summary
 
 ========================================================   ====================================
 :ref:`name <name_1>`                                                              'name' child.
@@ -67,11 +64,11 @@ Child                                                                           
 
 ========================================================   ====================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ==========================   ======================
 
-Command                                     Summary
+Method                                      Summary
 
 ==========================   ======================
 :ref:`display <display_2>`       'display' command.

@@ -5,11 +5,8 @@
 max_time_step
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.max_time_step
+.. autoclass:: ansys.fluent.core.solver.settings_231.max_time_step.max_time_step
 
-.. autoclass:: max_time_step
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================================   =============================================

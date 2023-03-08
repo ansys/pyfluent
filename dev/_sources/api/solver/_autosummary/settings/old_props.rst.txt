@@ -5,11 +5,8 @@
 old_props
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.old_props
+.. autoclass:: ansys.fluent.core.solver.settings_231.old_props.old_props
 
-.. autoclass:: old_props
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================================================   =================================================

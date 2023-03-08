@@ -5,11 +5,8 @@
 max_rel_humidity
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.max_rel_humidity
+.. autoclass:: ansys.fluent.core.solver.settings_231.max_rel_humidity.max_rel_humidity
 
-.. autoclass:: max_rel_humidity
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ===================================================

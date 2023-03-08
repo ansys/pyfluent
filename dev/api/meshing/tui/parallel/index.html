@@ -56,7 +56,7 @@
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
     <link rel="next" title="meshing.tui.cad_assemblies" href="../cad_assemblies/index.html" />
-    <link rel="prev" title="meshing.tui.objects.remove_gaps" href="../objects/remove_gaps/index.html" />
+    <link rel="prev" title="meshing.tui.openmp_controls" href="../openmp_controls/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -302,13 +302,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -321,6 +316,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../index.html">
      meshing.tui
@@ -337,28 +337,8 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../boundary/index.html">
-       meshing.tui.boundary
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../openmp_controls/index.html">
-       meshing.tui.openmp_controls
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../mesh/index.html">
-       meshing.tui.mesh
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../reference_frames/index.html">
-       meshing.tui.reference_frames
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
+      <a class="reference internal" href="../file/index.html">
+       meshing.tui.file
       </a>
      </li>
      <li class="toctree-l3">
@@ -367,13 +347,38 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../file/index.html">
-       meshing.tui.file
+      <a class="reference internal" href="../mesh/index.html">
+       meshing.tui.mesh
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../boundary/index.html">
+       meshing.tui.boundary
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../reference_frames/index.html">
+       meshing.tui.reference_frames
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../size_functions/index.html">
+       meshing.tui.size_functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
       </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../objects/index.html">
        meshing.tui.objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../openmp_controls/index.html">
+       meshing.tui.openmp_controls
       </a>
      </li>
      <li class="toctree-l3 current active">
@@ -387,11 +392,6 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../diagnostics/index.html">
-       meshing.tui.diagnostics
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../material_point/index.html">
        meshing.tui.material_point
       </a>
@@ -402,8 +402,8 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../size_functions/index.html">
-       meshing.tui.size_functions
+      <a class="reference internal" href="../diagnostics/index.html">
+       meshing.tui.diagnostics
       </a>
      </li>
     </ul>
@@ -448,7 +448,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.parallel">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.parallel
+     parallel
     </span>
    </code>
   </a>
@@ -457,7 +457,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.parallel.agglomerate">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.parallel.agglomerate()
+       parallel.agglomerate()
       </span>
      </code>
     </a>
@@ -466,7 +466,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.parallel.auto_partition">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.parallel.auto_partition()
+       parallel.auto_partition()
       </span>
      </code>
     </a>
@@ -475,7 +475,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.parallel.print_partition_info">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.parallel.print_partition_info()
+       parallel.print_partition_info()
       </span>
      </code>
     </a>
@@ -484,7 +484,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.parallel.spawn_solver_processes">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.parallel.spawn_solver_processes()
+       parallel.spawn_solver_processes()
       </span>
      </code>
     </a>
@@ -493,7 +493,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.parallel.thread_number_control">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.parallel.thread_number_control()
+       parallel.thread_number_control()
       </span>
      </code>
     </a>
@@ -521,14 +521,31 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-parallel">
 <span id="ref-meshing-tui-parallel"></span><h1>meshing.tui.parallel<a class="headerlink" href="#meshing-tui-parallel" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.parallel">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.</span></span><span class="sig-name descname"><span class="pre">parallel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.parallel" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the parallel menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.</span></span><span class="sig-name descname"><span class="pre">parallel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.parallel" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the parallel menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.parallel.agglomerate" title="ansys.fluent.core.meshing.tui_231.main_menu.parallel.agglomerate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">agglomerate</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Recombines distributed mesh data into a single partition on compute node 0.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.parallel.auto_partition" title="ansys.fluent.core.meshing.tui_231.main_menu.parallel.auto_partition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_partition</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Automatically partitions face-zones for parallel meshing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.parallel.print_partition_info" title="ansys.fluent.core.meshing.tui_231.main_menu.parallel.print_partition_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_partition_info</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Displays computed partition data to the console.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.parallel.spawn_solver_processes" title="ansys.fluent.core.meshing.tui_231.main_menu.parallel.spawn_solver_processes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spawn_solver_processes</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the number of solver processes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_231.main_menu.parallel.thread_number_control" title="ansys.fluent.core.meshing.tui_231.main_menu.parallel.thread_number_control"><code class="xref py py-obj docutils literal notranslate"><span class="pre">thread_number_control</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Controls the maximum number of threads on each machine.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.parallel.agglomerate">
 <span class="sig-name descname"><span class="pre">agglomerate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.parallel.agglomerate" title="Permalink to this definition">#</a></dt>

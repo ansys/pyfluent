@@ -5,11 +5,8 @@
 law_of_the_wall
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.law_of_the_wall
+.. autoclass:: ansys.fluent.core.solver.settings_231.law_of_the_wall.law_of_the_wall
 
-.. autoclass:: law_of_the_wall
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   ================================

@@ -3,13 +3,13 @@
 meshing.datamodel.PMFileManagement.File
 =======================================
 
-.. currentmodule:: ansys.fluent.core.datamodel_231.PMFileManagement
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.datamodel_231.PMFileManagement::Root.File._File
-   :members: Append, ConvertedPath, Dummy, FileUnit, IgnoreSolidNames, JtLOD, Keys, Name, PartPerBody, Path, PrefixParentName, RemoveEmptyParts, Route, Updated, _name_
+.. autoclass:: ansys.fluent.core.datamodel_231.PMFileManagement.Root.File._File
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:

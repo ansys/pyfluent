@@ -5,11 +5,8 @@
 solve_tke
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.solve_tke
+.. autoclass:: ansys.fluent.core.solver.settings_231.solve_tke.solve_tke
 
-.. autoclass:: solve_tke
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   ====================================

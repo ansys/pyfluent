@@ -5,16 +5,13 @@
 laplace_smoothing
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.laplace_smoothing
+.. autoclass:: ansys.fluent.core.solver.settings_231.laplace_smoothing.laplace_smoothing
 
-.. autoclass:: laplace_smoothing
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==========================   ====================================================
 
-Child                                                                     Summary
+Attribute                                                                 Summary
 
 ==========================   ====================================================
 :ref:`enabled <enabled_2>`                                       'enabled' child.

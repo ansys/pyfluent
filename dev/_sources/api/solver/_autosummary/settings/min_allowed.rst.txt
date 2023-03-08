@@ -5,11 +5,8 @@
 min_allowed
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.min_allowed
+.. autoclass:: ansys.fluent.core.solver.settings_231.min_allowed.min_allowed
 
-.. autoclass:: min_allowed
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================   ========================

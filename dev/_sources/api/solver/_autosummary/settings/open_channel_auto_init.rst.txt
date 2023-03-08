@@ -5,16 +5,13 @@
 open_channel_auto_init
 ======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.open_channel_auto_init
+.. autoclass:: ansys.fluent.core.solver.settings_231.open_channel_auto_init.open_channel_auto_init
 
-.. autoclass:: open_channel_auto_init
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ============================================   ==============================
 
-Child                                                                 Summary
+Attribute                                                             Summary
 
 ============================================   ==============================
 :ref:`boundary_thread <boundary_thread>`             'boundary_thread' child.

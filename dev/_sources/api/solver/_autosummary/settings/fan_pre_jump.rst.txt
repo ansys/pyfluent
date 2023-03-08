@@ -5,11 +5,8 @@
 fan_pre_jump
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.fan_pre_jump
+.. autoclass:: ansys.fluent.core.solver.settings_231.fan_pre_jump.fan_pre_jump
 
-.. autoclass:: fan_pre_jump
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

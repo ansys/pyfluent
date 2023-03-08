@@ -3,11 +3,11 @@
 meshing.tui.mesh.cavity
 =======================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.cavity
-   :members: merge_cavity, add_zones, region, create_hexcore_cavity_by_region, remesh_hexcore_cavity, remove_zones, replace_zones, create_hexcore_cavity_by_scale
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.mesh.cavity
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

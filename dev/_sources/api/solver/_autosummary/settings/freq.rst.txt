@@ -5,16 +5,13 @@
 freq
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.freq
+.. autoclass:: ansys.fluent.core.solver.settings_231.freq.freq
 
-.. autoclass:: freq
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

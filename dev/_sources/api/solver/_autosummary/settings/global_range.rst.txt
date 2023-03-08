@@ -5,11 +5,8 @@
 global_range
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.global_range
+.. autoclass:: ansys.fluent.core.solver.settings_231.global_range.global_range
 
-.. autoclass:: global_range
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

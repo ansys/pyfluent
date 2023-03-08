@@ -5,11 +5,8 @@
 alignment
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.alignment
+.. autoclass:: ansys.fluent.core.solver.settings_231.alignment.alignment
 
-.. autoclass:: alignment
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================   =======================================

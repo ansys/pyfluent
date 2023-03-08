@@ -5,16 +5,13 @@
 v_trans
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.v_trans
+.. autoclass:: ansys.fluent.core.solver.settings_231.v_trans.v_trans
 
-.. autoclass:: v_trans
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

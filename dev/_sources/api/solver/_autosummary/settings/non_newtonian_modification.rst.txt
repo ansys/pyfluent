@@ -5,11 +5,8 @@
 non_newtonian_modification
 ==========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.non_newtonian_modification
+.. autoclass:: ansys.fluent.core.solver.settings_231.non_newtonian_modification.non_newtonian_modification
 
-.. autoclass:: non_newtonian_modification
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================

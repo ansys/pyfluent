@@ -5,11 +5,8 @@
 x_displacement_type
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.x_displacement_type
+.. autoclass:: ansys.fluent.core.solver.settings_231.x_displacement_type.x_displacement_type
 
-.. autoclass:: x_displacement_type
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

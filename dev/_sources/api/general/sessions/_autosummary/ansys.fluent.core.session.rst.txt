@@ -1,0 +1,30 @@
+﻿session
+=======
+
+.. automodule:: ansys.fluent.core.session
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      parse_server_info_file
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

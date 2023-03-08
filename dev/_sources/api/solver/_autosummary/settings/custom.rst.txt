@@ -5,11 +5,8 @@
 custom
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.custom
+.. autoclass:: ansys.fluent.core.solver.settings_231.custom.custom
 
-.. autoclass:: custom
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`phase_child <phase_child_10>`

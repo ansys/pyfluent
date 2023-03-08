@@ -5,11 +5,8 @@
 structure_material
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.structure_material
+.. autoclass:: ansys.fluent.core.solver.settings_231.structure_material.structure_material
 
-.. autoclass:: structure_material
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

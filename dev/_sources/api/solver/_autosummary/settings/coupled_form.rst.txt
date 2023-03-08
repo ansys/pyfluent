@@ -5,11 +5,8 @@
 coupled_form
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.coupled_form
+.. autoclass:: ansys.fluent.core.solver.settings_231.coupled_form.coupled_form
 
-.. autoclass:: coupled_form
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   =================================================

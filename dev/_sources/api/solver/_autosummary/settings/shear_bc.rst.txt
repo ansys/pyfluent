@@ -5,11 +5,8 @@
 shear_bc
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.shear_bc
+.. autoclass:: ansys.fluent.core.solver.settings_231.shear_bc.shear_bc
 
-.. autoclass:: shear_bc
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -5,11 +5,8 @@
 lighting
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.lighting
+.. autoclass:: ansys.fluent.core.solver.settings_231.lighting.lighting
 
-.. autoclass:: lighting
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

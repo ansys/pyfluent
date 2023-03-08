@@ -5,16 +5,13 @@
 lithium_diffusivity
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.lithium_diffusivity
+.. autoclass:: ansys.fluent.core.solver.settings_231.lithium_diffusivity.lithium_diffusivity
 
-.. autoclass:: lithium_diffusivity
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   ====================================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

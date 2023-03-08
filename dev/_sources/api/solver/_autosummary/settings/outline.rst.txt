@@ -5,11 +5,8 @@
 outline
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.outline
+.. autoclass:: ansys.fluent.core.solver.settings_231.outline.outline
 
-.. autoclass:: outline
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

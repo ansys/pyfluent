@@ -5,11 +5,8 @@
 index_of_refraction
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.index_of_refraction
+.. autoclass:: ansys.fluent.core.solver.settings_231.index_of_refraction.index_of_refraction
 
-.. autoclass:: index_of_refraction
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ================================

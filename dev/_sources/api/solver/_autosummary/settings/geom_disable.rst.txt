@@ -5,11 +5,8 @@
 geom_disable
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.geom_disable
+.. autoclass:: ansys.fluent.core.solver.settings_231.geom_disable.geom_disable
 
-.. autoclass:: geom_disable
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================================   ================================================

@@ -5,16 +5,13 @@
 custom_laws
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.custom_laws
+.. autoclass:: ansys.fluent.core.solver.settings_231.custom_laws.custom_laws
 
-.. autoclass:: custom_laws
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ======================   ===================
 
-Child                                Summary
+Attribute                            Summary
 
 ======================   ===================
 :ref:`law_1 <law_1>`          'law_1' child.

@@ -5,16 +5,13 @@
 ww
 ==
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.ww
+.. autoclass:: ansys.fluent.core.solver.settings_231.ww.ww
 
-.. autoclass:: ww
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

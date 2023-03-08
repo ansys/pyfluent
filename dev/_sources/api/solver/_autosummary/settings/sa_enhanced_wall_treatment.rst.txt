@@ -5,11 +5,8 @@
 sa_enhanced_wall_treatment
 ==========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.sa_enhanced_wall_treatment
+.. autoclass:: ansys.fluent.core.solver.settings_231.sa_enhanced_wall_treatment.sa_enhanced_wall_treatment
 
-.. autoclass:: sa_enhanced_wall_treatment
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ====================

@@ -5,16 +5,13 @@
 power_law
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.power_law
+.. autoclass:: ansys.fluent.core.solver.settings_231.power_law.power_law
 
-.. autoclass:: power_law
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   ==================================
 
-Child                                                                             Summary
+Attribute                                                                         Summary
 
 ====================================================   ==================================
 :ref:`option <option_2>`                                                  'option' child.

@@ -5,11 +5,8 @@
 filter_minimum
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.filter_minimum
+.. autoclass:: ansys.fluent.core.solver.settings_231.filter_minimum.filter_minimum
 
-.. autoclass:: filter_minimum
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

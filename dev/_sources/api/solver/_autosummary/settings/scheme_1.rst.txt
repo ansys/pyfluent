@@ -5,11 +5,8 @@
 scheme
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.scheme_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.scheme_1.scheme
 
-.. autoclass:: scheme
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ====================

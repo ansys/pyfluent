@@ -5,11 +5,8 @@
 enable_drag_scaling
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.enable_drag_scaling
+.. autoclass:: ansys.fluent.core.solver.settings_231.enable_drag_scaling.enable_drag_scaling
 
-.. autoclass:: enable_drag_scaling
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==============================================================================================================

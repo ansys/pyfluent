@@ -5,11 +5,8 @@
 total_flow_rate
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.total_flow_rate
+.. autoclass:: ansys.fluent.core.solver.settings_231.total_flow_rate.total_flow_rate
 
-.. autoclass:: total_flow_rate
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   ======================

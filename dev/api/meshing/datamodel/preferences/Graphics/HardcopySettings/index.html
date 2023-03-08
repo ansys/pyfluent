@@ -304,13 +304,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -323,6 +318,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../../tui/index.html">
      meshing.tui
@@ -529,7 +529,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings">
    <code class="docutils literal notranslate">
     <span class="pre">
-     Root.Graphics.HardcopySettings
+     HardcopySettings
     </span>
    </code>
   </a>
@@ -538,7 +538,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.ExportEdgesForAVZ">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Graphics.HardcopySettings.ExportEdgesForAVZ
+       HardcopySettings.ExportEdgesForAVZ
       </span>
      </code>
     </a>
@@ -547,7 +547,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.HardcopyDriver">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Graphics.HardcopySettings.HardcopyDriver
+       HardcopySettings.HardcopyDriver
       </span>
      </code>
     </a>
@@ -556,7 +556,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.HardcopyLineWidth">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Graphics.HardcopySettings.HardcopyLineWidth
+       HardcopySettings.HardcopyLineWidth
       </span>
      </code>
     </a>
@@ -565,7 +565,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.HardwareImageAccel">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Graphics.HardcopySettings.HardwareImageAccel
+       HardcopySettings.HardwareImageAccel
       </span>
      </code>
     </a>
@@ -574,7 +574,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.PostScriptPermissionOverride">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Graphics.HardcopySettings.PostScriptPermissionOverride
+       HardcopySettings.PostScriptPermissionOverride
       </span>
      </code>
     </a>
@@ -583,7 +583,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.SaveEmbeddedHardcopiesSeparately">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Graphics.HardcopySettings.SaveEmbeddedHardcopiesSeparately
+       HardcopySettings.SaveEmbeddedHardcopiesSeparately
       </span>
      </code>
     </a>
@@ -592,7 +592,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.SaveEmbeddedWindowsInHardcopy">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Graphics.HardcopySettings.SaveEmbeddedWindowsInHardcopy
+       HardcopySettings.SaveEmbeddedWindowsInHardcopy
       </span>
      </code>
     </a>
@@ -601,7 +601,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.TransparentEmbeddedWindows">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Graphics.HardcopySettings.TransparentEmbeddedWindows
+       HardcopySettings.TransparentEmbeddedWindows
       </span>
      </code>
     </a>
@@ -629,60 +629,94 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-datamodel-preferences-graphics-hardcopysettings">
 <span id="ref-meshing-datamodel-preferences-graphics-hardcopysettings"></span><h1>meshing.datamodel.preferences.Graphics.HardcopySettings<a class="headerlink" href="#meshing-datamodel-preferences-graphics-hardcopysettings" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.datamodel_231.preferences.Root.Graphics.</span></span><span class="sig-name descname"><span class="pre">HardcopySettings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
+<p>Singleton HardcopySettings.</p>
+<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.ExportEdgesForAVZ" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.ExportEdgesForAVZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExportEdgesForAVZ</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter ExportEdgesForAVZ of value type bool.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.HardcopyDriver" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.HardcopyDriver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HardcopyDriver</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter HardcopyDriver of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.HardcopyLineWidth" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.HardcopyLineWidth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HardcopyLineWidth</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter HardcopyLineWidth of value type int.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.HardwareImageAccel" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.HardwareImageAccel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HardwareImageAccel</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter HardwareImageAccel of value type bool.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.PostScriptPermissionOverride" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.PostScriptPermissionOverride"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PostScriptPermissionOverride</span></code></a>(service, rules)</p></td>
+<td><p>Parameter PostScriptPermissionOverride of value type bool.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.SaveEmbeddedHardcopiesSeparately" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.SaveEmbeddedHardcopiesSeparately"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SaveEmbeddedHardcopiesSeparately</span></code></a>(service, rules)</p></td>
+<td><p>Parameter SaveEmbeddedHardcopiesSeparately of value type bool.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.SaveEmbeddedWindowsInHardcopy" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.SaveEmbeddedWindowsInHardcopy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SaveEmbeddedWindowsInHardcopy</span></code></a>(service, rules)</p></td>
+<td><p>Parameter SaveEmbeddedWindowsInHardcopy of value type bool.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.TransparentEmbeddedWindows" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.TransparentEmbeddedWindows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TransparentEmbeddedWindows</span></code></a>(service, rules[, ...])</p></td>
+<td><p>Parameter TransparentEmbeddedWindows of value type bool.</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Root.Graphics.</span></span><span class="sig-name descname"><span class="pre">HardcopySettings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings" title="Permalink to this definition">#</a></dt>
-<dd><p>Singleton HardcopySettings.</p>
-<dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.ExportEdgesForAVZ">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ExportEdgesForAVZ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.ExportEdgesForAVZ" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter ExportEdgesForAVZ of value type bool.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter ExportEdgesForAVZ of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.HardcopyDriver">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">HardcopyDriver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.HardcopyDriver" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter HardcopyDriver of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter HardcopyDriver of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.HardcopyLineWidth">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">HardcopyLineWidth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.HardcopyLineWidth" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter HardcopyLineWidth of value type int.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter HardcopyLineWidth of value type int.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.HardwareImageAccel">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">HardwareImageAccel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.HardwareImageAccel" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter HardwareImageAccel of value type bool.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter HardwareImageAccel of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.PostScriptPermissionOverride">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PostScriptPermissionOverride</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.PostScriptPermissionOverride" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter PostScriptPermissionOverride of value type bool.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter PostScriptPermissionOverride of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.SaveEmbeddedHardcopiesSeparately">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SaveEmbeddedHardcopiesSeparately</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.SaveEmbeddedHardcopiesSeparately" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter SaveEmbeddedHardcopiesSeparately of value type bool.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter SaveEmbeddedHardcopiesSeparately of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.SaveEmbeddedWindowsInHardcopy">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SaveEmbeddedWindowsInHardcopy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.SaveEmbeddedWindowsInHardcopy" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter SaveEmbeddedWindowsInHardcopy of value type bool.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter SaveEmbeddedWindowsInHardcopy of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.TransparentEmbeddedWindows">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TransparentEmbeddedWindows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.HardcopySettings.TransparentEmbeddedWindows" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter TransparentEmbeddedWindows of value type bool.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter TransparentEmbeddedWindows of value type bool.</p>
 </dd></dl>
 
 </dd></dl>

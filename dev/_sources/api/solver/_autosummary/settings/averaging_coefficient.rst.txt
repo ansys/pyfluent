@@ -5,11 +5,8 @@
 averaging_coefficient
 =====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.averaging_coefficient
+.. autoclass:: ansys.fluent.core.solver.settings_231.averaging_coefficient.averaging_coefficient
 
-.. autoclass:: averaging_coefficient
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

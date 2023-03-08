@@ -5,11 +5,8 @@
 film_wall_bc
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.film_wall_bc
+.. autoclass:: ansys.fluent.core.solver.settings_231.film_wall_bc.film_wall_bc
 
-.. autoclass:: film_wall_bc
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

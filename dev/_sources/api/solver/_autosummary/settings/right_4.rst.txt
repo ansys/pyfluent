@@ -5,11 +5,8 @@
 right
 =====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.right_4
+.. autoclass:: ansys.fluent.core.solver.settings_231.right_4.right
 
-.. autoclass:: right
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================   =======================================

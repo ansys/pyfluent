@@ -5,11 +5,8 @@
 pick_injection
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.pick_injection
+.. autoclass:: ansys.fluent.core.solver.settings_231.pick_injection.pick_injection
 
-.. autoclass:: pick_injection
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =================================================================================

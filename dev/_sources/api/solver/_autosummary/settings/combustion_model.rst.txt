@@ -5,16 +5,13 @@
 combustion_model
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.combustion_model
+.. autoclass:: ansys.fluent.core.solver.settings_231.combustion_model.combustion_model
 
-.. autoclass:: combustion_model
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==============================================================   ====================================================
 
-Child                                                                                                         Summary
+Attribute                                                                                                     Summary
 
 ==============================================================   ====================================================
 :ref:`option <option_9>`                                             Select method for calculating material property.

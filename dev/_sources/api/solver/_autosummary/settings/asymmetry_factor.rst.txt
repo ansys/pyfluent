@@ -5,11 +5,8 @@
 asymmetry_factor
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.asymmetry_factor
+.. autoclass:: ansys.fluent.core.solver.settings_231.asymmetry_factor.asymmetry_factor
 
-.. autoclass:: asymmetry_factor
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

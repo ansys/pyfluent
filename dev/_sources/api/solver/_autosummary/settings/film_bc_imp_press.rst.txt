@@ -5,11 +5,8 @@
 film_bc_imp_press
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.film_bc_imp_press
+.. autoclass:: ansys.fluent.core.solver.settings_231.film_bc_imp_press.film_bc_imp_press
 
-.. autoclass:: film_bc_imp_press
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

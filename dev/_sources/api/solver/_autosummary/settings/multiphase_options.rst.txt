@@ -5,16 +5,13 @@
 multiphase_options
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.multiphase_options
+.. autoclass:: ansys.fluent.core.solver.settings_231.multiphase_options.multiphase_options
 
-.. autoclass:: multiphase_options
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================================================================   ====================================================
 
-Child                                                                                                                   Summary
+Attribute                                                                                                               Summary
 
 ========================================================================   ====================================================
 :ref:`dispersion_force_in_momentum <dispersion_force_in_momentum>`                Enable/Disable dispersion force in momentum?.

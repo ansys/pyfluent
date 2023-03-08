@@ -5,11 +5,8 @@
 relative_permeability
 =====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.relative_permeability
+.. autoclass:: ansys.fluent.core.solver.settings_231.relative_permeability.relative_permeability
 
-.. autoclass:: relative_permeability
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ========================================================

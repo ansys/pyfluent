@@ -5,16 +5,13 @@
 network_child
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.network_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.network_child.network_child
 
-.. autoclass:: network_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 =======================   ==================
 
-Child                                Summary
+Attribute                            Summary
 
 =======================   ==================
 :ref:`phase <phase_10>`       'phase' child.

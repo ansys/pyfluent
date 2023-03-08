@@ -5,11 +5,8 @@
 source_terms
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.source_terms_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.source_terms_1.source_terms
 
-.. autoclass:: source_terms
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`source_terms_child <source_terms_child>`

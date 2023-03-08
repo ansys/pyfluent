@@ -5,16 +5,13 @@
 expert
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.expert
+.. autoclass:: ansys.fluent.core.solver.settings_231.expert.expert
 
-.. autoclass:: expert
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==============================================================   =======================================================
 
-Child                                                                                                            Summary
+Attribute                                                                                                        Summary
 
 ==============================================================   =======================================================
 :ref:`under_relaxation_factor <under_relaxation_factor>`                  Specify under-relaxation factor to be used in 

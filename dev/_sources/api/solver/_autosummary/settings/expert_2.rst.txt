@@ -5,16 +5,13 @@
 expert
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.expert_2
+.. autoclass:: ansys.fluent.core.solver.settings_231.expert_2.expert
 
-.. autoclass:: expert
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ======================================================================================   ==========================================================================
 
-Child                                                                                                                                                       Summary
+Attribute                                                                                                                                                   Summary
 
 ======================================================================================   ==========================================================================
 :ref:`reactions <reactions_1>`                                                               Enable/disable the species reaction sources and set relaxation factor.

@@ -5,11 +5,8 @@
 all_len_modified
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.all_len_modified
+.. autoclass:: ansys.fluent.core.solver.settings_231.all_len_modified.all_len_modified
 
-.. autoclass:: all_len_modified
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================   ========================

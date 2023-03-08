@@ -5,16 +5,13 @@
 display_states_child
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.display_states_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.display_states_child.display_states_child
 
-.. autoclass:: display_states_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================================================   ====================================
 
-Child                                                                                   Summary
+Attribute                                                                               Summary
 
 ========================================================   ====================================
 :ref:`front_faces_transparent <front_faces_transparent>`       'front_faces_transparent' child.

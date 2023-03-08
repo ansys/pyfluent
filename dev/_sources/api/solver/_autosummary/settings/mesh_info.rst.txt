@@ -5,11 +5,8 @@
 mesh_info
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.mesh_info
+.. autoclass:: ansys.fluent.core.solver.settings_231.mesh_info.mesh_info
 
-.. autoclass:: mesh_info
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ================================   ================================

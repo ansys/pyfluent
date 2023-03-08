@@ -3,21 +3,23 @@
 solver.tui.solution
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution
 .. toctree::
    :hidden:
 
    calculation_activities/index
+   cell_registers/index
    controls/index
+   expert/index
    initialize/index
-   run_calculation/index
    methods/index
    monitors/index
    report_definitions/index
-   cell_registers/index
-   expert/index
+   run_calculation/index
