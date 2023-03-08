@@ -600,3 +600,13 @@ def test_meshing_workflow_structure(new_mesh_session):
         "Enclose Fluid Regions (Capping)",
         "Create Regions",
     ]
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_231
+def test_iterate_meshing_workflow_task_container(new_mesh_session):
+    workflow = new_mesh_session.workflow
+    workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    tasks = [task for task in workflow.TaskObject]
+    assert len(tasks) == 11
+    assert tasks[0].name() == "Import Geometry"
