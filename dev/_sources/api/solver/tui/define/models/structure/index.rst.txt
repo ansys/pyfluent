@@ -14,5 +14,5 @@ solver.tui.define.models.structure
 .. toctree::
    :hidden:
 
-   controls/index
    expert/index
+   controls/index

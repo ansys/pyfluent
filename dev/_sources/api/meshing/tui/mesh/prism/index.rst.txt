@@ -14,7 +14,7 @@ meshing.tui.mesh.prism
 .. toctree::
    :hidden:
 
-   controls/index
    split/index
+   controls/index
    improve/index
    post_ignore/index

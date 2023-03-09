@@ -14,6 +14,6 @@ solver.tui.results.graphics.expert.set.particle\_tracks
 .. toctree::
    :hidden:
 
-   sphere_settings/index
-   vector_settings/index
    filter_settings/index
+   vector_settings/index
+   sphere_settings/index

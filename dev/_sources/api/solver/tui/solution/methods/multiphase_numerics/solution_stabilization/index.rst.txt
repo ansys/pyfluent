@@ -14,5 +14,5 @@ solver.tui.solution.methods.multiphase\_numerics.solution\_stabilization
 .. toctree::
    :hidden:
 
-   additional_stabilization_controls/index
    velocity_limiting_treatment/index
+   additional_stabilization_controls/index

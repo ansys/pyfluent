@@ -14,5 +14,5 @@ meshing.tui.mesh.poly.controls
 .. toctree::
    :hidden:
 
-   smooth_controls/index
    prism/index
+   smooth_controls/index

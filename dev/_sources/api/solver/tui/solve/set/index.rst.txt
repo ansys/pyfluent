@@ -14,23 +14,22 @@ solver.tui.solve.set
 .. toctree::
    :hidden:
 
-   contact_solution_controls/index
-   transient_controls/index
    data_sampling_options/index
-   pseudo_time_method/index
-   nita_expert_controls/index
-   multiphase_numerics/index
-   open_channel_wave_options/index
-   high_order_term_relaxation/index
-   poor_mesh_numerics/index
    amg_options/index
-   warped_face_gradient_correction/index
-   fast_transient_settings/index
    divergence_prevention/index
-   advanced/index
-   high_speed_numerics/index
+   nita_expert_controls/index
    previous_defaults/index
-   enhanced_les_numerics/index
-   overset/index
+   advanced/index
    acoustics_wave_equation_controls/index
-   p_v_controls_advanced/index
+   multiphase_numerics/index
+   high_order_term_relaxation/index
+   open_channel_wave_options/index
+   enhanced_les_numerics/index
+   contact_solution_controls/index
+   poor_mesh_numerics/index
+   pseudo_time_method/index
+   fast_transient_settings/index
+   overset/index
+   high_speed_numerics/index
+   warped_face_gradient_correction/index
+   transient_controls/index

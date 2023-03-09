@@ -14,8 +14,8 @@ meshing.tui.display.set
 .. toctree::
    :hidden:
 
-   lights/index
    styles/index
-   colors/index
    rendering_options/index
    picture/index
+   lights/index
+   colors/index

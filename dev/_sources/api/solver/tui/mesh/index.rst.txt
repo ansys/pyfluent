@@ -14,10 +14,10 @@ solver.tui.mesh
 .. toctree::
    :hidden:
 
+   modify_zones/index
+   surface_mesh/index
+   polyhedra/index
    adapt/index
    geometry/index
-   modify_zones/index
-   polyhedra/index
    reorder/index
    repair_improve/index
-   surface_mesh/index
