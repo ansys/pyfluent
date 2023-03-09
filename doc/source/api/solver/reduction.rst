@@ -295,3 +295,12 @@ specified locations as shown:
   >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet2"]]
   >>> )
   [ 1.15005117e-24,  1.15218653e-24, -6.60723735e-20]
+
+.. currentmodule:: ansys.fluent.core.solver.function
+
+.. autosummary::
+    :toctree: _autosummary
+    :template: flobject-module-template.rst
+    :recursive:
+
+    reduction

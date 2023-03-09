@@ -293,21 +293,19 @@ class DataModelGenerator:
             f.write(f"{heading_}\n")
             f.write(f"{'=' * len(heading_)}\n")
             f.write("\n")
-            f.write(f".. currentmodule:: {module_name}\n\n")
-            f.write(".. autosummary::\n")
-            f.write("   :toctree: _autosummary\n\n")
 
             named_objects = sorted(info.namedobjects)
             singletons = sorted(info.singletons)
             parameters = sorted(info.parameters)
             commands = sorted(info.commands)
 
-            f.write(f".. autoclass:: {module_name}::{class_name}\n")
-            if parameters or commands:
-                f.write(f"   :members: {', '.join(parameters + commands)}\n")
-            if any(heading.startswith(x) for x in DataModelStaticInfo._noindices):
-                f.write("   :noindex:\n")
-            f.write("\n")
+            f.write(f".. autoclass:: {module_name}.{class_name}\n")
+            f.write("   :members:\n")
+            f.write("   :show-inheritance:\n")
+            f.write("   :undoc-members:\n")
+            f.write('   :exclude-members: "__weakref__, __dict__"\n')
+            f.write('   :special-members: " __init__"\n')
+            f.write("   :autosummary:\n\n")
 
             if singletons or named_objects:
                 f.write(".. toctree::\n")

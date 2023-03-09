@@ -11,6 +11,7 @@ class EventsService(StreamingService):
     """Class wrapping the events gRPC service of Fluent."""
 
     def __init__(self, channel: grpc.Channel, metadata):
+        """__init__ method of EventsService class."""
         super().__init__(
             stub=EventsGrpcModule.EventsStub(channel),
             request=EventsProtoModule.BeginStreamingRequest(),

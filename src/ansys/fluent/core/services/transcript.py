@@ -13,6 +13,7 @@ class TranscriptService(StreamingService):
     """Class wrapping the transcript gRPC service of Fluent."""
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
+        """__init__ method of TranscriptService class."""
         super().__init__(
             stub=TranscriptGrpcModule.TranscriptStub(channel),
             request=TranscriptModule.TranscriptRequest(),

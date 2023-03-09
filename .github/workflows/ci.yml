@@ -99,7 +99,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: '3.10'
 
       - name: Install OS packages
         run: |
@@ -176,8 +176,8 @@ jobs:
           restore-keys: |
             Examples-v${{ env.RESET_EXAMPLES_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
-      - name: Build Documentation
-        run: make build-doc
+      - name: Build Source Documentation
+        run: make build-doc-source
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
@@ -197,14 +197,14 @@ jobs:
           path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
           retention-days: 7
 
-      - name: Deploy stable documentation
-        uses: pyansys/actions/doc-deploy-stable@v3
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, 'dev')
-        with:
-            doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
-            decompress_artifact: true
-            cname: ${{ env.DOCUMENTATION_CNAME }}
-            token: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Deploy stable documentation
+#        uses: pyansys/actions/doc-deploy-stable@v3
+#        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, 'dev')
+#        with:
+#            doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
+#            decompress_artifact: true
+#            cname: ${{ env.DOCUMENTATION_CNAME }}
+#            token: ${{ secrets.GITHUB_TOKEN }}
 
 
   build:
@@ -218,7 +218,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: '3.10'
 
       - name: Cache pip
         uses: actions/cache@v3
@@ -360,7 +360,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: '3.10'
 
       - name: Download package
         uses: actions/download-artifact@v3
@@ -491,7 +491,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: '3.10'
 
       - uses: actions/download-artifact@v3
 

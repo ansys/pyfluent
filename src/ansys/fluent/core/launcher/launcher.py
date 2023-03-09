@@ -70,6 +70,18 @@ def get_ansys_version() -> str:
 
 
 def get_fluent_exe_path(**launch_argvals) -> Path:
+    """Get Fluent executable path. The path is searched in the following order.
+
+    1. ``PYFLUENT_FLUENT_ROOT`` environment variable.
+    2. ``product_version`` parameter passed with ``launch_fluent``.
+    3. The latest ANSYS version from ``AWP_ROOTnnn``` environment variables.
+
+    Returns
+    -------
+    Path
+        Fluent executable path
+    """
+
     def get_fluent_root(version: FluentVersion) -> Path:
         awp_root = os.environ["AWP_ROOT" + "".join(str(version).split("."))[:-1]]
         return Path(awp_root) / "fluent"
@@ -401,6 +413,7 @@ def _generate_launch_string(
 
 
 def scm_to_py(topy):
+    """Convert journal filenames to Python filename."""
     if not isinstance(topy, (str, list)):
         raise TypeError("Journal name should be of str or list type.")
     if isinstance(topy, str):
@@ -410,7 +423,10 @@ def scm_to_py(topy):
 
 
 class LaunchFluentError(Exception):
+    """Exception class representing launch errors."""
+
     def __init__(self, launch_string):
+        """__init__ method of LaunchFluentError class."""
         details = "\n" + "Fluent Launch string: " + launch_string
         super().__init__(details)
 
@@ -441,7 +457,7 @@ def launch_fluent(
     cwd: str = None,
     topy: Union[str, list] = None,
     **kwargs,
-) -> Union[Solver, Meshing, PureMeshing]:
+) -> Union[Meshing, PureMeshing, Solver]:
     """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
 
