@@ -2,6 +2,7 @@ import threading
 from typing import Callable
 
 from ansys.api.fluent.v0 import datamodel_se_pb2
+from ansys.fluent.core.services.datamodel_se import _convert_variant_to_value
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 
@@ -53,5 +54,11 @@ class DatamodelEvents(StreamingService):
                                 )
                             ):
                                 cb[1](cb[0])
+                            elif response.HasField("createdEventResponse"):
+                                command = response.commandExecutedEventResponse.command
+                                args = _convert_variant_to_value(
+                                    response.commandExecutedEventResponse.args
+                                )
+                                cb[1](cb[0], command, args)
             except StopIteration:
                 break

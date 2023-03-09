@@ -4,6 +4,7 @@ import pytest
 from util.meshing_workflow import new_mesh_session  # noqa: F401
 
 from ansys.api.fluent.v0 import datamodel_se_pb2
+from ansys.fluent.core import examples
 from ansys.fluent.core.services.datamodel_se import convert_path_to_se_path
 
 
@@ -20,6 +21,7 @@ def test_event_subscription(new_mesh_session):
         "/workflow/affected/TaskObject",
         "/workflow/attribute_changed/TaskObject:TaskObject1/TaskList/isActive",
         "/workflow/command_attribute_changed/InitializeWorkflow/arguments",
+        "/workflow/command_executed/InitializeWorkflow",
     ]
     request = datamodel_se_pb2.SubscribeEventsRequest()
     e1 = request.eventrequest.add(rules="workflow")
@@ -41,6 +43,9 @@ def test_event_subscription(new_mesh_session):
     e7.commandAttributeChangedEventRequest.path = ""
     e7.commandAttributeChangedEventRequest.command = "InitializeWorkflow"
     e7.commandAttributeChangedEventRequest.attribute = "arguments"
+    e8 = request.eventrequest.add(rules="workflow")
+    e8.commandExecutedEventRequest.path = ""
+    e8.commandExecutedEventRequest.command = "InitializeWorkflow"
     response = session.fluent_connection.datamodel_service_se.subscribe_events(request)
     assert all(
         [
@@ -138,5 +143,32 @@ def test_add_on_affected_at_type_path(new_mesh_session):
     data.clear()
     subscription.unsubscribe()
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
+    sleep(5)
+    assert data == []
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_232
+def test_add_on_command_executed(new_mesh_session):
+    meshing = new_mesh_session
+    data = []
+    subscription = meshing.workflow.add_on_affected_at_type_path(
+        "TaskObject", lambda obj, command, args: data.append(True)
+    )
+    assert data == []
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    import_filename = examples.download_file(
+        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    )
+    meshing.workflow.TaskObject["Import Geometry"].Arguments = {
+        "FileName": import_filename
+    }
+    meshing.workflow.TaskObject["Import Geometry"].Execute()
+    sleep(5)
+    assert len(data) > 0
+    assert data[0] == True
+    data.clear()
+    subscription.unsubscribe()
+    meshing.workflow.TaskObject["Import Geometry"].Execute()
     sleep(5)
     assert data == []
