@@ -1,7 +1,7 @@
 """Module providing dump session data functionality."""
 from pathlib import Path
 import pickle
-from typing import Optional, Union
+from typing import Dict, Optional, Union
 
 import numpy as np
 
@@ -119,14 +119,13 @@ class DumpDataReader:
             SurfaceDataType.FacesNormal: "face-normal",
         }
 
-        surface_data = []
-        for surface_id in surface_ids:
-            for data_type in data_types:
-                surface_data.append(
-                    self._session_data["fields"][tag_id][surface_id][
-                        enum_to_field_name[data_type]
-                    ]
-                )
+        surface_data = [
+            self._session_data["fields"][tag_id][surface_id][
+                enum_to_field_name[data_type]
+            ]
+            for data_type in data_types
+            for surface_id in surface_ids
+        ]
 
         return surface_data
 
@@ -139,12 +138,11 @@ class DumpDataReader:
             ("boundaryValues", provide_boundary_values),
         )
 
-        scalar_field_data = []
-        for surface_id in surface_ids:
-            for field_name in field_names:
-                scalar_field_data.append(
-                    self._session_data["fields"][tag_id][surface_id][field_name]
-                )
+        scalar_field_data = [
+            self._session_data["fields"][tag_id][surface_id][field_name]
+            for field_name in field_names
+            for surface_id in surface_ids
+        ]
 
         return scalar_field_data
 
@@ -153,18 +151,15 @@ class DumpDataReader:
     ) -> list[Union[np.array, None]]:
         tag_id = (("type", "vector-field"),)
 
-        vector_field_data = []
-        for surface_id in surface_ids:
-            for field_name in field_names:
-                vector_field_data.append(
-                    self._session_data["fields"][tag_id][surface_id][field_name]
-                )
+        vector_field_data = [
+            self._session_data["fields"][tag_id][surface_id][field_name]
+            for field_name in field_names
+            for surface_id in surface_ids
+        ]
 
         return vector_field_data
 
-    def get_pathlines_data(
-        self, surface_ids, field_names
-    ) -> list[Union[np.array, None]]:
+    def get_pathlines_data(self, surface_ids, field_names) -> list[Dict]:
         pathlines_data = []
         for surface_id in surface_ids:
             for field_name in field_names:
