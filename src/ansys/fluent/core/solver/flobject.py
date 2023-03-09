@@ -470,7 +470,7 @@ class Group(SettingsBase[DictStateType]):
 
     def __getattribute__(self, name):
         if name in super().__getattribute__("child_names"):
-            if not self.is_active():
+            if self.is_active() is False:
                 raise RuntimeError(f"'{self.path}' is currently not active")
         try:
             return super().__getattribute__(name)
