@@ -6,6 +6,8 @@ from util.meshing_workflow import new_mesh_session  # noqa: F401
 from ansys.api.fluent.v0 import datamodel_se_pb2
 from ansys.fluent.core import examples
 from ansys.fluent.core.services.datamodel_se import convert_path_to_se_path
+from ansys.fluent.core.services.streaming import StreamingService
+from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 
 
 @pytest.mark.dev
@@ -172,3 +174,64 @@ def test_add_on_command_executed(new_mesh_session):
     meshing.workflow.TaskObject["Import Geometry"].Execute()
     sleep(5)
     assert data == []
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_232
+def test_datamodel_streaming_full_diff_state(new_mesh_session):
+    meshing = new_mesh_session
+    datamodel_service_se = meshing.datamodel_service_se
+    data_model_request = datamodel_se_pb2.DataModelRequest()
+    data_model_request.rules = "meshing"
+    datamodel_streaming = StreamingService(
+        stub=datamodel_service_se._stub,
+        request=data_model_request,
+        metadata=datamodel_service_se._metadata,
+    )
+    stream = DatamodelStream(datamodel_streaming)
+    stream.start()
+
+    def cb(state, deleted_paths, events):
+        cb.states.append(state)
+
+    cb.states = []
+
+    stream.register_callback(cb)
+
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    import_filename = examples.download_file(
+        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    )
+    meshing.meshing.ImportGeometry(FileName=import_filename)
+    assert "ImportGeometry:ImportGeometry1" in (y for x in cb.states for y in x)
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_232
+def test_datamodel_streaming_no_commands_diff_state(new_mesh_session):
+    meshing = new_mesh_session
+    datamodel_service_se = meshing.datamodel_service_se
+    data_model_request = datamodel_se_pb2.DataModelRequest()
+    data_model_request.rules = "meshing"
+    data_model_request.diffstate = datamodel_se_pb2.DIFFSTATE_NOCOMMANDS
+    datamodel_streaming = StreamingService(
+        stub=datamodel_service_se._stub,
+        request=data_model_request,
+        metadata=datamodel_service_se._metadata,
+    )
+    stream = DatamodelStream(datamodel_streaming)
+    stream.start()
+
+    def cb(state, deleted_paths, events):
+        cb.states.append(state)
+
+    cb.states = []
+
+    stream.register_callback(cb)
+
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    import_filename = examples.download_file(
+        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    )
+    meshing.meshing.ImportGeometry(FileName=import_filename)
+    assert "ImportGeometry:ImportGeometry1" not in (y for x in cb.states for y in x)
