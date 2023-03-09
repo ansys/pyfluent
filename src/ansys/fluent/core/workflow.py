@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Iterator, Tuple
 
 from ansys.fluent.core.services.datamodel_se import PyCallableStateObject
 
