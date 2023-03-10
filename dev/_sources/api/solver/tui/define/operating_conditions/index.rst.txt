@@ -11,3 +11,7 @@ solver.tui.define.operating\_conditions
    :special-members: " __init__"
    :autosummary:
 
+.. toctree::
+   :hidden:
+
+   operating_density/index

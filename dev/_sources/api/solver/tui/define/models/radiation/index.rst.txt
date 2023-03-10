@@ -15,5 +15,5 @@ solver.tui.define.models.radiation
    :hidden:
 
    s2s_parameters/index
-   solar_parameters/index
    dtrm_parameters/index
+   solar_parameters/index

@@ -14,5 +14,5 @@ meshing.tui.boundary.remesh
 .. toctree::
    :hidden:
 
-   size_functions/index
    controls/index
+   size_functions/index

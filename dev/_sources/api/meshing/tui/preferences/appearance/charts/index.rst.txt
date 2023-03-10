@@ -14,5 +14,5 @@ meshing.tui.preferences.appearance.charts
 .. toctree::
    :hidden:
 
-   font/index
    text_color/index
+   font/index

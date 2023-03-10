@@ -14,8 +14,8 @@ solver.tui.parametric\_study.design\_points
 .. toctree::
    :hidden:
 
-   concurrent/index
+   print_to_console/index
    set/index
    table/index
    auto_create/index
-   print_to_console/index
+   concurrent/index

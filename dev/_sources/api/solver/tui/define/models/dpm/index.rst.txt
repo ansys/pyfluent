@@ -14,11 +14,11 @@ solver.tui.define.models.dpm
 .. toctree::
    :hidden:
 
-   erosion_dynamic_mesh/index
    collisions/index
-   parallel/index
-   numerics/index
-   stripping_options/index
-   options/index
+   erosion_dynamic_mesh/index
    interaction/index
+   numerics/index
+   options/index
+   parallel/index
    splash_options/index
+   stripping_options/index

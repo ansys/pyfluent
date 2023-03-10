@@ -11,3 +11,7 @@ solver.tui.results.graphics.expert.set.lights
    :special-members: " __init__"
    :autosummary:
 
+.. toctree::
+   :hidden:
+
+   lighting_interpolation/index

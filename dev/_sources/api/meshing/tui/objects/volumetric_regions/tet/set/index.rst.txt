@@ -15,6 +15,6 @@ meshing.tui.objects.volumetric\_regions.tet.set
    :hidden:
 
    remove_slivers/index
-   tet_improve/index
    adv_front_method/index
+   tet_improve/index
    improve_mesh/index

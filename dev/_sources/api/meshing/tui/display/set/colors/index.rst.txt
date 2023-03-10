@@ -14,5 +14,5 @@ meshing.tui.display.set.colors
 .. toctree::
    :hidden:
 
-   by_surface/index
    by_type/index
+   by_surface/index
