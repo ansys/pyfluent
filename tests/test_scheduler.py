@@ -188,14 +188,22 @@ class TestLoadMachines(unittest.TestCase):
         self.assertEqual(machineList.machines[1].host_name, "m2")
         self.assertEqual(machineList.machines[2].number_of_cores, 4)
         self.assertEqual(machineList.machines[3].queue_name, "queueName1")
-        del os.environ["PE_HOSTFILE"] 
-        
+        del os.environ["PE_HOSTFILE"]
 
     def test_lsb_mcpu(self):
         os.environ["LSB_MCPU_HOSTS"] = "m1 3 m2 3"
         machineList = load_machines()
         self.assertEqual(machineList.number_of_cores, 6)
         del os.environ["LSB_MCPU_HOSTS"]
+
+    def test_pbs_nodefile(self):
+        with tempfile.NamedTemporaryFile(delete=False) as fp:
+            fp.write(b'm1\r\n\r\nm2\r\nm2\r\nm2')
+            os.environ["PBS_NODEFILE"] = fp.name
+        machineList = load_machines()
+        os.unlink(fp.name)
+        self.assertEqual(machineList[1].number_of_cores, 3)
+        del os.environ["PBS_NODEFILE"] 
 
     def test_no_environment(self):
         machineList = load_machines()

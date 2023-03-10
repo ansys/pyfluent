@@ -264,8 +264,7 @@ def _construct_machine_list_uge(host_filename):
             if len(row) == 1:
                 row.append(1)
             row[1] = int(row[1])
-            m = Machine(*row)
-            machineList.add(m)
+            machineList.add(Machine(*row))
     return machineList
 
 
@@ -289,15 +288,18 @@ def _construct_machine_list_pbs(host_filename):
     with open(host_filename, "r") as pbsFile:
         for hostname in pbsFile:
             hostname = hostname.rstrip("\r\n")
+            if len(hostname) == 0:
+                continue
             if hostname in machineDict:
-                machineDict[hostname].number_of_cores += 1
+                machineDict[hostname] += 1
             else:
-                machineDict[hostname] = Machine(hostname, 1)
+                machineDict[hostname] = 1
 
     # Convert accumulated dictionary to a MachineList
     machineList = MachineList()
-    for m in list(machineDict.values()):
-        machineList.add(m)
+    for m in list(machineDict):
+        machine = Machine(m, machineDict[m])
+        machineList.add(machine)
     return machineList
 
 
