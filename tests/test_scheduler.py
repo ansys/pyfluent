@@ -227,8 +227,11 @@ class TestLoadMachines(unittest.TestCase):
         self.assertEqual(fluentOpts, "-t4 -cnf=M0:1,M1:2,M2:1")
 
     def test_constrain_machines2(self):
-        machineList = load_machines(host_info="M0:2,M1:3,M2:2", ncores=3)
+        with tempfile.NamedTemporaryFile(delete=False) as fp:
+            fp.write(b'M0:2,M1:3,M2:2')
+        machineList = load_machines(host_info=fp.name, ncores=3)
         expectedValue = {"M0": 1, "M1": 1, "M2": 1}
+        os.unlink(fp.name)
         self.assertEqual(len(machineList.machines), 3)
         for machine in machineList.machines:
             self.assertEqual(machine.number_of_cores, expectedValue[machine.host_name])

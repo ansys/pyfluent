@@ -118,21 +118,21 @@ def _parse_host_info(host_info):
         A list of dictionaries formatted as:
         {'machine-name' : ###, 'core-count' : ###}
     """
-    if (
-        (":" in host_info or "," in host_info)
-        and not "\\" in host_info
-        and not "/" in host_info
+    print(host_info)
+    if ("\\" in host_info
+        or "/" in host_info
+        or "." in host_info
     ):
-        # Filenames generally shouldn't have ':',
-        # so assume it's a string list and parse accordingly
-        sMod = 1 if host_info[0] == "[" else 0
-        sBeg = sMod
-        sEnd = len(host_info) - sMod
-        machine_data = host_info[sBeg:sEnd].split(",")
-    else:
+        # Filenames generally have '\\' or '/' or '.'
+        # so assume it's a file and parse accordingly
         # Read from the file
         with open(host_info, "r") as f:
-            machine_data = f.read().splitlines()
+            host_info = f.read()
+         
+    sMod = 1 if host_info[0] == "[" else 0
+    sBeg = sMod
+    sEnd = len(host_info) - sMod
+    machine_data = host_info[sBeg:sEnd].split(",")
 
     return _parse_machine_data(machine_data)
 
