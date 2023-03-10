@@ -1,4 +1,4 @@
-from typing import Callable, Tuple
+from typing import Callable, Iterator, Tuple
 
 from ansys.fluent.core.services.datamodel_se import (
     EventSubscription,
@@ -18,34 +18,6 @@ def _new_command_for_task(task, session):
         if new_cmd:
             return new_cmd
     raise NewCommandError(task._name_())
-
-
-class TaskContainer(PyCallableStateObject):
-    """Wrap a workflow TaskObject container.
-
-    Methods
-    -------
-    __getitem__(attr)
-    __getattr__(attr)
-    __dir__()
-    """
-
-    def __init__(self, command_source):
-        self._container = command_source
-        self._task_container = command_source._workflow.TaskObject
-
-    def __getitem__(self, name):
-        return Task(self._container, name)
-
-    def __getattr__(self, attr):
-        return getattr(self._task_container, attr)
-
-    def __dir__(self):
-        return sorted(
-            set(
-                list(self.__dict__.keys()) + dir(type(self)) + dir(self._task_container)
-            )
-        )
 
 
 class Task(PyCallableStateObject):
@@ -228,6 +200,46 @@ class Task(PyCallableStateObject):
         if not self._cmd:
             self._cmd = _new_command_for_task(self._task, self._source)
         return self._cmd
+
+
+class TaskContainer(PyCallableStateObject):
+    """Wrap a workflow TaskObject container.
+
+    Methods
+    -------
+    __iter__()
+    __getitem__(attr)
+    __getattr__(attr)
+    __dir__()
+    """
+
+    def __init__(self, command_source):
+        self._container = command_source
+        self._task_container = command_source._workflow.TaskObject
+
+    def __iter__(self) -> Iterator[Task]:
+        """Yield the next child object.
+
+        Yields
+        ------
+        Iterator[Task]
+            Iterator of child objects.
+        """
+        for name in self._get_child_object_display_names():
+            yield self[name]
+
+    def __getitem__(self, name):
+        return Task(self._container, name)
+
+    def __getattr__(self, attr):
+        return getattr(self._task_container, attr)
+
+    def __dir__(self):
+        return sorted(
+            set(
+                list(self.__dict__.keys()) + dir(type(self)) + dir(self._task_container)
+            )
+        )
 
 
 class WorkflowWrapper:
