@@ -498,7 +498,7 @@ Close Fluent.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  45.455 seconds)
+   **Total running time of the script:** ( 0 minutes  41.546 seconds)
 
 
 .. _sphx_glr_download_examples_00-fluent_mixing_elbow_settings_api.py:

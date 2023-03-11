@@ -14,5 +14,5 @@ meshing.tui.diagnostics
 .. toctree::
    :hidden:
 
-   quality/index
    face_connectivity/index
+   quality/index

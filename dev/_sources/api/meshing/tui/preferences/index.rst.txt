@@ -14,13 +14,13 @@ meshing.tui.preferences
 .. toctree::
    :hidden:
 
-   turbo_workflow/index
+   gpuapp/index
+   general/index
    meshing_workflow/index
-   graphics/index
-   appearance/index
    navigation/index
    mat_pro_app/index
-   parametric_study/index
-   general/index
-   gpuapp/index
    simulation/index
+   appearance/index
+   graphics/index
+   turbo_workflow/index
+   parametric_study/index

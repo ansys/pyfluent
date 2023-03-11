@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev2 variable.
+            // this version, rather than using sphinx's 0.13.dev3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -335,13 +335,13 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../reference_frames/index.html">
-       meshing.tui.reference_frames
+      <a class="reference internal" href="../../../../size_functions/index.html">
+       meshing.tui.size_functions
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../diagnostics/index.html">
-       meshing.tui.diagnostics
+      <a class="reference internal" href="../../../../mesh/index.html">
+       meshing.tui.mesh
       </a>
      </li>
      <li class="toctree-l3">
@@ -350,8 +350,18 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../size_functions/index.html">
-       meshing.tui.size_functions
+      <a class="reference internal" href="../../../../report/index.html">
+       meshing.tui.report
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../diagnostics/index.html">
+       meshing.tui.diagnostics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
       </a>
      </li>
      <li class="toctree-l3">
@@ -365,8 +375,8 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../file/index.html">
-       meshing.tui.file
+      <a class="reference internal" href="../../../../reference_frames/index.html">
+       meshing.tui.reference_frames
       </a>
      </li>
      <li class="toctree-l3">
@@ -375,28 +385,8 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../mesh/index.html">
-       meshing.tui.mesh
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../material_point/index.html">
-       meshing.tui.material_point
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../report/index.html">
-       meshing.tui.report
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
+      <a class="reference internal" href="../../../../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -409,6 +399,26 @@ function checkPageExistsAndRedirect(event) {
        </i>
       </label>
       <ul class="current">
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../set/index.html">
+         meshing.tui.objects.set
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../labels/index.html">
+         meshing.tui.objects.labels
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../create_new_mesh_object/index.html">
+         meshing.tui.objects.create_new_mesh_object
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../deprecated/index.html">
+         meshing.tui.objects.deprecated
+        </a>
+       </li>
        <li class="toctree-l4 current active has-children">
         <a class="reference internal" href="../../index.html">
          meshing.tui.objects.volumetric_regions
@@ -422,11 +432,6 @@ function checkPageExistsAndRedirect(event) {
          <li class="toctree-l5">
           <a class="reference internal" href="../../scoped_prism/index.html">
            meshing.tui.objects.volumetric_regions.scoped_prism
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../hexcore/index.html">
-           meshing.tui.objects.volumetric_regions.hexcore
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -455,11 +460,6 @@ function checkPageExistsAndRedirect(event) {
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="adv_front_method/index.html">
-               meshing.tui.objects.volumetric_regions.tet.set.adv_front_method
-              </a>
-             </li>
-             <li class="toctree-l7">
               <a class="reference internal" href="tet_improve/index.html">
                meshing.tui.objects.volumetric_regions.tet.set.tet_improve
               </a>
@@ -469,20 +469,25 @@ function checkPageExistsAndRedirect(event) {
                meshing.tui.objects.volumetric_regions.tet.set.improve_mesh
               </a>
              </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="adv_front_method/index.html">
+               meshing.tui.objects.volumetric_regions.tet.set.adv_front_method
+              </a>
+             </li>
             </ul>
            </li>
           </ul>
          </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../hexcore/index.html">
+           meshing.tui.objects.volumetric_regions.hexcore
+          </a>
+         </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../cad_association/index.html">
-         meshing.tui.objects.cad_association
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../set/index.html">
-         meshing.tui.objects.set
+        <a class="reference internal" href="../../../remove_gaps/index.html">
+         meshing.tui.objects.remove_gaps
         </a>
        </li>
        <li class="toctree-l4">
@@ -491,8 +496,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../labels/index.html">
-         meshing.tui.objects.labels
+        <a class="reference internal" href="../../../join_intersect/index.html">
+         meshing.tui.objects.join_intersect
         </a>
        </li>
        <li class="toctree-l4">
@@ -501,30 +506,25 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../deprecated/index.html">
-         meshing.tui.objects.deprecated
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../join_intersect/index.html">
-         meshing.tui.objects.join_intersect
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../create_new_mesh_object/index.html">
-         meshing.tui.objects.create_new_mesh_object
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../remove_gaps/index.html">
-         meshing.tui.objects.remove_gaps
+        <a class="reference internal" href="../../../cad_association/index.html">
+         meshing.tui.objects.cad_association
         </a>
        </li>
       </ul>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
+      <a class="reference internal" href="../../../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../file/index.html">
+       meshing.tui.file
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../material_point/index.html">
+       meshing.tui.material_point
       </a>
      </li>
     </ul>

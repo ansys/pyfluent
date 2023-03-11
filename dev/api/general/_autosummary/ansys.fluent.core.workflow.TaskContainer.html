@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev2 variable.
+            // this version, rather than using sphinx's 0.13.dev3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -501,13 +501,16 @@ function checkPageExistsAndRedirect(event) {
 <p class="rubric">Methods</p>
 <table class="table">
 <tbody>
-<tr class="row-odd"><td><p><strong>__getitem__(attr)</strong></p></td>
+<tr class="row-odd"><td><p><strong>__iter__()</strong></p></td>
 <td></td>
 </tr>
-<tr class="row-even"><td><p><strong>__getattr__(attr)</strong></p></td>
+<tr class="row-even"><td><p><strong>__getitem__(attr)</strong></p></td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><p><strong>__dir__()</strong></p></td>
+<tr class="row-odd"><td><p><strong>__getattr__(attr)</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>__dir__()</strong></p></td>
 <td></td>
 </tr>
 </tbody>

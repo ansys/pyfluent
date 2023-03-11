@@ -15,6 +15,6 @@ meshing.tui.mesh.tet.controls
    :hidden:
 
    improve_mesh/index
-   tet_improve/index
    adv_front_method/index
+   tet_improve/index
    remove_slivers/index
