@@ -642,17 +642,13 @@ class PyMenu(PyStateContainer):
         self.service.event_streaming.register_callback(subscription.tag, self, cb)
         return subscription
 
-    def add_on_command_executed(
-        self, command: str, attribute: str, cb: Callable
-    ) -> EventSubscription:
+    def add_on_command_executed(self, command: str, cb: Callable) -> EventSubscription:
         """Register a callback for when a command is executed
 
         Parameters
         ----------
         command : str
             command name
-        attribute : str
-            attribute name
         cb : Callable
             Callback function
 

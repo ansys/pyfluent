@@ -54,7 +54,7 @@ class DatamodelEvents(StreamingService):
                                 )
                             ):
                                 cb[1](cb[0])
-                            elif response.HasField("createdEventResponse"):
+                            elif response.HasField("commandExecutedEventResponse"):
                                 command = response.commandExecutedEventResponse.command
                                 args = _convert_variant_to_value(
                                     response.commandExecutedEventResponse.args

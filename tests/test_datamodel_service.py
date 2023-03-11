@@ -154,24 +154,21 @@ def test_add_on_affected_at_type_path(new_mesh_session):
 def test_add_on_command_executed(new_mesh_session):
     meshing = new_mesh_session
     data = []
-    subscription = meshing.workflow.add_on_affected_at_type_path(
-        "TaskObject", lambda obj, command, args: data.append(True)
+    subscription = meshing.meshing.add_on_command_executed(
+        "ImportGeometry", lambda obj, command, args: data.append(True)
     )
     assert data == []
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     import_filename = examples.download_file(
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
     )
-    meshing.workflow.TaskObject["Import Geometry"].Arguments = {
-        "FileName": import_filename
-    }
-    meshing.workflow.TaskObject["Import Geometry"].Execute()
+    meshing.meshing.ImportGeometry(FileName=import_filename)
     sleep(5)
     assert len(data) > 0
     assert data[0] == True
     data.clear()
     subscription.unsubscribe()
-    meshing.workflow.TaskObject["Import Geometry"].Execute()
+    meshing.meshing.ImportGeometry(FileName=import_filename)
     sleep(5)
     assert data == []
 
