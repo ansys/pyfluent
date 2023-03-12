@@ -15,4 +15,3 @@ solver.tui.file.export
    :hidden:
 
    settings/index
-   system_coupling_definition_file_settings/index

@@ -14,6 +14,6 @@ solver.tui.define.models.electrolysis
 .. toctree::
    :hidden:
 
+   membrane_setup/index
    anode_setup/index
    cathode_setup/index
-   membrane_setup/index

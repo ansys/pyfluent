@@ -15,9 +15,9 @@ solver.tui.results.graphics\_window
    :hidden:
 
    embedded_windows/index
-   picture/index
-   windows/index
-   titles/index
-   views/index
-   display_states/index
    view_sync/index
+   windows/index
+   picture/index
+   titles/index
+   display_states/index
+   views/index

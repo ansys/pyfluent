@@ -14,5 +14,5 @@ solver.tui.define.models.eulerian\_wallfilm
 .. toctree::
    :hidden:
 
-   coupled_solution/index
    implicit_options/index
+   coupled_solution/index

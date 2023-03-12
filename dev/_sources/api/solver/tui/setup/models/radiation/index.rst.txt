@@ -14,6 +14,6 @@ solver.tui.setup.models.radiation
 .. toctree::
    :hidden:
 
+   solar_parameters/index
    s2s_parameters/index
    dtrm_parameters/index
-   solar_parameters/index

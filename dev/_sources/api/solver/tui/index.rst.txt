@@ -16,23 +16,23 @@ solver.tui
 
    adjoint/index
    display/index
-   define/index
-   file/index
-   icing/index
+   views/index
+   simulation_reports/index
+   setup/index
    mesh/index
-   parameters__and__customization/index
-   parallel/index
+   file/index
+   surface/index
    plot/index
    preferences/index
-   report/index
-   results/index
    solve/index
-   solution/index
-   setup/index
-   surface/index
-   simulation_reports/index
-   server/index
-   turbo_post/index
-   views/index
+   report/index
+   icing/index
    parametric_study/index
+   results/index
+   turbo_post/index
+   parameters__and__customization/index
+   define/index
+   solution/index
+   server/index
+   parallel/index
    turbo_workflow/index

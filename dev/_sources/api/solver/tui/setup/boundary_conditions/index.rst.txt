@@ -14,10 +14,10 @@ solver.tui.setup.boundary\_conditions
 .. toctree::
    :hidden:
 
-   bc_settings/index
-   expert/index
-   modify_zones/index
+   set/index
    profiles/index
    query/index
+   modify_zones/index
    rename_zone/index
-   set/index
+   expert/index
+   bc_settings/index

@@ -14,12 +14,12 @@ meshing.tui.boundary
 .. toctree::
    :hidden:
 
-   feature/index
-   boundary_conditions/index
-   improve/index
-   refine/index
-   separate/index
    shell_boundary_layer/index
-   remesh/index
+   feature/index
+   refine/index
    manage/index
+   improve/index
    modify/index
+   boundary_conditions/index
+   separate/index
+   remesh/index

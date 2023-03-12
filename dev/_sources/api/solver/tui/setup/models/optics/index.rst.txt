@@ -14,5 +14,5 @@ solver.tui.setup.models.optics
 .. toctree::
    :hidden:
 
-   beams/index
    statistics/index
+   beams/index

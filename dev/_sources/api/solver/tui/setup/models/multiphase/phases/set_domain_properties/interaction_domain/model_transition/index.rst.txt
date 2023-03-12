@@ -14,9 +14,9 @@ solver.tui.setup.models.multiphase.phases.set\_domain\_properties.interaction\_d
 .. toctree::
    :hidden:
 
-   cavitation/index
    interphase_discretization/index
    interphase_viscous_dissipation/index
-   lift/index
    surface_tension/index
    virtual_mass/index
+   lift/index
+   cavitation/index

@@ -14,9 +14,9 @@ solver.tui.results
 .. toctree::
    :hidden:
 
+   graphics_window/index
    animate/index
+   surface/index
    graphics/index
    plot/index
    report/index
-   surface/index
-   graphics_window/index

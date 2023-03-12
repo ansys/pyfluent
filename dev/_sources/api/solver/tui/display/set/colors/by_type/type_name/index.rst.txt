@@ -11,21 +11,3 @@ solver.tui.display.set.colors.by\_type.type\_name
    :special-members: " __init__"
    :autosummary:
 
-.. toctree::
-   :hidden:
-
-   axis/index
-   far_field/index
-   free_surface/index
-   inlet/index
-   interface/index
-   interior/index
-   internal/index
-   outlet/index
-   overset/index
-   periodic/index
-   rans_les_interface/index
-   surface/index
-   symmetry/index
-   traction/index
-   wall/index

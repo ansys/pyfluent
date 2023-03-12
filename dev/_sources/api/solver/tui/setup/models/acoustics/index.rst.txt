@@ -15,6 +15,6 @@ solver.tui.setup.models.acoustics
    :hidden:
 
    far_field_parameters/index
+   sponge_layers/index
    wave_equation_options/index
    sources_fft/index
-   sponge_layers/index
