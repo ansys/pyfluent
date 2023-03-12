@@ -338,7 +338,7 @@ def _construct_machine_list_slurm(host_list):
     # Regular expression to identify if a host entry contains a single range of machines
     pRange = re.compile(r"\[.*\]")
     # Regular expressions to identify a single machine ID within brackets
-    pIDOne = re.compile(r"^.*\[(\d*)$")
+    pIDOne = re.compile(r"^.*\[(\d*).$")
     pIDOneNext = re.compile(r"^(\d*)")
     # Regular expressions to identify a range of machine IDs within brackets
     pIDRangeFirst = re.compile(r"^.*\[(\d*)-(\d*).*$")
@@ -377,7 +377,7 @@ def _construct_machine_list_slurm(host_list):
             else:
                 machineIDs = pIDOne.match(hosts)
                 id = int(machineIDs.group(1))
-                numch = len(re.compile(r"^.*\[(\d*)$").match(hosts).group(1))
+                numch = len(re.compile(r"^.*\[(\d*).$").match(hosts).group(1))
                 machineName = machinePrefix + str(id).rjust(numch, "0")
                 machineList.add(Machine(machineName, coresPerMachine))
 

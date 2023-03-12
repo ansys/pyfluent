@@ -274,6 +274,17 @@ class TestLoadMachines(unittest.TestCase):
         self.assertEqual(fluentOpts, "-t32 -cnf=M0:8,M1:8,M2:16")
         del os.environ["CCP_NODES"]
 
+    def test_slurm_nodelist(self):
+        os.environ["SLURM_JOB_NODELIST"] = "M[1-2],M[3]"
+        os.environ["SLURM_TASKS_PER_NODE"] = "8,10(x2)"
+        hostList = os.environ.get("SLURM_JOB_NODELIST")
+        machineList = _construct_machine_list_slurm(hostList)
+        self.assertEqual(machineList[1].number_of_cores, 10)
+        self.assertEqual(machineList[2].number_of_cores, 10)
+        self.assertEqual(machineList[2].host_name, "M3")
+        del os.environ["SLURM_JOB_NODELIST"]
+        del os.environ["SLURM_TASKS_PER_NODE"]
+
     def test_slurm_no_brackets(self):
         os.environ["SLURM_JOB_NODELIST"] = "M0,M1,M2"
         os.environ["SLURM_NTASKS_PER_NODE"] = "8"
