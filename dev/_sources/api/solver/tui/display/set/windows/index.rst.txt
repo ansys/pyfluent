@@ -16,7 +16,7 @@ solver.tui.display.set.windows
 
    xy/index
    video/index
-   text/index
    axes/index
-   scale/index
    main/index
+   scale/index
+   text/index

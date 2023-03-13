@@ -14,11 +14,11 @@ meshing.tui.mesh.prism.controls
 .. toctree::
    :hidden:
 
-   adjacent_zone/index
-   normal/index
    improve/index
-   zone_specific_growth/index
+   normal/index
+   adjacent_zone/index
    offset/index
    morph/index
    post_ignore/index
    proximity/index
+   zone_specific_growth/index

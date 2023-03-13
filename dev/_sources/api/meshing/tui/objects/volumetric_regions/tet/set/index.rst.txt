@@ -14,7 +14,7 @@ meshing.tui.objects.volumetric\_regions.tet.set
 .. toctree::
    :hidden:
 
-   tet_improve/index
    remove_slivers/index
-   improve_mesh/index
    adv_front_method/index
+   improve_mesh/index
+   tet_improve/index

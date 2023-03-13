@@ -14,7 +14,7 @@ solver.tui.solution.initialize
 .. toctree::
    :hidden:
 
-   compute_defaults/index
-   vof_patch_smooth_options/index
    mp_localized_turb_init/index
+   compute_defaults/index
    set_fmg_options/index
+   vof_patch_smooth_options/index

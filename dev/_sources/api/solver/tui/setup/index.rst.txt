@@ -14,17 +14,17 @@ solver.tui.setup
 .. toctree::
    :hidden:
 
-   models/index
-   turbo_model/index
-   reference_values/index
-   operating_conditions/index
-   expert/index
-   reference_frames/index
-   dynamic_mesh/index
-   materials/index
-   named_expressions/index
-   boundary_conditions/index
-   overset_interfaces/index
    gap_model/index
+   reference_values/index
+   turbo_model/index
+   expert/index
    mixing_planes/index
+   boundary_conditions/index
+   operating_conditions/index
+   reference_frames/index
+   materials/index
+   overset_interfaces/index
    mesh_interfaces/index
+   named_expressions/index
+   models/index
+   dynamic_mesh/index

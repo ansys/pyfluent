@@ -15,12 +15,12 @@ meshing.tui.objects
    :hidden:
 
    remove_gaps/index
-   fix_holes/index
-   deprecated/index
-   set/index
    labels/index
-   volumetric_regions/index
+   fix_holes/index
+   set/index
    create_new_mesh_object/index
-   wrap/index
+   volumetric_regions/index
+   deprecated/index
    join_intersect/index
+   wrap/index
    cad_association/index
