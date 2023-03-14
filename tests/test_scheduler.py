@@ -274,7 +274,7 @@ class TestLoadMachines(unittest.TestCase):
         self.assertEqual(fluentOpts, "-t32 -cnf=M0:8,M1:8,M2:16")
         del os.environ["CCP_NODES"]
 
-    def test_slurm_nodelist(self):
+    def test_slurm_single_num(self):
         os.environ["SLURM_JOB_NODELIST"] = "M[1-2],M[3]"
         os.environ["SLURM_TASKS_PER_NODE"] = "8,10(x2)"
         hostList = os.environ.get("SLURM_JOB_NODELIST")
