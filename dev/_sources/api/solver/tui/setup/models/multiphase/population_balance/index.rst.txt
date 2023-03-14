@@ -14,5 +14,5 @@ solver.tui.setup.models.multiphase.population\_balance
 .. toctree::
    :hidden:
 
-   phenomena/index
    expert/index
+   phenomena/index

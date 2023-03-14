@@ -15,15 +15,15 @@ solver.tui.preferences.graphics
    :hidden:
 
    vector_settings/index
-   export_video_settings/index
-   transparency/index
-   graphics_effects/index
+   meshing_mode/index
    embedded_windows/index
    material_effects/index
-   boundary_markers/index
-   lighting/index
-   meshing_mode/index
-   manage_hoops_memory/index
-   hardcopy_settings/index
+   transparency/index
+   graphics_effects/index
    performance/index
+   lighting/index
+   hardcopy_settings/index
+   export_video_settings/index
+   boundary_markers/index
+   manage_hoops_memory/index
    colormap_settings/index

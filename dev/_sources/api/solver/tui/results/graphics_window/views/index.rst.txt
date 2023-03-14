@@ -14,5 +14,5 @@ solver.tui.results.graphics\_window.views
 .. toctree::
    :hidden:
 
-   camera/index
    display_states/index
+   camera/index

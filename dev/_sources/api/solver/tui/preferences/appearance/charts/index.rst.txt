@@ -14,5 +14,5 @@ solver.tui.preferences.appearance.charts
 .. toctree::
    :hidden:
 
-   text_color/index
    font/index
+   text_color/index

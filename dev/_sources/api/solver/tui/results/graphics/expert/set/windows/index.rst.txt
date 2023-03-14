@@ -15,8 +15,8 @@ solver.tui.results.graphics.expert.set.windows
    :hidden:
 
    scale/index
-   main/index
    video/index
-   xy/index
+   main/index
    axes/index
+   xy/index
    text/index

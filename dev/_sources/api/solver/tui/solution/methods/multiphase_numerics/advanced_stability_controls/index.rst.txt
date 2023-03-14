@@ -14,9 +14,9 @@ solver.tui.solution.methods.multiphase\_numerics.advanced\_stability\_controls
 .. toctree::
    :hidden:
 
-   pseudo_time/index
    p_v_coupling/index
    equation_order/index
-   hybrid_nita/index
    num_ventilation/index
+   hybrid_nita/index
+   pseudo_time/index
    anti_diffusion/index

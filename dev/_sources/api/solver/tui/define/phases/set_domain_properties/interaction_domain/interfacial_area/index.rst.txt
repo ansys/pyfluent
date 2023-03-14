@@ -15,8 +15,8 @@ solver.tui.define.phases.set\_domain\_properties.interaction\_domain.interfacial
    :hidden:
 
    interphase_viscous_dissipation/index
-   interphase_discretization/index
-   surface_tension/index
-   lift/index
-   cavitation/index
    virtual_mass/index
+   cavitation/index
+   lift/index
+   surface_tension/index
+   interphase_discretization/index

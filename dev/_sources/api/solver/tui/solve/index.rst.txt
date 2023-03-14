@@ -14,13 +14,13 @@ solver.tui.solve
 .. toctree::
    :hidden:
 
+   cell_registers/index
+   execute_commands/index
+   cell_register_operations/index
+   report_plots/index
+   report_files/index
    initialize/index
    animate/index
-   execute_commands/index
-   report_files/index
-   report_definitions/index
-   report_plots/index
-   monitors/index
-   cell_register_operations/index
-   cell_registers/index
    set/index
+   monitors/index
+   report_definitions/index

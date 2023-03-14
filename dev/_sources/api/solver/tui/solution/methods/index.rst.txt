@@ -14,11 +14,11 @@ solver.tui.solution.methods
 .. toctree::
    :hidden:
 
-   overset/index
-   query/index
-   nita_expert_controls/index
-   expert/index
    multiphase_numerics/index
-   pseudo_time_method/index
+   nita_expert_controls/index
+   overset/index
+   expert/index
    warped_face_gradient_correction/index
+   pseudo_time_method/index
+   query/index
    high_order_term_relaxation/index

@@ -14,9 +14,9 @@ solver.tui.results.graphics\_window.windows
 .. toctree::
    :hidden:
 
-   axes/index
-   xy/index
+   main/index
    video/index
    text/index
-   main/index
+   axes/index
    scale/index
+   xy/index
