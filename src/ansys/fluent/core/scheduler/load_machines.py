@@ -119,16 +119,13 @@ def _parse_host_info(host_info):
         {'machine-name' : ###, 'core-count' : ###}
     """
     print(host_info)
-    if ("\\" in host_info
-        or "/" in host_info
-        or "." in host_info
-    ):
+    if "\\" in host_info or "/" in host_info or "." in host_info:
         # Filenames generally have '\\' or '/' or '.'
         # so assume it's a file and parse accordingly
         # Read from the file
         with open(host_info, "r") as f:
             host_info = f.read()
-         
+
     sMod = 1 if host_info[0] == "[" else 0
     sBeg = sMod
     sEnd = len(host_info) - sMod
