@@ -14,7 +14,7 @@ meshing.tui.mesh.rapid\_octree
 .. toctree::
    :hidden:
 
-   mesh_sizing/index
-   boundary_layer_mesh_configuration/index
    refinement_regions/index
+   mesh_sizing/index
    advanced_meshing_options/index
+   boundary_layer_mesh_configuration/index

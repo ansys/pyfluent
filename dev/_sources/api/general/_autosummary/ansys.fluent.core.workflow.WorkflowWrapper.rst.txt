@@ -14,8 +14,6 @@ ansys.fluent.core.workflow.WorkflowWrapper
       :toctree:
    
       ~WorkflowWrapper.__init__
-      ~WorkflowWrapper.add_on_affected_at_type_path
-      ~WorkflowWrapper.add_on_child_created
       ~WorkflowWrapper.ordered_children
       ~WorkflowWrapper.task
    

@@ -14,7 +14,7 @@ solver.tui.solve.animate
 .. toctree::
    :hidden:
 
-   objects/index
+   playback/index
    define/index
    pulse/index
-   playback/index
+   objects/index

@@ -14,7 +14,7 @@ solver.tui.setup.models.acoustics
 .. toctree::
    :hidden:
 
-   sources_fft/index
    sponge_layers/index
-   far_field_parameters/index
    wave_equation_options/index
+   far_field_parameters/index
+   sources_fft/index

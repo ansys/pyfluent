@@ -15,12 +15,12 @@ solver.tui.results.graphics.expert.set
    :hidden:
 
    contours/index
-   particle_tracks/index
-   lights/index
-   path_lines/index
-   rendering_options/index
    windows/index
-   picture/index
    velocity_vectors/index
+   rendering_options/index
+   lights/index
    titles/index
+   path_lines/index
+   particle_tracks/index
+   picture/index
    colors/index

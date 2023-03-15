@@ -15,5 +15,5 @@ solver.tui.define.parameters
    :hidden:
 
    output_parameters/index
-   list_parameters/index
    input_parameters/index
+   list_parameters/index

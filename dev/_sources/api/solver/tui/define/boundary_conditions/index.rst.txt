@@ -14,11 +14,11 @@ solver.tui.define.boundary\_conditions
 .. toctree::
    :hidden:
 
-   bc_settings/index
+   perforated_walls/index
    modify_zones/index
-   impedance_data_fitting/index
    set/index
    rename_zone/index
-   advanced/index
-   perforated_walls/index
    non_reflecting_bc/index
+   impedance_data_fitting/index
+   bc_settings/index
+   advanced/index

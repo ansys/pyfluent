@@ -14,13 +14,13 @@ solver.tui.file.import\_
 .. toctree::
    :hidden:
 
-   mechanical_apdl/index
-   plot3d/index
-   tecplot/index
    abaqus/index
-   patran/index
-   lstc/index
+   tecplot/index
    cfx/index
-   cgns/index
    partition/index
+   cgns/index
+   lstc/index
+   plot3d/index
    nastran/index
+   patran/index
+   mechanical_apdl/index

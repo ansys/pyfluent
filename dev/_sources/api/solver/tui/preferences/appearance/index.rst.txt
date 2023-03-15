@@ -15,5 +15,5 @@ solver.tui.preferences.appearance
    :hidden:
 
    selections/index
-   ansys_logo/index
    charts/index
+   ansys_logo/index

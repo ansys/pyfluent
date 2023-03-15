@@ -15,5 +15,5 @@ solver.tui.parametric\_study
    :hidden:
 
    update/index
-   study/index
    design_points/index
+   study/index

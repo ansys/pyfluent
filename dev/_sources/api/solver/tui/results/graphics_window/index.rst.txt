@@ -14,10 +14,10 @@ solver.tui.results.graphics\_window
 .. toctree::
    :hidden:
 
-   view_sync/index
-   display_states/index
-   views/index
-   embedded_windows/index
-   picture/index
-   titles/index
    windows/index
+   titles/index
+   view_sync/index
+   views/index
+   picture/index
+   embedded_windows/index
+   display_states/index

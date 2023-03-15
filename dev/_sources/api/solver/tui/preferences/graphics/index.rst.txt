@@ -14,16 +14,16 @@ solver.tui.preferences.graphics
 .. toctree::
    :hidden:
 
-   vector_settings/index
-   meshing_mode/index
    embedded_windows/index
    material_effects/index
+   boundary_markers/index
    transparency/index
+   meshing_mode/index
+   vector_settings/index
    graphics_effects/index
-   performance/index
    lighting/index
+   colormap_settings/index
+   performance/index
+   manage_hoops_memory/index
    hardcopy_settings/index
    export_video_settings/index
-   boundary_markers/index
-   manage_hoops_memory/index
-   colormap_settings/index

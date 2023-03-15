@@ -15,12 +15,12 @@ solver.tui.report
    :hidden:
 
    system/index
-   dpm_histogram/index
    population_balance/index
-   reference_values/index
-   forces/index
-   heat_exchanger/index
-   modified_setting/index
-   fluxes/index
-   icing/index
    simulation_reports/index
+   dpm_histogram/index
+   forces/index
+   fluxes/index
+   modified_setting/index
+   reference_values/index
+   icing/index
+   heat_exchanger/index

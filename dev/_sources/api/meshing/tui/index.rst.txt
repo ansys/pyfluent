@@ -15,17 +15,17 @@ meshing.tui
    :hidden:
 
    boundary/index
-   file/index
-   material_point/index
-   report/index
-   scoped_sizing/index
-   preferences/index
-   size_functions/index
-   openmp_controls/index
-   reference_frames/index
-   cad_assemblies/index
-   parallel/index
-   mesh/index
-   objects/index
    diagnostics/index
+   preferences/index
+   material_point/index
+   parallel/index
+   reference_frames/index
+   size_functions/index
+   cad_assemblies/index
+   objects/index
+   scoped_sizing/index
+   openmp_controls/index
+   mesh/index
+   report/index
    display/index
+   file/index

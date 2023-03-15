@@ -15,5 +15,5 @@ solver.tui.setup.overset\_interfaces
    :hidden:
 
    options/index
-   cut_control/index
    adapt/index
+   cut_control/index
