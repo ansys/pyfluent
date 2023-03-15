@@ -200,6 +200,7 @@ def test_datamodel_streaming_full_diff_state(new_mesh_session):
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
     )
     meshing.meshing.ImportGeometry(FileName=import_filename)
+    sleep(5)
     assert "ImportGeometry:ImportGeometry1" in (y for x in cb.states for y in x)
 
 
@@ -231,4 +232,5 @@ def test_datamodel_streaming_no_commands_diff_state(new_mesh_session):
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
     )
     meshing.meshing.ImportGeometry(FileName=import_filename)
+    sleep(5)
     assert "ImportGeometry:ImportGeometry1" not in (y for x in cb.states for y in x)
