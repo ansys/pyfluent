@@ -642,6 +642,29 @@ class PyMenu(PyStateContainer):
         self.service.event_streaming.register_callback(subscription.tag, self, cb)
         return subscription
 
+    def add_on_command_executed(self, command: str, cb: Callable) -> EventSubscription:
+        """Register a callback for when a command is executed
+
+        Parameters
+        ----------
+        command : str
+            command name
+        cb : Callable
+            Callback function
+
+        Returns
+        -------
+        EventSubscription
+            EventSubscription instance which can be used to unregister the callback
+        """
+        request = DataModelProtoModule.SubscribeEventsRequest()
+        e = request.eventrequest.add(rules=self.rules)
+        e.commandExecutedEventRequest.path = convert_path_to_se_path(self.path)
+        e.commandExecutedEventRequest.command = command
+        subscription = EventSubscription(self.service, request)
+        self.service.event_streaming.register_callback(subscription.tag, self, cb)
+        return subscription
+
 
 class PyParameter(PyStateContainer):
     """Object class using StateEngine based DatamodelService as backend.
