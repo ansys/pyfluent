@@ -5,13 +5,16 @@
 report_definitions
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.report_definitions.report_definitions
+.. currentmodule:: ansys.fluent.core.solver.settings_231.report_definitions
 
-.. rubric:: Attributes
+.. autoclass:: report_definitions
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   ==================================
 
-Attribute                                                                         Summary
+Child                                                                             Summary
 
 ====================================================   ==================================
 :ref:`mesh <mesh_1>`                                                        'mesh' child.
@@ -46,11 +49,11 @@ Attribute                                                                       
 
 ====================================================   ==================================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ==========================   ======================
 
-Method                                      Summary
+Command                                     Summary
 
 ==========================   ======================
 :ref:`compute <compute_1>`       'compute' command.

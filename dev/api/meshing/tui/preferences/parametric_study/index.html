@@ -51,12 +51,12 @@
     <script src="../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
-    <link rel="next" title="meshing.tui.preferences.parametric_study.layout_options" href="layout_options/index.html" />
-    <link rel="prev" title="meshing.tui.preferences.graphics.manage_hoops_memory" href="../graphics/manage_hoops_memory/index.html" />
+    <link rel="next" title="meshing.tui.preferences.parametric_study.update_options" href="update_options/index.html" />
+    <link rel="prev" title="meshing.tui.preferences.navigation.mouse_mapping.additional" href="../navigation/mouse_mapping/additional/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -303,8 +303,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -317,11 +322,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -333,38 +333,13 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../display/index.html">
-       meshing.tui.display
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../report/index.html">
-       meshing.tui.report
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../size_functions/index.html">
-       meshing.tui.size_functions
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../../scoped_sizing/index.html">
        meshing.tui.scoped_sizing
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../reference_frames/index.html">
-       meshing.tui.reference_frames
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../parallel/index.html">
-       meshing.tui.parallel
+      <a class="reference internal" href="../../display/index.html">
+       meshing.tui.display
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -378,8 +353,18 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../gpuapp/index.html">
-         meshing.tui.preferences.gpuapp
+        <a class="reference internal" href="../turbo_workflow/index.html">
+         meshing.tui.preferences.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../general/index.html">
+         meshing.tui.preferences.general
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../appearance/index.html">
+         meshing.tui.preferences.appearance
         </a>
        </li>
        <li class="toctree-l4">
@@ -390,6 +375,26 @@ function checkPageExistsAndRedirect(event) {
        <li class="toctree-l4">
         <a class="reference internal" href="../graphics/index.html">
          meshing.tui.preferences.graphics
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../meshing_workflow/index.html">
+         meshing.tui.preferences.meshing_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../mat_pro_app/index.html">
+         meshing.tui.preferences.mat_pro_app
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../gpuapp/index.html">
+         meshing.tui.preferences.gpuapp
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../navigation/index.html">
+         meshing.tui.preferences.navigation
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -403,53 +408,18 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul>
          <li class="toctree-l5">
-          <a class="reference internal" href="layout_options/index.html">
-           meshing.tui.preferences.parametric_study.layout_options
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="update_options/index.html">
            meshing.tui.preferences.parametric_study.update_options
           </a>
          </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="layout_options/index.html">
+           meshing.tui.preferences.parametric_study.layout_options
+          </a>
+         </li>
         </ul>
        </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../turbo_workflow/index.html">
-         meshing.tui.preferences.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../appearance/index.html">
-         meshing.tui.preferences.appearance
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../mat_pro_app/index.html">
-         meshing.tui.preferences.mat_pro_app
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../meshing_workflow/index.html">
-         meshing.tui.preferences.meshing_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../general/index.html">
-         meshing.tui.preferences.general
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../navigation/index.html">
-         meshing.tui.preferences.navigation
-        </a>
-       </li>
       </ul>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../boundary/index.html">
-       meshing.tui.boundary
-      </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../../material_point/index.html">
@@ -457,8 +427,8 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../objects/index.html">
-       meshing.tui.objects
+      <a class="reference internal" href="../../boundary/index.html">
+       meshing.tui.boundary
       </a>
      </li>
      <li class="toctree-l3">
@@ -467,8 +437,28 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../mesh/index.html">
-       meshing.tui.mesh
+      <a class="reference internal" href="../../parallel/index.html">
+       meshing.tui.parallel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../size_functions/index.html">
+       meshing.tui.size_functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../objects/index.html">
+       meshing.tui.objects
       </a>
      </li>
      <li class="toctree-l3">
@@ -477,8 +467,18 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
+      <a class="reference internal" href="../../report/index.html">
+       meshing.tui.report
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../mesh/index.html">
+       meshing.tui.mesh
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../reference_frames/index.html">
+       meshing.tui.reference_frames
       </a>
      </li>
     </ul>
@@ -523,97 +523,10 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study">
    <code class="docutils literal notranslate">
     <span class="pre">
-     parametric_study
+     main_menu.preferences.parametric_study
     </span>
    </code>
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.layout_options">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       parametric_study.layout_options
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.layout_options.current_case_parameters">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         parametric_study.layout_options.current_case_parameters()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.layout_options.parametric_study_tree">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         parametric_study.layout_options.parametric_study_tree()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       parametric_study.update_options
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.auto_refresh_time">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         parametric_study.update_options.auto_refresh_time()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.capture_sim_report_data">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         parametric_study.update_options.capture_sim_report_data()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.enable_auto_refresh">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         parametric_study.update_options.enable_auto_refresh()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.save_project_after_dpupdate">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         parametric_study.update_options.save_project_after_dpupdate()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.write_data">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         parametric_study.update_options.write_data()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
  </li>
 </ul>
 
@@ -636,118 +549,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-preferences-parametric-study">
 <span id="ref-meshing-tui-preferences-parametric-study"></span><h1>meshing.tui.preferences.parametric_study<a class="headerlink" href="#meshing-tui-preferences-parametric-study" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.preferences.</span></span><span class="sig-name descname"><span class="pre">parametric_study</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>.</p>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.layout_options" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.layout_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">layout_options</span></code></a>(path, service)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_options</span></code></a>(path, service)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.layout_options">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">layout_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.layout_options" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.layout_options.current_case_parameters" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.layout_options.current_case_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">current_case_parameters</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.layout_options.parametric_study_tree" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.layout_options.parametric_study_tree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parametric_study_tree</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.layout_options.current_case_parameters">
-<span class="sig-name descname"><span class="pre">current_case_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.layout_options.current_case_parameters" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.preferences.</span></span><span class="sig-name descname"><span class="pre">parametric_study</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study" title="Permalink to this definition">#</a></dt>
 <dd><p>.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.layout_options.parametric_study_tree">
-<span class="sig-name descname"><span class="pre">parametric_study_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.layout_options.parametric_study_tree" title="Permalink to this definition">#</a></dt>
-<dd><p>.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.auto_refresh_time" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.auto_refresh_time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_refresh_time</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.capture_sim_report_data" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.capture_sim_report_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">capture_sim_report_data</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.enable_auto_refresh" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.enable_auto_refresh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_auto_refresh</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.save_project_after_dpupdate" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.save_project_after_dpupdate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_project_after_dpupdate</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.write_data" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.write_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_data</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.auto_refresh_time">
-<span class="sig-name descname"><span class="pre">auto_refresh_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.auto_refresh_time" title="Permalink to this definition">#</a></dt>
-<dd><p>.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.capture_sim_report_data">
-<span class="sig-name descname"><span class="pre">capture_sim_report_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.capture_sim_report_data" title="Permalink to this definition">#</a></dt>
-<dd><p>.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.enable_auto_refresh">
-<span class="sig-name descname"><span class="pre">enable_auto_refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.enable_auto_refresh" title="Permalink to this definition">#</a></dt>
-<dd><p>.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.save_project_after_dpupdate">
-<span class="sig-name descname"><span class="pre">save_project_after_dpupdate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.save_project_after_dpupdate" title="Permalink to this definition">#</a></dt>
-<dd><p>.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.write_data">
-<span class="sig-name descname"><span class="pre">write_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.parametric_study.update_options.write_data" title="Permalink to this definition">#</a></dt>
-<dd><p>.</p>
-</dd></dl>
-
-</dd></dl>
-
 </dd></dl>
 
 <div class="toctree-wrapper compound">

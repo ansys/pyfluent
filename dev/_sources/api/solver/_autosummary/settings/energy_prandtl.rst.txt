@@ -5,8 +5,11 @@
 energy_prandtl
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.energy_prandtl.energy_prandtl
+.. currentmodule:: ansys.fluent.core.solver.settings_231.energy_prandtl
 
+.. autoclass:: energy_prandtl
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =========================

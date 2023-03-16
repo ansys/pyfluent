@@ -5,8 +5,11 @@
 mean_and_std_deviation
 ======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.mean_and_std_deviation.mean_and_std_deviation
+.. currentmodule:: ansys.fluent.core.solver.settings_231.mean_and_std_deviation
 
+.. autoclass:: mean_and_std_deviation
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   ====================

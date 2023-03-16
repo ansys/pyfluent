@@ -5,8 +5,11 @@
 subspace_size
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.subspace_size.subspace_size
+.. currentmodule:: ansys.fluent.core.solver.settings_231.subspace_size
 
+.. autoclass:: subspace_size
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================================================   =======================================

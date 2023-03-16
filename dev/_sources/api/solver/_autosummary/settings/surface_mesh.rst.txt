@@ -5,13 +5,16 @@
 surface_mesh
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.surface_mesh.surface_mesh
+.. currentmodule:: ansys.fluent.core.solver.settings_231.surface_mesh
 
-.. rubric:: Methods
+.. autoclass:: surface_mesh
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ========================   ===========================
 
-Method                                         Summary
+Command                                        Summary
 
 ========================   ===========================
 :ref:`delete <delete>`            Delete surface mesh.

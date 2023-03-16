@@ -5,8 +5,11 @@
 cfpg_lowtu
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.cfpg_lowtu.cfpg_lowtu
+.. currentmodule:: ansys.fluent.core.solver.settings_231.cfpg_lowtu
 
+.. autoclass:: cfpg_lowtu
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   =====================================

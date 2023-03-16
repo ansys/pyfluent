@@ -5,8 +5,11 @@
 swirl_model
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.swirl_model.swirl_model
+.. currentmodule:: ansys.fluent.core.solver.settings_231.swirl_model
 
+.. autoclass:: swirl_model
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

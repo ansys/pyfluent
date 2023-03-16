@@ -5,8 +5,11 @@
 image_to_display
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.image_to_display.image_to_display
+.. currentmodule:: ansys.fluent.core.solver.settings_231.image_to_display
 
+.. autoclass:: image_to_display
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ===============================

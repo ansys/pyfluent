@@ -3,11 +3,11 @@
 solver.tui.define.dynamic\_mesh.zones
 =====================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.dynamic_mesh.zones
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.dynamic_mesh.zones
+   :members: remove_boundary_layer, insert_interior_layer, remove_interior_layer, create, delete, list, insert_boundary_layer
 

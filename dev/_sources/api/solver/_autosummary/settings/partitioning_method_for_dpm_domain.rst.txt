@@ -5,8 +5,11 @@
 partitioning_method_for_dpm_domain
 ==================================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.partitioning_method_for_dpm_domain.partitioning_method_for_dpm_domain
+.. currentmodule:: ansys.fluent.core.solver.settings_231.partitioning_method_for_dpm_domain
 
+.. autoclass:: partitioning_method_for_dpm_domain
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =======================

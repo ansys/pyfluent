@@ -5,8 +5,11 @@
 delete_design_points
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.delete_design_points.delete_design_points
+.. currentmodule:: ansys.fluent.core.solver.settings_231.delete_design_points
 
+.. autoclass:: delete_design_points
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ====================================   ==========================

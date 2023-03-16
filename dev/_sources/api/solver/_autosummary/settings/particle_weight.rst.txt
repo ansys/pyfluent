@@ -5,13 +5,16 @@
 particle_weight
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.particle_weight.particle_weight
+.. currentmodule:: ansys.fluent.core.solver.settings_231.particle_weight
 
-.. rubric:: Attributes
+.. autoclass:: particle_weight
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================================   ================================
 
-Attribute                                                                   Summary
+Child                                                                       Summary
 
 ================================================   ================================
 :ref:`use <use>`                                                       'use' child.

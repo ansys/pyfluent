@@ -5,13 +5,16 @@
 disk_child
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.disk_child.disk_child
+.. currentmodule:: ansys.fluent.core.solver.settings_231.disk_child
 
-.. rubric:: Attributes
+.. autoclass:: disk_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ============================   =================================================
 
-Attribute                                                                Summary
+Child                                                                    Summary
 
 ============================   =================================================
 :ref:`general <general_1>`         Menu to define the rotor general information.

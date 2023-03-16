@@ -5,8 +5,11 @@
 polar_real_angle
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.polar_real_angle.polar_real_angle
+.. currentmodule:: ansys.fluent.core.solver.settings_231.polar_real_angle
 
+.. autoclass:: polar_real_angle
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

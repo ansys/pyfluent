@@ -5,13 +5,16 @@
 time_step_method
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.time_step_method_1.time_step_method
+.. currentmodule:: ansys.fluent.core.solver.settings_231.time_step_method_1
 
-.. rubric:: Attributes
+.. autoclass:: time_step_method
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================================================================   =======================================================================
 
-Attribute                                                                                                                                Summary
+Child                                                                                                                                    Summary
 
 ======================================================================   =======================================================================
 :ref:`time_step_method <time_step_method>`                                           Enable/disable use of automatic time step size calculation.

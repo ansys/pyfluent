@@ -51,7 +51,7 @@
     <script src="../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -303,8 +303,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -317,11 +322,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../tui/index.html">
      meshing.tui
@@ -486,7 +486,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform">
    <code class="docutils literal notranslate">
     <span class="pre">
-     _Transform
+     Root.Transform._Transform
     </span>
    </code>
   </a>
@@ -495,7 +495,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Add">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Transform.Add
+       Root.Transform._Transform.Add
       </span>
      </code>
     </a>
@@ -504,7 +504,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Applied">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Transform.Applied
+       Root.Transform._Transform.Applied
       </span>
      </code>
     </a>
@@ -513,7 +513,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Apply">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Transform.Apply
+       Root.Transform._Transform.Apply
       </span>
      </code>
     </a>
@@ -522,7 +522,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Children">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Transform.Children
+       Root.Transform._Transform.Children
       </span>
      </code>
     </a>
@@ -531,7 +531,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Context">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Transform.Context
+       Root.Transform._Transform.Context
       </span>
      </code>
     </a>
@@ -540,7 +540,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Delete">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Transform.Delete
+       Root.Transform._Transform.Delete
       </span>
      </code>
     </a>
@@ -549,7 +549,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Global">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Transform.Global
+       Root.Transform._Transform.Global
       </span>
      </code>
     </a>
@@ -558,7 +558,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Name">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Transform.Name
+       Root.Transform._Transform.Name
       </span>
      </code>
     </a>
@@ -567,7 +567,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Remove">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Transform.Remove
+       Root.Transform._Transform.Remove
       </span>
      </code>
     </a>
@@ -576,7 +576,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Rename">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Transform.Rename
+       Root.Transform._Transform.Rename
       </span>
      </code>
     </a>
@@ -585,7 +585,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.RotateX">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Transform.RotateX
+       Root.Transform._Transform.RotateX
       </span>
      </code>
     </a>
@@ -594,7 +594,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.RotateY">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Transform.RotateY
+       Root.Transform._Transform.RotateY
       </span>
      </code>
     </a>
@@ -603,7 +603,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.RotateZ">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Transform.RotateZ
+       Root.Transform._Transform.RotateZ
       </span>
      </code>
     </a>
@@ -612,7 +612,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.TranslateX">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Transform.TranslateX
+       Root.Transform._Transform.TranslateX
       </span>
      </code>
     </a>
@@ -621,7 +621,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.TranslateY">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Transform.TranslateY
+       Root.Transform._Transform.TranslateY
       </span>
      </code>
     </a>
@@ -630,7 +630,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.TranslateZ">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Transform.TranslateZ
+       Root.Transform._Transform.TranslateZ
       </span>
      </code>
     </a>
@@ -639,7 +639,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Type">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Transform.Type
+       Root.Transform._Transform.Type
       </span>
      </code>
     </a>
@@ -648,7 +648,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Undo">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Transform.Undo
+       Root.Transform._Transform.Undo
       </span>
      </code>
     </a>
@@ -657,7 +657,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Update">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Transform.Update
+       Root.Transform._Transform.Update
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform._name_">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Root.Transform._Transform._name_
       </span>
      </code>
     </a>
@@ -685,78 +694,18 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-datamodel-partmanagement-transform">
 <span id="ref-meshing-datamodel-partmanagement-transform"></span><h1>meshing.datamodel.PartManagement.Transform<a class="headerlink" href="#meshing-datamodel-partmanagement-transform" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.datamodel_231.PartManagement.Root.Transform.</span></span><span class="sig-name descname"><span class="pre">_Transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
-<p>Singleton _Transform.</p>
-<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Add" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Add</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Add.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Applied" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Applied"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Applied</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Applied of value type bool.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Apply" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Apply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Apply</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Apply.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Children" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Children</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Children of value type List[str].</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Context" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Context</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Context of value type int.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Delete" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Delete</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Delete.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Global" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Global"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Global</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Global of value type str.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Name" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Name</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Name of value type str.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Remove" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Remove</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Remove.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Rename" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Rename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Rename</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Rename.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.RotateX" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.RotateX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateX</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter RotateX of value type float.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.RotateY" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.RotateY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateY</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter RotateY of value type float.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.RotateZ" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.RotateZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateZ</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter RotateZ of value type float.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.TranslateX" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.TranslateX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TranslateX</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter TranslateX of value type float.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.TranslateY" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.TranslateY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TranslateY</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter TranslateY of value type float.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.TranslateZ" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.TranslateZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TranslateZ</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter TranslateZ of value type float.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Type" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Type</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Type of value type str.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Undo" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Undo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Undo</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Undo.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Update" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Update</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Update.</p></td>
-</tr>
 </tbody>
 </table>
 <dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Root.Transform.</span></span><span class="sig-name descname"><span class="pre">_Transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform" title="Permalink to this definition">#</a></dt>
+<dd><p>Singleton _Transform.</p>
+<dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Add">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Add" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Add.</p>
+<dd><p>Command Add.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -774,15 +723,13 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Applied">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Applied</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Applied" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter Applied of value type bool.</p>
+<dd><p>Parameter Applied of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Apply">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Apply" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Apply.</p>
+<dd><p>Command Apply.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -795,22 +742,19 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Children">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Children" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter Children of value type List[str].</p>
+<dd><p>Parameter Children of value type List[str].</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Context">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Context</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Context" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter Context of value type int.</p>
+<dd><p>Parameter Context of value type int.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Delete">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Delete" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Delete.</p>
+<dd><p>Command Delete.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -828,22 +772,19 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Global">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Global</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Global" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter Global of value type str.</p>
+<dd><p>Parameter Global of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Name">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Name" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter Name of value type str.</p>
+<dd><p>Parameter Name of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Remove">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Remove" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Remove.</p>
+<dd><p>Command Remove.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -861,8 +802,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Rename">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Rename" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Rename.</p>
+<dd><p>Command Rename.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -880,57 +820,49 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.RotateX">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RotateX</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.RotateX" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter RotateX of value type float.</p>
+<dd><p>Parameter RotateX of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.RotateY">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RotateY</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.RotateY" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter RotateY of value type float.</p>
+<dd><p>Parameter RotateY of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.RotateZ">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RotateZ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.RotateZ" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter RotateZ of value type float.</p>
+<dd><p>Parameter RotateZ of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.TranslateX">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TranslateX</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.TranslateX" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter TranslateX of value type float.</p>
+<dd><p>Parameter TranslateX of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.TranslateY">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TranslateY</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.TranslateY" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter TranslateY of value type float.</p>
+<dd><p>Parameter TranslateY of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.TranslateZ">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TranslateZ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.TranslateZ" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter TranslateZ of value type float.</p>
+<dd><p>Parameter TranslateZ of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Type">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Type" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter Type of value type str.</p>
+<dd><p>Parameter Type of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Undo">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Undo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Undo" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Undo.</p>
+<dd><p>Command Undo.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -943,8 +875,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Update">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform.Update" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Update.</p>
+<dd><p>Command Update.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -952,6 +883,12 @@ function checkPageExistsAndRedirect(event) {
 </dl>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform._name_">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_name_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Transform._Transform._name_" title="Permalink to this definition">#</a></dt>
+<dd><p>Parameter _name_ of value type str.</p>
 </dd></dl>
 
 </dd></dl>

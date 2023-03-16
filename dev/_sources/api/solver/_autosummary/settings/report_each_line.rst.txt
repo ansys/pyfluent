@@ -5,8 +5,11 @@
 report_each_line
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.report_each_line.report_each_line
+.. currentmodule:: ansys.fluent.core.solver.settings_231.report_each_line
 
+.. autoclass:: report_each_line
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   =======================================

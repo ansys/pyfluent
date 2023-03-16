@@ -5,8 +5,11 @@
 storage_type
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.storage_type.storage_type
+.. currentmodule:: ansys.fluent.core.solver.settings_231.storage_type
 
+.. autoclass:: storage_type
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

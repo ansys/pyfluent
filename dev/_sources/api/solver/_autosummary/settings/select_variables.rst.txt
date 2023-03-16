@@ -5,8 +5,11 @@
 select_variables
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.select_variables.select_variables
+.. currentmodule:: ansys.fluent.core.solver.settings_231.select_variables
 
+.. autoclass:: select_variables
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   =======================================

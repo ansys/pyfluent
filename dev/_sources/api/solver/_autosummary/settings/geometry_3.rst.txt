@@ -5,8 +5,11 @@
 geometry
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.geometry_3.geometry
+.. currentmodule:: ansys.fluent.core.solver.settings_231.geometry_3
 
+.. autoclass:: geometry
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

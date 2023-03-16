@@ -5,13 +5,16 @@
 secondary_rate
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.secondary_rate.secondary_rate
+.. currentmodule:: ansys.fluent.core.solver.settings_231.secondary_rate
 
-.. rubric:: Attributes
+.. autoclass:: secondary_rate
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ============================================================   ======================================
 
-Attribute                                                                                     Summary
+Child                                                                                         Summary
 
 ============================================================   ======================================
 :ref:`particle_thermolysis_rate <particle_thermolysis_rate>`       'particle_thermolysis_rate' child.

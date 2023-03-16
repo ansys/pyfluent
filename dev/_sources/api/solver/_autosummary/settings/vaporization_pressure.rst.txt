@@ -5,8 +5,11 @@
 vaporization_pressure
 =====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.vaporization_pressure.vaporization_pressure
+.. currentmodule:: ansys.fluent.core.solver.settings_231.vaporization_pressure
 
+.. autoclass:: vaporization_pressure
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =======================

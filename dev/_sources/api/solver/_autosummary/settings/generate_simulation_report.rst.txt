@@ -5,8 +5,11 @@
 generate_simulation_report
 ==========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.generate_simulation_report.generate_simulation_report
+.. currentmodule:: ansys.fluent.core.solver.settings_231.generate_simulation_report
 
+.. autoclass:: generate_simulation_report
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ================================   ========================

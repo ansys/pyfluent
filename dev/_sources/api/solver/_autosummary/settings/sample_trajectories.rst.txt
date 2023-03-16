@@ -5,13 +5,16 @@
 sample_trajectories
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.sample_trajectories.sample_trajectories
+.. currentmodule:: ansys.fluent.core.solver.settings_231.sample_trajectories
 
-.. rubric:: Attributes
+.. autoclass:: sample_trajectories
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================   ==============================================
 
-Attribute                                                                                         Summary
+Child                                                                                             Summary
 
 ========================================================   ==============================================
 :ref:`user_defined_functions <user_defined_functions_1>`                 Set the DPM sampling output UDF.
@@ -20,11 +23,11 @@ Attribute                                                                       
 
 ========================================================   ==============================================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ========================   =====================
 
-Method                                   Summary
+Command                                  Summary
 
 ========================   =====================
 :ref:`sample <sample_1>`       'sample' command.

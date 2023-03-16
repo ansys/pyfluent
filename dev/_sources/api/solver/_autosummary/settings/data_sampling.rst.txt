@@ -5,8 +5,11 @@
 data_sampling
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.data_sampling.data_sampling
+.. currentmodule:: ansys.fluent.core.solver.settings_231.data_sampling
 
+.. autoclass:: data_sampling
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ==========================

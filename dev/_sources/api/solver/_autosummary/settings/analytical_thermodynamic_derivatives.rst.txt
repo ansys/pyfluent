@@ -5,8 +5,11 @@
 analytical_thermodynamic_derivatives
 ====================================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.analytical_thermodynamic_derivatives.analytical_thermodynamic_derivatives
+.. currentmodule:: ansys.fluent.core.solver.settings_231.analytical_thermodynamic_derivatives
 
+.. autoclass:: analytical_thermodynamic_derivatives
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==================================================

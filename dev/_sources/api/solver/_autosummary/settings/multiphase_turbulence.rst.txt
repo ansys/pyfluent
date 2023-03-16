@@ -5,13 +5,16 @@
 multiphase_turbulence
 =====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.multiphase_turbulence.multiphase_turbulence
+.. currentmodule:: ansys.fluent.core.solver.settings_231.multiphase_turbulence
 
-.. rubric:: Attributes
+.. autoclass:: multiphase_turbulence
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================================================================   ==========================================================================
 
-Attribute                                                                                                                                               Summary
+Child                                                                                                                                                   Summary
 
 ==================================================================================   ==========================================================================
 :ref:`multiphase_options <multiphase_options>`                                                                                      'multiphase_options' child.

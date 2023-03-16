@@ -51,7 +51,7 @@
     <script src="../../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -305,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -350,8 +355,33 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../icing/index.html">
-         solver.tui.icing
+        <a class="reference internal" href="../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../views/index.html">
+         solver.tui.views
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../adjoint/index.html">
+         solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -365,11 +395,6 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../graphics_window/index.html">
-           solver.tui.results.graphics_window
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="../../plot/index.html">
            solver.tui.results.plot
           </a>
@@ -380,8 +405,8 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../report/index.html">
-           solver.tui.results.report
+          <a class="reference internal" href="../../graphics_window/index.html">
+           solver.tui.results.graphics_window
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -418,86 +443,16 @@ function checkPageExistsAndRedirect(event) {
            solver.tui.results.surface
           </a>
          </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../report/index.html">
+           solver.tui.results.report
+          </a>
+         </li>
         </ul>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../solution/index.html">
-         solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../setup/index.html">
-         solver.tui.setup
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../report/index.html">
-         solver.tui.report
-        </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../turbo_workflow/index.html">
          solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../surface/index.html">
-         solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../define/index.html">
-         solver.tui.define
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../display/index.html">
-         solver.tui.display
         </a>
        </li>
        <li class="toctree-l4">
@@ -511,13 +466,63 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../preferences/index.html">
-         solver.tui.preferences
+        <a class="reference internal" href="../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../parameters__and__customization/index.html">
          solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../define/index.html">
+         solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../preferences/index.html">
+         solver.tui.preferences
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
       </ul>
@@ -589,7 +594,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback">
    <code class="docutils literal notranslate">
     <span class="pre">
-     playback
+     main_menu.results.animate.playback
     </span>
    </code>
   </a>
@@ -598,7 +603,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
-       playback.delete()
+       main_menu.results.animate.playback.delete()
       </span>
      </code>
     </a>
@@ -607,7 +612,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.play">
      <code class="docutils literal notranslate">
       <span class="pre">
-       playback.play()
+       main_menu.results.animate.playback.play()
       </span>
      </code>
     </a>
@@ -616,7 +621,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.read">
      <code class="docutils literal notranslate">
       <span class="pre">
-       playback.read()
+       main_menu.results.animate.playback.read()
       </span>
      </code>
     </a>
@@ -625,7 +630,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.set_custom_frames">
      <code class="docutils literal notranslate">
       <span class="pre">
-       playback.set_custom_frames()
+       main_menu.results.animate.playback.set_custom_frames()
       </span>
      </code>
     </a>
@@ -634,155 +639,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.stored_view">
      <code class="docutils literal notranslate">
       <span class="pre">
-       playback.stored_view()
+       main_menu.results.animate.playback.stored_view()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       playback.video
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         playback.video.advance_quality
-        </span>
-       </code>
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality.bitrate">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           playback.video.advance_quality.bitrate()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality.bitrate_scale">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           playback.video.advance_quality.bitrate_scale()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality.compression_method">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           playback.video.advance_quality.compression_method()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality.enable_h264">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           playback.video.advance_quality.enable_h264()
-          </span>
-         </code>
-        </a>
-       </li>
-      </ul>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.format">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         playback.video.format()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.fps">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         playback.video.fps()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.height">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         playback.video.height()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.name">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         playback.video.name()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.quality">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         playback.video.quality()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.scale">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         playback.video.scale()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.set_standard_resolution">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         playback.video.set_standard_resolution()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.use_original_resolution">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         playback.video.use_original_resolution()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.width">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         playback.video.width()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.write">
      <code class="docutils literal notranslate">
       <span class="pre">
-       playback.write()
+       main_menu.results.animate.playback.write()
       </span>
      </code>
     </a>
@@ -810,42 +676,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-results-animate-playback">
 <span id="ref-solver-tui-results-animate-playback"></span><h1>solver.tui.results.animate.playback<a class="headerlink" href="#solver-tui-results-animate-playback" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.results.animate.</span></span><span class="sig-name descname"><span class="pre">playback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter animation playback menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.delete" title="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete animation sequence.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.play" title="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.play"><code class="xref py py-obj docutils literal notranslate"><span class="pre">play</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Play the selected animation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.read" title="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Read new animation from file or already-defined animations.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.set_custom_frames" title="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.set_custom_frames"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_custom_frames</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set custom frames start, end, skip frames for video export.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.stored_view" title="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.stored_view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stored_view</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Play the 3D animation sequence using the view stored in the sequence.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.write" title="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Write animation sequence to the file.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video" title="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video"><code class="xref py py-obj docutils literal notranslate"><span class="pre">video</span></code></a>(path, service)</p></td>
-<td><p>Set options for exporting video file menu.</p></td>
-</tr>
-</tbody>
-</table>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.results.animate.</span></span><span class="sig-name descname"><span class="pre">playback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter animation playback menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.delete">
 <span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.delete" title="Permalink to this definition">#</a></dt>
@@ -874,155 +712,6 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.stored_view">
 <span class="sig-name descname"><span class="pre">stored_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.stored_view" title="Permalink to this definition">#</a></dt>
 <dd><p>Play the 3D animation sequence using the view stored in the sequence.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">video</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Set options for exporting video file menu.</p>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality" title="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">advance_quality</span></code></a>(path, service)</p></td>
-<td><p>Advance Quality setting.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.format" title="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">format</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set format for exporting video file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.fps" title="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.fps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fps</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the Frame Per Sec(FPS) for exporting video file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.height" title="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.height"><code class="xref py py-obj docutils literal notranslate"><span class="pre">height</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the height for exporting video file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.name" title="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Exporting video file name.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.quality" title="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.quality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quality</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set quality for exporting video file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.scale" title="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set scale by which video resolution will expand.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.set_standard_resolution" title="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.set_standard_resolution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_standard_resolution</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Select from pre-defined resolution list.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.use_original_resolution" title="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.use_original_resolution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_original_resolution</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable original resolution.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.width" title="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.width"><code class="xref py py-obj docutils literal notranslate"><span class="pre">width</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the width for exporting video file.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">advance_quality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Advance Quality setting.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality.bitrate" title="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality.bitrate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bitrate</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set video bitrate(kbits/sec) for exporting video file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality.bitrate_scale" title="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality.bitrate_scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bitrate_scale</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Mp4 bitrate scale - Best-64000 High-32000 Medium-16000 Low-8000.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality.compression_method" title="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality.compression_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compression_method</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compression methode for Microsoft AVI movie.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality.enable_h264" title="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality.enable_h264"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_h264</span></code></a>(*args, **kwargs)</p></td>
-<td><p>H264 encoding flag.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality.bitrate">
-<span class="sig-name descname"><span class="pre">bitrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality.bitrate" title="Permalink to this definition">#</a></dt>
-<dd><p>Set video bitrate(kbits/sec) for exporting video file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality.bitrate_scale">
-<span class="sig-name descname"><span class="pre">bitrate_scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality.bitrate_scale" title="Permalink to this definition">#</a></dt>
-<dd><p>Mp4 bitrate scale - Best-64000 High-32000 Medium-16000 Low-8000.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality.compression_method">
-<span class="sig-name descname"><span class="pre">compression_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality.compression_method" title="Permalink to this definition">#</a></dt>
-<dd><p>Compression methode for Microsoft AVI movie.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality.enable_h264">
-<span class="sig-name descname"><span class="pre">enable_h264</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.advance_quality.enable_h264" title="Permalink to this definition">#</a></dt>
-<dd><p>H264 encoding flag.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.format">
-<span class="sig-name descname"><span class="pre">format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.format" title="Permalink to this definition">#</a></dt>
-<dd><p>Set format for exporting video file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.fps">
-<span class="sig-name descname"><span class="pre">fps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.fps" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the Frame Per Sec(FPS) for exporting video file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.height">
-<span class="sig-name descname"><span class="pre">height</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.height" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the height for exporting video file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.name">
-<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Exporting video file name.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.quality">
-<span class="sig-name descname"><span class="pre">quality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.quality" title="Permalink to this definition">#</a></dt>
-<dd><p>Set quality for exporting video file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.scale">
-<span class="sig-name descname"><span class="pre">scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.scale" title="Permalink to this definition">#</a></dt>
-<dd><p>Set scale by which video resolution will expand.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.set_standard_resolution">
-<span class="sig-name descname"><span class="pre">set_standard_resolution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.set_standard_resolution" title="Permalink to this definition">#</a></dt>
-<dd><p>Select from pre-defined resolution list.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.use_original_resolution">
-<span class="sig-name descname"><span class="pre">use_original_resolution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.use_original_resolution" title="Permalink to this definition">#</a></dt>
-<dd><p>Enable original resolution.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.width">
-<span class="sig-name descname"><span class="pre">width</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.animate.playback.video.width" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the width for exporting video file.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">

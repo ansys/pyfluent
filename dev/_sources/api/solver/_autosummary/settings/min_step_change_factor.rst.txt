@@ -5,8 +5,11 @@
 min_step_change_factor
 ======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.min_step_change_factor.min_step_change_factor
+.. currentmodule:: ansys.fluent.core.solver.settings_231.min_step_change_factor
 
+.. autoclass:: min_step_change_factor
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================================   =============================================

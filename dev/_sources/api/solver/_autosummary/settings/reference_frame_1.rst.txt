@@ -5,8 +5,11 @@
 reference_frame
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.reference_frame_1.reference_frame
+.. currentmodule:: ansys.fluent.core.solver.settings_231.reference_frame_1
 
+.. autoclass:: reference_frame
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ====================================

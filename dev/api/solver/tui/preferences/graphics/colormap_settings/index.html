@@ -51,12 +51,12 @@
     <script src="../../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
-    <link rel="next" title="solver.tui.preferences.graphics.transparency" href="../transparency/index.html" />
-    <link rel="prev" title="solver.tui.preferences.graphics.export_video_settings.advanced_video_quality_options" href="../export_video_settings/advanced_video_quality_options/index.html" />
+    <link rel="next" title="solver.tui.preferences.graphics.hardcopy_settings" href="../hardcopy_settings/index.html" />
+    <link rel="prev" title="solver.tui.preferences.graphics.boundary_markers" href="../boundary_markers/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -305,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -350,28 +355,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../solution/index.html">
          solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../setup/index.html">
-         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4">
@@ -380,13 +365,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../../setup/index.html">
+         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4">
@@ -395,13 +375,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
+        <a class="reference internal" href="../../../display/index.html">
+         solver.tui.display
         </a>
        </li>
        <li class="toctree-l4">
@@ -410,33 +385,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../define/index.html">
-         solver.tui.define
+        <a class="reference internal" href="../../../results/index.html">
+         solver.tui.results
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
        <li class="toctree-l4">
@@ -447,6 +402,56 @@ function checkPageExistsAndRedirect(event) {
        <li class="toctree-l4">
         <a class="reference internal" href="../../../plot/index.html">
          solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../define/index.html">
+         solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../surface/index.html">
+         solver.tui.surface
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -460,18 +465,13 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
+          <a class="reference internal" href="../../simulation/index.html">
+           solver.tui.preferences.simulation
+          </a>
+         </li>
+         <li class="toctree-l5">
           <a class="reference internal" href="../../gpuapp/index.html">
            solver.tui.preferences.gpuapp
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../parametric_study/index.html">
-           solver.tui.preferences.parametric_study
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../turbo_workflow/index.html">
-           solver.tui.preferences.turbo_workflow
           </a>
          </li>
          <li class="toctree-l5">
@@ -480,13 +480,13 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../appearance/index.html">
-           solver.tui.preferences.appearance
+          <a class="reference internal" href="../../mat_pro_app/index.html">
+           solver.tui.preferences.mat_pro_app
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../simulation/index.html">
-           solver.tui.preferences.simulation
+          <a class="reference internal" href="../../meshing_workflow/index.html">
+           solver.tui.preferences.meshing_workflow
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -500,33 +500,13 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul class="current">
            <li class="toctree-l6">
+            <a class="reference internal" href="../transparency/index.html">
+             solver.tui.preferences.graphics.transparency
+            </a>
+           </li>
+           <li class="toctree-l6">
             <a class="reference internal" href="../boundary_markers/index.html">
              solver.tui.preferences.graphics.boundary_markers
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../graphics_effects/index.html">
-             solver.tui.preferences.graphics.graphics_effects
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../meshing_mode/index.html">
-             solver.tui.preferences.graphics.meshing_mode
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../vector_settings/index.html">
-             solver.tui.preferences.graphics.vector_settings
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../material_effects/index.html">
-             solver.tui.preferences.graphics.material_effects
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../export_video_settings/index.html">
-             solver.tui.preferences.graphics.export_video_settings
             </a>
            </li>
            <li class="toctree-l6 current active">
@@ -535,23 +515,13 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../transparency/index.html">
-             solver.tui.preferences.graphics.transparency
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../performance/index.html">
-             solver.tui.preferences.graphics.performance
-            </a>
-           </li>
-           <li class="toctree-l6">
             <a class="reference internal" href="../hardcopy_settings/index.html">
              solver.tui.preferences.graphics.hardcopy_settings
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../embedded_windows/index.html">
-             solver.tui.preferences.graphics.embedded_windows
+            <a class="reference internal" href="../meshing_mode/index.html">
+             solver.tui.preferences.graphics.meshing_mode
             </a>
            </li>
            <li class="toctree-l6">
@@ -560,15 +530,45 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
+            <a class="reference internal" href="../embedded_windows/index.html">
+             solver.tui.preferences.graphics.embedded_windows
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../material_effects/index.html">
+             solver.tui.preferences.graphics.material_effects
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../performance/index.html">
+             solver.tui.preferences.graphics.performance
+            </a>
+           </li>
+           <li class="toctree-l6">
             <a class="reference internal" href="../lighting/index.html">
              solver.tui.preferences.graphics.lighting
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../export_video_settings/index.html">
+             solver.tui.preferences.graphics.export_video_settings
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../vector_settings/index.html">
+             solver.tui.preferences.graphics.vector_settings
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../graphics_effects/index.html">
+             solver.tui.preferences.graphics.graphics_effects
             </a>
            </li>
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../meshing_workflow/index.html">
-           solver.tui.preferences.meshing_workflow
+          <a class="reference internal" href="../../turbo_workflow/index.html">
+           solver.tui.preferences.turbo_workflow
           </a>
          </li>
          <li class="toctree-l5">
@@ -577,15 +577,20 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../mat_pro_app/index.html">
-           solver.tui.preferences.mat_pro_app
+          <a class="reference internal" href="../../appearance/index.html">
+           solver.tui.preferences.appearance
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../parametric_study/index.html">
+           solver.tui.preferences.parametric_study
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
       </ul>
@@ -657,7 +662,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings">
    <code class="docutils literal notranslate">
     <span class="pre">
-     colormap_settings
+     main_menu.preferences.graphics.colormap_settings
     </span>
    </code>
   </a>
@@ -666,7 +671,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.alignment">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.alignment()
+       main_menu.preferences.graphics.colormap_settings.alignment()
       </span>
      </code>
     </a>
@@ -675,7 +680,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.aspect_ratio_when_horizontal">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.aspect_ratio_when_horizontal()
+       main_menu.preferences.graphics.colormap_settings.aspect_ratio_when_horizontal()
       </span>
      </code>
     </a>
@@ -684,7 +689,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.aspect_ratio_when_vertical">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.aspect_ratio_when_vertical()
+       main_menu.preferences.graphics.colormap_settings.aspect_ratio_when_vertical()
       </span>
      </code>
     </a>
@@ -693,7 +698,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.auto_refit_on_resize">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.auto_refit_on_resize()
+       main_menu.preferences.graphics.colormap_settings.auto_refit_on_resize()
       </span>
      </code>
     </a>
@@ -702,7 +707,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.automatic_resize">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.automatic_resize()
+       main_menu.preferences.graphics.colormap_settings.automatic_resize()
       </span>
      </code>
     </a>
@@ -711,7 +716,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.border_style">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.border_style()
+       main_menu.preferences.graphics.colormap_settings.border_style()
       </span>
      </code>
     </a>
@@ -720,7 +725,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.colormap">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.colormap()
+       main_menu.preferences.graphics.colormap_settings.colormap()
       </span>
      </code>
     </a>
@@ -729,7 +734,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.isolines_position_offset">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.isolines_position_offset()
+       main_menu.preferences.graphics.colormap_settings.isolines_position_offset()
       </span>
      </code>
     </a>
@@ -738,7 +743,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.labels">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.labels()
+       main_menu.preferences.graphics.colormap_settings.labels()
       </span>
      </code>
     </a>
@@ -747,7 +752,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.levels">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.levels()
+       main_menu.preferences.graphics.colormap_settings.levels()
       </span>
      </code>
     </a>
@@ -756,7 +761,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.log_scale">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.log_scale()
+       main_menu.preferences.graphics.colormap_settings.log_scale()
       </span>
      </code>
     </a>
@@ -765,7 +770,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.major_length_to_screen_ratio_when_horizontal">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.major_length_to_screen_ratio_when_horizontal()
+       main_menu.preferences.graphics.colormap_settings.major_length_to_screen_ratio_when_horizontal()
       </span>
      </code>
     </a>
@@ -774,7 +779,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.major_length_to_screen_ratio_when_vertical">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.major_length_to_screen_ratio_when_vertical()
+       main_menu.preferences.graphics.colormap_settings.major_length_to_screen_ratio_when_vertical()
       </span>
      </code>
     </a>
@@ -783,7 +788,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.margin_from_edge_to_screen_ratio">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.margin_from_edge_to_screen_ratio()
+       main_menu.preferences.graphics.colormap_settings.margin_from_edge_to_screen_ratio()
       </span>
      </code>
     </a>
@@ -792,7 +797,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.max_size_scale_factor">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.max_size_scale_factor()
+       main_menu.preferences.graphics.colormap_settings.max_size_scale_factor()
       </span>
      </code>
     </a>
@@ -801,7 +806,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.min_size_scale_factor">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.min_size_scale_factor()
+       main_menu.preferences.graphics.colormap_settings.min_size_scale_factor()
       </span>
      </code>
     </a>
@@ -810,7 +815,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.number_format_precision">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.number_format_precision()
+       main_menu.preferences.graphics.colormap_settings.number_format_precision()
       </span>
      </code>
     </a>
@@ -819,7 +824,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.number_format_type">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.number_format_type()
+       main_menu.preferences.graphics.colormap_settings.number_format_type()
       </span>
      </code>
     </a>
@@ -828,7 +833,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.preserve_aspect_ratio_for_hardcopy">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.preserve_aspect_ratio_for_hardcopy()
+       main_menu.preferences.graphics.colormap_settings.preserve_aspect_ratio_for_hardcopy()
       </span>
      </code>
     </a>
@@ -837,7 +842,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.show_colormap">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.show_colormap()
+       main_menu.preferences.graphics.colormap_settings.show_colormap()
       </span>
      </code>
     </a>
@@ -846,7 +851,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.skip_value">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.skip_value()
+       main_menu.preferences.graphics.colormap_settings.skip_value()
       </span>
      </code>
     </a>
@@ -855,7 +860,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_behavior">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.text_behavior()
+       main_menu.preferences.graphics.colormap_settings.text_behavior()
       </span>
      </code>
     </a>
@@ -864,7 +869,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_automatic_horizontal_size">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.text_font_automatic_horizontal_size()
+       main_menu.preferences.graphics.colormap_settings.text_font_automatic_horizontal_size()
       </span>
      </code>
     </a>
@@ -873,7 +878,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_automatic_size">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.text_font_automatic_size()
+       main_menu.preferences.graphics.colormap_settings.text_font_automatic_size()
       </span>
      </code>
     </a>
@@ -882,7 +887,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_automatic_units">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.text_font_automatic_units()
+       main_menu.preferences.graphics.colormap_settings.text_font_automatic_units()
       </span>
      </code>
     </a>
@@ -891,7 +896,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_automatic_vertical_size">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.text_font_automatic_vertical_size()
+       main_menu.preferences.graphics.colormap_settings.text_font_automatic_vertical_size()
       </span>
      </code>
     </a>
@@ -900,7 +905,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_fixed_horizontal_size">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.text_font_fixed_horizontal_size()
+       main_menu.preferences.graphics.colormap_settings.text_font_fixed_horizontal_size()
       </span>
      </code>
     </a>
@@ -909,7 +914,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_fixed_size">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.text_font_fixed_size()
+       main_menu.preferences.graphics.colormap_settings.text_font_fixed_size()
       </span>
      </code>
     </a>
@@ -918,7 +923,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_fixed_units">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.text_font_fixed_units()
+       main_menu.preferences.graphics.colormap_settings.text_font_fixed_units()
       </span>
      </code>
     </a>
@@ -927,7 +932,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_fixed_vertical_size">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.text_font_fixed_vertical_size()
+       main_menu.preferences.graphics.colormap_settings.text_font_fixed_vertical_size()
       </span>
      </code>
     </a>
@@ -936,7 +941,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_name">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.text_font_name()
+       main_menu.preferences.graphics.colormap_settings.text_font_name()
       </span>
      </code>
     </a>
@@ -945,7 +950,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_truncation_limit_for_horizontal_colormaps">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.text_truncation_limit_for_horizontal_colormaps()
+       main_menu.preferences.graphics.colormap_settings.text_truncation_limit_for_horizontal_colormaps()
       </span>
      </code>
     </a>
@@ -954,7 +959,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_truncation_limit_for_vertical_colormaps">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.text_truncation_limit_for_vertical_colormaps()
+       main_menu.preferences.graphics.colormap_settings.text_truncation_limit_for_vertical_colormaps()
       </span>
      </code>
     </a>
@@ -963,7 +968,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.type">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.type()
+       main_menu.preferences.graphics.colormap_settings.type()
       </span>
      </code>
     </a>
@@ -972,7 +977,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.use_no_sub_windows">
      <code class="docutils literal notranslate">
       <span class="pre">
-       colormap_settings.use_no_sub_windows()
+       main_menu.preferences.graphics.colormap_settings.use_no_sub_windows()
       </span>
      </code>
     </a>
@@ -1000,156 +1005,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-preferences-graphics-colormap-settings">
 <span id="ref-solver-tui-preferences-graphics-colormap-settings"></span><h1>solver.tui.preferences.graphics.colormap_settings<a class="headerlink" href="#solver-tui-preferences-graphics-colormap-settings" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.</span></span><span class="sig-name descname"><span class="pre">colormap_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.alignment" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.alignment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alignment</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.aspect_ratio_when_horizontal" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.aspect_ratio_when_horizontal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aspect_ratio_when_horizontal</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.aspect_ratio_when_vertical" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.aspect_ratio_when_vertical"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aspect_ratio_when_vertical</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.auto_refit_on_resize" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.auto_refit_on_resize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_refit_on_resize</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.automatic_resize" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.automatic_resize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">automatic_resize</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.border_style" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.border_style"><code class="xref py py-obj docutils literal notranslate"><span class="pre">border_style</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.colormap" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.colormap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">colormap</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.isolines_position_offset" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.isolines_position_offset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isolines_position_offset</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.labels" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">labels</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.levels" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.levels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">levels</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.log_scale" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.log_scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_scale</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.major_length_to_screen_ratio_when_horizontal" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.major_length_to_screen_ratio_when_horizontal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">major_length_to_screen_ratio_when_horizontal</span></code></a>(...)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.major_length_to_screen_ratio_when_vertical" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.major_length_to_screen_ratio_when_vertical"><code class="xref py py-obj docutils literal notranslate"><span class="pre">major_length_to_screen_ratio_when_vertical</span></code></a>(...)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.margin_from_edge_to_screen_ratio" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.margin_from_edge_to_screen_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">margin_from_edge_to_screen_ratio</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.max_size_scale_factor" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.max_size_scale_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_size_scale_factor</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.min_size_scale_factor" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.min_size_scale_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_size_scale_factor</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.number_format_precision" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.number_format_precision"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_format_precision</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.number_format_type" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.number_format_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_format_type</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.preserve_aspect_ratio_for_hardcopy" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.preserve_aspect_ratio_for_hardcopy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preserve_aspect_ratio_for_hardcopy</span></code></a>(*args, ...)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.show_colormap" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.show_colormap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_colormap</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.skip_value" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.skip_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">skip_value</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_behavior" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_behavior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_behavior</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_automatic_horizontal_size" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_automatic_horizontal_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_font_automatic_horizontal_size</span></code></a>(*args, ...)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_automatic_size" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_automatic_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_font_automatic_size</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_automatic_units" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_automatic_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_font_automatic_units</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_automatic_vertical_size" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_automatic_vertical_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_font_automatic_vertical_size</span></code></a>(*args, ...)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_fixed_horizontal_size" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_fixed_horizontal_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_font_fixed_horizontal_size</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_fixed_size" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_fixed_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_font_fixed_size</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_fixed_units" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_fixed_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_font_fixed_units</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_fixed_vertical_size" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_fixed_vertical_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_font_fixed_vertical_size</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_name" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_font_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_font_name</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_truncation_limit_for_horizontal_colormaps" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_truncation_limit_for_horizontal_colormaps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_truncation_limit_for_horizontal_colormaps</span></code></a>(...)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_truncation_limit_for_vertical_colormaps" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.text_truncation_limit_for_vertical_colormaps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_truncation_limit_for_vertical_colormaps</span></code></a>(...)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.type" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">type</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.use_no_sub_windows" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.use_no_sub_windows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_no_sub_windows</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.preferences.graphics.</span></span><span class="sig-name descname"><span class="pre">colormap_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.alignment">
 <span class="sig-name descname"><span class="pre">alignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.colormap_settings.alignment" title="Permalink to this definition">#</a></dt>

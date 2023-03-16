@@ -5,8 +5,11 @@
 improve_quality
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.improve_quality.improve_quality
+.. currentmodule:: ansys.fluent.core.solver.settings_231.improve_quality
 
+.. autoclass:: improve_quality
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ==============================================

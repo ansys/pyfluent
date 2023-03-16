@@ -5,8 +5,11 @@
 time_scale_modification_method
 ==============================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.time_scale_modification_method.time_scale_modification_method
+.. currentmodule:: ansys.fluent.core.solver.settings_231.time_scale_modification_method
 
+.. autoclass:: time_scale_modification_method
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

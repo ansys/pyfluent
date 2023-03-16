@@ -3,11 +3,11 @@
 solver.tui.display.set.rendering\_options
 =========================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.display.set.rendering_options
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.rendering_options
+   :members: driver, set_rendering_options, hidden_surface_method, animation_option, auto_spin, outer_face_cull, surface_edge_visibility, show_colormap, device_info, help_text_color, double_buffering, face_displacement, color_map_alignment, hidden_surfaces
 

@@ -5,13 +5,16 @@
 fluid_child
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fluid_child_1.fluid_child
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fluid_child_1
 
-.. rubric:: Attributes
+.. autoclass:: fluid_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================================================================   ===========================================
 
-Attribute                                                                                                    Summary
+Child                                                                                                        Summary
 
 ======================================================================   ===========================================
 :ref:`phase <phase>`                                                                                  'phase' child.

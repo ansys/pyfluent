@@ -5,8 +5,11 @@
 static_shadows
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.static_shadows.static_shadows
+.. currentmodule:: ansys.fluent.core.solver.settings_231.static_shadows
 
+.. autoclass:: static_shadows
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

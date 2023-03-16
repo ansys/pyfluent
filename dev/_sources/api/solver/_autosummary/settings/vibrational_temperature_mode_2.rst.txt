@@ -5,8 +5,11 @@
 vibrational_temperature_mode_2
 ==============================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.vibrational_temperature_mode_2.vibrational_temperature_mode_2
+.. currentmodule:: ansys.fluent.core.solver.settings_231.vibrational_temperature_mode_2
 
+.. autoclass:: vibrational_temperature_mode_2
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================

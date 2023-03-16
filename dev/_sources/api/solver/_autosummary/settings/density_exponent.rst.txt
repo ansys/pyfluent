@@ -5,8 +5,11 @@
 density_exponent
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.density_exponent.density_exponent
+.. currentmodule:: ansys.fluent.core.solver.settings_231.density_exponent
 
+.. autoclass:: density_exponent
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   ================================

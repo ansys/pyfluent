@@ -5,8 +5,11 @@
 rans_model
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.rans_model.rans_model
+.. currentmodule:: ansys.fluent.core.solver.settings_231.rans_model
 
+.. autoclass:: rans_model
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ====================

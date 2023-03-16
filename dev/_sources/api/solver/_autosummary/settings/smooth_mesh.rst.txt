@@ -5,8 +5,11 @@
 smooth_mesh
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.smooth_mesh.smooth_mesh
+.. currentmodule:: ansys.fluent.core.solver.settings_231.smooth_mesh
 
+.. autoclass:: smooth_mesh
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==================================================   =================================

@@ -5,13 +5,16 @@
 particle_track
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.particle_track.particle_track
+.. currentmodule:: ansys.fluent.core.solver.settings_231.particle_track
 
-.. rubric:: Methods
+.. autoclass:: particle_track
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ========================================   =============================================
 
-Method                                                                           Summary
+Command                                                                          Summary
 
 ========================================   =============================================
 :ref:`display <display_1>`                                      Display graphics object.

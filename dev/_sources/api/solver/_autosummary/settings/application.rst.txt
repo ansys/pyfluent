@@ -5,8 +5,11 @@
 application
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.application.application
+.. currentmodule:: ansys.fluent.core.solver.settings_231.application
 
+.. autoclass:: application
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   =======================================

@@ -5,8 +5,11 @@
 open_channel
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.open_channel.open_channel
+.. currentmodule:: ansys.fluent.core.solver.settings_231.open_channel
 
+.. autoclass:: open_channel
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

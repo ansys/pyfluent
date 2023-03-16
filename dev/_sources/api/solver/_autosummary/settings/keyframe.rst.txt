@@ -5,8 +5,11 @@
 keyframe
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.keyframe.keyframe
+.. currentmodule:: ansys.fluent.core.solver.settings_231.keyframe
 
+.. autoclass:: keyframe
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

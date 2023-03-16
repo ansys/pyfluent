@@ -5,8 +5,11 @@
 disk
 ====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.disk.disk
+.. currentmodule:: ansys.fluent.core.solver.settings_231.disk
 
+.. autoclass:: disk
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`disk_child <disk_child>`

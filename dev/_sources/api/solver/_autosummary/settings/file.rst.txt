@@ -5,13 +5,16 @@
 file
 ====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.file.file
+.. currentmodule:: ansys.fluent.core.solver.settings_231.file
 
-.. rubric:: Attributes
+.. autoclass:: file
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================================================   ===================================================================================================
 
-Attribute                                                                                                                                                        Summary
+Child                                                                                                                                                            Summary
 
 ==================================================================   ===================================================================================================
 :ref:`single_precision_coordinates <single_precision_coordinates>`                                      Indicate whether to write nodal coordinates in single precision.
@@ -34,11 +37,11 @@ Attribute                                                                       
 
 ==================================================================   ===================================================================================================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ============================================   ====================================================
 
-Method                                                                                      Summary
+Command                                                                                     Summary
 
 ============================================   ====================================================
 :ref:`auto_save <auto_save>`                                                     'auto_save' child.

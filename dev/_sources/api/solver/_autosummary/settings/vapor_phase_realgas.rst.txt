@@ -5,8 +5,11 @@
 vapor_phase_realgas
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.vapor_phase_realgas.vapor_phase_realgas
+.. currentmodule:: ansys.fluent.core.solver.settings_231.vapor_phase_realgas
 
+.. autoclass:: vapor_phase_realgas
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

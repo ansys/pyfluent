@@ -51,7 +51,7 @@
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
@@ -205,7 +205,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -351,7 +351,8 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.settings_231.forces.forces">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.settings_231.forces.</span></span><span class="sig-name descname"><span class="pre">forces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.settings_231.forces.forces" title="Permalink to this definition">#</a></dt>
-<dd><p>‘forces’ command.</p>
+<dd><p>Bases: <a class="reference internal" href="../ansys.fluent.core.solver.flobject.Command.html#ansys.fluent.core.solver.flobject.Command" title="ansys.fluent.core.solver.flobject.Command"><code class="xref py py-class docutils literal notranslate"><span class="pre">Command</span></code></a></p>
+<p>‘forces’ command.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -361,13 +362,13 @@ function checkPageExistsAndRedirect(event) {
 </dd>
 <dt><strong>all_wall_zones</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.12)"><span class="xref std std-ref">bool</span></a></span></dt><dd><p>Select all wall zones available.</p>
 </dd>
-<dt><strong>wall_thread_list</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">List</span></code></span></dt><dd><p>‘wall_thread_list’ child.</p>
+<dt><strong>wall_thread_list</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">typing.List</span></code></a>[<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a>]</span></dt><dd><p>‘wall_thread_list’ child.</p>
 </dd>
-<dt><strong>direction_vector</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Tuple</span></code></span></dt><dd><p>‘direction_vector’ child.</p>
+<dt><strong>direction_vector</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Tuple" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">typing.Tuple</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">real</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">real</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">real</span></code>]</span></dt><dd><p>‘direction_vector’ child.</p>
 </dd>
-<dt><strong>momentum_center</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Tuple</span></code></span></dt><dd><p>‘momentum_center’ child.</p>
+<dt><strong>momentum_center</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Tuple" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">typing.Tuple</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">real</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">real</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">real</span></code>]</span></dt><dd><p>‘momentum_center’ child.</p>
 </dd>
-<dt><strong>momentum_axis</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Tuple</span></code></span></dt><dd><p>‘momentum_axis’ child.</p>
+<dt><strong>momentum_axis</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Tuple" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">typing.Tuple</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">real</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">real</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">real</span></code>]</span></dt><dd><p>‘momentum_axis’ child.</p>
 </dd>
 <dt><strong>pressure_coordinate</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>‘pressure_coordinate’ child.</p>
 </dd>

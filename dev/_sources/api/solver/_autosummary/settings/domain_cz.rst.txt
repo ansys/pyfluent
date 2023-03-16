@@ -5,8 +5,11 @@
 domain_cz
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.domain_cz.domain_cz
+.. currentmodule:: ansys.fluent.core.solver.settings_231.domain_cz
 
+.. autoclass:: domain_cz
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ================================

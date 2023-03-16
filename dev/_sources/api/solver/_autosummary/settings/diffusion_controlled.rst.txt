@@ -5,13 +5,16 @@
 diffusion_controlled
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.diffusion_controlled.diffusion_controlled
+.. currentmodule:: ansys.fluent.core.solver.settings_231.diffusion_controlled
 
-.. rubric:: Attributes
+.. autoclass:: diffusion_controlled
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================================   ============================================
 
-Attribute                                                                                                       Summary
+Child                                                                                                           Summary
 
 ========================================================================   ============================================
 :ref:`use_vapor_species_heat_capacity <use_vapor_species_heat_capacity>`       'use_vapor_species_heat_capacity' child.

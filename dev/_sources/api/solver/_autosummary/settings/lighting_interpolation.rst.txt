@@ -5,8 +5,11 @@
 lighting_interpolation
 ======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.lighting_interpolation.lighting_interpolation
+.. currentmodule:: ansys.fluent.core.solver.settings_231.lighting_interpolation
 
+.. autoclass:: lighting_interpolation
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

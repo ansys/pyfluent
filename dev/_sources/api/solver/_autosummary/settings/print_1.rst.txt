@@ -5,8 +5,11 @@
 print
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.print_1.print
+.. currentmodule:: ansys.fluent.core.solver.settings_231.print_1
 
+.. autoclass:: print
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

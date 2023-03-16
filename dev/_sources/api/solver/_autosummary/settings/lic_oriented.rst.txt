@@ -5,8 +5,11 @@
 lic_oriented
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.lic_oriented.lic_oriented
+.. currentmodule:: ansys.fluent.core.solver.settings_231.lic_oriented
 
+.. autoclass:: lic_oriented
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ===============================

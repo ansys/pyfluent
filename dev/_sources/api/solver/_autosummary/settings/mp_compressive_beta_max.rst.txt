@@ -5,8 +5,11 @@
 mp_compressive_beta_max
 =======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.mp_compressive_beta_max.mp_compressive_beta_max
+.. currentmodule:: ansys.fluent.core.solver.settings_231.mp_compressive_beta_max
 
+.. autoclass:: mp_compressive_beta_max
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

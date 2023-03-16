@@ -5,8 +5,11 @@
 retain_most_recent_files
 ========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.retain_most_recent_files.retain_most_recent_files
+.. currentmodule:: ansys.fluent.core.solver.settings_231.retain_most_recent_files
 
+.. autoclass:: retain_most_recent_files
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

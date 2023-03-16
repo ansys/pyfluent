@@ -5,13 +5,16 @@
 phase_child
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.phase_child_8.phase_child
+.. currentmodule:: ansys.fluent.core.solver.settings_231.phase_child_8
 
-.. rubric:: Attributes
+.. autoclass:: phase_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================================================   ========================================
 
-Attribute                                                                                           Summary
+Child                                                                                               Summary
 
 ================================================================   ========================================
 :ref:`is_not_a_rans_les_interface <is_not_a_rans_les_interface>`       'is_not_a_rans_les_interface' child.

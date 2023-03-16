@@ -5,8 +5,11 @@
 enable_rough_wall_treatment
 ===========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.enable_rough_wall_treatment.enable_rough_wall_treatment
+.. currentmodule:: ansys.fluent.core.solver.settings_231.enable_rough_wall_treatment
 
+.. autoclass:: enable_rough_wall_treatment
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ========================

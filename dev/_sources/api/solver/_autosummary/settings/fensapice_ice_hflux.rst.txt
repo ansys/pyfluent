@@ -5,8 +5,11 @@
 fensapice_ice_hflux
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fensapice_ice_hflux.fensapice_ice_hflux
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fensapice_ice_hflux
 
+.. autoclass:: fensapice_ice_hflux
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

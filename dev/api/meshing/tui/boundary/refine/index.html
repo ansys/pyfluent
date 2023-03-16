@@ -51,12 +51,12 @@
     <script src="../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
     <link rel="next" title="meshing.tui.boundary.refine.local_regions" href="local_regions/index.html" />
-    <link rel="prev" title="meshing.tui.boundary.feature" href="../feature/index.html" />
+    <link rel="prev" title="meshing.tui.boundary" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -303,8 +303,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -317,11 +322,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -333,8 +333,8 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
+      <a class="reference internal" href="../../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
       </a>
      </li>
      <li class="toctree-l3">
@@ -343,33 +343,13 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../report/index.html">
-       meshing.tui.report
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../size_functions/index.html">
-       meshing.tui.size_functions
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../reference_frames/index.html">
-       meshing.tui.reference_frames
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../parallel/index.html">
-       meshing.tui.parallel
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../../preferences/index.html">
        meshing.tui.preferences
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../material_point/index.html">
+       meshing.tui.material_point
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -382,31 +362,6 @@ function checkPageExistsAndRedirect(event) {
        </i>
       </label>
       <ul class="current">
-       <li class="toctree-l4">
-        <a class="reference internal" href="../modify/index.html">
-         meshing.tui.boundary.modify
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../manage/index.html">
-         meshing.tui.boundary.manage
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../improve/index.html">
-         meshing.tui.boundary.improve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../remesh/index.html">
-         meshing.tui.boundary.remesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../feature/index.html">
-         meshing.tui.boundary.feature
-        </a>
-       </li>
        <li class="toctree-l4 current active has-children">
         <a class="current reference internal" href="#">
          meshing.tui.boundary.refine
@@ -425,6 +380,26 @@ function checkPageExistsAndRedirect(event) {
         </ul>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../improve/index.html">
+         meshing.tui.boundary.improve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../shell_boundary_layer/index.html">
+         meshing.tui.boundary.shell_boundary_layer
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../modify/index.html">
+         meshing.tui.boundary.modify
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../feature/index.html">
+         meshing.tui.boundary.feature
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../boundary_conditions/index.html">
          meshing.tui.boundary.boundary_conditions
         </a>
@@ -435,15 +410,40 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../shell_boundary_layer/index.html">
-         meshing.tui.boundary.shell_boundary_layer
+        <a class="reference internal" href="../remesh/index.html">
+         meshing.tui.boundary.remesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../manage/index.html">
+         meshing.tui.boundary.manage
         </a>
        </li>
       </ul>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../material_point/index.html">
-       meshing.tui.material_point
+      <a class="reference internal" href="../../diagnostics/index.html">
+       meshing.tui.diagnostics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../parallel/index.html">
+       meshing.tui.parallel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../size_functions/index.html">
+       meshing.tui.size_functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
       </a>
      </li>
      <li class="toctree-l3">
@@ -452,8 +452,13 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../diagnostics/index.html">
-       meshing.tui.diagnostics
+      <a class="reference internal" href="../../file/index.html">
+       meshing.tui.file
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../report/index.html">
+       meshing.tui.report
       </a>
      </li>
      <li class="toctree-l3">
@@ -462,13 +467,8 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../file/index.html">
-       meshing.tui.file
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
+      <a class="reference internal" href="../../reference_frames/index.html">
+       meshing.tui.reference_frames
       </a>
      </li>
     </ul>
@@ -513,7 +513,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine">
    <code class="docutils literal notranslate">
     <span class="pre">
-     refine
+     main_menu.boundary.refine
     </span>
    </code>
   </a>
@@ -522,7 +522,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.auto_refine">
      <code class="docutils literal notranslate">
       <span class="pre">
-       refine.auto_refine()
+       main_menu.boundary.refine.auto_refine()
       </span>
      </code>
     </a>
@@ -531,7 +531,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.clear">
      <code class="docutils literal notranslate">
       <span class="pre">
-       refine.clear()
+       main_menu.boundary.refine.clear()
       </span>
      </code>
     </a>
@@ -540,7 +540,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.count">
      <code class="docutils literal notranslate">
       <span class="pre">
-       refine.count()
+       main_menu.boundary.refine.count()
       </span>
      </code>
     </a>
@@ -549,63 +549,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.limits">
      <code class="docutils literal notranslate">
       <span class="pre">
-       refine.limits()
+       main_menu.boundary.refine.limits()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       refine.local_regions
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions.define">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         refine.local_regions.define()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions.delete">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         refine.local_regions.delete()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions.init">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         refine.local_regions.init()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions.list_all_regions">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         refine.local_regions.list_all_regions()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.mark">
      <code class="docutils literal notranslate">
       <span class="pre">
-       refine.mark()
+       main_menu.boundary.refine.mark()
       </span>
      </code>
     </a>
@@ -614,7 +567,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.refine">
      <code class="docutils literal notranslate">
       <span class="pre">
-       refine.refine()
+       main_menu.boundary.refine.refine()
       </span>
      </code>
     </a>
@@ -642,42 +595,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-boundary-refine">
 <span id="ref-meshing-tui-boundary-refine"></span><h1>meshing.tui.boundary.refine<a class="headerlink" href="#meshing-tui-boundary-refine" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.boundary.</span></span><span class="sig-name descname"><span class="pre">refine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Discusses the commands used to refine the boundary mesh.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.auto_refine" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.auto_refine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_refine</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Automatically refines a face zone based on proximity.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.clear" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Clears all refinement marks from all boundary faces.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.count" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Counts the number of faces marked on each boundary zone.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.limits" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.limits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">limits</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Prints a report of the minimum and maximum size of each specified zone.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.mark" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.mark"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mark</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Marks the faces for refinement.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.refine" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.refine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">refine</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Refines the marked faces.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">local_regions</span></code></a>(path, service)</p></td>
-<td><p>Enters the local refinement menu.</p></td>
-</tr>
-</tbody>
-</table>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.boundary.</span></span><span class="sig-name descname"><span class="pre">refine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine" title="Permalink to this definition">#</a></dt>
+<dd><p>Discusses the commands used to refine the boundary mesh.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.auto_refine">
 <span class="sig-name descname"><span class="pre">auto_refine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.auto_refine" title="Permalink to this definition">#</a></dt>
@@ -700,54 +625,6 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.limits">
 <span class="sig-name descname"><span class="pre">limits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.limits" title="Permalink to this definition">#</a></dt>
 <dd><p>Prints a report of the minimum and maximum size of each specified zone. This report will also tell you how many faces on each zone have been marked for refinement.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">local_regions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the local refinement menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions.define" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions.define"><code class="xref py py-obj docutils literal notranslate"><span class="pre">define</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Defines the refinement region according to the specified parameters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions.delete" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Deletes the specified region.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions.init" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions.init"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Creates a region encompassing the entire geometry.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions.list_all_regions" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions.list_all_regions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_all_regions</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Lists all the refinement regions in the console.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions.define">
-<span class="sig-name descname"><span class="pre">define</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions.define" title="Permalink to this definition">#</a></dt>
-<dd><p>Defines the refinement region according to the specified parameters.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions.delete">
-<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions.delete" title="Permalink to this definition">#</a></dt>
-<dd><p>Deletes the specified region.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions.init">
-<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions.init" title="Permalink to this definition">#</a></dt>
-<dd><p>Creates a region encompassing the entire geometry.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions.list_all_regions">
-<span class="sig-name descname"><span class="pre">list_all_regions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.refine.local_regions.list_all_regions" title="Permalink to this definition">#</a></dt>
-<dd><p>Lists all the refinement regions in the console.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">

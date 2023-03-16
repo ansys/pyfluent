@@ -5,8 +5,11 @@
 set_ambient_color
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.set_ambient_color.set_ambient_color
+.. currentmodule:: ansys.fluent.core.solver.settings_231.set_ambient_color
 
+.. autoclass:: set_ambient_color
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==============================   =======================

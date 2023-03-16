@@ -5,8 +5,11 @@
 wall
 ====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.wall.wall
+.. currentmodule:: ansys.fluent.core.solver.settings_231.wall
 
+.. autoclass:: wall
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`wall_child <wall_child>`

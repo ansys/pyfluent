@@ -5,13 +5,16 @@
 fmean
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fmean.fmean
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fmean
 
-.. rubric:: Attributes
+.. autoclass:: fmean
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

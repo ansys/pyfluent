@@ -5,8 +5,11 @@
 change_light_direction
 ======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.change_light_direction.change_light_direction
+.. currentmodule:: ansys.fluent.core.solver.settings_231.change_light_direction
 
+.. autoclass:: change_light_direction
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ========================

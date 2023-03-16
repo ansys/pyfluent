@@ -51,7 +51,7 @@
     <script src="../../../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../search.html" />
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -305,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -319,11 +324,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../../../tui/index.html">
      meshing.tui
@@ -547,7 +547,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode">
    <code class="docutils literal notranslate">
     <span class="pre">
-     FastDisplayMode
+     Root.Graphics.Performance.FastDisplayMode
     </span>
    </code>
   </a>
@@ -556,7 +556,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.Culling">
      <code class="docutils literal notranslate">
       <span class="pre">
-       FastDisplayMode.Culling
+       Root.Graphics.Performance.FastDisplayMode.Culling
       </span>
      </code>
     </a>
@@ -565,7 +565,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.FacesShown">
      <code class="docutils literal notranslate">
       <span class="pre">
-       FastDisplayMode.FacesShown
+       Root.Graphics.Performance.FastDisplayMode.FacesShown
       </span>
      </code>
     </a>
@@ -574,7 +574,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.MarkersDecimation">
      <code class="docutils literal notranslate">
       <span class="pre">
-       FastDisplayMode.MarkersDecimation
+       Root.Graphics.Performance.FastDisplayMode.MarkersDecimation
       </span>
      </code>
     </a>
@@ -583,7 +583,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.NodesShown">
      <code class="docutils literal notranslate">
       <span class="pre">
-       FastDisplayMode.NodesShown
+       Root.Graphics.Performance.FastDisplayMode.NodesShown
       </span>
      </code>
     </a>
@@ -592,7 +592,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.PerimeterEdgesShown">
      <code class="docutils literal notranslate">
       <span class="pre">
-       FastDisplayMode.PerimeterEdgesShown
+       Root.Graphics.Performance.FastDisplayMode.PerimeterEdgesShown
       </span>
      </code>
     </a>
@@ -601,7 +601,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.SilhouetteShown">
      <code class="docutils literal notranslate">
       <span class="pre">
-       FastDisplayMode.SilhouetteShown
+       Root.Graphics.Performance.FastDisplayMode.SilhouetteShown
       </span>
      </code>
     </a>
@@ -610,7 +610,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.Status">
      <code class="docutils literal notranslate">
       <span class="pre">
-       FastDisplayMode.Status
+       Root.Graphics.Performance.FastDisplayMode.Status
       </span>
      </code>
     </a>
@@ -619,7 +619,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.Transparency">
      <code class="docutils literal notranslate">
       <span class="pre">
-       FastDisplayMode.Transparency
+       Root.Graphics.Performance.FastDisplayMode.Transparency
       </span>
      </code>
     </a>
@@ -647,94 +647,60 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-datamodel-preferences-graphics-performance-fastdisplaymode">
 <span id="ref-meshing-datamodel-preferences-graphics-performance-fastdisplaymode"></span><h1>meshing.datamodel.preferences.Graphics.Performance.FastDisplayMode<a class="headerlink" href="#meshing-datamodel-preferences-graphics-performance-fastdisplaymode" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.</span></span><span class="sig-name descname"><span class="pre">FastDisplayMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
-<p>Singleton FastDisplayMode.</p>
-<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.Culling" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.Culling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Culling</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Culling of value type int.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.FacesShown" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.FacesShown"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FacesShown</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter FacesShown of value type bool.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.MarkersDecimation" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.MarkersDecimation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MarkersDecimation</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter MarkersDecimation of value type float.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.NodesShown" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.NodesShown"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NodesShown</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter NodesShown of value type bool.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.PerimeterEdgesShown" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.PerimeterEdgesShown"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PerimeterEdgesShown</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter PerimeterEdgesShown of value type bool.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.SilhouetteShown" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.SilhouetteShown"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SilhouetteShown</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter SilhouetteShown of value type bool.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.Status" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.Status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Status</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Status of value type str.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.Transparency" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.Transparency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Transparency</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Transparency of value type bool.</p></td>
-</tr>
 </tbody>
 </table>
 <dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Root.Graphics.Performance.</span></span><span class="sig-name descname"><span class="pre">FastDisplayMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode" title="Permalink to this definition">#</a></dt>
+<dd><p>Singleton FastDisplayMode.</p>
+<dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.Culling">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Culling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.Culling" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter Culling of value type int.</p>
+<dd><p>Parameter Culling of value type int.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.FacesShown">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FacesShown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.FacesShown" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter FacesShown of value type bool.</p>
+<dd><p>Parameter FacesShown of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.MarkersDecimation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MarkersDecimation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.MarkersDecimation" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter MarkersDecimation of value type float.</p>
+<dd><p>Parameter MarkersDecimation of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.NodesShown">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NodesShown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.NodesShown" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter NodesShown of value type bool.</p>
+<dd><p>Parameter NodesShown of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.PerimeterEdgesShown">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PerimeterEdgesShown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.PerimeterEdgesShown" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter PerimeterEdgesShown of value type bool.</p>
+<dd><p>Parameter PerimeterEdgesShown of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.SilhouetteShown">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SilhouetteShown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.SilhouetteShown" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter SilhouetteShown of value type bool.</p>
+<dd><p>Parameter SilhouetteShown of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.Status">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.Status" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter Status of value type str.</p>
+<dd><p>Parameter Status of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.Transparency">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Transparency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.FastDisplayMode.Transparency" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter Transparency of value type bool.</p>
+<dd><p>Parameter Transparency of value type bool.</p>
 </dd></dl>
 
 </dd></dl>

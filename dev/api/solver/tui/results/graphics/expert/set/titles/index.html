@@ -51,12 +51,12 @@
     <script src="../../../../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../../search.html" />
-    <link rel="next" title="solver.tui.results.graphics.expert.set.lights" href="../lights/index.html" />
-    <link rel="prev" title="solver.tui.results.graphics.expert.set.windows.xy" href="../windows/xy/index.html" />
+    <link rel="next" title="solver.tui.results.graphics.expert.set.rendering_options" href="../rendering_options/index.html" />
+    <link rel="prev" title="solver.tui.results.graphics.expert.set.particle_tracks.sphere_settings" href="../particle_tracks/sphere_settings/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -307,8 +307,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -352,8 +357,33 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../icing/index.html">
-         solver.tui.icing
+        <a class="reference internal" href="../../../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../views/index.html">
+         solver.tui.views
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../adjoint/index.html">
+         solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -366,11 +396,6 @@ function checkPageExistsAndRedirect(event) {
          </i>
         </label>
         <ul class="current">
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../graphics_window/index.html">
-           solver.tui.results.graphics_window
-          </a>
-         </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../../../plot/index.html">
            solver.tui.results.plot
@@ -387,23 +412,13 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul class="current">
            <li class="toctree-l6">
-            <a class="reference internal" href="../../../update_scene/index.html">
-             solver.tui.results.graphics.update_scene
-            </a>
-           </li>
-           <li class="toctree-l6">
             <a class="reference internal" href="../../../objects/index.html">
              solver.tui.results.graphics.objects
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../../lights/index.html">
-             solver.tui.results.graphics.lights
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../rendering_options/index.html">
-             solver.tui.results.graphics.rendering_options
+            <a class="reference internal" href="../../../update_scene/index.html">
+             solver.tui.results.graphics.update_scene
             </a>
            </li>
            <li class="toctree-l6 current active has-children">
@@ -416,67 +431,10 @@ function checkPageExistsAndRedirect(event) {
              </i>
             </label>
             <ul class="current">
-             <li class="toctree-l7 current active has-children">
-              <a class="reference internal" href="../index.html">
-               solver.tui.results.graphics.expert.set
+             <li class="toctree-l7">
+              <a class="reference internal" href="../../flamelet_data/index.html">
+               solver.tui.results.graphics.expert.flamelet_data
               </a>
-              <input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-              <label for="toctree-checkbox-7">
-               <i class="fas fa-chevron-down">
-               </i>
-              </label>
-              <ul class="current">
-               <li class="toctree-l8">
-                <a class="reference internal" href="../picture/index.html">
-                 solver.tui.results.graphics.expert.set.picture
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="../velocity_vectors/index.html">
-                 solver.tui.results.graphics.expert.set.velocity_vectors
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="../rendering_options/index.html">
-                 solver.tui.results.graphics.expert.set.rendering_options
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="../path_lines/index.html">
-                 solver.tui.results.graphics.expert.set.path_lines
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="../particle_tracks/index.html">
-                 solver.tui.results.graphics.expert.set.particle_tracks
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="../windows/index.html">
-                 solver.tui.results.graphics.expert.set.windows
-                </a>
-               </li>
-               <li class="toctree-l8 current active">
-                <a class="current reference internal" href="#">
-                 solver.tui.results.graphics.expert.set.titles
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="../lights/index.html">
-                 solver.tui.results.graphics.expert.set.lights
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="../contours/index.html">
-                 solver.tui.results.graphics.expert.set.contours
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="../colors/index.html">
-                 solver.tui.results.graphics.expert.set.colors
-                </a>
-               </li>
-              </ul>
              </li>
              <li class="toctree-l7">
               <a class="reference internal" href="../../pdf_data/index.html">
@@ -488,10 +446,67 @@ function checkPageExistsAndRedirect(event) {
                solver.tui.results.graphics.expert.path_lines
               </a>
              </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../../flamelet_data/index.html">
-               solver.tui.results.graphics.expert.flamelet_data
+             <li class="toctree-l7 current active has-children">
+              <a class="reference internal" href="../index.html">
+               solver.tui.results.graphics.expert.set
               </a>
+              <input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+              <label for="toctree-checkbox-7">
+               <i class="fas fa-chevron-down">
+               </i>
+              </label>
+              <ul class="current">
+               <li class="toctree-l8">
+                <a class="reference internal" href="../path_lines/index.html">
+                 solver.tui.results.graphics.expert.set.path_lines
+                </a>
+               </li>
+               <li class="toctree-l8">
+                <a class="reference internal" href="../lights/index.html">
+                 solver.tui.results.graphics.expert.set.lights
+                </a>
+               </li>
+               <li class="toctree-l8">
+                <a class="reference internal" href="../picture/index.html">
+                 solver.tui.results.graphics.expert.set.picture
+                </a>
+               </li>
+               <li class="toctree-l8">
+                <a class="reference internal" href="../colors/index.html">
+                 solver.tui.results.graphics.expert.set.colors
+                </a>
+               </li>
+               <li class="toctree-l8">
+                <a class="reference internal" href="../windows/index.html">
+                 solver.tui.results.graphics.expert.set.windows
+                </a>
+               </li>
+               <li class="toctree-l8">
+                <a class="reference internal" href="../particle_tracks/index.html">
+                 solver.tui.results.graphics.expert.set.particle_tracks
+                </a>
+               </li>
+               <li class="toctree-l8 current active">
+                <a class="current reference internal" href="#">
+                 solver.tui.results.graphics.expert.set.titles
+                </a>
+               </li>
+               <li class="toctree-l8">
+                <a class="reference internal" href="../rendering_options/index.html">
+                 solver.tui.results.graphics.expert.set.rendering_options
+                </a>
+               </li>
+               <li class="toctree-l8">
+                <a class="reference internal" href="../velocity_vectors/index.html">
+                 solver.tui.results.graphics.expert.set.velocity_vectors
+                </a>
+               </li>
+               <li class="toctree-l8">
+                <a class="reference internal" href="../contours/index.html">
+                 solver.tui.results.graphics.expert.set.contours
+                </a>
+               </li>
+              </ul>
              </li>
              <li class="toctree-l7">
               <a class="reference internal" href="../../particle_tracks/index.html">
@@ -500,11 +515,21 @@ function checkPageExistsAndRedirect(event) {
              </li>
             </ul>
            </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../rendering_options/index.html">
+             solver.tui.results.graphics.rendering_options
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../lights/index.html">
+             solver.tui.results.graphics.lights
+            </a>
+           </li>
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../report/index.html">
-           solver.tui.results.report
+          <a class="reference internal" href="../../../../graphics_window/index.html">
+           solver.tui.results.graphics_window
           </a>
          </li>
          <li class="toctree-l5">
@@ -517,86 +542,16 @@ function checkPageExistsAndRedirect(event) {
            solver.tui.results.surface
           </a>
          </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../report/index.html">
+           solver.tui.results.report
+          </a>
+         </li>
         </ul>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../solution/index.html">
-         solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../setup/index.html">
-         solver.tui.setup
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../report/index.html">
-         solver.tui.report
-        </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../../../turbo_workflow/index.html">
          solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../surface/index.html">
-         solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../define/index.html">
-         solver.tui.define
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../display/index.html">
-         solver.tui.display
         </a>
        </li>
        <li class="toctree-l4">
@@ -610,13 +565,63 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../preferences/index.html">
-         solver.tui.preferences
+        <a class="reference internal" href="../../../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../../../parameters__and__customization/index.html">
          solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../define/index.html">
+         solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../preferences/index.html">
+         solver.tui.preferences
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
       </ul>
@@ -688,7 +693,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.titles">
    <code class="docutils literal notranslate">
     <span class="pre">
-     titles
+     main_menu.results.graphics.expert.set.titles
     </span>
    </code>
   </a>
@@ -697,7 +702,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.titles.left_bottom">
      <code class="docutils literal notranslate">
       <span class="pre">
-       titles.left_bottom()
+       main_menu.results.graphics.expert.set.titles.left_bottom()
       </span>
      </code>
     </a>
@@ -706,7 +711,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.titles.left_top">
      <code class="docutils literal notranslate">
       <span class="pre">
-       titles.left_top()
+       main_menu.results.graphics.expert.set.titles.left_top()
       </span>
      </code>
     </a>
@@ -715,7 +720,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.titles.right_bottom">
      <code class="docutils literal notranslate">
       <span class="pre">
-       titles.right_bottom()
+       main_menu.results.graphics.expert.set.titles.right_bottom()
       </span>
      </code>
     </a>
@@ -724,7 +729,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.titles.right_middle">
      <code class="docutils literal notranslate">
       <span class="pre">
-       titles.right_middle()
+       main_menu.results.graphics.expert.set.titles.right_middle()
       </span>
      </code>
     </a>
@@ -733,7 +738,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.titles.right_top">
      <code class="docutils literal notranslate">
       <span class="pre">
-       titles.right_top()
+       main_menu.results.graphics.expert.set.titles.right_top()
       </span>
      </code>
     </a>
@@ -761,31 +766,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-results-graphics-expert-set-titles">
 <span id="ref-solver-tui-results-graphics-expert-set-titles"></span><h1>solver.tui.results.graphics.expert.set.titles<a class="headerlink" href="#solver-tui-results-graphics-expert-set-titles" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.titles">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.</span></span><span class="sig-name descname"><span class="pre">titles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.titles" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Set problem title.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.titles.left_bottom" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.titles.left_bottom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">left_bottom</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the title text for left bottom in title segment.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.titles.left_top" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.titles.left_top"><code class="xref py py-obj docutils literal notranslate"><span class="pre">left_top</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the title text for left top in title segment.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.titles.right_bottom" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.titles.right_bottom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">right_bottom</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the title text for right bottom in title segment.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.titles.right_middle" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.titles.right_middle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">right_middle</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the title text for right middle in title segment.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.titles.right_top" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.titles.right_top"><code class="xref py py-obj docutils literal notranslate"><span class="pre">right_top</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the title text for right top in title segment.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.titles">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.results.graphics.expert.set.</span></span><span class="sig-name descname"><span class="pre">titles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.titles" title="Permalink to this definition">#</a></dt>
+<dd><p>Set problem title.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.titles.left_bottom">
 <span class="sig-name descname"><span class="pre">left_bottom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.titles.left_bottom" title="Permalink to this definition">#</a></dt>

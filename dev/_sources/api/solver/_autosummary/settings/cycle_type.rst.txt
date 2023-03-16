@@ -5,8 +5,11 @@
 cycle_type
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.cycle_type.cycle_type
+.. currentmodule:: ansys.fluent.core.solver.settings_231.cycle_type
 
+.. autoclass:: cycle_type
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =======================================

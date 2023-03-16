@@ -5,8 +5,11 @@
 icing
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.icing.icing
+.. currentmodule:: ansys.fluent.core.solver.settings_231.icing
 
+.. autoclass:: icing
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`icing_child <icing_child>`

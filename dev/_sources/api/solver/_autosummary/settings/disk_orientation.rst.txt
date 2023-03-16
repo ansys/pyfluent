@@ -5,13 +5,16 @@
 disk_orientation
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.disk_orientation.disk_orientation
+.. currentmodule:: ansys.fluent.core.solver.settings_231.disk_orientation
 
-.. rubric:: Attributes
+.. autoclass:: disk_orientation
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==========================================   ==============================================
 
-Attribute                                                                           Summary
+Child                                                                               Summary
 
 ==========================================   ==============================================
 :ref:`terminology <terminology>`                 Select Rotor Disk Orientation Terminology:

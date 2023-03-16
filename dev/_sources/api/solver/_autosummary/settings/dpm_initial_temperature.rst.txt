@@ -5,8 +5,11 @@
 dpm_initial_temperature
 =======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_initial_temperature.dpm_initial_temperature
+.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_initial_temperature
 
+.. autoclass:: dpm_initial_temperature
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

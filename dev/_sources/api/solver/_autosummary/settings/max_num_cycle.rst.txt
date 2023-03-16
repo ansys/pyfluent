@@ -5,8 +5,11 @@
 max_num_cycle
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.max_num_cycle.max_num_cycle
+.. currentmodule:: ansys.fluent.core.solver.settings_231.max_num_cycle
 
+.. autoclass:: max_num_cycle
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   =============================================

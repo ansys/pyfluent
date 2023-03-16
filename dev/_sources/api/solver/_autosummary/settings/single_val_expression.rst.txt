@@ -5,8 +5,11 @@
 single_val_expression
 =====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.single_val_expression.single_val_expression
+.. currentmodule:: ansys.fluent.core.solver.settings_231.single_val_expression
 
+.. autoclass:: single_val_expression
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`single_val_expression_child <single_val_expression_child>`

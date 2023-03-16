@@ -5,8 +5,11 @@
 trad_internal
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.trad_internal.trad_internal
+.. currentmodule:: ansys.fluent.core.solver.settings_231.trad_internal
 
+.. autoclass:: trad_internal
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

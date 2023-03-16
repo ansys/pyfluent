@@ -5,8 +5,11 @@
 delete_simulation_report
 ========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.delete_simulation_report.delete_simulation_report
+.. currentmodule:: ansys.fluent.core.solver.settings_231.delete_simulation_report
 
+.. autoclass:: delete_simulation_report
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ================================   ========================

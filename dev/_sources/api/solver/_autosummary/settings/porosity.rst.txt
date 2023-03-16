@@ -5,13 +5,16 @@
 porosity
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.porosity.porosity
+.. currentmodule:: ansys.fluent.core.solver.settings_231.porosity
 
-.. rubric:: Attributes
+.. autoclass:: porosity
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

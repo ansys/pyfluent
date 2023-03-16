@@ -5,13 +5,16 @@
 amg_gpgpu_options_child
 =======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.amg_gpgpu_options_child.amg_gpgpu_options_child
+.. currentmodule:: ansys.fluent.core.solver.settings_231.amg_gpgpu_options_child
 
-.. rubric:: Attributes
+.. autoclass:: amg_gpgpu_options_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================   ============================
 
-Attribute                                                       Summary
+Child                                                           Summary
 
 ========================================   ============================
 :ref:`enable_gpu <enable_gpu>`                      'enable_gpu' child.

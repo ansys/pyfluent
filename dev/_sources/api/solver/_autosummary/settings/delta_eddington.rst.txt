@@ -5,13 +5,16 @@
 delta_eddington
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.delta_eddington.delta_eddington
+.. currentmodule:: ansys.fluent.core.solver.settings_231.delta_eddington
 
-.. rubric:: Attributes
+.. autoclass:: delta_eddington
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ============================================================   ======================================
 
-Attribute                                                                                     Summary
+Child                                                                                         Summary
 
 ============================================================   ======================================
 :ref:`forward_scattering_factor <forward_scattering_factor>`       'forward_scattering_factor' child.

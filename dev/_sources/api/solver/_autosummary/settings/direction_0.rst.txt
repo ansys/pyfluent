@@ -5,8 +5,11 @@
 direction_0
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.direction_0.direction_0
+.. currentmodule:: ansys.fluent.core.solver.settings_231.direction_0
 
+.. autoclass:: direction_0
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   =====================================

@@ -5,8 +5,11 @@
 usage
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.usage.usage
+.. currentmodule:: ansys.fluent.core.solver.settings_231.usage
 
+.. autoclass:: usage
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ==================

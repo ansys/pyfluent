@@ -5,8 +5,11 @@
 initial_outer_iter
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.initial_outer_iter.initial_outer_iter
+.. currentmodule:: ansys.fluent.core.solver.settings_231.initial_outer_iter
 
+.. autoclass:: initial_outer_iter
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ======================================

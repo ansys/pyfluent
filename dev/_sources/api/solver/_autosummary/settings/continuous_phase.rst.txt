@@ -5,8 +5,11 @@
 continuous_phase
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.continuous_phase.continuous_phase
+.. currentmodule:: ansys.fluent.core.solver.settings_231.continuous_phase
 
+.. autoclass:: continuous_phase
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ========================

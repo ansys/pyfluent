@@ -5,8 +5,11 @@
 ai
 ==
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.ai.ai
+.. currentmodule:: ansys.fluent.core.solver.settings_231.ai
 
+.. autoclass:: ai
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

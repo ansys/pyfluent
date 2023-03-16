@@ -5,13 +5,16 @@
 ribbon_settings
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.ribbon_settings.ribbon_settings
+.. currentmodule:: ansys.fluent.core.solver.settings_231.ribbon_settings
 
-.. rubric:: Attributes
+.. autoclass:: ribbon_settings
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================   ========================
 
-Attribute                                           Summary
+Child                                               Summary
 
 ================================   ========================
 :ref:`field <field>`                         'field' child.

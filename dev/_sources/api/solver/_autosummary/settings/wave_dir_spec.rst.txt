@@ -5,8 +5,11 @@
 wave_dir_spec
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.wave_dir_spec.wave_dir_spec
+.. currentmodule:: ansys.fluent.core.solver.settings_231.wave_dir_spec
 
+.. autoclass:: wave_dir_spec
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

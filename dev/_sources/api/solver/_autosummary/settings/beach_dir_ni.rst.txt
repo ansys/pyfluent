@@ -5,8 +5,11 @@
 beach_dir_ni
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.beach_dir_ni.beach_dir_ni
+.. currentmodule:: ansys.fluent.core.solver.settings_231.beach_dir_ni
 
+.. autoclass:: beach_dir_ni
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

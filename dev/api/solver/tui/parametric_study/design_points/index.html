@@ -51,12 +51,12 @@
     <script src="../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
-    <link rel="next" title="solver.tui.parametric_study.design_points.table" href="table/index.html" />
-    <link rel="prev" title="solver.tui.parametric_study.update.concurrent.licensing.set" href="../update/concurrent/licensing/set/index.html" />
+    <link rel="next" title="solver.tui.parametric_study.design_points.auto_create" href="auto_create/index.html" />
+    <link rel="prev" title="solver.tui.parametric_study.update.concurrent.print_to_console" href="../update/concurrent/print_to_console/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -304,8 +304,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -349,28 +354,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../solution/index.html">
          solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../setup/index.html">
-         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4">
@@ -379,13 +364,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../setup/index.html">
+         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4">
@@ -394,13 +374,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../turbo_post/index.html">
-         solver.tui.turbo_post
+        <a class="reference internal" href="../../display/index.html">
+         solver.tui.display
         </a>
        </li>
        <li class="toctree-l4">
@@ -409,13 +384,53 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../define/index.html">
-         solver.tui.define
+        <a class="reference internal" href="../../results/index.html">
+         solver.tui.results
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../parallel/index.html">
-         solver.tui.parallel
+        <a class="reference internal" href="../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../simulation_reports/index.html">
+         solver.tui.simulation_reports
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../define/index.html">
+         solver.tui.define
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -428,6 +443,11 @@ function checkPageExistsAndRedirect(event) {
          </i>
         </label>
         <ul class="current">
+         <li class="toctree-l5">
+          <a class="reference internal" href="../study/index.html">
+           solver.tui.parametric_study.study
+          </a>
+         </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../update/index.html">
            solver.tui.parametric_study.update
@@ -444,18 +464,8 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul>
            <li class="toctree-l6">
-            <a class="reference internal" href="table/index.html">
-             solver.tui.parametric_study.design_points.table
-            </a>
-           </li>
-           <li class="toctree-l6">
             <a class="reference internal" href="auto_create/index.html">
              solver.tui.parametric_study.design_points.auto_create
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="print_to_console/index.html">
-             solver.tui.parametric_study.design_points.print_to_console
             </a>
            </li>
            <li class="toctree-l6">
@@ -464,18 +474,28 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
+            <a class="reference internal" href="print_to_console/index.html">
+             solver.tui.parametric_study.design_points.print_to_console
+            </a>
+           </li>
+           <li class="toctree-l6">
             <a class="reference internal" href="concurrent/index.html">
              solver.tui.parametric_study.design_points.concurrent
             </a>
            </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="table/index.html">
+             solver.tui.parametric_study.design_points.table
+            </a>
+           </li>
           </ul>
          </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../study/index.html">
-           solver.tui.parametric_study.study
-          </a>
-         </li>
         </ul>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../icing/index.html">
+         solver.tui.icing
+        </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../file/index.html">
@@ -483,23 +503,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../display/index.html">
-         solver.tui.display
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../plot/index.html">
-         solver.tui.plot
+        <a class="reference internal" href="../../surface/index.html">
+         solver.tui.surface
         </a>
        </li>
        <li class="toctree-l4">
@@ -508,8 +513,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
       </ul>
@@ -581,7 +586,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points">
    <code class="docutils literal notranslate">
     <span class="pre">
-     design_points
+     main_menu.parametric_study.design_points
     </span>
    </code>
   </a>
@@ -590,119 +595,25 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.add">
      <code class="docutils literal notranslate">
       <span class="pre">
-       design_points.add()
+       main_menu.parametric_study.design_points.add()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       design_points.auto_create
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.create_design_points">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         design_points.auto_create.create_design_points()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.export_designs">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         design_points.auto_create.export_designs()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.go_to_optislang">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         design_points.auto_create.go_to_optislang()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.list_current_settings">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         design_points.auto_create.list_current_settings()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.open_designs_in_optislang_postprocessor">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         design_points.auto_create.open_designs_in_optislang_postprocessor()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.clear_data_and_edit_values">
      <code class="docutils literal notranslate">
       <span class="pre">
-       design_points.clear_data_and_edit_values()
+       main_menu.parametric_study.design_points.clear_data_and_edit_values()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       design_points.concurrent
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.abort_all_design_points">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         design_points.concurrent.abort_all_design_points()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.abort_design_point">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         design_points.concurrent.abort_design_point()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.refresh_status">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         design_points.concurrent.refresh_status()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
-       design_points.delete()
+       main_menu.parametric_study.design_points.delete()
       </span>
      </code>
     </a>
@@ -711,7 +622,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.duplicate">
      <code class="docutils literal notranslate">
       <span class="pre">
-       design_points.duplicate()
+       main_menu.parametric_study.design_points.duplicate()
       </span>
      </code>
     </a>
@@ -720,169 +631,19 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.load_case_data_for_current_dp">
      <code class="docutils literal notranslate">
       <span class="pre">
-       design_points.load_case_data_for_current_dp()
+       main_menu.parametric_study.design_points.load_case_data_for_current_dp()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       design_points.print_to_console
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.capture_simulation_report_data">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         design_points.print_to_console.capture_simulation_report_data()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.current_dp">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         design_points.print_to_console.current_dp()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.input_parameters_of_dp">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         design_points.print_to_console.input_parameters_of_dp()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.output_parameters_of_dp">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         design_points.print_to_console.output_parameters_of_dp()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.status_of_all_dps">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         design_points.print_to_console.status_of_all_dps()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.status_of_dp">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         design_points.print_to_console.status_of_dp()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.write_data">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         design_points.print_to_console.write_data()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.save_journals">
      <code class="docutils literal notranslate">
       <span class="pre">
-       design_points.save_journals()
+       main_menu.parametric_study.design_points.save_journals()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       design_points.set
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set.capture_simulation_report_data">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         design_points.set.capture_simulation_report_data()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set.current_dp">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         design_points.set.current_dp()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set.input_parameters_of_dp">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         design_points.set.input_parameters_of_dp()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set.write_data">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         design_points.set.write_data()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.table">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       design_points.table
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.table.export_design_table">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         design_points.table.export_design_table()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.table.import_design_table">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         design_points.table.import_design_table()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -907,160 +668,24 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-parametric-study-design-points">
 <span id="ref-solver-tui-parametric-study-design-points"></span><h1>solver.tui.parametric_study.design_points<a class="headerlink" href="#solver-tui-parametric-study-design-points" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.parametric_study.</span></span><span class="sig-name descname"><span class="pre">design_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the design points menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.add" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Add new design point.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.clear_data_and_edit_values" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.clear_data_and_edit_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_data_and_edit_values</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Clear Generated Data.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.delete" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete Design Point.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.duplicate" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.duplicate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">duplicate</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Duplicate Design Point.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.load_case_data_for_current_dp" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.load_case_data_for_current_dp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_case_data_for_current_dp</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Loads relevant case/data file for current design point.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.save_journals" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.save_journals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_journals</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Save Journals.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_create</span></code></a>(path, service)</p></td>
-<td><p>Enter the auto-crate design points menu.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concurrent</span></code></a>(path, service)</p></td>
-<td><p>Enter the concurrent design points menu.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_to_console</span></code></a>(path, service)</p></td>
-<td><p>Enter the design points print menu.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a>(path, service)</p></td>
-<td><p>Enter the design points Set menu.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.table" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">table</span></code></a>(path, service)</p></td>
-<td><p>Enter the design point table menu.</p></td>
-</tr>
-</tbody>
-</table>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.parametric_study.</span></span><span class="sig-name descname"><span class="pre">design_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the design points menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.add">
 <span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.add" title="Permalink to this definition">#</a></dt>
 <dd><p>Add new design point.</p>
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">auto_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the auto-crate design points menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.create_design_points" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.create_design_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_design_points</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create design points automatically.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.export_designs" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.export_designs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_designs</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Export designs by writing a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.go_to_optislang" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.go_to_optislang"><code class="xref py py-obj docutils literal notranslate"><span class="pre">go_to_optislang</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Open the optiSLang project.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.list_current_settings" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.list_current_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_current_settings</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List current settings for auto-create design points.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.open_designs_in_optislang_postprocessor" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.open_designs_in_optislang_postprocessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">open_designs_in_optislang_postprocessor</span></code></a>(...)</p></td>
-<td><p>Export designs into JSON and open this JSON into optiSLang Postprocessor.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.create_design_points">
-<span class="sig-name descname"><span class="pre">create_design_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.create_design_points" title="Permalink to this definition">#</a></dt>
-<dd><p>Create design points automatically.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.export_designs">
-<span class="sig-name descname"><span class="pre">export_designs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.export_designs" title="Permalink to this definition">#</a></dt>
-<dd><p>Export designs by writing a JSON file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.go_to_optislang">
-<span class="sig-name descname"><span class="pre">go_to_optislang</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.go_to_optislang" title="Permalink to this definition">#</a></dt>
-<dd><p>Open the optiSLang project.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.list_current_settings">
-<span class="sig-name descname"><span class="pre">list_current_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.list_current_settings" title="Permalink to this definition">#</a></dt>
-<dd><p>List current settings for auto-create design points.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.open_designs_in_optislang_postprocessor">
-<span class="sig-name descname"><span class="pre">open_designs_in_optislang_postprocessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.auto_create.open_designs_in_optislang_postprocessor" title="Permalink to this definition">#</a></dt>
-<dd><p>Export designs into JSON and open this JSON into optiSLang Postprocessor.</p>
-</dd></dl>
-
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.clear_data_and_edit_values">
 <span class="sig-name descname"><span class="pre">clear_data_and_edit_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.clear_data_and_edit_values" title="Permalink to this definition">#</a></dt>
 <dd><p>Clear Generated Data.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">concurrent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the concurrent design points menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.abort_all_design_points" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.abort_all_design_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">abort_all_design_points</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Interrupt All Design Points.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.abort_design_point" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.abort_design_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">abort_design_point</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Interrupt Design Point.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.refresh_status" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.refresh_status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">refresh_status</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Refresh Status.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.abort_all_design_points">
-<span class="sig-name descname"><span class="pre">abort_all_design_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.abort_all_design_points" title="Permalink to this definition">#</a></dt>
-<dd><p>Interrupt All Design Points.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.abort_design_point">
-<span class="sig-name descname"><span class="pre">abort_design_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.abort_design_point" title="Permalink to this definition">#</a></dt>
-<dd><p>Interrupt Design Point.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.refresh_status">
-<span class="sig-name descname"><span class="pre">refresh_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.concurrent.refresh_status" title="Permalink to this definition">#</a></dt>
-<dd><p>Refresh Status.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">
@@ -1081,163 +706,10 @@ function checkPageExistsAndRedirect(event) {
 <dd><p>Loads relevant case/data file for current design point.</p>
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">print_to_console</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the design points print menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.capture_simulation_report_data" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.capture_simulation_report_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">capture_simulation_report_data</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Print Capture Simulation Report Data option for Design Point.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.current_dp" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.current_dp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">current_dp</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Print Name of Current Design Point.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.input_parameters_of_dp" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.input_parameters_of_dp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">input_parameters_of_dp</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Print Input Parameter Values of Current Design Point.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.output_parameters_of_dp" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.output_parameters_of_dp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">output_parameters_of_dp</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Print Output Parameter Values of Design Point.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.status_of_all_dps" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.status_of_all_dps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">status_of_all_dps</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Print Statuses of all Design Points.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.status_of_dp" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.status_of_dp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">status_of_dp</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Print Status of given DP.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.write_data" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.write_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_data</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Print WriteData option for Design Point.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.capture_simulation_report_data">
-<span class="sig-name descname"><span class="pre">capture_simulation_report_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.capture_simulation_report_data" title="Permalink to this definition">#</a></dt>
-<dd><p>Print Capture Simulation Report Data option for Design Point.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.current_dp">
-<span class="sig-name descname"><span class="pre">current_dp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.current_dp" title="Permalink to this definition">#</a></dt>
-<dd><p>Print Name of Current Design Point.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.input_parameters_of_dp">
-<span class="sig-name descname"><span class="pre">input_parameters_of_dp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.input_parameters_of_dp" title="Permalink to this definition">#</a></dt>
-<dd><p>Print Input Parameter Values of Current Design Point.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.output_parameters_of_dp">
-<span class="sig-name descname"><span class="pre">output_parameters_of_dp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.output_parameters_of_dp" title="Permalink to this definition">#</a></dt>
-<dd><p>Print Output Parameter Values of Design Point.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.status_of_all_dps">
-<span class="sig-name descname"><span class="pre">status_of_all_dps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.status_of_all_dps" title="Permalink to this definition">#</a></dt>
-<dd><p>Print Statuses of all Design Points.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.status_of_dp">
-<span class="sig-name descname"><span class="pre">status_of_dp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.status_of_dp" title="Permalink to this definition">#</a></dt>
-<dd><p>Print Status of given DP.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.write_data">
-<span class="sig-name descname"><span class="pre">write_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.print_to_console.write_data" title="Permalink to this definition">#</a></dt>
-<dd><p>Print WriteData option for Design Point.</p>
-</dd></dl>
-
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.save_journals">
 <span class="sig-name descname"><span class="pre">save_journals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.save_journals" title="Permalink to this definition">#</a></dt>
 <dd><p>Save Journals.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the design points Set menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set.capture_simulation_report_data" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set.capture_simulation_report_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">capture_simulation_report_data</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set Capture Simulation Report Data option for Design Point.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set.current_dp" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set.current_dp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">current_dp</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set current design point.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set.input_parameters_of_dp" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set.input_parameters_of_dp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">input_parameters_of_dp</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set Input Parameter Values of Design Point.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set.write_data" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set.write_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_data</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set WriteData option for Design Point.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set.capture_simulation_report_data">
-<span class="sig-name descname"><span class="pre">capture_simulation_report_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set.capture_simulation_report_data" title="Permalink to this definition">#</a></dt>
-<dd><p>Set Capture Simulation Report Data option for Design Point.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set.current_dp">
-<span class="sig-name descname"><span class="pre">current_dp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set.current_dp" title="Permalink to this definition">#</a></dt>
-<dd><p>Set current design point.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set.input_parameters_of_dp">
-<span class="sig-name descname"><span class="pre">input_parameters_of_dp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set.input_parameters_of_dp" title="Permalink to this definition">#</a></dt>
-<dd><p>Set Input Parameter Values of Design Point.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set.write_data">
-<span class="sig-name descname"><span class="pre">write_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.set.write_data" title="Permalink to this definition">#</a></dt>
-<dd><p>Set WriteData option for Design Point.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.table">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.table" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the design point table menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.table.export_design_table" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.table.export_design_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_design_table</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Export Design Points Table.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.table.import_design_table" title="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.table.import_design_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">import_design_table</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Import Design Points Table.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.table.export_design_table">
-<span class="sig-name descname"><span class="pre">export_design_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.table.export_design_table" title="Permalink to this definition">#</a></dt>
-<dd><p>Export Design Points Table.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.table.import_design_table">
-<span class="sig-name descname"><span class="pre">import_design_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points.table.import_design_table" title="Permalink to this definition">#</a></dt>
-<dd><p>Import Design Points Table.</p>
-</dd></dl>
-
 </dd></dl>
 
 </dd></dl>

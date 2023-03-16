@@ -5,8 +5,11 @@
 max_capillary_pressure
 ======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.max_capillary_pressure.max_capillary_pressure
+.. currentmodule:: ansys.fluent.core.solver.settings_231.max_capillary_pressure
 
+.. autoclass:: max_capillary_pressure
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

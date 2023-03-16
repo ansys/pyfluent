@@ -5,24 +5,27 @@
 database
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.database.database
+.. currentmodule:: ansys.fluent.core.solver.settings_231.database
 
-.. rubric:: Attributes
+.. autoclass:: database
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================   ==============================
 
-Attribute                                                     Summary
+Child                                                         Summary
 
 ====================================   ==============================
 :ref:`database_type <database_type>`       Specify the database type.
 
 ====================================   ==============================
 
-.. rubric:: Methods
+.. rubric:: Commands
 
 ========================================   ========================================================
 
-Method                                                                                      Summary
+Command                                                                                     Summary
 
 ========================================   ========================================================
 :ref:`copy_by_formula <copy_by_formula>`       Copy a material from the database (pick by formula).

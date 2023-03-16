@@ -5,8 +5,11 @@
 preview
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.preview.preview
+.. currentmodule:: ansys.fluent.core.solver.settings_231.preview
 
+.. autoclass:: preview
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   =================================================

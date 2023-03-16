@@ -5,8 +5,11 @@
 patch_velocity
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.patch_velocity.patch_velocity
+.. currentmodule:: ansys.fluent.core.solver.settings_231.patch_velocity
 
+.. autoclass:: patch_velocity
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ====================================================

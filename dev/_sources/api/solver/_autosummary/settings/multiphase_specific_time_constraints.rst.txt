@@ -5,13 +5,16 @@
 multiphase_specific_time_constraints
 ====================================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.multiphase_specific_time_constraints.multiphase_specific_time_constraints
+.. currentmodule:: ansys.fluent.core.solver.settings_231.multiphase_specific_time_constraints
 
-.. rubric:: Attributes
+.. autoclass:: multiphase_specific_time_constraints
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================================================   ===========================================================
 
-Attribute                                                                                                            Summary
+Child                                                                                                                Summary
 
 ==============================================================   ===========================================================
 :ref:`moving_mesh_cfl_constraint <moving_mesh_cfl_constraint>`                           'moving_mesh_cfl_constraint' child.

@@ -3,13 +3,13 @@
 solver.tui.define.user\_defined
 ===============================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.define.user_defined
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.user_defined
+   :members: one_D_coupling, auto_compile_compiled_udfs, interpreted_functions, compiled_functions, use_built_in_compiler, enable_udf_on_gpu, function_hooks, user_defined_node_memory, user_defined_scalars, use_contributed_cpp, fan_model, execute_on_demand, compile_customized_addon_module, user_defined_memory
 
 .. toctree::
    :hidden:

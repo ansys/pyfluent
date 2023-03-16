@@ -5,8 +5,11 @@
 fps
 ===
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fps.fps
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fps
 
+.. autoclass:: fps
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ==================

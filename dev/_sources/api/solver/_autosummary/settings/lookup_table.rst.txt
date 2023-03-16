@@ -5,8 +5,11 @@
 lookup_table
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.lookup_table.lookup_table
+.. currentmodule:: ansys.fluent.core.solver.settings_231.lookup_table
 
+.. autoclass:: lookup_table
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ==================================

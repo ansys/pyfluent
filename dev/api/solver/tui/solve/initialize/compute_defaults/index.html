@@ -51,12 +51,12 @@
     <script src="../../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
-    <link rel="next" title="solver.tui.solve.initialize.mp_localized_turb_init" href="../mp_localized_turb_init/index.html" />
-    <link rel="prev" title="solver.tui.solve.initialize" href="../index.html" />
+    <link rel="next" title="solver.tui.define" href="../../../define/index.html" />
+    <link rel="prev" title="solver.tui.solve.initialize.vof_patch_smooth_options" href="../vof_patch_smooth_options/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -305,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -350,28 +355,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../solution/index.html">
          solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../setup/index.html">
-         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4">
@@ -380,18 +365,63 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../../setup/index.html">
+         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../views/index.html">
          solver.tui.views
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -405,18 +435,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../set/index.html">
-           solver.tui.solve.set
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../execute_commands/index.html">
-           solver.tui.solve.execute_commands
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../report_files/index.html">
-           solver.tui.solve.report_files
+          <a class="reference internal" href="../../report_plots/index.html">
+           solver.tui.solve.report_plots
           </a>
          </li>
          <li class="toctree-l5">
@@ -425,13 +445,38 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
+          <a class="reference internal" href="../../set/index.html">
+           solver.tui.solve.set
+          </a>
+         </li>
+         <li class="toctree-l5">
           <a class="reference internal" href="../../animate/index.html">
            solver.tui.solve.animate
           </a>
          </li>
          <li class="toctree-l5">
+          <a class="reference internal" href="../../cell_register_operations/index.html">
+           solver.tui.solve.cell_register_operations
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../execute_commands/index.html">
+           solver.tui.solve.execute_commands
+          </a>
+         </li>
+         <li class="toctree-l5">
           <a class="reference internal" href="../../report_definitions/index.html">
            solver.tui.solve.report_definitions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../monitors/index.html">
+           solver.tui.solve.monitors
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../report_files/index.html">
+           solver.tui.solve.report_files
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -444,11 +489,6 @@ function checkPageExistsAndRedirect(event) {
            </i>
           </label>
           <ul class="current">
-           <li class="toctree-l6 current active">
-            <a class="current reference internal" href="#">
-             solver.tui.solve.initialize.compute_defaults
-            </a>
-           </li>
            <li class="toctree-l6">
             <a class="reference internal" href="../mp_localized_turb_init/index.html">
              solver.tui.solve.initialize.mp_localized_turb_init
@@ -464,43 +504,18 @@ function checkPageExistsAndRedirect(event) {
              solver.tui.solve.initialize.vof_patch_smooth_options
             </a>
            </li>
+           <li class="toctree-l6 current active">
+            <a class="current reference internal" href="#">
+             solver.tui.solve.initialize.compute_defaults
+            </a>
+           </li>
           </ul>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../report_plots/index.html">
-           solver.tui.solve.report_plots
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../cell_register_operations/index.html">
-           solver.tui.solve.cell_register_operations
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../monitors/index.html">
-           solver.tui.solve.monitors
-          </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../define/index.html">
          solver.tui.define
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parallel/index.html">
-         solver.tui.parallel
         </a>
        </li>
        <li class="toctree-l4">
@@ -509,28 +524,18 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../file/index.html">
          solver.tui.file
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../display/index.html">
-         solver.tui.display
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../plot/index.html">
-         solver.tui.plot
+        <a class="reference internal" href="../../../surface/index.html">
+         solver.tui.surface
         </a>
        </li>
        <li class="toctree-l4">
@@ -539,8 +544,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
       </ul>
@@ -612,7 +617,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults">
    <code class="docutils literal notranslate">
     <span class="pre">
-     compute_defaults
+     main_menu.solve.initialize.compute_defaults
     </span>
    </code>
   </a>
@@ -621,7 +626,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.all_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.all_zones()
+       main_menu.solve.initialize.compute_defaults.all_zones()
       </span>
      </code>
     </a>
@@ -630,7 +635,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.axis">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.axis()
+       main_menu.solve.initialize.compute_defaults.axis()
       </span>
      </code>
     </a>
@@ -639,7 +644,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.degassing">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.degassing()
+       main_menu.solve.initialize.compute_defaults.degassing()
       </span>
      </code>
     </a>
@@ -648,7 +653,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.dummy_entry">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.dummy_entry()
+       main_menu.solve.initialize.compute_defaults.dummy_entry()
       </span>
      </code>
     </a>
@@ -657,7 +662,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.exhaust_fan">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.exhaust_fan()
+       main_menu.solve.initialize.compute_defaults.exhaust_fan()
       </span>
      </code>
     </a>
@@ -666,7 +671,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.fan">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.fan()
+       main_menu.solve.initialize.compute_defaults.fan()
       </span>
      </code>
     </a>
@@ -675,7 +680,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.fluid">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.fluid()
+       main_menu.solve.initialize.compute_defaults.fluid()
       </span>
      </code>
     </a>
@@ -684,7 +689,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.geometry">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.geometry()
+       main_menu.solve.initialize.compute_defaults.geometry()
       </span>
      </code>
     </a>
@@ -693,7 +698,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.inlet_vent">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.inlet_vent()
+       main_menu.solve.initialize.compute_defaults.inlet_vent()
       </span>
      </code>
     </a>
@@ -702,7 +707,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.intake_fan">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.intake_fan()
+       main_menu.solve.initialize.compute_defaults.intake_fan()
       </span>
      </code>
     </a>
@@ -711,7 +716,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.interface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.interface()
+       main_menu.solve.initialize.compute_defaults.interface()
       </span>
      </code>
     </a>
@@ -720,7 +725,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.interior">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.interior()
+       main_menu.solve.initialize.compute_defaults.interior()
       </span>
      </code>
     </a>
@@ -729,7 +734,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.mass_flow_inlet">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.mass_flow_inlet()
+       main_menu.solve.initialize.compute_defaults.mass_flow_inlet()
       </span>
      </code>
     </a>
@@ -738,7 +743,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.mass_flow_outlet">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.mass_flow_outlet()
+       main_menu.solve.initialize.compute_defaults.mass_flow_outlet()
       </span>
      </code>
     </a>
@@ -747,7 +752,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.network">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.network()
+       main_menu.solve.initialize.compute_defaults.network()
       </span>
      </code>
     </a>
@@ -756,7 +761,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.network_end">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.network_end()
+       main_menu.solve.initialize.compute_defaults.network_end()
       </span>
      </code>
     </a>
@@ -765,7 +770,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.outflow">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.outflow()
+       main_menu.solve.initialize.compute_defaults.outflow()
       </span>
      </code>
     </a>
@@ -774,7 +779,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.outlet_vent">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.outlet_vent()
+       main_menu.solve.initialize.compute_defaults.outlet_vent()
       </span>
      </code>
     </a>
@@ -783,7 +788,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.overset">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.overset()
+       main_menu.solve.initialize.compute_defaults.overset()
       </span>
      </code>
     </a>
@@ -792,7 +797,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.periodic">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.periodic()
+       main_menu.solve.initialize.compute_defaults.periodic()
       </span>
      </code>
     </a>
@@ -801,7 +806,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.porous_jump">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.porous_jump()
+       main_menu.solve.initialize.compute_defaults.porous_jump()
       </span>
      </code>
     </a>
@@ -810,7 +815,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.pressure_far_field">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.pressure_far_field()
+       main_menu.solve.initialize.compute_defaults.pressure_far_field()
       </span>
      </code>
     </a>
@@ -819,7 +824,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.pressure_inlet">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.pressure_inlet()
+       main_menu.solve.initialize.compute_defaults.pressure_inlet()
       </span>
      </code>
     </a>
@@ -828,7 +833,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.pressure_outlet">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.pressure_outlet()
+       main_menu.solve.initialize.compute_defaults.pressure_outlet()
       </span>
      </code>
     </a>
@@ -837,7 +842,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.radiator">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.radiator()
+       main_menu.solve.initialize.compute_defaults.radiator()
       </span>
      </code>
     </a>
@@ -846,7 +851,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.rans_les_interface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.rans_les_interface()
+       main_menu.solve.initialize.compute_defaults.rans_les_interface()
       </span>
      </code>
     </a>
@@ -855,7 +860,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.recirculation_inlet">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.recirculation_inlet()
+       main_menu.solve.initialize.compute_defaults.recirculation_inlet()
       </span>
      </code>
     </a>
@@ -864,7 +869,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.recirculation_outlet">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.recirculation_outlet()
+       main_menu.solve.initialize.compute_defaults.recirculation_outlet()
       </span>
      </code>
     </a>
@@ -873,7 +878,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.shadow">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.shadow()
+       main_menu.solve.initialize.compute_defaults.shadow()
       </span>
      </code>
     </a>
@@ -882,7 +887,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.solid">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.solid()
+       main_menu.solve.initialize.compute_defaults.solid()
       </span>
      </code>
     </a>
@@ -891,7 +896,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.symmetry">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.symmetry()
+       main_menu.solve.initialize.compute_defaults.symmetry()
       </span>
      </code>
     </a>
@@ -900,7 +905,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.velocity_inlet">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.velocity_inlet()
+       main_menu.solve.initialize.compute_defaults.velocity_inlet()
       </span>
      </code>
     </a>
@@ -909,7 +914,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.wall">
      <code class="docutils literal notranslate">
       <span class="pre">
-       compute_defaults.wall()
+       main_menu.solve.initialize.compute_defaults.wall()
       </span>
      </code>
     </a>
@@ -937,116 +942,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solve-initialize-compute-defaults">
 <span id="ref-solver-tui-solve-initialize-compute-defaults"></span><h1>solver.tui.solve.initialize.compute_defaults<a class="headerlink" href="#solver-tui-solve-initialize-compute-defaults" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.</span></span><span class="sig-name descname"><span class="pre">compute_defaults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the compute default values menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.all_zones" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.all_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_zones</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Initializes the flow field with the default values.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.axis" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.axis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.degassing" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.degassing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">degassing</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.dummy_entry" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.dummy_entry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dummy_entry</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.exhaust_fan" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.exhaust_fan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exhaust_fan</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.fan" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.fan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fan</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.fluid" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.fluid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fluid</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.geometry" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geometry</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.inlet_vent" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.inlet_vent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inlet_vent</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.intake_fan" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.intake_fan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intake_fan</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.interface" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.interior" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.interior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interior</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.mass_flow_inlet" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.mass_flow_inlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mass_flow_inlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.mass_flow_outlet" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.mass_flow_outlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mass_flow_outlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.network" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.network"><code class="xref py py-obj docutils literal notranslate"><span class="pre">network</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.network_end" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.network_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">network_end</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.outflow" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.outflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outflow</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.outlet_vent" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.outlet_vent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outlet_vent</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.overset" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.overset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overset</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.periodic" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.periodic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">periodic</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.porous_jump" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.porous_jump"><code class="xref py py-obj docutils literal notranslate"><span class="pre">porous_jump</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.pressure_far_field" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.pressure_far_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pressure_far_field</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.pressure_inlet" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.pressure_inlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pressure_inlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.pressure_outlet" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.pressure_outlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pressure_outlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.radiator" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.radiator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">radiator</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.rans_les_interface" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.rans_les_interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rans_les_interface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.recirculation_inlet" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.recirculation_inlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">recirculation_inlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.recirculation_outlet" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.recirculation_outlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">recirculation_outlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.shadow" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.shadow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shadow</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.solid" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.solid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solid</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.symmetry" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.symmetry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">symmetry</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.velocity_inlet" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.velocity_inlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_inlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.wall" title="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.wall"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wall</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute flow-initialization defaults from a zone of this type.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solve.initialize.</span></span><span class="sig-name descname"><span class="pre">compute_defaults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the compute default values menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.all_zones">
 <span class="sig-name descname"><span class="pre">all_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solve.initialize.compute_defaults.all_zones" title="Permalink to this definition">#</a></dt>

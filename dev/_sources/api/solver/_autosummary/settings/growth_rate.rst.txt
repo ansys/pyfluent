@@ -5,8 +5,11 @@
 growth_rate
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.growth_rate.growth_rate
+.. currentmodule:: ansys.fluent.core.solver.settings_231.growth_rate
 
+.. autoclass:: growth_rate
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================================   ==========================================

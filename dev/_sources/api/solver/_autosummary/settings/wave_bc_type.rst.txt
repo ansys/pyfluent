@@ -5,8 +5,11 @@
 wave_bc_type
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.wave_bc_type.wave_bc_type
+.. currentmodule:: ansys.fluent.core.solver.settings_231.wave_bc_type
 
+.. autoclass:: wave_bc_type
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==========================================

@@ -5,8 +5,11 @@
 save_as_copy
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.save_as_copy.save_as_copy
+.. currentmodule:: ansys.fluent.core.solver.settings_231.save_as_copy
 
+.. autoclass:: save_as_copy
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==============================================   ===============================

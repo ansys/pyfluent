@@ -5,8 +5,11 @@
 rotating_mesh_flow_predictor
 ============================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.rotating_mesh_flow_predictor.rotating_mesh_flow_predictor
+.. currentmodule:: ansys.fluent.core.solver.settings_231.rotating_mesh_flow_predictor
 
+.. autoclass:: rotating_mesh_flow_predictor
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===============================

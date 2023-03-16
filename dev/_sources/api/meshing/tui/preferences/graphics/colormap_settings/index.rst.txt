@@ -3,11 +3,11 @@
 meshing.tui.preferences.graphics.colormap\_settings
 ===================================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.colormap_settings
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.graphics.colormap_settings
+   :members: alignment, levels, text_font_fixed_horizontal_size, max_size_scale_factor, labels, type, min_size_scale_factor, text_truncation_limit_for_vertical_colormaps, number_format_precision, margin_from_edge_to_screen_ratio, log_scale, number_format_type, text_font_automatic_horizontal_size, aspect_ratio_when_horizontal, text_behavior, skip_value, border_style, major_length_to_screen_ratio_when_vertical, auto_refit_on_resize, text_font_automatic_vertical_size, aspect_ratio_when_vertical, preserve_aspect_ratio_for_hardcopy, colormap, text_font_automatic_size, text_font_automatic_units, text_font_fixed_size, text_font_fixed_vertical_size, show_colormap, text_font_fixed_units, automatic_resize, text_font_name, text_truncation_limit_for_horizontal_colormaps, isolines_position_offset, use_no_sub_windows, major_length_to_screen_ratio_when_horizontal
 

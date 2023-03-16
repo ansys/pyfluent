@@ -3,11 +3,11 @@
 meshing.tui.preferences.graphics.graphics\_effects
 ==================================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.preferences.graphics.graphics_effects
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.graphics.graphics_effects
+   :members: grid_plane_offset, ambient_occlusion_enabled, grid_color, bloom_enabled, plane_direction, update_after_mouse_release, grid_plane_enabled, bloom_strength, anti_aliasing, grid_plane_count, grid_plane_size_factor, reflections_enabled, show_edge_reflections, shadow_map_enabled, show_marker_reflections, bloom_blur, ambient_occlusion_quality, ambient_occlusion_strength, simple_shadows_enabled
 

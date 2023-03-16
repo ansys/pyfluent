@@ -5,8 +5,11 @@
 enable_pseudo_time_method
 =========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.enable_pseudo_time_method.enable_pseudo_time_method
+.. currentmodule:: ansys.fluent.core.solver.settings_231.enable_pseudo_time_method
 
+.. autoclass:: enable_pseudo_time_method
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

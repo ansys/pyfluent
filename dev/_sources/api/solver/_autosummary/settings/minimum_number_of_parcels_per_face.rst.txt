@@ -5,8 +5,11 @@
 minimum_number_of_parcels_per_face
 ==================================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.minimum_number_of_parcels_per_face.minimum_number_of_parcels_per_face
+.. currentmodule:: ansys.fluent.core.solver.settings_231.minimum_number_of_parcels_per_face
 
+.. autoclass:: minimum_number_of_parcels_per_face
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

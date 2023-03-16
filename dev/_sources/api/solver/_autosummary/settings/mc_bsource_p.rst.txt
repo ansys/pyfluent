@@ -5,8 +5,11 @@
 mc_bsource_p
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.mc_bsource_p.mc_bsource_p
+.. currentmodule:: ansys.fluent.core.solver.settings_231.mc_bsource_p
 
+.. autoclass:: mc_bsource_p
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

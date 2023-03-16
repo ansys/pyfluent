@@ -5,8 +5,11 @@
 banded
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.banded.banded
+.. currentmodule:: ansys.fluent.core.solver.settings_231.banded
 
+.. autoclass:: banded
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   =====================

@@ -5,8 +5,11 @@
 smoothing_iteration
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.smoothing_iteration.smoothing_iteration
+.. currentmodule:: ansys.fluent.core.solver.settings_231.smoothing_iteration
 
+.. autoclass:: smoothing_iteration
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   ===============================

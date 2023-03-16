@@ -5,13 +5,16 @@
 coupled_parameters
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.coupled_parameters.coupled_parameters
+.. currentmodule:: ansys.fluent.core.solver.settings_231.coupled_parameters
 
-.. rubric:: Attributes
+.. autoclass:: coupled_parameters
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================   ===================================
 
-Attribute                                                                              Summary
+Child                                                                                  Summary
 
 ========================================================   ===================================
 :ref:`fixed_cycle_parameters <fixed_cycle_parameters_1>`       'fixed_cycle_parameters' child.

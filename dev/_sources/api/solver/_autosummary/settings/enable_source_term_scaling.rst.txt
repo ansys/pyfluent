@@ -5,8 +5,11 @@
 enable_source_term_scaling
 ==========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.enable_source_term_scaling.enable_source_term_scaling
+.. currentmodule:: ansys.fluent.core.solver.settings_231.enable_source_term_scaling
 
+.. autoclass:: enable_source_term_scaling
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================   ==============================================================================================================

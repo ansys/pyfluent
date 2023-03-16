@@ -5,8 +5,11 @@
 surface_integrals
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.surface_integrals.surface_integrals
+.. currentmodule:: ansys.fluent.core.solver.settings_231.surface_integrals
 
+.. autoclass:: surface_integrals
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==============================================   ===============================

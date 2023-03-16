@@ -3,17 +3,17 @@
 solver.tui.solve.set.advanced
 =============================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solve.set.advanced
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.advanced
+   :members: explicit_under_relaxation_value, skewness_correction_enhanced, alternate_wall_temp_formulation, bcd_weights_freeze, linearized_mass_transfer_udf, retain_cell_residuals, energy_numerical_noise_filter, retain_temporary_solver_mem, energy_reconstruction_gradient_limiting, bcd_boundedness, singhal_et_al_cavitation_model, correction_form, anisotropic_solid_heat_transfer, show_all_discretization_schemes
 
 .. toctree::
    :hidden:
 
-   secondary_gradient_limiting/index
-   non_reflecting_boundary_treatment/index
    turbomachinery_specific_numerics/index
+   non_reflecting_boundary_treatment/index
+   secondary_gradient_limiting/index

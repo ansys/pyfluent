@@ -5,8 +5,11 @@
 kw_low_re_correction
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.kw_low_re_correction.kw_low_re_correction
+.. currentmodule:: ansys.fluent.core.solver.settings_231.kw_low_re_correction
 
+.. autoclass:: kw_low_re_correction
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

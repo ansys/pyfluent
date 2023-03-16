@@ -5,8 +5,11 @@
 outlet_temperature
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.outlet_temperature.outlet_temperature
+.. currentmodule:: ansys.fluent.core.solver.settings_231.outlet_temperature
 
+.. autoclass:: outlet_temperature
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ======================================   ===========================

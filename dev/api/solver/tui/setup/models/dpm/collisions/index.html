@@ -51,12 +51,12 @@
     <script src="../../../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../search.html" />
     <link rel="next" title="solver.tui.setup.models.dpm.collisions.collision_partners" href="collision_partners/index.html" />
-    <link rel="prev" title="solver.tui.setup.models.dpm.numerics.high_resolution_tracking.barycentric_interpolation" href="../numerics/high_resolution_tracking/barycentric_interpolation/index.html" />
+    <link rel="prev" title="solver.tui.setup.models.dpm.options" href="../options/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -306,8 +306,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -351,23 +356,13 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../../solution/index.html">
          solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../report/index.html">
+         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -381,13 +376,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../reference_values/index.html">
-           solver.tui.setup.reference_values
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../turbo_model/index.html">
-           solver.tui.setup.turbo_model
+          <a class="reference internal" href="../../../overset_interfaces/index.html">
+           solver.tui.setup.overset_interfaces
           </a>
          </li>
          <li class="toctree-l5">
@@ -396,8 +386,13 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../expert/index.html">
-           solver.tui.setup.expert
+          <a class="reference internal" href="../../../turbo_model/index.html">
+           solver.tui.setup.turbo_model
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../dynamic_mesh/index.html">
+           solver.tui.setup.dynamic_mesh
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -411,13 +406,13 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul class="current">
            <li class="toctree-l6">
-            <a class="reference internal" href="../../shell_conduction/index.html">
-             solver.tui.setup.models.shell_conduction
+            <a class="reference internal" href="../../nox_parameters/index.html">
+             solver.tui.setup.models.nox_parameters
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../acoustics/index.html">
-             solver.tui.setup.models.acoustics
+            <a class="reference internal" href="../../soot_parameters/index.html">
+             solver.tui.setup.models.soot_parameters
             </a>
            </li>
            <li class="toctree-l6">
@@ -426,18 +421,33 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../cht/index.html">
-             solver.tui.setup.models.cht
+            <a class="reference internal" href="../../radiation/index.html">
+             solver.tui.setup.models.radiation
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../nox_parameters/index.html">
-             solver.tui.setup.models.nox_parameters
+            <a class="reference internal" href="../../eulerian_wallfilm/index.html">
+             solver.tui.setup.models.eulerian_wallfilm
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../multiphase/index.html">
-             solver.tui.setup.models.multiphase
+            <a class="reference internal" href="../../shell_conduction/index.html">
+             solver.tui.setup.models.shell_conduction
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../two_temperature/index.html">
+             solver.tui.setup.models.two_temperature
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../electrolysis/index.html">
+             solver.tui.setup.models.electrolysis
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../species/index.html">
+             solver.tui.setup.models.species
             </a>
            </li>
            <li class="toctree-l6 current active has-children">
@@ -451,18 +461,13 @@ function checkPageExistsAndRedirect(event) {
             </label>
             <ul class="current">
              <li class="toctree-l7">
-              <a class="reference internal" href="../splash_options/index.html">
-               solver.tui.setup.models.dpm.splash_options
+              <a class="reference internal" href="../stripping_options/index.html">
+               solver.tui.setup.models.dpm.stripping_options
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../parallel/index.html">
-               solver.tui.setup.models.dpm.parallel
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../interaction/index.html">
-               solver.tui.setup.models.dpm.interaction
+              <a class="reference internal" href="../numerics/index.html">
+               solver.tui.setup.models.dpm.numerics
               </a>
              </li>
              <li class="toctree-l7">
@@ -471,13 +476,8 @@ function checkPageExistsAndRedirect(event) {
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../stripping_options/index.html">
-               solver.tui.setup.models.dpm.stripping_options
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../numerics/index.html">
-               solver.tui.setup.models.dpm.numerics
+              <a class="reference internal" href="../options/index.html">
+               solver.tui.setup.models.dpm.options
               </a>
              </li>
              <li class="toctree-l7 current active has-children">
@@ -498,25 +498,35 @@ function checkPageExistsAndRedirect(event) {
               </ul>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../options/index.html">
-               solver.tui.setup.models.dpm.options
+              <a class="reference internal" href="../splash_options/index.html">
+               solver.tui.setup.models.dpm.splash_options
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../parallel/index.html">
+               solver.tui.setup.models.dpm.parallel
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../interaction/index.html">
+               solver.tui.setup.models.dpm.interaction
               </a>
              </li>
             </ul>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../electrolysis/index.html">
-             solver.tui.setup.models.electrolysis
+            <a class="reference internal" href="../../structure/index.html">
+             solver.tui.setup.models.structure
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../eulerian_wallfilm/index.html">
-             solver.tui.setup.models.eulerian_wallfilm
+            <a class="reference internal" href="../../acoustics/index.html">
+             solver.tui.setup.models.acoustics
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../soot_parameters/index.html">
-             solver.tui.setup.models.soot_parameters
+            <a class="reference internal" href="../../multiphase/index.html">
+             solver.tui.setup.models.multiphase
             </a>
            </li>
            <li class="toctree-l6">
@@ -530,18 +540,8 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../structure/index.html">
-             solver.tui.setup.models.structure
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../radiation/index.html">
-             solver.tui.setup.models.radiation
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../heat_exchanger/index.html">
-             solver.tui.setup.models.heat_exchanger
+            <a class="reference internal" href="../../cht/index.html">
+             solver.tui.setup.models.cht
             </a>
            </li>
            <li class="toctree-l6">
@@ -550,16 +550,21 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../two_temperature/index.html">
-             solver.tui.setup.models.two_temperature
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../species/index.html">
-             solver.tui.setup.models.species
+            <a class="reference internal" href="../../heat_exchanger/index.html">
+             solver.tui.setup.models.heat_exchanger
             </a>
            </li>
           </ul>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../reference_frames/index.html">
+           solver.tui.setup.reference_frames
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../reference_values/index.html">
+           solver.tui.setup.reference_values
+          </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../../named_expressions/index.html">
@@ -567,23 +572,8 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../mixing_planes/index.html">
-           solver.tui.setup.mixing_planes
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../overset_interfaces/index.html">
-           solver.tui.setup.overset_interfaces
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../mesh_interfaces/index.html">
-           solver.tui.setup.mesh_interfaces
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../boundary_conditions/index.html">
-           solver.tui.setup.boundary_conditions
+          <a class="reference internal" href="../../../expert/index.html">
+           solver.tui.setup.expert
           </a>
          </li>
          <li class="toctree-l5">
@@ -597,31 +587,21 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../dynamic_mesh/index.html">
-           solver.tui.setup.dynamic_mesh
+          <a class="reference internal" href="../../../boundary_conditions/index.html">
+           solver.tui.setup.boundary_conditions
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../reference_frames/index.html">
-           solver.tui.setup.reference_frames
+          <a class="reference internal" href="../../../mixing_planes/index.html">
+           solver.tui.setup.mixing_planes
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../mesh_interfaces/index.html">
+           solver.tui.setup.mesh_interfaces
           </a>
          </li>
         </ul>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../surface/index.html">
-         solver.tui.surface
-        </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../../views/index.html">
@@ -629,13 +609,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_post/index.html">
-         solver.tui.turbo_post
+        <a class="reference internal" href="../../../../display/index.html">
+         solver.tui.display
         </a>
        </li>
        <li class="toctree-l4">
@@ -644,33 +619,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../define/index.html">
-         solver.tui.define
+        <a class="reference internal" href="../../../../results/index.html">
+         solver.tui.results
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
        <li class="toctree-l4">
@@ -684,13 +639,63 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../preferences/index.html">
-         solver.tui.preferences
+        <a class="reference internal" href="../../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../../parameters__and__customization/index.html">
          solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../define/index.html">
+         solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../preferences/index.html">
+         solver.tui.preferences
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
       </ul>
@@ -762,7 +767,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions">
    <code class="docutils literal notranslate">
     <span class="pre">
-     collisions
+     main_menu.setup.models.dpm.collisions
     </span>
    </code>
   </a>
@@ -771,7 +776,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_mesh">
      <code class="docutils literal notranslate">
       <span class="pre">
-       collisions.collision_mesh()
+       main_menu.setup.models.dpm.collisions.collision_mesh()
       </span>
      </code>
     </a>
@@ -780,72 +785,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_pair_settings">
      <code class="docutils literal notranslate">
       <span class="pre">
-       collisions.collision_pair_settings()
+       main_menu.setup.models.dpm.collisions.collision_pair_settings()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       collisions.collision_partners
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.copy">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         collisions.collision_partners.copy()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.create">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         collisions.collision_partners.create()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.delete">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         collisions.collision_partners.delete()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.list">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         collisions.collision_partners.list()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.rename">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         collisions.collision_partners.rename()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.dem_collisions">
      <code class="docutils literal notranslate">
       <span class="pre">
-       collisions.dem_collisions()
+       main_menu.setup.models.dpm.collisions.dem_collisions()
       </span>
      </code>
     </a>
@@ -854,7 +803,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.list_all_pair_settings">
      <code class="docutils literal notranslate">
       <span class="pre">
-       collisions.list_all_pair_settings()
+       main_menu.setup.models.dpm.collisions.list_all_pair_settings()
       </span>
      </code>
     </a>
@@ -863,7 +812,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.max_particle_velocity">
      <code class="docutils literal notranslate">
       <span class="pre">
-       collisions.max_particle_velocity()
+       main_menu.setup.models.dpm.collisions.max_particle_velocity()
       </span>
      </code>
     </a>
@@ -891,39 +840,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-models-dpm-collisions">
 <span id="ref-solver-tui-setup-models-dpm-collisions"></span><h1>solver.tui.setup.models.dpm.collisions<a class="headerlink" href="#solver-tui-setup-models-dpm-collisions" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.</span></span><span class="sig-name descname"><span class="pre">collisions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the DEM collisions menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_mesh" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">collision_mesh</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Input for the collision mesh.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_pair_settings" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_pair_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">collision_pair_settings</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Supply settings for collisions to a pair of collision partners.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.dem_collisions" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.dem_collisions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dem_collisions</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable the DEM collision model.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.list_all_pair_settings" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.list_all_pair_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_all_pair_settings</span></code></a>(*args, **kwargs)</p></td>
-<td><p>For each pair of collision partners, lists the collision laws and their parameters.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.max_particle_velocity" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.max_particle_velocity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_particle_velocity</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the maximum particle velocity that may arise from collisions.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners"><code class="xref py py-obj docutils literal notranslate"><span class="pre">collision_partners</span></code></a>(path, service)</p></td>
-<td><p>Manage collision partners.</p></td>
-</tr>
-</tbody>
-</table>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.models.dpm.</span></span><span class="sig-name descname"><span class="pre">collisions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the DEM collisions menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_mesh">
 <span class="sig-name descname"><span class="pre">collision_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_mesh" title="Permalink to this definition">#</a></dt>
@@ -934,63 +858,6 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_pair_settings">
 <span class="sig-name descname"><span class="pre">collision_pair_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_pair_settings" title="Permalink to this definition">#</a></dt>
 <dd><p>Supply settings for collisions to a pair of collision partners.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">collision_partners</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Manage collision partners.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.copy" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Copy a collision partner.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.create" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create a collision partner.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.delete" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete a collision partner.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.list" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Lists all known collision partners.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.rename" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.rename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rename</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Rename a collision partner.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.copy">
-<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.copy" title="Permalink to this definition">#</a></dt>
-<dd><p>Copy a collision partner.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.create">
-<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.create" title="Permalink to this definition">#</a></dt>
-<dd><p>Create a collision partner.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.delete">
-<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.delete" title="Permalink to this definition">#</a></dt>
-<dd><p>Delete a collision partner.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.list">
-<span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.list" title="Permalink to this definition">#</a></dt>
-<dd><p>Lists all known collision partners.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.rename">
-<span class="sig-name descname"><span class="pre">rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.collisions.collision_partners.rename" title="Permalink to this definition">#</a></dt>
-<dd><p>Rename a collision partner.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">

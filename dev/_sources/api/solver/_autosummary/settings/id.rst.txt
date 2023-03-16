@@ -5,8 +5,11 @@
 id
 ==
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.id.id
+.. currentmodule:: ansys.fluent.core.solver.settings_231.id
 
+.. autoclass:: id
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

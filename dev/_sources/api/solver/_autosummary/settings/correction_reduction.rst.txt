@@ -5,8 +5,11 @@
 correction_reduction
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.correction_reduction.correction_reduction
+.. currentmodule:: ansys.fluent.core.solver.settings_231.correction_reduction
 
+.. autoclass:: correction_reduction
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================

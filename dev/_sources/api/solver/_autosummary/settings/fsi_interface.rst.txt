@@ -5,8 +5,11 @@
 fsi_interface
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fsi_interface.fsi_interface
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fsi_interface
 
+.. autoclass:: fsi_interface
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -5,8 +5,11 @@
 partitions
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.partitions.partitions
+.. currentmodule:: ansys.fluent.core.solver.settings_231.partitions
 
+.. autoclass:: partitions
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   ====================

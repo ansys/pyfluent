@@ -5,13 +5,16 @@
 beams
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.beams.beams
+.. currentmodule:: ansys.fluent.core.solver.settings_231.beams
 
-.. rubric:: Methods
+.. autoclass:: beams
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ==================================================   =========================================
 
-Method                                                                                 Summary
+Command                                                                                Summary
 
 ==================================================   =========================================
 :ref:`copy <copy>`                                                     Copy optical beam grid.

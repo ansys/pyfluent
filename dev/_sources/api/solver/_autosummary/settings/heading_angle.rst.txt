@@ -5,13 +5,16 @@
 heading_angle
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.heading_angle.heading_angle
+.. currentmodule:: ansys.fluent.core.solver.settings_231.heading_angle
 
-.. rubric:: Attributes
+.. autoclass:: heading_angle
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

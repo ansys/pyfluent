@@ -5,8 +5,11 @@
 film_source
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.film_source.film_source
+.. currentmodule:: ansys.fluent.core.solver.settings_231.film_source
 
+.. autoclass:: film_source
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

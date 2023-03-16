@@ -5,8 +5,11 @@
 import_fmu
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.import_fmu.import_fmu
+.. currentmodule:: ansys.fluent.core.solver.settings_231.import_fmu
 
+.. autoclass:: import_fmu
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==============================   ======================

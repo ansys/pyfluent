@@ -5,8 +5,11 @@
 name
 ====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.name_2.name
+.. currentmodule:: ansys.fluent.core.solver.settings_231.name_2
 
+.. autoclass:: name
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   =======================================================

@@ -5,8 +5,11 @@
 band_diffuse_frac
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.band_diffuse_frac.band_diffuse_frac
+.. currentmodule:: ansys.fluent.core.solver.settings_231.band_diffuse_frac
 
+.. autoclass:: band_diffuse_frac
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`axis_direction_child <axis_direction_child>`

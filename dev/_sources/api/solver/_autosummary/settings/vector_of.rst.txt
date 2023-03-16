@@ -5,8 +5,11 @@
 vector_of
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.vector_of.vector_of
+.. currentmodule:: ansys.fluent.core.solver.settings_231.vector_of
 
+.. autoclass:: vector_of
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

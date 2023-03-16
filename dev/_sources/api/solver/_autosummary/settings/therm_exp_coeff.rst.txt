@@ -5,13 +5,16 @@
 therm_exp_coeff
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.therm_exp_coeff.therm_exp_coeff
+.. currentmodule:: ansys.fluent.core.solver.settings_231.therm_exp_coeff
 
-.. rubric:: Attributes
+.. autoclass:: therm_exp_coeff
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================   ====================================================
 
-Attribute                                                               Summary
+Child                                                                   Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

@@ -51,12 +51,12 @@
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="ansys.fluent.core.services.field_data.FieldInfo" href="_autosummary/ansys.fluent.core.services.field_data.FieldInfo.html" />
-    <link rel="prev" title="new_transaction" href="_autosummary/ansys.fluent.core.services.field_data.FieldData.new_transaction.html" />
+    <link rel="next" title="EventsManager" href="events.html" />
+    <link rel="prev" title="Field data" href="fielddata.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -301,8 +301,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../general/index.html">
-   General
+  <a class="reference internal" href="../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -345,22 +350,10 @@ function checkPageExistsAndRedirect(event) {
      Field data
     </a>
    </li>
-   <li class="toctree-l2 current active has-children">
+   <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      Field info
     </a>
-    <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-    <label for="toctree-checkbox-2">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="_autosummary/ansys.fluent.core.services.field_data.FieldInfo.html">
-       ansys.fluent.core.services.field_data.FieldInfo
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="events.html">
@@ -432,6 +425,44 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#get-surfaces-info">
      Get surfaces info
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.services.field_data.FieldInfo.get_range">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         FieldInfo.get_range()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.services.field_data.FieldInfo.get_fields_info">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         FieldInfo.get_fields_info()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.services.field_data.FieldInfo.get_vector_fields_info">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         FieldInfo.get_vector_fields_info()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.services.field_data.FieldInfo.get_surfaces_info">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         FieldInfo.get_surfaces_info()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
@@ -529,11 +560,81 @@ calling the <code class="docutils literal notranslate"><span class="pre">get_sur
 </div>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/ansys.fluent.core.services.field_data.FieldInfo.html#ansys.fluent.core.services.field_data.FieldInfo" title="ansys.fluent.core.services.field_data.FieldInfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">field_data.FieldInfo</span></code></a>(service)</p></td>
-<td><p>Provides access to Fluent field information.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.field_data.FieldInfo.get_range">
+<span class="sig-prename descclassname"><span class="pre">FieldInfo.</span></span><span class="sig-name descname"><span class="pre">get_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.field_data.FieldInfo.get_range" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the range (minimum and maximum values) of the field.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>field: str</strong></dt><dd><p>Name of the field</p>
+</dd>
+<dt><strong>node_value: bool</strong></dt><dd></dd>
+<dt><strong>surface_ids</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference external" href="https://docs.python.org/dev/library/functions.html#int" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a>], <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>List of surface IDS for the surface data.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference external" href="https://docs.python.org/dev/library/functions.html#float" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a>]</dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/dev/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.field_data.FieldInfo.get_fields_info">
+<span class="sig-prename descclassname"><span class="pre">FieldInfo.</span></span><span class="sig-name descname"><span class="pre">get_fields_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.field_data.FieldInfo.get_fields_info" title="Permalink to this definition">#</a></dt>
+<dd><p>Get fields information (field name, domain, and section).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dict</span></code></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.field_data.FieldInfo.get_vector_fields_info">
+<span class="sig-prename descclassname"><span class="pre">FieldInfo.</span></span><span class="sig-name descname"><span class="pre">get_vector_fields_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.field_data.FieldInfo.get_vector_fields_info" title="Permalink to this definition">#</a></dt>
+<dd><p>Get vector fields information (vector components).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dict</span></code></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.services.field_data.FieldInfo.get_surfaces_info">
+<span class="sig-prename descclassname"><span class="pre">FieldInfo.</span></span><span class="sig-name descname"><span class="pre">get_surfaces_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.services.field_data.FieldInfo.get_surfaces_info" title="Permalink to this definition">#</a></dt>
+<dd><p>Get surfaces information (surface name, ID, and type).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dict</span></code></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 </section>

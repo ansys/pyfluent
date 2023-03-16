@@ -5,8 +5,11 @@
 mom_center
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.mom_center.mom_center
+.. currentmodule:: ansys.fluent.core.solver.settings_231.mom_center
 
+.. autoclass:: mom_center
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ==================================

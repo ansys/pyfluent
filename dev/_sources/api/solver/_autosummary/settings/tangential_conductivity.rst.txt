@@ -5,13 +5,16 @@
 tangential_conductivity
 =======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.tangential_conductivity.tangential_conductivity
+.. currentmodule:: ansys.fluent.core.solver.settings_231.tangential_conductivity
 
-.. rubric:: Attributes
+.. autoclass:: tangential_conductivity
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   ====================================================
 
-Attribute                                                                                           Summary
+Child                                                                                               Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

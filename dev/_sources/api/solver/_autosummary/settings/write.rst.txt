@@ -5,8 +5,11 @@
 write
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.write.write
+.. currentmodule:: ansys.fluent.core.solver.settings_231.write
 
+.. autoclass:: write
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==============================   ======================

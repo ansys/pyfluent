@@ -51,7 +51,7 @@
     <script src="../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -303,8 +303,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -317,11 +322,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../tui/index.html">
      meshing.tui
@@ -416,7 +416,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject">
    <code class="docutils literal notranslate">
     <span class="pre">
-     _TaskObject
+     Root.TaskObject._TaskObject
     </span>
    </code>
   </a>
@@ -425,7 +425,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.AddChildAndUpdate">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _TaskObject.AddChildAndUpdate
+       Root.TaskObject._TaskObject.AddChildAndUpdate
       </span>
      </code>
     </a>
@@ -434,7 +434,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.AddChildToTask">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _TaskObject.AddChildToTask
+       Root.TaskObject._TaskObject.AddChildToTask
       </span>
      </code>
     </a>
@@ -443,7 +443,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Arguments">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _TaskObject.Arguments
+       Root.TaskObject._TaskObject.Arguments
       </span>
      </code>
     </a>
@@ -452,7 +452,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.CommandName">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _TaskObject.CommandName
+       Root.TaskObject._TaskObject.CommandName
       </span>
      </code>
     </a>
@@ -461,7 +461,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Errors">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _TaskObject.Errors
+       Root.TaskObject._TaskObject.Errors
       </span>
      </code>
     </a>
@@ -470,7 +470,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Execute">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _TaskObject.Execute
+       Root.TaskObject._TaskObject.Execute
       </span>
      </code>
     </a>
@@ -479,7 +479,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.ExecuteUpstreamNonExecutedAndThisTask">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _TaskObject.ExecuteUpstreamNonExecutedAndThisTask
+       Root.TaskObject._TaskObject.ExecuteUpstreamNonExecutedAndThisTask
       </span>
      </code>
     </a>
@@ -488,7 +488,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.ForceUptoDate">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _TaskObject.ForceUptoDate
+       Root.TaskObject._TaskObject.ForceUptoDate
       </span>
      </code>
     </a>
@@ -497,7 +497,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.GetNextPossibleTasks">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _TaskObject.GetNextPossibleTasks
+       Root.TaskObject._TaskObject.GetNextPossibleTasks
       </span>
      </code>
     </a>
@@ -506,7 +506,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.InactiveTaskList">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _TaskObject.InactiveTaskList
+       Root.TaskObject._TaskObject.InactiveTaskList
       </span>
      </code>
     </a>
@@ -515,7 +515,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.InsertCompositeChildTask">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _TaskObject.InsertCompositeChildTask
+       Root.TaskObject._TaskObject.InsertCompositeChildTask
       </span>
      </code>
     </a>
@@ -524,7 +524,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.InsertCompoundChildTask">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _TaskObject.InsertCompoundChildTask
+       Root.TaskObject._TaskObject.InsertCompoundChildTask
       </span>
      </code>
     </a>
@@ -533,7 +533,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.InsertNextTask">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _TaskObject.InsertNextTask
+       Root.TaskObject._TaskObject.InsertNextTask
       </span>
      </code>
     </a>
@@ -542,7 +542,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.ObjectPath">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _TaskObject.ObjectPath
+       Root.TaskObject._TaskObject.ObjectPath
       </span>
      </code>
     </a>
@@ -551,7 +551,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Rename">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _TaskObject.Rename
+       Root.TaskObject._TaskObject.Rename
       </span>
      </code>
     </a>
@@ -560,7 +560,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Revert">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _TaskObject.Revert
+       Root.TaskObject._TaskObject.Revert
       </span>
      </code>
     </a>
@@ -569,7 +569,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.SetAsCurrent">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _TaskObject.SetAsCurrent
+       Root.TaskObject._TaskObject.SetAsCurrent
       </span>
      </code>
     </a>
@@ -578,7 +578,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.State">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _TaskObject.State
+       Root.TaskObject._TaskObject.State
       </span>
      </code>
     </a>
@@ -587,7 +587,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.TaskList">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _TaskObject.TaskList
+       Root.TaskObject._TaskObject.TaskList
       </span>
      </code>
     </a>
@@ -596,7 +596,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.TaskType">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _TaskObject.TaskType
+       Root.TaskObject._TaskObject.TaskType
       </span>
      </code>
     </a>
@@ -605,7 +605,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.UpdateChildTasks">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _TaskObject.UpdateChildTasks
+       Root.TaskObject._TaskObject.UpdateChildTasks
       </span>
      </code>
     </a>
@@ -614,7 +614,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Warnings">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _TaskObject.Warnings
+       Root.TaskObject._TaskObject.Warnings
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject._name_">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Root.TaskObject._TaskObject._name_
       </span>
      </code>
     </a>
@@ -642,87 +651,18 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-datamodel-workflow-taskobject">
 <span id="ref-meshing-datamodel-workflow-taskobject"></span><h1>meshing.datamodel.workflow.TaskObject<a class="headerlink" href="#meshing-datamodel-workflow-taskobject" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.datamodel_231.workflow.Root.TaskObject.</span></span><span class="sig-name descname"><span class="pre">_TaskObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
-<p>Singleton _TaskObject.</p>
-<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../solver/datamodel/workflow/TaskObject/index.html#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.AddChildAndUpdate" title="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.AddChildAndUpdate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AddChildAndUpdate</span></code></a>(service, rules, command[, ...])</p></td>
-<td><p>Command AddChildAndUpdate.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../solver/datamodel/workflow/TaskObject/index.html#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.AddChildToTask" title="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.AddChildToTask"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AddChildToTask</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command AddChildToTask.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../solver/datamodel/workflow/TaskObject/index.html#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Arguments" title="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Arguments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Arguments</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Arguments of value type Dict[str, Any].</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../solver/datamodel/workflow/TaskObject/index.html#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.CommandName" title="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.CommandName"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CommandName</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter CommandName of value type str.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../solver/datamodel/workflow/TaskObject/index.html#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Errors" title="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Errors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Errors</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Errors of value type List[str].</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../solver/datamodel/workflow/TaskObject/index.html#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Execute" title="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Execute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Execute</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Execute.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../solver/datamodel/workflow/TaskObject/index.html#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.ExecuteUpstreamNonExecutedAndThisTask" title="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.ExecuteUpstreamNonExecutedAndThisTask"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExecuteUpstreamNonExecutedAndThisTask</span></code></a>(...[, ...])</p></td>
-<td><p>Command ExecuteUpstreamNonExecutedAndThisTask.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../solver/datamodel/workflow/TaskObject/index.html#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.ForceUptoDate" title="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.ForceUptoDate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ForceUptoDate</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command ForceUptoDate.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../solver/datamodel/workflow/TaskObject/index.html#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.GetNextPossibleTasks" title="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.GetNextPossibleTasks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GetNextPossibleTasks</span></code></a>(service, rules, command)</p></td>
-<td><p>Command GetNextPossibleTasks.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../solver/datamodel/workflow/TaskObject/index.html#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.InactiveTaskList" title="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.InactiveTaskList"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InactiveTaskList</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter InactiveTaskList of value type List[str].</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../solver/datamodel/workflow/TaskObject/index.html#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.InsertCompositeChildTask" title="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.InsertCompositeChildTask"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InsertCompositeChildTask</span></code></a>(service, rules, command)</p></td>
-<td><p>Command InsertCompositeChildTask.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../solver/datamodel/workflow/TaskObject/index.html#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.InsertCompoundChildTask" title="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.InsertCompoundChildTask"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InsertCompoundChildTask</span></code></a>(service, rules, command)</p></td>
-<td><p>Command InsertCompoundChildTask.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../solver/datamodel/workflow/TaskObject/index.html#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.InsertNextTask" title="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.InsertNextTask"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InsertNextTask</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command InsertNextTask.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../solver/datamodel/workflow/TaskObject/index.html#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.ObjectPath" title="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.ObjectPath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ObjectPath</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter ObjectPath of value type str.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../solver/datamodel/workflow/TaskObject/index.html#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Rename" title="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Rename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Rename</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Rename.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../solver/datamodel/workflow/TaskObject/index.html#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Revert" title="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Revert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Revert</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Revert.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../solver/datamodel/workflow/TaskObject/index.html#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.SetAsCurrent" title="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.SetAsCurrent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SetAsCurrent</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command SetAsCurrent.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../solver/datamodel/workflow/TaskObject/index.html#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.State" title="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.State"><code class="xref py py-obj docutils literal notranslate"><span class="pre">State</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter State of value type str.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../solver/datamodel/workflow/TaskObject/index.html#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.TaskList" title="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.TaskList"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TaskList</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter TaskList of value type List[str].</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../solver/datamodel/workflow/TaskObject/index.html#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.TaskType" title="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.TaskType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TaskType</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter TaskType of value type str.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../solver/datamodel/workflow/TaskObject/index.html#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.UpdateChildTasks" title="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.UpdateChildTasks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UpdateChildTasks</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command UpdateChildTasks.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../solver/datamodel/workflow/TaskObject/index.html#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Warnings" title="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Warnings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Warnings</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Warnings of value type List[str].</p></td>
-</tr>
 </tbody>
 </table>
 <dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Root.TaskObject.</span></span><span class="sig-name descname"><span class="pre">_TaskObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject" title="Permalink to this definition">#</a></dt>
+<dd><p>Singleton _TaskObject.</p>
+<dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.AddChildAndUpdate">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AddChildAndUpdate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.AddChildAndUpdate" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command AddChildAndUpdate.</p>
+<dd><p>Command AddChildAndUpdate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -735,8 +675,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.AddChildToTask">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AddChildToTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.AddChildToTask" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command AddChildToTask.</p>
+<dd><p>Command AddChildToTask.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -749,29 +688,25 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Arguments">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Arguments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Arguments" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyDictionary</span></code></p>
-<p>Parameter Arguments of value type Dict[str, Any].</p>
+<dd><p>Parameter Arguments of value type Dict[str, Any].</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.CommandName">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CommandName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.CommandName" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter CommandName of value type str.</p>
+<dd><p>Parameter CommandName of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Errors">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Errors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Errors" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter Errors of value type List[str].</p>
+<dd><p>Parameter Errors of value type List[str].</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Execute">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Execute" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Execute.</p>
+<dd><p>Command Execute.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -789,8 +724,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.ExecuteUpstreamNonExecutedAndThisTask">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ExecuteUpstreamNonExecutedAndThisTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.ExecuteUpstreamNonExecutedAndThisTask" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command ExecuteUpstreamNonExecutedAndThisTask.</p>
+<dd><p>Command ExecuteUpstreamNonExecutedAndThisTask.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -803,8 +737,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.ForceUptoDate">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ForceUptoDate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.ForceUptoDate" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command ForceUptoDate.</p>
+<dd><p>Command ForceUptoDate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -817,8 +750,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.GetNextPossibleTasks">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GetNextPossibleTasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.GetNextPossibleTasks" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command GetNextPossibleTasks.</p>
+<dd><p>Command GetNextPossibleTasks.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -831,15 +763,13 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.InactiveTaskList">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InactiveTaskList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.InactiveTaskList" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter InactiveTaskList of value type List[str].</p>
+<dd><p>Parameter InactiveTaskList of value type List[str].</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.InsertCompositeChildTask">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InsertCompositeChildTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.InsertCompositeChildTask" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command InsertCompositeChildTask.</p>
+<dd><p>Command InsertCompositeChildTask.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -857,8 +787,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.InsertCompoundChildTask">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InsertCompoundChildTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.InsertCompoundChildTask" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command InsertCompoundChildTask.</p>
+<dd><p>Command InsertCompoundChildTask.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -871,8 +800,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.InsertNextTask">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InsertNextTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.InsertNextTask" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command InsertNextTask.</p>
+<dd><p>Command InsertNextTask.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -891,15 +819,13 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.ObjectPath">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ObjectPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.ObjectPath" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter ObjectPath of value type str.</p>
+<dd><p>Parameter ObjectPath of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Rename">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Rename" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Rename.</p>
+<dd><p>Command Rename.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -917,8 +843,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Revert">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Revert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Revert" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Revert.</p>
+<dd><p>Command Revert.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -931,8 +856,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.SetAsCurrent">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SetAsCurrent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.SetAsCurrent" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command SetAsCurrent.</p>
+<dd><p>Command SetAsCurrent.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -945,29 +869,25 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.State">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">State</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.State" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter State of value type str.</p>
+<dd><p>Parameter State of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.TaskList">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TaskList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.TaskList" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter TaskList of value type List[str].</p>
+<dd><p>Parameter TaskList of value type List[str].</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.TaskType">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TaskType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.TaskType" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter TaskType of value type str.</p>
+<dd><p>Parameter TaskType of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.UpdateChildTasks">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">UpdateChildTasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.UpdateChildTasks" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command UpdateChildTasks.</p>
+<dd><p>Command UpdateChildTasks.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -985,8 +905,13 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Warnings">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Warnings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject.Warnings" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter Warnings of value type List[str].</p>
+<dd><p>Parameter Warnings of value type List[str].</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject._name_">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_name_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.workflow.Root.TaskObject._TaskObject._name_" title="Permalink to this definition">#</a></dt>
+<dd><p>Parameter _name_ of value type str.</p>
 </dd></dl>
 
 </dd></dl>

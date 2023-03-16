@@ -5,8 +5,11 @@
 inj_mass_rate_prev_mass
 =======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.inj_mass_rate_prev_mass.inj_mass_rate_prev_mass
+.. currentmodule:: ansys.fluent.core.solver.settings_231.inj_mass_rate_prev_mass
 
+.. autoclass:: inj_mass_rate_prev_mass
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   =====================================

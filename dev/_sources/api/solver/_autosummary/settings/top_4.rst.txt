@@ -5,8 +5,11 @@
 top
 ===
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.top_4.top
+.. currentmodule:: ansys.fluent.core.solver.settings_231.top_4
 
+.. autoclass:: top
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============   ===========================================

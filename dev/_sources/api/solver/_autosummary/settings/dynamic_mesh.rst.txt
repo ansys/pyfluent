@@ -5,13 +5,16 @@
 dynamic_mesh
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.dynamic_mesh.dynamic_mesh
+.. currentmodule:: ansys.fluent.core.solver.settings_231.dynamic_mesh
 
-.. rubric:: Attributes
+.. autoclass:: dynamic_mesh
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ============================   ======================
 
-Attribute                                     Summary
+Child                                         Summary
 
 ============================   ======================
 :ref:`use <use>`                         'use' child.

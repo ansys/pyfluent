@@ -5,8 +5,11 @@
 solid_material
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.solid_material.solid_material
+.. currentmodule:: ansys.fluent.core.solver.settings_231.solid_material
 
+.. autoclass:: solid_material
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

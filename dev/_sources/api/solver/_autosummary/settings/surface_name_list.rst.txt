@@ -5,8 +5,11 @@
 surface_name_list
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.surface_name_list.surface_name_list
+.. currentmodule:: ansys.fluent.core.solver.settings_231.surface_name_list
 
+.. autoclass:: surface_name_list
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

@@ -5,8 +5,11 @@
 dm
 ==
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.dm.dm
+.. currentmodule:: ansys.fluent.core.solver.settings_231.dm
 
+.. autoclass:: dm
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =======================================

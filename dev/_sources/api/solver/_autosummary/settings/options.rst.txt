@@ -5,13 +5,16 @@
 options
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.options.options
+.. currentmodule:: ansys.fluent.core.solver.settings_231.options
 
-.. rubric:: Attributes
+.. autoclass:: options
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================   ============================================================================
 
-Attribute                                                                                                                       Summary
+Child                                                                                                                           Summary
 
 ========================================================   ============================================================================
 :ref:`migrate_and_reorder <migrate_and_reorder>`               Perform migration and reordering at the end of the polyhedra conversion.

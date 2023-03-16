@@ -5,8 +5,11 @@
 print_histogram
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.print_histogram.print_histogram
+.. currentmodule:: ansys.fluent.core.solver.settings_231.print_histogram
 
+.. autoclass:: print_histogram
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ====================================   ==========================

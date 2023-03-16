@@ -5,13 +5,16 @@
 parametric_studies
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.parametric_studies.parametric_studies
+.. currentmodule:: ansys.fluent.core.solver.settings_231.parametric_studies
 
-.. rubric:: Methods
+.. autoclass:: parametric_studies
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ================================================   ===============================
 
-Method                                                                     Summary
+Command                                                                    Summary
 
 ================================================   ===============================
 :ref:`initialize <initialize_1>`                           Start Parametric Study.

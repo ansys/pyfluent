@@ -3,16 +3,16 @@
 solver.tui.setup.models.dpm.numerics.high\_resolution\_tracking
 ===============================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.numerics.high_resolution_tracking
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.dpm.numerics.high_resolution_tracking
+   :members: remove_stuck_particles, sliding_interface_crossover_fraction, enable_automatic_intersection_tolerance, enable_barycentric_intersections, always_use_face_centroid_with_periodics, set_subtet_intersection_tolerance, use_barycentric_sampling, use_velocity_based_error_control, enable_high_resolution_tracking, project_wall_film_particles_to_film, boundary_layer_tracking, use_quad_face_centroid, set_film_spreading_parameter, use_particle_timestep_for_intersection_tolerance, check_subtet_validity
 
 .. toctree::
    :hidden:
 
-   particle_relocation/index
    barycentric_interpolation/index
+   particle_relocation/index

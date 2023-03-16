@@ -5,8 +5,11 @@
 relative
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.relative_1.relative
+.. currentmodule:: ansys.fluent.core.solver.settings_231.relative_1
 
+.. autoclass:: relative
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   ====================

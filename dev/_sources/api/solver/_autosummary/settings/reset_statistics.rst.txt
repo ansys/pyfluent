@@ -5,8 +5,11 @@
 reset_statistics
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.reset_statistics.reset_statistics
+.. currentmodule:: ansys.fluent.core.solver.settings_231.reset_statistics
 
+.. autoclass:: reset_statistics
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =========================================================================================

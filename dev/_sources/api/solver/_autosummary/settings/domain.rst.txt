@@ -5,8 +5,11 @@
 domain
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.domain.domain
+.. currentmodule:: ansys.fluent.core.solver.settings_231.domain
 
+.. autoclass:: domain
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =====================================================

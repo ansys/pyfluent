@@ -5,8 +5,11 @@
 min_diam
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.min_diam.min_diam
+.. currentmodule:: ansys.fluent.core.solver.settings_231.min_diam
 
+.. autoclass:: min_diam
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ===================================

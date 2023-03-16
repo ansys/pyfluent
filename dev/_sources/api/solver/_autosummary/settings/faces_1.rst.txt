@@ -5,8 +5,11 @@
 faces
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.faces_1.faces
+.. currentmodule:: ansys.fluent.core.solver.settings_231.faces_1
 
+.. autoclass:: faces
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

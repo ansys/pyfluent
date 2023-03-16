@@ -51,7 +51,7 @@
     <script src="../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -304,8 +304,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -349,8 +354,33 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../icing/index.html">
-         solver.tui.icing
+        <a class="reference internal" href="../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../views/index.html">
+         solver.tui.views
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../adjoint/index.html">
+         solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -364,11 +394,6 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../graphics_window/index.html">
-           solver.tui.results.graphics_window
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="../plot/index.html">
            solver.tui.results.plot
           </a>
@@ -379,8 +404,8 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../report/index.html">
-           solver.tui.results.report
+          <a class="reference internal" href="../graphics_window/index.html">
+           solver.tui.results.graphics_window
           </a>
          </li>
          <li class="toctree-l5">
@@ -410,86 +435,16 @@ function checkPageExistsAndRedirect(event) {
            </li>
           </ul>
          </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../report/index.html">
+           solver.tui.results.report
+          </a>
+         </li>
         </ul>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../solution/index.html">
-         solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../setup/index.html">
-         solver.tui.setup
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../report/index.html">
-         solver.tui.report
-        </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../turbo_workflow/index.html">
          solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../surface/index.html">
-         solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../define/index.html">
-         solver.tui.define
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../display/index.html">
-         solver.tui.display
         </a>
        </li>
        <li class="toctree-l4">
@@ -503,13 +458,63 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../preferences/index.html">
-         solver.tui.preferences
+        <a class="reference internal" href="../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../simulation_reports/index.html">
+         solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../parameters__and__customization/index.html">
          solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../define/index.html">
+         solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../preferences/index.html">
+         solver.tui.preferences
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
       </ul>
@@ -581,7 +586,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface">
    <code class="docutils literal notranslate">
     <span class="pre">
-     surface
+     main_menu.results.surface
     </span>
    </code>
   </a>
@@ -590,7 +595,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.circle_slice">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.circle_slice()
+       main_menu.results.surface.circle_slice()
       </span>
      </code>
     </a>
@@ -599,7 +604,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.closest_point_search">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.closest_point_search()
+       main_menu.results.surface.closest_point_search()
       </span>
      </code>
     </a>
@@ -608,7 +613,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.cone_slice">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.cone_slice()
+       main_menu.results.surface.cone_slice()
       </span>
      </code>
     </a>
@@ -617,7 +622,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.create_imprint_surface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.create_imprint_surface()
+       main_menu.results.surface.create_imprint_surface()
       </span>
      </code>
     </a>
@@ -626,7 +631,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.delete_surface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.delete_surface()
+       main_menu.results.surface.delete_surface()
       </span>
      </code>
     </a>
@@ -635,7 +640,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.edit_surface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.edit_surface()
+       main_menu.results.surface.edit_surface()
       </span>
      </code>
     </a>
@@ -644,7 +649,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.ellipsoid_slice">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.ellipsoid_slice()
+       main_menu.results.surface.ellipsoid_slice()
       </span>
      </code>
     </a>
@@ -653,7 +658,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.expression_volume">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.expression_volume()
+       main_menu.results.surface.expression_volume()
       </span>
      </code>
     </a>
@@ -662,7 +667,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.group_surfaces">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.group_surfaces()
+       main_menu.results.surface.group_surfaces()
       </span>
      </code>
     </a>
@@ -671,7 +676,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.iso_clip">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.iso_clip()
+       main_menu.results.surface.iso_clip()
       </span>
      </code>
     </a>
@@ -680,7 +685,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.iso_surface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.iso_surface()
+       main_menu.results.surface.iso_surface()
       </span>
      </code>
     </a>
@@ -689,7 +694,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.line_slice">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.line_slice()
+       main_menu.results.surface.line_slice()
       </span>
      </code>
     </a>
@@ -698,7 +703,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.line_surface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.line_surface()
+       main_menu.results.surface.line_surface()
       </span>
      </code>
     </a>
@@ -707,7 +712,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.list_surfaces">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.list_surfaces()
+       main_menu.results.surface.list_surfaces()
       </span>
      </code>
     </a>
@@ -716,7 +721,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.mouse_line">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.mouse_line()
+       main_menu.results.surface.mouse_line()
       </span>
      </code>
     </a>
@@ -725,7 +730,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.mouse_plane">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.mouse_plane()
+       main_menu.results.surface.mouse_plane()
       </span>
      </code>
     </a>
@@ -734,7 +739,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.mouse_rake">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.mouse_rake()
+       main_menu.results.surface.mouse_rake()
       </span>
      </code>
     </a>
@@ -743,7 +748,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.multiple_iso_surfaces">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.multiple_iso_surfaces()
+       main_menu.results.surface.multiple_iso_surfaces()
       </span>
      </code>
     </a>
@@ -752,7 +757,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.multiple_plane_surfaces">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.multiple_plane_surfaces()
+       main_menu.results.surface.multiple_plane_surfaces()
       </span>
      </code>
     </a>
@@ -761,7 +766,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.multiple_zone_surfaces">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.multiple_zone_surfaces()
+       main_menu.results.surface.multiple_zone_surfaces()
       </span>
      </code>
     </a>
@@ -770,7 +775,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.partition_surface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.partition_surface()
+       main_menu.results.surface.partition_surface()
       </span>
      </code>
     </a>
@@ -779,7 +784,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.plane">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.plane()
+       main_menu.results.surface.plane()
       </span>
      </code>
     </a>
@@ -788,7 +793,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.plane_slice">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.plane_slice()
+       main_menu.results.surface.plane_slice()
       </span>
      </code>
     </a>
@@ -797,7 +802,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.plane_surface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.plane_surface()
+       main_menu.results.surface.plane_surface()
       </span>
      </code>
     </a>
@@ -806,7 +811,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.point_array">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.point_array()
+       main_menu.results.surface.point_array()
       </span>
      </code>
     </a>
@@ -815,110 +820,25 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.point_surface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.point_surface()
+       main_menu.results.surface.point_surface()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.post_processing_volume">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       surface.post_processing_volume
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.post_processing_volume.create_from_file">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         surface.post_processing_volume.create_from_file()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.post_processing_volume.create_octree">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         surface.post_processing_volume.create_octree()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.quadric_slice">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.quadric_slice()
+       main_menu.results.surface.quadric_slice()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.query">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       surface.query
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.delete_query">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         surface.query.delete_query()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.list_named_selection">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         surface.query.list_named_selection()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.list_queries">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         surface.query.list_queries()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.list_surfaces">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         surface.query.list_surfaces()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.named_surface_list">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         surface.query.named_surface_list()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.rake_surface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.rake_surface()
+       main_menu.results.surface.rake_surface()
       </span>
      </code>
     </a>
@@ -927,7 +847,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.rename_surface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.rename_surface()
+       main_menu.results.surface.rename_surface()
       </span>
      </code>
     </a>
@@ -936,7 +856,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.reset_zone_surfaces">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.reset_zone_surfaces()
+       main_menu.results.surface.reset_zone_surfaces()
       </span>
      </code>
     </a>
@@ -945,7 +865,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.sphere_slice">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.sphere_slice()
+       main_menu.results.surface.sphere_slice()
       </span>
      </code>
     </a>
@@ -954,7 +874,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.structural_point_surface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.structural_point_surface()
+       main_menu.results.surface.structural_point_surface()
       </span>
      </code>
     </a>
@@ -963,7 +883,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.surface_cells">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.surface_cells()
+       main_menu.results.surface.surface_cells()
       </span>
      </code>
     </a>
@@ -972,7 +892,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.transform_surface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.transform_surface()
+       main_menu.results.surface.transform_surface()
       </span>
      </code>
     </a>
@@ -981,7 +901,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.ungroup_surface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.ungroup_surface()
+       main_menu.results.surface.ungroup_surface()
       </span>
      </code>
     </a>
@@ -990,7 +910,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.zone_surface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       surface.zone_surface()
+       main_menu.results.surface.zone_surface()
       </span>
      </code>
     </a>
@@ -1018,135 +938,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-results-surface">
 <span id="ref-solver-tui-results-surface"></span><h1>solver.tui.results.surface<a class="headerlink" href="#solver-tui-results-surface" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.surface">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.results.</span></span><span class="sig-name descname"><span class="pre">surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the data surface manipulation menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.circle_slice" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.circle_slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">circle_slice</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Extract a circular slice.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.closest_point_search" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.closest_point_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">closest_point_search</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable the point surface algorithm to look for the nearest point instead of reporting a creation failure.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.cone_slice" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.cone_slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cone_slice</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Extract a cone slice.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.create_imprint_surface" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.create_imprint_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_imprint_surface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Imprint surface.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.delete_surface" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.delete_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_surface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Remove a defined data surface.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.edit_surface" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.edit_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edit_surface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Edit a defined data surface.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.ellipsoid_slice" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.ellipsoid_slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ellipsoid_slice</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Extract a ellipsoid slice.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.expression_volume" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.expression_volume"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expression_volume</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create volume with boolean expression.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.group_surfaces" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.group_surfaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">group_surfaces</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Group a set of surfaces.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.iso_clip" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.iso_clip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iso_clip</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Clip a data surface (surface, curve, or point) between two iso-values.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.iso_surface" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.iso_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iso_surface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Extract an iso-surface (surface, curve, or point) from the curent data field.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.line_slice" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.line_slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">line_slice</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Extract a linear slice.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.line_surface" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.line_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">line_surface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Define a &quot;line&quot; surface by specifying the two endpoint coordinates.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.list_surfaces" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.list_surfaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_surfaces</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List the number of facets in the defined surfaces.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.mouse_line" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.mouse_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mouse_line</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Define a line surface using the mouse to select two points.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.mouse_plane" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.mouse_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mouse_plane</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Define a plane surface using the mouse to select three points.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.mouse_rake" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.mouse_rake"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mouse_rake</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Define a &quot;rake&quot; surface using the mouse to select the end points.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.multiple_iso_surfaces" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.multiple_iso_surfaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">multiple_iso_surfaces</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create multiple iso-surfaces from the data field at specified spacing.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.multiple_plane_surfaces" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.multiple_plane_surfaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">multiple_plane_surfaces</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create multiple plane surfaces at specified spacing.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.multiple_zone_surfaces" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.multiple_zone_surfaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">multiple_zone_surfaces</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create multiple data surfaces at a time.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.partition_surface" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.partition_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partition_surface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Define a data surface on mesh faces on the partition boundary.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.plane" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plane</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create a plane given 3 points bounded by the domain.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.plane_slice" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.plane_slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plane_slice</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Extract a planar slice.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.plane_surface" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.plane_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plane_surface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create a plane from a coordinate plane, point and normal, or three points.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.point_array" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.point_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_array</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Extract a rectangular array of data points.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.point_surface" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.point_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_surface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Define a &quot;point&quot; surface by specifying the coordinates.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.quadric_slice" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.quadric_slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quadric_slice</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Extract a quadric slice.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.rake_surface" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.rake_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rake_surface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Define a &quot;rake&quot; surface by specifying the end points.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.rename_surface" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.rename_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rename_surface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Rename a defined data surface.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.reset_zone_surfaces" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.reset_zone_surfaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_zone_surfaces</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reset case surface list.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.sphere_slice" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.sphere_slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sphere_slice</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Extract a spherical slice.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.structural_point_surface" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.structural_point_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">structural_point_surface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Define a &quot;structural point&quot; surface by specifying the coordinates.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.surface_cells" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.surface_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">surface_cells</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Extract all cells intersected by a data surface.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.transform_surface" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.transform_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform_surface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Transform surface.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.ungroup_surface" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.ungroup_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ungroup_surface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Ungroup the surface(if grouped).</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.zone_surface" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.zone_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zone_surface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Define a data surface on a mesh zone.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.post_processing_volume" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.post_processing_volume"><code class="xref py py-obj docutils literal notranslate"><span class="pre">post_processing_volume</span></code></a>(path, service)</p></td>
-<td><p>Enter post-processing volume menu.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.query" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query</span></code></a>(path, service)</p></td>
-<td><p>Enter surface query menu.</p></td>
-</tr>
-</tbody>
-</table>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.results.</span></span><span class="sig-name descname"><span class="pre">surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the data surface manipulation menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.surface.circle_slice">
 <span class="sig-name descname"><span class="pre">circle_slice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.circle_slice" title="Permalink to this definition">#</a></dt>
@@ -1303,97 +1102,10 @@ function checkPageExistsAndRedirect(event) {
 <dd><p>Define a “point” surface by specifying the coordinates.</p>
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.surface.post_processing_volume">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">post_processing_volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.post_processing_volume" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter post-processing volume menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.post_processing_volume.create_from_file" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.post_processing_volume.create_from_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_from_file</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Read post-processing mesh from file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.post_processing_volume.create_octree" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.post_processing_volume.create_octree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_octree</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create post-processing octree mesh based on current case.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.surface.post_processing_volume.create_from_file">
-<span class="sig-name descname"><span class="pre">create_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.post_processing_volume.create_from_file" title="Permalink to this definition">#</a></dt>
-<dd><p>Read post-processing mesh from file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.surface.post_processing_volume.create_octree">
-<span class="sig-name descname"><span class="pre">create_octree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.post_processing_volume.create_octree" title="Permalink to this definition">#</a></dt>
-<dd><p>Create post-processing octree mesh based on current case.</p>
-</dd></dl>
-
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.surface.quadric_slice">
 <span class="sig-name descname"><span class="pre">quadric_slice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.quadric_slice" title="Permalink to this definition">#</a></dt>
 <dd><p>Extract a quadric slice.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.surface.query">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.query" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter surface query menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.delete_query" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.delete_query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_query</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete saved query.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.list_named_selection" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.list_named_selection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_named_selection</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List named selection of surface type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.list_queries" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.list_queries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_queries</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List all saved queries.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.list_surfaces" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.list_surfaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_surfaces</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List surfaces.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.named_surface_list" title="ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.named_surface_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">named_surface_list</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create named list of surfaces.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.delete_query">
-<span class="sig-name descname"><span class="pre">delete_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.delete_query" title="Permalink to this definition">#</a></dt>
-<dd><p>Delete saved query.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.list_named_selection">
-<span class="sig-name descname"><span class="pre">list_named_selection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.list_named_selection" title="Permalink to this definition">#</a></dt>
-<dd><p>List named selection of surface type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.list_queries">
-<span class="sig-name descname"><span class="pre">list_queries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.list_queries" title="Permalink to this definition">#</a></dt>
-<dd><p>List all saved queries.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.list_surfaces">
-<span class="sig-name descname"><span class="pre">list_surfaces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.list_surfaces" title="Permalink to this definition">#</a></dt>
-<dd><p>List surfaces.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.named_surface_list">
-<span class="sig-name descname"><span class="pre">named_surface_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.surface.query.named_surface_list" title="Permalink to this definition">#</a></dt>
-<dd><p>Create named list of surfaces.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">

@@ -5,8 +5,11 @@
 clear
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.clear_2.clear
+.. currentmodule:: ansys.fluent.core.solver.settings_231.clear_2
 
+.. autoclass:: clear
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ==============================================

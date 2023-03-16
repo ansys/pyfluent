@@ -5,13 +5,16 @@
 between_std_dev
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.between_std_dev.between_std_dev
+.. currentmodule:: ansys.fluent.core.solver.settings_231.between_std_dev
 
-.. rubric:: Attributes
+.. autoclass:: between_std_dev
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================   ==================
 
-Attribute                         Summary
+Child                             Summary
 
 ====================   ==================
 :ref:`lower <lower>`       'lower' child.

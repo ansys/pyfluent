@@ -5,8 +5,11 @@
 start_frame
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.start_frame.start_frame
+.. currentmodule:: ansys.fluent.core.solver.settings_231.start_frame
 
+.. autoclass:: start_frame
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ===============================================================

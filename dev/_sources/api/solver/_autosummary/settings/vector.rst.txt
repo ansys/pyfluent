@@ -5,13 +5,16 @@
 vector
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.vector.vector
+.. currentmodule:: ansys.fluent.core.solver.settings_231.vector
 
-.. rubric:: Methods
+.. autoclass:: vector
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ========================================   =============================================
 
-Method                                                                           Summary
+Command                                                                          Summary
 
 ========================================   =============================================
 :ref:`display <display_1>`                                      Display graphics object.

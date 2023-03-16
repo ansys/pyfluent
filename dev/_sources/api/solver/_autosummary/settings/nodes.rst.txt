@@ -5,8 +5,11 @@
 nodes
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.nodes.nodes
+.. currentmodule:: ansys.fluent.core.solver.settings_231.nodes
 
+.. autoclass:: nodes
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   ====================

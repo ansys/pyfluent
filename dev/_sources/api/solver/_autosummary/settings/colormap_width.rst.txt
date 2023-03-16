@@ -5,8 +5,11 @@
 colormap_width
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.colormap_width.colormap_width
+.. currentmodule:: ansys.fluent.core.solver.settings_231.colormap_width
 
+.. autoclass:: colormap_width
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ============================================

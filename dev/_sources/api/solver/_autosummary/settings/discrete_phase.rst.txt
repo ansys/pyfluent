@@ -5,13 +5,16 @@
 discrete_phase
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.discrete_phase.discrete_phase
+.. currentmodule:: ansys.fluent.core.solver.settings_231.discrete_phase
 
-.. rubric:: Attributes
+.. autoclass:: discrete_phase
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ======================================================   ==========================================================================================================================
 
-Attribute                                                                                                                                                                   Summary
+Child                                                                                                                                                                       Summary
 
 ======================================================   ==========================================================================================================================
 :ref:`enable_expert_view <enable_expert_view>`                                                         Enable/disable the display of non-standard ("expert-level") DPM TUI options.

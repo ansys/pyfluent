@@ -5,13 +5,16 @@
 p_v_coupling
 ============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.p_v_coupling_1.p_v_coupling
+.. currentmodule:: ansys.fluent.core.solver.settings_231.p_v_coupling_1
 
-.. rubric:: Attributes
+.. autoclass:: p_v_coupling
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================   =====================================================
 
-Attribute                                                                            Summary
+Child                                                                                Summary
 
 ====================================   =====================================================
 :ref:`flow_scheme <flow_scheme>`                                        'flow_scheme' child.

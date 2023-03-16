@@ -5,13 +5,16 @@
 web_server
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.web_server.web_server
+.. currentmodule:: ansys.fluent.core.solver.settings_231.web_server
 
-.. rubric:: Methods
+.. autoclass:: web_server
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Commands
 
 ====================   ====================
 
-Method                              Summary
+Command                             Summary
 
 ====================   ====================
 :ref:`start <start>`       'start' command.

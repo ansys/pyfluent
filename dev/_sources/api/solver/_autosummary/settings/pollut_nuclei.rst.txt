@@ -5,13 +5,16 @@
 pollut_nuclei
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.pollut_nuclei.pollut_nuclei
+.. currentmodule:: ansys.fluent.core.solver.settings_231.pollut_nuclei
 
-.. rubric:: Attributes
+.. autoclass:: pollut_nuclei
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

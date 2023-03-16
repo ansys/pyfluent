@@ -5,8 +5,11 @@
 size
 ====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.size_1.size
+.. currentmodule:: ansys.fluent.core.solver.settings_231.size_1
 
+.. autoclass:: size
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ===================================

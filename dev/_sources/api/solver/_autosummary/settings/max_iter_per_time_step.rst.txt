@@ -5,8 +5,11 @@
 max_iter_per_time_step
 ======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.max_iter_per_time_step.max_iter_per_time_step
+.. currentmodule:: ansys.fluent.core.solver.settings_231.max_iter_per_time_step
 
+.. autoclass:: max_iter_per_time_step
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===============================

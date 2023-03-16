@@ -5,8 +5,11 @@
 min_epsilon
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.min_epsilon.min_epsilon
+.. currentmodule:: ansys.fluent.core.solver.settings_231.min_epsilon
 
+.. autoclass:: min_epsilon
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

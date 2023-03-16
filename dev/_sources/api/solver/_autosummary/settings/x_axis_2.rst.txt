@@ -5,8 +5,11 @@
 x_axis
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.x_axis_2.x_axis
+.. currentmodule:: ansys.fluent.core.solver.settings_231.x_axis_2
 
+.. autoclass:: x_axis
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   =======================

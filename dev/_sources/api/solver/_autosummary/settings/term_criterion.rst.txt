@@ -5,8 +5,11 @@
 term_criterion
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.term_criterion.term_criterion
+.. currentmodule:: ansys.fluent.core.solver.settings_231.term_criterion
 
+.. autoclass:: term_criterion
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   =============================================

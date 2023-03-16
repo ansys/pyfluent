@@ -5,13 +5,16 @@
 rosin_rammler_settings
 ======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.rosin_rammler_settings.rosin_rammler_settings
+.. currentmodule:: ansys.fluent.core.solver.settings_231.rosin_rammler_settings
 
-.. rubric:: Attributes
+.. autoclass:: rosin_rammler_settings
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================================   ================================
 
-Attribute                                                                   Summary
+Child                                                                       Summary
 
 ================================================   ================================
 :ref:`min_diam <min_diam>`                                        'min_diam' child.

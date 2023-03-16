@@ -1,6 +1,0 @@
-execute\_tui
-============
-
-.. currentmodule:: ansys.fluent.core.session_meshing
-
-.. automethod:: Meshing.execute_tui

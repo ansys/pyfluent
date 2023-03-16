@@ -5,8 +5,11 @@
 enabled
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.enabled_2.enabled
+.. currentmodule:: ansys.fluent.core.solver.settings_231.enabled_2
 
+.. autoclass:: enabled
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================================================   =========================================

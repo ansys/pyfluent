@@ -5,8 +5,11 @@
 composition_dependent_density
 =============================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.composition_dependent_density.composition_dependent_density
+.. currentmodule:: ansys.fluent.core.solver.settings_231.composition_dependent_density
 
+.. autoclass:: composition_dependent_density
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================================   =======================================

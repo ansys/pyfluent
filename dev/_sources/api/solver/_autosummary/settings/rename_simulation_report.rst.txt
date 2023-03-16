@@ -5,8 +5,11 @@
 rename_simulation_report
 ========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.rename_simulation_report.rename_simulation_report
+.. currentmodule:: ansys.fluent.core.solver.settings_231.rename_simulation_report
 
+.. autoclass:: rename_simulation_report
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ========================================   ============================

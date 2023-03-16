@@ -51,7 +51,7 @@
     <script src="../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -303,8 +303,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -317,11 +322,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../tui/index.html">
      meshing.tui
@@ -486,7 +486,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations">
    <code class="docutils literal notranslate">
     <span class="pre">
-     ObjectSettingOperations
+     Root.ObjectSettingOperations
     </span>
    </code>
   </a>
@@ -495,7 +495,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.Children">
      <code class="docutils literal notranslate">
       <span class="pre">
-       ObjectSettingOperations.Children
+       Root.ObjectSettingOperations.Children
       </span>
      </code>
     </a>
@@ -504,7 +504,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.CreateObjectSetting">
      <code class="docutils literal notranslate">
       <span class="pre">
-       ObjectSettingOperations.CreateObjectSetting
+       Root.ObjectSettingOperations.CreateObjectSetting
       </span>
      </code>
     </a>
@@ -513,7 +513,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.DeleteAllObjectSetting">
      <code class="docutils literal notranslate">
       <span class="pre">
-       ObjectSettingOperations.DeleteAllObjectSetting
+       Root.ObjectSettingOperations.DeleteAllObjectSetting
       </span>
      </code>
     </a>
@@ -522,7 +522,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.DeleteObjectSetting">
      <code class="docutils literal notranslate">
       <span class="pre">
-       ObjectSettingOperations.DeleteObjectSetting
+       Root.ObjectSettingOperations.DeleteObjectSetting
       </span>
      </code>
     </a>
@@ -531,7 +531,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.Name">
      <code class="docutils literal notranslate">
       <span class="pre">
-       ObjectSettingOperations.Name
+       Root.ObjectSettingOperations.Name
       </span>
      </code>
     </a>
@@ -559,43 +559,24 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-datamodel-partmanagement-objectsettingoperations">
 <span id="ref-meshing-datamodel-partmanagement-objectsettingoperations"></span><h1>meshing.datamodel.PartManagement.ObjectSettingOperations<a class="headerlink" href="#meshing-datamodel-partmanagement-objectsettingoperations" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.datamodel_231.PartManagement.Root.</span></span><span class="sig-name descname"><span class="pre">ObjectSettingOperations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
-<p>Singleton ObjectSettingOperations.</p>
-<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.Children" title="ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.Children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Children</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Children of value type List[str].</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.CreateObjectSetting" title="ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.CreateObjectSetting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CreateObjectSetting</span></code></a>(service, rules, command)</p></td>
-<td><p>Command CreateObjectSetting.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.DeleteAllObjectSetting" title="ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.DeleteAllObjectSetting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DeleteAllObjectSetting</span></code></a>(service, rules, command)</p></td>
-<td><p>Command DeleteAllObjectSetting.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.DeleteObjectSetting" title="ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.DeleteObjectSetting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DeleteObjectSetting</span></code></a>(service, rules, command)</p></td>
-<td><p>Command DeleteObjectSetting.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.Name" title="ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.Name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Name</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Name of value type str.</p></td>
-</tr>
 </tbody>
 </table>
 <dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Root.</span></span><span class="sig-name descname"><span class="pre">ObjectSettingOperations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations" title="Permalink to this definition">#</a></dt>
+<dd><p>Singleton ObjectSettingOperations.</p>
+<dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.Children">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.Children" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter Children of value type List[str].</p>
+<dd><p>Parameter Children of value type List[str].</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.CreateObjectSetting">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CreateObjectSetting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.CreateObjectSetting" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command CreateObjectSetting.</p>
+<dd><p>Command CreateObjectSetting.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -613,8 +594,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.DeleteAllObjectSetting">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DeleteAllObjectSetting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.DeleteAllObjectSetting" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command DeleteAllObjectSetting.</p>
+<dd><p>Command DeleteAllObjectSetting.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -627,8 +607,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.DeleteObjectSetting">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DeleteObjectSetting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.DeleteObjectSetting" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command DeleteObjectSetting.</p>
+<dd><p>Command DeleteObjectSetting.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -646,8 +625,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.Name">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.ObjectSettingOperations.Name" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter Name of value type str.</p>
+<dd><p>Parameter Name of value type str.</p>
 </dd></dl>
 
 </dd></dl>

@@ -5,8 +5,11 @@
 overset
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.overset_2.overset
+.. currentmodule:: ansys.fluent.core.solver.settings_231.overset_2
 
+.. autoclass:: overset
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   ====================

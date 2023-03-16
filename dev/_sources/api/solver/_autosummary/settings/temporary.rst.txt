@@ -5,8 +5,11 @@
 temporary
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.temporary.temporary
+.. currentmodule:: ansys.fluent.core.solver.settings_231.temporary
 
+.. autoclass:: temporary
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   =================================

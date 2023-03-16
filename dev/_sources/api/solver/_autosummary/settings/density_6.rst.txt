@@ -5,8 +5,11 @@
 density
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.density_6.density
+.. currentmodule:: ansys.fluent.core.solver.settings_231.density_6
 
+.. autoclass:: density
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =============================

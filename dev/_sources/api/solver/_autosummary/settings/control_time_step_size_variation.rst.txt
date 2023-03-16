@@ -5,8 +5,11 @@
 control_time_step_size_variation
 ================================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.control_time_step_size_variation.control_time_step_size_variation
+.. currentmodule:: ansys.fluent.core.solver.settings_231.control_time_step_size_variation
 
+.. autoclass:: control_time_step_size_variation
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===============================

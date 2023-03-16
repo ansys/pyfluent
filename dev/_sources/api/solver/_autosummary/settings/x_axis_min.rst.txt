@@ -5,8 +5,11 @@
 x_axis_min
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.x_axis_min.x_axis_min
+.. currentmodule:: ansys.fluent.core.solver.settings_231.x_axis_min
 
+.. autoclass:: x_axis_min
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   =======================

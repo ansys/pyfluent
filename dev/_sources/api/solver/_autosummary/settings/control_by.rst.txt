@@ -5,8 +5,11 @@
 control_by
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.control_by.control_by
+.. currentmodule:: ansys.fluent.core.solver.settings_231.control_by
 
+.. autoclass:: control_by
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   ===================================================================================

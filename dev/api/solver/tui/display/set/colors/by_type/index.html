@@ -51,7 +51,7 @@
     <script src="../../../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../search.html" />
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -306,8 +306,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -351,28 +356,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../../solution/index.html">
          solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../setup/index.html">
-         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4">
@@ -381,58 +366,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../../../setup/index.html">
+         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../../views/index.html">
          solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../define/index.html">
-         solver.tui.define
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -445,26 +385,6 @@ function checkPageExistsAndRedirect(event) {
          </i>
         </label>
         <ul class="current">
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../surface/index.html">
-           solver.tui.display.surface
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../embedded_windows/index.html">
-           solver.tui.display.embedded_windows
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../pdf_data/index.html">
-           solver.tui.display.pdf_data
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../inverse_dft/index.html">
-           solver.tui.display.inverse_dft
-          </a>
-         </li>
          <li class="toctree-l5 current active has-children">
           <a class="reference internal" href="../../index.html">
            solver.tui.display.set
@@ -475,6 +395,36 @@ function checkPageExistsAndRedirect(event) {
            </i>
           </label>
           <ul class="current">
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../lights/index.html">
+             solver.tui.display.set.lights
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../velocity_vectors/index.html">
+             solver.tui.display.set.velocity_vectors
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../picture/index.html">
+             solver.tui.display.set.picture
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../windows/index.html">
+             solver.tui.display.set.windows
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../titles/index.html">
+             solver.tui.display.set.titles
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../contours/index.html">
+             solver.tui.display.set.contours
+            </a>
+           </li>
            <li class="toctree-l6 current active has-children">
             <a class="reference internal" href="../index.html">
              solver.tui.display.set.colors
@@ -510,18 +460,8 @@ function checkPageExistsAndRedirect(event) {
             </ul>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../velocity_vectors/index.html">
-             solver.tui.display.set.velocity_vectors
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../rendering_options/index.html">
-             solver.tui.display.set.rendering_options
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../windows/index.html">
-             solver.tui.display.set.windows
+            <a class="reference internal" href="../../particle_tracks/index.html">
+             solver.tui.display.set.particle_tracks
             </a>
            </li>
            <li class="toctree-l6">
@@ -530,55 +470,30 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../titles/index.html">
-             solver.tui.display.set.titles
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../picture/index.html">
-             solver.tui.display.set.picture
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../contours/index.html">
-             solver.tui.display.set.contours
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../lights/index.html">
-             solver.tui.display.set.lights
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../particle_tracks/index.html">
-             solver.tui.display.set.particle_tracks
+            <a class="reference internal" href="../../rendering_options/index.html">
+             solver.tui.display.set.rendering_options
             </a>
            </li>
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../particle_tracks/index.html">
-           solver.tui.display.particle_tracks
+          <a class="reference internal" href="../../../define/index.html">
+           solver.tui.display.define
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../flamelet_data/index.html">
-           solver.tui.display.flamelet_data
+          <a class="reference internal" href="../../../inverse_dft/index.html">
+           solver.tui.display.inverse_dft
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../display_states/index.html">
-           solver.tui.display.display_states
+          <a class="reference internal" href="../../../embedded_windows/index.html">
+           solver.tui.display.embedded_windows
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../path_lines/index.html">
-           solver.tui.display.path_lines
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../views/index.html">
-           solver.tui.display.views
+          <a class="reference internal" href="../../../pdf_data/index.html">
+           solver.tui.display.pdf_data
           </a>
          </li>
          <li class="toctree-l5">
@@ -592,16 +507,56 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
+          <a class="reference internal" href="../../../views/index.html">
+           solver.tui.display.views
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../flamelet_data/index.html">
+           solver.tui.display.flamelet_data
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../particle_tracks/index.html">
+           solver.tui.display.particle_tracks
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../display_states/index.html">
+           solver.tui.display.display_states
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../surface/index.html">
+           solver.tui.display.surface
+          </a>
+         </li>
+         <li class="toctree-l5">
           <a class="reference internal" href="../../../objects/index.html">
            solver.tui.display.objects
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../define/index.html">
-           solver.tui.display.define
+          <a class="reference internal" href="../../../path_lines/index.html">
+           solver.tui.display.path_lines
           </a>
          </li>
         </ul>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
+        </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../../mesh/index.html">
@@ -614,13 +569,63 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../preferences/index.html">
-         solver.tui.preferences
+        <a class="reference internal" href="../../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../../parameters__and__customization/index.html">
          solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../define/index.html">
+         solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../preferences/index.html">
+         solver.tui.preferences
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
       </ul>
@@ -692,7 +697,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type">
    <code class="docutils literal notranslate">
     <span class="pre">
-     by_type
+     main_menu.display.set.colors.by_type
     </span>
    </code>
   </a>
@@ -701,7 +706,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.only_list_case_boundaries">
      <code class="docutils literal notranslate">
       <span class="pre">
-       by_type.only_list_case_boundaries()
+       main_menu.display.set.colors.by_type.only_list_case_boundaries()
       </span>
      </code>
     </a>
@@ -710,156 +715,10 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.reset">
      <code class="docutils literal notranslate">
       <span class="pre">
-       by_type.reset()
+       main_menu.display.set.colors.by_type.reset()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       by_type.type_name
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.axis">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         by_type.type_name.axis()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.far_field">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         by_type.type_name.far_field()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.free_surface">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         by_type.type_name.free_surface()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.inlet">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         by_type.type_name.inlet()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.interface">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         by_type.type_name.interface()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.interior">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         by_type.type_name.interior()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.internal">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         by_type.type_name.internal()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.outlet">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         by_type.type_name.outlet()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.overset">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         by_type.type_name.overset()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.periodic">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         by_type.type_name.periodic()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.rans_les_interface">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         by_type.type_name.rans_les_interface()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.surface">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         by_type.type_name.surface()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.symmetry">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         by_type.type_name.symmetry()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.traction">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         by_type.type_name.traction()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.wall">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         by_type.type_name.wall()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -884,30 +743,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-display-set-colors-by-type">
 <span id="ref-solver-tui-display-set-colors-by-type"></span><h1>solver.tui.display.set.colors.by_type<a class="headerlink" href="#solver-tui-display-set-colors-by-type" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.</span></span><span class="sig-name descname"><span class="pre">by_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the zone type color and material assignment menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.only_list_case_boundaries" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.only_list_case_boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">only_list_case_boundaries</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Only list the boundary types that are assigned in this case.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.reset" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>(*args, **kwargs)</p></td>
-<td><p>To reset colors and/or materials to the defaults.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">type_name</span></code></a>(path, service)</p></td>
-<td><p>Select the boundary type to specify colors and/or materials.</p></td>
-</tr>
-</tbody>
-</table>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.display.set.colors.</span></span><span class="sig-name descname"><span class="pre">by_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the zone type color and material assignment menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.only_list_case_boundaries">
 <span class="sig-name descname"><span class="pre">only_list_case_boundaries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.only_list_case_boundaries" title="Permalink to this definition">#</a></dt>
@@ -918,153 +761,6 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.reset">
 <span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.reset" title="Permalink to this definition">#</a></dt>
 <dd><p>To reset colors and/or materials to the defaults.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">type_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Select the boundary type to specify colors and/or materials.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.axis" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.axis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.far_field" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.far_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">far_field</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.free_surface" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.free_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">free_surface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.inlet" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.inlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.interface" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.interior" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.interior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interior</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.internal" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.internal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">internal</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.outlet" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.outlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.overset" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.overset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overset</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.periodic" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.periodic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">periodic</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.rans_les_interface" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.rans_les_interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rans_les_interface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.surface" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">surface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.symmetry" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.symmetry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">symmetry</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.traction" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.traction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traction</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.wall" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.wall"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wall</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.axis">
-<span class="sig-name descname"><span class="pre">axis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.axis" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the material and/or color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.far_field">
-<span class="sig-name descname"><span class="pre">far_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.far_field" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the material and/or color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.free_surface">
-<span class="sig-name descname"><span class="pre">free_surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.free_surface" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the material and/or color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.inlet">
-<span class="sig-name descname"><span class="pre">inlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.inlet" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the material and/or color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.interface">
-<span class="sig-name descname"><span class="pre">interface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.interface" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the material and/or color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.interior">
-<span class="sig-name descname"><span class="pre">interior</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.interior" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the material and/or color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.internal">
-<span class="sig-name descname"><span class="pre">internal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.internal" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the material and/or color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.outlet">
-<span class="sig-name descname"><span class="pre">outlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.outlet" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the material and/or color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.overset">
-<span class="sig-name descname"><span class="pre">overset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.overset" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the material and/or color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.periodic">
-<span class="sig-name descname"><span class="pre">periodic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.periodic" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the material and/or color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.rans_les_interface">
-<span class="sig-name descname"><span class="pre">rans_les_interface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.rans_les_interface" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the material and/or color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.surface">
-<span class="sig-name descname"><span class="pre">surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.surface" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the material and/or color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.symmetry">
-<span class="sig-name descname"><span class="pre">symmetry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.symmetry" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the material and/or color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.traction">
-<span class="sig-name descname"><span class="pre">traction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.traction" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the material and/or color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.wall">
-<span class="sig-name descname"><span class="pre">wall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.colors.by_type.type_name.wall" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the material and/or color for the selected boundary type.</p>
-</dd></dl>
-
 </dd></dl>
 
 </dd></dl>

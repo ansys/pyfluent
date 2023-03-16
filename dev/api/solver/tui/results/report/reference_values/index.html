@@ -51,12 +51,12 @@
     <script src="../../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
     <link rel="next" title="solver.tui.results.report.reference_values.compute" href="compute/index.html" />
-    <link rel="prev" title="solver.tui.results.report.modified_setting" href="../modified_setting/index.html" />
+    <link rel="prev" title="solver.tui.results.report.icing" href="../icing/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -305,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -350,8 +355,33 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../icing/index.html">
-         solver.tui.icing
+        <a class="reference internal" href="../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../views/index.html">
+         solver.tui.views
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../adjoint/index.html">
+         solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -365,11 +395,6 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../graphics_window/index.html">
-           solver.tui.results.graphics_window
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="../../plot/index.html">
            solver.tui.results.plot
           </a>
@@ -377,6 +402,21 @@ function checkPageExistsAndRedirect(event) {
          <li class="toctree-l5">
           <a class="reference internal" href="../../graphics/index.html">
            solver.tui.results.graphics
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../graphics_window/index.html">
+           solver.tui.results.graphics_window
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../animate/index.html">
+           solver.tui.results.animate
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../surface/index.html">
+           solver.tui.results.surface
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -390,23 +430,18 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul class="current">
            <li class="toctree-l6">
-            <a class="reference internal" href="../forces/index.html">
-             solver.tui.results.report.forces
+            <a class="reference internal" href="../dpm_histogram/index.html">
+             solver.tui.results.report.dpm_histogram
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../population_balance/index.html">
-             solver.tui.results.report.population_balance
+            <a class="reference internal" href="../fluxes/index.html">
+             solver.tui.results.report.fluxes
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../heat_exchanger/index.html">
-             solver.tui.results.report.heat_exchanger
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../modified_setting/index.html">
-             solver.tui.results.report.modified_setting
+            <a class="reference internal" href="../icing/index.html">
+             solver.tui.results.report.icing
             </a>
            </li>
            <li class="toctree-l6 current active has-children">
@@ -427,18 +462,28 @@ function checkPageExistsAndRedirect(event) {
             </ul>
            </li>
            <li class="toctree-l6">
+            <a class="reference internal" href="../population_balance/index.html">
+             solver.tui.results.report.population_balance
+            </a>
+           </li>
+           <li class="toctree-l6">
             <a class="reference internal" href="../system/index.html">
              solver.tui.results.report.system
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../dpm_histogram/index.html">
-             solver.tui.results.report.dpm_histogram
+            <a class="reference internal" href="../forces/index.html">
+             solver.tui.results.report.forces
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../fluxes/index.html">
-             solver.tui.results.report.fluxes
+            <a class="reference internal" href="../heat_exchanger/index.html">
+             solver.tui.results.report.heat_exchanger
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../modified_setting/index.html">
+             solver.tui.results.report.modified_setting
             </a>
            </li>
            <li class="toctree-l6">
@@ -446,103 +491,13 @@ function checkPageExistsAndRedirect(event) {
              solver.tui.results.report.simulation_reports
             </a>
            </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../icing/index.html">
-             solver.tui.results.report.icing
-            </a>
-           </li>
           </ul>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../animate/index.html">
-           solver.tui.results.animate
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../surface/index.html">
-           solver.tui.results.surface
-          </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../solution/index.html">
-         solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../setup/index.html">
-         solver.tui.setup
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../turbo_workflow/index.html">
          solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../surface/index.html">
-         solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../define/index.html">
-         solver.tui.define
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../display/index.html">
-         solver.tui.display
         </a>
        </li>
        <li class="toctree-l4">
@@ -556,13 +511,63 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../preferences/index.html">
-         solver.tui.preferences
+        <a class="reference internal" href="../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../parameters__and__customization/index.html">
          solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../define/index.html">
+         solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../preferences/index.html">
+         solver.tui.preferences
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
       </ul>
@@ -634,7 +639,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values">
    <code class="docutils literal notranslate">
     <span class="pre">
-     reference_values
+     main_menu.results.report.reference_values
     </span>
    </code>
   </a>
@@ -643,315 +648,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.area">
      <code class="docutils literal notranslate">
       <span class="pre">
-       reference_values.area()
+       main_menu.results.report.reference_values.area()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       reference_values.compute
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.axis">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.axis()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.degassing">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.degassing()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.dummy_entry">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.dummy_entry()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.exhaust_fan">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.exhaust_fan()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.fan">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.fan()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.fluid">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.fluid()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.geometry">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.geometry()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.inlet_vent">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.inlet_vent()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.intake_fan">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.intake_fan()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.interface">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.interface()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.interior">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.interior()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.mass_flow_inlet">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.mass_flow_inlet()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.mass_flow_outlet">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.mass_flow_outlet()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.network">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.network()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.network_end">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.network_end()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.outflow">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.outflow()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.outlet_vent">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.outlet_vent()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.overset">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.overset()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.periodic">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.periodic()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.porous_jump">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.porous_jump()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.pressure_far_field">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.pressure_far_field()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.pressure_inlet">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.pressure_inlet()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.pressure_outlet">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.pressure_outlet()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.radiator">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.radiator()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.rans_les_interface">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.rans_les_interface()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.recirculation_inlet">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.recirculation_inlet()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.recirculation_outlet">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.recirculation_outlet()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.shadow">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.shadow()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.solid">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.solid()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.symmetry">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.symmetry()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.velocity_inlet">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.velocity_inlet()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.wall">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         reference_values.compute.wall()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.density">
      <code class="docutils literal notranslate">
       <span class="pre">
-       reference_values.density()
+       main_menu.results.report.reference_values.density()
       </span>
      </code>
     </a>
@@ -960,7 +666,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.depth">
      <code class="docutils literal notranslate">
       <span class="pre">
-       reference_values.depth()
+       main_menu.results.report.reference_values.depth()
       </span>
      </code>
     </a>
@@ -969,7 +675,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.enthalpy">
      <code class="docutils literal notranslate">
       <span class="pre">
-       reference_values.enthalpy()
+       main_menu.results.report.reference_values.enthalpy()
       </span>
      </code>
     </a>
@@ -978,7 +684,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.length">
      <code class="docutils literal notranslate">
       <span class="pre">
-       reference_values.length()
+       main_menu.results.report.reference_values.length()
       </span>
      </code>
     </a>
@@ -987,7 +693,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.list">
      <code class="docutils literal notranslate">
       <span class="pre">
-       reference_values.list()
+       main_menu.results.report.reference_values.list()
       </span>
      </code>
     </a>
@@ -996,7 +702,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.pressure">
      <code class="docutils literal notranslate">
       <span class="pre">
-       reference_values.pressure()
+       main_menu.results.report.reference_values.pressure()
       </span>
      </code>
     </a>
@@ -1005,7 +711,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.temperature">
      <code class="docutils literal notranslate">
       <span class="pre">
-       reference_values.temperature()
+       main_menu.results.report.reference_values.temperature()
       </span>
      </code>
     </a>
@@ -1014,7 +720,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.velocity">
      <code class="docutils literal notranslate">
       <span class="pre">
-       reference_values.velocity()
+       main_menu.results.report.reference_values.velocity()
       </span>
      </code>
     </a>
@@ -1023,7 +729,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.viscosity">
      <code class="docutils literal notranslate">
       <span class="pre">
-       reference_values.viscosity()
+       main_menu.results.report.reference_values.viscosity()
       </span>
      </code>
     </a>
@@ -1032,7 +738,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.yplus">
      <code class="docutils literal notranslate">
       <span class="pre">
-       reference_values.yplus()
+       main_menu.results.report.reference_values.yplus()
       </span>
      </code>
     </a>
@@ -1041,7 +747,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.zone">
      <code class="docutils literal notranslate">
       <span class="pre">
-       reference_values.zone()
+       main_menu.results.report.reference_values.zone()
       </span>
      </code>
     </a>
@@ -1069,365 +775,18 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-results-report-reference-values">
 <span id="ref-solver-tui-results-report-reference-values"></span><h1>solver.tui.results.report.reference_values<a class="headerlink" href="#solver-tui-results-report-reference-values" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.results.report.</span></span><span class="sig-name descname"><span class="pre">reference_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Reference value menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.area" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">area</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set reference area for normalization.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.density" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.density"><code class="xref py py-obj docutils literal notranslate"><span class="pre">density</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set reference density for normalization.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.depth" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.depth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">depth</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set reference depth for volume calculation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.enthalpy" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.enthalpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enthalpy</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set reference enthalpy for enthalpy damping and normalization.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.length" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">length</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set reference length for normalization.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.list" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List current reference values.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.pressure" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.pressure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pressure</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set reference pressure for normalization.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.temperature" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.temperature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">temperature</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set reference temperature for normalization.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.velocity" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.velocity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set reference velocity for normalization.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.viscosity" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.viscosity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">viscosity</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set reference viscosity for normalization.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.yplus" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.yplus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">yplus</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set reference yplus for normalization.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.zone" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set reference zone.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute</span></code></a>(path, service)</p></td>
-<td><p>Enter the compute menu.</p></td>
-</tr>
-</tbody>
-</table>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.results.report.</span></span><span class="sig-name descname"><span class="pre">reference_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values" title="Permalink to this definition">#</a></dt>
+<dd><p>Reference value menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.area">
 <span class="sig-name descname"><span class="pre">area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.area" title="Permalink to this definition">#</a></dt>
 <dd><p>Set reference area for normalization.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the compute menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.axis" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.axis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.degassing" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.degassing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">degassing</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.dummy_entry" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.dummy_entry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dummy_entry</span></code></a>(*args, **kwargs)</p></td>
-<td><p><p>.</p>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.exhaust_fan" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.exhaust_fan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exhaust_fan</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.fan" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.fan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fan</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.fluid" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.fluid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fluid</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.geometry" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geometry</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.inlet_vent" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.inlet_vent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inlet_vent</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.intake_fan" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.intake_fan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intake_fan</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.interface" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.interior" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.interior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interior</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.mass_flow_inlet" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.mass_flow_inlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mass_flow_inlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.mass_flow_outlet" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.mass_flow_outlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mass_flow_outlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.network" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.network"><code class="xref py py-obj docutils literal notranslate"><span class="pre">network</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.network_end" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.network_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">network_end</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.outflow" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.outflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outflow</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.outlet_vent" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.outlet_vent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outlet_vent</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.overset" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.overset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overset</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.periodic" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.periodic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">periodic</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.porous_jump" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.porous_jump"><code class="xref py py-obj docutils literal notranslate"><span class="pre">porous_jump</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.pressure_far_field" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.pressure_far_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pressure_far_field</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.pressure_inlet" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.pressure_inlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pressure_inlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.pressure_outlet" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.pressure_outlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pressure_outlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.radiator" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.radiator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">radiator</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.rans_les_interface" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.rans_les_interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rans_les_interface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.recirculation_inlet" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.recirculation_inlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">recirculation_inlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.recirculation_outlet" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.recirculation_outlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">recirculation_outlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.shadow" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.shadow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shadow</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.solid" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.solid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solid</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.symmetry" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.symmetry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">symmetry</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.velocity_inlet" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.velocity_inlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_inlet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.wall" title="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.wall"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wall</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute reference values from a zone of this type.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.axis">
-<span class="sig-name descname"><span class="pre">axis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.axis" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.degassing">
-<span class="sig-name descname"><span class="pre">degassing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.degassing" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.dummy_entry">
-<span class="sig-name descname"><span class="pre">dummy_entry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.dummy_entry" title="Permalink to this definition">#</a></dt>
-<dd><p>.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.exhaust_fan">
-<span class="sig-name descname"><span class="pre">exhaust_fan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.exhaust_fan" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.fan">
-<span class="sig-name descname"><span class="pre">fan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.fan" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.fluid">
-<span class="sig-name descname"><span class="pre">fluid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.fluid" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.geometry">
-<span class="sig-name descname"><span class="pre">geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.geometry" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.inlet_vent">
-<span class="sig-name descname"><span class="pre">inlet_vent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.inlet_vent" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.intake_fan">
-<span class="sig-name descname"><span class="pre">intake_fan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.intake_fan" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.interface">
-<span class="sig-name descname"><span class="pre">interface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.interface" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.interior">
-<span class="sig-name descname"><span class="pre">interior</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.interior" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.mass_flow_inlet">
-<span class="sig-name descname"><span class="pre">mass_flow_inlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.mass_flow_inlet" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.mass_flow_outlet">
-<span class="sig-name descname"><span class="pre">mass_flow_outlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.mass_flow_outlet" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.network">
-<span class="sig-name descname"><span class="pre">network</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.network" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.network_end">
-<span class="sig-name descname"><span class="pre">network_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.network_end" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.outflow">
-<span class="sig-name descname"><span class="pre">outflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.outflow" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.outlet_vent">
-<span class="sig-name descname"><span class="pre">outlet_vent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.outlet_vent" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.overset">
-<span class="sig-name descname"><span class="pre">overset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.overset" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.periodic">
-<span class="sig-name descname"><span class="pre">periodic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.periodic" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.porous_jump">
-<span class="sig-name descname"><span class="pre">porous_jump</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.porous_jump" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.pressure_far_field">
-<span class="sig-name descname"><span class="pre">pressure_far_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.pressure_far_field" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.pressure_inlet">
-<span class="sig-name descname"><span class="pre">pressure_inlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.pressure_inlet" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.pressure_outlet">
-<span class="sig-name descname"><span class="pre">pressure_outlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.pressure_outlet" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.radiator">
-<span class="sig-name descname"><span class="pre">radiator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.radiator" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.rans_les_interface">
-<span class="sig-name descname"><span class="pre">rans_les_interface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.rans_les_interface" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.recirculation_inlet">
-<span class="sig-name descname"><span class="pre">recirculation_inlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.recirculation_inlet" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.recirculation_outlet">
-<span class="sig-name descname"><span class="pre">recirculation_outlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.recirculation_outlet" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.shadow">
-<span class="sig-name descname"><span class="pre">shadow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.shadow" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.solid">
-<span class="sig-name descname"><span class="pre">solid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.solid" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.symmetry">
-<span class="sig-name descname"><span class="pre">symmetry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.symmetry" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.velocity_inlet">
-<span class="sig-name descname"><span class="pre">velocity_inlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.velocity_inlet" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.wall">
-<span class="sig-name descname"><span class="pre">wall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.report.reference_values.compute.wall" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute reference values from a zone of this type.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">

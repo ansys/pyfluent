@@ -5,8 +5,11 @@
 pv_coupling_method
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.pv_coupling_method.pv_coupling_method
+.. currentmodule:: ansys.fluent.core.solver.settings_231.pv_coupling_method
 
+.. autoclass:: pv_coupling_method
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ====================

@@ -5,8 +5,11 @@
 user_defined_value
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.user_defined_value.user_defined_value
+.. currentmodule:: ansys.fluent.core.solver.settings_231.user_defined_value
 
+.. autoclass:: user_defined_value
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===================================

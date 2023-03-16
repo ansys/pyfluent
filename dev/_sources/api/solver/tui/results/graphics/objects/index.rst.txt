@@ -3,11 +3,11 @@
 solver.tui.results.graphics.objects
 ===================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.graphics.objects
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.objects
+   :members: copy, edit, add_to_graphics, display, delete, create
 

@@ -5,8 +5,11 @@
 enable_strategy
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.enable_strategy.enable_strategy
+.. currentmodule:: ansys.fluent.core.solver.settings_231.enable_strategy
 
+.. autoclass:: enable_strategy
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ======================   ===================

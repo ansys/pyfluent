@@ -5,8 +5,11 @@
 fan_hub_rad
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fan_hub_rad.fan_hub_rad
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fan_hub_rad
 
+.. autoclass:: fan_hub_rad
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

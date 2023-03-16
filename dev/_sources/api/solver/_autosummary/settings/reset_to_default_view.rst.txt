@@ -5,8 +5,11 @@
 reset_to_default_view
 =====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.reset_to_default_view.reset_to_default_view
+.. currentmodule:: ansys.fluent.core.solver.settings_231.reset_to_default_view
 
+.. autoclass:: reset_to_default_view
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================   ==================

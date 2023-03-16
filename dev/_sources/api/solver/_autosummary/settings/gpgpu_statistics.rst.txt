@@ -5,8 +5,11 @@
 gpgpu_statistics
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.gpgpu_statistics.gpgpu_statistics
+.. currentmodule:: ansys.fluent.core.solver.settings_231.gpgpu_statistics
 
+.. autoclass:: gpgpu_statistics
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

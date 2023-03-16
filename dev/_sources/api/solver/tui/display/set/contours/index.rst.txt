@@ -3,11 +3,11 @@
 solver.tui.display.set.contours
 ===============================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.display.set.contours
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.contours
+   :members: n_contour, line_contours, surfaces, log_scale, node_values, filled_contours, auto_range, global_range, render_mesh, coloring, clip_to_range
 

@@ -5,13 +5,16 @@
 elec_potential_resistance
 =========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.elec_potential_resistance.elec_potential_resistance
+.. currentmodule:: ansys.fluent.core.solver.settings_231.elec_potential_resistance
 
-.. rubric:: Attributes
+.. autoclass:: elec_potential_resistance
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

@@ -5,8 +5,11 @@
 outer_iterations
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.outer_iterations.outer_iterations
+.. currentmodule:: ansys.fluent.core.solver.settings_231.outer_iterations
 
+.. autoclass:: outer_iterations
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   =======================================================

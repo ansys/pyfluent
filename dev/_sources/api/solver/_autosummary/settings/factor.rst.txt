@@ -5,8 +5,11 @@
 factor
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.factor.factor
+.. currentmodule:: ansys.fluent.core.solver.settings_231.factor
 
+.. autoclass:: factor
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   ====================================

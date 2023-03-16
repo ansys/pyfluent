@@ -5,8 +5,11 @@
 planar_conduction
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.planar_conduction.planar_conduction
+.. currentmodule:: ansys.fluent.core.solver.settings_231.planar_conduction
 
+.. autoclass:: planar_conduction
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

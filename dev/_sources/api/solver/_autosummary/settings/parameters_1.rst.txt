@@ -5,13 +5,16 @@
 parameters
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.parameters_1.parameters
+.. currentmodule:: ansys.fluent.core.solver.settings_231.parameters_1
 
-.. rubric:: Attributes
+.. autoclass:: parameters
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================================================================   =============================================================================================
 
-Attribute                                                                                                                                                              Summary
+Child                                                                                                                                                                  Summary
 
 ==============================================================================   =============================================================================================
 :ref:`iter_count <iter_count>`                                                                     Specify additional iterations to accomodate contact solution stabilization.

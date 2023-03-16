@@ -5,8 +5,11 @@
 const_velocity
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.const_velocity.const_velocity
+.. currentmodule:: ansys.fluent.core.solver.settings_231.const_velocity
 
+.. autoclass:: const_velocity
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ====================================

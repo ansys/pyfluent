@@ -5,8 +5,11 @@
 dpm_bc_erosion_finnie_max_erosion_angle
 =======================================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_bc_erosion_finnie_max_erosion_angle.dpm_bc_erosion_finnie_max_erosion_angle
+.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_bc_erosion_finnie_max_erosion_angle
 
+.. autoclass:: dpm_bc_erosion_finnie_max_erosion_angle
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

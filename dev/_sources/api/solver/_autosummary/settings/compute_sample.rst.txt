@@ -5,8 +5,11 @@
 compute_sample
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.compute_sample.compute_sample
+.. currentmodule:: ansys.fluent.core.solver.settings_231.compute_sample
 
+.. autoclass:: compute_sample
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==========================   =====================

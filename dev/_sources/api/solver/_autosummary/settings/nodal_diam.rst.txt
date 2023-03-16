@@ -5,8 +5,11 @@
 nodal_diam
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.nodal_diam.nodal_diam
+.. currentmodule:: ansys.fluent.core.solver.settings_231.nodal_diam
 
+.. autoclass:: nodal_diam
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

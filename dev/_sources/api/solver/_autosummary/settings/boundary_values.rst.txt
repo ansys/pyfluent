@@ -5,8 +5,11 @@
 boundary_values
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.boundary_values.boundary_values
+.. currentmodule:: ansys.fluent.core.solver.settings_231.boundary_values
 
+.. autoclass:: boundary_values
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ===================================

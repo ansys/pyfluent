@@ -5,8 +5,11 @@
 time_statistics_dpm
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.time_statistics_dpm.time_statistics_dpm
+.. currentmodule:: ansys.fluent.core.solver.settings_231.time_statistics_dpm
 
+.. autoclass:: time_statistics_dpm
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ==========================

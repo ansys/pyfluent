@@ -1,6 +1,0 @@
-download
-========
-
-.. currentmodule:: ansys.fluent.core.session_solver_icing
-
-.. automethod:: SolverIcing.download

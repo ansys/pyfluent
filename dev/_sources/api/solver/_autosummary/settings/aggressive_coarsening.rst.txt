@@ -5,8 +5,11 @@
 aggressive_coarsening
 =====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.aggressive_coarsening.aggressive_coarsening
+.. currentmodule:: ansys.fluent.core.solver.settings_231.aggressive_coarsening
 
+.. autoclass:: aggressive_coarsening
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ==================================

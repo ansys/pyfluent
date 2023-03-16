@@ -5,8 +5,11 @@
 des_limiter_option
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.des_limiter_option.des_limiter_option
+.. currentmodule:: ansys.fluent.core.solver.settings_231.des_limiter_option
 
+.. autoclass:: des_limiter_option
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   ========================

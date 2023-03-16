@@ -5,8 +5,11 @@
 t_b_b_spec
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.t_b_b_spec.t_b_b_spec
+.. currentmodule:: ansys.fluent.core.solver.settings_231.t_b_b_spec
 
+.. autoclass:: t_b_b_spec
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

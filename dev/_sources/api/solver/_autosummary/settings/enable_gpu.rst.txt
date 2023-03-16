@@ -5,8 +5,11 @@
 enable_gpu
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.enable_gpu.enable_gpu
+.. currentmodule:: ansys.fluent.core.solver.settings_231.enable_gpu
 
+.. autoclass:: enable_gpu
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   =============================================

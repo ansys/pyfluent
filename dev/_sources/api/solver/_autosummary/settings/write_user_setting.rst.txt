@@ -5,8 +5,11 @@
 write_user_setting
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.write_user_setting.write_user_setting
+.. currentmodule:: ansys.fluent.core.solver.settings_231.write_user_setting
 
+.. autoclass:: write_user_setting
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==============================   ======================

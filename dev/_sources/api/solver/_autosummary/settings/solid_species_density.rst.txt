@@ -5,8 +5,11 @@
 solid_species_density
 =====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.solid_species_density.solid_species_density
+.. currentmodule:: ansys.fluent.core.solver.settings_231.solid_species_density
 
+.. autoclass:: solid_species_density
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

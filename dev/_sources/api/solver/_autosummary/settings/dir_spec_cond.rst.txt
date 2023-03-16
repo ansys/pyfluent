@@ -5,8 +5,11 @@
 dir_spec_cond
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.dir_spec_cond.dir_spec_cond
+.. currentmodule:: ansys.fluent.core.solver.settings_231.dir_spec_cond
 
+.. autoclass:: dir_spec_cond
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

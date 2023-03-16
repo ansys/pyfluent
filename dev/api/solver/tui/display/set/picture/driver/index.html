@@ -51,7 +51,7 @@
     <script src="../../../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../search.html" />
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -306,8 +306,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -351,28 +356,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../../solution/index.html">
          solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../setup/index.html">
-         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4">
@@ -381,58 +366,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../../../setup/index.html">
+         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../../views/index.html">
          solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../define/index.html">
-         solver.tui.define
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -445,26 +385,6 @@ function checkPageExistsAndRedirect(event) {
          </i>
         </label>
         <ul class="current">
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../surface/index.html">
-           solver.tui.display.surface
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../embedded_windows/index.html">
-           solver.tui.display.embedded_windows
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../pdf_data/index.html">
-           solver.tui.display.pdf_data
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../inverse_dft/index.html">
-           solver.tui.display.inverse_dft
-          </a>
-         </li>
          <li class="toctree-l5 current active has-children">
           <a class="reference internal" href="../../index.html">
            solver.tui.display.set
@@ -476,33 +396,13 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul class="current">
            <li class="toctree-l6">
-            <a class="reference internal" href="../../colors/index.html">
-             solver.tui.display.set.colors
+            <a class="reference internal" href="../../lights/index.html">
+             solver.tui.display.set.lights
             </a>
            </li>
            <li class="toctree-l6">
             <a class="reference internal" href="../../velocity_vectors/index.html">
              solver.tui.display.set.velocity_vectors
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../rendering_options/index.html">
-             solver.tui.display.set.rendering_options
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../windows/index.html">
-             solver.tui.display.set.windows
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../path_lines/index.html">
-             solver.tui.display.set.path_lines
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../titles/index.html">
-             solver.tui.display.set.titles
             </a>
            </li>
            <li class="toctree-l6 current active has-children">
@@ -540,13 +440,23 @@ function checkPageExistsAndRedirect(event) {
             </ul>
            </li>
            <li class="toctree-l6">
+            <a class="reference internal" href="../../windows/index.html">
+             solver.tui.display.set.windows
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../titles/index.html">
+             solver.tui.display.set.titles
+            </a>
+           </li>
+           <li class="toctree-l6">
             <a class="reference internal" href="../../contours/index.html">
              solver.tui.display.set.contours
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../lights/index.html">
-             solver.tui.display.set.lights
+            <a class="reference internal" href="../../colors/index.html">
+             solver.tui.display.set.colors
             </a>
            </li>
            <li class="toctree-l6">
@@ -554,31 +464,36 @@ function checkPageExistsAndRedirect(event) {
              solver.tui.display.set.particle_tracks
             </a>
            </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../path_lines/index.html">
+             solver.tui.display.set.path_lines
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../rendering_options/index.html">
+             solver.tui.display.set.rendering_options
+            </a>
+           </li>
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../particle_tracks/index.html">
-           solver.tui.display.particle_tracks
+          <a class="reference internal" href="../../../define/index.html">
+           solver.tui.display.define
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../flamelet_data/index.html">
-           solver.tui.display.flamelet_data
+          <a class="reference internal" href="../../../inverse_dft/index.html">
+           solver.tui.display.inverse_dft
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../display_states/index.html">
-           solver.tui.display.display_states
+          <a class="reference internal" href="../../../embedded_windows/index.html">
+           solver.tui.display.embedded_windows
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../path_lines/index.html">
-           solver.tui.display.path_lines
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../views/index.html">
-           solver.tui.display.views
+          <a class="reference internal" href="../../../pdf_data/index.html">
+           solver.tui.display.pdf_data
           </a>
          </li>
          <li class="toctree-l5">
@@ -592,16 +507,56 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
+          <a class="reference internal" href="../../../views/index.html">
+           solver.tui.display.views
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../flamelet_data/index.html">
+           solver.tui.display.flamelet_data
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../particle_tracks/index.html">
+           solver.tui.display.particle_tracks
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../display_states/index.html">
+           solver.tui.display.display_states
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../surface/index.html">
+           solver.tui.display.surface
+          </a>
+         </li>
+         <li class="toctree-l5">
           <a class="reference internal" href="../../../objects/index.html">
            solver.tui.display.objects
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../define/index.html">
-           solver.tui.display.define
+          <a class="reference internal" href="../../../path_lines/index.html">
+           solver.tui.display.path_lines
           </a>
          </li>
         </ul>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
+        </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../../mesh/index.html">
@@ -614,13 +569,63 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../preferences/index.html">
-         solver.tui.preferences
+        <a class="reference internal" href="../../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../../parameters__and__customization/index.html">
          solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../define/index.html">
+         solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../preferences/index.html">
+         solver.tui.preferences
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
       </ul>
@@ -692,7 +697,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver">
    <code class="docutils literal notranslate">
     <span class="pre">
-     driver
+     main_menu.display.set.picture.driver
     </span>
    </code>
   </a>
@@ -701,7 +706,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.avz">
      <code class="docutils literal notranslate">
       <span class="pre">
-       driver.avz()
+       main_menu.display.set.picture.driver.avz()
       </span>
      </code>
     </a>
@@ -710,7 +715,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.dump_window">
      <code class="docutils literal notranslate">
       <span class="pre">
-       driver.dump_window()
+       main_menu.display.set.picture.driver.dump_window()
       </span>
      </code>
     </a>
@@ -719,7 +724,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.eps">
      <code class="docutils literal notranslate">
       <span class="pre">
-       driver.eps()
+       main_menu.display.set.picture.driver.eps()
       </span>
      </code>
     </a>
@@ -728,7 +733,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.glb">
      <code class="docutils literal notranslate">
       <span class="pre">
-       driver.glb()
+       main_menu.display.set.picture.driver.glb()
       </span>
      </code>
     </a>
@@ -737,7 +742,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.hsf">
      <code class="docutils literal notranslate">
       <span class="pre">
-       driver.hsf()
+       main_menu.display.set.picture.driver.hsf()
       </span>
      </code>
     </a>
@@ -746,7 +751,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.jpeg">
      <code class="docutils literal notranslate">
       <span class="pre">
-       driver.jpeg()
+       main_menu.display.set.picture.driver.jpeg()
       </span>
      </code>
     </a>
@@ -755,7 +760,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.list">
      <code class="docutils literal notranslate">
       <span class="pre">
-       driver.list()
+       main_menu.display.set.picture.driver.list()
       </span>
      </code>
     </a>
@@ -764,7 +769,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.options">
      <code class="docutils literal notranslate">
       <span class="pre">
-       driver.options()
+       main_menu.display.set.picture.driver.options()
       </span>
      </code>
     </a>
@@ -773,63 +778,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.png">
      <code class="docutils literal notranslate">
       <span class="pre">
-       driver.png()
+       main_menu.display.set.picture.driver.png()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       driver.post_format
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format.fast_raster">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         driver.post_format.fast_raster()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format.raster">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         driver.post_format.raster()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format.rle_raster">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         driver.post_format.rle_raster()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format.vector">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         driver.post_format.vector()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_script">
      <code class="docutils literal notranslate">
       <span class="pre">
-       driver.post_script()
+       main_menu.display.set.picture.driver.post_script()
       </span>
      </code>
     </a>
@@ -838,7 +796,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.ppm">
      <code class="docutils literal notranslate">
       <span class="pre">
-       driver.ppm()
+       main_menu.display.set.picture.driver.ppm()
       </span>
      </code>
     </a>
@@ -847,7 +805,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.tiff">
      <code class="docutils literal notranslate">
       <span class="pre">
-       driver.tiff()
+       main_menu.display.set.picture.driver.tiff()
       </span>
      </code>
     </a>
@@ -856,7 +814,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.vrml">
      <code class="docutils literal notranslate">
       <span class="pre">
-       driver.vrml()
+       main_menu.display.set.picture.driver.vrml()
       </span>
      </code>
     </a>
@@ -884,63 +842,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-display-set-picture-driver">
 <span id="ref-solver-tui-display-set-picture-driver"></span><h1>solver.tui.display.set.picture.driver<a class="headerlink" href="#solver-tui-display-set-picture-driver" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.</span></span><span class="sig-name descname"><span class="pre">driver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the set hardcopy driver menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.avz" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.avz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">avz</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Use AVZ output for hardcopies.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.dump_window" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.dump_window"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump_window</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the command used to dump the graphics window to a file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.eps" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.eps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eps</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Produce encapsulated PostScript (EPS) output for hardcopies.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.glb" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.glb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">glb</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Use GLB output for hardcopies.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.hsf" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.hsf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hsf</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Use HSF output for hardcopies.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.jpeg" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.jpeg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jpeg</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Produce JPEG output for hardcopies.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.list" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List the current hardcopy driver.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.options" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">options</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the hardcopy options.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.png" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.png"><code class="xref py py-obj docutils literal notranslate"><span class="pre">png</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Use PNG output for hardcopies.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_script" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_script"><code class="xref py py-obj docutils literal notranslate"><span class="pre">post_script</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Produce PostScript output for hardcopies.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.ppm" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.ppm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ppm</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Produce PPM output for hardcopies.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.tiff" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.tiff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tiff</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Use TIFF output for hardcopies.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.vrml" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.vrml"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vrml</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Use VRML output for hardcopies.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">post_format</span></code></a>(path, service)</p></td>
-<td><p>Enter the PostScript driver format menu.</p></td>
-</tr>
-</tbody>
-</table>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.display.set.picture.</span></span><span class="sig-name descname"><span class="pre">driver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the set hardcopy driver menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.avz">
 <span class="sig-name descname"><span class="pre">avz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.avz" title="Permalink to this definition">#</a></dt>
@@ -1001,54 +910,6 @@ The options may be combined by separating them with commas.</p>
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.png">
 <span class="sig-name descname"><span class="pre">png</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.png" title="Permalink to this definition">#</a></dt>
 <dd><p>Use PNG output for hardcopies.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">post_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the PostScript driver format menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format.fast_raster" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format.fast_raster"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fast_raster</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Use the new raster format.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format.raster" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format.raster"><code class="xref py py-obj docutils literal notranslate"><span class="pre">raster</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Use the original raster format.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format.rle_raster" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format.rle_raster"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rle_raster</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Use the run-length encoded raster format.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format.vector" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format.vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Use vector format.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format.fast_raster">
-<span class="sig-name descname"><span class="pre">fast_raster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format.fast_raster" title="Permalink to this definition">#</a></dt>
-<dd><p>Use the new raster format.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format.raster">
-<span class="sig-name descname"><span class="pre">raster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format.raster" title="Permalink to this definition">#</a></dt>
-<dd><p>Use the original raster format.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format.rle_raster">
-<span class="sig-name descname"><span class="pre">rle_raster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format.rle_raster" title="Permalink to this definition">#</a></dt>
-<dd><p>Use the run-length encoded raster format.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format.vector">
-<span class="sig-name descname"><span class="pre">vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.picture.driver.post_format.vector" title="Permalink to this definition">#</a></dt>
-<dd><p>Use vector format.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">

@@ -5,8 +5,11 @@
 fixed_thread_number
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fixed_thread_number.fixed_thread_number
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fixed_thread_number
 
+.. autoclass:: fixed_thread_number
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ==========================

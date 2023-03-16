@@ -5,8 +5,11 @@
 total_time_step_count
 =====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.total_time_step_count.total_time_step_count
+.. currentmodule:: ansys.fluent.core.solver.settings_231.total_time_step_count
 
+.. autoclass:: total_time_step_count
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ================================

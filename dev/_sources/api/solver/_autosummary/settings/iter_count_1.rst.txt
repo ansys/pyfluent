@@ -5,8 +5,11 @@
 iter_count
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.iter_count_1.iter_count
+.. currentmodule:: ansys.fluent.core.solver.settings_231.iter_count_1
 
+.. autoclass:: iter_count
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ====================================

@@ -3,16 +3,16 @@
 meshing.tui.display.set.picture
 ===============================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.display.set.picture
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.set.picture
+   :members: dpi, y_resolution, set_standard_resolution, use_window_resolution, preview, x_resolution, landscape, jpeg_hardcopy_quality, invert_background
 
 .. toctree::
    :hidden:
 
-   driver/index
    color_mode/index
+   driver/index

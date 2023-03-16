@@ -5,8 +5,11 @@
 border
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.border_1.border
+.. currentmodule:: ansys.fluent.core.solver.settings_231.border_1
 
+.. autoclass:: border
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   ============================================

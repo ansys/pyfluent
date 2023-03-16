@@ -5,13 +5,16 @@
 velocity_accom_coefficient
 ==========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.velocity_accom_coefficient.velocity_accom_coefficient
+.. currentmodule:: ansys.fluent.core.solver.settings_231.velocity_accom_coefficient
 
-.. rubric:: Attributes
+.. autoclass:: velocity_accom_coefficient
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================   ====================================================
 
-Attribute                                                               Summary
+Child                                                                   Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

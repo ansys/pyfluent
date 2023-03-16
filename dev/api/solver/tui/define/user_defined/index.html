@@ -51,12 +51,12 @@
     <script src="../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
     <link rel="next" title="solver.tui.define.user_defined.real_gas_models" href="real_gas_models/index.html" />
-    <link rel="prev" title="solver.tui.define.custom_field_functions" href="../custom_field_functions/index.html" />
+    <link rel="prev" title="solver.tui.define.curvilinear_coordinate_system" href="../curvilinear_coordinate_system/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -304,8 +304,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -349,28 +354,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../solution/index.html">
          solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../setup/index.html">
-         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4">
@@ -379,13 +364,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../setup/index.html">
+         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4">
@@ -394,8 +374,48 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../solve/index.html">
-         solver.tui.solve
+        <a class="reference internal" href="../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../simulation_reports/index.html">
+         solver.tui.simulation_reports
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
         </a>
        </li>
        <li class="toctree-l4">
@@ -404,8 +424,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../adjoint/index.html">
-         solver.tui.adjoint
+        <a class="reference internal" href="../../solve/index.html">
+         solver.tui.solve
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -419,13 +439,63 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../gap_model/index.html">
-           solver.tui.define.gap_model
+          <a class="reference internal" href="../parameters/index.html">
+           solver.tui.define.parameters
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../phases/index.html">
+           solver.tui.define.phases
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../virtual_boundary/index.html">
+           solver.tui.define.virtual_boundary
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../named_expressions/index.html">
+           solver.tui.define.named_expressions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../solution_strategy/index.html">
+           solver.tui.define.solution_strategy
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../reference_frames/index.html">
+           solver.tui.define.reference_frames
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../profiles/index.html">
+           solver.tui.define.profiles
           </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../custom_field_functions/index.html">
            solver.tui.define.custom_field_functions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../operating_conditions/index.html">
+           solver.tui.define.operating_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../models/index.html">
+           solver.tui.define.models
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../materials/index.html">
+           solver.tui.define.materials
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../curvilinear_coordinate_system/index.html">
+           solver.tui.define.curvilinear_coordinate_system
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -446,28 +516,13 @@ function checkPageExistsAndRedirect(event) {
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../reference_frames/index.html">
-           solver.tui.define.reference_frames
+          <a class="reference internal" href="../turbo_model/index.html">
+           solver.tui.define.turbo_model
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../materials/index.html">
-           solver.tui.define.materials
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../spectral/index.html">
-           solver.tui.define.spectral
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../dynamic_mesh/index.html">
-           solver.tui.define.dynamic_mesh
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../virtual_boundary/index.html">
-           solver.tui.define.virtual_boundary
+          <a class="reference internal" href="../periodic_conditions/index.html">
+           solver.tui.define.periodic_conditions
           </a>
          </li>
          <li class="toctree-l5">
@@ -481,18 +536,13 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../models/index.html">
-           solver.tui.define.models
+          <a class="reference internal" href="../gap_model/index.html">
+           solver.tui.define.gap_model
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../phases/index.html">
-           solver.tui.define.phases
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../operating_conditions/index.html">
-           solver.tui.define.operating_conditions
+          <a class="reference internal" href="../spectral/index.html">
+           solver.tui.define.spectral
           </a>
          </li>
          <li class="toctree-l5">
@@ -501,55 +551,25 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../periodic_conditions/index.html">
-           solver.tui.define.periodic_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../solution_strategy/index.html">
-           solver.tui.define.solution_strategy
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../named_expressions/index.html">
-           solver.tui.define.named_expressions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../parameters/index.html">
-           solver.tui.define.parameters
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../curvilinear_coordinate_system/index.html">
-           solver.tui.define.curvilinear_coordinate_system
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../profiles/index.html">
-           solver.tui.define.profiles
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="../overset_interfaces/index.html">
            solver.tui.define.overset_interfaces
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../turbo_model/index.html">
-           solver.tui.define.turbo_model
+          <a class="reference internal" href="../dynamic_mesh/index.html">
+           solver.tui.define.dynamic_mesh
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../parallel/index.html">
-         solver.tui.parallel
+        <a class="reference internal" href="../../parametric_study/index.html">
+         solver.tui.parametric_study
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../parametric_study/index.html">
-         solver.tui.parametric_study
+        <a class="reference internal" href="../../icing/index.html">
+         solver.tui.icing
         </a>
        </li>
        <li class="toctree-l4">
@@ -558,23 +578,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../display/index.html">
-         solver.tui.display
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../plot/index.html">
-         solver.tui.plot
+        <a class="reference internal" href="../../surface/index.html">
+         solver.tui.surface
         </a>
        </li>
        <li class="toctree-l4">
@@ -583,8 +588,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
       </ul>
@@ -656,7 +661,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined">
    <code class="docutils literal notranslate">
     <span class="pre">
-     user_defined
+     main_menu.define.user_defined
     </span>
    </code>
   </a>
@@ -665,7 +670,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.auto_compile_compiled_udfs">
      <code class="docutils literal notranslate">
       <span class="pre">
-       user_defined.auto_compile_compiled_udfs()
+       main_menu.define.user_defined.auto_compile_compiled_udfs()
       </span>
      </code>
     </a>
@@ -674,7 +679,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.compile_customized_addon_module">
      <code class="docutils literal notranslate">
       <span class="pre">
-       user_defined.compile_customized_addon_module()
+       main_menu.define.user_defined.compile_customized_addon_module()
       </span>
      </code>
     </a>
@@ -683,7 +688,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.compiled_functions">
      <code class="docutils literal notranslate">
       <span class="pre">
-       user_defined.compiled_functions()
+       main_menu.define.user_defined.compiled_functions()
       </span>
      </code>
     </a>
@@ -692,7 +697,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.enable_udf_on_gpu">
      <code class="docutils literal notranslate">
       <span class="pre">
-       user_defined.enable_udf_on_gpu()
+       main_menu.define.user_defined.enable_udf_on_gpu()
       </span>
      </code>
     </a>
@@ -701,7 +706,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.execute_on_demand">
      <code class="docutils literal notranslate">
       <span class="pre">
-       user_defined.execute_on_demand()
+       main_menu.define.user_defined.execute_on_demand()
       </span>
      </code>
     </a>
@@ -710,7 +715,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.fan_model">
      <code class="docutils literal notranslate">
       <span class="pre">
-       user_defined.fan_model()
+       main_menu.define.user_defined.fan_model()
       </span>
      </code>
     </a>
@@ -719,7 +724,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.function_hooks">
      <code class="docutils literal notranslate">
       <span class="pre">
-       user_defined.function_hooks()
+       main_menu.define.user_defined.function_hooks()
       </span>
      </code>
     </a>
@@ -728,7 +733,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.interpreted_functions">
      <code class="docutils literal notranslate">
       <span class="pre">
-       user_defined.interpreted_functions()
+       main_menu.define.user_defined.interpreted_functions()
       </span>
      </code>
     </a>
@@ -737,81 +742,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.one_D_coupling">
      <code class="docutils literal notranslate">
       <span class="pre">
-       user_defined.one_D_coupling()
+       main_menu.define.user_defined.one_D_coupling()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       user_defined.real_gas_models
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.nist_multispecies_real_gas_model">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         user_defined.real_gas_models.nist_multispecies_real_gas_model()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.nist_real_gas_model">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         user_defined.real_gas_models.nist_real_gas_model()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.nist_settings">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         user_defined.real_gas_models.nist_settings()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.set_state">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         user_defined.real_gas_models.set_state()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.user_defined_multispecies_real_gas_model">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         user_defined.real_gas_models.user_defined_multispecies_real_gas_model()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.user_defined_real_gas_model">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         user_defined.real_gas_models.user_defined_real_gas_model()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.use_built_in_compiler">
      <code class="docutils literal notranslate">
       <span class="pre">
-       user_defined.use_built_in_compiler()
+       main_menu.define.user_defined.use_built_in_compiler()
       </span>
      </code>
     </a>
@@ -820,7 +760,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.use_contributed_cpp">
      <code class="docutils literal notranslate">
       <span class="pre">
-       user_defined.use_contributed_cpp()
+       main_menu.define.user_defined.use_contributed_cpp()
       </span>
      </code>
     </a>
@@ -829,7 +769,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.user_defined_memory">
      <code class="docutils literal notranslate">
       <span class="pre">
-       user_defined.user_defined_memory()
+       main_menu.define.user_defined.user_defined_memory()
       </span>
      </code>
     </a>
@@ -838,7 +778,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.user_defined_node_memory">
      <code class="docutils literal notranslate">
       <span class="pre">
-       user_defined.user_defined_node_memory()
+       main_menu.define.user_defined.user_defined_node_memory()
       </span>
      </code>
     </a>
@@ -847,7 +787,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.user_defined_scalars">
      <code class="docutils literal notranslate">
       <span class="pre">
-       user_defined.user_defined_scalars()
+       main_menu.define.user_defined.user_defined_scalars()
       </span>
      </code>
     </a>
@@ -875,66 +815,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-define-user-defined">
 <span id="ref-solver-tui-define-user-defined"></span><h1>solver.tui.define.user_defined<a class="headerlink" href="#solver-tui-define-user-defined" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.define.</span></span><span class="sig-name descname"><span class="pre">user_defined</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the user-defined functions and scalars menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.auto_compile_compiled_udfs" title="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.auto_compile_compiled_udfs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_compile_compiled_udfs</span></code></a>(*args, **kwargs)</p></td>
-<td><p>For this Fluent session, specify whether to allow auto-compilation of compiled UDF when a case file (or settings file) is read.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.compile_customized_addon_module" title="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.compile_customized_addon_module"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compile_customized_addon_module</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compile customized addon module?.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.compiled_functions" title="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.compiled_functions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compiled_functions</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Opens user-defined function library.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.enable_udf_on_gpu" title="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.enable_udf_on_gpu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_udf_on_gpu</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compile UDFs with OpenCL support.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.execute_on_demand" title="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.execute_on_demand"><code class="xref py py-obj docutils literal notranslate"><span class="pre">execute_on_demand</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Executes UDFs on demand.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.fan_model" title="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.fan_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fan_model</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Configures user-defined fan model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.function_hooks" title="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.function_hooks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">function_hooks</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Hooks up user-defined functions.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.interpreted_functions" title="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.interpreted_functions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpreted_functions</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Loads interpreted user-defined functions.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.one_D_coupling" title="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.one_D_coupling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">one_D_coupling</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Load 1D library.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.use_built_in_compiler" title="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.use_built_in_compiler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_built_in_compiler</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the use of a built-in compiler (Clang) when the define/user-defined/compiled-functions text command is used.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.use_contributed_cpp" title="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.use_contributed_cpp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_contributed_cpp</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable use of cpp from the Fluent.Inc/contrib directory.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.user_defined_memory" title="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.user_defined_memory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">user_defined_memory</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Allocates user-defined memory.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.user_defined_node_memory" title="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.user_defined_node_memory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">user_defined_node_memory</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Allocate user-defined node memory.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.user_defined_scalars" title="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.user_defined_scalars"><code class="xref py py-obj docutils literal notranslate"><span class="pre">user_defined_scalars</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Defines user-defined scalars.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models" title="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models"><code class="xref py py-obj docutils literal notranslate"><span class="pre">real_gas_models</span></code></a>(path, service)</p></td>
-<td><p>Enters the real-gas menu to enable/configure real gas model.</p></td>
-</tr>
-</tbody>
-</table>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.</span></span><span class="sig-name descname"><span class="pre">user_defined</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the user-defined functions and scalars menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.auto_compile_compiled_udfs">
 <span class="sig-name descname"><span class="pre">auto_compile_compiled_udfs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.auto_compile_compiled_udfs" title="Permalink to this definition">#</a></dt>
@@ -987,72 +875,6 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.one_D_coupling">
 <span class="sig-name descname"><span class="pre">one_D_coupling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.one_D_coupling" title="Permalink to this definition">#</a></dt>
 <dd><p>Load 1D library.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">real_gas_models</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the real-gas menu to enable/configure real gas model.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.nist_multispecies_real_gas_model" title="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.nist_multispecies_real_gas_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nist_multispecies_real_gas_model</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Loads the NIST real-gas library.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.nist_real_gas_model" title="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.nist_real_gas_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nist_real_gas_model</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Loads the NIST real-gas library.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.nist_settings" title="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.nist_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nist_settings</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the name and the location for the REFPROP library and fluid files.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.set_state" title="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.set_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_state</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Selects the state for NIST real gas model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.user_defined_multispecies_real_gas_model" title="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.user_defined_multispecies_real_gas_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">user_defined_multispecies_real_gas_model</span></code></a>(...)</p></td>
-<td><p>Loads a user-defined multispecies real-gas library.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.user_defined_real_gas_model" title="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.user_defined_real_gas_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">user_defined_real_gas_model</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Loads the user-defined real-gas library.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.nist_multispecies_real_gas_model">
-<span class="sig-name descname"><span class="pre">nist_multispecies_real_gas_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.nist_multispecies_real_gas_model" title="Permalink to this definition">#</a></dt>
-<dd><p>Loads the NIST real-gas library.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.nist_real_gas_model">
-<span class="sig-name descname"><span class="pre">nist_real_gas_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.nist_real_gas_model" title="Permalink to this definition">#</a></dt>
-<dd><p>Loads the NIST real-gas library.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.nist_settings">
-<span class="sig-name descname"><span class="pre">nist_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.nist_settings" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the name and the location for the REFPROP library and fluid files.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.set_state">
-<span class="sig-name descname"><span class="pre">set_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.set_state" title="Permalink to this definition">#</a></dt>
-<dd><p>Selects the state for NIST real gas model.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.user_defined_multispecies_real_gas_model">
-<span class="sig-name descname"><span class="pre">user_defined_multispecies_real_gas_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.user_defined_multispecies_real_gas_model" title="Permalink to this definition">#</a></dt>
-<dd><p>Loads a user-defined multispecies real-gas library.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.user_defined_real_gas_model">
-<span class="sig-name descname"><span class="pre">user_defined_real_gas_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.user_defined.real_gas_models.user_defined_real_gas_model" title="Permalink to this definition">#</a></dt>
-<dd><p>Loads the user-defined real-gas library.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">

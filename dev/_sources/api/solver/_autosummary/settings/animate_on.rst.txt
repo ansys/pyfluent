@@ -5,8 +5,11 @@
 animate_on
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.animate_on.animate_on
+.. currentmodule:: ansys.fluent.core.solver.settings_231.animate_on
 
+.. autoclass:: animate_on
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

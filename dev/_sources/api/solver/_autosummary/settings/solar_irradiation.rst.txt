@@ -5,8 +5,11 @@
 solar_irradiation
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.solar_irradiation.solar_irradiation
+.. currentmodule:: ansys.fluent.core.solver.settings_231.solar_irradiation
 
+.. autoclass:: solar_irradiation
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

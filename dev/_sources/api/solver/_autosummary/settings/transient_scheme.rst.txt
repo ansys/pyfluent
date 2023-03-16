@@ -5,8 +5,11 @@
 transient_scheme
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.transient_scheme.transient_scheme
+.. currentmodule:: ansys.fluent.core.solver.settings_231.transient_scheme
 
+.. autoclass:: transient_scheme
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

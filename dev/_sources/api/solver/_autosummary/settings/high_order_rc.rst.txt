@@ -5,8 +5,11 @@
 high_order_rc
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.high_order_rc.high_order_rc
+.. currentmodule:: ansys.fluent.core.solver.settings_231.high_order_rc
 
+.. autoclass:: high_order_rc
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ============================

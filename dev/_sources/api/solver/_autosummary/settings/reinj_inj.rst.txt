@@ -5,8 +5,11 @@
 reinj_inj
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.reinj_inj.reinj_inj
+.. currentmodule:: ansys.fluent.core.solver.settings_231.reinj_inj
 
+.. autoclass:: reinj_inj
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

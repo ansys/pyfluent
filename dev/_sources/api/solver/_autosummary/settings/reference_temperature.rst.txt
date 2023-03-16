@@ -5,8 +5,11 @@
 reference_temperature
 =====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.reference_temperature.reference_temperature
+.. currentmodule:: ansys.fluent.core.solver.settings_231.reference_temperature
 
+.. autoclass:: reference_temperature
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   ====================================

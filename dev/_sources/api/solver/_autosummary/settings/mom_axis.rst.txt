@@ -5,8 +5,11 @@
 mom_axis
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.mom_axis.mom_axis
+.. currentmodule:: ansys.fluent.core.solver.settings_231.mom_axis
 
+.. autoclass:: mom_axis
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ==================================

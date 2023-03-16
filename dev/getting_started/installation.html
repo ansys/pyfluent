@@ -51,7 +51,7 @@
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -400,7 +400,7 @@ the Python kernel.</p>
 </section>
 <section id="launch-fluent">
 <h2>Launch Fluent<a class="headerlink" href="#launch-fluent" title="Permalink to this heading">#</a></h2>
-<p>To launch Fluent from PyFluent, use the <a class="reference internal" href="../api/general/launcher/index.html#ansys.fluent.core.launcher.launcher.launch_fluent" title="ansys.fluent.core.launcher.launcher.launch_fluent"><code class="xref py py-func docutils literal notranslate"><span class="pre">launch_fluent()</span></code></a>
+<p>To launch Fluent from PyFluent, use the <code class="xref py py-func docutils literal notranslate"><span class="pre">launch_fluent()</span></code>
 method:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ansys.fluent.core</span> <span class="k">as</span> <span class="nn">pyfluent</span>
 <span class="n">solver</span> <span class="o">=</span> <span class="n">pyfluent</span><span class="o">.</span><span class="n">launch_fluent</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="s2">&quot;double&quot;</span><span class="p">,</span> <span class="n">processor_count</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;solver&quot;</span><span class="p">)</span>
@@ -426,7 +426,7 @@ setting, and iterates the solver:</p>
 </pre></div>
 </div>
 <p>If you want to interact with the Fluent GUI (graphical user interface), pass <code class="docutils literal notranslate"><span class="pre">show_gui=True</span></code>
-to the <a class="reference internal" href="../api/general/launcher/index.html#ansys.fluent.core.launcher.launcher.launch_fluent" title="ansys.fluent.core.launcher.launcher.launch_fluent"><code class="xref py py-func docutils literal notranslate"><span class="pre">launch_fluent()</span></code></a> method:</p>
+to the <code class="xref py py-func docutils literal notranslate"><span class="pre">launch_fluent()</span></code> method:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span> <span class="o">=</span> <span class="n">pyfluent</span><span class="o">.</span><span class="n">launch_fluent</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="s2">&quot;double&quot;</span><span class="p">,</span> <span class="n">processor_count</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">show_gui</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;solver&quot;</span><span class="p">)</span>
 </pre></div>
 </div>

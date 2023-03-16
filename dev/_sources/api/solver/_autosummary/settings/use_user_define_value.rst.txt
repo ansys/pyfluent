@@ -5,8 +5,11 @@
 use_user_define_value
 =====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.use_user_define_value.use_user_define_value
+.. currentmodule:: ansys.fluent.core.solver.settings_231.use_user_define_value
 
+.. autoclass:: use_user_define_value
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =============================

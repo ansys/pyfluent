@@ -5,8 +5,11 @@
 char_porosity
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.char_porosity.char_porosity
+.. currentmodule:: ansys.fluent.core.solver.settings_231.char_porosity
 
+.. autoclass:: char_porosity
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

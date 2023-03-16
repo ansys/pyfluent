@@ -5,8 +5,11 @@
 fensapice_drop_cv
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fensapice_drop_cv.fensapice_drop_cv
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fensapice_drop_cv
 
+.. autoclass:: fensapice_drop_cv
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

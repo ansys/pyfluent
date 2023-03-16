@@ -5,8 +5,11 @@
 density_ratio_cutoff
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.density_ratio_cutoff.density_ratio_cutoff
+.. currentmodule:: ansys.fluent.core.solver.settings_231.density_ratio_cutoff
 
+.. autoclass:: density_ratio_cutoff
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ==================================================

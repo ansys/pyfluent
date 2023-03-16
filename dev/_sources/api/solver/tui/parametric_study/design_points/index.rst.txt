@@ -3,19 +3,19 @@
 solver.tui.parametric\_study.design\_points
 ===========================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.parametric_study.design_points
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.parametric_study.design_points
+   :members: delete, load_case_data_for_current_dp, duplicate, save_journals, add, clear_data_and_edit_values
 
 .. toctree::
    :hidden:
 
-   table/index
    auto_create/index
-   print_to_console/index
    set/index
+   print_to_console/index
    concurrent/index
+   table/index

@@ -5,8 +5,11 @@
 chord
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.chord.chord
+.. currentmodule:: ansys.fluent.core.solver.settings_231.chord
 
+.. autoclass:: chord
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

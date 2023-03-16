@@ -5,8 +5,11 @@
 ystar
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.ystar.ystar
+.. currentmodule:: ansys.fluent.core.solver.settings_231.ystar
 
+.. autoclass:: ystar
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 =========================   ===================

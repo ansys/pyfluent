@@ -5,8 +5,11 @@
 banded_coloring
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.banded_coloring.banded_coloring
+.. currentmodule:: ansys.fluent.core.solver.settings_231.banded_coloring
 
+.. autoclass:: banded_coloring
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ===========================

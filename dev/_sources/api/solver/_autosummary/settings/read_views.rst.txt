@@ -5,8 +5,11 @@
 read_views
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.read_views.read_views
+.. currentmodule:: ansys.fluent.core.solver.settings_231.read_views
 
+.. autoclass:: read_views
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==========================   =====================

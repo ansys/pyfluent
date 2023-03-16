@@ -5,8 +5,11 @@
 input_parameters
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.input_parameters.input_parameters
+.. currentmodule:: ansys.fluent.core.solver.settings_231.input_parameters
 
+.. autoclass:: input_parameters
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================

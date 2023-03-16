@@ -5,8 +5,11 @@
 disable
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.disable.disable
+.. currentmodule:: ansys.fluent.core.solver.settings_231.disable
 
+.. autoclass:: disable
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ====================================

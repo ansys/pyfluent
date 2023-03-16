@@ -5,8 +5,11 @@
 reverse
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.reverse.reverse
+.. currentmodule:: ansys.fluent.core.solver.settings_231.reverse
 
+.. autoclass:: reverse
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =========================

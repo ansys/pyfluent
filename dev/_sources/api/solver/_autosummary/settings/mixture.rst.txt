@@ -5,8 +5,11 @@
 mixture
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.mixture.mixture
+.. currentmodule:: ansys.fluent.core.solver.settings_231.mixture
 
+.. autoclass:: mixture
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`mixture_child <mixture_child>`

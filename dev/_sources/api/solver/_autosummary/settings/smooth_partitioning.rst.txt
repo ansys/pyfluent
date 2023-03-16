@@ -5,8 +5,11 @@
 smooth_partitioning
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.smooth_partitioning.smooth_partitioning
+.. currentmodule:: ansys.fluent.core.solver.settings_231.smooth_partitioning
 
+.. autoclass:: smooth_partitioning
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   =========================================

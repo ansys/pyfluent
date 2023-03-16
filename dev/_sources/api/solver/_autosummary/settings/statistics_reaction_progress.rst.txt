@@ -5,8 +5,11 @@
 statistics_reaction_progress
 ============================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.statistics_reaction_progress.statistics_reaction_progress
+.. currentmodule:: ansys.fluent.core.solver.settings_231.statistics_reaction_progress
 
+.. autoclass:: statistics_reaction_progress
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ==========================

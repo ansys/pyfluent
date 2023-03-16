@@ -5,8 +5,11 @@
 rough_data
 ==========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.rough_data.rough_data
+.. currentmodule:: ansys.fluent.core.solver.settings_231.rough_data
 
+.. autoclass:: rough_data
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

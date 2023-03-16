@@ -51,7 +51,7 @@
     <script src="../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -303,8 +303,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -317,11 +322,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../tui/index.html">
      meshing.tui
@@ -486,7 +486,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling">
    <code class="docutils literal notranslate">
     <span class="pre">
-     _Scaling
+     Root.Scaling._Scaling
     </span>
    </code>
   </a>
@@ -495,7 +495,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Add">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Scaling.Add
+       Root.Scaling._Scaling.Add
       </span>
      </code>
     </a>
@@ -504,7 +504,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Applied">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Scaling.Applied
+       Root.Scaling._Scaling.Applied
       </span>
      </code>
     </a>
@@ -513,7 +513,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Apply">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Scaling.Apply
+       Root.Scaling._Scaling.Apply
       </span>
      </code>
     </a>
@@ -522,7 +522,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Children">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Scaling.Children
+       Root.Scaling._Scaling.Children
       </span>
      </code>
     </a>
@@ -531,7 +531,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Context">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Scaling.Context
+       Root.Scaling._Scaling.Context
       </span>
      </code>
     </a>
@@ -540,7 +540,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Global">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Scaling.Global
+       Root.Scaling._Scaling.Global
       </span>
      </code>
     </a>
@@ -549,7 +549,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Name">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Scaling.Name
+       Root.Scaling._Scaling.Name
       </span>
      </code>
     </a>
@@ -558,7 +558,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Remove">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Scaling.Remove
+       Root.Scaling._Scaling.Remove
       </span>
      </code>
     </a>
@@ -567,7 +567,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Rename">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Scaling.Rename
+       Root.Scaling._Scaling.Rename
       </span>
      </code>
     </a>
@@ -576,7 +576,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.ScaleX">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Scaling.ScaleX
+       Root.Scaling._Scaling.ScaleX
       </span>
      </code>
     </a>
@@ -585,7 +585,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.ScaleY">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Scaling.ScaleY
+       Root.Scaling._Scaling.ScaleY
       </span>
      </code>
     </a>
@@ -594,7 +594,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.ScaleZ">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Scaling.ScaleZ
+       Root.Scaling._Scaling.ScaleZ
       </span>
      </code>
     </a>
@@ -603,7 +603,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Type">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Scaling.Type
+       Root.Scaling._Scaling.Type
       </span>
      </code>
     </a>
@@ -612,7 +612,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Undo">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Scaling.Undo
+       Root.Scaling._Scaling.Undo
       </span>
      </code>
     </a>
@@ -621,7 +621,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Update">
      <code class="docutils literal notranslate">
       <span class="pre">
-       _Scaling.Update
+       Root.Scaling._Scaling.Update
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling._name_">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       Root.Scaling._Scaling._name_
       </span>
      </code>
     </a>
@@ -649,66 +658,18 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-datamodel-partmanagement-scaling">
 <span id="ref-meshing-datamodel-partmanagement-scaling"></span><h1>meshing.datamodel.PartManagement.Scaling<a class="headerlink" href="#meshing-datamodel-partmanagement-scaling" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling.</span></span><span class="sig-name descname"><span class="pre">_Scaling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
-<p>Singleton _Scaling.</p>
-<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Add" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Add</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Add.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Applied" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Applied"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Applied</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Applied of value type bool.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Apply" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Apply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Apply</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Apply.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Children" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Children</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Children of value type List[str].</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Context" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Context</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Context of value type int.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Global" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Global"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Global</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Global of value type str.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Name" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Name</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Name of value type str.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Remove" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Remove</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Remove.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Rename" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Rename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Rename</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Rename.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.ScaleX" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.ScaleX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ScaleX</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter ScaleX of value type float.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.ScaleY" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.ScaleY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ScaleY</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter ScaleY of value type float.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.ScaleZ" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.ScaleZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ScaleZ</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter ScaleZ of value type float.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Type" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Type</span></code></a>(service, rules[, path])</p></td>
-<td><p>Parameter Type of value type str.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Undo" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Undo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Undo</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Undo.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Update" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Update</span></code></a>(service, rules, command[, path])</p></td>
-<td><p>Command Update.</p></td>
-</tr>
 </tbody>
 </table>
 <dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Root.Scaling.</span></span><span class="sig-name descname"><span class="pre">_Scaling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling" title="Permalink to this definition">#</a></dt>
+<dd><p>Singleton _Scaling.</p>
+<dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Add">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Add" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Add.</p>
+<dd><p>Command Add.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -726,15 +687,13 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Applied">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Applied</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Applied" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
-<p>Parameter Applied of value type bool.</p>
+<dd><p>Parameter Applied of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Apply">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Apply" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Apply.</p>
+<dd><p>Command Apply.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -747,36 +706,31 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Children">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Children" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter Children of value type List[str].</p>
+<dd><p>Parameter Children of value type List[str].</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Context">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Context</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Context" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter Context of value type int.</p>
+<dd><p>Parameter Context of value type int.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Global">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Global</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Global" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter Global of value type str.</p>
+<dd><p>Parameter Global of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Name">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Name" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter Name of value type str.</p>
+<dd><p>Parameter Name of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Remove">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Remove" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Remove.</p>
+<dd><p>Command Remove.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -794,8 +748,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Rename">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Rename" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Rename.</p>
+<dd><p>Command Rename.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -813,36 +766,31 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.ScaleX">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ScaleX</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.ScaleX" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter ScaleX of value type float.</p>
+<dd><p>Parameter ScaleX of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.ScaleY">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ScaleY</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.ScaleY" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter ScaleY of value type float.</p>
+<dd><p>Parameter ScaleY of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.ScaleZ">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ScaleZ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.ScaleZ" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
-<p>Parameter ScaleZ of value type float.</p>
+<dd><p>Parameter ScaleZ of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Type">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Type" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
-<p>Parameter Type of value type str.</p>
+<dd><p>Parameter Type of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Undo">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Undo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Undo" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Undo.</p>
+<dd><p>Command Undo.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -855,8 +803,7 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Update">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling.Update" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
-<p>Command Update.</p>
+<dd><p>Command Update.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -864,6 +811,12 @@ function checkPageExistsAndRedirect(event) {
 </dl>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling._name_">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_name_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Scaling._Scaling._name_" title="Permalink to this definition">#</a></dt>
+<dd><p>Parameter _name_ of value type str.</p>
 </dd></dl>
 
 </dd></dl>

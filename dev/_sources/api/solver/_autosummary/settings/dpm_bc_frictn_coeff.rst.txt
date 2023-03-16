@@ -5,13 +5,16 @@
 dpm_bc_frictn_coeff
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_bc_frictn_coeff.dpm_bc_frictn_coeff
+.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_bc_frictn_coeff
 
-.. rubric:: Attributes
+.. autoclass:: dpm_bc_frictn_coeff
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   =================================
 
-Attribute                                                                        Summary
+Child                                                                            Summary
 
 ====================================================   =================================
 :ref:`method <method_1>`                                                 'method' child.

@@ -5,8 +5,11 @@
 variable
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.variable.variable
+.. currentmodule:: ansys.fluent.core.solver.settings_231.variable
 
+.. autoclass:: variable
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ====================================================

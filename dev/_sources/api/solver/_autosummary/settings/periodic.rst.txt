@@ -5,8 +5,11 @@
 periodic
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.periodic.periodic
+.. currentmodule:: ansys.fluent.core.solver.settings_231.periodic
 
+.. autoclass:: periodic
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`periodic_child <periodic_child>`

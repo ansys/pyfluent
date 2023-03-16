@@ -5,8 +5,11 @@
 depth
 =====
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.depth.depth
+.. currentmodule:: ansys.fluent.core.solver.settings_231.depth
 
+.. autoclass:: depth
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =============================

@@ -51,12 +51,12 @@
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="ansys.fluent.core.streaming_services.events_streaming.EventsManager" href="_autosummary/ansys.fluent.core.streaming_services.events_streaming.EventsManager.html" />
-    <link rel="prev" title="get_vector_fields_info" href="_autosummary/ansys.fluent.core.services.field_data.FieldInfo.get_vector_fields_info.html" />
+    <link rel="next" title="MonitorsManager" href="monitors.html" />
+    <link rel="prev" title="Field info" href="fieldinfo.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -301,8 +301,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../general/index.html">
-   General
+  <a class="reference internal" href="../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -350,22 +355,10 @@ function checkPageExistsAndRedirect(event) {
      Field info
     </a>
    </li>
-   <li class="toctree-l2 current active has-children">
+   <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      EventsManager
     </a>
-    <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-    <label for="toctree-checkbox-2">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="_autosummary/ansys.fluent.core.streaming_services.events_streaming.EventsManager.html">
-       ansys.fluent.core.streaming_services.events_streaming.EventsManager
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="monitors.html">
@@ -397,9 +390,32 @@ function checkPageExistsAndRedirect(event) {
     
     <div class="toc-item">
       
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
 
 <nav id="bd-toc-nav">
-    
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.streaming_services.events_streaming.EventsManager.register_callback">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     EventsManager.register_callback()
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.streaming_services.events_streaming.EventsManager.unregister_callback">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     EventsManager.unregister_callback()
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+
 </nav>
     </div>
     
@@ -443,11 +459,50 @@ monitoring and updating graphics during runtime.</p>
 </div>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/ansys.fluent.core.streaming_services.events_streaming.EventsManager.html#ansys.fluent.core.streaming_services.events_streaming.EventsManager" title="ansys.fluent.core.streaming_services.events_streaming.EventsManager"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EventsManager</span></code></a>(session_id, service)</p></td>
-<td><p>Manages server-side events.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.streaming_services.events_streaming.EventsManager.register_callback">
+<span class="sig-prename descclassname"><span class="pre">EventsManager.</span></span><span class="sig-name descname"><span class="pre">register_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">call_back</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.streaming_services.events_streaming.EventsManager.register_callback" title="Permalink to this definition">#</a></dt>
+<dd><p>Register the callback.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>event_name</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Event name to register the callback to.</p>
+</dd>
+<dt><strong>call_back</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Callable</span></code></span></dt><dd><p>Callback to register.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></dt><dd><p>Registered callback ID.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><a class="reference external" href="https://docs.python.org/dev/library/exceptions.html#RuntimeError" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RuntimeError</span></code></a></dt><dd><p>If event name is not valid.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.streaming_services.events_streaming.EventsManager.unregister_callback">
+<span class="sig-prename descclassname"><span class="pre">EventsManager.</span></span><span class="sig-name descname"><span class="pre">unregister_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.streaming_services.events_streaming.EventsManager.unregister_callback" title="Permalink to this definition">#</a></dt>
+<dd><p>Unregister the callback.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>callback_id</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>ID of the registered callback.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 

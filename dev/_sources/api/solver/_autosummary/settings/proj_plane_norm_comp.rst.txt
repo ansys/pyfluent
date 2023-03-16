@@ -5,8 +5,11 @@
 proj_plane_norm_comp
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.proj_plane_norm_comp.proj_plane_norm_comp
+.. currentmodule:: ansys.fluent.core.solver.settings_231.proj_plane_norm_comp
 
+.. autoclass:: proj_plane_norm_comp
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   =========================================================================

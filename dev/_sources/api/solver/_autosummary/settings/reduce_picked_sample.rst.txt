@@ -5,8 +5,11 @@
 reduce_picked_sample
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.reduce_picked_sample.reduce_picked_sample
+.. currentmodule:: ansys.fluent.core.solver.settings_231.reduce_picked_sample
 
+.. autoclass:: reduce_picked_sample
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==============================================   ===============================

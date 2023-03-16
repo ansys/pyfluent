@@ -5,13 +5,16 @@
 boiling_parameters
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.boiling_parameters.boiling_parameters
+.. currentmodule:: ansys.fluent.core.solver.settings_231.boiling_parameters
 
-.. rubric:: Attributes
+.. autoclass:: boiling_parameters
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ============================================   ======================================================
 
-Attribute                                                                                     Summary
+Child                                                                                         Summary
 
 ============================================   ======================================================
 :ref:`thin_film <thin_film>`                                    Multiphase boiling thin film effects.

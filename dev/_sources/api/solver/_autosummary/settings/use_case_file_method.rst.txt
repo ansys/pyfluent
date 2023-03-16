@@ -5,8 +5,11 @@
 use_case_file_method
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.use_case_file_method.use_case_file_method
+.. currentmodule:: ansys.fluent.core.solver.settings_231.use_case_file_method
 
+.. autoclass:: use_case_file_method
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ====================================================   ==================================

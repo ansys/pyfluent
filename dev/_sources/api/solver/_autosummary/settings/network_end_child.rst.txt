@@ -5,13 +5,16 @@
 network_end_child
 =================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.network_end_child.network_end_child
+.. currentmodule:: ansys.fluent.core.solver.settings_231.network_end_child
 
-.. rubric:: Attributes
+.. autoclass:: network_end_child
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   ========================
 
-Attribute                                             Summary
+Child                                                 Summary
 
 ==================================   ========================
 :ref:`phase <phase_11>`                        'phase' child.

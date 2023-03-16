@@ -5,8 +5,11 @@
 vof_spec
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.vof_spec.vof_spec
+.. currentmodule:: ansys.fluent.core.solver.settings_231.vof_spec
 
+.. autoclass:: vof_spec
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

@@ -5,8 +5,11 @@
 number_of_partitions
 ====================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.number_of_partitions.number_of_partitions
+.. currentmodule:: ansys.fluent.core.solver.settings_231.number_of_partitions
 
+.. autoclass:: number_of_partitions
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =============================

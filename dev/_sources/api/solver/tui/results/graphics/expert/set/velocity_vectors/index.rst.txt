@@ -3,11 +3,11 @@
 solver.tui.results.graphics.expert.set.velocity\_vectors
 ========================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.velocity_vectors
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.velocity_vectors
+   :members: global_range, constant_length, auto_scale, in_plane, render_mesh, log_scale, component_x, component_z, component_y, style, color, node_values, surfaces, scale, relative, scale_head, color_levels
 

@@ -51,11 +51,11 @@
     <script src="../../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
-    <link rel="next" title="solver.tui.solution.controls.advanced.amg_options" href="amg_options/index.html" />
+    <link rel="next" title="solver.tui.solution.controls.advanced.fast_transient_settings" href="fast_transient_settings/index.html" />
     <link rel="prev" title="solver.tui.solution.controls" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -305,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -349,21 +354,6 @@ function checkPageExistsAndRedirect(event) {
        </i>
       </label>
       <ul class="current">
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
        <li class="toctree-l4 current active has-children">
         <a class="reference internal" href="../../index.html">
          solver.tui.solution
@@ -375,8 +365,18 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../report_definitions/index.html">
-           solver.tui.solution.report_definitions
+          <a class="reference internal" href="../../cell_registers/index.html">
+           solver.tui.solution.cell_registers
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../methods/index.html">
+           solver.tui.solution.methods
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../run_calculation/index.html">
+           solver.tui.solution.run_calculation
           </a>
          </li>
          <li class="toctree-l5">
@@ -385,23 +385,18 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
+          <a class="reference internal" href="../../calculation_activities/index.html">
+           solver.tui.solution.calculation_activities
+          </a>
+         </li>
+         <li class="toctree-l5">
           <a class="reference internal" href="../../initialize/index.html">
            solver.tui.solution.initialize
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../cell_registers/index.html">
-           solver.tui.solution.cell_registers
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../expert/index.html">
-           solver.tui.solution.expert
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../run_calculation/index.html">
-           solver.tui.solution.run_calculation
+          <a class="reference internal" href="../../report_definitions/index.html">
+           solver.tui.solution.report_definitions
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -425,13 +420,13 @@ function checkPageExistsAndRedirect(event) {
             </label>
             <ul>
              <li class="toctree-l7">
-              <a class="reference internal" href="amg_options/index.html">
-               solver.tui.solution.controls.advanced.amg_options
+              <a class="reference internal" href="fast_transient_settings/index.html">
+               solver.tui.solution.controls.advanced.fast_transient_settings
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="fast_transient_settings/index.html">
-               solver.tui.solution.controls.advanced.fast_transient_settings
+              <a class="reference internal" href="amg_options/index.html">
+               solver.tui.solution.controls.advanced.amg_options
               </a>
              </li>
             </ul>
@@ -454,21 +449,11 @@ function checkPageExistsAndRedirect(event) {
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../calculation_activities/index.html">
-           solver.tui.solution.calculation_activities
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../methods/index.html">
-           solver.tui.solution.methods
+          <a class="reference internal" href="../../expert/index.html">
+           solver.tui.solution.expert
           </a>
          </li>
         </ul>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../setup/index.html">
-         solver.tui.setup
-        </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../report/index.html">
@@ -476,13 +461,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../../setup/index.html">
+         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4">
@@ -491,13 +471,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
+        <a class="reference internal" href="../../../display/index.html">
+         solver.tui.display
         </a>
        </li>
        <li class="toctree-l4">
@@ -506,33 +481,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../define/index.html">
-         solver.tui.define
+        <a class="reference internal" href="../../../results/index.html">
+         solver.tui.results
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
        <li class="toctree-l4">
@@ -546,13 +501,63 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../preferences/index.html">
-         solver.tui.preferences
+        <a class="reference internal" href="../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../parameters__and__customization/index.html">
          solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../define/index.html">
+         solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../preferences/index.html">
+         solver.tui.preferences
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
       </ul>
@@ -624,92 +629,25 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced">
    <code class="docutils literal notranslate">
     <span class="pre">
-     advanced
+     main_menu.solution.controls.advanced
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       advanced.amg_options
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options.aggressive_amg_coarsening">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         advanced.amg_options.aggressive_amg_coarsening()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options.amg_gpgpu_options">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         advanced.amg_options.amg_gpgpu_options()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options.conservative_amg_coarsening">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         advanced.amg_options.conservative_amg_coarsening()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options.laplace_coarsening">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         advanced.amg_options.laplace_coarsening()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.correction_tolerance">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advanced.correction_tolerance()
+       main_menu.solution.controls.advanced.correction_tolerance()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.fast_transient_settings">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       advanced.fast_transient_settings
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.fast_transient_settings.rk2">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         advanced.fast_transient_settings.rk2()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.multi_grid_amg">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advanced.multi_grid_amg()
+       main_menu.solution.controls.advanced.multi_grid_amg()
       </span>
      </code>
     </a>
@@ -718,7 +656,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.multi_grid_controls">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advanced.multi_grid_controls()
+       main_menu.solution.controls.advanced.multi_grid_controls()
       </span>
      </code>
     </a>
@@ -727,7 +665,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.multi_grid_fas">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advanced.multi_grid_fas()
+       main_menu.solution.controls.advanced.multi_grid_fas()
       </span>
      </code>
     </a>
@@ -736,7 +674,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.multi_stage">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advanced.multi_stage()
+       main_menu.solution.controls.advanced.multi_stage()
       </span>
      </code>
     </a>
@@ -745,7 +683,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.relaxation_method">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advanced.relaxation_method()
+       main_menu.solution.controls.advanced.relaxation_method()
       </span>
      </code>
     </a>
@@ -754,7 +692,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.slope_limiter_set">
      <code class="docutils literal notranslate">
       <span class="pre">
-       advanced.slope_limiter_set()
+       main_menu.solution.controls.advanced.slope_limiter_set()
       </span>
      </code>
     </a>
@@ -782,121 +720,18 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solution-controls-advanced">
 <span id="ref-solver-tui-solution-controls-advanced"></span><h1>solver.tui.solution.controls.advanced<a class="headerlink" href="#solver-tui-solution-controls-advanced" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.solution.controls.</span></span><span class="sig-name descname"><span class="pre">advanced</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Controls advanced options.</p>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options" title="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">amg_options</span></code></a>(path, service)</p></td>
-<td><p>Enter AMG options menu.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.fast_transient_settings" title="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.fast_transient_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fast_transient_settings</span></code></a>(path, service)</p></td>
-<td><p>Enter the fast transient settings menu.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.correction_tolerance" title="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.correction_tolerance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">correction_tolerance</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enter the correction tolerance menu.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.multi_grid_amg" title="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.multi_grid_amg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">multi_grid_amg</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the parameters that govern the algebraic multigrid procedure.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.multi_grid_controls" title="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.multi_grid_controls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">multi_grid_controls</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enter the multi-grid-controls menu.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.multi_grid_fas" title="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.multi_grid_fas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">multi_grid_fas</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the coefficients that govern the FAS multigrid procedure.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.multi_stage" title="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.multi_stage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">multi_stage</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the multiple-stage time stepping scheme coefficients.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.relaxation_method" title="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.relaxation_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relaxation_method</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the solver relaxation method.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.slope_limiter_set" title="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.slope_limiter_set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slope_limiter_set</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enter the slope limiter set menu.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">amg_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter AMG options menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options.aggressive_amg_coarsening" title="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options.aggressive_amg_coarsening"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aggressive_amg_coarsening</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Use aggressive AMG coarsening.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options.amg_gpgpu_options" title="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options.amg_gpgpu_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">amg_gpgpu_options</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set GPGPU AMG solver options.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options.conservative_amg_coarsening" title="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options.conservative_amg_coarsening"><code class="xref py py-obj docutils literal notranslate"><span class="pre">conservative_amg_coarsening</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Use conservative AMG coarsening?.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options.laplace_coarsening" title="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options.laplace_coarsening"><code class="xref py py-obj docutils literal notranslate"><span class="pre">laplace_coarsening</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set AMG laplace coarsening options.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options.aggressive_amg_coarsening">
-<span class="sig-name descname"><span class="pre">aggressive_amg_coarsening</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options.aggressive_amg_coarsening" title="Permalink to this definition">#</a></dt>
-<dd><p>Use aggressive AMG coarsening.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options.amg_gpgpu_options">
-<span class="sig-name descname"><span class="pre">amg_gpgpu_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options.amg_gpgpu_options" title="Permalink to this definition">#</a></dt>
-<dd><p>Set GPGPU AMG solver options.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options.conservative_amg_coarsening">
-<span class="sig-name descname"><span class="pre">conservative_amg_coarsening</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options.conservative_amg_coarsening" title="Permalink to this definition">#</a></dt>
-<dd><p>Use conservative AMG coarsening?.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options.laplace_coarsening">
-<span class="sig-name descname"><span class="pre">laplace_coarsening</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.amg_options.laplace_coarsening" title="Permalink to this definition">#</a></dt>
-<dd><p>Set AMG laplace coarsening options.</p>
-</dd></dl>
-
-</dd></dl>
-
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solution.controls.</span></span><span class="sig-name descname"><span class="pre">advanced</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced" title="Permalink to this definition">#</a></dt>
+<dd><p>Controls advanced options.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.correction_tolerance">
 <span class="sig-name descname"><span class="pre">correction_tolerance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.correction_tolerance" title="Permalink to this definition">#</a></dt>
 <dd><p>Enter the correction tolerance menu.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.fast_transient_settings">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fast_transient_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.fast_transient_settings" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the fast transient settings menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.fast_transient_settings.rk2" title="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.fast_transient_settings.rk2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rk2</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable the use of a two-stage Runge-Kutta scheme for time integration.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.fast_transient_settings.rk2">
-<span class="sig-name descname"><span class="pre">rk2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.advanced.fast_transient_settings.rk2" title="Permalink to this definition">#</a></dt>
-<dd><p>Enable the use of a two-stage Runge-Kutta scheme for time integration.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">

@@ -3,29 +3,29 @@
 meshing.tui
 ===========
 
-.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu
+   :members: exit, print_license_usage, switch_to_solution_mode, beta_feature_access, close_fluent
 
 .. toctree::
    :hidden:
 
-   cad_assemblies/index
-   display/index
-   report/index
-   size_functions/index
    scoped_sizing/index
-   reference_frames/index
-   parallel/index
+   display/index
    preferences/index
-   boundary/index
    material_point/index
-   objects/index
+   boundary/index
    diagnostics/index
-   mesh/index
-   file/index
+   parallel/index
+   size_functions/index
    openmp_controls/index
+   cad_assemblies/index
+   objects/index
+   file/index
+   report/index
+   mesh/index
+   reference_frames/index

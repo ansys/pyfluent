@@ -5,13 +5,16 @@
 particle_reinjector
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.particle_reinjector.particle_reinjector
+.. currentmodule:: ansys.fluent.core.solver.settings_231.particle_reinjector
 
-.. rubric:: Attributes
+.. autoclass:: particle_reinjector
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==============================   =======================
 
-Attribute                                        Summary
+Child                                            Summary
 
 ==============================   =======================
 :ref:`enable <enable>`                   'enable' child.

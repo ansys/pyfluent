@@ -3,11 +3,11 @@
 solver.tui.adjoint
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.adjoint
-   :members:
-   :show-inheritance:
-   :undoc-members:
-   :exclude-members: "__weakref__, __dict__"
-   :special-members: " __init__"
-   :autosummary:
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.adjoint
+   :members: observable, expert, multi_objective, controls, utilities, monitors, morphing, reporting, optimizer, geometry, run, postprocess_options, design_tool, methods
 

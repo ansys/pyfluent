@@ -5,8 +5,11 @@
 columns
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.columns.columns
+.. currentmodule:: ansys.fluent.core.solver.settings_231.columns
 
+.. autoclass:: columns
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

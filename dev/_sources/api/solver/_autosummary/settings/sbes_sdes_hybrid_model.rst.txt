@@ -5,13 +5,16 @@
 sbes_sdes_hybrid_model
 ======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.sbes_sdes_hybrid_model.sbes_sdes_hybrid_model
+.. currentmodule:: ansys.fluent.core.solver.settings_231.sbes_sdes_hybrid_model
 
-.. rubric:: Attributes
+.. autoclass:: sbes_sdes_hybrid_model
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ================================================================   =========================================
 
-Attribute                                                                                            Summary
+Child                                                                                                Summary
 
 ================================================================   =========================================
 :ref:`sbes_sdes_hybrid_model_optn <sbes_sdes_hybrid_model_optn>`        Select the SBES / SDES hybrid model.

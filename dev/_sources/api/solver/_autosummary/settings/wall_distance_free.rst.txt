@@ -5,8 +5,11 @@
 wall_distance_free
 ==================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.wall_distance_free.wall_distance_free
+.. currentmodule:: ansys.fluent.core.solver.settings_231.wall_distance_free
 
+.. autoclass:: wall_distance_free
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =========================

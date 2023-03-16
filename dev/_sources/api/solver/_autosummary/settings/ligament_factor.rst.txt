@@ -5,8 +5,11 @@
 ligament_factor
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.ligament_factor.ligament_factor
+.. currentmodule:: ansys.fluent.core.solver.settings_231.ligament_factor
 
+.. autoclass:: ligament_factor
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

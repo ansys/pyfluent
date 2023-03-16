@@ -5,8 +5,11 @@
 les_embedded_fluctuations
 =========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.les_embedded_fluctuations.les_embedded_fluctuations
+.. currentmodule:: ansys.fluent.core.solver.settings_231.les_embedded_fluctuations
 
+.. autoclass:: les_embedded_fluctuations
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

@@ -51,12 +51,12 @@
     <script src="../../../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../search.html" />
     <link rel="next" title="solver.tui.setup.dynamic_mesh.controls.remeshing_parameters.prism_layer_parameters" href="prism_layer_parameters/index.html" />
-    <link rel="prev" title="solver.tui.setup.dynamic_mesh.controls.six_dof_parameters" href="../six_dof_parameters/index.html" />
+    <link rel="prev" title="solver.tui.setup.dynamic_mesh.controls.periodic_displacement_parameters" href="../periodic_displacement_parameters/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -306,8 +306,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -351,23 +356,13 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../../solution/index.html">
          solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../report/index.html">
+         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -381,13 +376,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../reference_values/index.html">
-           solver.tui.setup.reference_values
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../turbo_model/index.html">
-           solver.tui.setup.turbo_model
+          <a class="reference internal" href="../../../overset_interfaces/index.html">
+           solver.tui.setup.overset_interfaces
           </a>
          </li>
          <li class="toctree-l5">
@@ -396,48 +386,8 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../expert/index.html">
-           solver.tui.setup.expert
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../models/index.html">
-           solver.tui.setup.models
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../named_expressions/index.html">
-           solver.tui.setup.named_expressions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../mixing_planes/index.html">
-           solver.tui.setup.mixing_planes
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../overset_interfaces/index.html">
-           solver.tui.setup.overset_interfaces
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../mesh_interfaces/index.html">
-           solver.tui.setup.mesh_interfaces
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../boundary_conditions/index.html">
-           solver.tui.setup.boundary_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../operating_conditions/index.html">
-           solver.tui.setup.operating_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../gap_model/index.html">
-           solver.tui.setup.gap_model
+          <a class="reference internal" href="../../../turbo_model/index.html">
+           solver.tui.setup.turbo_model
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -451,8 +401,18 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul class="current">
            <li class="toctree-l6">
-            <a class="reference internal" href="../../zones/index.html">
-             solver.tui.setup.dynamic_mesh.zones
+            <a class="reference internal" href="../../events/index.html">
+             solver.tui.setup.dynamic_mesh.events
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../transient_settings/index.html">
+             solver.tui.setup.dynamic_mesh.transient_settings
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../actions/index.html">
+             solver.tui.setup.dynamic_mesh.actions
             </a>
            </li>
            <li class="toctree-l6 current active has-children">
@@ -466,8 +426,13 @@ function checkPageExistsAndRedirect(event) {
             </label>
             <ul class="current">
              <li class="toctree-l7">
-              <a class="reference internal" href="../six_dof_parameters/index.html">
-               solver.tui.setup.dynamic_mesh.controls.six_dof_parameters
+              <a class="reference internal" href="../layering_parameters/index.html">
+               solver.tui.setup.dynamic_mesh.controls.layering_parameters
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../periodic_displacement_parameters/index.html">
+               solver.tui.setup.dynamic_mesh.controls.periodic_displacement_parameters
               </a>
              </li>
              <li class="toctree-l7 current active has-children">
@@ -486,25 +451,20 @@ function checkPageExistsAndRedirect(event) {
                 </a>
                </li>
                <li class="toctree-l8">
-                <a class="reference internal" href="prism_controls/index.html">
-                 solver.tui.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls
+                <a class="reference internal" href="sizing_controls/index.html">
+                 solver.tui.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls
                 </a>
                </li>
                <li class="toctree-l8">
-                <a class="reference internal" href="sizing_controls/index.html">
-                 solver.tui.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls
+                <a class="reference internal" href="prism_controls/index.html">
+                 solver.tui.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls
                 </a>
                </li>
               </ul>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../layering_parameters/index.html">
-               solver.tui.setup.dynamic_mesh.controls.layering_parameters
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../smoothing_parameters/index.html">
-               solver.tui.setup.dynamic_mesh.controls.smoothing_parameters
+              <a class="reference internal" href="../contact_parameters/index.html">
+               solver.tui.setup.dynamic_mesh.controls.contact_parameters
               </a>
              </li>
              <li class="toctree-l7">
@@ -513,60 +473,80 @@ function checkPageExistsAndRedirect(event) {
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../periodic_displacement_parameters/index.html">
-               solver.tui.setup.dynamic_mesh.controls.periodic_displacement_parameters
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../contact_parameters/index.html">
-               solver.tui.setup.dynamic_mesh.controls.contact_parameters
-              </a>
-             </li>
-             <li class="toctree-l7">
               <a class="reference internal" href="../in_cylinder_parameters/index.html">
                solver.tui.setup.dynamic_mesh.controls.in_cylinder_parameters
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../smoothing_parameters/index.html">
+               solver.tui.setup.dynamic_mesh.controls.smoothing_parameters
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../six_dof_parameters/index.html">
+               solver.tui.setup.dynamic_mesh.controls.six_dof_parameters
               </a>
              </li>
             </ul>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../events/index.html">
-             solver.tui.setup.dynamic_mesh.events
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../transient_settings/index.html">
-             solver.tui.setup.dynamic_mesh.transient_settings
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../actions/index.html">
-             solver.tui.setup.dynamic_mesh.actions
+            <a class="reference internal" href="../../zones/index.html">
+             solver.tui.setup.dynamic_mesh.zones
             </a>
            </li>
           </ul>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../models/index.html">
+           solver.tui.setup.models
+          </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../../reference_frames/index.html">
            solver.tui.setup.reference_frames
           </a>
          </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../reference_values/index.html">
+           solver.tui.setup.reference_values
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../named_expressions/index.html">
+           solver.tui.setup.named_expressions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../expert/index.html">
+           solver.tui.setup.expert
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../operating_conditions/index.html">
+           solver.tui.setup.operating_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../gap_model/index.html">
+           solver.tui.setup.gap_model
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../boundary_conditions/index.html">
+           solver.tui.setup.boundary_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../mixing_planes/index.html">
+           solver.tui.setup.mixing_planes
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../mesh_interfaces/index.html">
+           solver.tui.setup.mesh_interfaces
+          </a>
+         </li>
         </ul>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../surface/index.html">
-         solver.tui.surface
-        </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../../views/index.html">
@@ -574,13 +554,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_post/index.html">
-         solver.tui.turbo_post
+        <a class="reference internal" href="../../../../display/index.html">
+         solver.tui.display
         </a>
        </li>
        <li class="toctree-l4">
@@ -589,33 +564,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../define/index.html">
-         solver.tui.define
+        <a class="reference internal" href="../../../../results/index.html">
+         solver.tui.results
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
        <li class="toctree-l4">
@@ -629,13 +584,63 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../preferences/index.html">
-         solver.tui.preferences
+        <a class="reference internal" href="../../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../../parameters__and__customization/index.html">
          solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../define/index.html">
+         solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../preferences/index.html">
+         solver.tui.preferences
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
       </ul>
@@ -707,7 +712,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters">
    <code class="docutils literal notranslate">
     <span class="pre">
-     remeshing_parameters
+     main_menu.setup.dynamic_mesh.controls.remeshing_parameters
     </span>
    </code>
   </a>
@@ -716,7 +721,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.cell_skew_max">
      <code class="docutils literal notranslate">
       <span class="pre">
-       remeshing_parameters.cell_skew_max()
+       main_menu.setup.dynamic_mesh.controls.remeshing_parameters.cell_skew_max()
       </span>
      </code>
     </a>
@@ -725,7 +730,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.face_skew_max">
      <code class="docutils literal notranslate">
       <span class="pre">
-       remeshing_parameters.face_skew_max()
+       main_menu.setup.dynamic_mesh.controls.remeshing_parameters.face_skew_max()
       </span>
      </code>
     </a>
@@ -734,7 +739,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.length_max">
      <code class="docutils literal notranslate">
       <span class="pre">
-       remeshing_parameters.length_max()
+       main_menu.setup.dynamic_mesh.controls.remeshing_parameters.length_max()
       </span>
      </code>
     </a>
@@ -743,7 +748,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.length_min">
      <code class="docutils literal notranslate">
       <span class="pre">
-       remeshing_parameters.length_min()
+       main_menu.setup.dynamic_mesh.controls.remeshing_parameters.length_min()
       </span>
      </code>
     </a>
@@ -752,7 +757,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.parallel_remeshing">
      <code class="docutils literal notranslate">
       <span class="pre">
-       remeshing_parameters.parallel_remeshing()
+       main_menu.setup.dynamic_mesh.controls.remeshing_parameters.parallel_remeshing()
       </span>
      </code>
     </a>
@@ -761,110 +766,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.poly_remeshing">
      <code class="docutils literal notranslate">
       <span class="pre">
-       remeshing_parameters.poly_remeshing()
+       main_menu.setup.dynamic_mesh.controls.remeshing_parameters.poly_remeshing()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       remeshing_parameters.prism_controls
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.add">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         remeshing_parameters.prism_controls.add()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.delete">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         remeshing_parameters.prism_controls.delete()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.edit">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         remeshing_parameters.prism_controls.edit()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.list">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         remeshing_parameters.prism_controls.list()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.list_properties">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         remeshing_parameters.prism_controls.list_properties()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_layer_parameters">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       remeshing_parameters.prism_layer_parameters
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_layer_parameters.first_height">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         remeshing_parameters.prism_layer_parameters.first_height()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_layer_parameters.growth_rate">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         remeshing_parameters.prism_layer_parameters.growth_rate()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_layer_parameters.number_of_layers">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         remeshing_parameters.prism_layer_parameters.number_of_layers()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.remeshing_after_moving">
      <code class="docutils literal notranslate">
       <span class="pre">
-       remeshing_parameters.remeshing_after_moving()
+       main_menu.setup.dynamic_mesh.controls.remeshing_parameters.remeshing_after_moving()
       </span>
      </code>
     </a>
@@ -873,7 +784,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.remeshing_methods">
      <code class="docutils literal notranslate">
       <span class="pre">
-       remeshing_parameters.remeshing_methods()
+       main_menu.setup.dynamic_mesh.controls.remeshing_parameters.remeshing_methods()
       </span>
      </code>
     </a>
@@ -882,7 +793,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.retain_size_distribution">
      <code class="docutils literal notranslate">
       <span class="pre">
-       remeshing_parameters.retain_size_distribution()
+       main_menu.setup.dynamic_mesh.controls.remeshing_parameters.retain_size_distribution()
       </span>
      </code>
     </a>
@@ -891,72 +802,16 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.size_remesh_interval">
      <code class="docutils literal notranslate">
       <span class="pre">
-       remeshing_parameters.size_remesh_interval()
+       main_menu.setup.dynamic_mesh.controls.remeshing_parameters.size_remesh_interval()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       remeshing_parameters.sizing_controls
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.add">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         remeshing_parameters.sizing_controls.add()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.delete">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         remeshing_parameters.sizing_controls.delete()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.edit">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         remeshing_parameters.sizing_controls.edit()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.list">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         remeshing_parameters.sizing_controls.list()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.list_properties">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         remeshing_parameters.sizing_controls.list_properties()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_funct_defaults">
      <code class="docutils literal notranslate">
       <span class="pre">
-       remeshing_parameters.sizing_funct_defaults()
+       main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_funct_defaults()
       </span>
      </code>
     </a>
@@ -965,7 +820,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_funct_rate">
      <code class="docutils literal notranslate">
       <span class="pre">
-       remeshing_parameters.sizing_funct_rate()
+       main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_funct_rate()
       </span>
      </code>
     </a>
@@ -974,7 +829,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_funct_resolution">
      <code class="docutils literal notranslate">
       <span class="pre">
-       remeshing_parameters.sizing_funct_resolution()
+       main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_funct_resolution()
       </span>
      </code>
     </a>
@@ -983,7 +838,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_funct_variation">
      <code class="docutils literal notranslate">
       <span class="pre">
-       remeshing_parameters.sizing_funct_variation()
+       main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_funct_variation()
       </span>
      </code>
     </a>
@@ -992,7 +847,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_function">
      <code class="docutils literal notranslate">
       <span class="pre">
-       remeshing_parameters.sizing_function()
+       main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_function()
       </span>
      </code>
     </a>
@@ -1001,7 +856,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.unified_remeshing">
      <code class="docutils literal notranslate">
       <span class="pre">
-       remeshing_parameters.unified_remeshing()
+       main_menu.setup.dynamic_mesh.controls.remeshing_parameters.unified_remeshing()
       </span>
      </code>
     </a>
@@ -1010,7 +865,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.zone_remeshing">
      <code class="docutils literal notranslate">
       <span class="pre">
-       remeshing_parameters.zone_remeshing()
+       main_menu.setup.dynamic_mesh.controls.remeshing_parameters.zone_remeshing()
       </span>
      </code>
     </a>
@@ -1038,81 +893,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-dynamic-mesh-controls-remeshing-parameters">
 <span id="ref-solver-tui-setup-dynamic-mesh-controls-remeshing-parameters"></span><h1>solver.tui.setup.dynamic_mesh.controls.remeshing_parameters<a class="headerlink" href="#solver-tui-setup-dynamic-mesh-controls-remeshing-parameters" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.</span></span><span class="sig-name descname"><span class="pre">remeshing_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the dynamic mesh remeshing menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.cell_skew_max" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.cell_skew_max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_skew_max</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the cell skewness threshold above which cells will be remeshed.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.face_skew_max" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.face_skew_max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_skew_max</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the face skewness threshold above which faces will be remeshed.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.length_max" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.length_max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">length_max</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the length threshold above which cells will be remeshed.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.length_min" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.length_min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">length_min</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the length threshold below which cells will be remeshed.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.parallel_remeshing" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.parallel_remeshing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parallel_remeshing</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable parallel remeshing for zone remeshing.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.poly_remeshing" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.poly_remeshing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">poly_remeshing</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable poly remeshing.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.remeshing_after_moving" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.remeshing_after_moving"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remeshing_after_moving</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable optional remeshing after mesh motion to meet skewness threshold.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.remeshing_methods" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.remeshing_methods"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remeshing_methods</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable remeshing methods.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.retain_size_distribution" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.retain_size_distribution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retain_size_distribution</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable retaining of size distribution.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.size_remesh_interval" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.size_remesh_interval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">size_remesh_interval</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the interval (in time steps) when remeshing based on size is done.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_funct_defaults" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_funct_defaults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sizing_funct_defaults</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set sizing function defaults.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_funct_rate" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_funct_rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sizing_funct_rate</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Determine how far from the boundary the increase/decrease happens.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_funct_resolution" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_funct_resolution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sizing_funct_resolution</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the sizing function resolution with respect to shortest boundary.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_funct_variation" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_funct_variation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sizing_funct_variation</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the maximum sizing function increase/decrease in the interior.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_function" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sizing_function</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable sizing function to control size based remeshing.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.unified_remeshing" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.unified_remeshing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unified_remeshing</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable unified remeshing.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.zone_remeshing" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.zone_remeshing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zone_remeshing</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable cell zone remeshing method.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prism_controls</span></code></a>(path, service)</p></td>
-<td><p>Specify optional prism controls.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_layer_parameters" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_layer_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prism_layer_parameters</span></code></a>(path, service)</p></td>
-<td><p>Enter the dynamic mesh prism remeshing menu.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sizing_controls</span></code></a>(path, service)</p></td>
-<td><p>Specify optional sizing controls.</p></td>
-</tr>
-</tbody>
-</table>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.dynamic_mesh.controls.</span></span><span class="sig-name descname"><span class="pre">remeshing_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the dynamic mesh remeshing menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.cell_skew_max">
 <span class="sig-name descname"><span class="pre">cell_skew_max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.cell_skew_max" title="Permalink to this definition">#</a></dt>
@@ -1149,102 +937,6 @@ function checkPageExistsAndRedirect(event) {
 <dd><p>Enable/disable poly remeshing.</p>
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prism_controls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Specify optional prism controls.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.add" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Add a new object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.delete" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete an object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.edit" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.edit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edit</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Edit an object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.list" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List objects.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.list_properties" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.list_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_properties</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List properties of an object.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.add">
-<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.add" title="Permalink to this definition">#</a></dt>
-<dd><p>Add a new object.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.delete">
-<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.delete" title="Permalink to this definition">#</a></dt>
-<dd><p>Delete an object.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.edit">
-<span class="sig-name descname"><span class="pre">edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.edit" title="Permalink to this definition">#</a></dt>
-<dd><p>Edit an object.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.list">
-<span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.list" title="Permalink to this definition">#</a></dt>
-<dd><p>List objects.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.list_properties">
-<span class="sig-name descname"><span class="pre">list_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls.list_properties" title="Permalink to this definition">#</a></dt>
-<dd><p>List properties of an object.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_layer_parameters">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prism_layer_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_layer_parameters" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the dynamic mesh prism remeshing menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_layer_parameters.first_height" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_layer_parameters.first_height"><code class="xref py py-obj docutils literal notranslate"><span class="pre">first_height</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set first cell height in the prism layer.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_layer_parameters.growth_rate" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_layer_parameters.growth_rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">growth_rate</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the geometric growth rate of the prism layer.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_layer_parameters.number_of_layers" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_layer_parameters.number_of_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_layers</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the number of elements in the prism layer.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_layer_parameters.first_height">
-<span class="sig-name descname"><span class="pre">first_height</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_layer_parameters.first_height" title="Permalink to this definition">#</a></dt>
-<dd><p>Set first cell height in the prism layer.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_layer_parameters.growth_rate">
-<span class="sig-name descname"><span class="pre">growth_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_layer_parameters.growth_rate" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the geometric growth rate of the prism layer.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_layer_parameters.number_of_layers">
-<span class="sig-name descname"><span class="pre">number_of_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_layer_parameters.number_of_layers" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the number of elements in the prism layer.</p>
-</dd></dl>
-
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.remeshing_after_moving">
 <span class="sig-name descname"><span class="pre">remeshing_after_moving</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.remeshing_after_moving" title="Permalink to this definition">#</a></dt>
@@ -1268,63 +960,6 @@ Steady state dynamic mesh only.</p>
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.size_remesh_interval">
 <span class="sig-name descname"><span class="pre">size_remesh_interval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.size_remesh_interval" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the interval (in time steps) when remeshing based on size is done.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sizing_controls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Specify optional sizing controls.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.add" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Add a new object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.delete" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete an object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.edit" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.edit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edit</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Edit an object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.list" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List objects.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.list_properties" title="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.list_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_properties</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List properties of an object.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.add">
-<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.add" title="Permalink to this definition">#</a></dt>
-<dd><p>Add a new object.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.delete">
-<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.delete" title="Permalink to this definition">#</a></dt>
-<dd><p>Delete an object.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.edit">
-<span class="sig-name descname"><span class="pre">edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.edit" title="Permalink to this definition">#</a></dt>
-<dd><p>Edit an object.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.list">
-<span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.list" title="Permalink to this definition">#</a></dt>
-<dd><p>List objects.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.list_properties">
-<span class="sig-name descname"><span class="pre">list_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.dynamic_mesh.controls.remeshing_parameters.sizing_controls.list_properties" title="Permalink to this definition">#</a></dt>
-<dd><p>List properties of an object.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">

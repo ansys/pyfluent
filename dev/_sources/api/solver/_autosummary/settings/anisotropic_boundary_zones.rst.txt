@@ -5,8 +5,11 @@
 anisotropic_boundary_zones
 ==========================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.anisotropic_boundary_zones.anisotropic_boundary_zones
+.. currentmodule:: ansys.fluent.core.solver.settings_231.anisotropic_boundary_zones
 
+.. autoclass:: anisotropic_boundary_zones
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================   ================================

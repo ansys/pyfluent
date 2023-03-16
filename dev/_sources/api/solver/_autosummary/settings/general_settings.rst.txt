@@ -5,13 +5,16 @@
 general_settings
 ================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.general_settings.general_settings
+.. currentmodule:: ansys.fluent.core.solver.settings_231.general_settings
 
-.. rubric:: Attributes
+.. autoclass:: general_settings
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ========================================================   ==========================================================================
 
-Attribute                                                                                                                     Summary
+Child                                                                                                                         Summary
 
 ========================================================   ==========================================================================
 :ref:`contour_plotting_option <contour_plotting_option>`       Enable/disable contour and vector plots of mean and rms particle data.

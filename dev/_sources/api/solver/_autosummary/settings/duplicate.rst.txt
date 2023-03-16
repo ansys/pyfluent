@@ -5,8 +5,11 @@
 duplicate
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.duplicate.duplicate
+.. currentmodule:: ansys.fluent.core.solver.settings_231.duplicate
 
+.. autoclass:: duplicate
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ==============================================   ===============================

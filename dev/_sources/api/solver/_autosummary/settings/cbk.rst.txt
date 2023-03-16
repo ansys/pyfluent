@@ -5,13 +5,16 @@
 cbk
 ===
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.cbk.cbk
+.. currentmodule:: ansys.fluent.core.solver.settings_231.cbk
 
-.. rubric:: Attributes
+.. autoclass:: cbk
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ============================================================   ======================================
 
-Attribute                                                                                     Summary
+Child                                                                                         Summary
 
 ============================================================   ======================================
 :ref:`option <option_2>`                                                              'option' child.

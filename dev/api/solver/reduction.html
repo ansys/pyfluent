@@ -51,12 +51,12 @@
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="reduction" href="_autosummary/ansys.fluent.core.solver.function.reduction.html" />
-    <link rel="prev" title="unregister_callback" href="_autosummary/ansys.fluent.core.streaming_services.monitor_streaming.MonitorsManager.unregister_callback.html" />
+    <link rel="next" title="Examples" href="../../examples/index.html" />
+    <link rel="prev" title="MonitorsManager" href="monitors.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -301,8 +301,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../general/index.html">
-   General
+  <a class="reference internal" href="../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -360,22 +365,10 @@ function checkPageExistsAndRedirect(event) {
      MonitorsManager
     </a>
    </li>
-   <li class="toctree-l2 current active has-children">
+   <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      Reduction
     </a>
-    <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-    <label for="toctree-checkbox-2">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="_autosummary/ansys.fluent.core.solver.function.reduction.html">
-       reduction
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -793,13 +786,6 @@ specified locations as shown:</p>
 <span class="go">[ 1.15005117e-24,  1.15218653e-24, -6.60723735e-20]</span>
 </pre></div>
 </div>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/ansys.fluent.core.solver.function.reduction.html#module-ansys.fluent.core.solver.function.reduction" title="ansys.fluent.core.solver.function.reduction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduction</span></code></a></p></td>
-<td><p>Module providing reductions functions that can be applied to Fluent data from one or across multiple remote Fluent sessions.</p></td>
-</tr>
-</tbody>
-</table>
 </section>
 </section>
 

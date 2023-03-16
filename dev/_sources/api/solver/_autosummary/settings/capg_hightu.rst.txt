@@ -5,8 +5,11 @@
 capg_hightu
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.capg_hightu.capg_hightu
+.. currentmodule:: ansys.fluent.core.solver.settings_231.capg_hightu
 
+.. autoclass:: capg_hightu
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   =====================================

@@ -5,13 +5,16 @@
 ocw_sp_vmag
 ===========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.ocw_sp_vmag.ocw_sp_vmag
+.. currentmodule:: ansys.fluent.core.solver.settings_231.ocw_sp_vmag
 
-.. rubric:: Attributes
+.. autoclass:: ocw_sp_vmag
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==================================   =========================
 
-Attribute                                              Summary
+Child                                                  Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

@@ -5,8 +5,11 @@
 linearize_source_terms
 ======================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.linearize_source_terms.linearize_source_terms
+.. currentmodule:: ansys.fluent.core.solver.settings_231.linearize_source_terms
 
+.. autoclass:: linearize_source_terms
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   =================================================================================

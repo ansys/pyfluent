@@ -5,8 +5,11 @@
 new_type
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.new_type.new_type
+.. currentmodule:: ansys.fluent.core.solver.settings_231.new_type
 
+.. autoclass:: new_type
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ================================   ==========================

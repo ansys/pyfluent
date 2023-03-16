@@ -5,8 +5,11 @@
 async_optimize
 ==============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.async_optimize.async_optimize
+.. currentmodule:: ansys.fluent.core.solver.settings_231.async_optimize
 
+.. autoclass:: async_optimize
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   =================

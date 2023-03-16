@@ -5,8 +5,11 @@
 per_angle
 =========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.per_angle.per_angle
+.. currentmodule:: ansys.fluent.core.solver.settings_231.per_angle
 
+.. autoclass:: per_angle
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

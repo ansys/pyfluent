@@ -5,8 +5,11 @@
 turbulent_intensity
 ===================
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.turbulent_intensity_1.turbulent_intensity
+.. currentmodule:: ansys.fluent.core.solver.settings_231.turbulent_intensity_1
 
+.. autoclass:: turbulent_intensity
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ======================================

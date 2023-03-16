@@ -5,8 +5,11 @@
 fanzone
 =======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.fanzone.fanzone
+.. currentmodule:: ansys.fluent.core.solver.settings_231.fanzone
 
+.. autoclass:: fanzone
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

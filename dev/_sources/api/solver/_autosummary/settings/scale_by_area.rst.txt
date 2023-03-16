@@ -5,8 +5,11 @@
 scale_by_area
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.scale_by_area.scale_by_area
+.. currentmodule:: ansys.fluent.core.solver.settings_231.scale_by_area
 
+.. autoclass:: scale_by_area
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   ======================

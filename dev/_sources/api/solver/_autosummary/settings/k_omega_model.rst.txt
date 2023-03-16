@@ -5,8 +5,11 @@
 k_omega_model
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.k_omega_model.k_omega_model
+.. currentmodule:: ansys.fluent.core.solver.settings_231.k_omega_model
 
+.. autoclass:: k_omega_model
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ====================

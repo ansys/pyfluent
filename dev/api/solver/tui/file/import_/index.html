@@ -51,12 +51,12 @@
     <script src="../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
-    <link rel="next" title="solver.tui.file.import_.lstc" href="lstc/index.html" />
-    <link rel="prev" title="solver.tui.file.auto_save" href="../auto_save/index.html" />
+    <link rel="next" title="solver.tui.file.import_.cgns" href="cgns/index.html" />
+    <link rel="prev" title="solver.tui.file.solution_files" href="../solution_files/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev3 variable.
+            // this version, rather than using sphinx's 0.13.dev2 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -304,8 +304,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -349,28 +354,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../solution/index.html">
          solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../setup/index.html">
-         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4">
@@ -379,13 +364,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../setup/index.html">
+         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4">
@@ -394,13 +374,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../turbo_post/index.html">
-         solver.tui.turbo_post
+        <a class="reference internal" href="../../display/index.html">
+         solver.tui.display
         </a>
        </li>
        <li class="toctree-l4">
@@ -409,157 +384,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../define/index.html">
-         solver.tui.define
+        <a class="reference internal" href="../../results/index.html">
+         solver.tui.results
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4 current active has-children">
-        <a class="reference internal" href="../index.html">
-         solver.tui.file
-        </a>
-        <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-        <label for="toctree-checkbox-4">
-         <i class="fas fa-chevron-down">
-         </i>
-        </label>
-        <ul class="current">
-         <li class="toctree-l5">
-          <a class="reference internal" href="../cffio_options/index.html">
-           solver.tui.file.cffio_options
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../solution_files/index.html">
-           solver.tui.file.solution_files
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../fsi/index.html">
-           solver.tui.file.fsi
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../export/index.html">
-           solver.tui.file.export
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../auto_save/index.html">
-           solver.tui.file.auto_save
-          </a>
-         </li>
-         <li class="toctree-l5 current active has-children">
-          <a class="current reference internal" href="#">
-           solver.tui.file.import_
-          </a>
-          <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-          <label for="toctree-checkbox-5">
-           <i class="fas fa-chevron-down">
-           </i>
-          </label>
-          <ul>
-           <li class="toctree-l6">
-            <a class="reference internal" href="lstc/index.html">
-             solver.tui.file.import_.lstc
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="mechanical_apdl/index.html">
-             solver.tui.file.import_.mechanical_apdl
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="tecplot/index.html">
-             solver.tui.file.import_.tecplot
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="cfx/index.html">
-             solver.tui.file.import_.cfx
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="nastran/index.html">
-             solver.tui.file.import_.nastran
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="plot3d/index.html">
-             solver.tui.file.import_.plot3d
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="abaqus/index.html">
-             solver.tui.file.import_.abaqus
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="cgns/index.html">
-             solver.tui.file.import_.cgns
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="patran/index.html">
-             solver.tui.file.import_.patran
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="partition/index.html">
-             solver.tui.file.import_.partition
-            </a>
-           </li>
-          </ul>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../table_manager/index.html">
-           solver.tui.file.table_manager
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../interpolate/index.html">
-           solver.tui.file.interpolate
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../parametric_project/index.html">
-           solver.tui.file.parametric_project
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../transient_export/index.html">
-           solver.tui.file.transient_export
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../project/index.html">
-           solver.tui.file.project
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../em_mapping/index.html">
-           solver.tui.file.em_mapping
-          </a>
-         </li>
-        </ul>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
        <li class="toctree-l4">
@@ -573,13 +404,187 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../preferences/index.html">
-         solver.tui.preferences
+        <a class="reference internal" href="../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../simulation_reports/index.html">
+         solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../parameters__and__customization/index.html">
          solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../define/index.html">
+         solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4 current active has-children">
+        <a class="reference internal" href="../index.html">
+         solver.tui.file
+        </a>
+        <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+        <label for="toctree-checkbox-4">
+         <i class="fas fa-chevron-down">
+         </i>
+        </label>
+        <ul class="current">
+         <li class="toctree-l5">
+          <a class="reference internal" href="../auto_save/index.html">
+           solver.tui.file.auto_save
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../cffio_options/index.html">
+           solver.tui.file.cffio_options
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../export/index.html">
+           solver.tui.file.export
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../parametric_project/index.html">
+           solver.tui.file.parametric_project
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../transient_export/index.html">
+           solver.tui.file.transient_export
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../solution_files/index.html">
+           solver.tui.file.solution_files
+          </a>
+         </li>
+         <li class="toctree-l5 current active has-children">
+          <a class="current reference internal" href="#">
+           solver.tui.file.import_
+          </a>
+          <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+          <label for="toctree-checkbox-5">
+           <i class="fas fa-chevron-down">
+           </i>
+          </label>
+          <ul>
+           <li class="toctree-l6">
+            <a class="reference internal" href="cgns/index.html">
+             solver.tui.file.import_.cgns
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="nastran/index.html">
+             solver.tui.file.import_.nastran
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="lstc/index.html">
+             solver.tui.file.import_.lstc
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="patran/index.html">
+             solver.tui.file.import_.patran
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="partition/index.html">
+             solver.tui.file.import_.partition
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="plot3d/index.html">
+             solver.tui.file.import_.plot3d
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="mechanical_apdl/index.html">
+             solver.tui.file.import_.mechanical_apdl
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="cfx/index.html">
+             solver.tui.file.import_.cfx
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="tecplot/index.html">
+             solver.tui.file.import_.tecplot
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="abaqus/index.html">
+             solver.tui.file.import_.abaqus
+            </a>
+           </li>
+          </ul>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../table_manager/index.html">
+           solver.tui.file.table_manager
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../fsi/index.html">
+           solver.tui.file.fsi
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../project/index.html">
+           solver.tui.file.project
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../interpolate/index.html">
+           solver.tui.file.interpolate
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../em_mapping/index.html">
+           solver.tui.file.em_mapping
+          </a>
+         </li>
+        </ul>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../preferences/index.html">
+         solver.tui.preferences
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../parallel/index.html">
+         solver.tui.parallel
         </a>
        </li>
       </ul>
@@ -651,121 +656,16 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_">
    <code class="docutils literal notranslate">
     <span class="pre">
-     import_
+     main_menu.file.import_
     </span>
    </code>
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.abaqus">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       import_.abaqus
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.abaqus.fil">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         import_.abaqus.fil()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.abaqus.input">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         import_.abaqus.input()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.abaqus.odb">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         import_.abaqus.odb()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cfx">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       import_.cfx
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cfx.definition">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         import_.cfx.definition()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cfx.result">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         import_.cfx.result()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       import_.cgns
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.data">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         import_.cgns.data()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.mesh">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         import_.cgns.mesh()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.mesh_data">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         import_.cgns.mesh_data()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.chemkin_mechanism">
      <code class="docutils literal notranslate">
       <span class="pre">
-       import_.chemkin_mechanism()
+       main_menu.file.import_.chemkin_mechanism()
       </span>
      </code>
     </a>
@@ -774,7 +674,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.chemkin_report_each_line">
      <code class="docutils literal notranslate">
       <span class="pre">
-       import_.chemkin_report_each_line()
+       main_menu.file.import_.chemkin_report_each_line()
       </span>
      </code>
     </a>
@@ -783,7 +683,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.ensight">
      <code class="docutils literal notranslate">
       <span class="pre">
-       import_.ensight()
+       main_menu.file.import_.ensight()
       </span>
      </code>
     </a>
@@ -792,7 +692,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fidap">
      <code class="docutils literal notranslate">
       <span class="pre">
-       import_.fidap()
+       main_menu.file.import_.fidap()
       </span>
      </code>
     </a>
@@ -801,7 +701,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.flamelet">
      <code class="docutils literal notranslate">
       <span class="pre">
-       import_.flamelet()
+       main_menu.file.import_.flamelet()
       </span>
      </code>
     </a>
@@ -810,7 +710,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fluent4_case">
      <code class="docutils literal notranslate">
       <span class="pre">
-       import_.fluent4_case()
+       main_menu.file.import_.fluent4_case()
       </span>
      </code>
     </a>
@@ -819,7 +719,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file">
      <code class="docutils literal notranslate">
       <span class="pre">
-       import_.fmu_file()
+       main_menu.file.import_.fmu_file()
       </span>
      </code>
     </a>
@@ -828,7 +728,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.gambit">
      <code class="docutils literal notranslate">
       <span class="pre">
-       import_.gambit()
+       main_menu.file.import_.gambit()
       </span>
      </code>
     </a>
@@ -837,7 +737,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.hypermesh">
      <code class="docutils literal notranslate">
       <span class="pre">
-       import_.hypermesh()
+       main_menu.file.import_.hypermesh()
       </span>
      </code>
     </a>
@@ -846,181 +746,25 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.ideas_universal">
      <code class="docutils literal notranslate">
       <span class="pre">
-       import_.ideas_universal()
+       main_menu.file.import_.ideas_universal()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.lstc">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       import_.lstc
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.lstc.input">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         import_.lstc.input()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.lstc.state">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         import_.lstc.state()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.marc_post">
      <code class="docutils literal notranslate">
       <span class="pre">
-       import_.marc_post()
+       main_menu.file.import_.marc_post()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.mechanical_apdl">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       import_.mechanical_apdl
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.mechanical_apdl.input">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         import_.mechanical_apdl.input()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.mechanical_apdl.result">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         import_.mechanical_apdl.result()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.nastran">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       import_.nastran
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.nastran.bulkdata">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         import_.nastran.bulkdata()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.nastran.output2">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         import_.nastran.output2()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.partition">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       import_.partition
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.partition.metis">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         import_.partition.metis()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.partition.metis_zone">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         import_.partition.metis_zone()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.patran">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       import_.patran
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.patran.neutral">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         import_.patran.neutral()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.plot3d">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       import_.plot3d
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.plot3d.mesh">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         import_.plot3d.mesh()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.prebfc_structured">
      <code class="docutils literal notranslate">
       <span class="pre">
-       import_.prebfc_structured()
+       main_menu.file.import_.prebfc_structured()
       </span>
      </code>
     </a>
@@ -1029,30 +773,10 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.ptc_mechanica">
      <code class="docutils literal notranslate">
       <span class="pre">
-       import_.ptc_mechanica()
+       main_menu.file.import_.ptc_mechanica()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.tecplot">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       import_.tecplot
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.tecplot.mesh">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         import_.tecplot.mesh()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -1077,198 +801,14 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-file-import">
 <span id="ref-solver-tui-file-import"></span><h1>solver.tui.file.import_<a class="headerlink" href="#solver-tui-file-import" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.file.</span></span><span class="sig-name descname"><span class="pre">import_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enter the import menu.</p>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.abaqus" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.abaqus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">abaqus</span></code></a>(path, service)</p></td>
-<td><p>Imports an ABAQUS file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cfx" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.cfx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cfx</span></code></a>(path, service)</p></td>
-<td><p>Imports a CFX file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cgns</span></code></a>(path, service)</p></td>
-<td><p>Imports a CGNS file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.lstc" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.lstc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lstc</span></code></a>(path, service)</p></td>
-<td><p>Imports an LSTC file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.mechanical_apdl" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.mechanical_apdl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mechanical_apdl</span></code></a>(path, service)</p></td>
-<td><p>Imports a Mechanical APDL file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.nastran" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.nastran"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nastran</span></code></a>(path, service)</p></td>
-<td><p>Imports a NASTRAN file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.partition" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.partition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partition</span></code></a>(path, service)</p></td>
-<td><p>Enters the partition menu to set conditions for partitioning an ANSYS Fluent case file during read.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.patran" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.patran"><code class="xref py py-obj docutils literal notranslate"><span class="pre">patran</span></code></a>(path, service)</p></td>
-<td><p>Imports a PATRAN neutral file (zones defined by named components).</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.plot3d" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.plot3d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot3d</span></code></a>(path, service)</p></td>
-<td><p>Imports a PLOT3D file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.tecplot" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.tecplot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tecplot</span></code></a>(path, service)</p></td>
-<td><p>Enters the Tecplot menu.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.chemkin_mechanism" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.chemkin_mechanism"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chemkin_mechanism</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads a CHEMKIN mechanism file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.chemkin_report_each_line" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.chemkin_report_each_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chemkin_report_each_line</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables reporting after reading each line.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.ensight" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.ensight"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ensight</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads an EnSight file as a case file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fidap" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.fidap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fidap</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Imports a FIDAP neutral file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.flamelet" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.flamelet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flamelet</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Imports a flamelet file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fluent4_case" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.fluent4_case"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fluent4_case</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Imports a formatted ANSYS Fluent 4 case file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fmu_file</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enters the import FMU file menu.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.gambit" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.gambit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gambit</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Imports a GAMBIT neutral file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.hypermesh" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.hypermesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hypermesh</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads a HYPERMESH file as a case file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.ideas_universal" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.ideas_universal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ideas_universal</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Imports an I-deas Universal file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.marc_post" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.marc_post"><code class="xref py py-obj docutils literal notranslate"><span class="pre">marc_post</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads a MARC POST file as a case file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.prebfc_structured" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.prebfc_structured"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prebfc_structured</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Imports a formatted PreBFC structured mesh file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.ptc_mechanica" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.ptc_mechanica"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ptc_mechanica</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads a PTC Mechanica Design file as a case file.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.abaqus">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">abaqus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.abaqus" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Imports an ABAQUS file.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.abaqus.fil" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.abaqus.fil"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fil</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads an ABAQUS .fil result file as a case file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.abaqus.input" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.abaqus.input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">input</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads an ABAQUS input file as a case file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.abaqus.odb" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.abaqus.odb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">odb</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads an ABAQUS odb file as a case file.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.abaqus.fil">
-<span class="sig-name descname"><span class="pre">fil</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.abaqus.fil" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads an ABAQUS .fil result file as a case file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.abaqus.input">
-<span class="sig-name descname"><span class="pre">input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.abaqus.input" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads an ABAQUS input file as a case file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.abaqus.odb">
-<span class="sig-name descname"><span class="pre">odb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.abaqus.odb" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads an ABAQUS odb file as a case file.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.cfx">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cfx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cfx" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Imports a CFX file.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cfx.definition" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.cfx.definition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">definition</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads a CFX definition file as a case file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cfx.result" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.cfx.result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">result</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads a CFX definition file as a case file.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.cfx.definition">
-<span class="sig-name descname"><span class="pre">definition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cfx.definition" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads a CFX definition file as a case file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.cfx.result">
-<span class="sig-name descname"><span class="pre">result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cfx.result" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads a CFX definition file as a case file.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cgns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Imports a CGNS file.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.data" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads data from CGNS file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.mesh" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Imports a CGNS mesh file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.mesh_data" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.mesh_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_data</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Imports a CGNS mesh file and data file.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.data">
-<span class="sig-name descname"><span class="pre">data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.data" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads data from CGNS file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.mesh">
-<span class="sig-name descname"><span class="pre">mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.mesh" title="Permalink to this definition">#</a></dt>
-<dd><p>Imports a CGNS mesh file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.mesh_data">
-<span class="sig-name descname"><span class="pre">mesh_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns.mesh_data" title="Permalink to this definition">#</a></dt>
-<dd><p>Imports a CGNS mesh file and data file.</p>
-</dd></dl>
-
-</dd></dl>
-
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.file.</span></span><span class="sig-name descname"><span class="pre">import_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the import menu.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.chemkin_mechanism">
 <span class="sig-name descname"><span class="pre">chemkin_mechanism</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.chemkin_mechanism" title="Permalink to this definition">#</a></dt>
@@ -1329,172 +869,10 @@ function checkPageExistsAndRedirect(event) {
 <dd><p>Imports an I-deas Universal file.</p>
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.lstc">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lstc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.lstc" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Imports an LSTC file.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.lstc.input" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.lstc.input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">input</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads an LSTC input file as a case file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.lstc.state" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.lstc.state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">state</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads an LSTC result file as a case file.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.lstc.input">
-<span class="sig-name descname"><span class="pre">input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.lstc.input" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads an LSTC input file as a case file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.lstc.state">
-<span class="sig-name descname"><span class="pre">state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.lstc.state" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads an LSTC result file as a case file.</p>
-</dd></dl>
-
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.marc_post">
 <span class="sig-name descname"><span class="pre">marc_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.marc_post" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads a MARC POST file as a case file.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.mechanical_apdl">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mechanical_apdl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.mechanical_apdl" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Imports a Mechanical APDL file.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.mechanical_apdl.input" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.mechanical_apdl.input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">input</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads a Mechanical APDL file as a case file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.mechanical_apdl.result" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.mechanical_apdl.result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">result</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads a Mechanical APDL result file as a case file.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.mechanical_apdl.input">
-<span class="sig-name descname"><span class="pre">input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.mechanical_apdl.input" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads a Mechanical APDL file as a case file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.mechanical_apdl.result">
-<span class="sig-name descname"><span class="pre">result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.mechanical_apdl.result" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads a Mechanical APDL result file as a case file.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.nastran">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nastran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.nastran" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Imports a NASTRAN file.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.nastran.bulkdata" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.nastran.bulkdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bulkdata</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads a NASTRAN file as a case file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.nastran.output2" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.nastran.output2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">output2</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads a NASTRAN op2 file as a case file.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.nastran.bulkdata">
-<span class="sig-name descname"><span class="pre">bulkdata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.nastran.bulkdata" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads a NASTRAN file as a case file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.nastran.output2">
-<span class="sig-name descname"><span class="pre">output2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.nastran.output2" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads a NASTRAN op2 file as a case file.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.partition">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">partition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.partition" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the partition menu to set conditions for partitioning an ANSYS Fluent case file during read.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.partition.metis" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.partition.metis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metis</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads and partitions an ANSYS Fluent case file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.partition.metis_zone" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.partition.metis_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metis_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads and partitions an ANSYS Fluent case file.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.partition.metis">
-<span class="sig-name descname"><span class="pre">metis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.partition.metis" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads and partitions an ANSYS Fluent case file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.partition.metis_zone">
-<span class="sig-name descname"><span class="pre">metis_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.partition.metis_zone" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads and partitions an ANSYS Fluent case file.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.patran">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">patran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.patran" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Imports a PATRAN neutral file (zones defined by named components).</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.patran.neutral" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.patran.neutral"><code class="xref py py-obj docutils literal notranslate"><span class="pre">neutral</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads a PATRAN Neutral file (zones defined by named components) as a case file.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.patran.neutral">
-<span class="sig-name descname"><span class="pre">neutral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.patran.neutral" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads a PATRAN Neutral file (zones defined by named components) as a case file.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.plot3d">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">plot3d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.plot3d" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Imports a PLOT3D file.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.plot3d.mesh" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.plot3d.mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads a PLOT3D file as a case file.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.plot3d.mesh">
-<span class="sig-name descname"><span class="pre">mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.plot3d.mesh" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads a PLOT3D file as a case file.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py method">
@@ -1507,27 +885,6 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.ptc_mechanica">
 <span class="sig-name descname"><span class="pre">ptc_mechanica</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.ptc_mechanica" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads a PTC Mechanica Design file as a case file.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.tecplot">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tecplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.tecplot" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the Tecplot menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.tecplot.mesh" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.tecplot.mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads a Tecplot binary file as a case file.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.tecplot.mesh">
-<span class="sig-name descname"><span class="pre">mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.tecplot.mesh" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads a Tecplot binary file as a case file.</p>
-</dd></dl>
-
 </dd></dl>
 
 </dd></dl>

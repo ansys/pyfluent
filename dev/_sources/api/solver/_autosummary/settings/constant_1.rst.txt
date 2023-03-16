@@ -5,13 +5,16 @@
 constant
 ========
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.constant_1.constant
+.. currentmodule:: ansys.fluent.core.solver.settings_231.constant_1
 
-.. rubric:: Attributes
+.. autoclass:: constant
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ==========================   =====================
 
-Attribute                                  Summary
+Child                                      Summary
 
 ==========================   =====================
 :ref:`diameter <diameter>`       'diameter' child.

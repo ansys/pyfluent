@@ -5,8 +5,11 @@
 abaqus
 ======
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.abaqus.abaqus
+.. currentmodule:: ansys.fluent.core.solver.settings_231.abaqus
 
+.. autoclass:: abaqus
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Arguments
 
 ================================================   ================================

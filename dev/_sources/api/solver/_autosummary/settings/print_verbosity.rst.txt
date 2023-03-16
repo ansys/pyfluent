@@ -5,8 +5,11 @@
 print_verbosity
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.print_verbosity.print_verbosity
+.. currentmodule:: ansys.fluent.core.solver.settings_231.print_verbosity
 
+.. autoclass:: print_verbosity
+    :show-inheritance:
+    :undoc-members:
 .. rubric:: Included in:
 
 ==================   ===============================================

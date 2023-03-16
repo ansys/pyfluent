@@ -5,13 +5,16 @@
 specific_heat
 =============
 
-.. autoclass:: ansys.fluent.core.solver.settings_231.specific_heat_4.specific_heat
+.. currentmodule:: ansys.fluent.core.solver.settings_231.specific_heat_4
 
-.. rubric:: Attributes
+.. autoclass:: specific_heat
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Children
 
 ====================================================   ====================================================
 
-Attribute                                                                                           Summary
+Child                                                                                               Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.
