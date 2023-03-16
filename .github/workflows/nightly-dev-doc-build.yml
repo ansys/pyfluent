@@ -15,10 +15,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image-tag: [v22.2.0, v23.1.0, v23.2.0]
+        image-tag: [v23.1.0]
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: before_doc_change
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -72,13 +74,13 @@ jobs:
         with:
           name: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
           path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
-          retention-days: 7
+          #retention-days: 7
 
-      - name: "Deploy development documentation"
-        if: matrix.image-tag == env.DOC_DEPLOYMENT_IMAGE_TAG
-        uses: pyansys/actions/doc-deploy-dev@v3
-        with:
-            doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
-            decompress_artifact: true
-            cname: ${{ env.DOCUMENTATION_CNAME }}
-            token: ${{ secrets.GITHUB_TOKEN }}
+      #- name: "Deploy development documentation"
+      #  if: matrix.image-tag == env.DOC_DEPLOYMENT_IMAGE_TAG
+      #  uses: pyansys/actions/doc-deploy-dev@v3
+      #  with:
+      #      doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
+      #      decompress_artifact: true
+      #      cname: ${{ env.DOCUMENTATION_CNAME }}
+      #      token: ${{ secrets.GITHUB_TOKEN }}
