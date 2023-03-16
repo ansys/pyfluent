@@ -9,11 +9,6 @@ from typing import List
 from ansys.fluent.core.session import parse_server_info_file
 from ansys.fluent.core.utils.networking import get_free_port
 
-def _get_free_port() -> int:
-    sock = socket.socket()
-    sock.bind(("", 0))
-    return sock.getsockname()[1]
-
 
 def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) -> int:
     """Start a Fluent container.
@@ -38,7 +33,7 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
     os.close(fd)
     timeout = 100
     license_server = os.environ["ANSYSLMD_LICENSE_FILE"]
-    port = _get_free_port()
+    port = get_free_port()
     password = ""
     container_sifile = mounted_to + "/" + Path(sifile).name
     image_tag = os.getenv("FLUENT_IMAGE_TAG", "v23.1.0")
