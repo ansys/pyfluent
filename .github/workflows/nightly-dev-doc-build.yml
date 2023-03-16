@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image-tag: [v22.2.0, v23.1.0, v23.2.0]
+        image-tag: [v23.1.0]
 
     steps:
       - uses: actions/checkout@v3
@@ -80,7 +80,7 @@ jobs:
         with:
           name: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
           path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
-          retention-days: 7
+          #retention-days: 7
 
       - name: "Deploy development documentation"
         if: matrix.image-tag == env.DOC_DEPLOYMENT_IMAGE_TAG
