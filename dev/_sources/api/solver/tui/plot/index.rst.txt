@@ -14,6 +14,6 @@ solver.tui.plot
 .. toctree::
    :hidden:
 
-   cumulative_plot/index
    flamelet_curves/index
    ansys_sound_analysis/index
+   cumulative_plot/index

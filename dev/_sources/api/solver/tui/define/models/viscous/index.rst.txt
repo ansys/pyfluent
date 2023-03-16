@@ -14,8 +14,8 @@ solver.tui.define.models.viscous
 .. toctree::
    :hidden:
 
-   turbulence_expert/index
    geko_options/index
-   near_wall_treatment/index
-   transition_model_options/index
    multiphase_turbulence/index
+   transition_model_options/index
+   turbulence_expert/index
+   near_wall_treatment/index

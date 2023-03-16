@@ -16,23 +16,23 @@ solver.tui
 
    icing/index
    results/index
-   display/index
-   turbo_workflow/index
-   setup/index
-   parameters__and__customization/index
-   solution/index
-   define/index
-   surface/index
-   preferences/index
-   solve/index
-   simulation_reports/index
-   report/index
-   parallel/index
-   turbo_post/index
-   parametric_study/index
-   views/index
    server/index
+   solution/index
+   setup/index
+   report/index
+   turbo_workflow/index
+   surface/index
+   views/index
+   solve/index
+   turbo_post/index
    adjoint/index
+   define/index
+   parallel/index
+   parametric_study/index
+   file/index
+   simulation_reports/index
+   display/index
    mesh/index
    plot/index
-   file/index
+   preferences/index
+   parameters__and__customization/index

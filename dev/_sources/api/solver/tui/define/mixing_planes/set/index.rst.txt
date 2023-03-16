@@ -14,5 +14,5 @@ solver.tui.define.mixing\_planes.set
 .. toctree::
    :hidden:
 
-   conserve_total_enthalpy/index
    conserve_swirl/index
+   conserve_total_enthalpy/index

@@ -16,10 +16,10 @@ meshing.tui.boundary
 
    modify/index
    manage/index
-   feature/index
-   boundary_conditions/index
    improve/index
-   shell_boundary_layer/index
-   refine/index
    remesh/index
+   feature/index
+   refine/index
+   boundary_conditions/index
    separate/index
+   shell_boundary_layer/index

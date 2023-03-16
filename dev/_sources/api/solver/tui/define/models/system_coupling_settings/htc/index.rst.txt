@@ -14,5 +14,5 @@ solver.tui.define.models.system\_coupling\_settings.htc
 .. toctree::
    :hidden:
 
-   unsteady_statistics/index
    htc_calculation_method/index
+   unsteady_statistics/index

@@ -14,9 +14,9 @@ solver.tui.mesh.adapt
 .. toctree::
    :hidden:
 
-   geometry/index
-   manage_criteria/index
    set/index
-   multi_layer_refinement/index
    cell_registers/index
+   manage_criteria/index
+   multi_layer_refinement/index
    profile/index
+   geometry/index

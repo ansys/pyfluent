@@ -14,5 +14,5 @@ solver.tui.solution.controls.advanced
 .. toctree::
    :hidden:
 
-   fast_transient_settings/index
    amg_options/index
+   fast_transient_settings/index

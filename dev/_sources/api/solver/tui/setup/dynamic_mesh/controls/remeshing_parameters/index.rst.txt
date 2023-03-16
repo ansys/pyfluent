@@ -15,5 +15,5 @@ solver.tui.setup.dynamic\_mesh.controls.remeshing\_parameters
    :hidden:
 
    prism_layer_parameters/index
-   sizing_controls/index
    prism_controls/index
+   sizing_controls/index

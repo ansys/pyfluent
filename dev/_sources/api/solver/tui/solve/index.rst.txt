@@ -15,12 +15,12 @@ solver.tui.solve
    :hidden:
 
    set/index
-   report_files/index
    execute_commands/index
+   report_files/index
    cell_registers/index
-   report_definitions/index
-   monitors/index
    animate/index
-   report_plots/index
+   report_definitions/index
    initialize/index
+   report_plots/index
    cell_register_operations/index
+   monitors/index

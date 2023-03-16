@@ -15,7 +15,7 @@ solver.tui.parametric\_study.design\_points
    :hidden:
 
    table/index
-   concurrent/index
-   set/index
    auto_create/index
    print_to_console/index
+   set/index
+   concurrent/index

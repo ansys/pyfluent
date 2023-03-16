@@ -16,8 +16,8 @@ solver.tui.results.graphics\_window
 
    windows/index
    titles/index
+   display_states/index
+   picture/index
    view_sync/index
    views/index
-   picture/index
    embedded_windows/index
-   display_states/index

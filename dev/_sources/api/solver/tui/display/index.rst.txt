@@ -14,17 +14,17 @@ solver.tui.display
 .. toctree::
    :hidden:
 
+   surface/index
+   embedded_windows/index
+   pdf_data/index
+   inverse_dft/index
+   set/index
+   particle_tracks/index
+   flamelet_data/index
+   display_states/index
+   path_lines/index
+   views/index
+   view_sync/index
    update_scene/index
    objects/index
-   particle_tracks/index
-   inverse_dft/index
-   surface/index
-   display_states/index
-   flamelet_data/index
-   pdf_data/index
-   views/index
-   path_lines/index
-   embedded_windows/index
    define/index
-   view_sync/index
-   set/index

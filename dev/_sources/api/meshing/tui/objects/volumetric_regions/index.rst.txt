@@ -15,5 +15,5 @@ meshing.tui.objects.volumetric\_regions
    :hidden:
 
    hexcore/index
-   tet/index
    scoped_prism/index
+   tet/index

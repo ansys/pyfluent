@@ -15,24 +15,24 @@ solver.tui.define
    :hidden:
 
    gap_model/index
-   operating_conditions/index
-   named_expressions/index
    custom_field_functions/index
-   reference_frames/index
-   mesh_interfaces/index
-   turbo_model/index
-   parameters/index
-   phases/index
-   materials/index
    user_defined/index
-   models/index
-   periodic_conditions/index
-   virtual_boundary/index
-   overset_interfaces/index
+   reference_frames/index
+   materials/index
    spectral/index
-   profiles/index
-   curvilinear_coordinate_system/index
-   solution_strategy/index
-   boundary_conditions/index
    dynamic_mesh/index
+   virtual_boundary/index
+   mesh_interfaces/index
    mixing_planes/index
+   models/index
+   phases/index
+   operating_conditions/index
+   boundary_conditions/index
+   periodic_conditions/index
+   solution_strategy/index
+   named_expressions/index
+   parameters/index
+   curvilinear_coordinate_system/index
+   profiles/index
+   overset_interfaces/index
+   turbo_model/index

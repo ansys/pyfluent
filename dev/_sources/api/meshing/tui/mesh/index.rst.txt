@@ -15,20 +15,20 @@ meshing.tui.mesh
    :hidden:
 
    rapid_octree/index
-   thin_volume_mesh/index
    auto_mesh_controls/index
-   poly_hexcore/index
-   manage/index
-   domains/index
-   modify/index
-   poly/index
-   separate/index
-   cartesian/index
-   non_conformals/index
-   pyramid/index
-   scoped_prisms/index
-   prism/index
-   hexcore/index
-   cell_zone_conditions/index
-   tet/index
    cavity/index
+   poly/index
+   hexcore/index
+   scoped_prisms/index
+   separate/index
+   poly_hexcore/index
+   cell_zone_conditions/index
+   modify/index
+   tet/index
+   cartesian/index
+   prism/index
+   domains/index
+   non_conformals/index
+   thin_volume_mesh/index
+   manage/index
+   pyramid/index

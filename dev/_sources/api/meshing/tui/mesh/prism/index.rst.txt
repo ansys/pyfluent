@@ -15,6 +15,6 @@ meshing.tui.mesh.prism
    :hidden:
 
    improve/index
-   controls/index
    split/index
    post_ignore/index
+   controls/index

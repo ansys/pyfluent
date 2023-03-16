@@ -14,13 +14,13 @@ solver.tui.results.graphics.expert.set
 .. toctree::
    :hidden:
 
-   contours/index
-   windows/index
+   picture/index
    velocity_vectors/index
    rendering_options/index
-   lights/index
-   titles/index
    path_lines/index
    particle_tracks/index
-   picture/index
+   windows/index
+   titles/index
+   lights/index
+   contours/index
    colors/index
