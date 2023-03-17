@@ -14,5 +14,5 @@ solver.tui.solve.animate.pulse
 .. toctree::
    :hidden:
 
-   hardcopy/index
    video/index
+   hardcopy/index

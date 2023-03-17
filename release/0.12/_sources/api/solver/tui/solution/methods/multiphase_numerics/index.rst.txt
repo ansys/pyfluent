@@ -13,11 +13,11 @@ solver.tui.solution.methods.multiphase\_numerics
    :hidden:
 
    face_pressure_controls/index
-   viscous_flow/index
-   advanced_stability_controls/index
-   boiling_parameters/index
-   compressible_flow/index
-   solution_stabilization/index
-   default_controls/index
    heat_mass_transfer/index
+   boiling_parameters/index
+   default_controls/index
+   advanced_stability_controls/index
+   compressible_flow/index
+   viscous_flow/index
+   solution_stabilization/index
    porous_media/index

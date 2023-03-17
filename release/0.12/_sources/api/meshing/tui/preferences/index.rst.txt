@@ -13,12 +13,12 @@ meshing.tui.preferences
    :hidden:
 
    meshing_workflow/index
-   navigation/index
-   mat_pro_app/index
-   gpuapp/index
-   simulation/index
-   parametric_study/index
-   graphics/index
    appearance/index
+   mat_pro_app/index
+   simulation/index
    general/index
    turbo_workflow/index
+   gpuapp/index
+   parametric_study/index
+   graphics/index
+   navigation/index

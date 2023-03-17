@@ -51,7 +51,7 @@
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -150,7 +150,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables examples/00-fluent/sg_execution_times and {'json_url': 'https://fluent.docs.pyansys.com/release/versions.json', 'version_match': '0.12'}.
+     variables examples/00-fluent/sg_execution_times and {'json_url': 'fluent.docs.pyansys.com/release/versions.json', 'version_match': '0.12'}.
 -->
 
 <script type="text/javascript">
@@ -177,7 +177,7 @@ function checkPageExistsAndRedirect(event) {
 
 // Populate the version switcher from the JSON config file
 (function () {
-    $.getJSON("https://fluent.docs.pyansys.com/release/versions.json", function(data, textStatus, jqXHR) {
+    $.getJSON("fluent.docs.pyansys.com/release/versions.json", function(data, textStatus, jqXHR) {
         const currentFilePath = "examples/00-fluent/sg_execution_times.html";
         let btn = document.getElementById("version_switcher_button");
         // Set empty strings by default so that these attributes exist and can be used in CSS selectors
@@ -205,7 +205,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.12.3 variable.
+            // this version, rather than using sphinx's 0.12.5 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.12") {
@@ -334,19 +334,19 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="computation-times">
 <span id="sphx-glr-examples-00-fluent-sg-execution-times"></span><h1>Computation times<a class="headerlink" href="#computation-times" title="Permalink to this heading">#</a></h1>
-<p><strong>06:24.470</strong> total execution time for <strong>examples_00-fluent</strong> files:</p>
+<p><strong>06:22.874</strong> total execution time for <strong>examples_00-fluent</strong> files:</p>
 <table class="table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="exhaust_system.html#sphx-glr-examples-00-fluent-exhaust-system-py"><span class="std std-ref">Fault-tolerant meshing workflow</span></a> (<code class="docutils literal notranslate"><span class="pre">exhaust_system.py</span></code>)</p></td>
-<td><p>04:24.104</p></td>
+<td><p>04:23.415</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="mixing_elbow.html#sphx-glr-examples-00-fluent-mixing-elbow-py"><span class="std std-ref">Watertight geometry meshing workflow</span></a> (<code class="docutils literal notranslate"><span class="pre">mixing_elbow.py</span></code>)</p></td>
-<td><p>01:15.532</p></td>
+<td><p>01:13.954</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="mixing_elbow_settings_api.html#sphx-glr-examples-00-fluent-mixing-elbow-settings-api-py"><span class="std std-ref">Fluent setup and solution using settings objects</span></a> (<code class="docutils literal notranslate"><span class="pre">mixing_elbow_settings_api.py</span></code>)</p></td>
-<td><p>00:44.834</p></td>
+<td><p>00:45.505</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 </tbody>

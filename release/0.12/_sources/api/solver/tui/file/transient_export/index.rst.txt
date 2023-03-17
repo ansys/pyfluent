@@ -9,7 +9,7 @@ solver.tui.file.transient\_export
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file.transient_export
-   :members: fieldview_unstruct, fast_solution, common_fluids_format_post, ensight_dvs_surfaces, particle_history_data, fieldview_xdb, tecplot, fast, abaqus, ensight_gold_parallel_surfaces, ensight_dvs_volume, ideas, fieldview_unstruct_mesh, cgns, ensight_gold_transient, patran_neutral, ascii, avs, ensight_gold_from_existing_files, taitherm, cdat_for_cfd_post__and__ensight, mechanical_apdl_input, edit, fieldview_unstruct_data, nastran, delete, dx, fieldview_unstruct_surfaces, ensight_gold_parallel_volume
+   :members: fast, delete, ensight_gold_transient, fieldview_xdb, ensight_gold_parallel_surfaces, fieldview_unstruct_surfaces, fast_solution, ensight_gold_parallel_volume, ensight_dvs_surfaces, taitherm, cdat_for_cfd_post__and__ensight, fieldview_unstruct_mesh, tecplot, edit, dx, avs, fieldview_unstruct, patran_neutral, abaqus, fieldview_unstruct_data, nastran, ideas, cgns, mechanical_apdl_input, particle_history_data, ensight_gold_from_existing_files, ensight_dvs_volume, ascii, common_fluids_format_post
 
 .. toctree::
    :hidden:

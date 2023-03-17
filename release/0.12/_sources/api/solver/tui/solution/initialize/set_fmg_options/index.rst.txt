@@ -9,5 +9,5 @@ solver.tui.solution.initialize.set\_fmg\_options
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.initialize.set_fmg_options
-   :members: species_reactions, viscous_terms, set_turbulent_viscosity_ratio
+   :members: species_reactions, set_turbulent_viscosity_ratio, viscous_terms
 

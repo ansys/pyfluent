@@ -15,5 +15,5 @@ solver.tui.define.models.electrolysis
    :hidden:
 
    cathode_setup/index
-   anode_setup/index
    membrane_setup/index
+   anode_setup/index

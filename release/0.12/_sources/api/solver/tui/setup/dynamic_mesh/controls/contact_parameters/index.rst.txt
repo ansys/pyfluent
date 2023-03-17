@@ -9,7 +9,7 @@ solver.tui.setup.dynamic\_mesh.controls.contact\_parameters
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.dynamic_mesh.controls.contact_parameters
-   :members: update_contact_marks, flow_control, contact_method, render_contact_cells, contact_face_zones, verbosity, contact_udf, contact_threshold
+   :members: contact_threshold, flow_control, contact_udf, update_contact_marks, render_contact_cells, verbosity, contact_method, contact_face_zones
 
 .. toctree::
    :hidden:

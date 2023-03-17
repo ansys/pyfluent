@@ -9,5 +9,5 @@ solver.tui.display.path\_lines
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.path_lines
-   :members: plot_write_xy_plot, write_to_files, path_lines
+   :members: path_lines, write_to_files, plot_write_xy_plot
 

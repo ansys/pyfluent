@@ -9,5 +9,5 @@ meshing.tui.preferences.mat\_pro\_app
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.mat_pro_app
-   :members: warning, beta_features, focus
+   :members: focus, warning, beta_features
 

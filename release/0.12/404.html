@@ -50,7 +50,7 @@
     <script src="/en/latest/_static/clipboard.min.js"></script>
     <script src="/en/latest/_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="/en/latest/_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="/en/latest/genindex.html" />
     <link rel="search" title="Search" href="/en/latest/search.html" />
@@ -149,7 +149,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables 404 and {'json_url': 'https://fluent.docs.pyansys.com/release/versions.json', 'version_match': '0.12'}.
+     variables 404 and {'json_url': 'fluent.docs.pyansys.com/release/versions.json', 'version_match': '0.12'}.
 -->
 
 <script type="text/javascript">
@@ -176,7 +176,7 @@ function checkPageExistsAndRedirect(event) {
 
 // Populate the version switcher from the JSON config file
 (function () {
-    $.getJSON("https://fluent.docs.pyansys.com/release/versions.json", function(data, textStatus, jqXHR) {
+    $.getJSON("fluent.docs.pyansys.com/release/versions.json", function(data, textStatus, jqXHR) {
         const currentFilePath = "404.html";
         let btn = document.getElementById("version_switcher_button");
         // Set empty strings by default so that these attributes exist and can be used in CSS selectors
@@ -204,7 +204,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.12.3 variable.
+            // this version, rather than using sphinx's 0.12.5 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.12") {

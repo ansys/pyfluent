@@ -9,5 +9,5 @@ solver.tui.file.interpolate
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file.interpolate
-   :members: write_data, read_data, zone_selection
+   :members: write_data, zone_selection, read_data
 

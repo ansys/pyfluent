@@ -12,6 +12,6 @@ solver.tui.solution.methods.multiphase\_numerics.advanced\_stability\_controls.p
 .. toctree::
    :hidden:
 
+   coupled_vof/index
    skewness_correction/index
    rhie_chow_flux/index
-   coupled_vof/index

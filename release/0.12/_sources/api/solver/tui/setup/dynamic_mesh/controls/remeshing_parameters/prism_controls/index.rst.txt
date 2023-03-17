@@ -9,5 +9,5 @@ solver.tui.setup.dynamic\_mesh.controls.remeshing\_parameters.prism\_controls
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.dynamic_mesh.controls.remeshing_parameters.prism_controls
-   :members: edit, add, list, list_properties, delete
+   :members: add, list_properties, edit, list, delete
 

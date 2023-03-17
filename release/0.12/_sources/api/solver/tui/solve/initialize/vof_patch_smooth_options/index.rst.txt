@@ -9,5 +9,5 @@ solver.tui.solve.initialize.vof\_patch\_smooth\_options
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.initialize.vof_patch_smooth_options
-   :members: set_options, execute_smoothing
+   :members: execute_smoothing, set_options
 

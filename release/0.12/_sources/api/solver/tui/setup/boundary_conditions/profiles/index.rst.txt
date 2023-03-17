@@ -9,5 +9,5 @@ solver.tui.setup.boundary\_conditions.profiles
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.boundary_conditions.profiles
-   :members: replicate_profile, set_preference_profile_point_cloud_data, orient_profile, overlay_profile_point_cloud_data, list_profile_fields, interpolation_method, link_profile_to_reference_frame, morphing, overlay_profile_surface, list_profiles, update_interval, display_profile_surface, display_profile_point_cloud_data, delete_all, list_profile_parameters, delete
+   :members: delete_all, set_preference_profile_point_cloud_data, replicate_profile, overlay_profile_point_cloud_data, display_profile_surface, morphing, orient_profile, list_profiles, update_interval, list_profile_fields, display_profile_point_cloud_data, link_profile_to_reference_frame, interpolation_method, delete, overlay_profile_surface, list_profile_parameters
 

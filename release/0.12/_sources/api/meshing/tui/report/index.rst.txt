@@ -9,5 +9,5 @@ meshing.tui.report
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.report
-   :members: print_info, unrefined_cells, cell_zone_at_location, memory_usage, cell_distribution, verbosity_level, mesh_statistics, update_bounding_box, cell_zone_volume, face_distribution, cell_size_limits, spy_level, number_meshed, list_cell_quality, face_zone_at_location, face_zone_area, mesh_size, face_node_degree_distribution, neighborhood_quality, quality_method, face_size_limits, edge_size_limits, enhanced_orthogonal_quality, face_quality_limits, boundary_cell_quality, cell_quality_limits, meshing_time
+   :members: number_meshed, spy_level, edge_size_limits, face_distribution, verbosity_level, mesh_size, unrefined_cells, cell_size_limits, update_bounding_box, list_cell_quality, meshing_time, boundary_cell_quality, cell_zone_at_location, enhanced_orthogonal_quality, memory_usage, quality_method, face_node_degree_distribution, face_zone_at_location, neighborhood_quality, face_quality_limits, mesh_statistics, cell_zone_volume, print_info, face_size_limits, cell_distribution, cell_quality_limits, face_zone_area
 

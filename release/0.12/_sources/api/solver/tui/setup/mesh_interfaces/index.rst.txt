@@ -9,11 +9,11 @@ solver.tui.setup.mesh\_interfaces
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.mesh_interfaces
-   :members: verbosity, one_to_one_pairing, make_periodic, enforce_continuity_after_bc, list, auto_pairing, make_phaselag_from_periodic, transfer_motion_across_interfaces, non_overlapping_zone_name, delete, display, make_phaselag_from_boundaries, edit, enable_si_with_nodes, enforce_coupled_wall_between_solids, create, remove_left_handed_interface_faces, delete_all, improve_quality, enable_visualization_of_interfaces, turbo_create
+   :members: delete_all, enforce_continuity_after_bc, display, make_phaselag_from_boundaries, improve_quality, enable_si_with_nodes, enable_visualization_of_interfaces, non_overlapping_zone_name, create, make_periodic, verbosity, make_phaselag_from_periodic, remove_left_handed_interface_faces, edit, transfer_motion_across_interfaces, enforce_coupled_wall_between_solids, turbo_create, auto_pairing, one_to_one_pairing, list, delete
 
 .. toctree::
    :hidden:
 
-   non_conformal_interface_numerics/index
-   auto_options/index
    mapped_interface_options/index
+   auto_options/index
+   non_conformal_interface_numerics/index

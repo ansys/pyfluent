@@ -9,12 +9,12 @@ solver.tui.setup.boundary\_conditions.expert
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.boundary_conditions.expert
-   :members: open_channel_wave_settings, non_overlapping_zone_name, openchannel_threads, target_mass_flow_rate_settings
+   :members: target_mass_flow_rate_settings, non_overlapping_zone_name, open_channel_wave_settings, openchannel_threads
 
 .. toctree::
    :hidden:
 
-   periodic_conditions/index
-   impedance_data_fitting/index
    perforated_walls/index
+   impedance_data_fitting/index
    non_reflecting_bc/index
+   periodic_conditions/index

@@ -14,8 +14,8 @@ solver.tui.setup.dynamic\_mesh
 .. toctree::
    :hidden:
 
-   zones/index
-   actions/index
    transient_settings/index
    controls/index
    events/index
+   zones/index
+   actions/index

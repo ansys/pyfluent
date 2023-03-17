@@ -9,14 +9,14 @@ solver.tui.mesh.adapt
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.mesh.adapt
-   :members: manual_refinement_criteria, free_hierarchy, adapt_mesh, coarsening_criteria, manual_coarsening_criteria, anisotropic_adaption, display_adaption_cells, refinement_criteria, list_adaption_cells
+   :members: list_adaption_cells, manual_coarsening_criteria, adapt_mesh, coarsening_criteria, display_adaption_cells, refinement_criteria, anisotropic_adaption, free_hierarchy, manual_refinement_criteria
 
 .. toctree::
    :hidden:
 
-   multi_layer_refinement/index
-   profile/index
-   cell_registers/index
-   manage_criteria/index
    set/index
+   manage_criteria/index
+   multi_layer_refinement/index
+   cell_registers/index
+   profile/index
    geometry/index

@@ -9,5 +9,5 @@ solver.tui.setup.boundary\_conditions.set
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.boundary_conditions.set
-   :members: wall, fan, pressure_inlet, overset, exhaust_fan, outflow, velocity_inlet, axis, fluid, pressure_far_field, rans_les_interface, interior, network, periodic, radiator, mass_flow_outlet, solid, pressure_outlet, geometry, porous_jump, interface, inlet_vent, intake_fan, recirculation_inlet, symmetry, outlet_vent, shadow, recirculation_outlet, network_end, degassing, mass_flow_inlet
+   :members: symmetry, rans_les_interface, wall, fluid, interior, velocity_inlet, outlet_vent, mass_flow_outlet, fan, degassing, network_end, pressure_outlet, intake_fan, recirculation_outlet, shadow, axis, pressure_inlet, solid, exhaust_fan, outflow, porous_jump, geometry, interface, radiator, recirculation_inlet, network, periodic, inlet_vent, pressure_far_field, overset, mass_flow_inlet
 

@@ -9,5 +9,5 @@ solver.tui.results.report.fluxes
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.report.fluxes
-   :members: rad_heat_trans, film_mass_flow, pressure_work, heat_transfer, mass_flow, heat_transfer_sensible, viscous_work, film_heat_transfer
+   :members: viscous_work, mass_flow, heat_transfer_sensible, pressure_work, rad_heat_trans, film_mass_flow, film_heat_transfer, heat_transfer
 

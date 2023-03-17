@@ -9,5 +9,5 @@ solver.tui.define.models.optics.beams
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.optics.beams
-   :members: list_beam_parameters, add, edit, rename, copy, delete
+   :members: list_beam_parameters, delete, copy, edit, rename, add
 

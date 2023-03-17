@@ -9,5 +9,5 @@ solver.tui.turbo\_post
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.turbo_post
-   :members: write_report, current_topology, xy_plot_avg, compute_report, two_d_contours, avg_contours
+   :members: avg_contours, two_d_contours, write_report, xy_plot_avg, compute_report, current_topology
 

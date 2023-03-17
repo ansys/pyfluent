@@ -12,12 +12,12 @@ solver.tui.solve.set.multiphase\_numerics
 .. toctree::
    :hidden:
 
-   porous_media/index
-   default_controls/index
-   boiling_parameters/index
    face_pressure_controls/index
-   solution_stabilization/index
-   viscous_flow/index
    heat_mass_transfer/index
-   compressible_flow/index
    advanced_stability_controls/index
+   boiling_parameters/index
+   solution_stabilization/index
+   porous_media/index
+   viscous_flow/index
+   default_controls/index
+   compressible_flow/index

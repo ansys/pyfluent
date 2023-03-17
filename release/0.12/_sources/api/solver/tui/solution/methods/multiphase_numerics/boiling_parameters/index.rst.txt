@@ -9,5 +9,5 @@ solver.tui.solution.methods.multiphase\_numerics.boiling\_parameters
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.methods.multiphase_numerics.boiling_parameters
-   :members: liquid_vof_factor, thin_film
+   :members: thin_film, liquid_vof_factor
 

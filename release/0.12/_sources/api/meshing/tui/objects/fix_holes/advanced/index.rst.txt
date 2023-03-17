@@ -9,5 +9,5 @@ meshing.tui.objects.fix\_holes.advanced
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects.fix_holes.advanced
-   :members: patch_holes_not_connected_to_material_points, patch_holes_connected_to_material_points, open_holes_between_material_points, open_traced_holes_between_material_points, patch_holes_between_material_points, open_holes_not_connected_to_material_points, open_holes_connected_to_material_points
+   :members: open_holes_not_connected_to_material_points, patch_holes_connected_to_material_points, patch_holes_not_connected_to_material_points, open_holes_between_material_points, patch_holes_between_material_points, open_traced_holes_between_material_points, open_holes_connected_to_material_points
 
