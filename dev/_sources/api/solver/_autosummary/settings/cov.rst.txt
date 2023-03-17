@@ -5,11 +5,8 @@
 cov
 ===
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.cov
+.. autoclass:: ansys.fluent.core.solver.settings_231.cov.cov
 
-.. autoclass:: cov
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

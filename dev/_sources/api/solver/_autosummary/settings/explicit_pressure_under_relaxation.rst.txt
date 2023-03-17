@@ -5,11 +5,8 @@
 explicit_pressure_under_relaxation
 ==================================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.explicit_pressure_under_relaxation
+.. autoclass:: ansys.fluent.core.solver.settings_231.explicit_pressure_under_relaxation.explicit_pressure_under_relaxation
 
-.. autoclass:: explicit_pressure_under_relaxation
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =========================

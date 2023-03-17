@@ -5,11 +5,8 @@
 company
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.company
+.. autoclass:: ansys.fluent.core.solver.settings_231.company.company
 
-.. autoclass:: company
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================   =======================================

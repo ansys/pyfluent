@@ -5,11 +5,8 @@
 diameter
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.diameter
+.. autoclass:: ansys.fluent.core.solver.settings_231.diameter.diameter
 
-.. autoclass:: diameter
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================   =====================

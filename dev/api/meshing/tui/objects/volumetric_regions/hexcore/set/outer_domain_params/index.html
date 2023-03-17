@@ -51,11 +51,11 @@
     <script src="../../../../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../../search.html" />
-    <link rel="next" title="meshing.tui.objects.volumetric_regions.tet" href="../../../tet/index.html" />
+    <link rel="next" title="meshing.tui.objects.remove_gaps" href="../../../../remove_gaps/index.html" />
     <link rel="prev" title="meshing.tui.objects.volumetric_regions.hexcore.set" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev2 variable.
+            // this version, rather than using sphinx's 0.13.dev3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -306,13 +306,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -325,6 +320,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../../../../index.html">
      meshing.tui
@@ -336,53 +336,13 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../display/index.html">
-       meshing.tui.display
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../preferences/index.html">
-       meshing.tui.preferences
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../material_point/index.html">
-       meshing.tui.material_point
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../boundary/index.html">
-       meshing.tui.boundary
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../diagnostics/index.html">
-       meshing.tui.diagnostics
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../parallel/index.html">
-       meshing.tui.parallel
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../../../../../size_functions/index.html">
        meshing.tui.size_functions
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
+      <a class="reference internal" href="../../../../../mesh/index.html">
+       meshing.tui.mesh
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -396,43 +356,13 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../deprecated/index.html">
-         meshing.tui.objects.deprecated
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../remove_gaps/index.html">
-         meshing.tui.objects.remove_gaps
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../../fix_holes/index.html">
          meshing.tui.objects.fix_holes
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../cad_association/index.html">
-         meshing.tui.objects.cad_association
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../join_intersect/index.html">
-         meshing.tui.objects.join_intersect
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../create_new_mesh_object/index.html">
-         meshing.tui.objects.create_new_mesh_object
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../wrap/index.html">
-         meshing.tui.objects.wrap
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../set/index.html">
-         meshing.tui.objects.set
+        <a class="reference internal" href="../../../../labels/index.html">
+         meshing.tui.objects.labels
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -445,6 +375,16 @@ function checkPageExistsAndRedirect(event) {
          </i>
         </label>
         <ul class="current">
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../scoped_prism/index.html">
+           meshing.tui.objects.volumetric_regions.scoped_prism
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../tet/index.html">
+           meshing.tui.objects.volumetric_regions.tet
+          </a>
+         </li>
          <li class="toctree-l5 current active has-children">
           <a class="reference internal" href="../../index.html">
            meshing.tui.objects.volumetric_regions.hexcore
@@ -474,21 +414,41 @@ function checkPageExistsAndRedirect(event) {
            </li>
           </ul>
          </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../tet/index.html">
-           meshing.tui.objects.volumetric_regions.tet
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../scoped_prism/index.html">
-           meshing.tui.objects.volumetric_regions.scoped_prism
-          </a>
-         </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../labels/index.html">
-         meshing.tui.objects.labels
+        <a class="reference internal" href="../../../../remove_gaps/index.html">
+         meshing.tui.objects.remove_gaps
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../set/index.html">
+         meshing.tui.objects.set
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../create_new_mesh_object/index.html">
+         meshing.tui.objects.create_new_mesh_object
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../wrap/index.html">
+         meshing.tui.objects.wrap
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../cad_association/index.html">
+         meshing.tui.objects.cad_association
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../join_intersect/index.html">
+         meshing.tui.objects.join_intersect
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../deprecated/index.html">
+         meshing.tui.objects.deprecated
         </a>
        </li>
       </ul>
@@ -499,18 +459,58 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../report/index.html">
-       meshing.tui.report
+      <a class="reference internal" href="../../../../../boundary/index.html">
+       meshing.tui.boundary
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../mesh/index.html">
-       meshing.tui.mesh
+      <a class="reference internal" href="../../../../../diagnostics/index.html">
+       meshing.tui.diagnostics
       </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../../../../../reference_frames/index.html">
        meshing.tui.reference_frames
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../parallel/index.html">
+       meshing.tui.parallel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../preferences/index.html">
+       meshing.tui.preferences
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../report/index.html">
+       meshing.tui.report
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../display/index.html">
+       meshing.tui.display
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../material_point/index.html">
+       meshing.tui.material_point
       </a>
      </li>
     </ul>
@@ -555,7 +555,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params
+     outer_domain_params
     </span>
    </code>
   </a>
@@ -564,7 +564,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align()
+       outer_domain_params.auto_align()
       </span>
      </code>
     </a>
@@ -573,7 +573,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align_boundaries">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align_boundaries()
+       outer_domain_params.auto_align_boundaries()
       </span>
      </code>
     </a>
@@ -582,7 +582,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align_tolerance">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align_tolerance()
+       outer_domain_params.auto_align_tolerance()
       </span>
      </code>
     </a>
@@ -591,7 +591,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.boundaries">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.boundaries()
+       outer_domain_params.boundaries()
       </span>
      </code>
     </a>
@@ -600,7 +600,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.coordinates">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.coordinates()
+       outer_domain_params.coordinates()
       </span>
      </code>
     </a>
@@ -609,7 +609,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.delete_old_face_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.delete_old_face_zones()
+       outer_domain_params.delete_old_face_zones()
       </span>
      </code>
     </a>
@@ -618,7 +618,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.list">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.list()
+       outer_domain_params.list()
       </span>
      </code>
     </a>
@@ -627,7 +627,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.specify_boundaries">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.specify_boundaries()
+       outer_domain_params.specify_boundaries()
       </span>
      </code>
     </a>
@@ -636,7 +636,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.specify_coordinates">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.specify_coordinates()
+       outer_domain_params.specify_coordinates()
       </span>
      </code>
     </a>
@@ -664,14 +664,43 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-objects-volumetric-regions-hexcore-set-outer-domain-params">
 <span id="ref-meshing-tui-objects-volumetric-regions-hexcore-set-outer-domain-params"></span><h1>meshing.tui.objects.volumetric_regions.hexcore.set.outer_domain_params<a class="headerlink" href="#meshing-tui-objects-volumetric-regions-hexcore-set-outer-domain-params" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.objects.volumetric_regions.hexcore.set.</span></span><span class="sig-name descname"><span class="pre">outer_domain_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params" title="Permalink to this definition">#</a></dt>
-<dd><p>Define outer domain parameters.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.</span></span><span class="sig-name descname"><span class="pre">outer_domain_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Define outer domain parameters.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_align</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable auto-align?.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align_boundaries" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align_boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_align_boundaries</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Auto-align selected boundaries.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align_tolerance" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align_tolerance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_align_tolerance</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set auto-align-tolerance.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.boundaries" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boundaries</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set box-aligned zones which  have to be removed from hexcore meshing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.coordinates" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coordinates</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Secifiy coordinates of outer box.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.delete_old_face_zones" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.delete_old_face_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_old_face_zones</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Delete replaced old tri face zones.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.list" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
+<td><p>List the face zones selected for hexcore up to boundaries.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.specify_boundaries" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.specify_boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specify_boundaries</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set parameters to get hex mesh to boundary(s).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.specify_coordinates" title="ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.specify_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specify_coordinates</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables specification of coordinates of hexcore outer box.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align">
 <span class="sig-name descname"><span class="pre">auto_align</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.objects.volumetric_regions.hexcore.set.outer_domain_params.auto_align" title="Permalink to this definition">#</a></dt>

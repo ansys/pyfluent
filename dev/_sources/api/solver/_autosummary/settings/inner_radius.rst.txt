@@ -5,11 +5,8 @@
 inner_radius
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.inner_radius
+.. autoclass:: ansys.fluent.core.solver.settings_231.inner_radius.inner_radius
 
-.. autoclass:: inner_radius
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

@@ -5,11 +5,8 @@
 turb_length_scale
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.turb_length_scale
+.. autoclass:: ansys.fluent.core.solver.settings_231.turb_length_scale.turb_length_scale
 
-.. autoclass:: turb_length_scale
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

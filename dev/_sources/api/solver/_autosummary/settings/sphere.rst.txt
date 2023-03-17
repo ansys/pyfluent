@@ -5,16 +5,13 @@
 sphere
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.sphere
+.. autoclass:: ansys.fluent.core.solver.settings_231.sphere.sphere
 
-.. autoclass:: sphere
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   ==================================
 
-Child                                                                             Summary
+Attribute                                                                         Summary
 
 ====================================================   ==================================
 :ref:`center <center>`                                                    'center' child.

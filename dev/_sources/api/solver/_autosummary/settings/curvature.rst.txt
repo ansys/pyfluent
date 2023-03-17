@@ -5,11 +5,8 @@
 curvature
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.curvature
+.. autoclass:: ansys.fluent.core.solver.settings_231.curvature.curvature
 
-.. autoclass:: curvature
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   =======================

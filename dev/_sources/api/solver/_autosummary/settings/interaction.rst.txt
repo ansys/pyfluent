@@ -5,16 +5,13 @@
 interaction
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.interaction
+.. autoclass:: ansys.fluent.core.solver.settings_231.interaction.interaction
 
-.. autoclass:: interaction
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ================================================================================   ================================================
 
-Child                                                                                                                       Summary
+Attribute                                                                                                                   Summary
 
 ================================================================================   ================================================
 :ref:`option <option>`                                                                       Select the interphase coupling option.

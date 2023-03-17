@@ -5,11 +5,8 @@
 remove_limiter
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.remove_limiter
+.. autoclass:: ansys.fluent.core.solver.settings_231.remove_limiter.remove_limiter
 
-.. autoclass:: remove_limiter
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================================   ==========================================

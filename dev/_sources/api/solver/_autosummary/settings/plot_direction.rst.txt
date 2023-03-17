@@ -5,16 +5,13 @@
 plot_direction
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.plot_direction
+.. autoclass:: ansys.fluent.core.solver.settings_231.plot_direction.plot_direction
 
-.. autoclass:: plot_direction
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ============================================   =============================
 
-Child                                                                Summary
+Attribute                                                            Summary
 
 ============================================   =============================
 :ref:`option <option_2>`                                     'option' child.

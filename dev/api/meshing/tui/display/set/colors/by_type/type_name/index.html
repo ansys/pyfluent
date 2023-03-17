@@ -51,11 +51,11 @@
     <script src="../../../../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../../search.html" />
-    <link rel="next" title="meshing.tui.display.set.colors.by_surface" href="../../by_surface/index.html" />
+    <link rel="next" title="meshing.tui.display.set.rendering_options" href="../../../rendering_options/index.html" />
     <link rel="prev" title="meshing.tui.display.set.colors.by_type" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev2 variable.
+            // this version, rather than using sphinx's 0.13.dev3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -306,13 +306,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -325,6 +320,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../../../../index.html">
      meshing.tui
@@ -336,8 +336,68 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../size_functions/index.html">
+       meshing.tui.size_functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../mesh/index.html">
+       meshing.tui.mesh
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../objects/index.html">
+       meshing.tui.objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../file/index.html">
+       meshing.tui.file
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../boundary/index.html">
+       meshing.tui.boundary
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../diagnostics/index.html">
+       meshing.tui.diagnostics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../reference_frames/index.html">
+       meshing.tui.reference_frames
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../parallel/index.html">
+       meshing.tui.parallel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../preferences/index.html">
+       meshing.tui.preferences
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../../../../../scoped_sizing/index.html">
        meshing.tui.scoped_sizing
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../report/index.html">
+       meshing.tui.report
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -356,13 +416,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../update_scene/index.html">
-         meshing.tui.display.update_scene
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../advanced_rendering/index.html">
-         meshing.tui.display.advanced_rendering
+        <a class="reference internal" href="../../../../xy_plot/index.html">
+         meshing.tui.display.xy_plot
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -376,8 +431,18 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../rendering_options/index.html">
-           meshing.tui.display.set.rendering_options
+          <a class="reference internal" href="../../../picture/index.html">
+           meshing.tui.display.set.picture
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../lights/index.html">
+           meshing.tui.display.set.lights
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../styles/index.html">
+           meshing.tui.display.set.styles
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -390,6 +455,11 @@ function checkPageExistsAndRedirect(event) {
            </i>
           </label>
           <ul class="current">
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../by_surface/index.html">
+             meshing.tui.display.set.colors.by_surface
+            </a>
+           </li>
            <li class="toctree-l6 current active has-children">
             <a class="reference internal" href="../index.html">
              meshing.tui.display.set.colors.by_type
@@ -407,26 +477,11 @@ function checkPageExistsAndRedirect(event) {
              </li>
             </ul>
            </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../by_surface/index.html">
-             meshing.tui.display.set.colors.by_surface
-            </a>
-           </li>
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../styles/index.html">
-           meshing.tui.display.set.styles
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../lights/index.html">
-           meshing.tui.display.set.lights
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../picture/index.html">
-           meshing.tui.display.set.picture
+          <a class="reference internal" href="../../../rendering_options/index.html">
+           meshing.tui.display.set.rendering_options
           </a>
          </li>
         </ul>
@@ -437,13 +492,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../objects/index.html">
-         meshing.tui.display.objects
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../xy_plot/index.html">
-         meshing.tui.display.xy_plot
+        <a class="reference internal" href="../../../../update_scene/index.html">
+         meshing.tui.display.update_scene
         </a>
        </li>
        <li class="toctree-l4">
@@ -451,71 +501,21 @@ function checkPageExistsAndRedirect(event) {
          meshing.tui.display.set_grid
         </a>
        </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../objects/index.html">
+         meshing.tui.display.objects
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../advanced_rendering/index.html">
+         meshing.tui.display.advanced_rendering
+        </a>
+       </li>
       </ul>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../preferences/index.html">
-       meshing.tui.preferences
-      </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../../../../../material_point/index.html">
        meshing.tui.material_point
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../boundary/index.html">
-       meshing.tui.boundary
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../diagnostics/index.html">
-       meshing.tui.diagnostics
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../parallel/index.html">
-       meshing.tui.parallel
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../size_functions/index.html">
-       meshing.tui.size_functions
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../objects/index.html">
-       meshing.tui.objects
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../file/index.html">
-       meshing.tui.file
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../report/index.html">
-       meshing.tui.report
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../mesh/index.html">
-       meshing.tui.mesh
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../reference_frames/index.html">
-       meshing.tui.reference_frames
       </a>
      </li>
     </ul>
@@ -560,7 +560,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.display.set.colors.by_type.type_name
+     type_name
     </span>
    </code>
   </a>
@@ -569,7 +569,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.axis">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.axis()
+       type_name.axis()
       </span>
      </code>
     </a>
@@ -578,7 +578,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.far_field">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.far_field()
+       type_name.far_field()
       </span>
      </code>
     </a>
@@ -587,7 +587,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.free_surface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.free_surface()
+       type_name.free_surface()
       </span>
      </code>
     </a>
@@ -596,7 +596,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.inlet">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.inlet()
+       type_name.inlet()
       </span>
      </code>
     </a>
@@ -605,7 +605,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.interface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.interface()
+       type_name.interface()
       </span>
      </code>
     </a>
@@ -614,7 +614,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.interior">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.interior()
+       type_name.interior()
       </span>
      </code>
     </a>
@@ -623,7 +623,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.internal">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.internal()
+       type_name.internal()
       </span>
      </code>
     </a>
@@ -632,7 +632,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.outlet">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.outlet()
+       type_name.outlet()
       </span>
      </code>
     </a>
@@ -641,7 +641,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.overset">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.overset()
+       type_name.overset()
       </span>
      </code>
     </a>
@@ -650,7 +650,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.periodic">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.periodic()
+       type_name.periodic()
       </span>
      </code>
     </a>
@@ -659,7 +659,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.rans_les_interface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.rans_les_interface()
+       type_name.rans_les_interface()
       </span>
      </code>
     </a>
@@ -668,7 +668,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.surface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.surface()
+       type_name.surface()
       </span>
      </code>
     </a>
@@ -677,7 +677,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.symmetry">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.symmetry()
+       type_name.symmetry()
       </span>
      </code>
     </a>
@@ -686,7 +686,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.traction">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.traction()
+       type_name.traction()
       </span>
      </code>
     </a>
@@ -695,7 +695,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.wall">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.wall()
+       type_name.wall()
       </span>
      </code>
     </a>
@@ -723,14 +723,61 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-display-set-colors-by-type-type-name">
 <span id="ref-meshing-tui-display-set-colors-by-type-type-name"></span><h1>meshing.tui.display.set.colors.by_type.type_name<a class="headerlink" href="#meshing-tui-display-set-colors-by-type-type-name" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.display.set.colors.by_type.</span></span><span class="sig-name descname"><span class="pre">type_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name" title="Permalink to this definition">#</a></dt>
-<dd><p>Select the boundary type to specify colors and/or materials.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.</span></span><span class="sig-name descname"><span class="pre">type_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Select the boundary type to specify colors and/or materials.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.axis" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.axis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the material and/or color for the selected boundary type.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.far_field" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.far_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">far_field</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the material and/or color for the selected boundary type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.free_surface" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.free_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">free_surface</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the material and/or color for the selected boundary type.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.inlet" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.inlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inlet</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the material and/or color for the selected boundary type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.interface" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interface</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the material and/or color for the selected boundary type.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.interior" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.interior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interior</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the material and/or color for the selected boundary type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.internal" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.internal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">internal</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the material and/or color for the selected boundary type.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.outlet" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.outlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outlet</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the material and/or color for the selected boundary type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.overset" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.overset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overset</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the material and/or color for the selected boundary type.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.periodic" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.periodic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">periodic</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the material and/or color for the selected boundary type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.rans_les_interface" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.rans_les_interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rans_les_interface</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the material and/or color for the selected boundary type.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.surface" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">surface</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the material and/or color for the selected boundary type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.symmetry" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.symmetry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">symmetry</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the material and/or color for the selected boundary type.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.traction" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.traction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traction</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the material and/or color for the selected boundary type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.wall" title="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.wall"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wall</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the material and/or color for the selected boundary type.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.axis">
 <span class="sig-name descname"><span class="pre">axis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.axis" title="Permalink to this definition">#</a></dt>

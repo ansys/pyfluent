@@ -5,11 +5,8 @@
 thermal_ctk
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.thermal_ctk
+.. autoclass:: ansys.fluent.core.solver.settings_231.thermal_ctk.thermal_ctk
 
-.. autoclass:: thermal_ctk
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =======================================

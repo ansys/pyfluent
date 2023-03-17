@@ -51,12 +51,12 @@
     <script src="../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
     <link rel="next" title="meshing.tui.boundary.boundary_conditions" href="../boundary_conditions/index.html" />
-    <link rel="prev" title="meshing.tui.boundary.modify" href="../modify/index.html" />
+    <link rel="prev" title="meshing.tui.boundary.remesh.controls.intersect" href="../remesh/controls/intersect/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev2 variable.
+            // this version, rather than using sphinx's 0.13.dev3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -303,13 +303,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -322,6 +317,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -333,23 +333,23 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
+      <a class="reference internal" href="../../size_functions/index.html">
+       meshing.tui.size_functions
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../display/index.html">
-       meshing.tui.display
+      <a class="reference internal" href="../../mesh/index.html">
+       meshing.tui.mesh
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../preferences/index.html">
-       meshing.tui.preferences
+      <a class="reference internal" href="../../objects/index.html">
+       meshing.tui.objects
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../material_point/index.html">
-       meshing.tui.material_point
+      <a class="reference internal" href="../../file/index.html">
+       meshing.tui.file
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -368,6 +368,31 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../separate/index.html">
+         meshing.tui.boundary.separate
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../manage/index.html">
+         meshing.tui.boundary.manage
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../remesh/index.html">
+         meshing.tui.boundary.remesh
+        </a>
+       </li>
+       <li class="toctree-l4 current active">
+        <a class="current reference internal" href="#">
+         meshing.tui.boundary.feature
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../boundary_conditions/index.html">
+         meshing.tui.boundary.boundary_conditions
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../improve/index.html">
          meshing.tui.boundary.improve
         </a>
@@ -382,31 +407,6 @@ function checkPageExistsAndRedirect(event) {
          meshing.tui.boundary.modify
         </a>
        </li>
-       <li class="toctree-l4 current active">
-        <a class="current reference internal" href="#">
-         meshing.tui.boundary.feature
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../boundary_conditions/index.html">
-         meshing.tui.boundary.boundary_conditions
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../separate/index.html">
-         meshing.tui.boundary.separate
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../remesh/index.html">
-         meshing.tui.boundary.remesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../manage/index.html">
-         meshing.tui.boundary.manage
-        </a>
-       </li>
       </ul>
      </li>
      <li class="toctree-l3">
@@ -415,18 +415,18 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../../reference_frames/index.html">
+       meshing.tui.reference_frames
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../../parallel/index.html">
        meshing.tui.parallel
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../size_functions/index.html">
-       meshing.tui.size_functions
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
+      <a class="reference internal" href="../../preferences/index.html">
+       meshing.tui.preferences
       </a>
      </li>
      <li class="toctree-l3">
@@ -435,13 +435,13 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../objects/index.html">
-       meshing.tui.objects
+      <a class="reference internal" href="../../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../file/index.html">
-       meshing.tui.file
+      <a class="reference internal" href="../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
       </a>
      </li>
      <li class="toctree-l3">
@@ -450,13 +450,13 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../mesh/index.html">
-       meshing.tui.mesh
+      <a class="reference internal" href="../../display/index.html">
+       meshing.tui.display
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../reference_frames/index.html">
-       meshing.tui.reference_frames
+      <a class="reference internal" href="../../material_point/index.html">
+       meshing.tui.material_point
       </a>
      </li>
     </ul>
@@ -501,7 +501,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.boundary.feature
+     feature
     </span>
    </code>
   </a>
@@ -510,7 +510,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.copy_edge_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.feature.copy_edge_zones()
+       feature.copy_edge_zones()
       </span>
      </code>
     </a>
@@ -519,7 +519,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.create_edge_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.feature.create_edge_zones()
+       feature.create_edge_zones()
       </span>
      </code>
     </a>
@@ -528,7 +528,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.delete_degenerated_edges">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.feature.delete_degenerated_edges()
+       feature.delete_degenerated_edges()
       </span>
      </code>
     </a>
@@ -537,7 +537,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.delete_edge_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.feature.delete_edge_zones()
+       feature.delete_edge_zones()
       </span>
      </code>
     </a>
@@ -546,7 +546,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.edge_size_limits">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.feature.edge_size_limits()
+       feature.edge_size_limits()
       </span>
      </code>
     </a>
@@ -555,7 +555,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.group">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.feature.group()
+       feature.group()
       </span>
      </code>
     </a>
@@ -564,7 +564,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.intersect_edge_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.feature.intersect_edge_zones()
+       feature.intersect_edge_zones()
       </span>
      </code>
     </a>
@@ -573,7 +573,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.list_edge_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.feature.list_edge_zones()
+       feature.list_edge_zones()
       </span>
      </code>
     </a>
@@ -582,7 +582,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.merge_edge_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.feature.merge_edge_zones()
+       feature.merge_edge_zones()
       </span>
      </code>
     </a>
@@ -591,7 +591,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.orient_edge_direction">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.feature.orient_edge_direction()
+       feature.orient_edge_direction()
       </span>
      </code>
     </a>
@@ -600,7 +600,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.project_edge_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.feature.project_edge_zones()
+       feature.project_edge_zones()
       </span>
      </code>
     </a>
@@ -609,7 +609,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.remesh_edge_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.feature.remesh_edge_zones()
+       feature.remesh_edge_zones()
       </span>
      </code>
     </a>
@@ -618,7 +618,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.reverse_edge_direction">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.feature.reverse_edge_direction()
+       feature.reverse_edge_direction()
       </span>
      </code>
     </a>
@@ -627,7 +627,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.separate_delete_small_edges">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.feature.separate_delete_small_edges()
+       feature.separate_delete_small_edges()
       </span>
      </code>
     </a>
@@ -636,7 +636,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.separate_edge_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.feature.separate_edge_zones()
+       feature.separate_edge_zones()
       </span>
      </code>
     </a>
@@ -645,7 +645,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.separate_edge_zones_by_seed">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.feature.separate_edge_zones_by_seed()
+       feature.separate_edge_zones_by_seed()
       </span>
      </code>
     </a>
@@ -654,7 +654,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.toggle_edge_type">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.feature.toggle_edge_type()
+       feature.toggle_edge_type()
       </span>
      </code>
     </a>
@@ -663,7 +663,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.ungroup">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.boundary.feature.ungroup()
+       feature.ungroup()
       </span>
      </code>
     </a>
@@ -691,14 +691,70 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-boundary-feature">
 <span id="ref-meshing-tui-boundary-feature"></span><h1>meshing.tui.boundary.feature<a class="headerlink" href="#meshing-tui-boundary-feature" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.boundary.</span></span><span class="sig-name descname"><span class="pre">feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables you to create and modify features.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.boundary.</span></span><span class="sig-name descname"><span class="pre">feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enables you to create and modify features.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.copy_edge_zones" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.copy_edge_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy_edge_zones</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Copies the specified edge zone(s) to new edge zone(s).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.create_edge_zones" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.create_edge_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_edge_zones</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Extracts edge loops for the specified face zone(s) based on the feature method specified.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.delete_degenerated_edges" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.delete_degenerated_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_degenerated_edges</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Deletes degenerated edges (edges where the two end nodes are the same) for the edge zone(s) specified.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.delete_edge_zones" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.delete_edge_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_edge_zones</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Deletes the specified edge zone(s).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.edge_size_limits" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.edge_size_limits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_size_limits</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reports the minimum, maximum, and average edge length for the specified edge zone(s) in the console.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.group" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">group</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Associates the specified edge zone(s) with the specified face zone.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.intersect_edge_zones" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.intersect_edge_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersect_edge_zones</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Intersects the specified edge loops to create a new edge loop comprising the common edges.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.list_edge_zones" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.list_edge_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_edge_zones</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Lists the name, ID, type, and count for the specified edge zone(s).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.merge_edge_zones" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.merge_edge_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_edge_zones</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Merges multiple edge loops of the same type into a single loop.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.orient_edge_direction" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.orient_edge_direction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orient_edge_direction</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Orients the edges on the loop to point in the same direction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.project_edge_zones" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.project_edge_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project_edge_zones</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Projects the edges of the specified loop onto the specified face zone using the specified projection method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.remesh_edge_zones" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.remesh_edge_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remesh_edge_zones</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Remeshes the specified edge loop(s), modifying the node distribution according to the specified remeshing method, spacing values, and feature angle.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.reverse_edge_direction" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.reverse_edge_direction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse_edge_direction</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reverses the direction of the edge loop.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.separate_delete_small_edges" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.separate_delete_small_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">separate_delete_small_edges</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Separates the edge zones based on the feature angle specified, and then deletes the edges having a count smaller than the minimum count specified.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.separate_edge_zones" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.separate_edge_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">separate_edge_zones</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Separates the specified edge loop based on connectivity and the specified feature angle.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.separate_edge_zones_by_seed" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.separate_edge_zones_by_seed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">separate_edge_zones_by_seed</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Separates the edge loop based on the seed edge specified.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.toggle_edge_type" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.toggle_edge_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toggle_edge_type</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Toggles the edge type between boundary and interior.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.ungroup" title="ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.ungroup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ungroup</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Ungroups previously grouped edge zones.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.copy_edge_zones">
 <span class="sig-name descname"><span class="pre">copy_edge_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.feature.copy_edge_zones" title="Permalink to this definition">#</a></dt>

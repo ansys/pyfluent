@@ -5,11 +5,8 @@
 view
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.view
+.. autoclass:: ansys.fluent.core.solver.settings_231.view.view
 
-.. autoclass:: view
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ===============================================

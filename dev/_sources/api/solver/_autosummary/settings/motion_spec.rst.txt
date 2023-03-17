@@ -5,11 +5,8 @@
 motion_spec
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.motion_spec
+.. autoclass:: ansys.fluent.core.solver.settings_231.motion_spec.motion_spec
 
-.. autoclass:: motion_spec
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

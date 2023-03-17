@@ -5,16 +5,13 @@
 turbulence_damping
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.turbulence_damping
+.. autoclass:: ansys.fluent.core.solver.settings_231.turbulence_damping.turbulence_damping
 
-.. autoclass:: turbulence_damping
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ================================================   ======================================
 
-Child                                                                             Summary
+Attribute                                                                         Summary
 
 ================================================   ======================================
 :ref:`enable_turb_damping <enable_turb_damping>`       Enable/Disable Turbulence Damping.

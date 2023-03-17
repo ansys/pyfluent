@@ -5,11 +5,8 @@
 mp_boiling_zone
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.mp_boiling_zone
+.. autoclass:: ansys.fluent.core.solver.settings_231.mp_boiling_zone.mp_boiling_zone
 
-.. autoclass:: mp_boiling_zone
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

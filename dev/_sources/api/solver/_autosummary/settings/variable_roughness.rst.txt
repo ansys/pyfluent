@@ -5,16 +5,13 @@
 variable_roughness
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.variable_roughness
+.. autoclass:: ansys.fluent.core.solver.settings_231.variable_roughness.variable_roughness
 
-.. autoclass:: variable_roughness
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

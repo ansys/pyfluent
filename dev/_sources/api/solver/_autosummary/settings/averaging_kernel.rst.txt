@@ -5,16 +5,13 @@
 averaging_kernel
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.averaging_kernel
+.. autoclass:: ansys.fluent.core.solver.settings_231.averaging_kernel.averaging_kernel
 
-.. autoclass:: averaging_kernel
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================================   =========================================================================================================================================
 
-Child                                                                                                                                                                        Summary
+Attribute                                                                                                                                                                    Summary
 
 ========================================   =========================================================================================================================================
 :ref:`kernel <kernel>`                                                                                                                           Specify a kernel for the averaging.

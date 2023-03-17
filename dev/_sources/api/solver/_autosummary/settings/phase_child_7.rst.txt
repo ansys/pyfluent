@@ -5,16 +5,13 @@
 phase_child
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.phase_child_7
+.. autoclass:: ansys.fluent.core.solver.settings_231.phase_child_7.phase_child
 
-.. autoclass:: phase_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   ==================================
 
-Child                                                                             Summary
+Attribute                                                                         Summary
 
 ====================================================   ==================================
 :ref:`geom_disable <geom_disable>`                                  'geom_disable' child.

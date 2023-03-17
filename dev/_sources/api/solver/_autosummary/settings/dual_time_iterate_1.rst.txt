@@ -5,11 +5,8 @@
 dual_time_iterate
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dual_time_iterate_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.dual_time_iterate_1.dual_time_iterate
 
-.. autoclass:: dual_time_iterate
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ==========================================================   =====================================

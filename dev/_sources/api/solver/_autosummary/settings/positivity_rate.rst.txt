@@ -5,11 +5,8 @@
 positivity_rate
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.positivity_rate
+.. autoclass:: ansys.fluent.core.solver.settings_231.positivity_rate.positivity_rate
 
-.. autoclass:: positivity_rate
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

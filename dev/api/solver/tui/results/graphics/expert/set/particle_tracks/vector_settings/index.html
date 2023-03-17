@@ -51,12 +51,12 @@
     <script src="../../../../../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../../../search.html" />
-    <link rel="next" title="solver.tui.results.graphics.expert.set.particle_tracks.sphere_settings" href="../sphere_settings/index.html" />
-    <link rel="prev" title="solver.tui.results.graphics.expert.set.particle_tracks.filter_settings" href="../filter_settings/index.html" />
+    <link rel="next" title="solver.tui.results.graphics.expert.set.particle_tracks.filter_settings" href="../filter_settings/index.html" />
+    <link rel="prev" title="solver.tui.results.graphics.expert.set.particle_tracks.sphere_settings" href="../sphere_settings/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev2 variable.
+            // this version, rather than using sphinx's 0.13.dev3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -308,13 +308,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -358,23 +353,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../solution/index.html">
-         solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../setup/index.html">
-         solver.tui.setup
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../views/index.html">
-         solver.tui.views
+        <a class="reference internal" href="../../../../../../adjoint/index.html">
+         solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4">
@@ -383,8 +363,48 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../adjoint/index.html">
-         solver.tui.adjoint
+        <a class="reference internal" href="../../../../../../define/index.html">
+         solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../parallel/index.html">
+         solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../preferences/index.html">
+         solver.tui.preferences
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../report/index.html">
+         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -398,8 +418,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../plot/index.html">
-           solver.tui.results.plot
+          <a class="reference internal" href="../../../../../animate/index.html">
+           solver.tui.results.animate
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -412,16 +432,6 @@ function checkPageExistsAndRedirect(event) {
            </i>
           </label>
           <ul class="current">
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../objects/index.html">
-             solver.tui.results.graphics.objects
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../update_scene/index.html">
-             solver.tui.results.graphics.update_scene
-            </a>
-           </li>
            <li class="toctree-l6 current active has-children">
             <a class="reference internal" href="../../../index.html">
              solver.tui.results.graphics.expert
@@ -438,13 +448,18 @@ function checkPageExistsAndRedirect(event) {
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../../../pdf_data/index.html">
-               solver.tui.results.graphics.expert.pdf_data
+              <a class="reference internal" href="../../../particle_tracks/index.html">
+               solver.tui.results.graphics.expert.particle_tracks
               </a>
              </li>
              <li class="toctree-l7">
               <a class="reference internal" href="../../../path_lines/index.html">
                solver.tui.results.graphics.expert.path_lines
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../../../pdf_data/index.html">
+               solver.tui.results.graphics.expert.pdf_data
               </a>
              </li>
              <li class="toctree-l7 current active has-children">
@@ -458,13 +473,13 @@ function checkPageExistsAndRedirect(event) {
               </label>
               <ul class="current">
                <li class="toctree-l8">
-                <a class="reference internal" href="../../path_lines/index.html">
-                 solver.tui.results.graphics.expert.set.path_lines
+                <a class="reference internal" href="../../colors/index.html">
+                 solver.tui.results.graphics.expert.set.colors
                 </a>
                </li>
                <li class="toctree-l8">
-                <a class="reference internal" href="../../lights/index.html">
-                 solver.tui.results.graphics.expert.set.lights
+                <a class="reference internal" href="../../contours/index.html">
+                 solver.tui.results.graphics.expert.set.contours
                 </a>
                </li>
                <li class="toctree-l8">
@@ -473,13 +488,8 @@ function checkPageExistsAndRedirect(event) {
                 </a>
                </li>
                <li class="toctree-l8">
-                <a class="reference internal" href="../../colors/index.html">
-                 solver.tui.results.graphics.expert.set.colors
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="../../windows/index.html">
-                 solver.tui.results.graphics.expert.set.windows
+                <a class="reference internal" href="../../lights/index.html">
+                 solver.tui.results.graphics.expert.set.lights
                 </a>
                </li>
                <li class="toctree-l8 current active has-children">
@@ -493,8 +503,8 @@ function checkPageExistsAndRedirect(event) {
                 </label>
                 <ul class="current">
                  <li class="toctree-l9">
-                  <a class="reference internal" href="../filter_settings/index.html">
-                   solver.tui.results.graphics.expert.set.particle_tracks.filter_settings
+                  <a class="reference internal" href="../sphere_settings/index.html">
+                   solver.tui.results.graphics.expert.set.particle_tracks.sphere_settings
                   </a>
                  </li>
                  <li class="toctree-l9 current active">
@@ -503,15 +513,15 @@ function checkPageExistsAndRedirect(event) {
                   </a>
                  </li>
                  <li class="toctree-l9">
-                  <a class="reference internal" href="../sphere_settings/index.html">
-                   solver.tui.results.graphics.expert.set.particle_tracks.sphere_settings
+                  <a class="reference internal" href="../filter_settings/index.html">
+                   solver.tui.results.graphics.expert.set.particle_tracks.filter_settings
                   </a>
                  </li>
                 </ul>
                </li>
                <li class="toctree-l8">
-                <a class="reference internal" href="../../titles/index.html">
-                 solver.tui.results.graphics.expert.set.titles
+                <a class="reference internal" href="../../path_lines/index.html">
+                 solver.tui.results.graphics.expert.set.path_lines
                 </a>
                </li>
                <li class="toctree-l8">
@@ -520,23 +530,33 @@ function checkPageExistsAndRedirect(event) {
                 </a>
                </li>
                <li class="toctree-l8">
+                <a class="reference internal" href="../../titles/index.html">
+                 solver.tui.results.graphics.expert.set.titles
+                </a>
+               </li>
+               <li class="toctree-l8">
                 <a class="reference internal" href="../../velocity_vectors/index.html">
                  solver.tui.results.graphics.expert.set.velocity_vectors
                 </a>
                </li>
                <li class="toctree-l8">
-                <a class="reference internal" href="../../contours/index.html">
-                 solver.tui.results.graphics.expert.set.contours
+                <a class="reference internal" href="../../windows/index.html">
+                 solver.tui.results.graphics.expert.set.windows
                 </a>
                </li>
               </ul>
              </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../../../particle_tracks/index.html">
-               solver.tui.results.graphics.expert.particle_tracks
-              </a>
-             </li>
             </ul>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../lights/index.html">
+             solver.tui.results.graphics.lights
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../objects/index.html">
+             solver.tui.results.graphics.objects
+            </a>
            </li>
            <li class="toctree-l6">
             <a class="reference internal" href="../../../../rendering_options/index.html">
@@ -544,20 +564,20 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../../../lights/index.html">
-             solver.tui.results.graphics.lights
+            <a class="reference internal" href="../../../../update_scene/index.html">
+             solver.tui.results.graphics.update_scene
             </a>
            </li>
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../graphics_window/index.html">
-           solver.tui.results.graphics_window
+          <a class="reference internal" href="../../../../../plot/index.html">
+           solver.tui.results.plot
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../animate/index.html">
-           solver.tui.results.animate
+          <a class="reference internal" href="../../../../../report/index.html">
+           solver.tui.results.report
           </a>
          </li>
          <li class="toctree-l5">
@@ -566,46 +586,11 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../report/index.html">
-           solver.tui.results.report
+          <a class="reference internal" href="../../../../../graphics_window/index.html">
+           solver.tui.results.graphics_window
           </a>
          </li>
         </ul>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../../../../solve/index.html">
@@ -613,23 +598,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../define/index.html">
-         solver.tui.define
+        <a class="reference internal" href="../../../../../../solution/index.html">
+         solver.tui.solution
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../file/index.html">
-         solver.tui.file
+        <a class="reference internal" href="../../../../../../setup/index.html">
+         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4">
@@ -638,13 +613,33 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../preferences/index.html">
-         solver.tui.preferences
+        <a class="reference internal" href="../../../../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../parallel/index.html">
-         solver.tui.parallel
+        <a class="reference internal" href="../../../../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../views/index.html">
+         solver.tui.views
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
       </ul>
@@ -716,7 +711,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.results.graphics.expert.set.particle_tracks.vector_settings
+     vector_settings
     </span>
    </code>
   </a>
@@ -725,7 +720,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.color_variable">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.results.graphics.expert.set.particle_tracks.vector_settings.color_variable()
+       vector_settings.color_variable()
       </span>
      </code>
     </a>
@@ -734,7 +729,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.constant_color">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.results.graphics.expert.set.particle_tracks.vector_settings.constant_color()
+       vector_settings.constant_color()
       </span>
      </code>
     </a>
@@ -743,7 +738,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.length_to_head_ratio">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.results.graphics.expert.set.particle_tracks.vector_settings.length_to_head_ratio()
+       vector_settings.length_to_head_ratio()
       </span>
      </code>
     </a>
@@ -752,7 +747,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.length_variable">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.results.graphics.expert.set.particle_tracks.vector_settings.length_variable()
+       vector_settings.length_variable()
       </span>
      </code>
     </a>
@@ -761,7 +756,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.scale_factor">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.results.graphics.expert.set.particle_tracks.vector_settings.scale_factor()
+       vector_settings.scale_factor()
       </span>
      </code>
     </a>
@@ -770,7 +765,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.style">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.results.graphics.expert.set.particle_tracks.vector_settings.style()
+       vector_settings.style()
       </span>
      </code>
     </a>
@@ -779,7 +774,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.vector_length">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.results.graphics.expert.set.particle_tracks.vector_settings.vector_length()
+       vector_settings.vector_length()
       </span>
      </code>
     </a>
@@ -788,7 +783,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.vector_length_variable">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.results.graphics.expert.set.particle_tracks.vector_settings.vector_length_variable()
+       vector_settings.vector_length_variable()
       </span>
      </code>
     </a>
@@ -797,7 +792,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.vector_variable">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.results.graphics.expert.set.particle_tracks.vector_settings.vector_variable()
+       vector_settings.vector_variable()
       </span>
      </code>
     </a>
@@ -825,14 +820,43 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-results-graphics-expert-set-particle-tracks-vector-settings">
 <span id="ref-solver-tui-results-graphics-expert-set-particle-tracks-vector-settings"></span><h1>solver.tui.results.graphics.expert.set.particle_tracks.vector_settings<a class="headerlink" href="#solver-tui-results-graphics-expert-set-particle-tracks-vector-settings" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.results.graphics.expert.set.particle_tracks.</span></span><span class="sig-name descname"><span class="pre">vector_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings" title="Permalink to this definition">#</a></dt>
-<dd><p>Set vector specific input.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.</span></span><span class="sig-name descname"><span class="pre">vector_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Set vector specific input.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.color_variable" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.color_variable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">color_variable</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify whether the vectors should be colored by variable specified in /display/particle-track/particle-track (if false use a constant color).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.constant_color" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.constant_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constant_color</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify a constant color for the vectors.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.length_to_head_ratio" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.length_to_head_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">length_to_head_ratio</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify ratio of length to head for vectors and length to diameter for cylinders.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.length_variable" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.length_variable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">length_variable</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify whether the displayed vectors have length varying with another variable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.scale_factor" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.scale_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale_factor</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify a scale factor to enlarge/reduce the length of vectors.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.style" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.style"><code class="xref py py-obj docutils literal notranslate"><span class="pre">style</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable and set the display style for particle vectors (none/vector/centered-vector/centered-cylinder).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.vector_length" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.vector_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_length</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify the length of constant vectors.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.vector_length_variable" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.vector_length_variable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_length_variable</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Select a particle variable to specify the length of vectors.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.vector_variable" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.vector_variable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_variable</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Select a particle vector function to specify vector direction.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.color_variable">
 <span class="sig-name descname"><span class="pre">color_variable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.vector_settings.color_variable" title="Permalink to this definition">#</a></dt>

@@ -5,11 +5,8 @@
 clip_to_range
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.clip_to_range
+.. autoclass:: ansys.fluent.core.solver.settings_231.clip_to_range.clip_to_range
 
-.. autoclass:: clip_to_range
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ===========================

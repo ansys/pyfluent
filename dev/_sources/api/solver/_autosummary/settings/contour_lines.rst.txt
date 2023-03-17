@@ -5,11 +5,8 @@
 contour_lines
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.contour_lines
+.. autoclass:: ansys.fluent.core.solver.settings_231.contour_lines.contour_lines
 
-.. autoclass:: contour_lines
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ===================================

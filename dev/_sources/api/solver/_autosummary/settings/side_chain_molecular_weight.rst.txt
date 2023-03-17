@@ -5,11 +5,8 @@
 side_chain_molecular_weight
 ===========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.side_chain_molecular_weight
+.. autoclass:: ansys.fluent.core.solver.settings_231.side_chain_molecular_weight.side_chain_molecular_weight
 
-.. autoclass:: side_chain_molecular_weight
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

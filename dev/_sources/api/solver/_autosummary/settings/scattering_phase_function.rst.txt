@@ -5,16 +5,13 @@
 scattering_phase_function
 =========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.scattering_phase_function
+.. autoclass:: ansys.fluent.core.solver.settings_231.scattering_phase_function.scattering_phase_function
 
-.. autoclass:: scattering_phase_function
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   ====================================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

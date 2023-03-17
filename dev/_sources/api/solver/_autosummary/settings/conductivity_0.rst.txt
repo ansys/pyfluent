@@ -5,16 +5,13 @@
 conductivity_0
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.conductivity_0
+.. autoclass:: ansys.fluent.core.solver.settings_231.conductivity_0.conductivity_0
 
-.. autoclass:: conductivity_0
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   ====================================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

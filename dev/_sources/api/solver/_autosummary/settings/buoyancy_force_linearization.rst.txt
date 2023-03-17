@@ -5,11 +5,8 @@
 buoyancy_force_linearization
 ============================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.buoyancy_force_linearization
+.. autoclass:: ansys.fluent.core.solver.settings_231.buoyancy_force_linearization.buoyancy_force_linearization
 
-.. autoclass:: buoyancy_force_linearization
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================   =======================================

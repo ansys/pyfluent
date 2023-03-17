@@ -5,11 +5,8 @@
 feature_angle
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.feature_angle
+.. autoclass:: ansys.fluent.core.solver.settings_231.feature_angle.feature_angle
 
-.. autoclass:: feature_angle
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ====================

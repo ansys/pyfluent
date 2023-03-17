@@ -5,11 +5,8 @@
 fensapice_drop_ddiam
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.fensapice_drop_ddiam
+.. autoclass:: ansys.fluent.core.solver.settings_231.fensapice_drop_ddiam.fensapice_drop_ddiam
 
-.. autoclass:: fensapice_drop_ddiam
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

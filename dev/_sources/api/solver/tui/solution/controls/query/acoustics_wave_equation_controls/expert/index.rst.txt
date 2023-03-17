@@ -3,11 +3,11 @@
 solver.tui.solution.controls.query.acoustics\_wave\_equation\_controls.expert
 =============================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.controls.query.acoustics_wave_equation_controls.expert
-   :members: explicit_relaxation_factor, under_relaxation_factor
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.controls.query.acoustics_wave_equation_controls.expert
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

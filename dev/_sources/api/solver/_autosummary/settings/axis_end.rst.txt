@@ -5,11 +5,8 @@
 axis_end
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.axis_end
+.. autoclass:: ansys.fluent.core.solver.settings_231.axis_end.axis_end
 
-.. autoclass:: axis_end
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   =====================

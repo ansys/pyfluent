@@ -5,11 +5,8 @@
 subgrid_dynamic_fvar
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.subgrid_dynamic_fvar
+.. autoclass:: ansys.fluent.core.solver.settings_231.subgrid_dynamic_fvar.subgrid_dynamic_fvar
 
-.. autoclass:: subgrid_dynamic_fvar
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================

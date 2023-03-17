@@ -51,12 +51,12 @@
     <script src="../../../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../search.html" />
-    <link rel="next" title="solver.tui.define.models.dpm.splash_options" href="../splash_options/index.html" />
-    <link rel="prev" title="solver.tui.define.models.dpm.parallel.expert" href="../parallel/expert/index.html" />
+    <link rel="next" title="solver.tui.define.models.dpm.numerics" href="../numerics/index.html" />
+    <link rel="prev" title="solver.tui.define.models.dpm.erosion_dynamic_mesh.run_parameters" href="../erosion_dynamic_mesh/run_parameters/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev2 variable.
+            // this version, rather than using sphinx's 0.13.dev3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -306,13 +306,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -356,78 +351,13 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solution/index.html">
-         solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../setup/index.html">
-         solver.tui.setup
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../display/index.html">
-         solver.tui.display
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../../adjoint/index.html">
          solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solve/index.html">
-         solver.tui.solve
+        <a class="reference internal" href="../../../../display/index.html">
+         solver.tui.display
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -441,38 +371,13 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../parameters/index.html">
-           solver.tui.define.parameters
+          <a class="reference internal" href="../../../boundary_conditions/index.html">
+           solver.tui.define.boundary_conditions
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../phases/index.html">
-           solver.tui.define.phases
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../virtual_boundary/index.html">
-           solver.tui.define.virtual_boundary
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../named_expressions/index.html">
-           solver.tui.define.named_expressions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../solution_strategy/index.html">
-           solver.tui.define.solution_strategy
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../reference_frames/index.html">
-           solver.tui.define.reference_frames
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../profiles/index.html">
-           solver.tui.define.profiles
+          <a class="reference internal" href="../../../spectral/index.html">
+           solver.tui.define.spectral
           </a>
          </li>
          <li class="toctree-l5">
@@ -481,8 +386,28 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../operating_conditions/index.html">
-           solver.tui.define.operating_conditions
+          <a class="reference internal" href="../../../dynamic_mesh/index.html">
+           solver.tui.define.dynamic_mesh
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../mesh_interfaces/index.html">
+           solver.tui.define.mesh_interfaces
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../gap_model/index.html">
+           solver.tui.define.gap_model
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../materials/index.html">
+           solver.tui.define.materials
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../mixing_planes/index.html">
+           solver.tui.define.mixing_planes
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -496,33 +421,8 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul class="current">
            <li class="toctree-l6">
-            <a class="reference internal" href="../../structure/index.html">
-             solver.tui.define.models.structure
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../multiphase/index.html">
-             solver.tui.define.models.multiphase
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../solver/index.html">
-             solver.tui.define.models.solver
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../electrolysis/index.html">
-             solver.tui.define.models.electrolysis
-            </a>
-           </li>
-           <li class="toctree-l6">
             <a class="reference internal" href="../../acoustics/index.html">
              solver.tui.define.models.acoustics
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../viscous/index.html">
-             solver.tui.define.models.viscous
             </a>
            </li>
            <li class="toctree-l6">
@@ -531,33 +431,8 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../nox_parameters/index.html">
-             solver.tui.define.models.nox_parameters
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../system_coupling_settings/index.html">
-             solver.tui.define.models.system_coupling_settings
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../radiation/index.html">
-             solver.tui.define.models.radiation
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../shell_conduction/index.html">
-             solver.tui.define.models.shell_conduction
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../heat_exchanger/index.html">
-             solver.tui.define.models.heat_exchanger
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../species/index.html">
-             solver.tui.define.models.species
+            <a class="reference internal" href="../../eulerian_wallfilm/index.html">
+             solver.tui.define.models.eulerian_wallfilm
             </a>
            </li>
            <li class="toctree-l6 current active has-children">
@@ -571,11 +446,6 @@ function checkPageExistsAndRedirect(event) {
             </label>
             <ul class="current">
              <li class="toctree-l7">
-              <a class="reference internal" href="../options/index.html">
-               solver.tui.define.models.dpm.options
-              </a>
-             </li>
-             <li class="toctree-l7">
               <a class="reference internal" href="../collisions/index.html">
                solver.tui.define.models.dpm.collisions
               </a>
@@ -585,9 +455,9 @@ function checkPageExistsAndRedirect(event) {
                solver.tui.define.models.dpm.erosion_dynamic_mesh
               </a>
              </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../stripping_options/index.html">
-               solver.tui.define.models.dpm.stripping_options
+             <li class="toctree-l7 current active">
+              <a class="current reference internal" href="#">
+               solver.tui.define.models.dpm.interaction
               </a>
              </li>
              <li class="toctree-l7">
@@ -596,13 +466,13 @@ function checkPageExistsAndRedirect(event) {
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../parallel/index.html">
-               solver.tui.define.models.dpm.parallel
+              <a class="reference internal" href="../options/index.html">
+               solver.tui.define.models.dpm.options
               </a>
              </li>
-             <li class="toctree-l7 current active">
-              <a class="current reference internal" href="#">
-               solver.tui.define.models.dpm.interaction
+             <li class="toctree-l7">
+              <a class="reference internal" href="../parallel/index.html">
+               solver.tui.define.models.dpm.parallel
               </a>
              </li>
              <li class="toctree-l7">
@@ -610,16 +480,26 @@ function checkPageExistsAndRedirect(event) {
                solver.tui.define.models.dpm.splash_options
               </a>
              </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../stripping_options/index.html">
+               solver.tui.define.models.dpm.stripping_options
+              </a>
+             </li>
             </ul>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../shell_conduction/index.html">
+             solver.tui.define.models.shell_conduction
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../system_coupling_settings/index.html">
+             solver.tui.define.models.system_coupling_settings
+            </a>
            </li>
            <li class="toctree-l6">
             <a class="reference internal" href="../../cht/index.html">
              solver.tui.define.models.cht
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../soot_parameters/index.html">
-             solver.tui.define.models.soot_parameters
             </a>
            </li>
            <li class="toctree-l6">
@@ -628,30 +508,70 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../eulerian_wallfilm/index.html">
-             solver.tui.define.models.eulerian_wallfilm
+            <a class="reference internal" href="../../multiphase/index.html">
+             solver.tui.define.models.multiphase
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../nox_parameters/index.html">
+             solver.tui.define.models.nox_parameters
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../soot_parameters/index.html">
+             solver.tui.define.models.soot_parameters
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../radiation/index.html">
+             solver.tui.define.models.radiation
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../solver/index.html">
+             solver.tui.define.models.solver
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../species/index.html">
+             solver.tui.define.models.species
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../viscous/index.html">
+             solver.tui.define.models.viscous
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../structure/index.html">
+             solver.tui.define.models.structure
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../heat_exchanger/index.html">
+             solver.tui.define.models.heat_exchanger
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../electrolysis/index.html">
+             solver.tui.define.models.electrolysis
             </a>
            </li>
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../materials/index.html">
-           solver.tui.define.materials
+          <a class="reference internal" href="../../../overset_interfaces/index.html">
+           solver.tui.define.overset_interfaces
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../curvilinear_coordinate_system/index.html">
-           solver.tui.define.curvilinear_coordinate_system
+          <a class="reference internal" href="../../../operating_conditions/index.html">
+           solver.tui.define.operating_conditions
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../user_defined/index.html">
-           solver.tui.define.user_defined
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../turbo_model/index.html">
-           solver.tui.define.turbo_model
+          <a class="reference internal" href="../../../parameters/index.html">
+           solver.tui.define.parameters
           </a>
          </li>
          <li class="toctree-l5">
@@ -660,45 +580,55 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../mesh_interfaces/index.html">
-           solver.tui.define.mesh_interfaces
+          <a class="reference internal" href="../../../turbo_model/index.html">
+           solver.tui.define.turbo_model
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../mixing_planes/index.html">
-           solver.tui.define.mixing_planes
+          <a class="reference internal" href="../../../phases/index.html">
+           solver.tui.define.phases
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../gap_model/index.html">
-           solver.tui.define.gap_model
+          <a class="reference internal" href="../../../profiles/index.html">
+           solver.tui.define.profiles
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../spectral/index.html">
-           solver.tui.define.spectral
+          <a class="reference internal" href="../../../solution_strategy/index.html">
+           solver.tui.define.solution_strategy
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../boundary_conditions/index.html">
-           solver.tui.define.boundary_conditions
+          <a class="reference internal" href="../../../reference_frames/index.html">
+           solver.tui.define.reference_frames
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../overset_interfaces/index.html">
-           solver.tui.define.overset_interfaces
+          <a class="reference internal" href="../../../user_defined/index.html">
+           solver.tui.define.user_defined
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../dynamic_mesh/index.html">
-           solver.tui.define.dynamic_mesh
+          <a class="reference internal" href="../../../named_expressions/index.html">
+           solver.tui.define.named_expressions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../virtual_boundary/index.html">
+           solver.tui.define.virtual_boundary
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../curvilinear_coordinate_system/index.html">
+           solver.tui.define.curvilinear_coordinate_system
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parametric_study/index.html">
-         solver.tui.parametric_study
+        <a class="reference internal" href="../../../../file/index.html">
+         solver.tui.file
         </a>
        </li>
        <li class="toctree-l4">
@@ -707,13 +637,23 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../file/index.html">
-         solver.tui.file
+        <a class="reference internal" href="../../../../mesh/index.html">
+         solver.tui.mesh
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parallel/index.html">
+         solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../plot/index.html">
+         solver.tui.plot
         </a>
        </li>
        <li class="toctree-l4">
@@ -722,8 +662,63 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parallel/index.html">
-         solver.tui.parallel
+        <a class="reference internal" href="../../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../views/index.html">
+         solver.tui.views
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
       </ul>
@@ -795,7 +790,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.define.models.dpm.interaction
+     interaction
     </span>
    </code>
   </a>
@@ -804,7 +799,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.choice_of_eulerian_phase_for_interaction">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.dpm.interaction.choice_of_eulerian_phase_for_interaction()
+       interaction.choice_of_eulerian_phase_for_interaction()
       </span>
      </code>
     </a>
@@ -813,7 +808,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.coupled_calculations">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.dpm.interaction.coupled_calculations()
+       interaction.coupled_calculations()
       </span>
      </code>
     </a>
@@ -822,7 +817,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.ddpm_energy_coupling_via_source_term">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.dpm.interaction.ddpm_energy_coupling_via_source_term()
+       interaction.ddpm_energy_coupling_via_source_term()
       </span>
      </code>
     </a>
@@ -831,7 +826,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.ddpm_enhanced_inter_phase_exchange">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.dpm.interaction.ddpm_enhanced_inter_phase_exchange()
+       interaction.ddpm_enhanced_inter_phase_exchange()
       </span>
      </code>
     </a>
@@ -840,7 +835,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.ddpm_iad_particle">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.dpm.interaction.ddpm_iad_particle()
+       interaction.ddpm_iad_particle()
       </span>
      </code>
     </a>
@@ -849,7 +844,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.dpm_iteration_interval">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.dpm.interaction.dpm_iteration_interval()
+       interaction.dpm_iteration_interval()
       </span>
      </code>
     </a>
@@ -858,7 +853,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.enable_drag_scaling_due_to_flow_blocking">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.dpm.interaction.enable_drag_scaling_due_to_flow_blocking()
+       interaction.enable_drag_scaling_due_to_flow_blocking()
       </span>
      </code>
     </a>
@@ -867,7 +862,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.enable_flow_blocking_by_particles">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.dpm.interaction.enable_flow_blocking_by_particles()
+       interaction.enable_flow_blocking_by_particles()
       </span>
      </code>
     </a>
@@ -876,7 +871,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.enable_source_scaling_due_to_flow_blocking">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.dpm.interaction.enable_source_scaling_due_to_flow_blocking()
+       interaction.enable_source_scaling_due_to_flow_blocking()
       </span>
      </code>
     </a>
@@ -885,7 +880,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.implicit_momentum_coupling">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.dpm.interaction.implicit_momentum_coupling()
+       interaction.implicit_momentum_coupling()
       </span>
      </code>
     </a>
@@ -894,7 +889,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.implicit_source_term_coupling">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.dpm.interaction.implicit_source_term_coupling()
+       interaction.implicit_source_term_coupling()
       </span>
      </code>
     </a>
@@ -903,7 +898,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.keep_linearized_dpm_source_terms_constant">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.dpm.interaction.keep_linearized_dpm_source_terms_constant()
+       interaction.keep_linearized_dpm_source_terms_constant()
       </span>
      </code>
     </a>
@@ -912,7 +907,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.linear_growth_of_dpm_source_term">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.dpm.interaction.linear_growth_of_dpm_source_term()
+       interaction.linear_growth_of_dpm_source_term()
       </span>
      </code>
     </a>
@@ -921,7 +916,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.linearized_dpm_mixture_fraction_source_terms">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.dpm.interaction.linearized_dpm_mixture_fraction_source_terms()
+       interaction.linearized_dpm_mixture_fraction_source_terms()
       </span>
      </code>
     </a>
@@ -930,7 +925,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.linearized_dpm_source_terms">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.dpm.interaction.linearized_dpm_source_terms()
+       interaction.linearized_dpm_source_terms()
       </span>
      </code>
     </a>
@@ -939,7 +934,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.linearized_dpm_source_terms_limiter">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.dpm.interaction.linearized_dpm_source_terms_limiter()
+       interaction.linearized_dpm_source_terms_limiter()
       </span>
      </code>
     </a>
@@ -948,7 +943,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.linearized_dpm_species_source_terms">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.dpm.interaction.linearized_dpm_species_source_terms()
+       interaction.linearized_dpm_species_source_terms()
       </span>
      </code>
     </a>
@@ -957,7 +952,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.max_vf_allowed_for_blocking">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.dpm.interaction.max_vf_allowed_for_blocking()
+       interaction.max_vf_allowed_for_blocking()
       </span>
      </code>
     </a>
@@ -966,7 +961,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.min_vf_threshold_for_dpm_src_scaling">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.dpm.interaction.min_vf_threshold_for_dpm_src_scaling()
+       interaction.min_vf_threshold_for_dpm_src_scaling()
       </span>
      </code>
     </a>
@@ -975,7 +970,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.replace_dpm_mass_source_by_mixture_fraction">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.dpm.interaction.replace_dpm_mass_source_by_mixture_fraction()
+       interaction.replace_dpm_mass_source_by_mixture_fraction()
       </span>
      </code>
     </a>
@@ -984,7 +979,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.reset_sources_at_timestep">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.dpm.interaction.reset_sources_at_timestep()
+       interaction.reset_sources_at_timestep()
       </span>
      </code>
     </a>
@@ -993,7 +988,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.underrelaxation_factor">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.dpm.interaction.underrelaxation_factor()
+       interaction.underrelaxation_factor()
       </span>
      </code>
     </a>
@@ -1002,7 +997,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.update_dpm_sources_every_flow_iteration">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.models.dpm.interaction.update_dpm_sources_every_flow_iteration()
+       interaction.update_dpm_sources_every_flow_iteration()
       </span>
      </code>
     </a>
@@ -1030,14 +1025,85 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-define-models-dpm-interaction">
 <span id="ref-solver-tui-define-models-dpm-interaction"></span><h1>solver.tui.define.models.dpm.interaction<a class="headerlink" href="#solver-tui-define-models-dpm-interaction" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.models.dpm.</span></span><span class="sig-name descname"><span class="pre">interaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets parameters for coupled discrete phase calculations.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.</span></span><span class="sig-name descname"><span class="pre">interaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Sets parameters for coupled discrete phase calculations.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.choice_of_eulerian_phase_for_interaction" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.choice_of_eulerian_phase_for_interaction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">choice_of_eulerian_phase_for_interaction</span></code></a>(...)</p></td>
+<td><p>Enable/disable the option to choose for every injection the Eulerian phase for the DPM continuous phase interaction.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.coupled_calculations" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.coupled_calculations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coupled_calculations</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Selects whether or not to couple continuous and discrete phase calculations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.ddpm_energy_coupling_via_source_term" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.ddpm_energy_coupling_via_source_term"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ddpm_energy_coupling_via_source_term</span></code></a>(*args, ...)</p></td>
+<td><p>Energy coupling in DDPM established via source term.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.ddpm_enhanced_inter_phase_exchange" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.ddpm_enhanced_inter_phase_exchange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ddpm_enhanced_inter_phase_exchange</span></code></a>(*args, ...)</p></td>
+<td><p>Enhanced Eulerian inter-phase exchange.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.ddpm_iad_particle" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.ddpm_iad_particle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ddpm_iad_particle</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable the non-default interfacial area method IA-particle.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.dpm_iteration_interval" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.dpm_iteration_interval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dpm_iteration_interval</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the frequency with which the particle trajectory calculations are introduced.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.enable_drag_scaling_due_to_flow_blocking" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.enable_drag_scaling_due_to_flow_blocking"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_drag_scaling_due_to_flow_blocking</span></code></a>(...)</p></td>
+<td><p>Enable/disable scaling of DPM drag coefficient due to inclusion of DPM volume fraction in continuous flow.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.enable_flow_blocking_by_particles" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.enable_flow_blocking_by_particles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_flow_blocking_by_particles</span></code></a>(*args, ...)</p></td>
+<td><p>Enable/disable inclusion of DPM volume fraction in continuous flow.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.enable_source_scaling_due_to_flow_blocking" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.enable_source_scaling_due_to_flow_blocking"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_source_scaling_due_to_flow_blocking</span></code></a>(...)</p></td>
+<td><p>Enable/disable scaling of DPM source terms due to inclusion of DPM volume fraction in continuous flow.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.implicit_momentum_coupling" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.implicit_momentum_coupling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">implicit_momentum_coupling</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables/disables implicit treatment for the DPM momentum source terms.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.implicit_source_term_coupling" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.implicit_source_term_coupling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">implicit_source_term_coupling</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables/disables implicit treatment for all DPM source terms.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.keep_linearized_dpm_source_terms_constant" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.keep_linearized_dpm_source_terms_constant"><code class="xref py py-obj docutils literal notranslate"><span class="pre">keep_linearized_dpm_source_terms_constant</span></code></a>(...)</p></td>
+<td><p>Keep linearized DPM source terms constant until the next DPM Update.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.linear_growth_of_dpm_source_term" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.linear_growth_of_dpm_source_term"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linear_growth_of_dpm_source_term</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables/disables the linear ramping up of the DPM source terms at every DPM iteration.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.linearized_dpm_mixture_fraction_source_terms" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.linearized_dpm_mixture_fraction_source_terms"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linearized_dpm_mixture_fraction_source_terms</span></code></a>(...)</p></td>
+<td><p>Enables/disables linearization of mixture fraction source terms.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.linearized_dpm_source_terms" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.linearized_dpm_source_terms"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linearized_dpm_source_terms</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables/disables linearization of source terms for the discrete phase.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.linearized_dpm_source_terms_limiter" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.linearized_dpm_source_terms_limiter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linearized_dpm_source_terms_limiter</span></code></a>(*args, ...)</p></td>
+<td><p>Relative limit for DPM source linear coefficient with respect to fluid linear Ap coefficient.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.linearized_dpm_species_source_terms" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.linearized_dpm_species_source_terms"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linearized_dpm_species_source_terms</span></code></a>(*args, ...)</p></td>
+<td><p>Perform linearization of species source terms.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.max_vf_allowed_for_blocking" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.max_vf_allowed_for_blocking"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_vf_allowed_for_blocking</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Maximum DPM volume fraction used in continuous flow.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.min_vf_threshold_for_dpm_src_scaling" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.min_vf_threshold_for_dpm_src_scaling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_vf_threshold_for_dpm_src_scaling</span></code></a>(*args, ...)</p></td>
+<td><p>Minimum DPM volume fraction below which no DPM source scaling is applied.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.replace_dpm_mass_source_by_mixture_fraction" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.replace_dpm_mass_source_by_mixture_fraction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">replace_dpm_mass_source_by_mixture_fraction</span></code></a>(...)</p></td>
+<td><p>When enabled, recalculates the mixture fraction source terms as a function of the primary mixture fraction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.reset_sources_at_timestep" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.reset_sources_at_timestep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_sources_at_timestep</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables/disables flush of DPM source terms at beginning of every time step.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.underrelaxation_factor" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.underrelaxation_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">underrelaxation_factor</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the under-relaxation factor for the discrete phase sources.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.update_dpm_sources_every_flow_iteration" title="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.update_dpm_sources_every_flow_iteration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_dpm_sources_every_flow_iteration</span></code></a>(...)</p></td>
+<td><p>Enables/disables the update of DPM source terms every flow iteration (if this option is not enabled, the terms will be updated every DPM iteration).</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.choice_of_eulerian_phase_for_interaction">
 <span class="sig-name descname"><span class="pre">choice_of_eulerian_phase_for_interaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.interaction.choice_of_eulerian_phase_for_interaction" title="Permalink to this definition">#</a></dt>

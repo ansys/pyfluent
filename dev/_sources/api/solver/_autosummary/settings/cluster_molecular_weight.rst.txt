@@ -5,11 +5,8 @@
 cluster_molecular_weight
 ========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.cluster_molecular_weight
+.. autoclass:: ansys.fluent.core.solver.settings_231.cluster_molecular_weight.cluster_molecular_weight
 
-.. autoclass:: cluster_molecular_weight
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

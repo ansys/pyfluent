@@ -5,11 +5,8 @@
 wireframe
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.wireframe
+.. autoclass:: ansys.fluent.core.solver.settings_231.wireframe.wireframe
 
-.. autoclass:: wireframe
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

@@ -51,7 +51,7 @@
     <script src="../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev2 variable.
+            // this version, rather than using sphinx's 0.13.dev3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -303,13 +303,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -322,6 +317,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../tui/index.html">
      meshing.tui
@@ -486,7 +486,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting">
    <code class="docutils literal notranslate">
     <span class="pre">
-     Root.Refaceting._Refaceting
+     _Refaceting
     </span>
    </code>
   </a>
@@ -495,7 +495,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Add">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Refaceting._Refaceting.Add
+       _Refaceting.Add
       </span>
      </code>
     </a>
@@ -504,7 +504,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Applied">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Refaceting._Refaceting.Applied
+       _Refaceting.Applied
       </span>
      </code>
     </a>
@@ -513,7 +513,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Apply">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Refaceting._Refaceting.Apply
+       _Refaceting.Apply
       </span>
      </code>
     </a>
@@ -522,7 +522,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Children">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Refaceting._Refaceting.Children
+       _Refaceting.Children
       </span>
      </code>
     </a>
@@ -531,7 +531,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Context">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Refaceting._Refaceting.Context
+       _Refaceting.Context
       </span>
      </code>
     </a>
@@ -540,7 +540,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Delete">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Refaceting._Refaceting.Delete
+       _Refaceting.Delete
       </span>
      </code>
     </a>
@@ -549,7 +549,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Deviation">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Refaceting._Refaceting.Deviation
+       _Refaceting.Deviation
       </span>
      </code>
     </a>
@@ -558,7 +558,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Edit">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Refaceting._Refaceting.Edit
+       _Refaceting.Edit
       </span>
      </code>
     </a>
@@ -567,7 +567,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.MaxSize">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Refaceting._Refaceting.MaxSize
+       _Refaceting.MaxSize
       </span>
      </code>
     </a>
@@ -576,7 +576,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Name">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Refaceting._Refaceting.Name
+       _Refaceting.Name
       </span>
      </code>
     </a>
@@ -585,7 +585,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.NormalAngle">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Refaceting._Refaceting.NormalAngle
+       _Refaceting.NormalAngle
       </span>
      </code>
     </a>
@@ -594,7 +594,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Remove">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Refaceting._Refaceting.Remove
+       _Refaceting.Remove
       </span>
      </code>
     </a>
@@ -603,16 +603,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Rename">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Refaceting._Refaceting.Rename
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting._name_">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       Root.Refaceting._Refaceting._name_
+       _Refaceting.Rename
       </span>
      </code>
     </a>
@@ -640,18 +631,60 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-datamodel-partmanagement-refaceting">
 <span id="ref-meshing-datamodel-partmanagement-refaceting"></span><h1>meshing.datamodel.PartManagement.Refaceting<a class="headerlink" href="#meshing-datamodel-partmanagement-refaceting" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting.</span></span><span class="sig-name descname"><span class="pre">_Refaceting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
+<p>Singleton _Refaceting.</p>
+<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Add" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Add</span></code></a>(service, rules, command[, path])</p></td>
+<td><p>Command Add.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Applied" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Applied"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Applied</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Applied of value type bool.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Apply" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Apply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Apply</span></code></a>(service, rules, command[, path])</p></td>
+<td><p>Command Apply.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Children" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Children</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Children of value type List[str].</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Context" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Context</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Context of value type int.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Delete" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Delete</span></code></a>(service, rules, command[, path])</p></td>
+<td><p>Command Delete.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Deviation" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Deviation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Deviation</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Deviation of value type float.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Edit" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Edit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Edit</span></code></a>(service, rules, command[, path])</p></td>
+<td><p>Command Edit.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.MaxSize" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.MaxSize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MaxSize</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter MaxSize of value type float.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Name" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Name</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Name of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.NormalAngle" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.NormalAngle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NormalAngle</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter NormalAngle of value type float.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Remove" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Remove</span></code></a>(service, rules, command[, path])</p></td>
+<td><p>Command Remove.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Rename" title="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Rename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Rename</span></code></a>(service, rules, command[, path])</p></td>
+<td><p>Command Rename.</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Root.Refaceting.</span></span><span class="sig-name descname"><span class="pre">_Refaceting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting" title="Permalink to this definition">#</a></dt>
-<dd><p>Singleton _Refaceting.</p>
-<dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Add">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Add" title="Permalink to this definition">#</a></dt>
-<dd><p>Command Add.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
+<p>Command Add.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -669,13 +702,15 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Applied">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Applied</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Applied" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter Applied of value type bool.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter Applied of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Apply">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Apply" title="Permalink to this definition">#</a></dt>
-<dd><p>Command Apply.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
+<p>Command Apply.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -688,19 +723,22 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Children">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Children" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter Children of value type List[str].</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter Children of value type List[str].</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Context">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Context</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Context" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter Context of value type int.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter Context of value type int.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Delete">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Delete" title="Permalink to this definition">#</a></dt>
-<dd><p>Command Delete.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
+<p>Command Delete.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -713,13 +751,15 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Deviation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Deviation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Deviation" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter Deviation of value type float.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter Deviation of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Edit">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Edit" title="Permalink to this definition">#</a></dt>
-<dd><p>Command Edit.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
+<p>Command Edit.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -732,25 +772,29 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.MaxSize">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MaxSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.MaxSize" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter MaxSize of value type float.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter MaxSize of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Name">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Name" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter Name of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter Name of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.NormalAngle">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NormalAngle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.NormalAngle" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter NormalAngle of value type float.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter NormalAngle of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Remove">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Remove" title="Permalink to this definition">#</a></dt>
-<dd><p>Command Remove.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
+<p>Command Remove.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -768,7 +812,8 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Rename">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting.Rename" title="Permalink to this definition">#</a></dt>
-<dd><p>Command Rename.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
+<p>Command Rename.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -781,12 +826,6 @@ function checkPageExistsAndRedirect(event) {
 </dl>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting._name_">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_name_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.Refaceting._Refaceting._name_" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter _name_ of value type str.</p>
 </dd></dl>
 
 </dd></dl>

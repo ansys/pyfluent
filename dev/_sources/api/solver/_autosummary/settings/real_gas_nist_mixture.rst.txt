@@ -5,16 +5,13 @@
 real_gas_nist_mixture
 =====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.real_gas_nist_mixture
+.. autoclass:: ansys.fluent.core.solver.settings_231.real_gas_nist_mixture.real_gas_nist_mixture
 
-.. autoclass:: real_gas_nist_mixture
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ================================================   ==============================================================
 
-Child                                                                                                     Summary
+Attribute                                                                                                 Summary
 
 ================================================   ==============================================================
 :ref:`lookup_table <lookup_table>`                     Whether to use a lookup table for accelerating NIST calls.

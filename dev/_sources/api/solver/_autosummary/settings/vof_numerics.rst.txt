@@ -5,16 +5,13 @@
 vof_numerics
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.vof_numerics
+.. autoclass:: ansys.fluent.core.solver.settings_231.vof_numerics.vof_numerics
 
-.. autoclass:: vof_numerics
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ================================================================================================================   ===============================================================================
 
-Child                                                                                                                                                                                      Summary
+Attribute                                                                                                                                                                                  Summary
 
 ================================================================================================================   ===============================================================================
 :ref:`high_order_rc <high_order_rc>`                                                                                                     Use low order velocity interpolation in flux calculation.

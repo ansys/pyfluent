@@ -51,7 +51,7 @@
     <script src="../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev2 variable.
+            // this version, rather than using sphinx's 0.13.dev3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -303,13 +303,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -322,6 +317,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../tui/index.html">
      meshing.tui
@@ -498,7 +498,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode">
    <code class="docutils literal notranslate">
     <span class="pre">
-     Root.AssemblyNode._AssemblyNode
+     _AssemblyNode
     </span>
    </code>
   </a>
@@ -507,7 +507,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.ChangeChildrenSettings">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.AssemblyNode._AssemblyNode.ChangeChildrenSettings
+       _AssemblyNode.ChangeChildrenSettings
       </span>
      </code>
     </a>
@@ -516,7 +516,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Children">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.AssemblyNode._AssemblyNode.Children
+       _AssemblyNode.Children
       </span>
      </code>
     </a>
@@ -525,7 +525,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Context">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.AssemblyNode._AssemblyNode.Context
+       _AssemblyNode.Context
       </span>
      </code>
     </a>
@@ -534,7 +534,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Copy">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.AssemblyNode._AssemblyNode.Copy
+       _AssemblyNode.Copy
       </span>
      </code>
     </a>
@@ -543,7 +543,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.CreateChild">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.AssemblyNode._AssemblyNode.CreateChild
+       _AssemblyNode.CreateChild
       </span>
      </code>
     </a>
@@ -552,7 +552,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.EdgeExtraction">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.AssemblyNode._AssemblyNode.EdgeExtraction
+       _AssemblyNode.EdgeExtraction
       </span>
      </code>
     </a>
@@ -561,7 +561,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.FeatureAngle">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.AssemblyNode._AssemblyNode.FeatureAngle
+       _AssemblyNode.FeatureAngle
       </span>
      </code>
     </a>
@@ -570,7 +570,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.IsChildrenSettingsChanged">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.AssemblyNode._AssemblyNode.IsChildrenSettingsChanged
+       _AssemblyNode.IsChildrenSettingsChanged
       </span>
      </code>
     </a>
@@ -579,7 +579,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.KeyId">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.AssemblyNode._AssemblyNode.KeyId
+       _AssemblyNode.KeyId
       </span>
      </code>
     </a>
@@ -588,7 +588,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.MergeChildren">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.AssemblyNode._AssemblyNode.MergeChildren
+       _AssemblyNode.MergeChildren
       </span>
      </code>
     </a>
@@ -597,7 +597,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Move">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.AssemblyNode._AssemblyNode.Move
+       _AssemblyNode.Move
       </span>
      </code>
     </a>
@@ -606,7 +606,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Name">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.AssemblyNode._AssemblyNode.Name
+       _AssemblyNode.Name
       </span>
      </code>
     </a>
@@ -615,7 +615,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.OneZonePer">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.AssemblyNode._AssemblyNode.OneZonePer
+       _AssemblyNode.OneZonePer
       </span>
      </code>
     </a>
@@ -624,7 +624,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Parent">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.AssemblyNode._AssemblyNode.Parent
+       _AssemblyNode.Parent
       </span>
      </code>
     </a>
@@ -633,7 +633,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.PrefixObjectName">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.AssemblyNode._AssemblyNode.PrefixObjectName
+       _AssemblyNode.PrefixObjectName
       </span>
      </code>
     </a>
@@ -642,7 +642,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.ReFacet">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.AssemblyNode._AssemblyNode.ReFacet
+       _AssemblyNode.ReFacet
       </span>
      </code>
     </a>
@@ -651,7 +651,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.ReFacetNow">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.AssemblyNode._AssemblyNode.ReFacetNow
+       _AssemblyNode.ReFacetNow
       </span>
      </code>
     </a>
@@ -660,16 +660,63 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.RefacetOperation">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.AssemblyNode._AssemblyNode.RefacetOperation
+       _AssemblyNode.RefacetOperation
       </span>
      </code>
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       _AssemblyNode.Refaceting
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting.Deviation">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         _AssemblyNode.Refaceting.Deviation
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting.MaxSize">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         _AssemblyNode.Refaceting.MaxSize
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting.NormalAngle">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         _AssemblyNode.Refaceting.NormalAngle
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting.Refacet">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         _AssemblyNode.Refaceting.Refacet
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Rename">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.AssemblyNode._AssemblyNode.Rename
+       _AssemblyNode.Rename
       </span>
      </code>
     </a>
@@ -678,16 +725,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Transformations">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.AssemblyNode._AssemblyNode.Transformations
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode._name_">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       Root.AssemblyNode._AssemblyNode._name_
+       _AssemblyNode.Transformations
       </span>
      </code>
     </a>
@@ -715,18 +753,84 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-datamodel-partmanagement-assemblynode">
 <span id="ref-meshing-datamodel-partmanagement-assemblynode"></span><h1>meshing.datamodel.PartManagement.AssemblyNode<a class="headerlink" href="#meshing-datamodel-partmanagement-assemblynode" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode.</span></span><span class="sig-name descname"><span class="pre">_AssemblyNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
+<p>Singleton _AssemblyNode.</p>
+<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.ChangeChildrenSettings" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.ChangeChildrenSettings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ChangeChildrenSettings</span></code></a>(service, rules, command)</p></td>
+<td><p>Command ChangeChildrenSettings.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Children" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Children</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Children of value type List[str].</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Context" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Context</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Context of value type int.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Copy" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Copy</span></code></a>(service, rules, command[, path])</p></td>
+<td><p>Command Copy.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.CreateChild" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.CreateChild"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CreateChild</span></code></a>(service, rules, command[, path])</p></td>
+<td><p>Command CreateChild.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.EdgeExtraction" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.EdgeExtraction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EdgeExtraction</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter EdgeExtraction of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.FeatureAngle" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.FeatureAngle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FeatureAngle</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter FeatureAngle of value type float.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.IsChildrenSettingsChanged" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.IsChildrenSettingsChanged"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IsChildrenSettingsChanged</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter IsChildrenSettingsChanged of value type bool.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.KeyId" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.KeyId"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KeyId</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter KeyId of value type int.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.MergeChildren" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.MergeChildren"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MergeChildren</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter MergeChildren of value type bool.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Move" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Move"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Move</span></code></a>(service, rules, command[, path])</p></td>
+<td><p>Command Move.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Name" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Name</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Name of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.OneZonePer" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.OneZonePer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OneZonePer</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter OneZonePer of value type str.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Parent" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Parent</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Parent of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.PrefixObjectName" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.PrefixObjectName"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PrefixObjectName</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter PrefixObjectName of value type bool.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.ReFacet" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.ReFacet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReFacet</span></code></a>(service, rules, command[, path])</p></td>
+<td><p>Command ReFacet.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.ReFacetNow" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.ReFacetNow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReFacetNow</span></code></a>(service, rules, command[, path])</p></td>
+<td><p>Command ReFacetNow.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.RefacetOperation" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.RefacetOperation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RefacetOperation</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter RefacetOperation of value type str.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Refaceting</span></code></a>(service, rules, path)</p></td>
+<td><p>Singleton Refaceting.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Rename" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Rename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Rename</span></code></a>(service, rules, command[, path])</p></td>
+<td><p>Command Rename.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Transformations" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Transformations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Transformations</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Transformations of value type List[str].</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Root.AssemblyNode.</span></span><span class="sig-name descname"><span class="pre">_AssemblyNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode" title="Permalink to this definition">#</a></dt>
-<dd><p>Singleton _AssemblyNode.</p>
-<dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.ChangeChildrenSettings">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ChangeChildrenSettings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.ChangeChildrenSettings" title="Permalink to this definition">#</a></dt>
-<dd><p>Command ChangeChildrenSettings.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
+<p>Command ChangeChildrenSettings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -739,19 +843,22 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Children">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Children" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter Children of value type List[str].</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter Children of value type List[str].</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Context">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Context</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Context" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter Context of value type int.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter Context of value type int.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Copy">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Copy" title="Permalink to this definition">#</a></dt>
-<dd><p>Command Copy.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
+<p>Command Copy.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -769,7 +876,8 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.CreateChild">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CreateChild</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.CreateChild" title="Permalink to this definition">#</a></dt>
-<dd><p>Command CreateChild.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
+<p>Command CreateChild.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -787,37 +895,43 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.EdgeExtraction">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EdgeExtraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.EdgeExtraction" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter EdgeExtraction of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter EdgeExtraction of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.FeatureAngle">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FeatureAngle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.FeatureAngle" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter FeatureAngle of value type float.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter FeatureAngle of value type float.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.IsChildrenSettingsChanged">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">IsChildrenSettingsChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.IsChildrenSettingsChanged" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter IsChildrenSettingsChanged of value type bool.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter IsChildrenSettingsChanged of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.KeyId">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">KeyId</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.KeyId" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter KeyId of value type int.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter KeyId of value type int.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.MergeChildren">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MergeChildren</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.MergeChildren" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter MergeChildren of value type bool.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter MergeChildren of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Move">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Move" title="Permalink to this definition">#</a></dt>
-<dd><p>Command Move.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
+<p>Command Move.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -835,31 +949,36 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Name">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Name" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter Name of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter Name of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.OneZonePer">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OneZonePer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.OneZonePer" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter OneZonePer of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter OneZonePer of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Parent">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Parent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Parent" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter Parent of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter Parent of value type str.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.PrefixObjectName">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PrefixObjectName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.PrefixObjectName" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter PrefixObjectName of value type bool.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter PrefixObjectName of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.ReFacet">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ReFacet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.ReFacet" title="Permalink to this definition">#</a></dt>
-<dd><p>Command ReFacet.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
+<p>Command ReFacet.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -879,7 +998,8 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.ReFacetNow">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ReFacetNow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.ReFacetNow" title="Permalink to this definition">#</a></dt>
-<dd><p>Command ReFacetNow.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
+<p>Command ReFacetNow.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -892,13 +1012,67 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.RefacetOperation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RefacetOperation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.RefacetOperation" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter RefacetOperation of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter RefacetOperation of value type str.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Refaceting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
+<p>Singleton Refaceting.</p>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting.Deviation" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting.Deviation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Deviation</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Deviation of value type float.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting.MaxSize" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting.MaxSize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MaxSize</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter MaxSize of value type float.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting.NormalAngle" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting.NormalAngle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NormalAngle</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter NormalAngle of value type float.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting.Refacet" title="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting.Refacet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Refacet</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Refacet of value type bool.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting.Deviation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Deviation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting.Deviation" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter Deviation of value type float.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting.MaxSize">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MaxSize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting.MaxSize" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter MaxSize of value type float.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting.NormalAngle">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NormalAngle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting.NormalAngle" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter NormalAngle of value type float.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting.Refacet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Refacet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Refaceting.Refacet" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter Refacet of value type bool.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Rename">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Rename" title="Permalink to this definition">#</a></dt>
-<dd><p>Command Rename.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyCommand</span></code></p>
+<p>Command Rename.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -916,13 +1090,8 @@ function checkPageExistsAndRedirect(event) {
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Transformations">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Transformations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode.Transformations" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter Transformations of value type List[str].</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode._name_">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_name_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.PartManagement.Root.AssemblyNode._AssemblyNode._name_" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter _name_ of value type str.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyTextual</span></code></p>
+<p>Parameter Transformations of value type List[str].</p>
 </dd></dl>
 
 </dd></dl>

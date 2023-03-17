@@ -5,11 +5,8 @@
 hub
 ===
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.hub
+.. autoclass:: ansys.fluent.core.solver.settings_231.hub.hub
 
-.. autoclass:: hub
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

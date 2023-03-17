@@ -5,16 +5,13 @@
 uds_diffusivity
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.uds_diffusivity
+.. autoclass:: ansys.fluent.core.solver.settings_231.uds_diffusivity.uds_diffusivity
 
-.. autoclass:: uds_diffusivity
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   ====================================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

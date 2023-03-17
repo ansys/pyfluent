@@ -5,11 +5,8 @@
 target_number_in_parcel
 =======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.target_number_in_parcel
+.. autoclass:: ansys.fluent.core.solver.settings_231.target_number_in_parcel.target_number_in_parcel
 
-.. autoclass:: target_number_in_parcel
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

@@ -5,11 +5,8 @@
 threshold
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.threshold
+.. autoclass:: ansys.fluent.core.solver.settings_231.threshold.threshold
 
-.. autoclass:: threshold
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ============================================

@@ -5,11 +5,8 @@
 read_case
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.read_case
+.. autoclass:: ansys.fluent.core.solver.settings_231.read_case.read_case
 
-.. autoclass:: read_case
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ============================================   ==============================

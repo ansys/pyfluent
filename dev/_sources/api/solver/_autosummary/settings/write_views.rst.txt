@@ -5,11 +5,8 @@
 write_views
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.write_views
+.. autoclass:: ansys.fluent.core.solver.settings_231.write_views.write_views
 
-.. autoclass:: write_views
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ==============================   ======================

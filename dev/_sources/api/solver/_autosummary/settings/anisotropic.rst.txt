@@ -5,16 +5,13 @@
 anisotropic
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.anisotropic
+.. autoclass:: ansys.fluent.core.solver.settings_231.anisotropic.anisotropic
 
-.. autoclass:: anisotropic
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==========================================   =============================
 
-Child                                                              Summary
+Attribute                                                          Summary
 
 ==========================================   =============================
 :ref:`matrix_component <matrix_component>`       'matrix_component' child.

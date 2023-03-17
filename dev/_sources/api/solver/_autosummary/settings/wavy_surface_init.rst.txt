@@ -5,11 +5,8 @@
 wavy_surface_init
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.wavy_surface_init
+.. autoclass:: ansys.fluent.core.solver.settings_231.wavy_surface_init.wavy_surface_init
 
-.. autoclass:: wavy_surface_init
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ==========================================

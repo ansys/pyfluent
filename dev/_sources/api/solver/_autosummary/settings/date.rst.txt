@@ -5,11 +5,8 @@
 date
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.date
+.. autoclass:: ansys.fluent.core.solver.settings_231.date.date
 
-.. autoclass:: date
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================   =======================================

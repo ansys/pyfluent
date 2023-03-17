@@ -51,12 +51,12 @@
     <script src="../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
     <link rel="next" title="meshing.tui.preferences.simulation.report_definitions" href="report_definitions/index.html" />
-    <link rel="prev" title="meshing.tui.preferences.appearance.selections" href="../appearance/selections/index.html" />
+    <link rel="prev" title="meshing.tui.preferences.mat_pro_app" href="../mat_pro_app/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev2 variable.
+            // this version, rather than using sphinx's 0.13.dev3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -303,13 +303,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -322,6 +317,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -333,13 +333,43 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
+      <a class="reference internal" href="../../size_functions/index.html">
+       meshing.tui.size_functions
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../display/index.html">
-       meshing.tui.display
+      <a class="reference internal" href="../../mesh/index.html">
+       meshing.tui.mesh
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../objects/index.html">
+       meshing.tui.objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../file/index.html">
+       meshing.tui.file
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../boundary/index.html">
+       meshing.tui.boundary
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../diagnostics/index.html">
+       meshing.tui.diagnostics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../reference_frames/index.html">
+       meshing.tui.reference_frames
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../parallel/index.html">
+       meshing.tui.parallel
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -353,18 +383,13 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../turbo_workflow/index.html">
-         meshing.tui.preferences.turbo_workflow
+        <a class="reference internal" href="../meshing_workflow/index.html">
+         meshing.tui.preferences.meshing_workflow
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../general/index.html">
-         meshing.tui.preferences.general
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../appearance/index.html">
-         meshing.tui.preferences.appearance
+        <a class="reference internal" href="../mat_pro_app/index.html">
+         meshing.tui.preferences.mat_pro_app
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -385,23 +410,8 @@ function checkPageExistsAndRedirect(event) {
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../graphics/index.html">
-         meshing.tui.preferences.graphics
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../meshing_workflow/index.html">
-         meshing.tui.preferences.meshing_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../mat_pro_app/index.html">
-         meshing.tui.preferences.mat_pro_app
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../gpuapp/index.html">
-         meshing.tui.preferences.gpuapp
+        <a class="reference internal" href="../appearance/index.html">
+         meshing.tui.preferences.appearance
         </a>
        </li>
        <li class="toctree-l4">
@@ -410,35 +420,40 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../gpuapp/index.html">
+         meshing.tui.preferences.gpuapp
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../turbo_workflow/index.html">
+         meshing.tui.preferences.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../graphics/index.html">
+         meshing.tui.preferences.graphics
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../parametric_study/index.html">
          meshing.tui.preferences.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../general/index.html">
+         meshing.tui.preferences.general
         </a>
        </li>
       </ul>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../material_point/index.html">
-       meshing.tui.material_point
+      <a class="reference internal" href="../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../boundary/index.html">
-       meshing.tui.boundary
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../diagnostics/index.html">
-       meshing.tui.diagnostics
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../parallel/index.html">
-       meshing.tui.parallel
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../size_functions/index.html">
-       meshing.tui.size_functions
+      <a class="reference internal" href="../../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
       </a>
      </li>
      <li class="toctree-l3">
@@ -447,33 +462,18 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../objects/index.html">
-       meshing.tui.objects
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../file/index.html">
-       meshing.tui.file
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../../report/index.html">
        meshing.tui.report
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../mesh/index.html">
-       meshing.tui.mesh
+      <a class="reference internal" href="../../display/index.html">
+       meshing.tui.display
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../reference_frames/index.html">
-       meshing.tui.reference_frames
+      <a class="reference internal" href="../../material_point/index.html">
+       meshing.tui.material_point
       </a>
      </li>
     </ul>
@@ -518,7 +518,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.preferences.simulation
+     simulation
     </span>
    </code>
   </a>
@@ -527,7 +527,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.flow_model">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.simulation.flow_model()
+       simulation.flow_model()
       </span>
      </code>
     </a>
@@ -536,10 +536,39 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.local_residual_scaling">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.simulation.local_residual_scaling()
+       simulation.local_residual_scaling()
       </span>
      </code>
     </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.report_definitions">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       simulation.report_definitions
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.report_definitions.automatic_plot_file">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         simulation.report_definitions.automatic_plot_file()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.report_definitions.report_plot_history_data_size">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         simulation.report_definitions.report_plot_history_data_size()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
@@ -564,14 +593,32 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-preferences-simulation">
 <span id="ref-meshing-tui-preferences-simulation"></span><h1>meshing.tui.preferences.simulation<a class="headerlink" href="#meshing-tui-preferences-simulation" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.preferences.</span></span><span class="sig-name descname"><span class="pre">simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation" title="Permalink to this definition">#</a></dt>
-<dd><p>.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.preferences.</span></span><span class="sig-name descname"><span class="pre">simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.flow_model" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.flow_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flow_model</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.local_residual_scaling" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.local_residual_scaling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">local_residual_scaling</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.report_definitions" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.report_definitions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">report_definitions</span></code></a>(path, service)</p></td>
+<td><p>Enter the menu for report definition preferences.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.flow_model">
 <span class="sig-name descname"><span class="pre">flow_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.flow_model" title="Permalink to this definition">#</a></dt>
@@ -582,6 +629,36 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.local_residual_scaling">
 <span class="sig-name descname"><span class="pre">local_residual_scaling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.local_residual_scaling" title="Permalink to this definition">#</a></dt>
 <dd><p>.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.report_definitions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">report_definitions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.report_definitions" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the menu for report definition preferences.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.report_definitions.automatic_plot_file" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.report_definitions.automatic_plot_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">automatic_plot_file</span></code></a>(*args, **kwargs)</p></td>
+<td><p>New report definitions will automatically create associated report files and plots.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.report_definitions.report_plot_history_data_size" title="ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.report_definitions.report_plot_history_data_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">report_plot_history_data_size</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify how many data points are read from the associated report file and plotted in the graphics window.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.report_definitions.automatic_plot_file">
+<span class="sig-name descname"><span class="pre">automatic_plot_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.report_definitions.automatic_plot_file" title="Permalink to this definition">#</a></dt>
+<dd><p>New report definitions will automatically create associated report files and plots.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.report_definitions.report_plot_history_data_size">
+<span class="sig-name descname"><span class="pre">report_plot_history_data_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.preferences.simulation.report_definitions.report_plot_history_data_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Specify how many data points are read from the associated report file and plotted in the graphics window. If the case/data files are already open, read the case and data again, after changing this setting, and re-plot to see the updated report plot.</p>
+</dd></dl>
+
 </dd></dl>
 
 </dd></dl>

@@ -5,16 +5,13 @@
 graphics_objects
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.graphics_objects
+.. autoclass:: ansys.fluent.core.solver.settings_231.graphics_objects.graphics_objects
 
-.. autoclass:: graphics_objects
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Commands
+.. rubric:: Methods
 
 ==================   ===================
 
-Command                          Summary
+Method                           Summary
 
 ==================   ===================
 :ref:`list <list>`       'list' command.

@@ -5,11 +5,8 @@
 light_on
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.light_on
+.. autoclass:: ansys.fluent.core.solver.settings_231.light_on.light_on
 
-.. autoclass:: light_on
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ========================

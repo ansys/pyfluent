@@ -5,11 +5,8 @@
 pre_sweeps
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.pre_sweeps_3
+.. autoclass:: ansys.fluent.core.solver.settings_231.pre_sweeps_3.pre_sweeps
 
-.. autoclass:: pre_sweeps
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================   ================

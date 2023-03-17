@@ -5,11 +5,8 @@
 disk_normal_x
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.disk_normal_x
+.. autoclass:: ansys.fluent.core.solver.settings_231.disk_normal_x.disk_normal_x
 
-.. autoclass:: disk_normal_x
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   ==============================================

@@ -5,11 +5,8 @@
 top_value_cells
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.top_value_cells
+.. autoclass:: ansys.fluent.core.solver.settings_231.top_value_cells.top_value_cells
 
-.. autoclass:: top_value_cells
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 =========================   ===================

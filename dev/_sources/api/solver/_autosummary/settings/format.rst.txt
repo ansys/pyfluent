@@ -5,11 +5,8 @@
 format
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.format
+.. autoclass:: ansys.fluent.core.solver.settings_231.format.format
 
-.. autoclass:: format
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

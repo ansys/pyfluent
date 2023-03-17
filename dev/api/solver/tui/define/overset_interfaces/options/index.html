@@ -51,12 +51,12 @@
     <script src="../../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
-    <link rel="next" title="solver.tui.define.overset_interfaces.adapt" href="../adapt/index.html" />
-    <link rel="prev" title="solver.tui.define.overset_interfaces.cut_control.cut_seeds" href="../cut_control/cut_seeds/index.html" />
+    <link rel="next" title="solver.tui.define.overset_interfaces.cut_control" href="../cut_control/index.html" />
+    <link rel="prev" title="solver.tui.define.overset_interfaces" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev2 variable.
+            // this version, rather than using sphinx's 0.13.dev3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -305,13 +305,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -355,78 +350,13 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../solution/index.html">
-         solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../setup/index.html">
-         solver.tui.setup
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../display/index.html">
-         solver.tui.display
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../adjoint/index.html">
          solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../solve/index.html">
-         solver.tui.solve
+        <a class="reference internal" href="../../../display/index.html">
+         solver.tui.display
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -440,8 +370,95 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
+          <a class="reference internal" href="../../boundary_conditions/index.html">
+           solver.tui.define.boundary_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../spectral/index.html">
+           solver.tui.define.spectral
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../custom_field_functions/index.html">
+           solver.tui.define.custom_field_functions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../dynamic_mesh/index.html">
+           solver.tui.define.dynamic_mesh
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../mesh_interfaces/index.html">
+           solver.tui.define.mesh_interfaces
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../gap_model/index.html">
+           solver.tui.define.gap_model
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../materials/index.html">
+           solver.tui.define.materials
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../mixing_planes/index.html">
+           solver.tui.define.mixing_planes
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../models/index.html">
+           solver.tui.define.models
+          </a>
+         </li>
+         <li class="toctree-l5 current active has-children">
+          <a class="reference internal" href="../index.html">
+           solver.tui.define.overset_interfaces
+          </a>
+          <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+          <label for="toctree-checkbox-5">
+           <i class="fas fa-chevron-down">
+           </i>
+          </label>
+          <ul class="current">
+           <li class="toctree-l6 current active">
+            <a class="current reference internal" href="#">
+             solver.tui.define.overset_interfaces.options
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../cut_control/index.html">
+             solver.tui.define.overset_interfaces.cut_control
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../adapt/index.html">
+             solver.tui.define.overset_interfaces.adapt
+            </a>
+           </li>
+          </ul>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../operating_conditions/index.html">
+           solver.tui.define.operating_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
           <a class="reference internal" href="../../parameters/index.html">
            solver.tui.define.parameters
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../periodic_conditions/index.html">
+           solver.tui.define.periodic_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../turbo_model/index.html">
+           solver.tui.define.turbo_model
           </a>
          </li>
          <li class="toctree-l5">
@@ -450,13 +467,8 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../virtual_boundary/index.html">
-           solver.tui.define.virtual_boundary
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../named_expressions/index.html">
-           solver.tui.define.named_expressions
+          <a class="reference internal" href="../../profiles/index.html">
+           solver.tui.define.profiles
           </a>
          </li>
          <li class="toctree-l5">
@@ -470,28 +482,18 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../profiles/index.html">
-           solver.tui.define.profiles
+          <a class="reference internal" href="../../user_defined/index.html">
+           solver.tui.define.user_defined
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../custom_field_functions/index.html">
-           solver.tui.define.custom_field_functions
+          <a class="reference internal" href="../../named_expressions/index.html">
+           solver.tui.define.named_expressions
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../operating_conditions/index.html">
-           solver.tui.define.operating_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../models/index.html">
-           solver.tui.define.models
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../materials/index.html">
-           solver.tui.define.materials
+          <a class="reference internal" href="../../virtual_boundary/index.html">
+           solver.tui.define.virtual_boundary
           </a>
          </li>
          <li class="toctree-l5">
@@ -499,83 +501,11 @@ function checkPageExistsAndRedirect(event) {
            solver.tui.define.curvilinear_coordinate_system
           </a>
          </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../user_defined/index.html">
-           solver.tui.define.user_defined
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../turbo_model/index.html">
-           solver.tui.define.turbo_model
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../periodic_conditions/index.html">
-           solver.tui.define.periodic_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../mesh_interfaces/index.html">
-           solver.tui.define.mesh_interfaces
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../mixing_planes/index.html">
-           solver.tui.define.mixing_planes
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../gap_model/index.html">
-           solver.tui.define.gap_model
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../spectral/index.html">
-           solver.tui.define.spectral
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../boundary_conditions/index.html">
-           solver.tui.define.boundary_conditions
-          </a>
-         </li>
-         <li class="toctree-l5 current active has-children">
-          <a class="reference internal" href="../index.html">
-           solver.tui.define.overset_interfaces
-          </a>
-          <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-          <label for="toctree-checkbox-5">
-           <i class="fas fa-chevron-down">
-           </i>
-          </label>
-          <ul class="current">
-           <li class="toctree-l6">
-            <a class="reference internal" href="../cut_control/index.html">
-             solver.tui.define.overset_interfaces.cut_control
-            </a>
-           </li>
-           <li class="toctree-l6 current active">
-            <a class="current reference internal" href="#">
-             solver.tui.define.overset_interfaces.options
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../adapt/index.html">
-             solver.tui.define.overset_interfaces.adapt
-            </a>
-           </li>
-          </ul>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../dynamic_mesh/index.html">
-           solver.tui.define.dynamic_mesh
-          </a>
-         </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parametric_study/index.html">
-         solver.tui.parametric_study
+        <a class="reference internal" href="../../../file/index.html">
+         solver.tui.file
         </a>
        </li>
        <li class="toctree-l4">
@@ -584,13 +514,23 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../file/index.html">
-         solver.tui.file
+        <a class="reference internal" href="../../../mesh/index.html">
+         solver.tui.mesh
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parallel/index.html">
+         solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../plot/index.html">
+         solver.tui.plot
         </a>
        </li>
        <li class="toctree-l4">
@@ -599,8 +539,63 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parallel/index.html">
-         solver.tui.parallel
+        <a class="reference internal" href="../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../views/index.html">
+         solver.tui.views
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
       </ul>
@@ -672,7 +667,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.define.overset_interfaces.options
+     options
     </span>
    </code>
   </a>
@@ -681,7 +676,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.auto_create">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.overset_interfaces.options.auto_create()
+       options.auto_create()
       </span>
      </code>
     </a>
@@ -690,7 +685,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.dead_cell_update">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.overset_interfaces.options.dead_cell_update()
+       options.dead_cell_update()
       </span>
      </code>
     </a>
@@ -699,7 +694,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.donor_priority_method">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.overset_interfaces.options.donor_priority_method()
+       options.donor_priority_method()
       </span>
      </code>
     </a>
@@ -708,7 +703,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.expert">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.overset_interfaces.options.expert()
+       options.expert()
       </span>
      </code>
     </a>
@@ -717,7 +712,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.mesh_interfaces">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.overset_interfaces.options.mesh_interfaces()
+       options.mesh_interfaces()
       </span>
      </code>
     </a>
@@ -726,7 +721,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.minimize_overlap">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.overset_interfaces.options.minimize_overlap()
+       options.minimize_overlap()
       </span>
      </code>
     </a>
@@ -735,7 +730,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.modified_donor_search">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.overset_interfaces.options.modified_donor_search()
+       options.modified_donor_search()
       </span>
      </code>
     </a>
@@ -744,7 +739,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.modified_hole_cutting">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.overset_interfaces.options.modified_hole_cutting()
+       options.modified_hole_cutting()
       </span>
      </code>
     </a>
@@ -753,7 +748,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.node_connected_donors">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.overset_interfaces.options.node_connected_donors()
+       options.node_connected_donors()
       </span>
      </code>
     </a>
@@ -762,7 +757,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.overlap_boundaries">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.overset_interfaces.options.overlap_boundaries()
+       options.overlap_boundaries()
       </span>
      </code>
     </a>
@@ -771,7 +766,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.parallel">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.overset_interfaces.options.parallel()
+       options.parallel()
       </span>
      </code>
     </a>
@@ -780,7 +775,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.partial_cut_faces">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.overset_interfaces.options.partial_cut_faces()
+       options.partial_cut_faces()
       </span>
      </code>
     </a>
@@ -789,7 +784,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.render_receptor_cells">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.overset_interfaces.options.render_receptor_cells()
+       options.render_receptor_cells()
       </span>
      </code>
     </a>
@@ -798,7 +793,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.solve_island_removal">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.overset_interfaces.options.solve_island_removal()
+       options.solve_island_removal()
       </span>
      </code>
     </a>
@@ -807,7 +802,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.transient_caching">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.overset_interfaces.options.transient_caching()
+       options.transient_caching()
       </span>
      </code>
     </a>
@@ -816,7 +811,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.update_before_case_write">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.overset_interfaces.options.update_before_case_write()
+       options.update_before_case_write()
       </span>
      </code>
     </a>
@@ -825,7 +820,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.verbosity">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.define.overset_interfaces.options.verbosity()
+       options.verbosity()
       </span>
      </code>
     </a>
@@ -853,14 +848,67 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-define-overset-interfaces-options">
 <span id="ref-solver-tui-define-overset-interfaces-options"></span><h1>solver.tui.define.overset_interfaces.options<a class="headerlink" href="#solver-tui-define-overset-interfaces-options" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.overset_interfaces.</span></span><span class="sig-name descname"><span class="pre">options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options" title="Permalink to this definition">#</a></dt>
-<dd><p>Enters the overset interface options menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.</span></span><span class="sig-name descname"><span class="pre">options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enters the overset interface options menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.auto_create" title="ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.auto_create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_create</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables the automatic creation of a default overset interface during        initialization or mesh motion update.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.dead_cell_update" title="ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.dead_cell_update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dead_cell_update</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables/disables the updating of dead cells during the solution process, which may  be helpful for some moving and dynamic mesh simulations         (though at the cost of solver performance).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.donor_priority_method" title="ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.donor_priority_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">donor_priority_method</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Allows you to specify whether the cell donor priority used in the overlap   minimization of an overset interface is inversely proportional to either the    cell size or the distance to the nearest boundary.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.expert" title="ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.expert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expert</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables / disables overset-related expert tools.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.mesh_interfaces" title="ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.mesh_interfaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_interfaces</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Allows the inclusion of non-conformal mesh interfaces       inside overset cell zones, as long as the mesh  interfaces do not spatially overlap with the cells where        the overset interfaces lie.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.minimize_overlap" title="ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.minimize_overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimize_overlap</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Allows you to disable overlap minimization during hole cutting.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.modified_donor_search" title="ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.modified_donor_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modified_donor_search</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables / disables modified donor search parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.modified_hole_cutting" title="ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.modified_hole_cutting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modified_hole_cutting</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables / disables modified hole cutting parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.node_connected_donors" title="ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.node_connected_donors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_connected_donors</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Allows you to switch between face or node connected donor cells.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.overlap_boundaries" title="ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.overlap_boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overlap_boundaries</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Allows you to disable the detection of overlapping boundaries during hole cutting,  in order to reduce the computational expense for cases  that do not include such boundaries.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.parallel" title="ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parallel</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Allows you to select the algorithm used for overset parallel processing.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.partial_cut_faces" title="ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.partial_cut_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partial_cut_faces</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables/disables enhanced hole cutting, where partially overlapping cut faces are   decomposed into overlapping and non-overlapping         fractions, and only the non-overlapping fractions       participate in the hole cutting.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.render_receptor_cells" title="ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.render_receptor_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">render_receptor_cells</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Allows you to enable visualization of receptor cells in contour and mesh    displays.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.solve_island_removal" title="ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.solve_island_removal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve_island_removal</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the method used to control the removal of isolated patches of solve cells.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.transient_caching" title="ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.transient_caching"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transient_caching</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the options to control caching of entities in transient overset simulations.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.update_before_case_write" title="ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.update_before_case_write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_before_case_write</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables/disables the updating of the overset interfaces before writing a case file in the   Common Fluids Format (CFF).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.verbosity" title="ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.verbosity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verbosity</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the level of detail printed in the console about overset  interfaces.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.auto_create">
 <span class="sig-name descname"><span class="pre">auto_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.overset_interfaces.options.auto_create" title="Permalink to this definition">#</a></dt>

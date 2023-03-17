@@ -5,11 +5,8 @@
 material
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.material
+.. autoclass:: ansys.fluent.core.solver.settings_231.material.material
 
-.. autoclass:: material
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================================   ============================================

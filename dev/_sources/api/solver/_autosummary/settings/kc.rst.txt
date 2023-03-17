@@ -5,16 +5,13 @@
 kc
 ==
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.kc
+.. autoclass:: ansys.fluent.core.solver.settings_231.kc.kc
 
-.. autoclass:: kc
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   =================================
 
-Child                                                                            Summary
+Attribute                                                                        Summary
 
 ====================================================   =================================
 :ref:`method <method_1>`                                                 'method' child.

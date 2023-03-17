@@ -5,16 +5,13 @@
 burn_hreact
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.burn_hreact
+.. autoclass:: ansys.fluent.core.solver.settings_231.burn_hreact.burn_hreact
 
-.. autoclass:: burn_hreact
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

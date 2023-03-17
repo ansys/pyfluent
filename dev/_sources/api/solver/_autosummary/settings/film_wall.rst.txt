@@ -5,11 +5,8 @@
 film_wall
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.film_wall
+.. autoclass:: ansys.fluent.core.solver.settings_231.film_wall.film_wall
 
-.. autoclass:: film_wall
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

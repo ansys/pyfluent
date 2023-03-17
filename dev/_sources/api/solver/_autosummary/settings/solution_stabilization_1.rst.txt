@@ -5,16 +5,13 @@
 solution_stabilization
 ======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.solution_stabilization_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.solution_stabilization_1.solution_stabilization
 
-.. autoclass:: solution_stabilization
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================================================   ========================================================
 
-Child                                                                                                                                   Summary
+Attribute                                                                                                                               Summary
 
 ====================================================================================   ========================================================
 :ref:`execute_settings_optimization <execute_settings_optimization>`                                        Execute optimized settings for VOF.

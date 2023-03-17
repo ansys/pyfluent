@@ -5,11 +5,8 @@
 pole
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.pole
+.. autoclass:: ansys.fluent.core.solver.settings_231.pole.pole
 
-.. autoclass:: pole
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =======================================

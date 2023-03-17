@@ -3,22 +3,24 @@
 solver.tui.preferences
 ======================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.preferences
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences
 .. toctree::
    :hidden:
 
-   simulation/index
+   appearance/index
+   general/index
    gpuapp/index
-   navigation/index
+   graphics/index
    mat_pro_app/index
    meshing_workflow/index
-   graphics/index
-   turbo_workflow/index
-   general/index
-   appearance/index
+   navigation/index
    parametric_study/index
+   simulation/index
+   turbo_workflow/index

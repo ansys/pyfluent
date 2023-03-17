@@ -5,11 +5,8 @@
 fluid_time_step_count
 =====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.fluid_time_step_count
+.. autoclass:: ansys.fluent.core.solver.settings_231.fluid_time_step_count.fluid_time_step_count
 
-.. autoclass:: fluid_time_step_count
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ==============================================================

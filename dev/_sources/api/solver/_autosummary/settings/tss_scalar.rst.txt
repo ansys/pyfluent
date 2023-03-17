@@ -5,11 +5,8 @@
 tss_scalar
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.tss_scalar
+.. autoclass:: ansys.fluent.core.solver.settings_231.tss_scalar.tss_scalar
 
-.. autoclass:: tss_scalar
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`child_object_type_child <child_object_type_child_1>`

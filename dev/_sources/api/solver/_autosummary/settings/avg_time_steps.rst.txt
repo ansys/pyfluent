@@ -5,11 +5,8 @@
 avg_time_steps
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.avg_time_steps
+.. autoclass:: ansys.fluent.core.solver.settings_231.avg_time_steps.avg_time_steps
 
-.. autoclass:: avg_time_steps
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   ==================================

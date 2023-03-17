@@ -5,11 +5,8 @@
 maximum
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.maximum
+.. autoclass:: ansys.fluent.core.solver.settings_231.maximum.maximum
 
-.. autoclass:: maximum
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================================   ================================================

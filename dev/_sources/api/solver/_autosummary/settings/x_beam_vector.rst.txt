@@ -5,11 +5,8 @@
 x_beam_vector
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.x_beam_vector
+.. autoclass:: ansys.fluent.core.solver.settings_231.x_beam_vector.x_beam_vector
 
-.. autoclass:: x_beam_vector
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================   ===========================

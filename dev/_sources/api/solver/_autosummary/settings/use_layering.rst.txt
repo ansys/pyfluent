@@ -5,11 +5,8 @@
 use_layering
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.use_layering
+.. autoclass:: ansys.fluent.core.solver.settings_231.use_layering.use_layering
 
-.. autoclass:: use_layering
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   ==================================

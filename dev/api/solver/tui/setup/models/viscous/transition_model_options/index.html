@@ -51,11 +51,11 @@
     <script src="../../../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../search.html" />
-    <link rel="next" title="solver.tui.setup.models.viscous.turbulence_expert" href="../turbulence_expert/index.html" />
+    <link rel="next" title="solver.tui.setup.models.structure" href="../../structure/index.html" />
     <link rel="prev" title="solver.tui.setup.models.viscous.geko_options" href="../geko_options/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev2 variable.
+            // this version, rather than using sphinx's 0.13.dev3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -306,13 +306,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -356,13 +351,73 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solution/index.html">
-         solver.tui.solution
+        <a class="reference internal" href="../../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../define/index.html">
+         solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parallel/index.html">
+         solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../../report/index.html">
          solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../solution/index.html">
+         solver.tui.solution
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -376,8 +431,23 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../overset_interfaces/index.html">
-           solver.tui.setup.overset_interfaces
+          <a class="reference internal" href="../../../boundary_conditions/index.html">
+           solver.tui.setup.boundary_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../dynamic_mesh/index.html">
+           solver.tui.setup.dynamic_mesh
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../expert/index.html">
+           solver.tui.setup.expert
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../gap_model/index.html">
+           solver.tui.setup.gap_model
           </a>
          </li>
          <li class="toctree-l5">
@@ -386,13 +456,13 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../turbo_model/index.html">
-           solver.tui.setup.turbo_model
+          <a class="reference internal" href="../../../mesh_interfaces/index.html">
+           solver.tui.setup.mesh_interfaces
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../dynamic_mesh/index.html">
-           solver.tui.setup.dynamic_mesh
+          <a class="reference internal" href="../../../mixing_planes/index.html">
+           solver.tui.setup.mixing_planes
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -406,6 +476,51 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul class="current">
            <li class="toctree-l6">
+            <a class="reference internal" href="../../acoustics/index.html">
+             solver.tui.setup.models.acoustics
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../optics/index.html">
+             solver.tui.setup.models.optics
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../eulerian_wallfilm/index.html">
+             solver.tui.setup.models.eulerian_wallfilm
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../dpm/index.html">
+             solver.tui.setup.models.dpm
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../shell_conduction/index.html">
+             solver.tui.setup.models.shell_conduction
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../system_coupling_settings/index.html">
+             solver.tui.setup.models.system_coupling_settings
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../cht/index.html">
+             solver.tui.setup.models.cht
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../two_temperature/index.html">
+             solver.tui.setup.models.two_temperature
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../multiphase/index.html">
+             solver.tui.setup.models.multiphase
+            </a>
+           </li>
+           <li class="toctree-l6">
             <a class="reference internal" href="../../nox_parameters/index.html">
              solver.tui.setup.models.nox_parameters
             </a>
@@ -416,63 +531,18 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../solver/index.html">
-             solver.tui.setup.models.solver
-            </a>
-           </li>
-           <li class="toctree-l6">
             <a class="reference internal" href="../../radiation/index.html">
              solver.tui.setup.models.radiation
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../eulerian_wallfilm/index.html">
-             solver.tui.setup.models.eulerian_wallfilm
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../shell_conduction/index.html">
-             solver.tui.setup.models.shell_conduction
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../two_temperature/index.html">
-             solver.tui.setup.models.two_temperature
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../electrolysis/index.html">
-             solver.tui.setup.models.electrolysis
+            <a class="reference internal" href="../../solver/index.html">
+             solver.tui.setup.models.solver
             </a>
            </li>
            <li class="toctree-l6">
             <a class="reference internal" href="../../species/index.html">
              solver.tui.setup.models.species
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../dpm/index.html">
-             solver.tui.setup.models.dpm
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../structure/index.html">
-             solver.tui.setup.models.structure
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../acoustics/index.html">
-             solver.tui.setup.models.acoustics
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../multiphase/index.html">
-             solver.tui.setup.models.multiphase
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../system_coupling_settings/index.html">
-             solver.tui.setup.models.system_coupling_settings
             </a>
            </li>
            <li class="toctree-l6 current active has-children">
@@ -486,13 +556,18 @@ function checkPageExistsAndRedirect(event) {
             </label>
             <ul class="current">
              <li class="toctree-l7">
+              <a class="reference internal" href="../near_wall_treatment/index.html">
+               solver.tui.setup.models.viscous.near_wall_treatment
+              </a>
+             </li>
+             <li class="toctree-l7">
               <a class="reference internal" href="../multiphase_turbulence/index.html">
                solver.tui.setup.models.viscous.multiphase_turbulence
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../near_wall_treatment/index.html">
-               solver.tui.setup.models.viscous.near_wall_treatment
+              <a class="reference internal" href="../turbulence_expert/index.html">
+               solver.tui.setup.models.viscous.turbulence_expert
               </a>
              </li>
              <li class="toctree-l7">
@@ -505,21 +580,11 @@ function checkPageExistsAndRedirect(event) {
                solver.tui.setup.models.viscous.transition_model_options
               </a>
              </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../turbulence_expert/index.html">
-               solver.tui.setup.models.viscous.turbulence_expert
-              </a>
-             </li>
             </ul>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../cht/index.html">
-             solver.tui.setup.models.cht
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../optics/index.html">
-             solver.tui.setup.models.optics
+            <a class="reference internal" href="../../structure/index.html">
+             solver.tui.setup.models.structure
             </a>
            </li>
            <li class="toctree-l6">
@@ -527,7 +592,27 @@ function checkPageExistsAndRedirect(event) {
              solver.tui.setup.models.heat_exchanger
             </a>
            </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../electrolysis/index.html">
+             solver.tui.setup.models.electrolysis
+            </a>
+           </li>
           </ul>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../named_expressions/index.html">
+           solver.tui.setup.named_expressions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../operating_conditions/index.html">
+           solver.tui.setup.operating_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../overset_interfaces/index.html">
+           solver.tui.setup.overset_interfaces
+          </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../../reference_frames/index.html">
@@ -540,80 +625,15 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../named_expressions/index.html">
-           solver.tui.setup.named_expressions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../expert/index.html">
-           solver.tui.setup.expert
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../operating_conditions/index.html">
-           solver.tui.setup.operating_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../gap_model/index.html">
-           solver.tui.setup.gap_model
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../boundary_conditions/index.html">
-           solver.tui.setup.boundary_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../mixing_planes/index.html">
-           solver.tui.setup.mixing_planes
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../mesh_interfaces/index.html">
-           solver.tui.setup.mesh_interfaces
+          <a class="reference internal" href="../../../turbo_model/index.html">
+           solver.tui.setup.turbo_model
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../display/index.html">
-         solver.tui.display
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../server/index.html">
-         solver.tui.server
+        <a class="reference internal" href="../../../../surface/index.html">
+         solver.tui.surface
         </a>
        </li>
        <li class="toctree-l4">
@@ -622,8 +642,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../../server/index.html">
+         solver.tui.server
         </a>
        </li>
        <li class="toctree-l4">
@@ -632,13 +652,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../define/index.html">
-         solver.tui.define
+        <a class="reference internal" href="../../../../views/index.html">
+         solver.tui.views
         </a>
        </li>
        <li class="toctree-l4">
@@ -647,28 +662,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../surface/index.html">
-         solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../preferences/index.html">
-         solver.tui.preferences
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parallel/index.html">
-         solver.tui.parallel
+        <a class="reference internal" href="../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
       </ul>
@@ -740,7 +735,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.setup.models.viscous.transition_model_options
+     transition_model_options
     </span>
    </code>
   </a>
@@ -749,7 +744,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.capg_hightu">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.viscous.transition_model_options.capg_hightu()
+       transition_model_options.capg_hightu()
       </span>
      </code>
     </a>
@@ -758,7 +753,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.capg_lowtu">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.viscous.transition_model_options.capg_lowtu()
+       transition_model_options.capg_lowtu()
       </span>
      </code>
     </a>
@@ -767,7 +762,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.cbubble_c1">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.viscous.transition_model_options.cbubble_c1()
+       transition_model_options.cbubble_c1()
       </span>
      </code>
     </a>
@@ -776,7 +771,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.cbubble_c2">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.viscous.transition_model_options.cbubble_c2()
+       transition_model_options.cbubble_c2()
       </span>
      </code>
     </a>
@@ -785,7 +780,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.cfpg_hightu">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.viscous.transition_model_options.cfpg_hightu()
+       transition_model_options.cfpg_hightu()
       </span>
      </code>
     </a>
@@ -794,7 +789,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.cfpg_lowtu">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.viscous.transition_model_options.cfpg_lowtu()
+       transition_model_options.cfpg_lowtu()
       </span>
      </code>
     </a>
@@ -803,7 +798,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.clambda_scale">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.viscous.transition_model_options.clambda_scale()
+       transition_model_options.clambda_scale()
       </span>
      </code>
     </a>
@@ -812,7 +807,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.critical_reynolds_number_correlation">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.viscous.transition_model_options.critical_reynolds_number_correlation()
+       transition_model_options.critical_reynolds_number_correlation()
       </span>
      </code>
     </a>
@@ -821,7 +816,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.crossflow_transition">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.viscous.transition_model_options.crossflow_transition()
+       transition_model_options.crossflow_transition()
       </span>
      </code>
     </a>
@@ -830,7 +825,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.ctu_hightu">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.viscous.transition_model_options.ctu_hightu()
+       transition_model_options.ctu_hightu()
       </span>
      </code>
     </a>
@@ -839,7 +834,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.ctu_lowtu">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.viscous.transition_model_options.ctu_lowtu()
+       transition_model_options.ctu_lowtu()
       </span>
      </code>
     </a>
@@ -848,7 +843,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.rec_c1">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.viscous.transition_model_options.rec_c1()
+       transition_model_options.rec_c1()
       </span>
      </code>
     </a>
@@ -857,7 +852,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.rec_c2">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.viscous.transition_model_options.rec_c2()
+       transition_model_options.rec_c2()
       </span>
      </code>
     </a>
@@ -866,7 +861,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.rec_max">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.viscous.transition_model_options.rec_max()
+       transition_model_options.rec_max()
       </span>
      </code>
     </a>
@@ -875,7 +870,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.rv1_switch">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.viscous.transition_model_options.rv1_switch()
+       transition_model_options.rv1_switch()
       </span>
      </code>
     </a>
@@ -903,14 +898,61 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-models-viscous-transition-model-options">
 <span id="ref-solver-tui-setup-models-viscous-transition-model-options"></span><h1>solver.tui.setup.models.viscous.transition_model_options<a class="headerlink" href="#solver-tui-setup-models-viscous-transition-model-options" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.models.viscous.</span></span><span class="sig-name descname"><span class="pre">transition_model_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the transition model options menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.</span></span><span class="sig-name descname"><span class="pre">transition_model_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enter the transition model options menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.capg_hightu" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.capg_hightu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">capg_hightu</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the algebraic transition model coefficient CAPG_HIGHTU.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.capg_lowtu" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.capg_lowtu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">capg_lowtu</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the algebraic transition model coefficient CAPG_LOWTU.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.cbubble_c1" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.cbubble_c1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cbubble_c1</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the algebraic transition model coefficient CBUBBLE_C1.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.cbubble_c2" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.cbubble_c2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cbubble_c2</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the algebraic transition model coefficient CBUBBLE_C2.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.cfpg_hightu" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.cfpg_hightu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cfpg_hightu</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the algebraic transition model coefficient CFPG_HIGHTU.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.cfpg_lowtu" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.cfpg_lowtu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cfpg_lowtu</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the algebraic transition model coefficient CFPG_LOWTU.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.clambda_scale" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.clambda_scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clambda_scale</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the algebraic transition model coefficient CLAMBDA_SCALE.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.critical_reynolds_number_correlation" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.critical_reynolds_number_correlation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">critical_reynolds_number_correlation</span></code></a>(*args, ...)</p></td>
+<td><p>Set the critical Reynolds number correlation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.crossflow_transition" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.crossflow_transition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">crossflow_transition</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable crossflow transition for the intermittency transition model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.ctu_hightu" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.ctu_hightu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ctu_hightu</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the algebraic transition model coefficient CTU_HIGHTU.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.ctu_lowtu" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.ctu_lowtu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ctu_lowtu</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the algebraic transition model coefficient CTU_LOWTU.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.rec_c1" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.rec_c1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rec_c1</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the algebraic transition model coefficient REC_C1.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.rec_c2" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.rec_c2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rec_c2</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the algebraic transition model coefficient REC_C2.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.rec_max" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.rec_max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rec_max</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the algebraic transition model coefficient REC_MAX.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.rv1_switch" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.rv1_switch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rv1_switch</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the algebraic transition model coefficient RV1_SWITCH.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.capg_hightu">
 <span class="sig-name descname"><span class="pre">capg_hightu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.viscous.transition_model_options.capg_hightu" title="Permalink to this definition">#</a></dt>

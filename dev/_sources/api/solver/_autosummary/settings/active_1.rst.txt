@@ -5,11 +5,8 @@
 active
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.active_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.active_1.active
 
-.. autoclass:: active
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================   =======================================================

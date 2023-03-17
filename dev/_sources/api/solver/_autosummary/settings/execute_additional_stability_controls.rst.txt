@@ -5,11 +5,8 @@
 execute_additional_stability_controls
 =====================================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.execute_additional_stability_controls
+.. autoclass:: ansys.fluent.core.solver.settings_231.execute_additional_stability_controls.execute_additional_stability_controls
 
-.. autoclass:: execute_additional_stability_controls
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   ====================================

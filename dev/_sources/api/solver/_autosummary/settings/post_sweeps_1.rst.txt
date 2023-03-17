@@ -5,11 +5,8 @@
 post_sweeps
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.post_sweeps_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.post_sweeps_1.post_sweeps
 
-.. autoclass:: post_sweeps
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   ===================================

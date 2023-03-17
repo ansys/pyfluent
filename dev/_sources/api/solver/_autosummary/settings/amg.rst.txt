@@ -5,16 +5,13 @@
 amg
 ===
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.amg
+.. autoclass:: ansys.fluent.core.solver.settings_231.amg.amg
 
-.. autoclass:: amg
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==============================================================   ========================================================
 
-Child                                                                                                             Summary
+Attribute                                                                                                         Summary
 
 ==============================================================   ========================================================
 :ref:`enforce_laplace_coarsening <enforce_laplace_coarsening>`       Enable/disable the use of laplace coarsening in AMG.

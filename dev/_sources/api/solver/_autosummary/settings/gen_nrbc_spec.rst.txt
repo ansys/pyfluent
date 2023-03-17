@@ -5,11 +5,8 @@
 gen_nrbc_spec
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.gen_nrbc_spec
+.. autoclass:: ansys.fluent.core.solver.settings_231.gen_nrbc_spec.gen_nrbc_spec
 
-.. autoclass:: gen_nrbc_spec
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

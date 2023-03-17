@@ -51,7 +51,7 @@
     <script src="../../../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../search.html" />
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev2 variable.
+            // this version, rather than using sphinx's 0.13.dev3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -305,13 +305,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -324,6 +319,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../../../../tui/index.html">
      meshing.tui
@@ -547,7 +547,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate">
    <code class="docutils literal notranslate">
     <span class="pre">
-     Root.Graphics.Performance.MinimumFrameRate
+     MinimumFrameRate
     </span>
    </code>
   </a>
@@ -556,7 +556,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.DynamicAdjustment">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Graphics.Performance.MinimumFrameRate.DynamicAdjustment
+       MinimumFrameRate.DynamicAdjustment
       </span>
      </code>
     </a>
@@ -565,7 +565,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.Enabled">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Graphics.Performance.MinimumFrameRate.Enabled
+       MinimumFrameRate.Enabled
       </span>
      </code>
     </a>
@@ -574,7 +574,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.FixedCullingValue">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Graphics.Performance.MinimumFrameRate.FixedCullingValue
+       MinimumFrameRate.FixedCullingValue
       </span>
      </code>
     </a>
@@ -583,7 +583,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.MaximumCullingThreshold">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Graphics.Performance.MinimumFrameRate.MaximumCullingThreshold
+       MinimumFrameRate.MaximumCullingThreshold
       </span>
      </code>
     </a>
@@ -592,7 +592,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.MinimumCullingThreshold">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Graphics.Performance.MinimumFrameRate.MinimumCullingThreshold
+       MinimumFrameRate.MinimumCullingThreshold
       </span>
      </code>
     </a>
@@ -601,7 +601,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.TargetFPS">
      <code class="docutils literal notranslate">
       <span class="pre">
-       Root.Graphics.Performance.MinimumFrameRate.TargetFPS
+       MinimumFrameRate.TargetFPS
       </span>
      </code>
     </a>
@@ -629,48 +629,74 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-datamodel-preferences-graphics-performance-minimumframerate">
 <span id="ref-meshing-datamodel-preferences-graphics-performance-minimumframerate"></span><h1>meshing.datamodel.preferences.Graphics.Performance.MinimumFrameRate<a class="headerlink" href="#meshing-datamodel-preferences-graphics-performance-minimumframerate" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.</span></span><span class="sig-name descname"><span class="pre">MinimumFrameRate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMenu</span></code></p>
+<p>Singleton MinimumFrameRate.</p>
+<p><strong>Classes:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.DynamicAdjustment" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.DynamicAdjustment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DynamicAdjustment</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter DynamicAdjustment of value type bool.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.Enabled" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.Enabled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Enabled</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter Enabled of value type bool.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.FixedCullingValue" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.FixedCullingValue"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FixedCullingValue</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter FixedCullingValue of value type int.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.MaximumCullingThreshold" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.MaximumCullingThreshold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MaximumCullingThreshold</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter MaximumCullingThreshold of value type int.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.MinimumCullingThreshold" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.MinimumCullingThreshold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MinimumCullingThreshold</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter MinimumCullingThreshold of value type int.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../solver/datamodel/preferences/index.html#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.TargetFPS" title="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.TargetFPS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TargetFPS</span></code></a>(service, rules[, path])</p></td>
+<td><p>Parameter TargetFPS of value type int.</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Root.Graphics.Performance.</span></span><span class="sig-name descname"><span class="pre">MinimumFrameRate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate" title="Permalink to this definition">#</a></dt>
-<dd><p>Singleton MinimumFrameRate.</p>
-<dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.DynamicAdjustment">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DynamicAdjustment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.DynamicAdjustment" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter DynamicAdjustment of value type bool.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter DynamicAdjustment of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.Enabled">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Enabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.Enabled" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter Enabled of value type bool.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyParameter</span></code></p>
+<p>Parameter Enabled of value type bool.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.FixedCullingValue">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FixedCullingValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.FixedCullingValue" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter FixedCullingValue of value type int.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter FixedCullingValue of value type int.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.MaximumCullingThreshold">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MaximumCullingThreshold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.MaximumCullingThreshold" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter MaximumCullingThreshold of value type int.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter MaximumCullingThreshold of value type int.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.MinimumCullingThreshold">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MinimumCullingThreshold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.MinimumCullingThreshold" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter MinimumCullingThreshold of value type int.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter MinimumCullingThreshold of value type int.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.TargetFPS">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TargetFPS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.datamodel_231.preferences.Root.Graphics.Performance.MinimumFrameRate.TargetFPS" title="Permalink to this definition">#</a></dt>
-<dd><p>Parameter TargetFPS of value type int.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyNumerical</span></code></p>
+<p>Parameter TargetFPS of value type int.</p>
 </dd></dl>
 
 </dd></dl>

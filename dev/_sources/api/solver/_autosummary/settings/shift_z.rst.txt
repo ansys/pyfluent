@@ -5,11 +5,8 @@
 shift_z
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.shift_z
+.. autoclass:: ansys.fluent.core.solver.settings_231.shift_z.shift_z
 
-.. autoclass:: shift_z
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ====================================

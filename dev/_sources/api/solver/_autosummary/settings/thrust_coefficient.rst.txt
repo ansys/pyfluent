@@ -5,11 +5,8 @@
 thrust_coefficient
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.thrust_coefficient
+.. autoclass:: ansys.fluent.core.solver.settings_231.thrust_coefficient.thrust_coefficient
 
-.. autoclass:: thrust_coefficient
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   =========================================

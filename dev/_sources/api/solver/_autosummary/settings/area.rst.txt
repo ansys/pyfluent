@@ -5,11 +5,8 @@
 area
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.area
+.. autoclass:: ansys.fluent.core.solver.settings_231.area.area
 
-.. autoclass:: area
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =============================

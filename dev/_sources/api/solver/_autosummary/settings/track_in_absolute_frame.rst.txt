@@ -5,11 +5,8 @@
 track_in_absolute_frame
 =======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.track_in_absolute_frame
+.. autoclass:: ansys.fluent.core.solver.settings_231.track_in_absolute_frame.track_in_absolute_frame
 
-.. autoclass:: track_in_absolute_frame
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ===================================================================================

@@ -5,11 +5,8 @@
 critical_shear_rate
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.critical_shear_rate
+.. autoclass:: ansys.fluent.core.solver.settings_231.critical_shear_rate.critical_shear_rate
 
-.. autoclass:: critical_shear_rate
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =============================

@@ -5,11 +5,8 @@
 setting_type
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.setting_type
+.. autoclass:: ansys.fluent.core.solver.settings_231.setting_type.setting_type
 
-.. autoclass:: setting_type
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================   =====================================================================================================================

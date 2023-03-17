@@ -5,11 +5,8 @@
 origin
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.origin
+.. autoclass:: ansys.fluent.core.solver.settings_231.origin.origin
 
-.. autoclass:: origin
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===============================================

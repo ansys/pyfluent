@@ -3,17 +3,19 @@
 solver.tui.solution.calculation\_activities
 ===========================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.solution.calculation_activities
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.calculation_activities
 .. toctree::
    :hidden:
 
-   solution_strategy/index
    animate/index
-   execute_commands/index
    auto_save/index
    cell_register_operations/index
+   execute_commands/index
+   solution_strategy/index

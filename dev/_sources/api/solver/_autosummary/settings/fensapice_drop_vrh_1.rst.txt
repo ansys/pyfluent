@@ -5,11 +5,8 @@
 fensapice_drop_vrh_1
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.fensapice_drop_vrh_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.fensapice_drop_vrh_1.fensapice_drop_vrh_1
 
-.. autoclass:: fensapice_drop_vrh_1
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

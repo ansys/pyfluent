@@ -5,11 +5,8 @@
 saturation_points
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.saturation_points
+.. autoclass:: ansys.fluent.core.solver.settings_231.saturation_points.saturation_points
 
-.. autoclass:: saturation_points
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

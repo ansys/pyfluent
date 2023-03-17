@@ -3,13 +3,13 @@
 solver.tui.file.transient\_export
 =================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file.transient_export
-   :members: nastran, ensight_dvs_volume, ensight_gold_parallel_surfaces, patran_neutral, avs, common_fluids_format_post, ensight_dvs_surfaces, cdat_for_cfd_post__and__ensight, tecplot, ensight_gold_parallel_volume, fast, ideas, fieldview_xdb, taitherm, ascii, fieldview_unstruct, fieldview_unstruct_mesh, particle_history_data, fieldview_unstruct_data, edit, abaqus, cgns, delete, fast_solution, ensight_gold_transient, mechanical_apdl_input, dx, ensight_gold_from_existing_files, fieldview_unstruct_surfaces
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.file.transient_export
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:

@@ -5,11 +5,8 @@
 reorder_partitions
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.reorder_partitions
+.. autoclass:: ansys.fluent.core.solver.settings_231.reorder_partitions.reorder_partitions
 
-.. autoclass:: reorder_partitions
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   ====================================

@@ -51,7 +51,7 @@
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev2 variable.
+            // this version, rather than using sphinx's 0.13.dev3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -562,7 +562,7 @@ processors and activate the Fluent user interface:</p>
 </pre></div>
 </div>
 <p>For additional launch examples, see <a class="reference internal" href="../user_guide/launching_ansys_fluent.html#ref-user-guide-launch"><span class="std std-ref">Launch Fluent locally</span></a>. For
-descriptions of all parameters, see the <code class="xref py py-func docutils literal notranslate"><span class="pre">launch_fluent()</span></code> method.</p>
+descriptions of all parameters, see the <a class="reference internal" href="../api/general/launcher/index.html#ansys.fluent.core.launcher.launcher.launch_fluent" title="ansys.fluent.core.launcher.launcher.launch_fluent"><code class="xref py py-func docutils literal notranslate"><span class="pre">launch_fluent()</span></code></a> method.</p>
 </section>
 <section id="how-does-pyfluent-infer-the-location-to-launch-fluent">
 <span id="faqs-fluentloc"></span><h2>How does PyFluent infer the location to launch Fluent?<a class="headerlink" href="#how-does-pyfluent-infer-the-location-to-launch-fluent" title="Permalink to this heading">#</a></h2>
@@ -575,7 +575,7 @@ as <code class="docutils literal notranslate"><span class="pre">231</span></code
 variable to locate the latest Fluent installation. On Linux systems configure
 <code class="docutils literal notranslate"><span class="pre">AWP_ROOT&lt;ver&gt;</span></code> to point to the absolute path of an Ansys installation such
 as <code class="docutils literal notranslate"><span class="pre">/apps/ansys_inc/v231</span></code>.</p></li>
-<li><p>Value of <code class="docutils literal notranslate"><span class="pre">product_version</span></code> parameter passed to <a class="reference internal" href="../api/_autosummary/ansys.fluent.core.launch_fluent.html#ansys.fluent.core.launch_fluent" title="ansys.fluent.core.launch_fluent"><code class="xref py py-func docutils literal notranslate"><span class="pre">launch_fluent()</span></code></a>.</p></li>
+<li><p>Value of <code class="docutils literal notranslate"><span class="pre">product_version</span></code> parameter passed to <code class="xref py py-func docutils literal notranslate"><span class="pre">launch_fluent()</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">PYFLUENT_FLUENT_ROOT</span></code> environment variable, set this to <code class="docutils literal notranslate"><span class="pre">&lt;install</span>
 <span class="pre">location&gt;/&lt;ver&gt;/fluent</span></code> directory.</p></li>
 </ol>

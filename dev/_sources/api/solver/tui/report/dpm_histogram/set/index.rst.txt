@@ -3,11 +3,11 @@
 solver.tui.report.dpm\_histogram.set
 ====================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.report.dpm_histogram.set
-   :members: histogram_mode, variable_power_3, diameter_statistics, weighting, maximum, number_of_bins, auto_range, logarithmic, cumulation_curve, percentage, correlation, minimum
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.set
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

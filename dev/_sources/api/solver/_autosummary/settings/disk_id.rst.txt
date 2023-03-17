@@ -5,16 +5,13 @@
 disk_id
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.disk_id
+.. autoclass:: ansys.fluent.core.solver.settings_231.disk_id.disk_id
 
-.. autoclass:: disk_id
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==============================================   ===============================
 
-Child                                                                    Summary
+Attribute                                                                Summary
 
 ==============================================   ===============================
 :ref:`embedded_face_zone <embedded_face_zone>`          Set Embedded face zone:.

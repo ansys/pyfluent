@@ -5,16 +5,13 @@
 variable
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.variable_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.variable_1.variable
 
-.. autoclass:: variable
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================   ====================
 
-Child                                   Summary
+Attribute                               Summary
 
 ========================   ====================
 :ref:`size_by <size_by>`       'size_by' child.

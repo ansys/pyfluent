@@ -5,11 +5,8 @@
 constant_length
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.constant_length
+.. autoclass:: ansys.fluent.core.solver.settings_231.constant_length.constant_length
 
-.. autoclass:: constant_length
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

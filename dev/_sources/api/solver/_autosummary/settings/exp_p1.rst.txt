@@ -5,11 +5,8 @@
 exp_p1
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.exp_p1
+.. autoclass:: ansys.fluent.core.solver.settings_231.exp_p1.exp_p1
 
-.. autoclass:: exp_p1
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

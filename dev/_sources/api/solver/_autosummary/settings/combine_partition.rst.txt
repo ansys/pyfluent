@@ -5,11 +5,8 @@
 combine_partition
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.combine_partition
+.. autoclass:: ansys.fluent.core.solver.settings_231.combine_partition.combine_partition
 
-.. autoclass:: combine_partition
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ==================================================   =================================

@@ -5,16 +5,13 @@
 pollut_soot
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.pollut_soot
+.. autoclass:: ansys.fluent.core.solver.settings_231.pollut_soot.pollut_soot
 
-.. autoclass:: pollut_soot
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

@@ -5,16 +5,13 @@
 general
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.general_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.general_1.general
 
-.. autoclass:: general
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==============================================   =======================================================
 
-Child                                                                                            Summary
+Attribute                                                                                        Summary
 
 ==============================================   =======================================================
 :ref:`basic_info <basic_info>`                              Menu to define the rotor basic informations:

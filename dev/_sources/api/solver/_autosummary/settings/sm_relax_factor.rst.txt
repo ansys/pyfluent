@@ -5,11 +5,8 @@
 sm_relax_factor
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.sm_relax_factor
+.. autoclass:: ansys.fluent.core.solver.settings_231.sm_relax_factor.sm_relax_factor
 
-.. autoclass:: sm_relax_factor
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================================   =============================================

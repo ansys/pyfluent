@@ -5,16 +5,13 @@
 general_settings
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.general_settings_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.general_settings_1.general_settings
 
-.. autoclass:: general_settings
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==========================================   ========================================================
 
-Child                                                                                         Summary
+Attribute                                                                                     Summary
 
 ==========================================   ========================================================
 :ref:`iter_count <iter_count_1>`                                        Set the number of iterations.

@@ -5,11 +5,8 @@
 dpm_impingement_splashing_model
 ===============================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_impingement_splashing_model
+.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_impingement_splashing_model.dpm_impingement_splashing_model
 
-.. autoclass:: dpm_impingement_splashing_model
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

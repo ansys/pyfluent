@@ -5,11 +5,8 @@
 subgrid_turbulence_contribution_aiad
 ====================================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.subgrid_turbulence_contribution_aiad
+.. autoclass:: ansys.fluent.core.solver.settings_231.subgrid_turbulence_contribution_aiad.subgrid_turbulence_contribution_aiad
 
-.. autoclass:: subgrid_turbulence_contribution_aiad
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ==================================

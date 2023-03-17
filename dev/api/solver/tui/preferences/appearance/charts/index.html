@@ -51,11 +51,11 @@
     <script src="../../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
-    <link rel="next" title="solver.tui.preferences.appearance.charts.text_color" href="text_color/index.html" />
+    <link rel="next" title="solver.tui.preferences.appearance.charts.font" href="font/index.html" />
     <link rel="prev" title="solver.tui.preferences.appearance.ansys_logo" href="../ansys_logo/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev2 variable.
+            // this version, rather than using sphinx's 0.13.dev3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -305,13 +305,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -355,23 +350,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../solution/index.html">
-         solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../setup/index.html">
-         solver.tui.setup
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../views/index.html">
-         solver.tui.views
+        <a class="reference internal" href="../../../adjoint/index.html">
+         solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4">
@@ -380,68 +360,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../define/index.html">
          solver.tui.define
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../icing/index.html">
-         solver.tui.icing
         </a>
        </li>
        <li class="toctree-l4">
@@ -450,8 +370,28 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parallel/index.html">
+         solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../plot/index.html">
+         solver.tui.plot
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -464,46 +404,6 @@ function checkPageExistsAndRedirect(event) {
          </i>
         </label>
         <ul class="current">
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../simulation/index.html">
-           solver.tui.preferences.simulation
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../gpuapp/index.html">
-           solver.tui.preferences.gpuapp
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../navigation/index.html">
-           solver.tui.preferences.navigation
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../mat_pro_app/index.html">
-           solver.tui.preferences.mat_pro_app
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../meshing_workflow/index.html">
-           solver.tui.preferences.meshing_workflow
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../graphics/index.html">
-           solver.tui.preferences.graphics
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../turbo_workflow/index.html">
-           solver.tui.preferences.turbo_workflow
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../general/index.html">
-           solver.tui.preferences.general
-          </a>
-         </li>
          <li class="toctree-l5 current active has-children">
           <a class="reference internal" href="../index.html">
            solver.tui.preferences.appearance
@@ -530,13 +430,13 @@ function checkPageExistsAndRedirect(event) {
             </label>
             <ul>
              <li class="toctree-l7">
-              <a class="reference internal" href="text_color/index.html">
-               solver.tui.preferences.appearance.charts.text_color
+              <a class="reference internal" href="font/index.html">
+               solver.tui.preferences.appearance.charts.font
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="font/index.html">
-               solver.tui.preferences.appearance.charts.font
+              <a class="reference internal" href="text_color/index.html">
+               solver.tui.preferences.appearance.charts.text_color
               </a>
              </li>
             </ul>
@@ -549,15 +449,110 @@ function checkPageExistsAndRedirect(event) {
           </ul>
          </li>
          <li class="toctree-l5">
+          <a class="reference internal" href="../../general/index.html">
+           solver.tui.preferences.general
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../gpuapp/index.html">
+           solver.tui.preferences.gpuapp
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../graphics/index.html">
+           solver.tui.preferences.graphics
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../mat_pro_app/index.html">
+           solver.tui.preferences.mat_pro_app
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../meshing_workflow/index.html">
+           solver.tui.preferences.meshing_workflow
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../navigation/index.html">
+           solver.tui.preferences.navigation
+          </a>
+         </li>
+         <li class="toctree-l5">
           <a class="reference internal" href="../../parametric_study/index.html">
            solver.tui.preferences.parametric_study
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../simulation/index.html">
+           solver.tui.preferences.simulation
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../turbo_workflow/index.html">
+           solver.tui.preferences.turbo_workflow
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parallel/index.html">
-         solver.tui.parallel
+        <a class="reference internal" href="../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../views/index.html">
+         solver.tui.views
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
       </ul>
@@ -629,7 +624,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.preferences.appearance.charts
+     charts
     </span>
    </code>
   </a>
@@ -638,7 +633,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.curve_colors">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.charts.curve_colors()
+       charts.curve_colors()
       </span>
      </code>
     </a>
@@ -647,16 +642,63 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.enable_open_glfor_modern_plots">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.charts.enable_open_glfor_modern_plots()
+       charts.enable_open_glfor_modern_plots()
       </span>
      </code>
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       charts.font
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font.axes">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         charts.font.axes()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font.axes_titles">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         charts.font.axes_titles()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font.legend">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         charts.font.legend()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font.title">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         charts.font.title()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.legend_alignment">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.charts.legend_alignment()
+       charts.legend_alignment()
       </span>
      </code>
     </a>
@@ -665,7 +707,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.legend_visibility">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.charts.legend_visibility()
+       charts.legend_visibility()
       </span>
      </code>
     </a>
@@ -674,7 +716,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.modern_plots_enabled">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.charts.modern_plots_enabled()
+       charts.modern_plots_enabled()
       </span>
      </code>
     </a>
@@ -683,7 +725,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.modern_plots_points_threshold">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.charts.modern_plots_points_threshold()
+       charts.modern_plots_points_threshold()
       </span>
      </code>
     </a>
@@ -692,7 +734,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.plots_behavior">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.charts.plots_behavior()
+       charts.plots_behavior()
       </span>
      </code>
     </a>
@@ -701,7 +743,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.print_plot_data">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.charts.print_plot_data()
+       charts.print_plot_data()
       </span>
      </code>
     </a>
@@ -710,16 +752,63 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.print_residuals_data">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.charts.print_residuals_data()
+       charts.print_residuals_data()
       </span>
      </code>
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       charts.text_color
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color.axes">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         charts.text_color.axes()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color.axes_titles">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         charts.text_color.axes_titles()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color.legend">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         charts.text_color.legend()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color.title">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         charts.text_color.title()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.threshold">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.charts.threshold()
+       charts.threshold()
       </span>
      </code>
     </a>
@@ -728,7 +817,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.tooltip_interpolation">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.preferences.appearance.charts.tooltip_interpolation()
+       charts.tooltip_interpolation()
       </span>
      </code>
     </a>
@@ -756,14 +845,73 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-preferences-appearance-charts">
 <span id="ref-solver-tui-preferences-appearance-charts"></span><h1>solver.tui.preferences.appearance.charts<a class="headerlink" href="#solver-tui-preferences-appearance-charts" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.preferences.appearance.</span></span><span class="sig-name descname"><span class="pre">charts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts" title="Permalink to this definition">#</a></dt>
-<dd><p>.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.</span></span><span class="sig-name descname"><span class="pre">charts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.curve_colors" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.curve_colors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">curve_colors</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.enable_open_glfor_modern_plots" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.enable_open_glfor_modern_plots"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_open_glfor_modern_plots</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.legend_alignment" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.legend_alignment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">legend_alignment</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.legend_visibility" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.legend_visibility"><code class="xref py py-obj docutils literal notranslate"><span class="pre">legend_visibility</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.modern_plots_enabled" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.modern_plots_enabled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modern_plots_enabled</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.modern_plots_points_threshold" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.modern_plots_points_threshold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modern_plots_points_threshold</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.plots_behavior" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.plots_behavior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plots_behavior</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.print_plot_data" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.print_plot_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_plot_data</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.print_residuals_data" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.print_residuals_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_residuals_data</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.threshold" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.threshold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">threshold</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.tooltip_interpolation" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.tooltip_interpolation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tooltip_interpolation</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font"><code class="xref py py-obj docutils literal notranslate"><span class="pre">font</span></code></a>(path, service)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_color</span></code></a>(path, service)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.curve_colors">
 <span class="sig-name descname"><span class="pre">curve_colors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.curve_colors" title="Permalink to this definition">#</a></dt>
@@ -774,6 +922,58 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.enable_open_glfor_modern_plots">
 <span class="sig-name descname"><span class="pre">enable_open_glfor_modern_plots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.enable_open_glfor_modern_plots" title="Permalink to this definition">#</a></dt>
 <dd><p>.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">font</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font.axes" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font.axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axes</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font.axes_titles" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font.axes_titles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axes_titles</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font.legend" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font.legend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">legend</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font.title" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font.title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">title</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font.axes">
+<span class="sig-name descname"><span class="pre">axes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font.axes" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font.axes_titles">
+<span class="sig-name descname"><span class="pre">axes_titles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font.axes_titles" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font.legend">
+<span class="sig-name descname"><span class="pre">legend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font.legend" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.font.title" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py method">
@@ -816,6 +1016,58 @@ function checkPageExistsAndRedirect(event) {
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.print_residuals_data">
 <span class="sig-name descname"><span class="pre">print_residuals_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.print_residuals_data" title="Permalink to this definition">#</a></dt>
 <dd><p>.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">text_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color.axes" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color.axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axes</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color.axes_titles" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color.axes_titles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axes_titles</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color.legend" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color.legend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">legend</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color.title" title="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color.title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">title</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color.axes">
+<span class="sig-name descname"><span class="pre">axes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color.axes" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color.axes_titles">
+<span class="sig-name descname"><span class="pre">axes_titles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color.axes_titles" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color.legend">
+<span class="sig-name descname"><span class="pre">legend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color.legend" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.preferences.appearance.charts.text_color.title" title="Permalink to this definition">#</a></dt>
+<dd><p>.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py method">

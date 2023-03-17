@@ -5,16 +5,13 @@
 edge_type
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.edge_type
+.. autoclass:: ansys.fluent.core.solver.settings_231.edge_type.edge_type
 
-.. autoclass:: edge_type
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================   ====================
 
-Child                                   Summary
+Attribute                               Summary
 
 ========================   ====================
 :ref:`option <option_2>`        'option' child.

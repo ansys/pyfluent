@@ -5,11 +5,8 @@
 courant_number_reduction
 ========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.courant_number_reduction
+.. autoclass:: ansys.fluent.core.solver.settings_231.courant_number_reduction.courant_number_reduction
 
-.. autoclass:: courant_number_reduction
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================

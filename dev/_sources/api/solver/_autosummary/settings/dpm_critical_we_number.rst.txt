@@ -5,11 +5,8 @@
 dpm_critical_we_number
 ======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_critical_we_number
+.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_critical_we_number.dpm_critical_we_number
 
-.. autoclass:: dpm_critical_we_number
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

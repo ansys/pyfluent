@@ -5,11 +5,8 @@
 up_vector
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.up_vector
+.. autoclass:: ansys.fluent.core.solver.settings_231.up_vector.up_vector
 
-.. autoclass:: up_vector
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ================   ================

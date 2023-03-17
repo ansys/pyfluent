@@ -5,11 +5,8 @@
 write_animation
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.write_animation
+.. autoclass:: ansys.fluent.core.solver.settings_231.write_animation.write_animation
 
-.. autoclass:: write_animation
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ================================   ========================

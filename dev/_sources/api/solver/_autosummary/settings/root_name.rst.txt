@@ -5,11 +5,8 @@
 root_name
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.root_name
+.. autoclass:: ansys.fluent.core.solver.settings_231.root_name.root_name
 
-.. autoclass:: root_name
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

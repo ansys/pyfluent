@@ -5,11 +5,8 @@
 cone_axis_x
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.cone_axis_x
+.. autoclass:: ansys.fluent.core.solver.settings_231.cone_axis_x.cone_axis_x
 
-.. autoclass:: cone_axis_x
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

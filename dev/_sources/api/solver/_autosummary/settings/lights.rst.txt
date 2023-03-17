@@ -5,16 +5,13 @@
 lights
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.lights
+.. autoclass:: ansys.fluent.core.solver.settings_231.lights.lights
 
-.. autoclass:: lights
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ======================================================   ======================================
 
-Child                                                                                   Summary
+Attribute                                                                               Summary
 
 ======================================================   ======================================
 :ref:`headlight_setting <headlight_setting>`                         'headlight_setting' child.
@@ -25,11 +22,11 @@ Child                                                                           
 
 ======================================================   ======================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ============================================   ================================
 
-Command                                                                 Summary
+Method                                                                  Summary
 
 ============================================   ================================
 :ref:`set_ambient_color <set_ambient_color>`       'set_ambient_color' command.

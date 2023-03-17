@@ -5,11 +5,8 @@
 user_skip
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.user_skip
+.. autoclass:: ansys.fluent.core.solver.settings_231.user_skip.user_skip
 
-.. autoclass:: user_skip
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================   ======================

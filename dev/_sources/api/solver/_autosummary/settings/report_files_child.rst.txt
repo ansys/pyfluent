@@ -5,16 +5,13 @@
 report_files_child
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.report_files_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.report_files_child.report_files_child
 
-.. autoclass:: report_files_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==============================================================   =======================================================
 
-Child                                                                                                            Summary
+Attribute                                                                                                        Summary
 
 ==============================================================   =======================================================
 :ref:`name <name_1>`                                                                                       'name' child.

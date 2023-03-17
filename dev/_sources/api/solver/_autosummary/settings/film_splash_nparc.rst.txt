@@ -5,11 +5,8 @@
 film_splash_nparc
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.film_splash_nparc
+.. autoclass:: ansys.fluent.core.solver.settings_231.film_splash_nparc.film_splash_nparc
 
-.. autoclass:: film_splash_nparc
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

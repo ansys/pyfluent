@@ -5,16 +5,13 @@
 partition_coeff
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.partition_coeff
+.. autoclass:: ansys.fluent.core.solver.settings_231.partition_coeff.partition_coeff
 
-.. autoclass:: partition_coeff
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   ====================================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

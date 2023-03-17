@@ -3,13 +3,13 @@
 solver.tui.parametric\_study.update
 ===================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.parametric_study.update
-   :members: update_selected_design_points, print_update_method, update_all, update_current, set_update_method
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.parametric_study.update
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:

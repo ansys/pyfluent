@@ -5,11 +5,8 @@
 mom_accom_coef
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.mom_accom_coef
+.. autoclass:: ansys.fluent.core.solver.settings_231.mom_accom_coef.mom_accom_coef
 
-.. autoclass:: mom_accom_coef
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

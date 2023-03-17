@@ -5,16 +5,13 @@
 auto_range_on
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.auto_range_on
+.. autoclass:: ansys.fluent.core.solver.settings_231.auto_range_on.auto_range_on
 
-.. autoclass:: auto_range_on
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`global_range <global_range>`       'global_range' child.

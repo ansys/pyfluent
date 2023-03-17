@@ -51,12 +51,12 @@
     <script src="../../../../../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../../../search.html" />
-    <link rel="next" title="solver.tui.results.graphics.expert.set.windows.text" href="../text/index.html" />
-    <link rel="prev" title="solver.tui.results.graphics.expert.set.windows.main" href="../main/index.html" />
+    <link rel="next" title="solver.tui.results.graphics.expert.set.windows.xy" href="../xy/index.html" />
+    <link rel="prev" title="solver.tui.results.graphics.expert.set.windows.text" href="../text/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev2 variable.
+            // this version, rather than using sphinx's 0.13.dev3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -308,13 +308,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -358,23 +353,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../solution/index.html">
-         solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../setup/index.html">
-         solver.tui.setup
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../views/index.html">
-         solver.tui.views
+        <a class="reference internal" href="../../../../../../adjoint/index.html">
+         solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4">
@@ -383,8 +363,48 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../adjoint/index.html">
-         solver.tui.adjoint
+        <a class="reference internal" href="../../../../../../define/index.html">
+         solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../parallel/index.html">
+         solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../preferences/index.html">
+         solver.tui.preferences
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../report/index.html">
+         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -398,8 +418,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../plot/index.html">
-           solver.tui.results.plot
+          <a class="reference internal" href="../../../../../animate/index.html">
+           solver.tui.results.animate
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -412,16 +432,6 @@ function checkPageExistsAndRedirect(event) {
            </i>
           </label>
           <ul class="current">
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../objects/index.html">
-             solver.tui.results.graphics.objects
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../update_scene/index.html">
-             solver.tui.results.graphics.update_scene
-            </a>
-           </li>
            <li class="toctree-l6 current active has-children">
             <a class="reference internal" href="../../../index.html">
              solver.tui.results.graphics.expert
@@ -438,13 +448,18 @@ function checkPageExistsAndRedirect(event) {
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../../../pdf_data/index.html">
-               solver.tui.results.graphics.expert.pdf_data
+              <a class="reference internal" href="../../../particle_tracks/index.html">
+               solver.tui.results.graphics.expert.particle_tracks
               </a>
              </li>
              <li class="toctree-l7">
               <a class="reference internal" href="../../../path_lines/index.html">
                solver.tui.results.graphics.expert.path_lines
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../../../pdf_data/index.html">
+               solver.tui.results.graphics.expert.pdf_data
               </a>
              </li>
              <li class="toctree-l7 current active has-children">
@@ -458,13 +473,13 @@ function checkPageExistsAndRedirect(event) {
               </label>
               <ul class="current">
                <li class="toctree-l8">
-                <a class="reference internal" href="../../path_lines/index.html">
-                 solver.tui.results.graphics.expert.set.path_lines
+                <a class="reference internal" href="../../colors/index.html">
+                 solver.tui.results.graphics.expert.set.colors
                 </a>
                </li>
                <li class="toctree-l8">
-                <a class="reference internal" href="../../lights/index.html">
-                 solver.tui.results.graphics.expert.set.lights
+                <a class="reference internal" href="../../contours/index.html">
+                 solver.tui.results.graphics.expert.set.contours
                 </a>
                </li>
                <li class="toctree-l8">
@@ -473,8 +488,33 @@ function checkPageExistsAndRedirect(event) {
                 </a>
                </li>
                <li class="toctree-l8">
-                <a class="reference internal" href="../../colors/index.html">
-                 solver.tui.results.graphics.expert.set.colors
+                <a class="reference internal" href="../../lights/index.html">
+                 solver.tui.results.graphics.expert.set.lights
+                </a>
+               </li>
+               <li class="toctree-l8">
+                <a class="reference internal" href="../../particle_tracks/index.html">
+                 solver.tui.results.graphics.expert.set.particle_tracks
+                </a>
+               </li>
+               <li class="toctree-l8">
+                <a class="reference internal" href="../../path_lines/index.html">
+                 solver.tui.results.graphics.expert.set.path_lines
+                </a>
+               </li>
+               <li class="toctree-l8">
+                <a class="reference internal" href="../../rendering_options/index.html">
+                 solver.tui.results.graphics.expert.set.rendering_options
+                </a>
+               </li>
+               <li class="toctree-l8">
+                <a class="reference internal" href="../../titles/index.html">
+                 solver.tui.results.graphics.expert.set.titles
+                </a>
+               </li>
+               <li class="toctree-l8">
+                <a class="reference internal" href="../../velocity_vectors/index.html">
+                 solver.tui.results.graphics.expert.set.velocity_vectors
                 </a>
                </li>
                <li class="toctree-l8 current active has-children">
@@ -497,9 +537,9 @@ function checkPageExistsAndRedirect(event) {
                    solver.tui.results.graphics.expert.set.windows.main
                   </a>
                  </li>
-                 <li class="toctree-l9 current active">
-                  <a class="current reference internal" href="#">
-                   solver.tui.results.graphics.expert.set.windows.video
+                 <li class="toctree-l9">
+                  <a class="reference internal" href="../scale/index.html">
+                   solver.tui.results.graphics.expert.set.windows.scale
                   </a>
                  </li>
                  <li class="toctree-l9">
@@ -507,9 +547,9 @@ function checkPageExistsAndRedirect(event) {
                    solver.tui.results.graphics.expert.set.windows.text
                   </a>
                  </li>
-                 <li class="toctree-l9">
-                  <a class="reference internal" href="../scale/index.html">
-                   solver.tui.results.graphics.expert.set.windows.scale
+                 <li class="toctree-l9 current active">
+                  <a class="current reference internal" href="#">
+                   solver.tui.results.graphics.expert.set.windows.video
                   </a>
                  </li>
                  <li class="toctree-l9">
@@ -519,39 +559,19 @@ function checkPageExistsAndRedirect(event) {
                  </li>
                 </ul>
                </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="../../particle_tracks/index.html">
-                 solver.tui.results.graphics.expert.set.particle_tracks
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="../../titles/index.html">
-                 solver.tui.results.graphics.expert.set.titles
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="../../rendering_options/index.html">
-                 solver.tui.results.graphics.expert.set.rendering_options
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="../../velocity_vectors/index.html">
-                 solver.tui.results.graphics.expert.set.velocity_vectors
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="../../contours/index.html">
-                 solver.tui.results.graphics.expert.set.contours
-                </a>
-               </li>
               </ul>
              </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../../../particle_tracks/index.html">
-               solver.tui.results.graphics.expert.particle_tracks
-              </a>
-             </li>
             </ul>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../lights/index.html">
+             solver.tui.results.graphics.lights
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../objects/index.html">
+             solver.tui.results.graphics.objects
+            </a>
            </li>
            <li class="toctree-l6">
             <a class="reference internal" href="../../../../rendering_options/index.html">
@@ -559,20 +579,20 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../../../lights/index.html">
-             solver.tui.results.graphics.lights
+            <a class="reference internal" href="../../../../update_scene/index.html">
+             solver.tui.results.graphics.update_scene
             </a>
            </li>
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../graphics_window/index.html">
-           solver.tui.results.graphics_window
+          <a class="reference internal" href="../../../../../plot/index.html">
+           solver.tui.results.plot
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../animate/index.html">
-           solver.tui.results.animate
+          <a class="reference internal" href="../../../../../report/index.html">
+           solver.tui.results.report
           </a>
          </li>
          <li class="toctree-l5">
@@ -581,46 +601,11 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../report/index.html">
-           solver.tui.results.report
+          <a class="reference internal" href="../../../../../graphics_window/index.html">
+           solver.tui.results.graphics_window
           </a>
          </li>
         </ul>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../../../../solve/index.html">
@@ -628,23 +613,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../define/index.html">
-         solver.tui.define
+        <a class="reference internal" href="../../../../../../solution/index.html">
+         solver.tui.solution
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../file/index.html">
-         solver.tui.file
+        <a class="reference internal" href="../../../../../../setup/index.html">
+         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4">
@@ -653,13 +628,33 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../preferences/index.html">
-         solver.tui.preferences
+        <a class="reference internal" href="../../../../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../parallel/index.html">
-         solver.tui.parallel
+        <a class="reference internal" href="../../../../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../views/index.html">
+         solver.tui.views
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
       </ul>
@@ -731,7 +726,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.windows.video">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.results.graphics.expert.set.windows.video
+     video
     </span>
    </code>
   </a>
@@ -740,7 +735,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.windows.video.background">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.results.graphics.expert.set.windows.video.background()
+       video.background()
       </span>
      </code>
     </a>
@@ -749,7 +744,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.windows.video.color_filter">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.results.graphics.expert.set.windows.video.color_filter()
+       video.color_filter()
       </span>
      </code>
     </a>
@@ -758,7 +753,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.windows.video.foreground">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.results.graphics.expert.set.windows.video.foreground()
+       video.foreground()
       </span>
      </code>
     </a>
@@ -767,7 +762,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.windows.video.on">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.results.graphics.expert.set.windows.video.on()
+       video.on()
       </span>
      </code>
     </a>
@@ -776,7 +771,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.windows.video.pixel_size">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.results.graphics.expert.set.windows.video.pixel_size()
+       video.pixel_size()
       </span>
      </code>
     </a>
@@ -804,14 +799,36 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-results-graphics-expert-set-windows-video">
 <span id="ref-solver-tui-results-graphics-expert-set-windows-video"></span><h1>solver.tui.results.graphics.expert.set.windows.video<a class="headerlink" href="#solver-tui-results-graphics-expert-set-windows-video" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.windows.video">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.results.graphics.expert.set.windows.</span></span><span class="sig-name descname"><span class="pre">video</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.windows.video" title="Permalink to this definition">#</a></dt>
-<dd><p>.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.windows.</span></span><span class="sig-name descname"><span class="pre">video</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.windows.video" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.windows.video.background" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.windows.video.background"><code class="xref py py-obj docutils literal notranslate"><span class="pre">background</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.windows.video.color_filter" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.windows.video.color_filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">color_filter</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.windows.video.foreground" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.windows.video.foreground"><code class="xref py py-obj docutils literal notranslate"><span class="pre">foreground</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.windows.video.on" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.windows.video.on"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.windows.video.pixel_size" title="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.windows.video.pixel_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pixel_size</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.windows.video.background">
 <span class="sig-name descname"><span class="pre">background</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.windows.video.background" title="Permalink to this definition">#</a></dt>

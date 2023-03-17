@@ -5,11 +5,8 @@
 electrolyte
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.electrolyte
+.. autoclass:: ansys.fluent.core.solver.settings_231.electrolyte.electrolyte
 
-.. autoclass:: electrolyte
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

@@ -5,11 +5,8 @@
 convert_skewed_cells
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.convert_skewed_cells_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.convert_skewed_cells_1.convert_skewed_cells
 
-.. autoclass:: convert_skewed_cells
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ==================================================   ==============================================

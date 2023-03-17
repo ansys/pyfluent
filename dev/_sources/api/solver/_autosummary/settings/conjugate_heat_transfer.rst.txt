@@ -5,16 +5,13 @@
 conjugate_heat_transfer
 =======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.conjugate_heat_transfer
+.. autoclass:: ansys.fluent.core.solver.settings_231.conjugate_heat_transfer.conjugate_heat_transfer
 
-.. autoclass:: conjugate_heat_transfer
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==========================   ===========================================================
 
-Child                                                                            Summary
+Attribute                                                                        Summary
 
 ==========================   ===========================================================
 :ref:`enabled <enabled_3>`       Enable/disable loosely coupled conjugate heat transfer.

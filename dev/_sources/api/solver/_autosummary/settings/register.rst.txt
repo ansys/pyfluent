@@ -5,11 +5,8 @@
 register
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.register
+.. autoclass:: ansys.fluent.core.solver.settings_231.register.register
 
-.. autoclass:: register
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================   =======================================================

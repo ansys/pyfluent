@@ -5,11 +5,8 @@
 undo_timestep
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.undo_timestep
+.. autoclass:: ansys.fluent.core.solver.settings_231.undo_timestep.undo_timestep
 
-.. autoclass:: undo_timestep
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================   ===============================

@@ -5,11 +5,8 @@
 fan_vr
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.fan_vr
+.. autoclass:: ansys.fluent.core.solver.settings_231.fan_vr.fan_vr
 
-.. autoclass:: fan_vr
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

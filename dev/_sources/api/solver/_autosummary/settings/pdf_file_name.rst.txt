@@ -5,11 +5,8 @@
 pdf_file_name
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.pdf_file_name
+.. autoclass:: ansys.fluent.core.solver.settings_231.pdf_file_name.pdf_file_name
 
-.. autoclass:: pdf_file_name
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ================================

@@ -5,16 +5,13 @@
 acoustics_wave_eqn_controls
 ===========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.acoustics_wave_eqn_controls
+.. autoclass:: ansys.fluent.core.solver.settings_231.acoustics_wave_eqn_controls.acoustics_wave_eqn_controls
 
-.. autoclass:: acoustics_wave_eqn_controls
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ======================================================================   =============================================================
 
-Child                                                                                                                          Summary
+Attribute                                                                                                                      Summary
 
 ======================================================================   =============================================================
 :ref:`expert <expert>`                                                                                 Enter menu for expert controls.

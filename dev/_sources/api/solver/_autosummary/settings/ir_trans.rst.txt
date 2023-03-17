@@ -5,16 +5,13 @@
 ir_trans
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.ir_trans
+.. autoclass:: ansys.fluent.core.solver.settings_231.ir_trans.ir_trans
 
-.. autoclass:: ir_trans
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

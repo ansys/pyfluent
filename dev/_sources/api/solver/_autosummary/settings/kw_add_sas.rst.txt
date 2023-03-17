@@ -5,11 +5,8 @@
 kw_add_sas
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.kw_add_sas
+.. autoclass:: ansys.fluent.core.solver.settings_231.kw_add_sas.kw_add_sas
 
-.. autoclass:: kw_add_sas
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   ==============================

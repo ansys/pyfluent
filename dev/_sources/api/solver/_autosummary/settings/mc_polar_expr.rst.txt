@@ -5,11 +5,8 @@
 mc_polar_expr
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.mc_polar_expr
+.. autoclass:: ansys.fluent.core.solver.settings_231.mc_polar_expr.mc_polar_expr
 
-.. autoclass:: mc_polar_expr
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

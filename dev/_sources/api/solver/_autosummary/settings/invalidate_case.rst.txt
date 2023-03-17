@@ -5,11 +5,8 @@
 invalidate_case
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.invalidate_case
+.. autoclass:: ansys.fluent.core.solver.settings_231.invalidate_case.invalidate_case
 
-.. autoclass:: invalidate_case
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ==================================================

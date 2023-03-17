@@ -5,11 +5,8 @@
 study_name
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.study_name
+.. autoclass:: ansys.fluent.core.solver.settings_231.study_name.study_name
 
-.. autoclass:: study_name
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   =========================

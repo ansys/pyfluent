@@ -5,11 +5,8 @@
 include_local_polyhedra_conversion_in_repair
 ============================================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.include_local_polyhedra_conversion_in_repair
+.. autoclass:: ansys.fluent.core.solver.settings_231.include_local_polyhedra_conversion_in_repair.include_local_polyhedra_conversion_in_repair
 
-.. autoclass:: include_local_polyhedra_conversion_in_repair
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ==============================================

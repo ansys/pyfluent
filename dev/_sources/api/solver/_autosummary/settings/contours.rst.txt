@@ -5,16 +5,13 @@
 contours
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.contours
+.. autoclass:: ansys.fluent.core.solver.settings_231.contours.contours
 
-.. autoclass:: contours
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================================   =================================================================================
 
-Child                                                                                                                Summary
+Attribute                                                                                                            Summary
 
 ========================================   =================================================================================
 :ref:`auto_scale <auto_scale_2>`                                      Enable/disable auto-computation of range for contours.

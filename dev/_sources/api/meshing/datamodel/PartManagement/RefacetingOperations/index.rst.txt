@@ -3,11 +3,11 @@
 meshing.datamodel.PartManagement.RefacetingOperations
 =====================================================
 
-.. currentmodule:: ansys.fluent.core.datamodel_231.PartManagement
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.datamodel_231.PartManagement::Root.RefacetingOperations
-   :members: Children, Name, CreateRefacet, DeleteAllRefacets, DeleteRefacet, UpdateAllRefacets
+.. autoclass:: ansys.fluent.core.datamodel_231.PartManagement.Root.RefacetingOperations
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

@@ -5,11 +5,8 @@
 scalefactor
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.scalefactor
+.. autoclass:: ansys.fluent.core.solver.settings_231.scalefactor.scalefactor
 
-.. autoclass:: scalefactor
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

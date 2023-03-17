@@ -5,11 +5,8 @@
 prepare_expressions
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.prepare_expressions
+.. autoclass:: ansys.fluent.core.solver.settings_231.prepare_expressions.prepare_expressions
 
-.. autoclass:: prepare_expressions
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   =====================================

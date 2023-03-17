@@ -5,16 +5,13 @@
 area_enhancement_factor
 =======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.area_enhancement_factor
+.. autoclass:: ansys.fluent.core.solver.settings_231.area_enhancement_factor.area_enhancement_factor
 
-.. autoclass:: area_enhancement_factor
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

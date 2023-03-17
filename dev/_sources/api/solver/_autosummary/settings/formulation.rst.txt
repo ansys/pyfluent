@@ -5,16 +5,13 @@
 formulation
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.formulation
+.. autoclass:: ansys.fluent.core.solver.settings_231.formulation.formulation
 
-.. autoclass:: formulation
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================================   ========================================================================
 
-Child                                                                                                                 Summary
+Attribute                                                                                                             Summary
 
 ==================================================   ========================================================================
 :ref:`coupled_solver <coupled_solver>`                   Select pseudo time step size formulation for the pseudo time method.

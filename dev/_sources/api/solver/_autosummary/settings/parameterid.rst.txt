@@ -5,11 +5,8 @@
 parameterid
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.parameterid
+.. autoclass:: ansys.fluent.core.solver.settings_231.parameterid.parameterid
 
-.. autoclass:: parameterid
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================================   =============================================

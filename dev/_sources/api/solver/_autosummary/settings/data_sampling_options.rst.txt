@@ -5,16 +5,13 @@
 data_sampling_options
 =====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.data_sampling_options
+.. autoclass:: ansys.fluent.core.solver.settings_231.data_sampling_options.data_sampling_options
 
-.. autoclass:: data_sampling_options
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Commands
+.. rubric:: Methods
 
 ======================================   ===================
 
-Command                                              Summary
+Method                                               Summary
 
 ======================================   ===================
 :ref:`remove_dataset <remove_dataset>`       Remove dataset.

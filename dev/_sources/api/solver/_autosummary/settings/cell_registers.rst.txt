@@ -5,11 +5,8 @@
 cell_registers
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.cell_registers
+.. autoclass:: ansys.fluent.core.solver.settings_231.cell_registers.cell_registers
 
-.. autoclass:: cell_registers
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`cell_registers_child <cell_registers_child>`

@@ -5,11 +5,8 @@
 nita
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.nita
+.. autoclass:: ansys.fluent.core.solver.settings_231.nita.nita
 
-.. autoclass:: nita
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================   ====================

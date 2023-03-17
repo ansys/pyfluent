@@ -5,16 +5,13 @@
 u
 =
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.u
+.. autoclass:: ansys.fluent.core.solver.settings_231.u.u
 
-.. autoclass:: u
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ============   ==============
 
-Child                 Summary
+Attribute             Summary
 
 ============   ==============
 :ref:`x <x>`       'x' child.

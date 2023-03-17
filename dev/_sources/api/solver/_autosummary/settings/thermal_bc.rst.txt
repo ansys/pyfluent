@@ -5,11 +5,8 @@
 thermal_bc
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.thermal_bc
+.. autoclass:: ansys.fluent.core.solver.settings_231.thermal_bc.thermal_bc
 
-.. autoclass:: thermal_bc
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =======================================

@@ -5,11 +5,8 @@
 matrix_component
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.matrix_component
+.. autoclass:: ansys.fluent.core.solver.settings_231.matrix_component.matrix_component
 
-.. autoclass:: matrix_component
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ========================

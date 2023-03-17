@@ -5,11 +5,8 @@
 min_max
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.min_max
+.. autoclass:: ansys.fluent.core.solver.settings_231.min_max.min_max
 
-.. autoclass:: min_max
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 =========================   ===================

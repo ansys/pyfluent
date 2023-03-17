@@ -5,16 +5,13 @@
 sphere_settings
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.sphere_settings
+.. autoclass:: ansys.fluent.core.solver.settings_231.sphere_settings.sphere_settings
 
-.. autoclass:: sphere_settings
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==============================   =======================
 
-Child                                            Summary
+Attribute                                        Summary
 
 ==============================   =======================
 :ref:`scale <scale_2>`                    'scale' child.

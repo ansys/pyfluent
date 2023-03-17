@@ -5,11 +5,8 @@
 thread_names
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.thread_names
+.. autoclass:: ansys.fluent.core.solver.settings_231.thread_names.thread_names
 
-.. autoclass:: thread_names
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================================================   =========================================

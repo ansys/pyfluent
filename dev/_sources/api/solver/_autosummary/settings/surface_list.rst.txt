@@ -5,11 +5,8 @@
 surface_list
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.surface_list
+.. autoclass:: ansys.fluent.core.solver.settings_231.surface_list.surface_list
 
-.. autoclass:: surface_list
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   =======================================

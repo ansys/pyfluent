@@ -5,11 +5,8 @@
 track_single_particle_stream
 ============================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.track_single_particle_stream_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.track_single_particle_stream_1.track_single_particle_stream
 
-.. autoclass:: track_single_particle_stream
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================

@@ -5,16 +5,13 @@
 beach_dir_list_child
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.beach_dir_list_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.beach_dir_list_child.beach_dir_list_child
 
-.. autoclass:: beach_dir_list_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ================   ================
 
-Child                       Summary
+Attribute                   Summary
 
 ================   ================
 :ref:`ni <ni>`          'ni' child.

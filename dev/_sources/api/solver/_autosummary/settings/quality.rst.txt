@@ -5,11 +5,8 @@
 quality
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.quality
+.. autoclass:: ansys.fluent.core.solver.settings_231.quality.quality
 
-.. autoclass:: quality
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================   =================

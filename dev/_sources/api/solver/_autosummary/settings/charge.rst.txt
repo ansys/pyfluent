@@ -5,16 +5,13 @@
 charge
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.charge
+.. autoclass:: ansys.fluent.core.solver.settings_231.charge.charge
 
-.. autoclass:: charge
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================   ====================================================
 
-Child                                                                   Summary
+Attribute                                                               Summary
 
 ========================   ====================================================
 :ref:`option <option_9>`       Select method for calculating material property.

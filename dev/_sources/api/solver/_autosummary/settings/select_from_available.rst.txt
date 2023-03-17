@@ -5,11 +5,8 @@
 select_from_available
 =====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.select_from_available
+.. autoclass:: ansys.fluent.core.solver.settings_231.select_from_available.select_from_available
 
-.. autoclass:: select_from_available
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ===============================================================

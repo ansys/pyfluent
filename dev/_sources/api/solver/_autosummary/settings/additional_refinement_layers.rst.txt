@@ -5,11 +5,8 @@
 additional_refinement_layers
 ============================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.additional_refinement_layers
+.. autoclass:: ansys.fluent.core.solver.settings_231.additional_refinement_layers.additional_refinement_layers
 
-.. autoclass:: additional_refinement_layers
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ================   ================================

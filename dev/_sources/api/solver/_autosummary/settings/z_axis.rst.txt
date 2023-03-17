@@ -5,11 +5,8 @@
 z_axis
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.z_axis
+.. autoclass:: ansys.fluent.core.solver.settings_231.z_axis.z_axis
 
-.. autoclass:: z_axis
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ==========================

@@ -5,11 +5,8 @@
 statistics_shear_stress
 =======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.statistics_shear_stress
+.. autoclass:: ansys.fluent.core.solver.settings_231.statistics_shear_stress.statistics_shear_stress
 
-.. autoclass:: statistics_shear_stress
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   ==========================

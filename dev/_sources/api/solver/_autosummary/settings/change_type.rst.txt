@@ -5,11 +5,8 @@
 change_type
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.change_type
+.. autoclass:: ansys.fluent.core.solver.settings_231.change_type.change_type
 
-.. autoclass:: change_type
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ============================   ======================

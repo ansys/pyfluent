@@ -5,16 +5,13 @@
 pseudo_time_method_usage
 ========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.pseudo_time_method_usage
+.. autoclass:: ansys.fluent.core.solver.settings_231.pseudo_time_method_usage.pseudo_time_method_usage
 
-.. autoclass:: pseudo_time_method_usage
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ============================   ======================
 
-Child                                         Summary
+Attribute                                     Summary
 
 ============================   ======================
 :ref:`local_dt <local_dt>`          'local_dt' child.

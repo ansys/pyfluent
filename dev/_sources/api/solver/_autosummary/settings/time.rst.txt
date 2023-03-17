@@ -5,11 +5,8 @@
 time
 ====
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.time
+.. autoclass:: ansys.fluent.core.solver.settings_231.time.time
 
-.. autoclass:: time
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

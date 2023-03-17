@@ -5,11 +5,8 @@
 volume_list
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.volume_list
+.. autoclass:: ansys.fluent.core.solver.settings_231.volume_list.volume_list
 
-.. autoclass:: volume_list
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================================   =======================================

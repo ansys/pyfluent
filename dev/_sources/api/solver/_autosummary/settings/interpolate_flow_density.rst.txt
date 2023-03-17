@@ -5,11 +5,8 @@
 interpolate_flow_density
 ========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.interpolate_flow_density
+.. autoclass:: ansys.fluent.core.solver.settings_231.interpolate_flow_density.interpolate_flow_density
 
-.. autoclass:: interpolate_flow_density
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================   ====================================================================================================

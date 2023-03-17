@@ -5,11 +5,8 @@
 beach_start_point
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.beach_start_point
+.. autoclass:: ansys.fluent.core.solver.settings_231.beach_start_point.beach_start_point
 
-.. autoclass:: beach_start_point
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

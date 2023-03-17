@@ -5,16 +5,13 @@
 polynomial
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.polynomial
+.. autoclass:: ansys.fluent.core.solver.settings_231.polynomial.polynomial
 
-.. autoclass:: polynomial
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ======================================================   ==========================================================================
 
-Child                                                                                                                       Summary
+Attribute                                                                                                                   Summary
 
 ======================================================   ==========================================================================
 :ref:`number_of_coefficients <number_of_coefficients>`       Specify number of polynomial coefficients (polynomial order plus one).

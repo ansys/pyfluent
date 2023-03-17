@@ -5,11 +5,8 @@
 rough_nasa
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.rough_nasa
+.. autoclass:: ansys.fluent.core.solver.settings_231.rough_nasa.rough_nasa
 
-.. autoclass:: rough_nasa
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

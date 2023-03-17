@@ -5,11 +5,8 @@
 background
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.background
+.. autoclass:: ansys.fluent.core.solver.settings_231.background.background
 
-.. autoclass:: background
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

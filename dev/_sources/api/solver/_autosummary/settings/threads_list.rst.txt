@@ -5,11 +5,8 @@
 threads_list
 ============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.threads_list
+.. autoclass:: ansys.fluent.core.solver.settings_231.threads_list.threads_list
 
-.. autoclass:: threads_list
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   =====================================================

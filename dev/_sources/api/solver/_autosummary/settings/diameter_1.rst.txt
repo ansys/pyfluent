@@ -5,16 +5,13 @@
 diameter
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.diameter_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.diameter_1.diameter
 
-.. autoclass:: diameter
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================================================   ====================================
 
-Child                                                                                   Summary
+Attribute                                                                               Summary
 
 ========================================================   ====================================
 :ref:`diameter <diameter>`                                                    'diameter' child.

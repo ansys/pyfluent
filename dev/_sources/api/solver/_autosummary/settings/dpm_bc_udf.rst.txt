@@ -5,11 +5,8 @@
 dpm_bc_udf
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.dpm_bc_udf
+.. autoclass:: ansys.fluent.core.solver.settings_231.dpm_bc_udf.dpm_bc_udf
 
-.. autoclass:: dpm_bc_udf
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==========================================================   ==============================================

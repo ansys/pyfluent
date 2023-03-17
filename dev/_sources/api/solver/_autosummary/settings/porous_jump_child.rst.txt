@@ -5,16 +5,13 @@
 porous_jump_child
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.porous_jump_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.porous_jump_child.porous_jump_child
 
-.. autoclass:: porous_jump_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================================================================   ============================================
 
-Child                                                                                                           Summary
+Attribute                                                                                                       Summary
 
 ========================================================================   ============================================
 :ref:`phase <phase_15>`                                                                                  'phase' child.

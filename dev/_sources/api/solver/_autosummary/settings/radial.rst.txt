@@ -5,11 +5,8 @@
 radial
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.radial
+.. autoclass:: ansys.fluent.core.solver.settings_231.radial.radial
 
-.. autoclass:: radial
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ===========================================

@@ -5,11 +5,8 @@
 flow_spec
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.flow_spec
+.. autoclass:: ansys.fluent.core.solver.settings_231.flow_spec.flow_spec
 
-.. autoclass:: flow_spec
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================================================   ================================================

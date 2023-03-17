@@ -5,11 +5,8 @@
 pressure_corr_grad
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.pressure_corr_grad
+.. autoclass:: ansys.fluent.core.solver.settings_231.pressure_corr_grad.pressure_corr_grad
 
-.. autoclass:: pressure_corr_grad
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================   ==============================

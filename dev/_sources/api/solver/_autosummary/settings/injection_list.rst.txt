@@ -5,11 +5,8 @@
 injection_list
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.injection_list
+.. autoclass:: ansys.fluent.core.solver.settings_231.injection_list.injection_list
 
-.. autoclass:: injection_list
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   =====================================

@@ -5,16 +5,13 @@
 lines_child
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.lines_child
+.. autoclass:: ansys.fluent.core.solver.settings_231.lines_child.lines_child
 
-.. autoclass:: lines_child
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================   ====================
 
-Child                                   Summary
+Attribute                               Summary
 
 ========================   ====================
 :ref:`pattern <pattern>`       'pattern' child.

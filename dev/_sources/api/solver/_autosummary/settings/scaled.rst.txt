@@ -5,11 +5,8 @@
 scaled
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.scaled
+.. autoclass:: ansys.fluent.core.solver.settings_231.scaled.scaled
 
-.. autoclass:: scaled
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   ==================================

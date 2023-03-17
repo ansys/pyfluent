@@ -5,11 +5,8 @@
 reset_report_to_defaults
 ========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.reset_report_to_defaults
+.. autoclass:: ansys.fluent.core.solver.settings_231.reset_report_to_defaults.reset_report_to_defaults
 
-.. autoclass:: reset_report_to_defaults
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ================================   ========================

@@ -5,27 +5,24 @@
 import_
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.import_
+.. autoclass:: ansys.fluent.core.solver.settings_231.import_.import_
 
-.. autoclass:: import_
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   ==================================
 
-Child                                                                             Summary
+Attribute                                                                         Summary
 
 ====================================================   ==================================
 :ref:`create_zones_from_ccl <create_zones_from_ccl>`       'create_zones_from_ccl' child.
 
 ====================================================   ==================================
 
-.. rubric:: Commands
+.. rubric:: Methods
 
 ==========================================================   =======================================
 
-Command                                                                                      Summary
+Method                                                                                       Summary
 
 ==========================================================   =======================================
 :ref:`read <read>`                                                                   'read' command.

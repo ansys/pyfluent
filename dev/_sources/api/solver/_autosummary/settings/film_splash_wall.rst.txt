@@ -5,11 +5,8 @@
 film_splash_wall
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.film_splash_wall
+.. autoclass:: ansys.fluent.core.solver.settings_231.film_splash_wall.film_splash_wall
 
-.. autoclass:: film_splash_wall
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ===================================   =================================

@@ -5,16 +5,13 @@
 matrix
 ======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.matrix
+.. autoclass:: ansys.fluent.core.solver.settings_231.matrix.matrix
 
-.. autoclass:: matrix
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ============   ==============
 
-Child                 Summary
+Attribute             Summary
 
 ============   ==============
 :ref:`r <r>`       'r' child.

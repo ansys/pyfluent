@@ -5,11 +5,8 @@
 bandwidth
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.bandwidth
+.. autoclass:: ansys.fluent.core.solver.settings_231.bandwidth.bandwidth
 
-.. autoclass:: bandwidth
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================   =====================

@@ -5,16 +5,13 @@
 nb_gradient_boundary_option
 ===========================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.nb_gradient_boundary_option
+.. autoclass:: ansys.fluent.core.solver.settings_231.nb_gradient_boundary_option.nb_gradient_boundary_option
 
-.. autoclass:: nb_gradient_boundary_option
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==========================================   =============================
 
-Child                                                              Summary
+Attribute                                                          Summary
 
 ==========================================   =============================
 :ref:`nb_gradient <nb_gradient>`                      'nb_gradient' child.

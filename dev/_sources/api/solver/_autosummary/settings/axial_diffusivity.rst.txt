@@ -5,16 +5,13 @@
 axial_diffusivity
 =================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.axial_diffusivity
+.. autoclass:: ansys.fluent.core.solver.settings_231.axial_diffusivity.axial_diffusivity
 
-.. autoclass:: axial_diffusivity
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================   ====================================================
 
-Child                                                                                               Summary
+Attribute                                                                                           Summary
 
 ====================================================   ====================================================
 :ref:`option <option_9>`                                   Select method for calculating material property.

@@ -3,11 +3,11 @@
 solver.tui.preferences.graphics.manage\_hoops\_memory
 =====================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.graphics.manage_hoops_memory
-   :members: hsfimport_limit, enabled
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.preferences.graphics.manage_hoops_memory
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 

@@ -5,11 +5,8 @@
 y_format
 ========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.y_format
+.. autoclass:: ansys.fluent.core.solver.settings_231.y_format.y_format
 
-.. autoclass:: y_format
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ====================

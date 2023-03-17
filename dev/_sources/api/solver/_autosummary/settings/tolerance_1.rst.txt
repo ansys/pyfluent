@@ -5,11 +5,8 @@
 tolerance
 =========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.tolerance_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.tolerance_1.tolerance
 
-.. autoclass:: tolerance
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================   =============================

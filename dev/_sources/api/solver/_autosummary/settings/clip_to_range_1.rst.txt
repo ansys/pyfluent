@@ -5,16 +5,13 @@
 clip_to_range
 =============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.clip_to_range_1
+.. autoclass:: ansys.fluent.core.solver.settings_231.clip_to_range_1.clip_to_range
 
-.. autoclass:: clip_to_range
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ============================   ======================
 
-Child                                         Summary
+Attribute                                     Summary
 
 ============================   ======================
 :ref:`min_value <min_value>`       'min_value' child.

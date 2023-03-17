@@ -5,11 +5,8 @@
 use_barycentric_intersection
 ============================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.use_barycentric_intersection
+.. autoclass:: ansys.fluent.core.solver.settings_231.use_barycentric_intersection.use_barycentric_intersection
 
-.. autoclass:: use_barycentric_intersection
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ============================================================   ============================================================================

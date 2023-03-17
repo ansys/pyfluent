@@ -1,0 +1,47 @@
+ansys.fluent.core.session\_solver.Solver
+========================================
+
+.. currentmodule:: ansys.fluent.core.session_solver
+
+.. autoclass:: Solver
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      ~Solver.__init__
+      ~Solver.build_from_fluent_connection
+      ~Solver.create_from_server_info_file
+      ~Solver.download
+      ~Solver.execute_tui
+      ~Solver.read_case
+      ~Solver.upload
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Solver.current_parametric_study
+      ~Solver.file
+      ~Solver.mesh
+      ~Solver.parallel
+      ~Solver.parametric_studies
+      ~Solver.preferences
+      ~Solver.report
+      ~Solver.results
+      ~Solver.setup
+      ~Solver.solution
+      ~Solver.solverworkflow
+      ~Solver.tui
+      ~Solver.version
+      ~Solver.workflow
+   
+   

@@ -5,11 +5,8 @@
 overset
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.overset
+.. autoclass:: ansys.fluent.core.solver.settings_231.overset.overset
 
-.. autoclass:: overset
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Named object type
 
 :ref:`axis_child <axis_child>`

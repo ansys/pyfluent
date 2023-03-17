@@ -5,11 +5,8 @@
 print_partitions
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.print_partitions
+.. autoclass:: ansys.fluent.core.solver.settings_231.print_partitions.print_partitions
 
-.. autoclass:: print_partitions
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==============================   ====================================

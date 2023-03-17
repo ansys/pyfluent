@@ -5,16 +5,13 @@
 roughness_const_nasa
 ====================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.roughness_const_nasa
+.. autoclass:: ansys.fluent.core.solver.settings_231.roughness_const_nasa.roughness_const_nasa
 
-.. autoclass:: roughness_const_nasa
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ==================================   =========================
 
-Child                                                  Summary
+Attribute                                              Summary
 
 ==================================   =========================
 :ref:`option <option_2>`                       'option' child.

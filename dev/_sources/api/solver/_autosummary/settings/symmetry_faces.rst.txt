@@ -5,11 +5,8 @@
 symmetry_faces
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.symmetry_faces
+.. autoclass:: ansys.fluent.core.solver.settings_231.symmetry_faces.symmetry_faces
 
-.. autoclass:: symmetry_faces
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ======================   ===================

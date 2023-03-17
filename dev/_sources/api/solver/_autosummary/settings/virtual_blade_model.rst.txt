@@ -5,16 +5,13 @@
 virtual_blade_model
 ===================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.virtual_blade_model
+.. autoclass:: ansys.fluent.core.solver.settings_231.virtual_blade_model.virtual_blade_model
 
-.. autoclass:: virtual_blade_model
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ========================   =====================================
 
-Child                                                    Summary
+Attribute                                                Summary
 
 ========================   =====================================
 :ref:`enable <enable_4>`               Enable/disable vbm model.

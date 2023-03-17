@@ -5,11 +5,8 @@
 load_hosts
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.load_hosts
+.. autoclass:: ansys.fluent.core.solver.settings_231.load_hosts.load_hosts
 
-.. autoclass:: load_hosts
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ============================   ======================

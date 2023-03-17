@@ -5,16 +5,13 @@
 general
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.general
+.. autoclass:: ansys.fluent.core.solver.settings_231.general.general
 
-.. autoclass:: general
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ====================================================================================   ================================================================
 
-Child                                                                                                                                           Summary
+Attribute                                                                                                                                       Summary
 
 ====================================================================================   ================================================================
 :ref:`solver <solver>`                                                                                                                  'solver' child.

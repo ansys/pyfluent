@@ -5,11 +5,8 @@
 physics
 =======
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.physics
+.. autoclass:: ansys.fluent.core.solver.settings_231.physics.physics
 
-.. autoclass:: physics
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   =====================================

@@ -3,16 +3,16 @@
 meshing.tui.preferences.navigation.mouse\_mapping
 =================================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.navigation.mouse_mapping
-   :members: mousemaptheme
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.preferences.navigation.mouse_mapping
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:
 
-   basic/index
    additional/index
+   basic/index

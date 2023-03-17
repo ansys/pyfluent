@@ -5,11 +5,8 @@
 leverett_con_ang
 ================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.leverett_con_ang
+.. autoclass:: ansys.fluent.core.solver.settings_231.leverett_con_ang.leverett_con_ang
 
-.. autoclass:: leverett_con_ang
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

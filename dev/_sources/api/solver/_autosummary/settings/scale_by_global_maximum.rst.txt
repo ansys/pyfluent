@@ -5,11 +5,8 @@
 scale_by_global_maximum
 =======================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.scale_by_global_maximum
+.. autoclass:: ansys.fluent.core.solver.settings_231.scale_by_global_maximum.scale_by_global_maximum
 
-.. autoclass:: scale_by_global_maximum
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================   ====================

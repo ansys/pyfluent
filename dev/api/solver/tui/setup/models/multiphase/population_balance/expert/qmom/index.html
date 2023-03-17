@@ -51,11 +51,11 @@
     <script src="../../../../../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../../../search.html" />
-    <link rel="next" title="solver.tui.setup.models.multiphase.phases" href="../../../phases/index.html" />
+    <link rel="next" title="solver.tui.setup.models.multiphase.volume_fraction_parameters" href="../../../volume_fraction_parameters/index.html" />
     <link rel="prev" title="solver.tui.setup.models.multiphase.population_balance.expert" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev2 variable.
+            // this version, rather than using sphinx's 0.13.dev3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -308,13 +308,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -358,13 +353,73 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../solution/index.html">
-         solver.tui.solution
+        <a class="reference internal" href="../../../../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../define/index.html">
+         solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../parallel/index.html">
+         solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../../../../report/index.html">
          solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../solution/index.html">
+         solver.tui.solution
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -378,8 +433,23 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../overset_interfaces/index.html">
-           solver.tui.setup.overset_interfaces
+          <a class="reference internal" href="../../../../../boundary_conditions/index.html">
+           solver.tui.setup.boundary_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../../dynamic_mesh/index.html">
+           solver.tui.setup.dynamic_mesh
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../../expert/index.html">
+           solver.tui.setup.expert
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../../gap_model/index.html">
+           solver.tui.setup.gap_model
           </a>
          </li>
          <li class="toctree-l5">
@@ -388,13 +458,13 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../turbo_model/index.html">
-           solver.tui.setup.turbo_model
+          <a class="reference internal" href="../../../../../mesh_interfaces/index.html">
+           solver.tui.setup.mesh_interfaces
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../dynamic_mesh/index.html">
-           solver.tui.setup.dynamic_mesh
+          <a class="reference internal" href="../../../../../mixing_planes/index.html">
+           solver.tui.setup.mixing_planes
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -408,23 +478,13 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul class="current">
            <li class="toctree-l6">
-            <a class="reference internal" href="../../../../nox_parameters/index.html">
-             solver.tui.setup.models.nox_parameters
+            <a class="reference internal" href="../../../../acoustics/index.html">
+             solver.tui.setup.models.acoustics
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../../../soot_parameters/index.html">
-             solver.tui.setup.models.soot_parameters
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../solver/index.html">
-             solver.tui.setup.models.solver
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../radiation/index.html">
-             solver.tui.setup.models.radiation
+            <a class="reference internal" href="../../../../optics/index.html">
+             solver.tui.setup.models.optics
             </a>
            </li>
            <li class="toctree-l6">
@@ -433,38 +493,28 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../../../shell_conduction/index.html">
-             solver.tui.setup.models.shell_conduction
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../two_temperature/index.html">
-             solver.tui.setup.models.two_temperature
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../electrolysis/index.html">
-             solver.tui.setup.models.electrolysis
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../species/index.html">
-             solver.tui.setup.models.species
-            </a>
-           </li>
-           <li class="toctree-l6">
             <a class="reference internal" href="../../../../dpm/index.html">
              solver.tui.setup.models.dpm
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../../../structure/index.html">
-             solver.tui.setup.models.structure
+            <a class="reference internal" href="../../../../shell_conduction/index.html">
+             solver.tui.setup.models.shell_conduction
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../../../acoustics/index.html">
-             solver.tui.setup.models.acoustics
+            <a class="reference internal" href="../../../../system_coupling_settings/index.html">
+             solver.tui.setup.models.system_coupling_settings
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../cht/index.html">
+             solver.tui.setup.models.cht
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../two_temperature/index.html">
+             solver.tui.setup.models.two_temperature
             </a>
            </li>
            <li class="toctree-l6 current active has-children">
@@ -478,28 +528,23 @@ function checkPageExistsAndRedirect(event) {
             </label>
             <ul class="current">
              <li class="toctree-l7">
-              <a class="reference internal" href="../../../hybrid_models/index.html">
-               solver.tui.setup.models.multiphase.hybrid_models
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../../../explicit_expert_options/index.html">
-               solver.tui.setup.models.multiphase.explicit_expert_options
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../../../sub_models/index.html">
-               solver.tui.setup.models.multiphase.sub_models
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../../../flow_regime_modeling/index.html">
-               solver.tui.setup.models.multiphase.flow_regime_modeling
+              <a class="reference internal" href="../../../phases/index.html">
+               solver.tui.setup.models.multiphase.phases
               </a>
              </li>
              <li class="toctree-l7">
               <a class="reference internal" href="../../../wet_steam/index.html">
                solver.tui.setup.models.multiphase.wet_steam
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../../../hybrid_models/index.html">
+               solver.tui.setup.models.multiphase.hybrid_models
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../../../sub_models/index.html">
+               solver.tui.setup.models.multiphase.sub_models
               </a>
              </li>
              <li class="toctree-l7 current active has-children">
@@ -537,15 +582,45 @@ function checkPageExistsAndRedirect(event) {
               </ul>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../../../phases/index.html">
-               solver.tui.setup.models.multiphase.phases
+              <a class="reference internal" href="../../../volume_fraction_parameters/index.html">
+               solver.tui.setup.models.multiphase.volume_fraction_parameters
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../../../flow_regime_modeling/index.html">
+               solver.tui.setup.models.multiphase.flow_regime_modeling
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../../../explicit_expert_options/index.html">
+               solver.tui.setup.models.multiphase.explicit_expert_options
               </a>
              </li>
             </ul>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../../../system_coupling_settings/index.html">
-             solver.tui.setup.models.system_coupling_settings
+            <a class="reference internal" href="../../../../nox_parameters/index.html">
+             solver.tui.setup.models.nox_parameters
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../soot_parameters/index.html">
+             solver.tui.setup.models.soot_parameters
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../radiation/index.html">
+             solver.tui.setup.models.radiation
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../solver/index.html">
+             solver.tui.setup.models.solver
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../species/index.html">
+             solver.tui.setup.models.species
             </a>
            </li>
            <li class="toctree-l6">
@@ -554,13 +629,8 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../../../cht/index.html">
-             solver.tui.setup.models.cht
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../optics/index.html">
-             solver.tui.setup.models.optics
+            <a class="reference internal" href="../../../../structure/index.html">
+             solver.tui.setup.models.structure
             </a>
            </li>
            <li class="toctree-l6">
@@ -568,7 +638,27 @@ function checkPageExistsAndRedirect(event) {
              solver.tui.setup.models.heat_exchanger
             </a>
            </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../electrolysis/index.html">
+             solver.tui.setup.models.electrolysis
+            </a>
+           </li>
           </ul>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../../named_expressions/index.html">
+           solver.tui.setup.named_expressions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../../operating_conditions/index.html">
+           solver.tui.setup.operating_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../../overset_interfaces/index.html">
+           solver.tui.setup.overset_interfaces
+          </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../../../../reference_frames/index.html">
@@ -581,80 +671,15 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../named_expressions/index.html">
-           solver.tui.setup.named_expressions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../expert/index.html">
-           solver.tui.setup.expert
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../operating_conditions/index.html">
-           solver.tui.setup.operating_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../gap_model/index.html">
-           solver.tui.setup.gap_model
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../boundary_conditions/index.html">
-           solver.tui.setup.boundary_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../mixing_planes/index.html">
-           solver.tui.setup.mixing_planes
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../mesh_interfaces/index.html">
-           solver.tui.setup.mesh_interfaces
+          <a class="reference internal" href="../../../../../turbo_model/index.html">
+           solver.tui.setup.turbo_model
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../display/index.html">
-         solver.tui.display
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../server/index.html">
-         solver.tui.server
+        <a class="reference internal" href="../../../../../../surface/index.html">
+         solver.tui.surface
         </a>
        </li>
        <li class="toctree-l4">
@@ -663,8 +688,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../../../../server/index.html">
+         solver.tui.server
         </a>
        </li>
        <li class="toctree-l4">
@@ -673,13 +698,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../define/index.html">
-         solver.tui.define
+        <a class="reference internal" href="../../../../../../views/index.html">
+         solver.tui.views
         </a>
        </li>
        <li class="toctree-l4">
@@ -688,28 +708,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../surface/index.html">
-         solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../preferences/index.html">
-         solver.tui.preferences
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../parallel/index.html">
-         solver.tui.parallel
+        <a class="reference internal" href="../../../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
       </ul>
@@ -781,7 +781,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.population_balance.expert.qmom">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.setup.models.multiphase.population_balance.expert.qmom
+     qmom
     </span>
    </code>
   </a>
@@ -790,7 +790,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.population_balance.expert.qmom.inversion_algorithm">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.multiphase.population_balance.expert.qmom.inversion_algorithm()
+       qmom.inversion_algorithm()
       </span>
      </code>
     </a>
@@ -799,7 +799,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.population_balance.expert.qmom.print_realizable_moment_warning">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.multiphase.population_balance.expert.qmom.print_realizable_moment_warning()
+       qmom.print_realizable_moment_warning()
       </span>
      </code>
     </a>
@@ -808,7 +808,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.population_balance.expert.qmom.realizable_moments">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.multiphase.population_balance.expert.qmom.realizable_moments()
+       qmom.realizable_moments()
       </span>
      </code>
     </a>
@@ -817,7 +817,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.population_balance.expert.qmom.retain_qmom_sources_for_low_vof">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.setup.models.multiphase.population_balance.expert.qmom.retain_qmom_sources_for_low_vof()
+       qmom.retain_qmom_sources_for_low_vof()
       </span>
      </code>
     </a>
@@ -845,14 +845,28 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-models-multiphase-population-balance-expert-qmom">
 <span id="ref-solver-tui-setup-models-multiphase-population-balance-expert-qmom"></span><h1>solver.tui.setup.models.multiphase.population_balance.expert.qmom<a class="headerlink" href="#solver-tui-setup-models-multiphase-population-balance-expert-qmom" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.population_balance.expert.qmom">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.models.multiphase.population_balance.expert.</span></span><span class="sig-name descname"><span class="pre">qmom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.population_balance.expert.qmom" title="Permalink to this definition">#</a></dt>
-<dd><p>.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.population_balance.expert.</span></span><span class="sig-name descname"><span class="pre">qmom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.population_balance.expert.qmom" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.population_balance.expert.qmom.inversion_algorithm" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.population_balance.expert.qmom.inversion_algorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inversion_algorithm</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Select the inversion algorithm for quadrature-based population balance method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.population_balance.expert.qmom.print_realizable_moment_warning" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.population_balance.expert.qmom.print_realizable_moment_warning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_realizable_moment_warning</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Print the information for realizable moments in the population balance model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.population_balance.expert.qmom.realizable_moments" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.population_balance.expert.qmom.realizable_moments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">realizable_moments</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the population balance model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.population_balance.expert.qmom.retain_qmom_sources_for_low_vof" title="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.population_balance.expert.qmom.retain_qmom_sources_for_low_vof"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retain_qmom_sources_for_low_vof</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Retain qmom source calculation for low secondary phase vof.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.population_balance.expert.qmom.inversion_algorithm">
 <span class="sig-name descname"><span class="pre">inversion_algorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.multiphase.population_balance.expert.qmom.inversion_algorithm" title="Permalink to this definition">#</a></dt>

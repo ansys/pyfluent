@@ -5,11 +5,8 @@
 merge_clusters
 ==============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.merge_clusters
+.. autoclass:: ansys.fluent.core.solver.settings_231.merge_clusters.merge_clusters
 
-.. autoclass:: merge_clusters
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Arguments
 
 ==========================================   =============================

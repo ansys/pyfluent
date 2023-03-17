@@ -5,11 +5,8 @@
 report_leidenfrost_temperature
 ==============================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.report_leidenfrost_temperature
+.. autoclass:: ansys.fluent.core.solver.settings_231.report_leidenfrost_temperature.report_leidenfrost_temperature
 
-.. autoclass:: report_leidenfrost_temperature
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ====================================================================   ==========================================

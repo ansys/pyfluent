@@ -3,19 +3,19 @@
 meshing.tui.display.set
 =======================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.set
-   :members: native_display_defaults, remote_display_defaults, filled_grid, quick_moves_algorithm, reset_graphics, re_render, overlays, shrink_factor, edges, windows, line_weight, title, highlight_tree_selection
+.. autoclass:: ansys.fluent.core.meshing.tui_231.main_menu.display.set
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:
 
-   rendering_options/index
-   colors/index
-   styles/index
-   lights/index
    picture/index
+   lights/index
+   styles/index
+   colors/index
+   rendering_options/index

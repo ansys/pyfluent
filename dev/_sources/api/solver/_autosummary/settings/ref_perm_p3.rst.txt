@@ -5,11 +5,8 @@
 ref_perm_p3
 ===========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.ref_perm_p3
+.. autoclass:: ansys.fluent.core.solver.settings_231.ref_perm_p3.ref_perm_p3
 
-.. autoclass:: ref_perm_p3
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ==================================   =================================

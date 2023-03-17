@@ -51,12 +51,12 @@
     <script src="../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
-    <link rel="next" title="meshing.tui.display.set_grid" href="../set_grid/index.html" />
-    <link rel="prev" title="meshing.tui.display.objects" href="../objects/index.html" />
+    <link rel="next" title="meshing.tui.display.set" href="../set/index.html" />
+    <link rel="prev" title="meshing.tui.display.display_states" href="../display_states/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev2 variable.
+            // this version, rather than using sphinx's 0.13.dev3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -303,13 +303,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -322,6 +317,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -333,8 +333,68 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
+      <a class="reference internal" href="../../size_functions/index.html">
+       meshing.tui.size_functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../mesh/index.html">
+       meshing.tui.mesh
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../objects/index.html">
+       meshing.tui.objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../file/index.html">
+       meshing.tui.file
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../boundary/index.html">
+       meshing.tui.boundary
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../diagnostics/index.html">
+       meshing.tui.diagnostics
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../reference_frames/index.html">
+       meshing.tui.reference_frames
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../parallel/index.html">
+       meshing.tui.parallel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../preferences/index.html">
+       meshing.tui.preferences
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../../scoped_sizing/index.html">
        meshing.tui.scoped_sizing
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../report/index.html">
+       meshing.tui.report
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -352,14 +412,9 @@ function checkPageExistsAndRedirect(event) {
          meshing.tui.display.display_states
         </a>
        </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../update_scene/index.html">
-         meshing.tui.display.update_scene
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../advanced_rendering/index.html">
-         meshing.tui.display.advanced_rendering
+       <li class="toctree-l4 current active">
+        <a class="current reference internal" href="#">
+         meshing.tui.display.xy_plot
         </a>
        </li>
        <li class="toctree-l4">
@@ -373,13 +428,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../objects/index.html">
-         meshing.tui.display.objects
-        </a>
-       </li>
-       <li class="toctree-l4 current active">
-        <a class="current reference internal" href="#">
-         meshing.tui.display.xy_plot
+        <a class="reference internal" href="../update_scene/index.html">
+         meshing.tui.display.update_scene
         </a>
        </li>
        <li class="toctree-l4">
@@ -387,71 +437,21 @@ function checkPageExistsAndRedirect(event) {
          meshing.tui.display.set_grid
         </a>
        </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../objects/index.html">
+         meshing.tui.display.objects
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../advanced_rendering/index.html">
+         meshing.tui.display.advanced_rendering
+        </a>
+       </li>
       </ul>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../preferences/index.html">
-       meshing.tui.preferences
-      </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../../material_point/index.html">
        meshing.tui.material_point
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../boundary/index.html">
-       meshing.tui.boundary
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../diagnostics/index.html">
-       meshing.tui.diagnostics
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../parallel/index.html">
-       meshing.tui.parallel
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../size_functions/index.html">
-       meshing.tui.size_functions
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../objects/index.html">
-       meshing.tui.objects
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../file/index.html">
-       meshing.tui.file
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../report/index.html">
-       meshing.tui.report
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../mesh/index.html">
-       meshing.tui.mesh
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../reference_frames/index.html">
-       meshing.tui.reference_frames
       </a>
      </li>
     </ul>
@@ -496,7 +496,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.xy_plot">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.display.xy_plot
+     xy_plot
     </span>
    </code>
   </a>
@@ -505,7 +505,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.xy_plot.cell_distribution">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.xy_plot.cell_distribution()
+       xy_plot.cell_distribution()
       </span>
      </code>
     </a>
@@ -514,7 +514,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.xy_plot.face_distribution">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.xy_plot.face_distribution()
+       xy_plot.face_distribution()
       </span>
      </code>
     </a>
@@ -523,7 +523,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.xy_plot.file">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.xy_plot.file()
+       xy_plot.file()
       </span>
      </code>
     </a>
@@ -532,7 +532,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.xy_plot.set">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.xy_plot.set()
+       xy_plot.set()
       </span>
      </code>
     </a>
@@ -560,14 +560,28 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-display-xy-plot">
 <span id="ref-meshing-tui-display-xy-plot"></span><h1>meshing.tui.display.xy_plot<a class="headerlink" href="#meshing-tui-display-xy-plot" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.xy_plot">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.display.</span></span><span class="sig-name descname"><span class="pre">xy_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.xy_plot" title="Permalink to this definition">#</a></dt>
-<dd><p>Enters the XY plot menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.meshing.tui_231.main_menu.display.</span></span><span class="sig-name descname"><span class="pre">xy_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.xy_plot" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Enters the XY plot menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.xy_plot.cell_distribution" title="ansys.fluent.core.meshing.tui_231.main_menu.display.xy_plot.cell_distribution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_distribution</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Plots a histogram of cell quality.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.xy_plot.face_distribution" title="ansys.fluent.core.meshing.tui_231.main_menu.display.xy_plot.face_distribution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_distribution</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Plots a histogram of face quality.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.xy_plot.file" title="ansys.fluent.core.meshing.tui_231.main_menu.display.xy_plot.file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">file</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to choose a file from which to create an xy plot.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_231.main_menu.display.xy_plot.set" title="ansys.fluent.core.meshing.tui_231.main_menu.display.xy_plot.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enters the set window options menu.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.xy_plot.cell_distribution">
 <span class="sig-name descname"><span class="pre">cell_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.xy_plot.cell_distribution" title="Permalink to this definition">#</a></dt>

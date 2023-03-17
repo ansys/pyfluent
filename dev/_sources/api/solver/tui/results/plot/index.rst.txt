@@ -3,13 +3,13 @@
 solver.tui.results.plot
 =======================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_231
-
-.. autosummary::
-   :toctree: _autosummary
-
-.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.plot
-   :members: file_set, display_profile_data, residuals_set, residuals, plot, fft, circum_avg_radial, plot_direction, histogram_set, label_alignment, set_boundary_val_off, solution, file, file_list, solution_set, circum_avg_axial, datasources, change_fft_ref_pressure, histogram, fft_set
+.. autoclass:: ansys.fluent.core.solver.tui_231.main_menu.results.plot
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: "__weakref__, __dict__"
+   :special-members: " __init__"
+   :autosummary:
 
 .. toctree::
    :hidden:

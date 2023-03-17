@@ -5,16 +5,13 @@
 simulation_reports
 ==================
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.simulation_reports
+.. autoclass:: ansys.fluent.core.solver.settings_231.simulation_reports.simulation_reports
 
-.. autoclass:: simulation_reports
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Commands
+.. rubric:: Methods
 
 ====================================================================================   =============================================================================================================
 
-Command                                                                                                                                                                                      Summary
+Method                                                                                                                                                                                       Summary
 
 ====================================================================================   =============================================================================================================
 :ref:`list_simulation_reports <list_simulation_reports>`                                                                                                                      List all report names.

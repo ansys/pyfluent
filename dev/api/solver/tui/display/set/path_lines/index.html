@@ -51,12 +51,12 @@
     <script src="../../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
     <link rel="next" title="solver.tui.display.set.rendering_options" href="../rendering_options/index.html" />
-    <link rel="prev" title="solver.tui.display.set.particle_tracks.vector_settings" href="../particle_tracks/vector_settings/index.html" />
+    <link rel="prev" title="solver.tui.display.set.particle_tracks.filter_settings" href="../particle_tracks/filter_settings/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -207,7 +207,7 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.13.dev2 variable.
+            // this version, rather than using sphinx's 0.13.dev3 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
             if (entry.version == "0.13") {
@@ -305,13 +305,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -355,23 +350,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../solution/index.html">
-         solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../setup/index.html">
-         solver.tui.setup
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../views/index.html">
-         solver.tui.views
+        <a class="reference internal" href="../../../adjoint/index.html">
+         solver.tui.adjoint
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -384,6 +364,36 @@ function checkPageExistsAndRedirect(event) {
          </i>
         </label>
         <ul class="current">
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../embedded_windows/index.html">
+           solver.tui.display.embedded_windows
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../objects/index.html">
+           solver.tui.display.objects
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../flamelet_data/index.html">
+           solver.tui.display.flamelet_data
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../particle_tracks/index.html">
+           solver.tui.display.particle_tracks
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../path_lines/index.html">
+           solver.tui.display.path_lines
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../pdf_data/index.html">
+           solver.tui.display.pdf_data
+          </a>
+         </li>
          <li class="toctree-l5 current active has-children">
           <a class="reference internal" href="../index.html">
            solver.tui.display.set
@@ -395,28 +405,8 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul class="current">
            <li class="toctree-l6">
-            <a class="reference internal" href="../lights/index.html">
-             solver.tui.display.set.lights
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../velocity_vectors/index.html">
-             solver.tui.display.set.velocity_vectors
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../picture/index.html">
-             solver.tui.display.set.picture
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../windows/index.html">
-             solver.tui.display.set.windows
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../titles/index.html">
-             solver.tui.display.set.titles
+            <a class="reference internal" href="../colors/index.html">
+             solver.tui.display.set.colors
             </a>
            </li>
            <li class="toctree-l6">
@@ -425,8 +415,13 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../colors/index.html">
-             solver.tui.display.set.colors
+            <a class="reference internal" href="../picture/index.html">
+             solver.tui.display.set.picture
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../lights/index.html">
+             solver.tui.display.set.lights
             </a>
            </li>
            <li class="toctree-l6">
@@ -444,26 +439,36 @@ function checkPageExistsAndRedirect(event) {
              solver.tui.display.set.rendering_options
             </a>
            </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../titles/index.html">
+             solver.tui.display.set.titles
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../velocity_vectors/index.html">
+             solver.tui.display.set.velocity_vectors
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../windows/index.html">
+             solver.tui.display.set.windows
+            </a>
+           </li>
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../define/index.html">
-           solver.tui.display.define
+          <a class="reference internal" href="../../surface/index.html">
+           solver.tui.display.surface
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../inverse_dft/index.html">
-           solver.tui.display.inverse_dft
+          <a class="reference internal" href="../../views/index.html">
+           solver.tui.display.views
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../embedded_windows/index.html">
-           solver.tui.display.embedded_windows
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../pdf_data/index.html">
-           solver.tui.display.pdf_data
+          <a class="reference internal" href="../../display_states/index.html">
+           solver.tui.display.display_states
           </a>
          </li>
          <li class="toctree-l5">
@@ -477,105 +482,20 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../views/index.html">
-           solver.tui.display.views
+          <a class="reference internal" href="../../inverse_dft/index.html">
+           solver.tui.display.inverse_dft
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../flamelet_data/index.html">
-           solver.tui.display.flamelet_data
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../particle_tracks/index.html">
-           solver.tui.display.particle_tracks
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../display_states/index.html">
-           solver.tui.display.display_states
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../surface/index.html">
-           solver.tui.display.surface
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../objects/index.html">
-           solver.tui.display.objects
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../path_lines/index.html">
-           solver.tui.display.path_lines
+          <a class="reference internal" href="../../define/index.html">
+           solver.tui.display.define
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../define/index.html">
          solver.tui.define
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../icing/index.html">
-         solver.tui.icing
         </a>
        </li>
        <li class="toctree-l4">
@@ -584,8 +504,28 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parallel/index.html">
+         solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../plot/index.html">
+         solver.tui.plot
         </a>
        </li>
        <li class="toctree-l4">
@@ -594,8 +534,63 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parallel/index.html">
-         solver.tui.parallel
+        <a class="reference internal" href="../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../views/index.html">
+         solver.tui.views
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
       </ul>
@@ -667,7 +662,7 @@ function checkPageExistsAndRedirect(event) {
   <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines">
    <code class="docutils literal notranslate">
     <span class="pre">
-     main_menu.display.set.path_lines
+     path_lines
     </span>
    </code>
   </a>
@@ -676,7 +671,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.arrow_scale">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.path_lines.arrow_scale()
+       path_lines.arrow_scale()
       </span>
      </code>
     </a>
@@ -685,7 +680,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.arrow_space">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.path_lines.arrow_space()
+       path_lines.arrow_space()
       </span>
      </code>
     </a>
@@ -694,7 +689,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.display_steps">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.path_lines.display_steps()
+       path_lines.display_steps()
       </span>
      </code>
     </a>
@@ -703,7 +698,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.error_control">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.path_lines.error_control()
+       path_lines.error_control()
       </span>
      </code>
     </a>
@@ -712,7 +707,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.line_width">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.path_lines.line_width()
+       path_lines.line_width()
       </span>
      </code>
     </a>
@@ -721,7 +716,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.marker_size">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.path_lines.marker_size()
+       path_lines.marker_size()
       </span>
      </code>
     </a>
@@ -730,7 +725,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.maximum_error">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.path_lines.maximum_error()
+       path_lines.maximum_error()
       </span>
      </code>
     </a>
@@ -739,7 +734,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.maximum_steps">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.path_lines.maximum_steps()
+       path_lines.maximum_steps()
       </span>
      </code>
     </a>
@@ -748,7 +743,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.radius">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.path_lines.radius()
+       path_lines.radius()
       </span>
      </code>
     </a>
@@ -757,7 +752,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.relative_pathlines">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.path_lines.relative_pathlines()
+       path_lines.relative_pathlines()
       </span>
      </code>
     </a>
@@ -766,7 +761,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.reverse">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.path_lines.reverse()
+       path_lines.reverse()
       </span>
      </code>
     </a>
@@ -775,7 +770,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.sphere_attrib">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.path_lines.sphere_attrib()
+       path_lines.sphere_attrib()
       </span>
      </code>
     </a>
@@ -784,7 +779,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.step_size">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.path_lines.step_size()
+       path_lines.step_size()
       </span>
      </code>
     </a>
@@ -793,7 +788,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.style">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.path_lines.style()
+       path_lines.style()
       </span>
      </code>
     </a>
@@ -802,7 +797,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.track_in_phase">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.path_lines.track_in_phase()
+       path_lines.track_in_phase()
       </span>
      </code>
     </a>
@@ -811,7 +806,7 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.twist_factor">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.path_lines.twist_factor()
+       path_lines.twist_factor()
       </span>
      </code>
     </a>
@@ -839,14 +834,64 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-display-set-path-lines">
 <span id="ref-solver-tui-display-set-path-lines"></span><h1>solver.tui.display.set.path_lines<a class="headerlink" href="#solver-tui-display-set-path-lines" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.display.set.</span></span><span class="sig-name descname"><span class="pre">path_lines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines" title="Permalink to this definition">#</a></dt>
-<dd><p>Sets parameters for display of pathlines.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.solver.tui_231.main_menu.display.set.</span></span><span class="sig-name descname"><span class="pre">path_lines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
+<p>Sets parameters for display of pathlines.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.arrow_scale" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.arrow_scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">arrow_scale</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the scale factor for arrows drawn on pathlines.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.arrow_space" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.arrow_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">arrow_space</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the spacing factor for arrows drawn on pathlines.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.display_steps" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.display_steps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display_steps</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the display stepping for pathlines.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.error_control" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.error_control"><code class="xref py py-obj docutils literal notranslate"><span class="pre">error_control</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets error control during pathline computation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.line_width" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.line_width"><code class="xref py py-obj docutils literal notranslate"><span class="pre">line_width</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the width for pathlines.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.marker_size" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.marker_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">marker_size</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the marker size for particle drawing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.maximum_error" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.maximum_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maximum_error</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the maximum error allowed while computing the pathlines.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.maximum_steps" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.maximum_steps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maximum_steps</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the maximum number of steps to take for pathlines.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.radius" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">radius</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the radius for pathline (ribbons/cylinder only) cross-section.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.relative_pathlines" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.relative_pathlines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_pathlines</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables/disables the tracking of pathlines in a relative coordinate system.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.reverse" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.reverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets direction of path tracking.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.sphere_attrib" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.sphere_attrib"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sphere_attrib</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the size and number of slices to be used in drawing spheres.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.step_size" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.step_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step_size</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the step length between particle positions for pathlines.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.style" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.style"><code class="xref py py-obj docutils literal notranslate"><span class="pre">style</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Selects the pathline style (line, point, ribbon, triangle, cylinder).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.track_in_phase" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.track_in_phase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">track_in_phase</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Selects the phase in which particle pathlines will be computed (Multiphase Eulerian Model only).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.twist_factor" title="ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.twist_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">twist_factor</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the scale factor for twisting (ribbons only).</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.arrow_scale">
 <span class="sig-name descname"><span class="pre">arrow_scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.display.set.path_lines.arrow_scale" title="Permalink to this definition">#</a></dt>

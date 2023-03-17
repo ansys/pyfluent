@@ -5,16 +5,13 @@
 yplus_star
 ==========
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.yplus_star
+.. autoclass:: ansys.fluent.core.solver.settings_231.yplus_star.yplus_star
 
-.. autoclass:: yplus_star
-    :show-inheritance:
-    :undoc-members:
-.. rubric:: Children
+.. rubric:: Attributes
 
 ================================   ========================
 
-Child                                               Summary
+Attribute                                           Summary
 
 ================================   ========================
 :ref:`option <option_11>`                   'option' child.

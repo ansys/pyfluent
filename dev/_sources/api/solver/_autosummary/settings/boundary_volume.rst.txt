@@ -5,11 +5,8 @@
 boundary_volume
 ===============
 
-.. currentmodule:: ansys.fluent.core.solver.settings_231.boundary_volume
+.. autoclass:: ansys.fluent.core.solver.settings_231.boundary_volume.boundary_volume
 
-.. autoclass:: boundary_volume
-    :show-inheritance:
-    :undoc-members:
 .. rubric:: Included in:
 
 ========================================   ============================
