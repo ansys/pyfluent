@@ -1,9 +1,9 @@
 """Provide a module to test the algorithms which parse job scheduler
 environments for machines to run on."""
 from builtins import range
-import tempfile
 import os
 import socket
+import tempfile
 import unittest
 
 from ansys.fluent.core.scheduler import build_parallel_options
@@ -180,7 +180,7 @@ class TestLoadMachines(unittest.TestCase):
 
     def test_pe_hostfile(self):
         with tempfile.NamedTemporaryFile(delete=False) as fp:
-            fp.write(b'm1\r\n\r\nm2 3 None None\r\nm3 4\r\nm4 2 queueName1')
+            fp.write(b"m1\r\n\r\nm2 3 None None\r\nm3 4\r\nm4 2 queueName1")
             os.environ["PE_HOSTFILE"] = fp.name
         machineList = load_machines()
         os.unlink(fp.name)
@@ -198,12 +198,12 @@ class TestLoadMachines(unittest.TestCase):
 
     def test_pbs_nodefile(self):
         with tempfile.NamedTemporaryFile(delete=False) as fp:
-            fp.write(b'm1\r\n\r\nm2\r\nm2\r\nm2')
+            fp.write(b"m1\r\n\r\nm2\r\nm2\r\nm2")
             os.environ["PBS_NODEFILE"] = fp.name
         machineList = load_machines()
         os.unlink(fp.name)
         self.assertEqual(machineList[1].number_of_cores, 3)
-        del os.environ["PBS_NODEFILE"] 
+        del os.environ["PBS_NODEFILE"]
 
     def test_no_environment(self):
         machineList = load_machines()
@@ -228,7 +228,7 @@ class TestLoadMachines(unittest.TestCase):
 
     def test_constrain_machines2(self):
         with tempfile.NamedTemporaryFile(delete=False) as fp:
-            fp.write(b'M0:2,M1:3,M2:2')
+            fp.write(b"M0:2,M1:3,M2:2")
         machineList = load_machines(host_info=fp.name, ncores=3)
         expectedValue = {"M0": 1, "M1": 1, "M2": 1}
         os.unlink(fp.name)
