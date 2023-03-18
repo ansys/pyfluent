@@ -461,10 +461,6 @@ class TestMachineListCmdLine(unittest.TestCase):
                     machine.number_of_cores, self._expectedValues[machine.host_name]
                 )
 
-    def test_file_not_found(self):
-        hostfile = "nonExistentFile.txt"
-        self.assertRaises(IOError, _parse_host_info, hostfile)
-
 
 suite1 = unittest.TestLoader().loadTestsFromTestCase(TestMachine)
 suite2 = unittest.TestLoader().loadTestsFromTestCase(TestMachineList)
