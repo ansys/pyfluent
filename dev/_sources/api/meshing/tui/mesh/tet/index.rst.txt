@@ -14,6 +14,6 @@ meshing.tui.mesh.tet
 .. toctree::
    :hidden:
 
-   local_regions/index
    improve/index
    controls/index
+   local_regions/index
