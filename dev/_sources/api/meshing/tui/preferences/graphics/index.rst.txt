@@ -14,16 +14,16 @@ meshing.tui.preferences.graphics
 .. toctree::
    :hidden:
 
-   lighting/index
-   transparency/index
-   boundary_markers/index
-   material_effects/index
    manage_hoops_memory/index
-   embedded_windows/index
-   graphics_effects/index
-   hardcopy_settings/index
-   vector_settings/index
-   colormap_settings/index
-   export_video_settings/index
-   meshing_mode/index
+   material_effects/index
    performance/index
+   boundary_markers/index
+   colormap_settings/index
+   meshing_mode/index
+   hardcopy_settings/index
+   graphics_effects/index
+   embedded_windows/index
+   lighting/index
+   export_video_settings/index
+   transparency/index
+   vector_settings/index

@@ -14,7 +14,7 @@ solver.tui.setup.boundary\_conditions.expert
 .. toctree::
    :hidden:
 
-   impedance_data_fitting/index
    non_reflecting_bc/index
-   perforated_walls/index
    periodic_conditions/index
+   impedance_data_fitting/index
+   perforated_walls/index

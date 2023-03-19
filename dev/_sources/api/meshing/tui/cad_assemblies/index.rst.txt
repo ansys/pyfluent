@@ -14,7 +14,7 @@ meshing.tui.cad\_assemblies
 .. toctree::
    :hidden:
 
-   labels/index
    update_options/index
+   labels/index
    draw_options/index
    manage_state/index

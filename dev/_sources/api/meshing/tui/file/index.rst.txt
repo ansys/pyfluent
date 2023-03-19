@@ -14,7 +14,7 @@ meshing.tui.file
 .. toctree::
    :hidden:
 
-   import_/index
    project/index
-   checkpoint/index
    export/index
+   import_/index
+   checkpoint/index

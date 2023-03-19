@@ -14,5 +14,5 @@ solver.tui.define.models.dpm.numerics.high\_resolution\_tracking
 .. toctree::
    :hidden:
 
-   barycentric_interpolation/index
    particle_relocation/index
+   barycentric_interpolation/index

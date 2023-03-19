@@ -14,5 +14,5 @@ solver.tui.parameters\_\_and\_\_customization
 .. toctree::
    :hidden:
 
-   parameters/index
    user_defined/index
+   parameters/index

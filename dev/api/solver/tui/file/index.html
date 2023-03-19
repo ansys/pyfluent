@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="solver.tui.file.auto_save" href="auto_save/index.html" />
-    <link rel="prev" title="solver.tui.define.curvilinear_coordinate_system" href="../define/curvilinear_coordinate_system/index.html" />
+    <link rel="next" title="solver.tui.file.project" href="project/index.html" />
+    <link rel="prev" title="solver.tui.mesh.geometry" href="../mesh/geometry/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -348,18 +348,58 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../adjoint/index.html">
-         solver.tui.adjoint
+        <a class="reference internal" href="../setup/index.html">
+         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../display/index.html">
-         solver.tui.display
+        <a class="reference internal" href="../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../define/index.html">
-         solver.tui.define
+        <a class="reference internal" href="../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../views/index.html">
+         solver.tui.views
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../mesh/index.html">
+         solver.tui.mesh
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -373,38 +413,8 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul>
          <li class="toctree-l5">
-          <a class="reference internal" href="auto_save/index.html">
-           solver.tui.file.auto_save
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="cffio_options/index.html">
-           solver.tui.file.cffio_options
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="export/index.html">
-           solver.tui.file.export
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="transient_export/index.html">
-           solver.tui.file.transient_export
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="em_mapping/index.html">
-           solver.tui.file.em_mapping
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="import_/index.html">
-           solver.tui.file.import_
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="interpolate/index.html">
-           solver.tui.file.interpolate
+          <a class="reference internal" href="project/index.html">
+           solver.tui.file.project
           </a>
          </li>
          <li class="toctree-l5">
@@ -413,18 +423,33 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="parametric_project/index.html">
-           solver.tui.file.parametric_project
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="project/index.html">
-           solver.tui.file.project
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="table_manager/index.html">
            solver.tui.file.table_manager
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="interpolate/index.html">
+           solver.tui.file.interpolate
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="import_/index.html">
+           solver.tui.file.import_
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="em_mapping/index.html">
+           solver.tui.file.em_mapping
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="export/index.html">
+           solver.tui.file.export
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="parametric_project/index.html">
+           solver.tui.file.parametric_project
           </a>
          </li>
          <li class="toctree-l5">
@@ -432,16 +457,26 @@ function checkPageExistsAndRedirect(event) {
            solver.tui.file.solution_files
           </a>
          </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="auto_save/index.html">
+           solver.tui.file.auto_save
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="transient_export/index.html">
+           solver.tui.file.transient_export
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="cffio_options/index.html">
+           solver.tui.file.cffio_options
+          </a>
+         </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../mesh/index.html">
-         solver.tui.mesh
+        <a class="reference internal" href="../solve/index.html">
+         solver.tui.solve
         </a>
        </li>
        <li class="toctree-l4">
@@ -455,28 +490,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../preferences/index.html">
-         solver.tui.preferences
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../report/index.html">
          solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../solve/index.html">
-         solver.tui.solve
         </a>
        </li>
        <li class="toctree-l4">
@@ -485,43 +500,28 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../setup/index.html">
-         solver.tui.setup
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../surface/index.html">
-         solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../simulation_reports/index.html">
          solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../server/index.html">
-         solver.tui.server
+        <a class="reference internal" href="../display/index.html">
+         solver.tui.display
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../turbo_post/index.html">
-         solver.tui.turbo_post
+        <a class="reference internal" href="../define/index.html">
+         solver.tui.define
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../views/index.html">
-         solver.tui.views
+        <a class="reference internal" href="../results/index.html">
+         solver.tui.results
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
+        <a class="reference internal" href="../adjoint/index.html">
+         solver.tui.adjoint
         </a>
        </li>
       </ul>
@@ -1168,30 +1168,10 @@ function checkPageExistsAndRedirect(event) {
       <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.export.system_coupling_definition_file_settings">
        <code class="docutils literal notranslate">
         <span class="pre">
-         file.export.system_coupling_definition_file_settings
+         file.export.system_coupling_definition_file_settings()
         </span>
        </code>
       </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.export.system_coupling_definition_file_settings.enable_automatic_creation_of_scp_file">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           file.export.system_coupling_definition_file_settings.enable_automatic_creation_of_scp_file()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.export.system_coupling_definition_file_settings.write_system_coupling_file">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           file.export.system_coupling_definition_file_settings.write_system_coupling_file()
-          </span>
-         </code>
-        </a>
-       </li>
-      </ul>
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.export.taitherm">
@@ -1423,30 +1403,10 @@ function checkPageExistsAndRedirect(event) {
       <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.flamelet">
        <code class="docutils literal notranslate">
         <span class="pre">
-         file.import_.flamelet
+         file.import_.flamelet()
         </span>
        </code>
       </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.flamelet.cfx_rif">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           file.import_.flamelet.cfx_rif()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.flamelet.standard">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           file.import_.flamelet.standard()
-          </span>
-         </code>
-        </a>
-       </li>
-      </ul>
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fluent4_case">
@@ -1461,48 +1421,10 @@ function checkPageExistsAndRedirect(event) {
       <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file">
        <code class="docutils literal notranslate">
         <span class="pre">
-         file.import_.fmu_file
+         file.import_.fmu_file()
         </span>
        </code>
       </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file.define_fmu">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           file.import_.fmu_file.define_fmu()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file.import_fmu">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           file.import_.fmu_file.import_fmu()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file.select_fmu_local">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           file.import_.fmu_file.select_fmu_local()
-          </span>
-         </code>
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file.set_fmu_parameter">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           file.import_.fmu_file.set_fmu_parameter()
-          </span>
-         </code>
-        </a>
-       </li>
-      </ul>
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.gambit">
@@ -3357,10 +3279,13 @@ function checkPageExistsAndRedirect(event) {
 <tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.export.patran_nodal" title="ansys.fluent.core.solver.tui_231.main_menu.file.export.patran_nodal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">patran_nodal</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Writes a PATRAN nodal results file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.export.taitherm" title="ansys.fluent.core.solver.tui_231.main_menu.file.export.taitherm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">taitherm</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.export.system_coupling_definition_file_settings" title="ansys.fluent.core.solver.tui_231.main_menu.file.export.system_coupling_definition_file_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">system_coupling_definition_file_settings</span></code></a>(...)</p></td>
+<td><p>Enters the system coupling file (.scp) menu.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.export.taitherm" title="ansys.fluent.core.solver.tui_231.main_menu.file.export.taitherm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">taitherm</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Exports TAITherm file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.export.tecplot" title="ansys.fluent.core.solver.tui_231.main_menu.file.export.tecplot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tecplot</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.export.tecplot" title="ansys.fluent.core.solver.tui_231.main_menu.file.export.tecplot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tecplot</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Writes a Tecplot+3DV format file.</p></td>
 </tr>
 </tbody>
@@ -3370,9 +3295,6 @@ function checkPageExistsAndRedirect(event) {
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.export.settings" title="ansys.fluent.core.solver.tui_231.main_menu.file.export.settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">settings</span></code></a>(path, service)</p></td>
 <td><p>Enter the export settings menu.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.export.system_coupling_definition_file_settings" title="ansys.fluent.core.solver.tui_231.main_menu.file.export.system_coupling_definition_file_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">system_coupling_definition_file_settings</span></code></a>(...)</p></td>
-<td><p>Enters the system coupling file (.scp) menu.</p></td>
 </tr>
 </tbody>
 </table>
@@ -3601,34 +3523,10 @@ function checkPageExistsAndRedirect(event) {
 
 </dd></dl>
 
-<dl class="py class">
+<dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.export.system_coupling_definition_file_settings">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">system_coupling_definition_file_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.export.system_coupling_definition_file_settings" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the system coupling file (.scp) menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.export.system_coupling_definition_file_settings.enable_automatic_creation_of_scp_file" title="ansys.fluent.core.solver.tui_231.main_menu.file.export.system_coupling_definition_file_settings.enable_automatic_creation_of_scp_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_automatic_creation_of_scp_file</span></code></a>(*args, ...)</p></td>
-<td><p>Enables/disables automatically writing a .scp every time a case file is written.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.export.system_coupling_definition_file_settings.write_system_coupling_file" title="ansys.fluent.core.solver.tui_231.main_menu.file.export.system_coupling_definition_file_settings.write_system_coupling_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_system_coupling_file</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Writes a system coupling (.scp) file.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.export.system_coupling_definition_file_settings.enable_automatic_creation_of_scp_file">
-<span class="sig-name descname"><span class="pre">enable_automatic_creation_of_scp_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.export.system_coupling_definition_file_settings.enable_automatic_creation_of_scp_file" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables/disables automatically writing a .scp every time a case file is written.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.export.system_coupling_definition_file_settings.write_system_coupling_file">
-<span class="sig-name descname"><span class="pre">write_system_coupling_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.export.system_coupling_definition_file_settings.write_system_coupling_file" title="Permalink to this definition">#</a></dt>
-<dd><p>Writes a system coupling (.scp) file.</p>
-</dd></dl>
-
+<span class="sig-name descname"><span class="pre">system_coupling_definition_file_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.export.system_coupling_definition_file_settings" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the system coupling file (.scp) menu.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -3716,12 +3614,6 @@ function checkPageExistsAndRedirect(event) {
 <tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.cgns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cgns</span></code></a>(path, service)</p></td>
 <td><p>Imports a CGNS file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.flamelet" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.flamelet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flamelet</span></code></a>(path, service)</p></td>
-<td><p>Imports a flamelet file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fmu_file</span></code></a>(path, service)</p></td>
-<td><p>Enters the import FMU file menu.</p></td>
-</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.lstc" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.lstc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lstc</span></code></a>(path, service)</p></td>
 <td><p>Imports an LSTC file.</p></td>
 </tr>
@@ -3760,8 +3652,14 @@ function checkPageExistsAndRedirect(event) {
 <tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fidap" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.fidap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fidap</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Imports a FIDAP neutral file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fluent4_case" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.fluent4_case"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fluent4_case</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.flamelet" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.flamelet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flamelet</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Imports a flamelet file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fluent4_case" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.fluent4_case"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fluent4_case</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Imports a formatted ANSYS Fluent 4 case file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fmu_file</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enters the import FMU file menu.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.gambit" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.gambit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gambit</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Imports a GAMBIT neutral file.</p></td>
@@ -3915,34 +3813,10 @@ function checkPageExistsAndRedirect(event) {
 <dd><p>Imports a FIDAP neutral file.</p>
 </dd></dl>
 
-<dl class="py class">
+<dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.flamelet">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">flamelet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.flamelet" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Imports a flamelet file.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.flamelet.cfx_rif" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.flamelet.cfx_rif"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cfx_rif</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads a CFX-RIF format flamelet file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.flamelet.standard" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.flamelet.standard"><code class="xref py py-obj docutils literal notranslate"><span class="pre">standard</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads a standard format flamelet file.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.flamelet.cfx_rif">
-<span class="sig-name descname"><span class="pre">cfx_rif</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.flamelet.cfx_rif" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads a CFX-RIF format flamelet file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.flamelet.standard">
-<span class="sig-name descname"><span class="pre">standard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.flamelet.standard" title="Permalink to this definition">#</a></dt>
-<dd><p>Reads a standard format flamelet file.</p>
-</dd></dl>
-
+<span class="sig-name descname"><span class="pre">flamelet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.flamelet" title="Permalink to this definition">#</a></dt>
+<dd><p>Imports a flamelet file.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -3951,52 +3825,10 @@ function checkPageExistsAndRedirect(event) {
 <dd><p>Imports a formatted ANSYS Fluent 4 case file.</p>
 </dd></dl>
 
-<dl class="py class">
+<dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fmu_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TUIMenu</span></code></p>
-<p>Enters the import FMU file menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file.define_fmu" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file.define_fmu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">define_fmu</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Links the FMU variables with the Fluent output parameters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file.import_fmu" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file.import_fmu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">import_fmu</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Imports an FMU file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file.select_fmu_local" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file.select_fmu_local"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_fmu_local</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Allows you to select FMU local variables to be monitored during the calculation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file.set_fmu_parameter" title="ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file.set_fmu_parameter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_fmu_parameter</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Allows you to select FMU parameter variables and change their values.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file.define_fmu">
-<span class="sig-name descname"><span class="pre">define_fmu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file.define_fmu" title="Permalink to this definition">#</a></dt>
-<dd><p>Links the FMU variables with the Fluent output parameters.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file.import_fmu">
-<span class="sig-name descname"><span class="pre">import_fmu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file.import_fmu" title="Permalink to this definition">#</a></dt>
-<dd><p>Imports an FMU file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file.select_fmu_local">
-<span class="sig-name descname"><span class="pre">select_fmu_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file.select_fmu_local" title="Permalink to this definition">#</a></dt>
-<dd><p>Allows you to select FMU local variables to be monitored during the calculation.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file.set_fmu_parameter">
-<span class="sig-name descname"><span class="pre">set_fmu_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file.set_fmu_parameter" title="Permalink to this definition">#</a></dt>
-<dd><p>Allows you to select FMU parameter variables and change their values.</p>
-</dd></dl>
-
+<span class="sig-name descname"><span class="pre">fmu_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.file.import_.fmu_file" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the import FMU file menu.</p>
 </dd></dl>
 
 <dl class="py method">

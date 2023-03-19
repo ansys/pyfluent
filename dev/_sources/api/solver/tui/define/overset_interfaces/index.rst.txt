@@ -14,6 +14,6 @@ solver.tui.define.overset\_interfaces
 .. toctree::
    :hidden:
 
-   options/index
    cut_control/index
+   options/index
    adapt/index
