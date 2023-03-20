@@ -20,16 +20,15 @@ interfacing to Matplotlib and pyvista, and tools for asynchronous and batched co
 Meshing
 #######
 
-The :ref:`ref_meshing` mode is dedicated to capturing the capabilities of the Fluent Meshing guided workflows and
-associated tools. This component consists of an interface that is derived from the Fluent (meshing) TUI, as well as
-a meshing workflow interface that manages workflow tasks, meshing functions, and part management.
+The :ref:`ref_meshing` mode provides Pythonic interfaces to the Fluent Meshing TUI, Fluent Meshing guided workflows,
+and part management.
 
 Solver
 ######
 
 The :ref:`ref_solver` mode is dedicated to capturing the power of the Fluent solver. This component consists of a
-:ref:`ref_settings`-based interface or a :ref:`ref_solver_tui`-based interface that is derived from the Fluent
-(solver) TUI, as well as access to Fluent surface, scalar and vector field data.
+:ref:`ref_settings`-based interface and a :ref:`ref_solver_tui`-based interface that is derived from the Fluent
+Solver TUI, as well as access to scalar and vector surface field data.
 
 
 .. toctree::
