@@ -3,7 +3,6 @@ import time
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core.fluent_connection import _FluentConnection
-from ansys.fluent.core.launcher.launcher import get_ansys_version
 from ansys.fluent.core.session_solver import Solver
 
 
@@ -54,7 +53,7 @@ def test_transcript(new_solver_session):
         total_checked_transcript += transcript_counter[0]
         passed_transcript += transcript_counter[1]
 
-    if get_ansys_version() == "23.2.0":
+    if solver.get_fluent_version() >= "23.2.0":
         assert total_checked_transcript == passed_transcript
     else:
         assert total_checked_transcript > passed_transcript
