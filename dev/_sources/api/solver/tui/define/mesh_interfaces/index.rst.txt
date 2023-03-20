@@ -14,6 +14,6 @@ solver.tui.define.mesh\_interfaces
 .. toctree::
    :hidden:
 
-   auto_options/index
    non_conformal_interface_numerics/index
    mapped_interface_options/index
+   auto_options/index

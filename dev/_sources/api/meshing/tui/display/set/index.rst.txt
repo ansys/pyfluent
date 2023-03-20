@@ -15,7 +15,7 @@ meshing.tui.display.set
    :hidden:
 
    colors/index
-   lights/index
-   picture/index
-   styles/index
    rendering_options/index
+   picture/index
+   lights/index
+   styles/index

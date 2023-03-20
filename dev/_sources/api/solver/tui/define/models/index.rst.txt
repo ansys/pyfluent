@@ -14,21 +14,21 @@ solver.tui.define.models
 .. toctree::
    :hidden:
 
-   species/index
+   acoustics/index
+   optics/index
    eulerian_wallfilm/index
-   structure/index
-   viscous/index
-   nox_parameters/index
-   electrolysis/index
-   solver/index
-   multiphase/index
-   heat_exchanger/index
+   dpm/index
    shell_conduction/index
    system_coupling_settings/index
-   two_temperature/index
-   optics/index
    cht/index
-   radiation/index
-   dpm/index
-   acoustics/index
+   two_temperature/index
+   multiphase/index
+   nox_parameters/index
    soot_parameters/index
+   radiation/index
+   solver/index
+   species/index
+   viscous/index
+   structure/index
+   heat_exchanger/index
+   electrolysis/index

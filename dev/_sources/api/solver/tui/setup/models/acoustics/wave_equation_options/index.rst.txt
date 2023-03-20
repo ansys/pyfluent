@@ -14,5 +14,5 @@ solver.tui.setup.models.acoustics.wave\_equation\_options
 .. toctree::
    :hidden:
 
-   remote_receivers_options/index
    basic_shapes/index
+   remote_receivers_options/index

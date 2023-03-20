@@ -15,5 +15,5 @@ solver.tui.preferences.turbo\_workflow
    :hidden:
 
    cell_zone_settings/index
-   graphics_settings/index
    face_zone_settings/index
+   graphics_settings/index

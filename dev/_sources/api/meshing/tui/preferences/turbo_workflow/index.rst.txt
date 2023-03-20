@@ -15,5 +15,5 @@ meshing.tui.preferences.turbo\_workflow
    :hidden:
 
    graphics_settings/index
-   face_zone_settings/index
    cell_zone_settings/index
+   face_zone_settings/index

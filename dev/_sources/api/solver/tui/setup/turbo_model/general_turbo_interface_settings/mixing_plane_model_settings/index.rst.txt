@@ -11,3 +11,7 @@ solver.tui.setup.turbo\_model.general\_turbo\_interface\_settings.mixing\_plane\
    :special-members: " __init__"
    :autosummary:
 
+.. toctree::
+   :hidden:
+
+   number_of_bands/index

@@ -14,5 +14,5 @@ solver.tui.display.set.picture
 .. toctree::
    :hidden:
 
-   driver/index
    color_mode/index
+   driver/index

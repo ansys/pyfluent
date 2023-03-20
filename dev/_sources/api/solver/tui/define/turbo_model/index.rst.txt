@@ -15,5 +15,5 @@ solver.tui.define.turbo\_model
    :hidden:
 
    turbo_topology/index
-   blade_flutter_harmonics/index
    general_turbo_interface_settings/index
+   blade_flutter_harmonics/index

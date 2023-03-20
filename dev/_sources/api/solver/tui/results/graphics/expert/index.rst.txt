@@ -14,8 +14,8 @@ solver.tui.results.graphics.expert
 .. toctree::
    :hidden:
 
-   particle_tracks/index
    flamelet_data/index
+   particle_tracks/index
    path_lines/index
-   set/index
    pdf_data/index
+   set/index

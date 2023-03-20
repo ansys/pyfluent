@@ -14,8 +14,8 @@ solver.tui.results.graphics
 .. toctree::
    :hidden:
 
-   lights/index
-   update_scene/index
-   rendering_options/index
    expert/index
+   lights/index
    objects/index
+   rendering_options/index
+   update_scene/index

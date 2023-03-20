@@ -14,5 +14,5 @@ solver.tui.solution.run\_calculation
 .. toctree::
    :hidden:
 
-   transient_controls/index
    data_sampling_options/index
+   transient_controls/index

@@ -15,5 +15,5 @@ solver.tui.display.set.particle\_tracks
    :hidden:
 
    sphere_settings/index
-   filter_settings/index
    vector_settings/index
+   filter_settings/index
