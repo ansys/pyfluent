@@ -11,7 +11,7 @@ General
 Features of PyFluent not specifically belonging to either the Meshing or Solver modes are collected together in the
 :ref:`ref_general` section. That includes instructions on how to launch and connect to Fluent, and the various types of
 PyFluent session objects, which connect to Fluent sessions, are documented. Fundamental gRPC services, including
-streaming services, upon which PyFluent depends -- and a re directly usable -- are outlined. Other features include a
+streaming services, upon which PyFluent depends (and are directly usable) are outlined. Other features include a
 Scheduler module for facilitating use of external job scheduling systems, a purely Python-based reader for Fluent
 project and case files, Python-based journaling, task-based workflow objects, full Pythonic access to Fluent rp-vars,
 powerful quantity objects that expose real values and units of API (and other) objects, visualization objects for
