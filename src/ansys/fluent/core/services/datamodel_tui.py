@@ -23,7 +23,10 @@ class DatamodelService:
     """
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
-        intercept_channel = grpc.intercept_channel(channel, TracingInterceptor(), BatchInterceptor())
+        """__init__ method of DatamodelService class."""
+        intercept_channel = grpc.intercept_channel(
+            channel, TracingInterceptor(), BatchInterceptor()
+        )
         self.__stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self.__metadata = metadata
 
@@ -31,34 +34,40 @@ class DatamodelService:
     def get_attribute_value(
         self, request: DataModelProtoModule.GetAttributeValueRequest
     ) -> DataModelProtoModule.GetAttributeValueResponse:
+        """GetAttributeValue rpc of DataModel service."""
         return self.__stub.GetAttributeValue(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def get_state(
         self, request: DataModelProtoModule.GetStateRequest
     ) -> DataModelProtoModule.GetStateResponse:
+        """GetState rpc of DataModel service."""
         return self.__stub.GetState(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def set_state(
         self, request: DataModelProtoModule.SetStateRequest
     ) -> DataModelProtoModule.SetStateResponse:
+        """SetState rpc of DataModel service."""
         return self.__stub.SetState(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def execute_command(
         self, request: DataModelProtoModule.ExecuteCommandRequest
     ) -> DataModelProtoModule.ExecuteCommandResponse:
+        """ExecuteCommand rpc of DataModel service."""
         return self.__stub.ExecuteCommand(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def execute_query(
         self, request: DataModelProtoModule.ExecuteQueryRequest
     ) -> DataModelProtoModule.ExecuteQueryResponse:
+        """ExecuteQuery rpc of DataModel service."""
         return self.__stub.ExecuteQuery(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def get_static_info(self, request):
+        """GetStaticInfo rpc of DataModel service."""
         return self.__stub.GetStaticInfo(request, metadata=self.__metadata)
 
 
@@ -120,6 +129,7 @@ class PyMenu:
     """
 
     def __init__(self, service: DatamodelService, path: Union[Path, str]):
+        """__init__ method of PyMenu class."""
         self._service = service
         self._path = path if isinstance(path, str) else convert_path_to_grpc_path(path)
 
@@ -245,6 +255,7 @@ class TUIMenu:
     """Base class for the generated menu classes."""
 
     def __init__(self, path, service):
+        """__init__ method of TUIMenu class."""
         self.path = path
         self.service = service
 
@@ -273,6 +284,7 @@ class TUIMenu:
                     return TUICommand(path, self.service)
             else:
                 raise ex
+
 
 class TUICommand(TUIMenu):
     """Generic command class for when the explicit menu classes aren't

@@ -1,4 +1,4 @@
-"""Module for maintaining journal."""
+"""A module for maintaining journals."""
 
 
 class Journal:

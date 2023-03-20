@@ -98,6 +98,10 @@ except Exception:
 
 BUILDING_GALLERY = False
 
-pydoc.text.docother = fldoc.docother.__get__(pydoc.text, pydoc.TextDoc)
+# Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS
+INFER_REMOTING_IP = True
 
-USE_LIGHT_IO = False
+# Time in second to wait for response for each ip while inferring remoting ip
+INFER_REMOTING_IP_TIMEOUT_PER_IP = 2
+
+pydoc.text.docother = fldoc.docother.__get__(pydoc.text, pydoc.TextDoc)

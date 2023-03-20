@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Iterator, Tuple
 
 from ansys.fluent.core.services.datamodel_se import PyCallableStateObject
 
@@ -17,35 +17,6 @@ def _new_command_for_task(task, session):
     raise NewCommandError(task._name_())
 
 
-class TaskContainer(PyCallableStateObject):
-    """Wrap a workflow TaskObject container.
-
-    Methods
-    -------
-    __getitem__(attr)
-    __getattr__(attr)
-    __dir__()
-    """
-    def __init__(self, command_source):
-        self._container = command_source
-        self._task_container = command_source._workflow.TaskObject
-
-    def __getitem__(self, name):
-        return Task(self._container, name)
-
-    def __getattr__(self, attr):
-        return getattr(self._task_container, attr)
-
-    def __dir__(self):
-        return sorted(
-            set(
-                list(self.__dict__.keys())
-                + dir(type(self))
-                + dir(self._task_container)
-            )
-        )
-
-
 class Task(PyCallableStateObject):
     """Wrap a Workflow TaskObject instance, adding methods to discover more
     about the relationships between TaskObjects.
@@ -62,6 +33,7 @@ class Task(PyCallableStateObject):
     __setattr__(attr, value)
     __dir__()
     """
+
     def __init__(self, command_source, name: str) -> None:
         self.__dict__.update(
             dict(
@@ -83,9 +55,8 @@ class Task(PyCallableStateObject):
             Upstream task list.
         """
         return self._tasks_with_matching_attributes(
-            attr="requiredInputs",
-            other_attr="outputs"
-            )
+            attr="requiredInputs", other_attr="outputs"
+        )
 
     def get_direct_downstream_tasks(self) -> list:
         """Get the list of tasks downstream of this one and directly connected
@@ -97,12 +68,11 @@ class Task(PyCallableStateObject):
             Downstream task list.
         """
         return self._tasks_with_matching_attributes(
-            attr="outputs",
-            other_attr="requiredInputs"
-            )
+            attr="outputs", other_attr="requiredInputs"
+        )
 
     def ordered_children(self) -> list:
-        """ Get the ordered task list held by this task. Sorting is in terms
+        """Get the ordered task list held by this task. Sorting is in terms
         of the workflow order and only includes this task's top-level tasks, while other tasks
         can be obtained by calling ordered_children() on a parent task. Given the
         workflow:
@@ -126,7 +96,10 @@ class Task(PyCallableStateObject):
         children : list
             Ordered children.
         """
-        return [self._command_source._task_by_id(task_id) for task_id in self._task.TaskList()]
+        return [
+            self._command_source._task_by_id(task_id)
+            for task_id in self._task.TaskList()
+        ]
 
     def inactive_ordered_children(self) -> list:
         """Get the inactive ordered task list held by this task.
@@ -136,7 +109,10 @@ class Task(PyCallableStateObject):
         children : list
             Inactive ordered children.
         """
-        return [self._command_source._task_by_id(task_id) for task_id in self._task.InactiveTaskList()]
+        return [
+            self._command_source._task_by_id(task_id)
+            for task_id in self._task.InactiveTaskList()
+        ]
 
     def get_id(self) -> str:
         """Get the unique string identifier of this task, as it is in the
@@ -149,9 +125,9 @@ class Task(PyCallableStateObject):
         """
         workflow_state = self._command_source._workflow_state()
         for k, v in workflow_state.items():
-            if isinstance(v, dict) and '_name_' in v:
-                if v['_name_'] == self.name():
-                    type_ , id_ = k.split(':')
+            if isinstance(v, dict) and "_name_" in v:
+                if v["_name_"] == self.name():
+                    type_, id_ = k.split(":")
                     if type_ == "TaskObject":
                         return id_
 
@@ -164,7 +140,7 @@ class Task(PyCallableStateObject):
         index : int
             The integer index.
         """
-        return int(self.get_id()[len("TaskObject"):])
+        return int(self.get_id()[len("TaskObject") :])
 
     @property
     def CommandArguments(self):
@@ -184,19 +160,16 @@ class Task(PyCallableStateObject):
             set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._task))
         )
 
-    def _tasks_with_matching_attributes(
-        self,
-        attr: str,
-        other_attr: str
-    ) -> list:
+    def _tasks_with_matching_attributes(self, attr: str, other_attr: str) -> list:
         this_command = self._command()
         attrs = this_command.get_attr(attr)
         if not attrs:
             return []
         attrs = set(attrs)
         tasks = [
-            task for task in self._command_source.ordered_children() if
-            task.name() != self.name()
+            task
+            for task in self._command_source.ordered_children()
+            if task.name() != self.name()
         ]
         matches = []
         for task in tasks:
@@ -216,9 +189,7 @@ class Task(PyCallableStateObject):
     def _cmd_sub_items_read_only(self, cmd):
         for item in cmd():
             if type(getattr(cmd, item).get_state()) == dict:
-                setattr(
-                    cmd, item, self._cmd_sub_items_read_only(getattr(cmd, item))
-                )
+                setattr(cmd, item, self._cmd_sub_items_read_only(getattr(cmd, item)))
             setattr(cmd, item, _MakeReadOnly(getattr(cmd, item)))
         return cmd
 
@@ -226,6 +197,46 @@ class Task(PyCallableStateObject):
         if not self._cmd:
             self._cmd = _new_command_for_task(self._task, self._source)
         return self._cmd
+
+
+class TaskContainer(PyCallableStateObject):
+    """Wrap a workflow TaskObject container.
+
+    Methods
+    -------
+    __iter__()
+    __getitem__(attr)
+    __getattr__(attr)
+    __dir__()
+    """
+
+    def __init__(self, command_source):
+        self._container = command_source
+        self._task_container = command_source._workflow.TaskObject
+
+    def __iter__(self) -> Iterator[Task]:
+        """Yield the next child object.
+
+        Yields
+        ------
+        Iterator[Task]
+            Iterator of child objects.
+        """
+        for name in self._get_child_object_display_names():
+            yield self[name]
+
+    def __getitem__(self, name):
+        return Task(self._container, name)
+
+    def __getattr__(self, attr):
+        return getattr(self._task_container, attr)
+
+    def __dir__(self):
+        return sorted(
+            set(
+                list(self.__dict__.keys()) + dir(type(self)) + dir(self._task_container)
+            )
+        )
 
 
 class WorkflowWrapper:
@@ -272,7 +283,7 @@ class WorkflowWrapper:
         return TaskContainer(self)
 
     def ordered_children(self) -> list:
-        """ Get the ordered task list held by the workflow. Sorting is in terms
+        """Get the ordered task list held by the workflow. Sorting is in terms
         of the workflow order and only includes the top-level tasks, while other tasks
         can be obtained by calling ordered_children() on a parent task. Given the
         workflow:
@@ -299,7 +310,7 @@ class WorkflowWrapper:
         return tasks
 
     def __getattr__(self, attr):
-        """ Delegate attribute lookup to the wrapped workflow object
+        """Delegate attribute lookup to the wrapped workflow object
         Parameters
         ----------
         attr : str

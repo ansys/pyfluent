@@ -15,13 +15,14 @@ class BatchOpsService:
     """Class wrapping methods in batch rpc service."""
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
+        """__init__ method of BatchOpsService class."""
         self._stub = batch_ops_pb2_grpc.BatchOpsStub(channel)
         self._metadata = metadata
 
     @catch_grpc_error
     def execute(self, request):
-        """Call execute rpc."""
-        return self._stub.Execute(request,  metadata=self._metadata)
+        """Execute rpc of BatchOps service."""
+        return self._stub.Execute(request, metadata=self._metadata)
 
 
 class BatchOps:
@@ -56,12 +57,23 @@ class BatchOps:
 
     class Op:
         """Class to create a single batch operation."""
-        def __init__(self, package: str, service: str, method: str, request_body: bytes):
+
+        def __init__(
+            self, package: str, service: str, method: str, request_body: bytes
+        ):
+            """__init__ method of Op class."""
             self._request = batch_ops_pb2.ExecuteRequest(
-                package=package, service=service, method=method, request_body=request_body
+                package=package,
+                service=service,
+                method=method,
+                request_body=request_body,
             )
             if not BatchOps._proto_files:
-                BatchOps._proto_files = [x[1] for x in inspect.getmembers(api, inspect.ismodule) if hasattr(x[1], "DESCRIPTOR")]
+                BatchOps._proto_files = [
+                    x[1]
+                    for x in inspect.getmembers(api, inspect.ismodule)
+                    if hasattr(x[1], "DESCRIPTOR")
+                ]
             self._supported = False
             self.response_cls = None
             for file in BatchOps._proto_files:
@@ -70,9 +82,15 @@ class BatchOps:
                     service_desc = file_desc.services_by_name.get(service)
                     if service_desc:
                         # TODO Add custom option in .proto files to identify getters
-                        if not method.startswith("Get") and not method.startswith("get"):
+                        if not method.startswith("Get") and not method.startswith(
+                            "get"
+                        ):
                             method_desc = service_desc.methods_by_name.get(method)
-                            if method_desc and not method_desc.client_streaming and not method_desc.server_streaming:
+                            if (
+                                method_desc
+                                and not method_desc.client_streaming
+                                and not method_desc.server_streaming
+                            ):
                                 self._supported = True
                                 response_cls_name = method_desc.output_type.name
                                 # TODO Get the respnse_cls from message_factory
@@ -80,8 +98,11 @@ class BatchOps:
                                 break
             if self._supported:
                 self._request = batch_ops_pb2.ExecuteRequest(
-                    package=package, service=service, method=method, request_body=request_body
-                    )
+                    package=package,
+                    service=service,
+                    method=method,
+                    request_body=request_body,
+                )
                 self._status = None
                 self._result = None
             self.queued = False
@@ -142,7 +163,9 @@ class BatchOps:
         """
         op = BatchOps.Op(package, service, method, request.SerializeToString())
         if op._supported:
-            LOG.debug(f"Adding batch operation with package {package}, service {service} and method {method}")
+            LOG.debug(
+                f"Adding batch operation with package {package}, service {service} and method {method}"
+            )
             self._ops.append(op)
             op.queued = True
         return op

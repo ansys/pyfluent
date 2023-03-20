@@ -17,12 +17,13 @@ import warnings
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
-from ansys.fluent.core.session import _BaseSession, parse_server_info_file
+from ansys.fluent.core.session import parse_server_info_file
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.logging import LOG
+from ansys.fluent.core.utils.networking import find_remoting_ip
 import ansys.platform.instancemanagement as pypim
 
 _THIS_DIR = os.path.dirname(__file__)
@@ -49,9 +50,11 @@ class FluentVersion(Enum):
                 if version == v.value:
                     return FluentVersion(version)
             else:
-                raise RuntimeError(f"The passed version '{version[:-2]}' does not exist."
-                                   f" Available version strings are: "
-                                   f"{[ver.value for ver in FluentVersion]} ")
+                raise RuntimeError(
+                    f"The passed version '{version[:-2]}' does not exist."
+                    f" Available version strings are: "
+                    f"{[ver.value for ver in FluentVersion]} "
+                )
 
     def __str__(self):
         return str(self.value)
@@ -67,6 +70,18 @@ def get_ansys_version() -> str:
 
 
 def get_fluent_exe_path(**launch_argvals) -> Path:
+    """Get Fluent executable path. The path is searched in the following order.
+
+    1. ``PYFLUENT_FLUENT_ROOT`` environment variable.
+    2. ``product_version`` parameter passed with ``launch_fluent``.
+    3. The latest ANSYS version from ``AWP_ROOTnnn``` environment variables.
+
+    Returns
+    -------
+    Path
+        Fluent executable path
+    """
+
     def get_fluent_root(version: FluentVersion) -> Path:
         awp_root = os.environ["AWP_ROOT" + "".join(str(version).split("."))[:-1]]
         return Path(awp_root) / "fluent"
@@ -132,6 +147,12 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
     fluent_env = os.environ.copy()
     fluent_env.update({k: str(v) for k, v in env.items()})
     fluent_env["REMOTING_THROW_LAST_TUI_ERROR"] = "1"
+    from ansys.fluent.core import INFER_REMOTING_IP
+
+    if INFER_REMOTING_IP and not "REMOTING_SERVER_ADDRESS" in fluent_env:
+        remoting_ip = find_remoting_ip()
+        if remoting_ip:
+            fluent_env["REMOTING_SERVER_ADDRESS"] = remoting_ip
     kwargs.update(env=fluent_env)
     return kwargs
 
@@ -200,7 +221,6 @@ def launch_remote_fluent(
     dimensionality: str = None,
     launcher_args: Dict[str, Any] = None,
 ):
-
     """Launch Fluent remotely using the PIM (Product Instance Management) API.
 
     When calling this method, you must ensure that you are in an
@@ -257,14 +277,12 @@ def launch_remote_fluent(
             remote_instance=instance,
             start_timeout=start_timeout,
             start_transcript=start_transcript,
-            launcher_args=launcher_args
+            launcher_args=launcher_args,
         )
     )
 
 
-def _get_session_info(
-    argvals, mode: Union[LaunchModes, str, None] = None
-):
+def _get_session_info(argvals, mode: Union[LaunchModes, str, None] = None):
     """Updates the session information."""
     if mode is None:
         mode = LaunchModes.SOLVER
@@ -395,20 +413,20 @@ def _generate_launch_string(
 
 
 def scm_to_py(topy):
+    """Convert journal filenames to Python filename."""
     if not isinstance(topy, (str, list)):
         raise TypeError("Journal name should be of str or list type.")
-    launch_string = ""
     if isinstance(topy, str):
         topy = [topy]
     fluent_jou_arg = "".join([f'-i "{journal}" ' for journal in topy])
-    py_jou = "_".join([Path(journal).stem for journal in topy])
-    launch_string += f' {fluent_jou_arg} -command="(api-start-python-journal \\\"\\\"{py_jou}.py\\\"\\\")"'  # noqa: E501
-    return launch_string
+    return f" {fluent_jou_arg} -topy"
 
 
 class LaunchFluentError(Exception):
+    """Exception class representing launch errors."""
 
     def __init__(self, launch_string):
+        """__init__ method of LaunchFluentError class."""
         details = "\n" + "Fluent Launch string: " + launch_string
         super().__init__(details)
 
@@ -431,6 +449,7 @@ def launch_fluent(
     show_gui: bool = None,
     case_filepath: str = None,
     case_data_filepath: str = None,
+    lightweight_mode: bool = False,
     mode: Union[LaunchModes, str, None] = None,
     server_info_filepath: str = None,
     password: str = None,
@@ -438,8 +457,7 @@ def launch_fluent(
     cwd: str = None,
     topy: Union[str, list] = None,
     **kwargs,
-) -> _BaseSession:
-
+) -> Union[Meshing, PureMeshing, Solver]:
     """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
 
@@ -509,6 +527,10 @@ def launch_fluent(
     case_data_filepath : str, optional
         If provided, reads a fluent case and data file and sets the required settings
         in the fluent session
+    lightweight_mode: bool, optional
+        Whether to use light io mode for reading case via ``case_filepath`` parameter.
+        This parameter is used only when ``case_filepath`` is provided. The default is
+        ``False``.
     mode : str, optional
         Launch mode of Fluent to point to a specific session type.
         The default value is ``None``. Options are ``"meshing"``,
@@ -539,17 +561,19 @@ def launch_fluent(
     """
     if kwargs:
         if "meshing_mode" in kwargs:
-            raise RuntimeError("'meshing_mode' argument is no longer used."
-                               " Please use launch_fluent(mode='meshing') to launch in meshing mode.")
+            raise RuntimeError(
+                "'meshing_mode' argument is no longer used."
+                " Please use launch_fluent(mode='meshing') to launch in meshing mode."
+            )
         else:
-            raise TypeError(f"launch_fluent() got an unexpected keyword argument {next(iter(kwargs))}")
+            raise TypeError(
+                f"launch_fluent() got an unexpected keyword argument {next(iter(kwargs))}"
+            )
 
     del kwargs
     argvals = locals()
 
-    new_session, meshing_mode, argvals, mode = _get_session_info(
-        argvals, mode
-    )
+    new_session, meshing_mode, argvals, mode = _get_session_info(argvals, mode)
     _raise_exception_g_gu_in_windows_os(additional_arguments)
     if _start_instance(start_instance):
         server_info_filepath = _get_server_info_filepath()
@@ -578,13 +602,13 @@ def launch_fluent(
                 server_info_filepath=server_info_filepath,
                 cleanup_on_exit=cleanup_on_exit,
                 start_transcript=start_transcript,
-                launcher_args=argvals
+                launcher_args=argvals,
             )
             if case_filepath:
                 if meshing_mode:
                     session.tui.file.read_case(case_filepath)
                 else:
-                    session.file.read(file_type="case", file_name=case_filepath)
+                    session.read_case(case_filepath, lightweight_mode)
             if journal_filepath:
                 if meshing_mode:
                     session.tui.file.read_journal(journal_filepath)
@@ -592,9 +616,13 @@ def launch_fluent(
                     session.file.read_journal(journal_filepath)
             if case_data_filepath:
                 if not meshing_mode:
-                    session.file.read(file_type="case-data", file_name=case_data_filepath)
+                    session.file.read(
+                        file_type="case-data", file_name=case_data_filepath
+                    )
                 else:
-                    raise RuntimeError("Case and data file cannot be read in meshing mode.")
+                    raise RuntimeError(
+                        "Case and data file cannot be read in meshing mode."
+                    )
 
             return session
         except Exception as ex:
@@ -616,7 +644,7 @@ def launch_fluent(
                 cleanup_on_exit=cleanup_on_exit,
                 meshing_mode=meshing_mode,
                 dimensionality=version,
-                launcher_args=argvals
+                launcher_args=argvals,
             )
         import ansys.fluent.core as pyfluent
 
@@ -637,7 +665,7 @@ def launch_fluent(
                     password=password,
                     cleanup_on_exit=cleanup_on_exit,
                     start_transcript=start_transcript,
-                    launcher_args=argvals
+                    launcher_args=argvals,
                 )
             )
         else:
@@ -650,7 +678,7 @@ def launch_fluent(
                 password=password,
                 cleanup_on_exit=cleanup_on_exit,
                 start_transcript=start_transcript,
-                launcher_args=argvals
+                launcher_args=argvals,
             )
             new_session = _get_running_session_mode(fluent_connection, mode)
             return new_session(fluent_connection=fluent_connection)

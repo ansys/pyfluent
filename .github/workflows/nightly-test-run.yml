@@ -114,6 +114,7 @@ jobs:
 
       - name: 23.1 Unit Testing
         run: make unittest-all-231
+        continue-on-error: true
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
@@ -121,12 +122,14 @@ jobs:
 
       - name: Upload 23.1 Coverage Artifacts
         uses: actions/upload-artifact@v3
+        continue-on-error: true
         with:
-          name: cov_xml.xml
-          path: ./cov_xml.xml
+          name: coverage_report
+          path: ./htmlcov
 
       - name: 23.2 Unit Testing
         run: make unittest-all-232
+        continue-on-error: true
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0

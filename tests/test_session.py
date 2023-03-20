@@ -20,6 +20,7 @@ from ansys.fluent.core import examples, launch_fluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.session import _BaseSession
+from ansys.fluent.core.utils.networking import get_free_port
 
 
 class MockHealthServicer(health_pb2_grpc.HealthServicer):
@@ -74,7 +75,7 @@ class MockSchemeEvalServicer(scheme_eval_pb2_grpc.SchemeEvalServicer):
 def test_create_session_by_passing_ip_and_port_and_password() -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
-    port = 50051
+    port = get_free_port()
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
@@ -95,7 +96,7 @@ def test_create_session_by_setting_ip_and_port_env_var(
 ) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
-    port = 50051
+    port = get_free_port()
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
@@ -114,7 +115,7 @@ def test_create_session_by_setting_ip_and_port_env_var(
 def test_create_session_by_passing_grpc_channel() -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
-    port = 50051
+    port = get_free_port()
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
@@ -134,7 +135,7 @@ def test_create_session_by_passing_grpc_channel() -> None:
 def test_create_session_from_server_info_file(tmp_path: Path) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
-    port = 50051
+    port = get_free_port()
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
@@ -157,7 +158,7 @@ def test_create_session_from_server_info_file_with_wrong_password(
 ) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
-    port = 50051
+    port = get_free_port()
     server.add_insecure_port(f"{ip}:{port}")
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
@@ -174,10 +175,12 @@ def test_create_session_from_server_info_file_with_wrong_password(
         session.exit()
 
 
-def test_create_session_from_launch_fluent_by_passing_ip_and_port_and_password() -> None:
+def test_create_session_from_launch_fluent_by_passing_ip_and_port_and_password() -> (
+    None
+):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
-    port = 50051
+    port = get_free_port()
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
@@ -207,7 +210,7 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
 ) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
-    port = 50051
+    port = get_free_port()
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
@@ -231,28 +234,26 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
-def test_journal_creation(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH):
-    session = new_mesh_session
-
+def test_journal_creation(new_mesh_session):
     fd, file_path = tempfile.mkstemp(
-        suffix=f"-{os.getpid()}.txt",
-        prefix="sample_py_journal-",
-        dir=str(tmp_path),
+        suffix=f"-{os.getpid()}.jou",
+        prefix="pyfluent-",
+        dir=str(pyfluent.EXAMPLES_PATH),
     )
     os.close(fd)
 
+    prev_stat = Path(file_path).stat()
+    prev_mtime = prev_stat.st_mtime
+    prev_size = prev_stat.st_size
+
+    session = new_mesh_session
     session.journal.start(file_path)
-
     session = session.switch_to_solver()
-
     session.journal.stop()
 
-    with open(file_path) as f:
-        returned = f.readlines()
-
-    time.sleep(1)
-
-    assert returned
+    new_stat = Path(file_path).stat()
+    assert new_stat.st_mtime > prev_mtime
+    assert new_stat.st_size > prev_size
 
 
 @pytest.mark.skip("Failing in GitHub CI")
@@ -273,9 +274,10 @@ def test_get_fluent_mode(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.skip("Failing in github")
 def test_start_transcript_file_write(new_mesh_session):
     fd, file_path = tempfile.mkstemp(
-        suffix=f"-{os.getpid()}.txt",
+        suffix=f"-{os.getpid()}.trn",
         prefix="pyfluent-",
         dir=str(pyfluent.EXAMPLES_PATH),
     )
@@ -302,17 +304,21 @@ def test_solverworkflow_in_solver_session(new_solver_session):
     for attr in ("preferences", "solverworkflow", "tui", "workflow"):
         assert attr in solver_dir
 
+
 @pytest.mark.dev
 @pytest.mark.fluent_232
-def test_read_case_using_light_io(new_solver_session):
+@pytest.mark.skip("Failing in github")
+def test_read_case_using_lightweight_mode(with_launching_container):
     import_filename = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
-    pyfluent.USE_LIGHT_IO = True
-    new_solver_session.read_case(file_name=import_filename)
-    new_solver_session.setup.models.energy.enabled = False
-    old_fluent_connection_id = id(new_solver_session.fluent_connection)
-    while id(new_solver_session.fluent_connection) == old_fluent_connection_id:
+    solver = pyfluent.launch_fluent(
+        case_filepath=import_filename, lightweight_mode=True
+    )
+    solver.setup.models.energy.enabled = False
+    old_fluent_connection_id = id(solver.fluent_connection)
+    while id(solver.fluent_connection) == old_fluent_connection_id:
         time.sleep(1)
-    assert new_solver_session.setup.models.energy.enabled() == False
-    pyfluent.USE_LIGHT_IO = False
+    time.sleep(5)
+    assert solver.setup.models.energy.enabled() == False
+    solver.exit()

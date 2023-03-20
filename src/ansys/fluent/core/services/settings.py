@@ -1,5 +1,6 @@
 """Wrapper to settings gRPC service of Fluent."""
 import collections.abc
+from functools import wraps
 from typing import Any, List
 
 import grpc
@@ -12,7 +13,9 @@ from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInt
 
 class _SettingsServiceImpl:
     def __init__(self, channel: grpc.Channel, metadata):
-        intercept_channel = grpc.intercept_channel(channel, TracingInterceptor(), BatchInterceptor())
+        intercept_channel = grpc.intercept_channel(
+            channel, TracingInterceptor(), BatchInterceptor()
+        )
         self.__stub = SettingsGrpcModule.SettingsStub(intercept_channel)
         self.__metadata = metadata
 
@@ -74,6 +77,7 @@ _indent = 0
 
 
 def _trace(fn):
+    @wraps(fn)
     def _fn(self, *args, **kwds):
         global _indent
         if trace:
@@ -101,8 +105,10 @@ def _get_request_instance_for_path(request_class, path):
 class SettingsService:
     """Service for accessing and modifying Fluent settings."""
 
-    def __init__(self, channel, metadata):
-        self.__service_impl = _SettingsServiceImpl(channel, metadata)
+    def __init__(self, channel, metadata, scheme_eval):
+        """__init__ method of SettingsService class."""
+        self._service_impl = _SettingsServiceImpl(channel, metadata)
+        self._scheme_eval = scheme_eval
 
     @_trace
     def _set_state_from_value(self, state, value):
@@ -150,13 +156,13 @@ class SettingsService:
         """Set the value for the given path."""
         request = _get_request_instance_for_path(SettingsModule.SetVarRequest, path)
         self._set_state_from_value(request.value, value)
-        self.__service_impl.set_var(request)
+        self._service_impl.set_var(request)
 
     @_trace
     def get_var(self, path: str) -> Any:
         """Get the value for the given path."""
         request = _get_request_instance_for_path(SettingsModule.GetVarRequest, path)
-        response = self.__service_impl.get_var(request)
+        response = self._service_impl.get_var(request)
         return self._get_state_from_value(response.value)
 
     @_trace
@@ -166,7 +172,7 @@ class SettingsService:
         request.old_name = old
         request.new_name = new
 
-        self.__service_impl.rename(request)
+        self._service_impl.rename(request)
 
     @_trace
     def create(self, path: str, name: str):
@@ -174,7 +180,7 @@ class SettingsService:
         request = _get_request_instance_for_path(SettingsModule.CreateRequest, path)
         request.name = name
 
-        self.__service_impl.create(request)
+        self._service_impl.create(request)
 
     @_trace
     def delete(self, path: str, name: str):
@@ -182,7 +188,7 @@ class SettingsService:
         request = _get_request_instance_for_path(SettingsModule.DeleteRequest, path)
         request.name = name
 
-        self.__service_impl.delete(request)
+        self._service_impl.delete(request)
 
     @_trace
     def get_object_names(self, path: str) -> List[int]:
@@ -190,7 +196,7 @@ class SettingsService:
         request = _get_request_instance_for_path(
             SettingsModule.GetObjectNamesRequest, path
         )
-        return self.__service_impl.get_object_names(request).names
+        return self._service_impl.get_object_names(request).names
 
     @_trace
     def get_list_size(self, path: str) -> int:
@@ -198,7 +204,7 @@ class SettingsService:
         request = _get_request_instance_for_path(
             SettingsModule.GetListSizeRequest, path
         )
-        return self.__service_impl.get_list_size(request).size
+        return self._service_impl.get_list_size(request).size
 
     @_trace
     def resize_list_object(self, path: str, size: int):
@@ -207,7 +213,7 @@ class SettingsService:
             SettingsModule.ResizeListObjectRequest, path
         )
         request.size = size
-        return self.__service_impl.resize_list_object(request)
+        return self._service_impl.resize_list_object(request)
 
     @_trace
     def _extract_static_info(self, info):
@@ -262,9 +268,10 @@ class SettingsService:
 
     @_trace
     def get_static_info(self):
+        """Get static-info for settings."""
         request = SettingsModule.GetStaticInfoRequest()
         request.root = "fluent"
-        response = self.__service_impl.get_static_info(request)
+        response = self._service_impl.get_static_info(request)
         # The rpc calls no longer raise an exception. Force an exception if
         # type is empty
         if not response.info.type:
@@ -280,7 +287,7 @@ class SettingsService:
         request.command = command
         self._set_state_from_value(request.args, kwds)
 
-        response = self.__service_impl.execute_cmd(request)
+        response = self._service_impl.execute_cmd(request)
         return self._get_state_from_value(response.reply)
 
     @_trace
@@ -292,7 +299,7 @@ class SettingsService:
         request.query = query
         self._set_state_from_value(request.args, kwds)
 
-        response = self.__service_impl.execute_query(request)
+        response = self._service_impl.execute_query(request)
         return self._get_state_from_value(response.reply)
 
     @_trace
@@ -320,8 +327,7 @@ class SettingsService:
             }
         if response.queries:
             ret["queries"] = {
-                child.name: self._parse_attrs(child.value)
-                for child in response.queries
+                child.name: self._parse_attrs(child.value) for child in response.queries
             }
         if response.arguments:
             ret["arguments"] = {
@@ -337,7 +343,12 @@ class SettingsService:
         request.attrs[:] = attrs
         request.recursive = recursive
 
-        response = self.__service_impl.get_attrs(request)
+        response = self._service_impl.get_attrs(request)
         if recursive:
             return self._parse_attrs(response)
         return self._get_state_from_value(response.values)
+
+    @_trace
+    def has_wildcard(self, name: str) -> bool:
+        """Checks whether a name has a wildcard pattern."""
+        return self._scheme_eval.scheme_eval(f'(has-wild-card? "{name}")')

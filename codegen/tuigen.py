@@ -94,7 +94,9 @@ def _copy_tui_help_xml_file(version: str):
         subprocess.run(f"docker container rm {container_name}", shell=is_linux)
 
     else:
-        ansys_version = get_ansys_version()  # picking up the file from the latest install location
+        ansys_version = (
+            get_ansys_version()
+        )  # picking up the file from the latest install location
         awp_root = os.environ["AWP_ROOT" + "".join(str(ansys_version).split("."))[:-1]]
         xml_source = (
             Path(awp_root)
@@ -262,18 +264,19 @@ class TUIGenerator:
             if desc:
                 f.write(desc)
             f.write("\n")
-            f.write(f".. currentmodule:: {self._tui_module}\n\n")
-            f.write(".. autosummary::\n")
-            f.write("   :toctree: _autosummary\n\n")
 
             command_names = [v.name for _, v in menu.children.items() if v.is_command]
             child_menu_names = [
                 v.name for _, v in menu.children.items() if not v.is_command
             ]
 
-            f.write(f".. autoclass:: {self._tui_module}::{class_name}\n")
-            if command_names:
-                f.write(f"   :members: {', '.join(command_names)}\n\n")
+            f.write(f".. autoclass:: {self._tui_module}.{class_name}\n")
+            f.write("   :members:\n")
+            f.write("   :show-inheritance:\n")
+            f.write("   :undoc-members:\n")
+            f.write('   :exclude-members: "__weakref__, __dict__"\n')
+            f.write('   :special-members: " __init__"\n')
+            f.write("   :autosummary:\n\n")
 
             if child_menu_names:
                 f.write(".. toctree::\n")

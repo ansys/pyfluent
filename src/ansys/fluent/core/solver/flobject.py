@@ -25,6 +25,7 @@ import sys
 from typing import Any, Dict, Generic, List, NewType, Tuple, TypeVar, Union
 import weakref
 
+from .error_message import allowed_name_error_message, allowed_values_error
 from .logging import LOG
 
 # Type hints
@@ -157,7 +158,9 @@ class Base:
                 attr_type_or_types = (attr_type_or_types,)
             if isinstance(val, attr_type_or_types):
                 return val
-            if val is not None and any(issubclass(x, bool) for x in attr_type_or_types):  # cast to bool for boolean attributes
+            if val is not None and any(
+                issubclass(x, bool) for x in attr_type_or_types
+            ):  # cast to bool for boolean attributes
                 return bool(val)
             return None
         return val
@@ -450,14 +453,120 @@ class Group(SettingsBase[DictStateType]):
                 ret.append(query)
         return ret
 
+    def _get_parent_of_active_child_names(self, name):
+        parents = ""
+        for parent in self.get_active_child_names():
+            try:
+                if hasattr(getattr(self, parent), str(name)):
+                    if len(parents) != 0:
+                        parents += "." + parent
+                    else:
+                        parents += parent
+            except AttributeError:
+                pass
+        if len(parents):
+            print(f"\n {name} is a child of {parents} \n")
+            return f"\n {name} is a child of {parents} \n"
+
     def __getattribute__(self, name):
         if name in super().__getattribute__("child_names"):
-            if not self.is_active():
+            if self.is_active() is False:
                 raise RuntimeError(f"'{self.path}' is currently not active")
-        return super().__getattribute__(name)
+        try:
+            return super().__getattribute__(name)
+        except AttributeError as ex:
+            self._get_parent_of_active_child_names(name)
+            raise AttributeError(
+                allowed_name_error_message(
+                    "Settings objects", name, super().__getattribute__("child_names")
+                )
+            ) from ex
 
     def __setattr__(self, name: str, value):
-        return getattr(self, name).set_state(value)
+        attr = None
+        try:
+            attr = getattr(self, name)
+        except BaseException as ex:
+            raise AttributeError(
+                allowed_name_error_message(
+                    "Settings objects", name, super().__getattribute__("child_names")
+                )
+            ) from ex
+        try:
+            return attr.set_state(value)
+        except BaseException as ex:
+            allowed = attr.allowed_values()
+            if allowed and value not in allowed:
+                raise allowed_values_error(name, value, allowed) from ex
+
+
+class WildcardPath(Group):
+    """Class wrapping a wildcard path to perform get_var and set_var on
+    flproxy."""
+
+    def __init__(self, flproxy, path: str, state_cls, settings_cls):
+        """__init__ of WildcardPath class."""
+        self._setattr("_flproxy", flproxy)
+        self._setattr("_path", path)
+        # _state_cls is the settings class at which the state is constructed.
+        # _state_cls isn't changed after the first wildcard, i.e.
+        # a.b["*"], a.b["*"].c, a.b["*"].c.d["*"] have the same _state_cls.
+        # It is used to convert between python and scheme keys within the state.
+        self._setattr("_state_cls", state_cls)
+        # _settings_cls is the settings cls at the wildcard path level. It is used to
+        # construct the scheme path for children.
+        self._setattr("_settings_cls", settings_cls)
+
+    @property
+    def flproxy(self):
+        """Proxy object."""
+        return self._flproxy
+
+    @property
+    def path(self):
+        """Path with wildcards."""
+        return self._path
+
+    def __getattr__(self, name: str):
+        if hasattr(self._settings_cls, name):
+            child_settings_cls = getattr(self._settings_cls, name)
+            scheme_name = child_settings_cls.fluent_name
+            wildcard_cls = (
+                NamedObjectWildcardPath
+                if issubclass(child_settings_cls, NamedObject)
+                else WildcardPath
+            )
+            return wildcard_cls(
+                self.flproxy,
+                self.path + "/" + scheme_name,
+                self._state_cls,
+                child_settings_cls,
+            )
+        raise AttributeError(name)
+
+    def to_scheme_keys(self, value):
+        """Convert value to have keys with scheme names."""
+        return self._state_cls.to_scheme_keys(value)
+
+    def to_python_keys(self, value):
+        """Convert value to have keys with Python names."""
+        return self._state_cls.to_python_keys(value)
+
+
+class NamedObjectWildcardPath(WildcardPath):
+    """WildcardPath at a NamedObject path, so it can be looked up by wildcard
+    again."""
+
+    def __getitem__(self, name: str):
+        return WildcardPath(
+            self.flproxy,
+            self.path + "/" + name,
+            self._state_cls,
+            self._settings_cls.child_object_type,
+        )
+
+    def __setitem__(self, name, value):
+        self[name].set_state(value)
 
 
 ChildTypeT = TypeVar("ChildTypeT")
@@ -585,7 +694,17 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
 
     def __getitem__(self, name: str) -> ChildTypeT:
         if name not in self.get_object_names():
-            raise KeyError(name)
+            if self.flproxy.has_wildcard(name):
+                child_cls = self.__class__.child_object_type
+                return WildcardPath(
+                    self.flproxy, self.path + "/" + name, self.__class__, child_cls
+                )
+            raise KeyError(
+                allowed_name_error_message(
+                    "Settings objects", name, self.get_object_names()
+                )
+            )
+
         obj = self._objects.get(name)
         if not obj:
             obj = self._create_child_object(name)

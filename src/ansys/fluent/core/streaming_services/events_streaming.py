@@ -25,6 +25,7 @@ class EventsManager(StreamingService):
     """
 
     def __init__(self, session_id: str, service):
+        """__init__ method of EventsManager class."""
         super().__init__(
             target=EventsManager._process_streaming,
             streaming_service=service,
