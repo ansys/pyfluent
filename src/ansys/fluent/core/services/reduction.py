@@ -13,25 +13,17 @@ Path = List[Tuple[str, str]]
 
 
 class ReductionService:
-    """Wraps the StateEngine-based datamodel gRPC service of Fluent.
-
-    Using the methods from the ``PyMenu`` class is recommended.
+    """
+    Reduction Service.
     """
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
-        """__init__ method of DatamodelService class."""
+        """__init__ method of Reduction class."""
         intercept_channel = grpc.intercept_channel(
             channel, TracingInterceptor(), BatchInterceptor()
         )
         self._stub = ReductionGrpcModule.ReductionQueriesStub(intercept_channel)
         self._metadata = metadata
-        super().__init__(
-            stub=self._stub,
-            request=ReductionProtoModule.AreaRequest(),
-            metadata=metadata,
-        )
-        self.event_streaming = None
-        self.events = {}
 
     @catch_grpc_error
     def area(
@@ -165,149 +157,145 @@ class Reduction:
     Reduction.
     """
 
-    def __init__(
-        self, service: ReductionService, locations: str, expression: str = None
-    ):
+    def __init__(self, service: ReductionService):
         """__init__ method of Reduction class."""
         self.service = service
-        self.locations = locations
-        self.expression = expression
 
     docstring = None
 
-    def area(self) -> Any:
+    def area(self, locations) -> Any:
         """Get area."""
         request = ReductionProtoModule.AreaRequest()
-        request.locations.append(self.locations)
+        request.locations.extend(locations)
         response = self.service.area(request)
         return response.value
 
-    def area_average(self) -> Any:
-        """Get area average."""
-        request = ReductionProtoModule.AreaAveRequest()
-        request.expression = self.expression
-        request.locations.append(self.locations)
-        response = self.service.area_average(request)
-        return response.value
-
-    def area_integral(self) -> Any:
-        """Get area integral."""
-        request = ReductionProtoModule.AreaIntRequest()
-        request.expression = self.expression
-        request.locations.append(self.locations)
-        response = self.service.area_integral(request)
-        return response.value
-
-    def centroid(self) -> Any:
-        """Get centroid."""
-        request = ReductionProtoModule.CentroidRequest()
-        request.locations.append(self.locations)
-        response = self.service.centroid(request)
-        return response.value
-
-    def count(self) -> Any:
-        """Get count."""
-        request = ReductionProtoModule.CountRequest()
-        request.locations.append(self.locations)
-        response = self.service.count(request)
-        return response.value
-
-    def force(self) -> Any:
-        """Get force."""
-        request = ReductionProtoModule.ForceRequest()
-        request.locations.append(self.locations)
-        response = self.service.force(request)
-        return response.value
-
-    def mass_average(self) -> Any:
-        """Get mass average."""
-        request = ReductionProtoModule.MassAveRequest()
-        request.expression = self.expression
-        request.locations.append(self.locations)
-        response = self.service.mass_average(request)
-        return response.value
-
-    def mass_flow_average(self) -> Any:
-        """Get mass flow average."""
-        request = ReductionProtoModule.MassFlowAveRequest()
-        request.expression = self.expression
-        request.locations.append(self.locations)
-        response = self.service.mass_flow_average(request)
-        return response.value
-
-    def mass_flow_average_absolute(self) -> Any:
-        """Get absolute mass flow average."""
-        request = ReductionProtoModule.MassFlowAveAbsRequest()
-        request.expression = self.expression
-        request.locations.append(self.locations)
-        response = self.service.mass_flow_average_absolute(request)
-        return response.value
-
-    def mass_flow_integral(self) -> Any:
-        """Get mass flow integral."""
-        request = ReductionProtoModule.MassFlowIntRequest()
-        request.expression = self.expression
-        request.locations.append(self.locations)
-        response = self.service.mass_flow_integral(request)
-        return response.value
-
-    def mass_integral(self) -> Any:
-        """Get mass integral."""
-        request = ReductionProtoModule.MassIntRequest()
-        request.expression = self.expression
-        request.locations.append(self.locations)
-        response = self.service.mass_integral(request)
-        return response.value
-
-    def maximum(self) -> Any:
-        """Get maximum."""
-        request = ReductionProtoModule.MaximumRequest()
-        request.expression = self.expression
-        request.locations.append(self.locations)
-        response = self.service.maximum(request)
-        return response.value
-
-    def minimum(self) -> Any:
-        """Get minimum."""
-        request = ReductionProtoModule.MinimumRequest()
-        request.expression = self.expression
-        request.locations.append(self.locations)
-        response = self.service.minimum(request)
-        return response.value
-
-    def pressure_force(self) -> Any:
-        """Get pressure force."""
-        request = ReductionProtoModule.PressureForceRequest()
-        request.locations.append(self.locations)
-        response = self.service.pressure_force(request)
-        return response.value
-
-    def viscous_force(self) -> Any:
-        """Get viscous force."""
-        request = ReductionProtoModule.ViscousForceRequest()
-        request.locations.append(self.locations)
-        response = self.service.viscous_force(request)
-        return response.value
-
-    def volume(self) -> Any:
-        """Get volume."""
-        request = ReductionProtoModule.VolumeRequest()
-        request.locations.append(self.locations)
-        response = self.service.volume(request)
-        return response.value
-
-    def volume_average(self) -> Any:
-        """Get volume average."""
-        request = ReductionProtoModule.VolumeAveRequest()
-        request.expression = self.expression
-        request.locations.append(self.locations)
-        response = self.service.volume_average(request)
-        return response.value
-
-    def volume_integral(self) -> Any:
-        """Get volume integral."""
-        request = ReductionProtoModule.VolumeIntRequest()
-        request.expression = self.expression
-        request.locations.append(self.locations)
-        response = self.service.volume_integral(request)
-        return response.value
+    # def area_average(self) -> Any:
+    #     """Get area average."""
+    #     request = ReductionProtoModule.AreaAveRequest()
+    #     request.expression = self.expression
+    #     request.locations.append(self.locations)
+    #     response = self.service.area_average(request)
+    #     return response.value
+    #
+    # def area_integral(self) -> Any:
+    #     """Get area integral."""
+    #     request = ReductionProtoModule.AreaIntRequest()
+    #     request.expression = self.expression
+    #     request.locations.append(self.locations)
+    #     response = self.service.area_integral(request)
+    #     return response.value
+    #
+    # def centroid(self) -> Any:
+    #     """Get centroid."""
+    #     request = ReductionProtoModule.CentroidRequest()
+    #     request.locations.append(self.locations)
+    #     response = self.service.centroid(request)
+    #     return response.value
+    #
+    # def count(self) -> Any:
+    #     """Get count."""
+    #     request = ReductionProtoModule.CountRequest()
+    #     request.locations.append(self.locations)
+    #     response = self.service.count(request)
+    #     return response.value
+    #
+    # def force(self) -> Any:
+    #     """Get force."""
+    #     request = ReductionProtoModule.ForceRequest()
+    #     request.locations.append(self.locations)
+    #     response = self.service.force(request)
+    #     return response.value
+    #
+    # def mass_average(self) -> Any:
+    #     """Get mass average."""
+    #     request = ReductionProtoModule.MassAveRequest()
+    #     request.expression = self.expression
+    #     request.locations.append(self.locations)
+    #     response = self.service.mass_average(request)
+    #     return response.value
+    #
+    # def mass_flow_average(self) -> Any:
+    #     """Get mass flow average."""
+    #     request = ReductionProtoModule.MassFlowAveRequest()
+    #     request.expression = self.expression
+    #     request.locations.append(self.locations)
+    #     response = self.service.mass_flow_average(request)
+    #     return response.value
+    #
+    # def mass_flow_average_absolute(self) -> Any:
+    #     """Get absolute mass flow average."""
+    #     request = ReductionProtoModule.MassFlowAveAbsRequest()
+    #     request.expression = self.expression
+    #     request.locations.append(self.locations)
+    #     response = self.service.mass_flow_average_absolute(request)
+    #     return response.value
+    #
+    # def mass_flow_integral(self) -> Any:
+    #     """Get mass flow integral."""
+    #     request = ReductionProtoModule.MassFlowIntRequest()
+    #     request.expression = self.expression
+    #     request.locations.append(self.locations)
+    #     response = self.service.mass_flow_integral(request)
+    #     return response.value
+    #
+    # def mass_integral(self) -> Any:
+    #     """Get mass integral."""
+    #     request = ReductionProtoModule.MassIntRequest()
+    #     request.expression = self.expression
+    #     request.locations.append(self.locations)
+    #     response = self.service.mass_integral(request)
+    #     return response.value
+    #
+    # def maximum(self) -> Any:
+    #     """Get maximum."""
+    #     request = ReductionProtoModule.MaximumRequest()
+    #     request.expression = self.expression
+    #     request.locations.append(self.locations)
+    #     response = self.service.maximum(request)
+    #     return response.value
+    #
+    # def minimum(self) -> Any:
+    #     """Get minimum."""
+    #     request = ReductionProtoModule.MinimumRequest()
+    #     request.expression = self.expression
+    #     request.locations.append(self.locations)
+    #     response = self.service.minimum(request)
+    #     return response.value
+    #
+    # def pressure_force(self) -> Any:
+    #     """Get pressure force."""
+    #     request = ReductionProtoModule.PressureForceRequest()
+    #     request.locations.append(self.locations)
+    #     response = self.service.pressure_force(request)
+    #     return response.value
+    #
+    # def viscous_force(self) -> Any:
+    #     """Get viscous force."""
+    #     request = ReductionProtoModule.ViscousForceRequest()
+    #     request.locations.append(self.locations)
+    #     response = self.service.viscous_force(request)
+    #     return response.value
+    #
+    # def volume(self) -> Any:
+    #     """Get volume."""
+    #     request = ReductionProtoModule.VolumeRequest()
+    #     request.locations.append(self.locations)
+    #     response = self.service.volume(request)
+    #     return response.value
+    #
+    # def volume_average(self) -> Any:
+    #     """Get volume average."""
+    #     request = ReductionProtoModule.VolumeAveRequest()
+    #     request.expression = self.expression
+    #     request.locations.append(self.locations)
+    #     response = self.service.volume_average(request)
+    #     return response.value
+    #
+    # def volume_integral(self) -> Any:
+    #     """Get volume integral."""
+    #     request = ReductionProtoModule.VolumeIntRequest()
+    #     request.expression = self.expression
+    #     request.locations.append(self.locations)
+    #     response = self.service.volume_integral(request)
+    #     return response.value
