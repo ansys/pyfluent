@@ -11,10 +11,10 @@ def transcript(data):
 
 
 def run_transcript(i, ip, port, password):
-    solver_session = Solver(_FluentConnection(ip=ip, port=port, password=password, cleanup_on_exit=False))
-    solver_session.transcript.register_callback(
-        transcript
+    solver_session = Solver(
+        _FluentConnection(ip=ip, port=port, password=password, cleanup_on_exit=False)
     )
+    solver_session.transcript.register_callback(transcript)
 
     transcript_counter = [0, 0]
 
@@ -30,9 +30,9 @@ def run_transcript(i, ip, port, password):
         solver_session.exit()
         if check_transcript:
             if not transcript.data:
-                print(i, 'transcript failed.', transcript.data)
+                print(i, "transcript failed.", transcript.data)
             else:
-                print(i, 'transcript passed:', transcript.data)
+                print(i, "transcript passed:", transcript.data)
                 transcript_counter[1] += 1
         transcript("")
 
