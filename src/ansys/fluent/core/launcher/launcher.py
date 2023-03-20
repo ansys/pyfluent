@@ -36,7 +36,7 @@ def _is_windows():
 
 
 class FluentVersion(Enum):
-    """An enumeration of supported Fluent versions."""
+    """An enumeration over supported Fluent versions."""
 
     version_23R2 = "23.2.0"
     version_23R1 = "23.1.0"
@@ -108,19 +108,19 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
     return get_exe_path(get_fluent_root(FluentVersion(ansys_version)))
 
 
-class LaunchModes(Enum):
-    """Provides the standard Fluent launch modes."""
+class LaunchMode(Enum):
+    """An enumeration over supported launch modes."""
 
-    # Tuple:   Name, Solver object type, Meshing flag, Launcher options
+    # Tuple: Name, Solver object type, Meshing flag, Launcher options
     MESHING_MODE = ("meshing", Meshing, True, [])
     PURE_MESHING_MODE = ("pure-meshing", PureMeshing, True, [])
     SOLVER = ("solver", Solver, False, [])
     SOLVER_ICING = ("solver-icing", SolverIcing, False, [("fluent_icing", True)])
 
     @staticmethod
-    def get_mode(mode: str) -> "LaunchModes":
-        """Returns the LaunchMode based on the mode in string format."""
-        for m in LaunchModes:
+    def get_mode(mode: str):
+        """Returns the LaunchMode based on the provided mode string."""
+        for m in LaunchMode:
             if mode == m.value[0]:
                 return m
         else:
@@ -282,13 +282,13 @@ def launch_remote_fluent(
     )
 
 
-def _get_session_info(argvals, mode: Union[LaunchModes, str, None] = None):
+def _get_session_info(argvals, mode: Union[LaunchMode, str, None] = None):
     """Updates the session information."""
     if mode is None:
-        mode = LaunchModes.SOLVER
+        mode = LaunchMode.SOLVER
 
     if isinstance(mode, str):
-        mode = LaunchModes.get_mode(mode)
+        mode = LaunchMode.get_mode(mode)
     new_session = mode.value[1]
     meshing_mode = mode.value[2]
     for k, v in mode.value[3]:
@@ -361,7 +361,7 @@ def _connect_to_running_server(argvals, server_info_filepath: str):
 
 
 def _get_running_session_mode(
-    fluent_connection: _FluentConnection, mode: LaunchModes = None
+    fluent_connection: _FluentConnection, mode: LaunchMode = None
 ):
     """Get the mode of the running session if the mode has not been mentioned
     explicitly."""
@@ -369,7 +369,7 @@ def _get_running_session_mode(
         session_mode = mode
     else:
         try:
-            session_mode = LaunchModes.get_mode(
+            session_mode = LaunchMode.get_mode(
                 fluent_connection.get_current_fluent_mode()
             )
         except BaseException:
@@ -450,7 +450,7 @@ def launch_fluent(
     case_filepath: str = None,
     case_data_filepath: str = None,
     lightweight_mode: bool = False,
-    mode: Union[LaunchModes, str, None] = None,
+    mode: Union[LaunchMode, str, None] = None,
     server_info_filepath: str = None,
     password: str = None,
     py: bool = None,
@@ -586,7 +586,7 @@ def launch_fluent(
             sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
             if env is None:
                 env = {}
-            if mode != LaunchModes.SOLVER_ICING:
+            if mode != LaunchMode.SOLVER_ICING:
                 env["APP_LAUNCHED_FROM_CLIENT"] = "1"  # disables flserver datamodel
             kwargs = _get_subprocess_kwargs_for_fluent(env)
             if cwd:
