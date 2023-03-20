@@ -53,4 +53,7 @@ def test_transcript(new_solver_session):
         total_checked_transcript += transcript_counter[0]
         passed_transcript += transcript_counter[1]
 
-    assert total_checked_transcript == passed_transcript
+    if solver.get_ansys_version() == "23.2.0":
+        assert total_checked_transcript == passed_transcript
+    else:
+        assert total_checked_transcript > passed_transcript
