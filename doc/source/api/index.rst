@@ -8,11 +8,14 @@ solver components of Fluent.
 General
 #######
 
-The :ref:`ref_general` component describes starting of Fluent and it's asynchronous execution, types of various
-Fluent sessions, use of gRPC and streaming services, creation of visualization objects for Matplotlib and abstract
-machine object for queue system interface, contains examples to read and transfer Fluent's case files in addition
-to this it contains information about used meta classes, rpvars, workflow objects, recording journals and module for
-creation of  physical quantities using real values and units.
+Features of PyFluent not specifically belonging to either the Meshing or Solver modes are collected together in the
+:ref:`ref_general` section. That includes instructions on how to launch and connect to Fluent, and the various types of
+PyFluent session objects, which connect to Fluent sessions, are documented. Fundamental gRPC services, including
+streaming services, upon which PyFluent depends -- and a re directly usable -- are outlined. Other features include a
+Scheduler module for facilitating use of external job scheduling systems, a purely Python-based reader for Fluent
+project and case files, Python-based journaling, task-based workflow objects, full Pythonic access to Fluent rp-vars,
+powerful quantity objects that expose real values and units of API (and other) objects, visualization objects for
+interfacing to Matplotlib and PyVista, and tools for asynchronous and batched command execution.
 
 Meshing
 #######
