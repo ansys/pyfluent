@@ -53,7 +53,4 @@ def test_transcript(new_solver_session):
         total_checked_transcript += transcript_counter[0]
         passed_transcript += transcript_counter[1]
 
-    # TODO: Ideally this should be equal.
-    #  This check can be updated later after the server side fix is in place
-    #  (this test will start failing then).
-    assert total_checked_transcript > passed_transcript
+    assert total_checked_transcript == passed_transcript
