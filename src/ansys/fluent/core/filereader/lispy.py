@@ -100,7 +100,6 @@ def readchar(in_port):
 
 def read(in_port):
     """Read a Scheme expression from an input port."""
-
     def read_ahead(token):
         if "(" == token:
             list_ = None

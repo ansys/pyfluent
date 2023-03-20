@@ -32,7 +32,6 @@ class Attribute:
 
 
 class Command:
-
     def __init__(self, method):
         self.arguments_attrs = {}
         cmd_args = inspect.signature(method).parameters
@@ -237,7 +236,7 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
                             name,
                             cls(self, api_helper),
                         )
-                    if cls.__class__.__name__ == "PyLocalNamedObjectMeta":
+                    if cls.__class__.__name__ == "PyLocalNamedObjectMeta"  or cls.__class__.__name__ == "PyLocalNamedObjectMetaAbstract" :
                         setattr(
                             self,
                             cls.PLURAL,
@@ -369,7 +368,7 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
                             name,
                             cls(self, api_helper),
                         )
-                    if cls.__class__.__name__ == "PyLocalNamedObjectMeta":
+                    elif cls.__class__.__name__ == "PyLocalNamedObjectMeta" or cls.__class__.__name__ == "PyLocalNamedObjectMetaAbstract" :
                         setattr(
                             self,
                             cls.PLURAL,
@@ -449,6 +448,7 @@ class PyLocalContainer(MutableMapping):
     def Create(self, name = None):
         if not name:
             name = self._get_unique_chid_name()
+
         new_object =  self.__getitem__(name)
         return new_object._name
 

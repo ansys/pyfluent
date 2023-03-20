@@ -7,7 +7,6 @@ from ansys.fluent.core.filereader.casereader import CaseReader
 
 
 def test_get_and_set_rp_vars(new_solver_session_no_transcript) -> None:
-
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver = new_solver_session_no_transcript
     solver.file.read(file_type="case", file_name=case_path)
@@ -35,7 +34,6 @@ def test_get_and_set_rp_vars(new_solver_session_no_transcript) -> None:
 
 @pytest.mark.fluent_231
 def test_get_all_rp_vars(new_solver_session_no_transcript) -> None:
-
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver = new_solver_session_no_transcript
     solver.file.read(file_type="case", file_name=case_path)
@@ -56,3 +54,22 @@ def test_get_all_rp_vars(new_solver_session_no_transcript) -> None:
     case = CaseReader(case_filepath=case_path)
     case_vars = case.rp_vars()
     assert len(case_vars) == pytest.approx(9000, 450)
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_232
+def test_rp_vars_allowed_values(new_solver_session_no_transcript) -> None:
+    solver = new_solver_session_no_transcript
+    rp_vars = solver.rp_vars
+
+    assert rp_vars("number-of-iterations") == 0
+
+    with pytest.raises(RuntimeError) as msg:
+        rp_vars("number-of-iterat")
+
+    assert msg.value.args[0] == "number-of-iterat is not an allowed rp-vars name.\n" \
+                                "The most similar names are: number-of-iterations, " \
+                                "number-of-time-steps, lb/number-of-timesteps, " \
+                                "number-of-samples, gpuapp/total-number-of-subiterations."
+
+    assert "number-of-iterations" in rp_vars.allowed_values()

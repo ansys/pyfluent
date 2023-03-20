@@ -1,6 +1,9 @@
 """Module containing class encapsulating Fluent connection."""
 
+from asyncio import Future
+import functools
 import importlib
+import threading
 
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
@@ -12,6 +15,7 @@ from ansys.fluent.core.session import (
 )
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
+from ansys.fluent.core.utils.async_execution import asynchronous
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 from ansys.fluent.core.utils.logging import LOG
 from ansys.fluent.core.workflow import WorkflowWrapper
@@ -27,14 +31,23 @@ class Solver(_BaseSession):
         fluent_connection,
     ):
         super(Solver, self).__init__(fluent_connection=fluent_connection)
+        self._build_from_fluent_connection(fluent_connection)
+
+    def _build_from_fluent_connection(self, fluent_connection):
+        super(Solver, self).build_from_fluent_connection(fluent_connection)
         self._tui_service = self.fluent_connection.datamodel_service_tui
-        self._se_service = fluent_connection.datamodel_service_se
+        self._se_service = self.fluent_connection.datamodel_service_se
         self._settings_service = self.fluent_connection.settings_service
         self._tui = None
         self._workflow = None
         self._settings_root = None
         self._version = None
         self._solverworkflow = None
+        self._lck = threading.Lock()
+
+    def build_from_fluent_connection(self, fluent_connection):
+        super(Solver, self).build_from_fluent_connection(fluent_connection)
+        self._build_from_fluent_connection(fluent_connection)
 
     @property
     def version(self):
@@ -143,3 +156,32 @@ class Solver(_BaseSession):
         if self._solverworkflow is None:
             self._solverworkflow = _get_solverworkflow(self)
         return self._solverworkflow
+
+    def _sync_from_future(self, fut: Future):
+        with self._lck:
+            try:
+                fut_session = fut.result()
+            except Exception as ex:
+                raise RuntimeError("Unable to read mesh") from ex
+            state = self._root.get_state()
+            self.build_from_fluent_connection(fut_session.fluent_connection)
+            self._root.set_state(state)
+
+    def read_case(self, file_name: str):
+        """Read a case file using light IO mode if ``pyfluent.USE_LIGHT_IO`` is
+        set to ``True``.
+
+        Parameters
+        ----------
+        file_name : str
+            Case file name
+        """
+        import ansys.fluent.core as pyfluent
+        if pyfluent.USE_LIGHT_IO:
+            self.file.read(file_type="case", file_name=file_name, lightweight_setup=True)
+            launcher_args = dict(self.fluent_connection.launcher_args)
+            launcher_args["case_filepath"] = file_name
+            fut: Future = asynchronous(pyfluent.launch_fluent)(**launcher_args)
+            fut.add_done_callback(functools.partial(Solver._sync_from_future, self))
+        else:
+            self.file.read(file_type="case", file_name=file_name)

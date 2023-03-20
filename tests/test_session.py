@@ -16,7 +16,7 @@ from ansys.api.fluent.v0 import (
     scheme_eval_pb2_grpc,
 )
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import launch_fluent
+from ansys.fluent.core import examples, launch_fluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.session import _BaseSession
@@ -273,27 +273,26 @@ def test_get_fluent_mode(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
-def test_start_transcript_file_write(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH):
+def test_start_transcript_file_write(new_mesh_session):
     fd, file_path = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.txt",
         prefix="pyfluent-",
-        dir=str(tmp_path),
+        dir=str(pyfluent.EXAMPLES_PATH),
     )
     os.close(fd)
+
+    prev_stat = Path(file_path).stat()
+    prev_mtime = prev_stat.st_mtime
+    prev_size = prev_stat.st_size
 
     session = new_mesh_session
     session.transcript.start(file_path)
     session = session.switch_to_solver()
     session.transcript.stop()
 
-    with open(file_path) as f:
-        returned = f.readlines()
-
-    session.exit()
-
-    time.sleep(1)
-
-    assert returned
+    new_stat = Path(file_path).stat()
+    assert new_stat.st_mtime > prev_mtime
+    assert new_stat.st_size > prev_size
 
 
 @pytest.mark.fluent_231
@@ -302,3 +301,18 @@ def test_solverworkflow_in_solver_session(new_solver_session):
     solver_dir = dir(solver)
     for attr in ("preferences", "solverworkflow", "tui", "workflow"):
         assert attr in solver_dir
+
+@pytest.mark.dev
+@pytest.mark.fluent_232
+def test_read_case_using_light_io(new_solver_session):
+    import_filename = examples.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    )
+    pyfluent.USE_LIGHT_IO = True
+    new_solver_session.read_case(file_name=import_filename)
+    new_solver_session.setup.models.energy.enabled = False
+    old_fluent_connection_id = id(new_solver_session.fluent_connection)
+    while id(new_solver_session.fluent_connection) == old_fluent_connection_id:
+        time.sleep(1)
+    assert new_solver_session.setup.models.energy.enabled() == False
+    pyfluent.USE_LIGHT_IO = False
