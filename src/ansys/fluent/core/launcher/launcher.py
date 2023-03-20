@@ -36,7 +36,7 @@ def _is_windows():
 
 
 class FluentVersion(Enum):
-    """Contains the standard Ansys Fluent release."""
+    """An enumeration of supported Fluent versions."""
 
     version_23R2 = "23.2.0"
     version_23R1 = "23.1.0"
