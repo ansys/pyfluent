@@ -6,6 +6,7 @@ from typing import Dict, List, Tuple, Union
 import numpy as np
 import pandas as pd
 
+from ansys.api.fluent.v0 import monitor_pb2 as MonitorModule
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 
@@ -143,9 +144,10 @@ class MonitorsManager(StreamingService):
     def _prepare(self):
         self._update_dataframe()
 
-    def _process_streaming(self, started_evt):
+    def _process_streaming(self, started_evt, *args, **kwargs):
         """Begin monitors streaming."""
-        responses = self._streaming_service.begin_streaming(started_evt)
+        request = MonitorModule.StreamingRequest(*args, **kwargs)
+        responses = self._streaming_service.begin_streaming(request, started_evt)
 
         while True:
             try:

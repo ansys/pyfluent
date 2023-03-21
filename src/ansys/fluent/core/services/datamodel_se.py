@@ -69,7 +69,6 @@ class DatamodelService(StreamingService):
         self._metadata = metadata
         super().__init__(
             stub=self._stub,
-            request=DataModelProtoModule.EventRequest(),
             metadata=metadata,
         )
         self.event_streaming = None
@@ -167,11 +166,9 @@ class DatamodelService(StreamingService):
         """unsubscribeEvents rpc of DataModel service."""
         return self._stub.unsubscribeEvents(request, metadata=self._metadata)
 
-    def begin_event_streaming(self, started_evt):
+    def begin_event_streaming(self, request, started_evt):
         """Begin datamodel event streaming."""
-        self._streams = self._stub.BeginEventStreaming(
-            self.request, metadata=self._metadata
-        )
+        self._streams = self._stub.BeginEventStreaming(request, metadata=self._metadata)
         started_evt.set()
         while True:
             try:

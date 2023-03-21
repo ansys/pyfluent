@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 
+from ansys.api.fluent.v0 import transcript_pb2 as TranscriptModule
 from ansys.fluent.core.services.transcript import TranscriptService
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
@@ -62,10 +63,11 @@ class Transcript(StreamingService):
             self.unregister_callback(callback_id)
         super().stop()
 
-    def _process_streaming(self, started_evt):
+    def _process_streaming(self, started_evt, *args, **kwargs):
         """Performs processes on transcript depending on the callback
         functions."""
-        responses = self._streaming_service.begin_streaming(started_evt)
+        request = TranscriptModule.TranscriptRequest(*args, **kwargs)
+        responses = self._streaming_service.begin_streaming(request, started_evt)
         transcript = ""
         while True:
             try:
