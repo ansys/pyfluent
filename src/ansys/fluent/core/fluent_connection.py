@@ -30,6 +30,7 @@ from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
 
 # from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 from ansys.fluent.core.streaming_services.events_streaming import EventsManager
+from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
 
@@ -232,7 +233,9 @@ class FluentConnection:
         self.field_data = FieldData(
             self._field_data_service, self.field_info, _IsDataValid(self.scheme_eval)
         )
-
+        self.field_data_streaming = FieldDataStreaming(
+            self._id, self._field_data_service
+        )
         self.journal = Journal(self.scheme_eval)
 
         self._cleanup_on_exit = cleanup_on_exit

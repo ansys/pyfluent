@@ -9,7 +9,6 @@ from ansys.fluent.core.services.datamodel_se import (
     _convert_variant_to_value,
     convert_path_to_se_path,
 )
-from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 
@@ -187,15 +186,8 @@ def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
 def test_datamodel_streaming_full_diff_state(disable_datamodel_cache, new_mesh_session):
     meshing = new_mesh_session
     datamodel_service_se = meshing.datamodel_service_se
-    data_model_request = datamodel_se_pb2.DataModelRequest()
-    data_model_request.rules = "meshing"
-    datamodel_streaming = StreamingService(
-        stub=datamodel_service_se._stub,
-        request=data_model_request,
-        metadata=datamodel_service_se._metadata,
-    )
-    stream = DatamodelStream(datamodel_streaming)
-    stream.start()
+    stream = DatamodelStream(datamodel_service_se)
+    stream.start(rules="meshing", no_commands_diff_state=False)
 
     def cb(state, deleted_paths):
         if state:
@@ -222,16 +214,8 @@ def test_datamodel_streaming_no_commands_diff_state(
 ):
     meshing = new_mesh_session
     datamodel_service_se = meshing.datamodel_service_se
-    data_model_request = datamodel_se_pb2.DataModelRequest()
-    data_model_request.rules = "meshing"
-    data_model_request.diffstate = datamodel_se_pb2.DIFFSTATE_NOCOMMANDS
-    datamodel_streaming = StreamingService(
-        stub=datamodel_service_se._stub,
-        request=data_model_request,
-        metadata=datamodel_service_se._metadata,
-    )
-    stream = DatamodelStream(datamodel_streaming)
-    stream.start()
+    stream = DatamodelStream(datamodel_service_se)
+    stream.start(rules="meshing", no_commands_diff_state=True)
 
     def cb(state, deleted_paths):
         if state:

@@ -1,7 +1,7 @@
 import threading
 from typing import Callable
 
-from ansys.api.fluent.v0 import datamodel_se_pb2
+from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.fluent.core.services.datamodel_se import _convert_variant_to_value
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
@@ -14,6 +14,7 @@ class DatamodelEvents(StreamingService):
         super().__init__(
             target=DatamodelEvents._process_streaming,
             streaming_service=service,
+            stop_service=service.end_event_streaming,
         )
         self._cbs = {}
         service.event_streaming = self
@@ -29,12 +30,13 @@ class DatamodelEvents(StreamingService):
         with self._lock:
             self._cbs.pop(tag, None)
 
-    def _process_streaming(self, started_evt):
+    def _process_streaming(self, started_evt, *args, **kwargs):
         """Processes datamodel events."""
-        responses = self._streaming_service.begin_event_streaming(started_evt)
+        request = DataModelProtoModule.EventRequest(*args, **kwargs)
+        responses = self._streaming_service.begin_event_streaming(request, started_evt)
         while True:
             try:
-                response: datamodel_se_pb2.EventResponse = next(responses)
+                response: DataModelProtoModule.EventResponse = next(responses)
                 with self._lock:
                     self._streaming = True
                     for tag, cb in self._cbs.items():
