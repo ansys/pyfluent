@@ -528,9 +528,8 @@ def launch_fluent(
     case_data_filepath : str, optional
         If provided, the case and data files at ``case_data_filepath`` are read into the Fluent session.
     lightweight_mode: bool, optional
-        Whether to use light io mode for reading case via ``case_filepath`` parameter.
-        This parameter is used only when ``case_filepath`` is provided. The default is
-        ``False``.
+        Whether to read only the lightweight settings from any specified Fluent case file, ignoring the mesh.
+        This parameter is used only when ``case_filepath`` is provided. The default is ``False``.
     mode : str, optional
         Launch mode of Fluent to point to a specific session type.
         The default value is ``None``. Options are ``"meshing"``,
