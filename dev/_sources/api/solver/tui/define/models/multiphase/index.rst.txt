@@ -14,11 +14,10 @@ solver.tui.define.models.multiphase
 .. toctree::
    :hidden:
 
-   phases/index
-   wet_steam/index
-   hybrid_models/index
-   sub_models/index
-   population_balance/index
-   volume_fraction_parameters/index
    flow_regime_modeling/index
+   phases/index
+   population_balance/index
    explicit_expert_options/index
+   sub_models/index
+   hybrid_models/index
+   wet_steam/index

@@ -14,5 +14,5 @@ meshing.tui.preferences.navigation.mouse\_mapping
 .. toctree::
    :hidden:
 
-   additional/index
    basic/index
+   additional/index

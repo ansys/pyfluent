@@ -15,6 +15,6 @@ meshing.tui.file
    :hidden:
 
    checkpoint/index
+   export/index
    project/index
    import_/index
-   export/index

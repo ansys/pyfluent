@@ -15,5 +15,5 @@ solver.tui.define.mesh\_interfaces
    :hidden:
 
    non_conformal_interface_numerics/index
-   mapped_interface_options/index
    auto_options/index
+   mapped_interface_options/index

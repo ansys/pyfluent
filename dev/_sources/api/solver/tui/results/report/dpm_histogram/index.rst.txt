@@ -14,5 +14,5 @@ solver.tui.results.report.dpm\_histogram
 .. toctree::
    :hidden:
 
-   set/index
    setup_reduction/index
+   set/index

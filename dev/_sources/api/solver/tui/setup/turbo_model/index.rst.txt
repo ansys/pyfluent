@@ -14,6 +14,6 @@ solver.tui.setup.turbo\_model
 .. toctree::
    :hidden:
 
-   turbo_topology/index
    general_turbo_interface_settings/index
    blade_flutter_harmonics/index
+   turbo_topology/index

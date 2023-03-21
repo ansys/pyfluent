@@ -15,5 +15,5 @@ solver.tui.results.plot
    :hidden:
 
    ansys_sound_analysis/index
-   cumulative_plot/index
    flamelet_curves/index
+   cumulative_plot/index

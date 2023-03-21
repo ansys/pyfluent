@@ -14,5 +14,5 @@ meshing.tui.preferences.parametric\_study
 .. toctree::
    :hidden:
 
-   layout_options/index
    update_options/index
+   layout_options/index

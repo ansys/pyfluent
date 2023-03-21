@@ -12,5 +12,6 @@ solver.datamodel
    :hidden:
 
    workflow/index
+   flicing/index
    preferences/index
    solverworkflow/index

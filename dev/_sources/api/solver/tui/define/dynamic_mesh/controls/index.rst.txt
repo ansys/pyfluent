@@ -14,11 +14,11 @@ solver.tui.define.dynamic\_mesh.controls
 .. toctree::
    :hidden:
 
+   six_dof_parameters/index
    smoothing_parameters/index
    layering_parameters/index
-   remeshing_parameters/index
-   in_cylinder_parameters/index
-   implicit_update_parameters/index
-   six_dof_parameters/index
    periodic_displacement_parameters/index
    contact_parameters/index
+   implicit_update_parameters/index
+   in_cylinder_parameters/index
+   remeshing_parameters/index
