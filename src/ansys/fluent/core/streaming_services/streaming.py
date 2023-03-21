@@ -53,14 +53,14 @@ class StreamingService:
             if callback_id in self._service_callbacks:
                 del self._service_callbacks[callback_id]
 
-    def start(self) -> None:
+    def start(self, *args, **kwargs) -> None:
         """Start streaming of Fluent transcript."""
         with self._lock:
             if not self.is_streaming:
                 self._prepare()
                 started_evt = threading.Event()
                 self._stream_thread = threading.Thread(
-                    target=self._target, args=(self, started_evt)
+                    target=self._target, args=(self, started_evt, *args), kwargs=kwargs
                 )
                 self._stream_thread.start()
                 started_evt.wait()
@@ -72,6 +72,27 @@ class StreamingService:
             self._stream_thread.join()
             self._streaming = False
             self._stream_thread = None
+
+    def refresh(self, session_id, event_info) -> None:
+        """Refresh plots on-initialized and data-read events.
+
+        This method is registered with the EventsManager and is called
+        to refresh plots whenever on-initialized and data-read events occur.
+
+        Parameters
+        ----------
+        session_id : str
+            Name of the monitor set.
+        event_info : object
+            Event info object.
+
+        Returns
+        -------
+        None
+        """
+        with self._lock_refresh:
+            self.stop()
+            self.start()
 
     def _prepare(self):
         pass  # Currently only used by monitor services.
