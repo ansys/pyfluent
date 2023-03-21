@@ -543,8 +543,7 @@ def launch_fluent(
     password : str, optional
             Password to connect to existing Fluent instance.
     py : bool, optional
-        Passes ``"-py"`` as an additional_argument to launch fluent in python mode.
-        The default is ``None``.
+        If True, Fluent will run in Python mode. Default is None.
     cwd: str, Optional
         Path to specify current working directory to launch fluent from the defined directory as
         current working directory.
