@@ -5,22 +5,36 @@ from ansys.fluent.core.meta import PyLocalContainer
 
 
 class Container:
-    def __init__(
-        self, session, child, module, post_api_helper, local_surfaces_provider=None
-    ):
-        """Instantiate Plots, container of plot objects.
+    """
+    Base class for containers, e.g. Plots, Graphics.
 
-        Parameters
+    Parameters
         ----------
-        session :
+        session : object
             Session object.
+        container_type: object
+            Container type (e.g. Plots, Graphics)
+        module: object
+            Python module containing post definitions
+        post_api_helper: object
+            Provides helper APIs for post-processing
         local_surfaces_provider : object, optional
-            Object providing local surfaces.
-        """
-        session_state = child._sessions_state.get(session)
+            Object providing local surfaces so that user can access surfaces
+            created in other modules, such as PyVista. The default is ``None``.
+    """
+
+    def __init__(
+        self,
+        session,
+        container_type,
+        module,
+        post_api_helper,
+        local_surfaces_provider=None,
+    ):
+        session_state = container_type._sessions_state.get(session)
         if not session_state:
             session_state = self.__dict__
-            child._sessions_state[session] = session_state
+            container_type._sessions_state[session] = session_state
             self.session = session
             self._init_module(self, module, post_api_helper)
         else:
@@ -55,6 +69,10 @@ class Plots(Container):
         ----------
         session : obj
             Session object.
+        module: object
+            Python module containing post definitions
+        post_api_helper: object
+            Provides helper APIs for post-processing
         local_surfaces_provider : object, optional
             Object providing local surfaces so that you can access surfaces
             created in other modules, such as PyVista. The default is ``None``.
@@ -85,6 +103,10 @@ class Graphics(Container):
     ----------
     session : obj
         Session object.
+    module: object
+        Python module containing post definitions
+    post_api_helper: object
+        Provides helper APIs for post-processing
     local_surfaces_provider : object, optional
         Object providing local surfaces so that you can access surfaces
         created in other modules, such as PyVista. The default is ``None``.
