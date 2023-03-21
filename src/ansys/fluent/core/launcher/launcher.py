@@ -493,12 +493,11 @@ def launch_fluent(
         Mapping to modify environment variables in Fluent. The default
         is ``None``.
     start_instance : bool, optional
-        Whether to connect to an existing Fluent instance at a specified IP
-        address on a specified port. The default is ``None``, in which
-        case a local instance of Fluent is started. When ``False``, use
-        the next two parameters to specify the IP address and port. You
-        can also use the environment variable ``PYFLUENT_START_INSTANCE=<0 or 1>``
-        to set this parameter.
+        Whether to start a local Fluent instance. The default is None, which
+        indicates True. Otherwise, connect to an existing Fluent instance at a
+        specified IP address on a specified port, using the arguments `ip` and
+        `port`. You can also use the environment variable ``PYFLUENT_START_INSTANCE=<0 or 1>``
+        to set `start_instance` if you do not pass it as an argument.
     ip : str, optional
         IP address for connecting to an existing Fluent instance. This parameter
         is used only when ``start_instance`` is ``False``. Otherwise, the
