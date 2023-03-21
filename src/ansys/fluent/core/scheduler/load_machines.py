@@ -7,9 +7,9 @@ variables, respectively.
 """
 import csv
 import os
+from pathlib import Path
 import subprocess
 from typing import Dict, List
-from pathlib import Path
 
 from ansys.fluent.core.scheduler.machine_list import Machine, MachineList
 
