@@ -471,8 +471,8 @@ def launch_fluent(
         for 2023 R1). The default is ``None``, in which case the active version
         or latest installed version is used.
     version : str, optional
-        Dimensions for modeling. The default is ``None``, in which case ``"3d"``
-        is used. Options are ``"3d"`` and ``"2d"``.
+        Geometric dimensionality of the Fluent simulation. The default is ``None``,
+        in which case ``"3d"`` is used. Options are ``"3d"`` and ``"2d"``.
     precision : str, optional
         Floating point precision. The default is ``None``, in which case ``"double"``
         is used. Options are ``"double"`` and ``"single"``.
