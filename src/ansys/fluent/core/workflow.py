@@ -355,6 +355,9 @@ class _MakeReadOnly:
     def __init__(self, cmd):
         self._cmd = cmd
 
+    def is_read_only(self):
+        return True
+
     def __getattr__(self, attr):
         if attr in _MakeReadOnly._unwanted_attr:
             raise AttributeError("Command Arguments are read-only.")
