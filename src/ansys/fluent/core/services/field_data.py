@@ -50,6 +50,10 @@ class FieldDataService:
     @catch_grpc_error
     def get_fields(self, request):
         return self.__stub.GetFields(request, metadata=self.__metadata)
+        
+    @catch_grpc_error
+    def begin_fields_streaming(self, request):
+        return self.__stub.BeginFieldsStreaming(request, metadata=self.__metadata)        
 
 
 class FieldInfo:

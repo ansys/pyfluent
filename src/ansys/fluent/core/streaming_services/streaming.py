@@ -71,5 +71,26 @@ class StreamingService:
             self._streaming = False
             self._stream_thread = None
 
+    def refresh(self, session_id, event_info) -> None:
+        """Refresh plots on-initialized and data-read events.
+
+        This method is registered with the EventsManager and is called
+        to refresh plots whenever on-initialized and data-read events occur.
+
+        Parameters
+        ----------
+        session_id : str
+            Name of the monitor set.
+        event_info : object
+            Event info object.
+
+        Returns
+        -------
+        None
+        """
+        with self._lock_refresh:
+            self.stop()
+            self.start()
+            
     def _prepare(self):
         pass  # Currently only used by monitor services.
