@@ -548,7 +548,8 @@ def launch_fluent(
         Path to specify current working directory to launch fluent from the defined directory as
         current working directory.
     topy: str or list, optional
-        Automates scheme to python journal creation.
+        The string path to a Fluent journal file, or a list of such paths. Fluent will execute the
+        journal(s) and write the equivalent Python journal(s).
 
     Returns
     -------
