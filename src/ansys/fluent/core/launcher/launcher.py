@@ -61,7 +61,10 @@ class FluentVersion(Enum):
 
 
 def get_ansys_version() -> str:
-    """Get the latest ANSYS version from AWP_ROOT environment variables."""
+    """Return the version string corresponding to the most recent, available ANSYS
+    installation. The returned value is the string component of one of the members
+    of the FluentVersion class.
+    """
     for v in FluentVersion:
         if "AWP_ROOT" + "".join(str(v).split("."))[:-1] in os.environ:
             return str(v)
@@ -240,9 +243,9 @@ def launch_remote_fluent(
         Maximum allowable time in seconds for connecting to the Fluent
         server. The default is ``100``.
     product_version : str, optional
-        Version of Fluent to use in the three-digit format (such as ``"212"``
-        for 2021 R2). The default is ``None``, in which case the active version
-        or latest installed version is used.
+        Select an installed version of ANSYS. The string must match the
+        documented version format in the FluentVersion class. The default is
+        ``None``, in which case the newest installed version is used.
     cleanup_on_exit : bool, optional
         Whether to clean up and exit Fluent when Python exits or when garbage
         is collected for the Fluent Python instance. The default is ``True``.
