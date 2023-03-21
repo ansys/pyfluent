@@ -510,8 +510,8 @@ def launch_fluent(
         value.
     cleanup_on_exit : bool, optional
         Whether to shut down the connected Fluent session when PyFluent is
-        exited or the ``exit()`` method is called on the session instance.
-        The default is ``True``.
+        exited, or the ``exit()`` method is called on the session instance,
+        or if the session instance becomes unreferenced. The default is ``True``.
     start_transcript : bool, optional
         Whether to start streaming the Fluent transcript in the client. The
         default is ``True``. You can stop and start the streaming of the
