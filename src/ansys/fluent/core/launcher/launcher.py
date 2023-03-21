@@ -486,7 +486,9 @@ def launch_fluent(
         Maximum allowable time in seconds for connecting to the Fluent
         server. The default is ``100``.
     additional_arguments : str, optional
-        Additional arguments to send to Fluent. The default is ``""``.
+        Additional arguments to send to Fluent as a string in the same
+        format they are normally passed to Fluent on the command line.
+        The default is``""``.
     env : dict[str, str], optional
         Mapping to modify environment variables in Fluent. The default
         is ``None``.
