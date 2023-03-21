@@ -495,9 +495,9 @@ def launch_fluent(
     start_instance : bool, optional
         Whether to start a local Fluent instance. The default is None, which
         indicates True. Otherwise, connect to an existing Fluent instance at a
-        specified IP address on a specified port, using the arguments `ip` and
-        `port`. You can also use the environment variable ``PYFLUENT_START_INSTANCE=<0 or 1>``
-        to set `start_instance` if you do not pass it as an argument.
+        specified IP address on a specified port, using the arguments ``ip`` and
+        ``port``. You can also use the environment variable ``PYFLUENT_START_INSTANCE=<0 or 1>``
+        to set ``start_instance`` if you do not pass it as an argument.
     ip : str, optional
         IP address for connecting to an existing Fluent instance. This parameter
         is used only when ``start_instance`` is ``False``. Otherwise, the
@@ -515,23 +515,20 @@ def launch_fluent(
     start_transcript : bool, optional
         Whether to start streaming the Fluent transcript in the client. The
         default is ``True``. You can stop and start the streaming of the
-        Fluent transcript subsequently via the method calls, `start_transcript()`
-        and `stop_transcript()` on the session object.
+        Fluent transcript subsequently via the method calls, ``start_transcript()``
+        and ``stop_transcript()`` on the session object.
     show_gui : bool, optional
-        Whether to display the Fluent GUI when ``start_instance``
-        is set to ''True``. The default is ``None`` so that explicit
-        ``False`` settings can be detected. This is because you can use
-        also use the environment variable ``PYFLUENT_SHOW_SERVER_GUI=<0 or 1>``
-        to set this parameter. The ``show-gui`` parameter overrides the
-        PYFLUENT_SHOW_SERVER_GUI environment variable. For example, if
-        PYFLUENT_SHOW_SERVER_GUI is set to ``1`` and the ``show-gui``
-        parameter is set to ``False``, the GUI is hidden.
+        Whether to display the Fluent GUI, only when ``start_instance``
+        is set to ``True``. The default is ``None``, which does not
+        cause the GUI to be shown. If a value of ``False`` is
+        not explicitly provided, the GUI will also be shown if
+        the environment variable ``PYFLUENT_SHOW_SERVER_GUI`` is set to 1.
     case_filepath : str, optional
         If provided, reads a fluent case file and sets the required settings
-        in the fluent session
+        in the fluent session.
     case_data_filepath : str, optional
         If provided, reads a fluent case and data file and sets the required settings
-        in the fluent session
+        in the fluent session.
     lightweight_mode: bool, optional
         Whether to use light io mode for reading case via ``case_filepath`` parameter.
         This parameter is used only when ``case_filepath`` is provided. The default is
