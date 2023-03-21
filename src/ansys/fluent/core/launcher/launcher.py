@@ -524,11 +524,9 @@ def launch_fluent(
         not explicitly provided, the GUI will also be shown if
         the environment variable ``PYFLUENT_SHOW_SERVER_GUI`` is set to 1.
     case_filepath : str, optional
-        If provided, reads a fluent case file and sets the required settings
-        in the fluent session.
+        If provided, the case file at ``case_filepath`` is read into the Fluent session.
     case_data_filepath : str, optional
-        If provided, reads a fluent case and data file and sets the required settings
-        in the fluent session.
+        If provided, the case and data files at ``case_data_filepath`` are read into the Fluent session.
     lightweight_mode: bool, optional
         Whether to use light io mode for reading case via ``case_filepath`` parameter.
         This parameter is used only when ``case_filepath`` is provided. The default is
