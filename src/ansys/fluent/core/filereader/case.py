@@ -15,13 +15,13 @@ input_parameters = reader.input_parameters()
 output_parameters = reader.output_parameters()
 """
 import codecs
-import glob
 import gzip
-import itertools
+import os
 from os.path import dirname
 from pathlib import Path
 from typing import List
 
+from bs4 import BeautifulSoup
 import h5py
 
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
@@ -126,7 +126,7 @@ class _CaseVariable:
             return _CaseVariable(self._variables, name + "/")
 
 
-class Case:
+class CaseFile:
     """Class to read a Fluent case file.
 
     Methods
@@ -170,7 +170,13 @@ class Case:
             )
         if project_filepath:
             if Path(project_filepath).suffix in [".flprj", ".flprz"]:
-                case_filepath = _get_case_filepath(dirname(project_filepath))
+                project_dir = os.path.join(
+                    dirname(project_filepath),
+                    Path(project_filepath).name.split(".")[0] + ".cffdb",
+                )
+                case_filepath = Path(
+                    project_dir + _get_case_filepath_from_flprj(project_filepath)
+                )
             else:
                 raise RuntimeError("Please provide a valid fluent project file path")
         try:
@@ -285,29 +291,8 @@ def _get_processed_string(input_string: bytes) -> str:
     return string_identifier + rp_vars_str.split(string_identifier)[1]
 
 
-def _get_case_filepath(project_dir_path: str) -> str:
-    """Gets case file path within the provided project directory path.
+def _get_case_filepath_from_flprj(flprj_file):
+    with open(flprj_file) as fp:
+        soup = BeautifulSoup(fp, "xml")
 
-    Parameters
-    ----------
-    project_dir_path : str
-        The directory containing the case file
-
-    Returns
-    -------
-    case file path (str)
-    """
-    file_list = list(
-        itertools.chain(
-            *(
-                glob.glob(project_dir_path + r"/**/**-Solve/*.%s" % ext)
-                for ext in ["cas", "cas.h5", "cas.gz"]
-            )
-        )
-    )
-    if len(file_list) < 1:
-        raise RuntimeError(f"No case files are present in: {project_dir_path}")
-    elif len(file_list) > 1:
-        raise RuntimeError(f"More than one case file is present in: {project_dir_path}")
-    else:
-        return file_list[0]
+    return soup.find_all("Case")[0].findNext()["value"]
