@@ -515,7 +515,8 @@ def launch_fluent(
     start_transcript : bool, optional
         Whether to start streaming the Fluent transcript in the client. The
         default is ``True``. You can stop and start the streaming of the
-        Fluent transcript subsequently via method calls on the session object.
+        Fluent transcript subsequently via the method calls, `start_transcript()`
+        and `stop_transcript()` on the session object.
     show_gui : bool, optional
         Whether to display the Fluent GUI when ``start_instance``
         is set to ''True``. The default is ``None`` so that explicit
