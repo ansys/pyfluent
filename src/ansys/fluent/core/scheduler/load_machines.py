@@ -9,6 +9,7 @@ import csv
 import os
 import subprocess
 from typing import Dict, List
+from pathlib import Path
 
 from ansys.fluent.core.scheduler.machine_list import Machine, MachineList
 
@@ -118,7 +119,7 @@ def _parse_host_info(host_info):
         A list of dictionaries formatted as:
         {'machine-name' : ###, 'core-count' : ###}
     """
-    if os.path.exists(host_info):
+    if Path(host_info).is_file():
         # Only opens a file if it exists
         with open(host_info, "r") as f:
             host_info = f.read()
