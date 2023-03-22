@@ -223,7 +223,7 @@ def launch_remote_fluent(
     meshing_mode: bool = False,
     dimensionality: str = None,
     launcher_args: Dict[str, Any] = None,
-):
+) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
     """Launch Fluent remotely using `PyPIM <https://pypim.docs.pyansys.com>`.
 
     When calling this method, you must ensure that you are in an
@@ -258,8 +258,8 @@ def launch_remote_fluent(
 
     Returns
     -------
-    ansys.fluent.core.session.Session
-        Instance of the session.
+    Union[Meshing, PureMeshing, Solver, SolverIcing]
+        Session object.
     """
     pim = pypim.connect()
     instance = pim.create_instance(
@@ -553,8 +553,8 @@ def launch_fluent(
 
     Returns
     -------
-    ansys.fluent.session.Session
-        Fluent session.
+    Union[Meshing, PureMeshing, Solver, SolverIcing]
+        Session object.
 
     Notes
     -----
