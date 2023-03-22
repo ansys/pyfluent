@@ -542,7 +542,7 @@ def launch_fluent(
         ``"pure-meshing"`` and ``"solver"``.
     server_info_filepath: str
         Path to server-info file written out by Fluent server. The default is
-        ``None``. ``server_info_filepath`` can be specified either if ``start_instance``
+        ``None``. ``server_info_filepath`` can be specified if ``start_instance``
         is ``False``, where PyFluent will use the connection information in the file to
         connect to a running Fluent session.
     password : str, optional
