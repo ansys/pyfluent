@@ -20,7 +20,7 @@ interfacing to Matplotlib and pyvista, and tools for asynchronous and batched co
 Meshing
 #######
 
-The :ref:`ref_meshing` mode provides Pythonic interfaces to the Fluent Meshing TUI, Fluent Meshing guided workflows,
+The :ref:`ref_meshing` mode provides Pythonic interfaces to the Fluent meshing TUI, Fluent meshing guided workflows,
 and part management.
 
 Solver

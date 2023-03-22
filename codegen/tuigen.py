@@ -310,7 +310,7 @@ class TUIGenerator:
                 self._populate_menu(self._main_menu, info)
             self.session.exit()
             self._write_code_to_tui_file(
-                f'"""Fluent {self._mode.title()} TUI Commands"""\n'
+                f'"""Fluent {self._mode.title().lower()} TUI commands"""\n'
             )
             self._main_menu.doc = f"Fluent {self._mode} main menu."
             self._write_code_to_tui_file(
