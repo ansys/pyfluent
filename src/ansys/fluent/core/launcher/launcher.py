@@ -528,7 +528,11 @@ def launch_fluent(
     case_data_filepath : str, optional
         If provided, the case and data files at ``case_data_filepath`` are read into the Fluent session.
     lightweight_mode: bool, optional
-        Whether to read only the lightweight settings from any specified Fluent case file, ignoring the mesh.
+        Whether to run in lightweight mode. In lightweight mode, the lightweight settings are read into the
+        current Fluent solver session. The mesh is read into a background Fluent solver session which will
+        replace the current Fluent solver session once the mesh read is complete and the lightweight settings
+        made by the user in the current Fluent solver session have been applied in the background Fluent
+        solver session. This is all orchestrated by PyFluent and requires no special usage.
         This parameter is used only when ``case_filepath`` is provided. The default is ``False``.
     mode : str, optional
         Launch mode of Fluent to point to a specific session type.
