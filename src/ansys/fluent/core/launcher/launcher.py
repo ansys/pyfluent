@@ -253,8 +253,8 @@ def launch_remote_fluent(
         Whether to launch Fluent remotely in meshing mode. The default is
         ``False``.
     dimensionality : str, optional
-        Number of dimensions for modeling. The default is ``None``, in which
-        case ``"3s"`` is used. Options are ``"3d"`` and ``"2d"``.
+        Geometric dimensionality of the Fluent simulation. The default is ``None``,
+        in which case ``"3d"`` is used. Options are ``"3d"`` and ``"2d"``.
 
     Returns
     -------
