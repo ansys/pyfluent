@@ -41,7 +41,7 @@ Data transfer
 Journaling
 ##########
 
-:ref:`ref_journaling` explains how to read an write Python journals that are reusable between PyFluent and Fluent.
+:ref:`ref_journaling` explains how to read and write Python journals that are reusable between PyFluent and Fluent.
 
 Workflow
 ########
