@@ -28,7 +28,7 @@ Solver
 
 The :ref:`ref_solver` mode is dedicated to capturing the power of the Fluent solver. This component consists of a
 :ref:`ref_settings`-based interface and a :ref:`ref_solver_tui`-based interface that is derived from the Fluent
-Solver TUI, as well as access to scalar and vector surface field data.
+Solver TUI, as well as access to surface data and scalar and vector field data.
 
 
 .. toctree::

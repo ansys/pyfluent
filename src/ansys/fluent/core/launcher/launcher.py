@@ -243,9 +243,10 @@ def launch_remote_fluent(
         Maximum allowable time in seconds for connecting to the Fluent
         server. The default is ``100``.
     product_version : str, optional
-        Select an installed version of ANSYS. The string must match the
-        documented version format in the FluentVersion class. The default is
-        ``None``, in which case the newest installed version is used.
+        Select an installed version of ANSYS. The string must be in a format like
+        ``"23.1.0"`` (for 2023 R1) matching the documented version format in the
+        FluentVersion class. The default is ``None``, in which case the newest installed
+        version is used.
     cleanup_on_exit : bool, optional
         Whether to clean up and exit Fluent when Python exits or when garbage
         is collected for the Fluent Python instance. The default is ``True``.
@@ -467,9 +468,10 @@ def launch_fluent(
     Parameters
     ----------
     product_version : str, optional
-        Select an installed version of ANSYS. The string must match the
-        documented version format in the FluentVersion class. The default is
-        ``None``, in which case the newest installed version is used.
+        Select an installed version of ANSYS. The string must be in a format like
+        ``"23.1.0"`` (for 2023 R1) matching the documented version format in the
+        FluentVersion class. The default is ``None``, in which case the newest installed
+        version is used.
     version : str, optional
         Geometric dimensionality of the Fluent simulation. The default is ``None``,
         in which case ``"3d"`` is used. Options are ``"3d"`` and ``"2d"``.
