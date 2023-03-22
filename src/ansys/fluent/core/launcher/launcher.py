@@ -547,7 +547,7 @@ def launch_fluent(
         at that path, or if ``start_instance`` is ``False``, where PyFluent will use the
         connection information in the file to connect to a running Fluent session.
     password : str, optional
-            Password to connect to existing Fluent instance.
+        Password to connect to existing Fluent instance.
     py : bool, optional
         If True, Fluent will run in Python mode. Default is None.
     cwd: str, Optional
