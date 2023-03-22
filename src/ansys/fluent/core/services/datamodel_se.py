@@ -349,8 +349,12 @@ class PyStateContainer(PyCallableStateObject):
     getAttribValue = get_attr
 
     def is_active(self):
-        """Returns true if the parameter is active."""
+        """Returns true if the object is active."""
         return true_if_none(self.get_attr(Attribute.IS_ACTIVE.value))
+
+    def is_read_only(self):
+        """Checks whether the object is read only."""
+        return false_if_none(self.get_attr(Attribute.IS_READ_ONLY.value))
 
     def help(self) -> None:
         """Print help string."""
@@ -677,10 +681,6 @@ class PyParameter(PyStateContainer):
         """Get default value of the parameter."""
         return self.get_attr(Attribute.DEFAULT.value)
 
-    def is_read_only(self):
-        """Checks whether the parameter is read only."""
-        return true_if_none(self.get_attr(Attribute.IS_READ_ONLY.value))
-
     def add_on_changed(self, cb: Callable) -> EventSubscription:
         """Register a callback for when the object is modified.
 
@@ -727,12 +727,20 @@ class PyParameter(PyStateContainer):
         return subscription
 
 
+def _bool_value_if_none(val, default):
+    if isinstance(val, bool) or val is None:
+        return default if val is None else val
+    raise TypeError(f"{val} should be a bool or None")
+
+
 def true_if_none(val):
     """Returns true if 'val' is true or None, else returns false."""
-    if val in [True, False, None]:
-        return True if val is None else val
-    else:
-        raise RuntimeError(f"In-correct value passed")
+    return _bool_value_if_none(val, default=True)
+
+
+def false_if_none(val):
+    """Returns true if 'val' is true or None, else returns false."""
+    return _bool_value_if_none(val, default=False)
 
 
 class PyTextual(PyParameter):
