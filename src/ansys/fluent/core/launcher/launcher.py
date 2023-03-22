@@ -543,9 +543,8 @@ def launch_fluent(
     server_info_filepath: str
         Path to server-info file written out by Fluent server. The default is
         ``None``. ``server_info_filepath`` can be specified either if ``start_instance``
-        is ``True``, where PyFluent will launch and then direct Fluent to write the file
-        at that path, or if ``start_instance`` is ``False``, where PyFluent will use the
-        connection information in the file to connect to a running Fluent session.
+        is ``False``, where PyFluent will use the connection information in the file to
+        connect to a running Fluent session.
     password : str, optional
         Password to connect to existing Fluent instance.
     py : bool, optional
