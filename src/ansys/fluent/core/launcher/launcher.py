@@ -169,6 +169,10 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
     with open(_OPTIONS_FILE, encoding="utf-8") as fp:
         all_options = json.load(fp)
     launch_args_string = ""
+    from ansys.fluent.core import FLUENT_DEBUG
+
+    if FLUENT_DEBUG:
+        kwargs["debug"] = True
     for k, v in all_options.items():
         argval = kwargs.get(k)
         default = v.get("default")
