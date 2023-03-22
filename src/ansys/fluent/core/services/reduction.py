@@ -152,6 +152,81 @@ class ReductionService:
         return self._stub.VolumeInt(request, metadata=self._metadata)
 
 
+class BadReductionRequest(Exception):
+    def __init__(self, err):
+        super().__init__(f"Could not complete reduction function request: {err}")
+
+
+def _validate_locn_list(locn_list, ctxt):
+    if not all(locn[0] for locn in locn_list) and (
+        any(locn[0] for locn in locn_list) or not ctxt
+    ):
+        raise BadReductionRequest("Invalid combination of arguments")
+
+
+def _is_iterable(obj):
+    return hasattr(type(obj), "__iter__")
+
+
+def _expand_locn_container(locns):
+    try:
+        return [[locn, locns] for locn in locns]
+    except TypeError as ex:
+        raise BadReductionRequest(ex)
+
+
+def _locn_name_and_obj(locn, locns):
+    if isinstance(locn, str):
+        return [locn, locns]
+    # should call locn_get_name()
+    if _is_iterable(locn):
+        return _locn_names_and_objs(locn)
+    else:
+        return [locn.obj_name, locn]
+
+
+def _locn_names_and_objs(locns):
+    if _is_iterable(locns):
+        names_and_objs = []
+        for locn in locns:
+            name_and_obj = _locn_name_and_obj(locn, locns)
+            if _is_iterable(name_and_obj):
+                if isinstance(name_and_obj[0], str):
+                    names_and_objs.append(name_and_obj)
+                else:
+                    names_and_objs.extend(name_and_obj)
+        return names_and_objs
+    else:
+        return _expand_locn_container(locns)
+
+
+def _root(obj):
+    return (
+        None
+        if isinstance(obj, list)
+        else obj
+        if not getattr(obj, "obj_name", None)
+        else _root(obj._parent)
+    )
+
+
+def _locns(locns, ctxt=None):
+    locn_names_and_objs = _locn_names_and_objs(locns)
+    locn_list = []
+    for name, obj in locn_names_and_objs:
+        root = _root(obj)
+        found = False
+        for locn in locn_list:
+            if locn[0] is root:
+                locn[1].append(name)
+                found = True
+                break
+        if not found:
+            locn_list.append([root, [name]])
+    _validate_locn_list(locn_list, ctxt)
+    return locn_list
+
+
 class Reduction:
     """
     Reduction.
@@ -163,10 +238,17 @@ class Reduction:
 
     docstring = None
 
+    @staticmethod
+    def _get_location_string(locations) -> list[str]:
+        try:
+            return _locns(locations)[0][1]
+        except BadReductionRequest:
+            return locations
+
     def area(self, locations) -> Any:
         """Get area."""
         request = ReductionProtoModule.AreaRequest()
-        request.locations.extend(locations)
+        request.locations.extend(self._get_location_string(locations))
         response = self.service.area(request)
         return response.value
 
@@ -174,7 +256,7 @@ class Reduction:
         """Get area average."""
         request = ReductionProtoModule.AreaAveRequest()
         request.expression = expression
-        request.locations.extend(locations)
+        request.locations.extend(self._get_location_string(locations))
         response = self.service.area_average(request)
         return response.value
 
@@ -182,28 +264,28 @@ class Reduction:
         """Get area integral."""
         request = ReductionProtoModule.AreaIntRequest()
         request.expression = expression
-        request.locations.extend(locations)
+        request.locations.extend(self._get_location_string(locations))
         response = self.service.area_integral(request)
         return response.value
 
     def centroid(self, locations) -> Any:
         """Get centroid."""
         request = ReductionProtoModule.CentroidRequest()
-        request.locations.extend(locations)
+        request.locations.extend(self._get_location_string(locations))
         response = self.service.centroid(request)
         return response.value
 
     def count(self, locations) -> Any:
         """Get count."""
         request = ReductionProtoModule.CountRequest()
-        request.locations.extend(locations)
+        request.locations.extend(self._get_location_string(locations))
         response = self.service.count(request)
         return response.value
 
     def force(self, locations) -> Any:
         """Get force."""
         request = ReductionProtoModule.ForceRequest()
-        request.locations.extend(locations)
+        request.locations.extend(self._get_location_string(locations))
         response = self.service.force(request)
         return response.value
 
@@ -211,7 +293,7 @@ class Reduction:
         """Get mass average."""
         request = ReductionProtoModule.MassAveRequest()
         request.expression = expression
-        request.locations.extend(locations)
+        request.locations.extend(self._get_location_string(locations))
         response = self.service.mass_average(request)
         return response.value
 
@@ -219,7 +301,7 @@ class Reduction:
         """Get mass flow average."""
         request = ReductionProtoModule.MassFlowAveRequest()
         request.expression = expression
-        request.locations.extend(locations)
+        request.locations.extend(self._get_location_string(locations))
         response = self.service.mass_flow_average(request)
         return response.value
 
@@ -227,7 +309,7 @@ class Reduction:
         """Get absolute mass flow average."""
         request = ReductionProtoModule.MassFlowAveAbsRequest()
         request.expression = expression
-        request.locations.extend(locations)
+        request.locations.extend(self._get_location_string(locations))
         response = self.service.mass_flow_average_absolute(request)
         return response.value
 
@@ -235,7 +317,7 @@ class Reduction:
         """Get mass flow integral."""
         request = ReductionProtoModule.MassFlowIntRequest()
         request.expression = expression
-        request.locations.extend(locations)
+        request.locations.extend(self._get_location_string(locations))
         response = self.service.mass_flow_integral(request)
         return response.value
 
@@ -243,7 +325,7 @@ class Reduction:
         """Get mass integral."""
         request = ReductionProtoModule.MassIntRequest()
         request.expression = expression
-        request.locations.extend(locations)
+        request.locations.extend(self._get_location_string(locations))
         response = self.service.mass_integral(request)
         return response.value
 
@@ -251,7 +333,7 @@ class Reduction:
         """Get maximum."""
         request = ReductionProtoModule.MaximumRequest()
         request.expression = expression
-        request.locations.extend(locations)
+        request.locations.extend(self._get_location_string(locations))
         response = self.service.maximum(request)
         return response.value
 
@@ -259,28 +341,28 @@ class Reduction:
         """Get minimum."""
         request = ReductionProtoModule.MinimumRequest()
         request.expression = expression
-        request.locations.extend(locations)
+        request.locations.extend(self._get_location_string(locations))
         response = self.service.minimum(request)
         return response.value
 
     def pressure_force(self, locations) -> Any:
         """Get pressure force."""
         request = ReductionProtoModule.PressureForceRequest()
-        request.locations.extend(locations)
+        request.locations.extend(self._get_location_string(locations))
         response = self.service.pressure_force(request)
         return response.value
 
     def viscous_force(self, locations) -> Any:
         """Get viscous force."""
         request = ReductionProtoModule.ViscousForceRequest()
-        request.locations.extend(locations)
+        request.locations.extend(self._get_location_string(locations))
         response = self.service.viscous_force(request)
         return response.value
 
     def volume(self, locations) -> Any:
         """Get volume."""
         request = ReductionProtoModule.VolumeRequest()
-        request.locations.extend(locations)
+        request.locations.extend(self._get_location_string(locations))
         response = self.service.volume(request)
         return response.value
 
@@ -288,7 +370,7 @@ class Reduction:
         """Get volume average."""
         request = ReductionProtoModule.VolumeAveRequest()
         request.expression = expression
-        request.locations.extend(locations)
+        request.locations.extend(self._get_location_string(locations))
         response = self.service.volume_average(request)
         return response.value
 
@@ -296,6 +378,6 @@ class Reduction:
         """Get volume integral."""
         request = ReductionProtoModule.VolumeIntRequest()
         request.expression = expression
-        request.locations.extend(locations)
+        request.locations.extend(self._get_location_string(locations))
         response = self.service.volume_integral(request)
         return response.value
