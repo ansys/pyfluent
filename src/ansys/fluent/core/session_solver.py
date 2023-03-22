@@ -22,9 +22,8 @@ from ansys.fluent.core.workflow import WorkflowWrapper
 
 
 class Solver(_BaseSession):
-    """Encapsulates a Fluent - Solver session connection.
-    Solver(Session) holds the top-level objects
-    for solver TUI and settings objects calls."""
+    """Encapsulates a Fluent solver session. A ``tui`` object for solver TUI
+    commanding, and solver settings objects are all exposed here."""
 
     def __init__(
         self,
