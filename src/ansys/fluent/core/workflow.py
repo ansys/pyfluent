@@ -75,19 +75,14 @@ class Task(PyCallableStateObject):
         """Get the ordered task list held by this task. Sorting is in terms
         of the workflow order and only includes this task's top-level tasks, while other tasks
         can be obtained by calling ordered_children() on a parent task. Given the
-        workflow:
+        workflow::
 
-        o Workflow
-        |
-        |--o A
-        |
-        |--o B
-        |  |
-        |  |--o C
-        |  |
-        |  |--o D
-        |
-        |--o E
+            Workflow
+            ├── A
+            ├── B
+            │  ├── C
+            │  └── D
+            └── E
 
         C and D are the ordered children of task B.
 
@@ -286,19 +281,14 @@ class WorkflowWrapper:
         """Get the ordered task list held by the workflow. Sorting is in terms
         of the workflow order and only includes the top-level tasks, while other tasks
         can be obtained by calling ordered_children() on a parent task. Given the
-        workflow:
+        workflow::
 
-        o Workflow
-        |
-        |--o A
-        |
-        |--o B
-        |  |
-        |  |--o C
-        |  |
-        |  |--o D
-        |
-        |--o E
+            Workflow
+            ├── A
+            ├── B
+            │  ├── C
+            │  └── D
+            └── E
 
         the ordered children of the workflow are A, B, E, while B has ordered children
         C and D.
