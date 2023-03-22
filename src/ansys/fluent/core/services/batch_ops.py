@@ -27,19 +27,32 @@ class BatchOpsService:
 
 
 class BatchOps:
-    """Class to perform batch operations.
+    """Class to execute operations in batch in Fluent.
 
     Examples
     --------
     >>> with pyfluent.BatchOps(solver):
-    >>>     solver.tui.file.read_case("elbow.cas.h5")
-    >>>     solver.solution.initialization.hybrid_initialize()
+    >>>     solver.tui.file.read_case("mixing_elbow.cas.h5")
+    >>>     solver.results.graphics.mesh["mesh-1"] = {}
 
-    Above will be executed in server through a single grpc call during exiting the with
-    block. Only the non-getter rpc methods are supported.
+    Above code will execute both operations through a single gRPC call upon exiting the
+    ``with`` block.
 
-    The getter rpc methods within the with block are executed right away. Make
-    sure that they do not depend on execution of non-getter methods.
+    Operations that perform queries in Fluent are executed immediately, while others are
+    queued for batch execution. Some queries are executed behind the scenes while
+    queueing an operation for batch execution, and we must ensure that they do not
+    depend on previously queued operations.
+
+
+    For example,
+
+    >>> with pyfluent.BatchOps(solver):
+    >>>     solver.tui.file.read_case("mixing_elbow.cas.h5")
+    >>>     solver.results.graphics.mesh["mesh-1"] = {}
+    >>>     solver.results.graphics.mesh["mesh-1"].surfaces_list = ["wall-elbow"]
+
+    will throw a ``KeyError`` as ``solver.results.graphics.mesh["mesh-1"]`` attempts to
+    access ``mesh-1`` mesh object which has not been created yet.
     """
 
     _proto_files = None
