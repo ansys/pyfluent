@@ -224,7 +224,7 @@ def launch_remote_fluent(
     dimensionality: str = None,
     launcher_args: Dict[str, Any] = None,
 ):
-    """Launch Fluent remotely using the PIM (Product Instance Management) API.
+    """Launch Fluent remotely using `PyPIM <https://pypim.docs.pyansys.com>`.
 
     When calling this method, you must ensure that you are in an
     environment where PyPIM is configured. You can use the :func:
