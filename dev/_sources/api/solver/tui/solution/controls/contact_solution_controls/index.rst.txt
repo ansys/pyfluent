@@ -15,9 +15,9 @@ solver.tui.solution.controls.contact\_solution\_controls
    :hidden:
 
    parameters/index
-   transient/index
-   miscellaneous/index
    spatial/index
+   transient/index
    amg/index
-   methods/index
    models/index
+   methods/index
+   miscellaneous/index

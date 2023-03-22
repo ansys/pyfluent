@@ -14,9 +14,9 @@ solver.tui.define.phases.set\_domain\_properties.interaction\_domain.interfacial
 .. toctree::
    :hidden:
 
-   lift/index
-   interphase_discretization/index
-   surface_tension/index
-   interphase_viscous_dissipation/index
    cavitation/index
+   interphase_discretization/index
+   interphase_viscous_dissipation/index
+   lift/index
+   surface_tension/index
    virtual_mass/index

@@ -14,5 +14,5 @@ solver.tui.setup.models.heat\_exchanger
 .. toctree::
    :hidden:
 
-   dual_cell_model/index
    macro_model/index
+   dual_cell_model/index

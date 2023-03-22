@@ -15,16 +15,16 @@ solver.tui.display
    :hidden:
 
    embedded_windows/index
-   particle_tracks/index
-   surface/index
-   display_states/index
-   flamelet_data/index
-   views/index
-   view_sync/index
-   pdf_data/index
-   path_lines/index
-   inverse_dft/index
-   update_scene/index
    objects/index
-   define/index
+   flamelet_data/index
+   particle_tracks/index
+   path_lines/index
+   pdf_data/index
    set/index
+   surface/index
+   views/index
+   display_states/index
+   view_sync/index
+   update_scene/index
+   inverse_dft/index
+   define/index
