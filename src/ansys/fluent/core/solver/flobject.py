@@ -19,6 +19,7 @@ import collections
 import hashlib
 import importlib
 import keyword
+import logging
 import pickle
 import string
 import sys
@@ -26,7 +27,8 @@ from typing import Any, Dict, Generic, List, NewType, Tuple, TypeVar, Union
 import weakref
 
 from .error_message import allowed_name_error_message, allowed_values_error
-from .logging import LOG
+
+settings_logger = logging.getLogger("ansys.fluent.services.settings_api")
 
 # Type hints
 RealType = NewType("real", Union[float, str])  # constant or expression
@@ -996,7 +998,7 @@ def get_cls(name, info, parent=None, version=None):
         obj_type = info["type"]
         base = _baseTypes.get(obj_type)
         if base is None:
-            LOG.error(
+            settings_logger.error(
                 f"Unable to find base class for '{name}' "
                 f"(type = '{obj_type}'). "
                 f"Falling back to String."
@@ -1138,7 +1140,7 @@ def get_root(flproxy, version: str = "") -> Group:
         )
 
         if settings.SHASH != _gethash(obj_info):
-            LOG.warning(
+            settings_logger.warning(
                 "Mismatch between generated file and server object "
                 "info. Dynamically created settings classes will "
                 "be used."

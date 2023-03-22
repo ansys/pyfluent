@@ -1,10 +1,11 @@
 """A package providing Fluent's Solver and Meshing capabilities in Python."""
 
+import logging.config
 import os
 import pydoc
-from typing import Any, Optional
 
 import appdirs
+import yaml
 
 from ansys.fluent.core._version import __version__  # noqa: F401
 from ansys.fluent.core.launcher.launcher import (  # noqa: F401
@@ -15,7 +16,6 @@ from ansys.fluent.core.launcher.launcher import (  # noqa: F401
 from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
 from ansys.fluent.core.session import _BaseSession as Fluent  # noqa: F401
 from ansys.fluent.core.utils import fldoc
-from ansys.fluent.core.utils.logging import LOG
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 
 _VERSION_INFO = None
@@ -44,44 +44,12 @@ def version_info() -> str:
     return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
 
-def set_log_level(level: Any) -> None:
-    """Set logging level.
+# Load the logging configuration from a YAML file
+with open("logging_config.yaml", "rt") as f:
+    config = yaml.safe_load(f)
 
-    Parameters
-    ----------
-    level : Any
-        Any of the logging level (CRITICAL, ERROR, WARNING, INFO, DEBUG)
-        in string or enum format
-    """
-    LOG.set_level(level)
-
-
-def enable_logging_to_stdout() -> None:
-    """Enable logging to stdout."""
-    LOG.enable_logging_to_stdout()
-
-
-def disable_logging_to_stdout() -> None:
-    """Disable logging to stdout."""
-    LOG.disable_logging_to_stdout()
-
-
-def enable_logging_to_file(filepath: Optional[str] = None) -> None:
-    """Enable logging to file.
-
-    Parameters
-    ----------
-    filepath : str, optional
-        filapath, a default filepath will be chosen if filepath is not
-        passed
-    """
-    LOG.enable_logging_to_file(filepath)
-
-
-def disable_logging_to_file() -> None:
-    """Disable logging to file."""
-    LOG.disable_logging_to_file()
-
+# Configure the logging system
+logging.config.dictConfig(config)
 
 # Setup data directory
 try:
