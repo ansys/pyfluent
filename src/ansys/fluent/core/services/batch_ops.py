@@ -52,7 +52,7 @@ class BatchOps:
     >>>     solver.results.graphics.mesh["mesh-1"].surfaces_list = ["wall-elbow"]
 
     will throw a ``KeyError`` as ``solver.results.graphics.mesh["mesh-1"]`` attempts to
-    access ``mesh-1`` mesh object which has not been created yet.
+    access the ``mesh-1`` mesh object which has not been created yet.
     """
 
     _proto_files = None
