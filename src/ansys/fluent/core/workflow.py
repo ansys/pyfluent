@@ -80,8 +80,8 @@ class Task(PyCallableStateObject):
             Workflow
             ├── A
             ├── B
-            │  ├── C
-            │  └── D
+            │   ├── C
+            │   └── D
             └── E
 
         C and D are the ordered children of task B.
@@ -286,8 +286,8 @@ class WorkflowWrapper:
             Workflow
             ├── A
             ├── B
-            │  ├── C
-            │  └── D
+            │   ├── C
+            │   └── D
             └── E
 
         the ordered children of the workflow are A, B, E, while B has ordered children
