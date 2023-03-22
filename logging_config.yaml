@@ -67,7 +67,7 @@ loggers:
     level: DEBUG
     handlers: [tui.file]
     propagate: no
-  ansys.fluent.services.settings_api
+  ansys.fluent.services.settings_api:
     level: DEBUG
     handlers: [settings.file]
     propagate: no
