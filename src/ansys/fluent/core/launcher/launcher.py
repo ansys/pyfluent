@@ -233,8 +233,8 @@ def launch_remote_fluent(
 
     Parameters
     ----------
-    session_cls: _BaseSession
-        Instance of the Session class
+    session_cls: Union[type(Meshing), type(PureMeshing), type(Solver), type(SolverIcing)]
+        Session type.
     start_transcript: bool
         Whether to start streaming the Fluent transcript in the client. The
         default is ``True``. You can stop and start the streaming of the
@@ -460,7 +460,7 @@ def launch_fluent(
     cwd: str = None,
     topy: Union[str, list] = None,
     **kwargs,
-) -> Union[Meshing, PureMeshing, Solver]:
+) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
     """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
 
