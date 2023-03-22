@@ -1,3 +1,5 @@
+import sys
+
 import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
@@ -7,6 +9,9 @@ from ansys.fluent.core import examples
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.skipif(
+    sys.platform.startswith("linux"), reason="Linux specific issue in server"
+)
 def test_batch_ops_create_mesh(new_solver_session):
     solver = new_solver_session
     case_filename = examples.download_file(
@@ -23,6 +28,9 @@ def test_batch_ops_create_mesh(new_solver_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.skipif(
+    sys.platform.startswith("linux"), reason="Linux specific issue in server"
+)
 def test_batch_ops_create_mesh_and_access_fails(new_solver_session):
     solver = new_solver_session
     case_filename = examples.download_file(
