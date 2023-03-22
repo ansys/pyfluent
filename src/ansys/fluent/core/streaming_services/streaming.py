@@ -51,14 +51,14 @@ class StreamingService:
             if callback_id in self._service_callbacks:
                 del self._service_callbacks[callback_id]
 
-    def start(self) -> None:
+    def start(self, *args, **kwargs) -> None:
         """Start streaming of Fluent transcript."""
         with self._lock:
             if not self.is_streaming:
                 self._prepare()
                 started_evt = threading.Event()
                 self._stream_thread = threading.Thread(
-                    target=self._target, args=(self, started_evt)
+                    target=self._target, args=(self, started_evt, *args), kwargs=kwargs
                 )
                 self._stream_thread.start()
                 started_evt.wait()
