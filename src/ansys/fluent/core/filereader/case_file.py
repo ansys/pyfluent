@@ -178,7 +178,6 @@ class CaseFile:
                 case_filepath = Path(
                     project_dir + _get_case_filepath_from_flprj(project_filepath)
                 )
-                a = 1
             else:
                 raise RuntimeError("Please provide a valid fluent project file path")
         try:
