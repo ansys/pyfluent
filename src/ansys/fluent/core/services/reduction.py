@@ -22,7 +22,7 @@ class ReductionService:
         intercept_channel = grpc.intercept_channel(
             channel, TracingInterceptor(), BatchInterceptor()
         )
-        self._stub = ReductionGrpcModule.ReductionQueriesStub(intercept_channel)
+        self._stub = ReductionGrpcModule.ReductionStub(intercept_channel)
         self._metadata = metadata
 
     @catch_grpc_error
