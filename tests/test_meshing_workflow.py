@@ -645,3 +645,11 @@ def test_extended_wrapper(new_mesh_session, mixing_elbow_geometry):
     assert watertight_workflow.import_geometry.State() == "Up-to-date"
     import_geometry_state = watertight_workflow.import_geometry.arguments()
     assert len(import_geometry_state) > 2
+
+
+def test_iterate_meshing_workflow_task_container(new_mesh_session):
+    workflow = new_mesh_session.workflow
+    workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    tasks = [task for task in workflow.TaskObject]
+    assert len(tasks) == 11
+    assert tasks[0].name() == "Import Geometry"

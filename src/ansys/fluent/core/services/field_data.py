@@ -8,12 +8,13 @@ import numpy as np
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
-from ansys.fluent.core.allowed_name_error_msg import allowed_name_error_message
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
+from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 
 def override_help_text(func, func_to_be_wrapped):
+    """Override function help text."""
     func.__doc__ = "\n" + func_to_be_wrapped.__doc__
     func.__name__ = func_to_be_wrapped.__qualname__
     return func
@@ -25,7 +26,10 @@ validate_inputs = True
 
 
 class FieldDataService:
+    """FieldData service of Fluent."""
+
     def __init__(self, channel: grpc.Channel, metadata):
+        """__init__ method of FieldDataService class."""
         intercept_channel = grpc.intercept_channel(
             channel, TracingInterceptor(), BatchInterceptor()
         )
@@ -34,22 +38,27 @@ class FieldDataService:
 
     @catch_grpc_error
     def get_range(self, request):
+        """GetRange rpc of FieldData service."""
         return self.__stub.GetRange(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def get_fields_info(self, request):
+        """GetFieldsInfo rpc of FieldData service."""
         return self.__stub.GetFieldsInfo(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def get_vector_fields_info(self, request):
+        """GetVectorFieldsInfo rpc of FieldData service."""
         return self.__stub.GetVectorFieldsInfo(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def get_surfaces_info(self, request):
+        """GetSurfacesInfo rpc of FieldData service."""
         return self.__stub.GetSurfacesInfo(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def get_fields(self, request):
+        """GetFields rpc of FieldData service."""
         return self.__stub.GetFields(request, metadata=self.__metadata)
 
 
@@ -73,6 +82,7 @@ class FieldInfo:
     """
 
     def __init__(self, service: FieldDataService):
+        """__init__ method of FieldInfo class."""
         self._service = service
 
     def get_range(
@@ -161,15 +171,21 @@ class FieldInfo:
 
 
 def unavailable_field_error_message(context: str, field_name: str) -> str:
+    """Error message for unavailable fields."""
     return f"{field_name} is not a currently available {context}."
 
 
 class FieldNameError(ValueError):
+    """Exception class for errors in field name."""
+
     pass
 
 
 class ScalarFieldNameError(FieldNameError):
+    """Exception class for errors in scalar field name."""
+
     def __init__(self, field_name: str, allowed_values: List[str]):
+        """__init__ method of ScalarFieldNameError class."""
         self.field_name = field_name
         super().__init__(
             allowed_name_error_message("scalar field", field_name, allowed_values)
@@ -177,7 +193,10 @@ class ScalarFieldNameError(FieldNameError):
 
 
 class VectorFieldNameError(FieldNameError):
+    """Exception class for errors in vector field name."""
+
     def __init__(self, field_name: str, allowed_values: List[str]):
+        """__init__ method of VectorFieldNameError class."""
         self.field_name = field_name
         super().__init__(
             allowed_name_error_message("vector field", field_name, allowed_values)
@@ -185,23 +204,34 @@ class VectorFieldNameError(FieldNameError):
 
 
 class FieldUnavailable(RuntimeError):
+    """Exception class for when field is unavailable."""
+
     pass
 
 
 class ScalarFieldUnavailable(FieldUnavailable):
+    """Exception class for when scalar field is unavailable."""
+
     def __init__(self, field_name: str):
+        """__init__ method of ScalarFieldUnavailable class."""
         self.field_name = field_name
         super().__init__(unavailable_field_error_message("scalar field", field_name))
 
 
 class VectorFieldUnavailable(FieldUnavailable):
+    """Exception class for when vector field is unavailable."""
+
     def __init__(self, field_name: str):
+        """__init__ method of VectorFieldUnavailable class."""
         self.field_name = field_name
         super().__init__(unavailable_field_error_message("vector field", field_name))
 
 
 class SurfaceNameError(ValueError):
+    """Exception class for errors in surface name."""
+
     def __init__(self, surface_name: str, allowed_values: List[str]):
+        """__init__ method of SurfaceNameError class."""
         self.surface_name = surface_name
         super().__init__(
             allowed_name_error_message("surface", surface_name, allowed_values)
@@ -329,6 +359,7 @@ class FieldTransaction:
         allowed_scalar_field_names,
         allowed_vector_field_names,
     ):
+        """__init__ method of FieldTransaction class."""
         self._service = service
         self._field_info = field_info
         self._fields_request = get_fields_request()
@@ -816,6 +847,7 @@ class FieldData:
         field_info: FieldInfo,
         is_data_valid: Callable[[], bool],
     ):
+        """__init__ method of FieldData class."""
         self._service = service
         self._field_info = field_info
         self.is_data_valid = is_data_valid
@@ -873,6 +905,7 @@ class FieldData:
         )
 
     def new_transaction(self):
+        """Create a new field transaction."""
         return FieldTransaction(
             self._service,
             self._field_info,

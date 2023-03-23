@@ -11,10 +11,14 @@ fluent
 Fluent's
 fullname
 hexahedral
+Journaling
 journaling
+Matplotlib
 matplotlib
 mesher
 meshing's
+metaclass
+metaclasses
 MonitorsManager
 numpy
 pathlines
@@ -27,6 +31,7 @@ pyansys
 PyFluent
 Pythonic
 pyvista
+rpvars
 sbatch
 Slurm
 UDFs

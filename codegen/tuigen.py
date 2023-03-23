@@ -264,18 +264,19 @@ class TUIGenerator:
             if desc:
                 f.write(desc)
             f.write("\n")
-            f.write(f".. currentmodule:: {self._tui_module}\n\n")
-            f.write(".. autosummary::\n")
-            f.write("   :toctree: _autosummary\n\n")
 
             command_names = [v.name for _, v in menu.children.items() if v.is_command]
             child_menu_names = [
                 v.name for _, v in menu.children.items() if not v.is_command
             ]
 
-            f.write(f".. autoclass:: {self._tui_module}::{class_name}\n")
-            if command_names:
-                f.write(f"   :members: {', '.join(command_names)}\n\n")
+            f.write(f".. autoclass:: {self._tui_module}.{class_name}\n")
+            f.write("   :members:\n")
+            f.write("   :show-inheritance:\n")
+            f.write("   :undoc-members:\n")
+            f.write('   :exclude-members: "__weakref__, __dict__"\n')
+            f.write('   :special-members: " __init__"\n')
+            f.write("   :autosummary:\n\n")
 
             if child_menu_names:
                 f.write(".. toctree::\n")
@@ -309,7 +310,7 @@ class TUIGenerator:
                 self._populate_menu(self._main_menu, info)
             self.session.exit()
             self._write_code_to_tui_file(
-                f'"""Fluent {self._mode.title()} TUI Commands"""\n'
+                f'"""Fluent {self._mode.title().lower()} TUI commands"""\n'
             )
             self._main_menu.doc = f"Fluent {self._mode} main menu."
             self._write_code_to_tui_file(

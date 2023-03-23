@@ -1,4 +1,3 @@
-# from inspect import Arguments
 from typing import Any, Tuple
 
 from ansys.fluent.core.services.datamodel_se import PyCallableStateObject
@@ -155,19 +154,14 @@ class BaseTask:
         """Get the ordered task list held by this task. Sorting is in terms
         of the workflow order and only includes this task's top-level tasks, while other tasks
         can be obtained by calling ordered_children() on a parent task. Given the
-        workflow:
+        workflow::
 
-        o Workflow
-        |
-        |--o A
-        |
-        |--o B
-        |  |
-        |  |--o C
-        |  |
-        |  |--o D
-        |
-        |--o E
+            Workflow
+            ├── A
+            ├── B
+            │   ├── C
+            │   └── D
+            └── E
 
         C and D are the ordered children of task B.
 
@@ -443,17 +437,12 @@ class WorkflowWrapper:
         can be obtained by calling ordered_children() on a parent task. Given the
         workflow:
 
-        o Workflow
-        |c
-        |--o A
-        |
-        |--o B
-        |  |
-        |  |--o C
-        |  |
-        |  |--o D
-        |
-        |--o E
+            Workflow
+            ├── A
+            ├── B
+            │   ├── C
+            │   └── D
+            └── E
 
         the ordered children of the workflow are A, B, E, while B has ordered children
         C and D.
@@ -541,6 +530,9 @@ class _MakeReadOnly:
 
     def __init__(self, cmd):
         self._cmd = cmd
+
+    def is_read_only(self):
+        return True
 
     def __getattr__(self, attr):
         if attr in _MakeReadOnly._unwanted_attr:

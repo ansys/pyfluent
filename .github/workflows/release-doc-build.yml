@@ -1,0 +1,81 @@
+name: Release Documentation Build
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+      - '!*dev*'
+
+env:
+  DOCUMENTATION_CNAME: 'fluent.docs.pyansys.com'
+  DOC_DEPLOYMENT_IMAGE_TAG: v23.1.0
+
+jobs:
+  nightly_docs_build:
+    runs-on: [self-hosted, pyfluent]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install OS packages
+        run: |
+          sudo apt update
+          sudo apt-get install pandoc libegl1 make xvfb libfontconfig1 libxrender1 libxkbcommon-x11-0 -y
+
+      - name: Install pyfluent
+        run: make install
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GH_USERNAME }}
+          password: ${{ secrets.REPO_DOWNLOAD_PAT }}
+
+      - name: Pull Fluent docker image
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+
+      - name: Run API codegen
+        run: make api-codegen
+        env:
+          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+          PYFLUENT_START_INSTANCE: 0
+          PYFLUENT_LAUNCH_CONTAINER: 1
+          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+
+      - name: Build All Documentation
+        run: make build-all-docs
+        env:
+          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+          PYFLUENT_START_INSTANCE: 0
+          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+
+      - name: Zip HTML Documentation before upload
+        run: |
+          sudo apt install zip -y
+          pushd doc/_build/html
+          zip -r ../../../HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip .
+          popd
+
+      - name: Upload HTML Documentation
+        uses: actions/upload-artifact@v3
+        with:
+          name: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
+          retention-days: 7
+
+      - name: "Deploy release documentation"
+        uses: pyansys/actions/doc-deploy-stable@v3
+        with:
+            doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
+            decompress_artifact: true
+            cname: ${{ env.DOCUMENTATION_CNAME }}
+            token: ${{ secrets.GITHUB_TOKEN }}

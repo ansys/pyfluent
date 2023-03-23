@@ -1,24 +1,44 @@
+import sys
+
 import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
-from ansys.api.fluent.v0 import batch_ops_pb2
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
-@pytest.mark.skip("Failing in github")
-def test_batch_ops(new_solver_session):
-    import_filename = examples.download_file(
+@pytest.mark.skipif(
+    sys.platform.startswith("linux"), reason="Linux specific issue in server"
+)
+def test_batch_ops_create_mesh(new_solver_session):
+    solver = new_solver_session
+    case_filename = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
-    with pyfluent.BatchOps(new_solver_session):
-        assert len(pyfluent.BatchOps.instance()._ops) == 0
-        new_solver_session.tui.file.read_case(import_filename)
-        new_solver_session.setup.models.energy.enabled = False
-        assert len(pyfluent.BatchOps.instance()._ops) == 2
-    assert all(
-        op._status == batch_ops_pb2.STATUS_SUCCESSFUL
-        for op in pyfluent.BatchOps.instance()._ops
+    with pyfluent.BatchOps(solver):
+        solver.file.read_case(file_name=case_filename)
+        solver.results.graphics.mesh["mesh-1"] = {}
+        assert not solver.scheme_eval.scheme_eval("(case-valid?)")
+        assert "mesh-1" not in solver.results.graphics.mesh.get_object_names()
+    assert solver.scheme_eval.scheme_eval("(case-valid?)")
+    assert "mesh-1" in solver.results.graphics.mesh.get_object_names()
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_232
+@pytest.mark.skipif(
+    sys.platform.startswith("linux"), reason="Linux specific issue in server"
+)
+def test_batch_ops_create_mesh_and_access_fails(new_solver_session):
+    solver = new_solver_session
+    case_filename = examples.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
+    with pytest.raises(KeyError):
+        with pyfluent.BatchOps(solver):
+            solver.file.read_case(file_name=case_filename)
+            solver.results.graphics.mesh["mesh-1"] = {}
+            solver.results.graphics.mesh["mesh-1"].surfaces_list = ["wall-elbow"]
+    assert not solver.scheme_eval.scheme_eval("(case-valid?)")

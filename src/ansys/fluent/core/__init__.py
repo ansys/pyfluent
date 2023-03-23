@@ -9,7 +9,7 @@ import appdirs
 from ansys.fluent.core._version import __version__  # noqa: F401
 from ansys.fluent.core.launcher.launcher import (  # noqa: F401
     FluentVersion,
-    LaunchModes,
+    LaunchMode,
     launch_fluent,
 )
 from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
@@ -97,5 +97,11 @@ except Exception:
     pass
 
 BUILDING_GALLERY = False
+
+# Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS
+INFER_REMOTING_IP = True
+
+# Time in second to wait for response for each ip while inferring remoting ip
+INFER_REMOTING_IP_TIMEOUT_PER_IP = 2
 
 pydoc.text.docother = fldoc.docother.__get__(pydoc.text, pydoc.TextDoc)

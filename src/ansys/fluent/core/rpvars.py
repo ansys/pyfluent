@@ -6,8 +6,8 @@ interfaces: solver settings objects and task-based meshing workflow.
 """
 from typing import Any, List
 
-from ansys.fluent.core.allowed_name_error_msg import allowed_name_error_message
 import ansys.fluent.core.filereader.lispy as lispy
+from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 
 class RPVars:
@@ -15,9 +15,7 @@ class RPVars:
 
     Methods
     -------
-    __call__(
-        var, val
-        )
+    __call__(var, val)
         Set or get a specific rpvar or get the full rpvar state.
     """
 

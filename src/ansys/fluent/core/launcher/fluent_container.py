@@ -6,7 +6,7 @@ import time
 from typing import List
 
 from ansys.fluent.core.session import parse_server_info_file
-from ansys.fluent.core.utils.network import get_free_port
+from ansys.fluent.core.utils.networking import get_free_port
 
 
 def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) -> int:

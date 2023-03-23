@@ -125,7 +125,7 @@ class DataModelGenerator:
             "PMFileManagement": DataModelStaticInfo(
                 "PMFileManagement", ("meshing",), self.version
             ),
-            "icing": DataModelStaticInfo(
+            "flicing": DataModelStaticInfo(
                 "flserver", ("flicing",), self.version, "flicing"
             ),
             "preferences": DataModelStaticInfo(
@@ -293,21 +293,19 @@ class DataModelGenerator:
             f.write(f"{heading_}\n")
             f.write(f"{'=' * len(heading_)}\n")
             f.write("\n")
-            f.write(f".. currentmodule:: {module_name}\n\n")
-            f.write(".. autosummary::\n")
-            f.write("   :toctree: _autosummary\n\n")
 
             named_objects = sorted(info.namedobjects)
             singletons = sorted(info.singletons)
             parameters = sorted(info.parameters)
             commands = sorted(info.commands)
 
-            f.write(f".. autoclass:: {module_name}::{class_name}\n")
-            if parameters or commands:
-                f.write(f"   :members: {', '.join(parameters + commands)}\n")
-            if any(heading.startswith(x) for x in DataModelStaticInfo._noindices):
-                f.write("   :noindex:\n")
-            f.write("\n")
+            f.write(f".. autoclass:: {module_name}.{class_name}\n")
+            f.write("   :members:\n")
+            f.write("   :show-inheritance:\n")
+            f.write("   :undoc-members:\n")
+            f.write('   :exclude-members: "__weakref__, __dict__"\n')
+            f.write('   :special-members: " __init__"\n')
+            f.write("   :autosummary:\n\n")
 
             if singletons or named_objects:
                 f.write(".. toctree::\n")
@@ -372,21 +370,24 @@ class DataModelGenerator:
                 f.write(")\n\n\n")
                 self._write_static_info("Root", info.static_info, f)
                 mode_to_dir = dict(
-                    meshing=_MESHING_DM_DOC_DIR, solver=_SOLVER_DM_DOC_DIR
+                    meshing=_MESHING_DM_DOC_DIR,
+                    solver=_SOLVER_DM_DOC_DIR,
+                    flicing=_SOLVER_DM_DOC_DIR,
                 )
                 for mode in info.modes:
                     dir_type = mode_to_dir.get(mode)
+                    first_heading = "solver" if mode == "flicing" else mode
                     if dir_type:
                         doc_dir = Path(dir_type)
                         index_file = doc_dir / "index.rst"
                         with open(index_file, "a", encoding="utf8") as f:
                             f.write(f"   {name}/index\n")
                         self._write_doc_for_model_object(
-                            info.static_info,
-                            doc_dir / name,
-                            f"{mode}.datamodel.{name}",
-                            f"ansys.fluent.core.datamodel_{self.version}.{name}",
-                            "Root",
+                            info=info.static_info,
+                            doc_dir=doc_dir / name,
+                            heading=f"{first_heading}.datamodel.{name}",
+                            module_name=f"ansys.fluent.core.datamodel_{self.version}.{name}",
+                            class_name="Root",
                         )
 
     def _delete_generated_files(self):
