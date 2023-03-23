@@ -5,7 +5,7 @@ import shutil
 import pytest
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.filereader.case import _get_processed_string
+from ansys.fluent.core.filereader.case_file import _get_processed_string
 from ansys.fluent.core.filereader.casereader import CaseReader, InputParameter
 
 
