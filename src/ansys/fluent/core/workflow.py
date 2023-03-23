@@ -1,4 +1,4 @@
-from typing import Any, Tuple
+from typing import Any, Iterator, Tuple
 
 from ansys.fluent.core.services.datamodel_se import PyCallableStateObject
 
@@ -15,73 +15,6 @@ def _new_command_for_task(task, session):
         if new_cmd:
             return new_cmd
     raise NewCommandError(task._name_())
-
-
-class TaskContainer(PyCallableStateObject):
-    """Wrap a workflow TaskObject container.
-
-    Methods
-    -------
-    __getitem__(attr)
-    __getattr__(attr)
-    __dir__()
-    """
-
-    def __init__(self, command_source):
-        self._container = command_source
-        self._task_container = command_source._workflow.TaskObject
-
-    def __getitem__(self, name):
-        return makeTask(self._container, name)
-
-    def __getattr__(self, attr):
-        return getattr(self._task_container, attr)
-
-    def __dir__(self):
-        return sorted(
-            set(
-                list(self.__dict__.keys()) + dir(type(self)) + dir(self._task_container)
-            )
-        )
-
-
-class ArgumentsWrapper(PyCallableStateObject):
-    def __init__(self, task):
-        self._task = task
-
-    def set_state(self, args):
-        self._task.Arguments.set_state(args)
-
-    def get_state(self, explicit_only=False):
-        return (
-            self._task.Arguments() if explicit_only else self._task.CommandArguments()
-        )
-
-    def __getattr__(self, attr):
-        return getattr(self._task.CommandArguments, attr)
-
-    def __setitem__(self, key, value):
-        self._task.CommandArguments.__setitem__(key, value)
-
-
-class ArgumentWrapper(PyCallableStateObject):
-    def __init__(self, task, arg):
-        print(1)
-        self._task = task
-        print(2)
-        self._arg_name = arg
-        print(3)
-        self._arg = getattr(task.CommandArguments, arg)
-        print(4)
-
-    def set_state(self, value):
-        self._task.Arguments.update_dict({self._arg_name: value})
-
-    def get_state(self, explicit_only=False):
-        return self._task.Arguments()[self._arg_name] if explicit_only else self._arg()
-
-    def __getattr__(self, attr):
-        return getattr(self._arg, attr)
 
 
 class BaseTask:
@@ -253,6 +186,84 @@ class BaseTask:
             if other_attrs and (attrs & set(other_attrs)):
                 matches.append(task)
         return matches
+
+
+class TaskContainer(PyCallableStateObject):
+    """Wrap a workflow TaskObject container.
+
+    Methods
+    -------
+    __iter__()
+    __getitem__(attr)
+    __getattr__(attr)
+    __dir__()
+    """
+
+    def __init__(self, command_source):
+        self._container = command_source
+        self._task_container = command_source._workflow.TaskObject
+
+    def __iter__(self) -> Iterator[BaseTask]:
+        """Yield the next child object.
+        Yields
+        ------
+        Iterator[BaseTask]
+            Iterator of child objects.
+        """
+        for name in self._get_child_object_display_names():
+            yield self[name]
+
+    def __getitem__(self, name):
+        return makeTask(self._container, name)
+
+    def __getattr__(self, attr):
+        return getattr(self._task_container, attr)
+
+    def __dir__(self):
+        return sorted(
+            set(
+                list(self.__dict__.keys()) + dir(type(self)) + dir(self._task_container)
+            )
+        )
+
+
+class ArgumentsWrapper(PyCallableStateObject):
+    def __init__(self, task):
+        self._task = task
+
+    def set_state(self, args):
+        self._task.Arguments.set_state(args)
+
+    def get_state(self, explicit_only=False):
+        return (
+            self._task.Arguments() if explicit_only else self._task.CommandArguments()
+        )
+
+    def __getattr__(self, attr):
+        return getattr(self._task.CommandArguments, attr)
+
+    def __setitem__(self, key, value):
+        self._task.CommandArguments.__setitem__(key, value)
+
+
+class ArgumentWrapper(PyCallableStateObject):
+    def __init__(self, task, arg):
+        print(1)
+        self._task = task
+        print(2)
+        self._arg_name = arg
+        print(3)
+        self._arg = getattr(task.CommandArguments, arg)
+        print(4)
+
+    def set_state(self, value):
+        self._task.Arguments.update_dict({self._arg_name: value})
+
+    def get_state(self, explicit_only=False):
+        return self._task.Arguments()[self._arg_name] if explicit_only else self._arg()
+
+    def __getattr__(self, attr):
+        return getattr(self._arg, attr)
 
 
 class CommandTask(BaseTask):
