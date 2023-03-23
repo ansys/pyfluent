@@ -36,49 +36,49 @@ class MeshingQueriesService:
     def GetCellZoneAtLocation(
         self, request: MeshingQueriesProtoModule.GetCellZoneAtLocationRequest
     ) -> MeshingQueriesProtoModule.GetCellZoneAtLocationResponse:
-        """GetFaceZoneAtLocation rpc of Reduction service."""
+        """GetCellZoneAtLocation rpc of Reduction service."""
         return self._stub.GetCellZoneAtLocation(request, metadata=self._metadata)
 
     @catch_grpc_error
     def GetZonesOfType(
         self, request: MeshingQueriesProtoModule.GetZonesOfTypeRequest
     ) -> MeshingQueriesProtoModule.GetZonesOfTypeResponse:
-        """GetFaceZoneAtLocation rpc of Reduction service."""
+        """GetZonesOfType rpc of Reduction service."""
         return self._stub.GetZonesOfType(request, metadata=self._metadata)
 
     @catch_grpc_error
     def GetZonesOfGroup(
         self, request: MeshingQueriesProtoModule.GetZonesOfGroupRequest
     ) -> MeshingQueriesProtoModule.GetZonesOfGroupResponse:
-        """GetFaceZoneAtLocation rpc of Reduction service."""
+        """GetZonesOfGroup rpc of Reduction service."""
         return self._stub.GetZonesOfGroup(request, metadata=self._metadata)
 
     @catch_grpc_error
     def GetFaceZonesOfFilter(
         self, request: MeshingQueriesProtoModule.GetFaceZonesOfFilterRequest
     ) -> MeshingQueriesProtoModule.GetFaceZonesOfFilterResponse:
-        """GetFaceZoneAtLocation rpc of Reduction service."""
+        """GetFaceZonesOfFilter rpc of Reduction service."""
         return self._stub.GetFaceZonesOfFilter(request, metadata=self._metadata)
 
     @catch_grpc_error
     def GetCellZonesOfFilter(
         self, request: MeshingQueriesProtoModule.GetCellZonesOfFilterRequest
     ) -> MeshingQueriesProtoModule.GetCellZonesOfFilterResponse:
-        """GetFaceZoneAtLocation rpc of Reduction service."""
+        """GetCellZonesOfFilter rpc of Reduction service."""
         return self._stub.GetCellZonesOfFilter(request, metadata=self._metadata)
 
     @catch_grpc_error
     def GetEdgeZonesOfFilter(
         self, request: MeshingQueriesProtoModule.GetEdgeZonesOfFilterRequest
     ) -> MeshingQueriesProtoModule.GetEdgeZonesOfFilterResponse:
-        """GetFaceZoneAtLocation rpc of Reduction service."""
+        """GetEdgeZonesOfFilter rpc of Reduction service."""
         return self._stub.GetEdgeZonesOfFilter(request, metadata=self._metadata)
 
     @catch_grpc_error
     def GetNodeZonesOfFilter(
         self, request: MeshingQueriesProtoModule.GetNodeZonesOfFilterRequest
     ) -> MeshingQueriesProtoModule.GetNodeZonesOfFilterResponse:
-        """GetFaceZoneAtLocation rpc of Reduction service."""
+        """GetNodeZonesOfFilter rpc of Reduction service."""
         return self._stub.GetNodeZonesOfFilter(request, metadata=self._metadata)
 
 
@@ -94,7 +94,7 @@ class MeshingQueries:
     docstring = None
 
     def GetFaceZoneAtLocation(self, location) -> Any:
-        """GetFaceZoneAtLocationRequest."""
+        """GetFaceZoneAtLocation."""
         request = MeshingQueriesProtoModule.GetFaceZoneAtLocationRequest()
         request.location.x = location[0]
         request.location.y = location[1]
@@ -103,7 +103,7 @@ class MeshingQueries:
         return response.face_zone_id
 
     def GetCellZoneAtLocation(self, location) -> Any:
-        """GetFaceZoneAtLocationRequest."""
+        """GetCellZoneAtLocation."""
         request = MeshingQueriesProtoModule.GetCellZoneAtLocationRequest()
         request.location.x = location[0]
         request.location.y = location[1]
@@ -112,42 +112,42 @@ class MeshingQueries:
         return response.cell_zone_id
 
     def GetZonesOfType(self, zone_type) -> Any:
-        """GetFaceZoneAtLocationRequest."""
+        """GetZonesOfType."""
         request = MeshingQueriesProtoModule.GetZonesOfTypeRequest()
         request.zone_type = zone_type
         response = self.service.GetZonesOfType(request)
         return response.zone_ids
 
     def GetZonesOfGroup(self, group) -> Any:
-        """GetFaceZoneAtLocationRequest."""
+        """GetZonesOfGroup."""
         request = MeshingQueriesProtoModule.GetZonesOfGroupRequest()
         request.group = group
         response = self.service.GetZonesOfGroup(request)
         return response.zone_ids
 
     def GetFaceZonesOfFilter(self, filter) -> Any:
-        """GetFaceZoneAtLocationRequest."""
+        """GetFaceZonesOfFilter."""
         request = MeshingQueriesProtoModule.GetFaceZonesOfFilterRequest()
         request.filter = filter
         response = self.service.GetFaceZonesOfFilter(request)
         return response.face_zone_ids
 
     def GetCellZonesOfFilter(self, filter) -> Any:
-        """GetFaceZoneAtLocationRequest."""
+        """GetCellZonesOfFilter."""
         request = MeshingQueriesProtoModule.GetCellZonesOfFilterRequest()
         request.filter = filter
         response = self.service.GetCellZonesOfFilter(request)
         return response.cell_zone_ids
 
     def GetEdgeZonesOfFilter(self, filter) -> Any:
-        """GetFaceZoneAtLocationRequest."""
+        """GetEdgeZonesOfFilter."""
         request = MeshingQueriesProtoModule.GetEdgeZonesOfFilterRequest()
         request.filter = filter
         response = self.service.GetEdgeZonesOfFilter(request)
         return response.edge_zone_ids
 
     def GetNodeZonesOfFilter(self, filter) -> Any:
-        """GetFaceZoneAtLocationRequest."""
+        """GetNodeZonesOfFilter."""
         request = MeshingQueriesProtoModule.GetNodeZonesOfFilterRequest()
         request.filter = filter
         response = self.service.GetNodeZonesOfFilter(request)
