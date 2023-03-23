@@ -20,9 +20,10 @@ import os
 from os.path import dirname
 from pathlib import Path
 from typing import List
+import xml.etree.ElementTree as ET
 
-from bs4 import BeautifulSoup
 import h5py
+from lxml import etree
 
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
@@ -177,6 +178,7 @@ class CaseFile:
                 case_filepath = Path(
                     project_dir + _get_case_filepath_from_flprj(project_filepath)
                 )
+                a = 1
             else:
                 raise RuntimeError("Please provide a valid fluent project file path")
         try:
@@ -292,7 +294,8 @@ def _get_processed_string(input_string: bytes) -> str:
 
 
 def _get_case_filepath_from_flprj(flprj_file):
-    with open(flprj_file) as fp:
-        soup = BeautifulSoup(fp, "xml")
-
-    return soup.find_all("Case")[0].findNext()["value"]
+    parser = etree.XMLParser(recover=True)
+    tree = ET.parse(flprj_file, parser)
+    root = tree.getroot()
+    folder_name = root.find("Metadata").find("CurrentSimulation").get("value")[5:-1]
+    return root.find(folder_name).find("Input").find("Case").find("Target").get("value")
