@@ -1,11 +1,7 @@
-import os
-
 import pytest
 from util.fixture_fluent import load_static_mixer_case  # noqa: F401
 
 from ansys.fluent.core.services.reduction import _locn_names_and_objs
-
-os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
 
 load_static_mixer_case_2 = load_static_mixer_case
 
