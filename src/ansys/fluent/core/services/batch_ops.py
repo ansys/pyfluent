@@ -3,6 +3,7 @@
 import inspect
 import logging
 from typing import List, Tuple
+import weakref
 
 import grpc
 
@@ -28,23 +29,36 @@ class BatchOpsService:
 
 
 class BatchOps:
-    """Class to perform batch operations.
+    """Class to execute operations in batch in Fluent.
 
     Examples
     --------
     >>> with pyfluent.BatchOps(solver):
-    >>>     solver.tui.file.read_case("elbow.cas.h5")
-    >>>     solver.solution.initialization.hybrid_initialize()
+    >>>     solver.tui.file.read_case("mixing_elbow.cas.h5")
+    >>>     solver.results.graphics.mesh["mesh-1"] = {}
 
-    Above will be executed in server through a single grpc call during exiting the with
-    block. Only the non-getter rpc methods are supported.
+    Above code will execute both operations through a single gRPC call upon exiting the
+    ``with`` block.
 
-    The getter rpc methods within the with block are executed right away. Make
-    sure that they do not depend on execution of non-getter methods.
+    Operations that perform queries in Fluent are executed immediately, while others are
+    queued for batch execution. Some queries are executed behind the scenes while
+    queueing an operation for batch execution, and we must ensure that they do not
+    depend on previously queued operations.
+
+
+    For example,
+
+    >>> with pyfluent.BatchOps(solver):
+    >>>     solver.tui.file.read_case("mixing_elbow.cas.h5")
+    >>>     solver.results.graphics.mesh["mesh-1"] = {}
+    >>>     solver.results.graphics.mesh["mesh-1"].surfaces_list = ["wall-elbow"]
+
+    will throw a ``KeyError`` as ``solver.results.graphics.mesh["mesh-1"]`` attempts to
+    access the ``mesh-1`` mesh object which has not been created yet.
     """
 
     _proto_files = None
-    _instance = None
+    _instance = lambda: None
 
     @classmethod
     def instance(cls) -> "BatchOps":
@@ -55,7 +69,7 @@ class BatchOps:
         BatchOps
             BatchOps instance
         """
-        return cls._instance
+        return cls._instance()
 
     class Op:
         """Class to create a single batch operation."""
@@ -120,12 +134,13 @@ class BatchOps:
             self._result = obj
 
     def __new__(cls, session):
-        if cls._instance is None:
-            cls._instance = super(BatchOps, cls).__new__(cls)
-            cls._instance._service = session._batch_ops_service
-            cls._instance._ops: List[BatchOps.Op] = []
-            cls._instance.batching = False
-        return cls._instance
+        if cls.instance() is None:
+            instance = super(BatchOps, cls).__new__(cls)
+            instance._service = session._batch_ops_service
+            instance._ops: List[BatchOps.Op] = []
+            instance.batching = False
+            cls._instance = weakref.ref(instance)
+        return cls.instance()
 
     def __enter__(self):
         """Entering the with block."""
@@ -137,10 +152,11 @@ class BatchOps:
         """Exiting from the with block."""
         network_logger.debug("Executing batch operations")
         self.batching = False
-        requests = (x._request for x in self._ops)
-        responses = self._service.execute(requests)
-        for i, response in enumerate(responses):
-            self._ops[i].update_result(response.status, response.response_body)
+        if not exc_type:
+            requests = (x._request for x in self._ops)
+            responses = self._service.execute(requests)
+            for i, response in enumerate(responses):
+                self._ops[i].update_result(response.status, response.response_body)
 
     def add_op(self, package: str, service: str, method: str, request):
         """Queue a single batch operation. Only the non-getter operations will

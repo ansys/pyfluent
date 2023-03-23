@@ -7,11 +7,11 @@ from ansys.fluent.core.session_solver import Solver
 
 
 class Meshing(PureMeshing):
-    """Encapsulates a Fluent - Meshing session connection.
-    Meshing(PureMeshing) holds the top-level objects
-    for meshing TUI and various meshing datamodel API calls.
-    In this general meshing mode, switch to solver is available,
-    after which"""
+    """Encapsulates a Fluent meshing session. A ``tui`` object
+    for meshing TUI commanding, and ``meshing`` and ``workflow``
+    objects for access to task-based meshing workflows are all
+    exposed here. A ``switch_to_solver`` method is available
+    in this mode."""
 
     def __init__(
         self,

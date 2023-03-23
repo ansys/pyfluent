@@ -1,4 +1,5 @@
-"""Module providing visualization objects for Matplotlib."""
+"""Module providing visualization objects to facilitate
+   integration with libraries like Matplotlib and pyvista."""
 import inspect
 
 from ansys.fluent.core.meta import PyLocalContainer
@@ -57,7 +58,7 @@ class Plots(Container):
             Session object.
         local_surfaces_provider : object, optional
             Object providing local surfaces so that you can access surfaces
-            created in other modules, such as PyVista. The default is ``None``.
+            created in other modules, such as pyvista. The default is ``None``.
 
     Attributes
     ----------
@@ -76,7 +77,7 @@ class Plots(Container):
 
 
 class Graphics(Container):
-    """Provides the PyVista ``Graphics`` objects manager.
+    """Provides the pyvista ``Graphics`` objects manager.
 
     This class provides access to ``Graphics`` object containers for a given
     session so that graphics objects can be created.
@@ -87,7 +88,7 @@ class Graphics(Container):
         Session object.
     local_surfaces_provider : object, optional
         Object providing local surfaces so that you can access surfaces
-        created in other modules, such as PyVista. The default is ``None``.
+        created in other modules, such as pyvista. The default is ``None``.
 
     Attributes
     ----------

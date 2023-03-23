@@ -125,7 +125,7 @@ class DataModelGenerator:
             "PMFileManagement": DataModelStaticInfo(
                 "PMFileManagement", ("meshing",), self.version
             ),
-            "icing": DataModelStaticInfo(
+            "flicing": DataModelStaticInfo(
                 "flserver", ("flicing",), self.version, "flicing"
             ),
             "preferences": DataModelStaticInfo(
@@ -370,21 +370,24 @@ class DataModelGenerator:
                 f.write(")\n\n\n")
                 self._write_static_info("Root", info.static_info, f)
                 mode_to_dir = dict(
-                    meshing=_MESHING_DM_DOC_DIR, solver=_SOLVER_DM_DOC_DIR
+                    meshing=_MESHING_DM_DOC_DIR,
+                    solver=_SOLVER_DM_DOC_DIR,
+                    flicing=_SOLVER_DM_DOC_DIR,
                 )
                 for mode in info.modes:
                     dir_type = mode_to_dir.get(mode)
+                    first_heading = "solver" if mode == "flicing" else mode
                     if dir_type:
                         doc_dir = Path(dir_type)
                         index_file = doc_dir / "index.rst"
                         with open(index_file, "a", encoding="utf8") as f:
                             f.write(f"   {name}/index\n")
                         self._write_doc_for_model_object(
-                            info.static_info,
-                            doc_dir / name,
-                            f"{mode}.datamodel.{name}",
-                            f"ansys.fluent.core.datamodel_{self.version}.{name}",
-                            "Root",
+                            info=info.static_info,
+                            doc_dir=doc_dir / name,
+                            heading=f"{first_heading}.datamodel.{name}",
+                            module_name=f"ansys.fluent.core.datamodel_{self.version}.{name}",
+                            class_name="Root",
                         )
 
     def _delete_generated_files(self):

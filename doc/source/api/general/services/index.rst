@@ -10,6 +10,7 @@ Services
     :template: flobject-module-template.rst
     :recursive:
 
+    batch_ops
     error_handler
     events
     field_data
