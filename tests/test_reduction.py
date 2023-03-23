@@ -3,7 +3,7 @@ import os
 import pytest
 from util.fixture_fluent import load_static_mixer_case  # noqa: F401
 
-from ansys.fluent.core.solver.function import reduction
+from ansys.fluent.core.services.reduction import _locn_names_and_objs
 
 os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
 
@@ -11,11 +11,11 @@ load_static_mixer_case_2 = load_static_mixer_case
 
 
 def _test_locn_extraction(solver1, solver2):
-    locns = reduction._locn_names_and_objs(["inlet1"])
+    locns = _locn_names_and_objs(["inlet1"])
     assert locns == [["inlet1", ["inlet1"]]]
 
     all_bcs = solver1.setup.boundary_conditions
-    locns = reduction._locn_names_and_objs(all_bcs)
+    locns = _locn_names_and_objs(all_bcs)
     assert locns == [
         ["interior--fluid", all_bcs],
         ["outlet", all_bcs],
@@ -24,12 +24,12 @@ def _test_locn_extraction(solver1, solver2):
         ["wall", all_bcs],
     ]
 
-    locns = reduction._locn_names_and_objs([all_bcs["inlet1"]])
+    locns = _locn_names_and_objs([all_bcs["inlet1"]])
     assert locns == [["inlet1", all_bcs["inlet1"]]]
 
     all_bcs = solver1.setup.boundary_conditions
     all_bcs2 = solver2.setup.boundary_conditions
-    locns = reduction._locn_names_and_objs([all_bcs, all_bcs2])
+    locns = _locn_names_and_objs([all_bcs, all_bcs2])
     assert locns == [
         ["interior--fluid", all_bcs],
         ["outlet", all_bcs],
@@ -47,12 +47,12 @@ def _test_locn_extraction(solver1, solver2):
 def _test_context(solver):
     solver.solution.initialization.hybrid_initialize()
 
-    assert reduction.area(
+    assert solver.reduction.area(
         locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
         ctxt=solver,
     )
 
-    assert reduction.area(locations=["inlet1"], ctxt=solver)
+    assert solver.reduction.area(locations=["inlet1"], ctxt=solver)
 
 
 def _test_area_average(solver):
@@ -232,12 +232,15 @@ def _test_area_integrated_average(solver1, solver2):
 
 def _test_error_handling(solver):
     with pytest.raises(RuntimeError) as msg:
-        reduction.area_average(
-            expr="AbsoluteVelocity",  # This is a wrong expression intentionally passed
+        solver.reduction.area_average(
+            expression="AbsoluteVelocity",  # This is a wrong expression intentionally passed
             locations=solver.setup.boundary_conditions.velocity_inlet,
         )
 
-    assert msg.value.args[0] == "Unable to evaluate expression"
+    assert (
+        msg.value.args[0]
+        == "The last request could not be completed because there is error in server."
+    )
 
 
 def _test_force(solver):
@@ -278,17 +281,21 @@ def _test_moment(solver):
     ].definition = "Moment(['inlet1'],['wall'])"
     expr_val_2 = solver.setup.named_expressions["test_expr_1"].get_value()
 
-    red_moment_force = reduction.moment(
-        expr="Force(['wall'])", locations=[solver.setup.boundary_conditions.wall]
+    red_moment_force = solver.reduction.moment(
+        expression="Force(['wall'])", locations=[solver.setup.boundary_conditions.wall]
     )
 
-    red_moment_location = reduction.moment(
-        expr="['inlet1']",
+    red_moment_location = solver.reduction.moment(
+        expression="['inlet1']",
         locations=[solver.setup.boundary_conditions.wall],
     )
 
-    assert (red_moment_force == expr_val_1).all()
-    assert (red_moment_location == expr_val_2).all()
+    assert [red_moment_force.x, red_moment_force.y, red_moment_force.z] == expr_val_1
+    assert [
+        red_moment_location.x,
+        red_moment_location.y,
+        red_moment_location.z,
+    ] == expr_val_2
 
     solver.setup.named_expressions.pop(key="test_expr_1")
 
@@ -298,13 +305,13 @@ def _test_moment(solver):
 def test_reductions(load_static_mixer_case, load_static_mixer_case_2) -> None:
     solver1 = load_static_mixer_case
     solver2 = load_static_mixer_case_2
-    # _test_context(solver1)
+    _test_context(solver1)
     _test_locn_extraction(solver1, solver2)
     _test_area_average(solver1)
     _test_min(solver1, solver2)
     _test_count(solver1)
     _test_centroid(solver1)
     _test_area_integrated_average(solver1, solver2)
-    # _test_error_handling(solver1)
+    _test_error_handling(solver1)
     _test_force(solver1)
-    # _test_moment(solver1)
+    _test_moment(solver1)
