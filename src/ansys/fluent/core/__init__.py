@@ -44,8 +44,12 @@ def version_info() -> str:
     return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
 
+file_path = os.path.abspath(__file__)
+file_dir = os.path.dirname(file_path)
+yaml_path = os.path.join(file_dir, "logging_config.yaml")
+
 # Load the logging configuration from a YAML file
-with open("logging_config.yaml", "rt") as f:
+with open(yaml_path, "rt") as f:
     config = yaml.safe_load(f)
 
 # Configure the logging system
