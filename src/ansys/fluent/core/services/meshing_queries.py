@@ -18,7 +18,7 @@ class MeshingQueriesService:
     """
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
-        """__init__ method of MeshingQueries class."""
+        """__init__ method of MeshingQueriesService class."""
         intercept_channel = grpc.intercept_channel(
             channel, TracingInterceptor(), BatchInterceptor()
         )
@@ -29,66 +29,66 @@ class MeshingQueriesService:
     def GetFaceZoneAtLocation(
         self, request: MeshingQueriesProtoModule.GetFaceZoneAtLocationRequest
     ) -> MeshingQueriesProtoModule.GetFaceZoneAtLocationResponse:
-        """GetFaceZoneAtLocation rpc of Reduction service."""
+        """GetFaceZoneAtLocation rpc of MeshingQueriesService."""
         return self._stub.GetFaceZoneAtLocation(request, metadata=self._metadata)
 
     @catch_grpc_error
     def GetCellZoneAtLocation(
         self, request: MeshingQueriesProtoModule.GetCellZoneAtLocationRequest
     ) -> MeshingQueriesProtoModule.GetCellZoneAtLocationResponse:
-        """GetCellZoneAtLocation rpc of Reduction service."""
+        """GetCellZoneAtLocation rpc of MeshingQueriesService."""
         return self._stub.GetCellZoneAtLocation(request, metadata=self._metadata)
 
     @catch_grpc_error
     def GetZonesOfType(
         self, request: MeshingQueriesProtoModule.GetZonesOfTypeRequest
     ) -> MeshingQueriesProtoModule.GetZonesOfTypeResponse:
-        """GetZonesOfType rpc of Reduction service."""
+        """GetZonesOfType rpc of MeshingQueriesService."""
         return self._stub.GetZonesOfType(request, metadata=self._metadata)
 
     @catch_grpc_error
     def GetZonesOfGroup(
         self, request: MeshingQueriesProtoModule.GetZonesOfGroupRequest
     ) -> MeshingQueriesProtoModule.GetZonesOfGroupResponse:
-        """GetZonesOfGroup rpc of Reduction service."""
+        """GetZonesOfGroup rpc of MeshingQueriesService."""
         return self._stub.GetZonesOfGroup(request, metadata=self._metadata)
 
     @catch_grpc_error
     def GetFaceZonesOfFilter(
         self, request: MeshingQueriesProtoModule.GetFaceZonesOfFilterRequest
     ) -> MeshingQueriesProtoModule.GetFaceZonesOfFilterResponse:
-        """GetFaceZonesOfFilter rpc of Reduction service."""
+        """GetFaceZonesOfFilter rpc of MeshingQueriesService."""
         return self._stub.GetFaceZonesOfFilter(request, metadata=self._metadata)
 
     @catch_grpc_error
     def GetCellZonesOfFilter(
         self, request: MeshingQueriesProtoModule.GetCellZonesOfFilterRequest
     ) -> MeshingQueriesProtoModule.GetCellZonesOfFilterResponse:
-        """GetCellZonesOfFilter rpc of Reduction service."""
+        """GetCellZonesOfFilter rpc of MeshingQueriesService."""
         return self._stub.GetCellZonesOfFilter(request, metadata=self._metadata)
 
     @catch_grpc_error
     def GetEdgeZonesOfFilter(
         self, request: MeshingQueriesProtoModule.GetEdgeZonesOfFilterRequest
     ) -> MeshingQueriesProtoModule.GetEdgeZonesOfFilterResponse:
-        """GetEdgeZonesOfFilter rpc of Reduction service."""
+        """GetEdgeZonesOfFilter rpc of MeshingQueriesService."""
         return self._stub.GetEdgeZonesOfFilter(request, metadata=self._metadata)
 
     @catch_grpc_error
     def GetNodeZonesOfFilter(
         self, request: MeshingQueriesProtoModule.GetNodeZonesOfFilterRequest
     ) -> MeshingQueriesProtoModule.GetNodeZonesOfFilterResponse:
-        """GetNodeZonesOfFilter rpc of Reduction service."""
+        """GetNodeZonesOfFilter rpc of MeshingQueriesService."""
         return self._stub.GetNodeZonesOfFilter(request, metadata=self._metadata)
 
 
 class MeshingQueries:
     """
-    Reduction.
+    MeshingQueries.
     """
 
     def __init__(self, service: MeshingQueriesService):
-        """__init__ method of Reduction class."""
+        """__init__ method of MeshingQueries class."""
         self.service = service
 
     docstring = None
