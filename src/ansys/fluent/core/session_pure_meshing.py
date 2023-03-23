@@ -11,12 +11,11 @@ from ansys.fluent.core.utils.data_transfer import transfer_case
 
 
 class PureMeshing(_BaseSession):
-    """Encapsulates a Fluent - Pure Meshing session connection.
-    PureMeshing(_BaseSession) holds the top-level objects
-    for meshing TUI and various meshing datamodel API calls.
-    In pure-meshing mode, switch to solver is not available.
-    Public attributes of this class or extracted from the _BaseMeshing
-    class"""
+    """Encapsulates a Fluent meshing session. A ``tui`` object
+    for meshing TUI commanding, and ``meshing`` and ``workflow``
+    objects for access to task-based meshing workflows are all
+    exposed here. No ``switch_to_solver`` method is available
+    in this mode."""
 
     def __init__(self, fluent_connection: _FluentConnection):
         super(PureMeshing, self).__init__(fluent_connection=fluent_connection)

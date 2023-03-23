@@ -1,7 +1,7 @@
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
 from enum import Enum
 import itertools
-from typing import Any, Callable, Dict, Iterator, List, Tuple
+from typing import Any, Callable, Dict, Iterator, List, Tuple, Type
 import warnings
 
 import grpc
@@ -1127,7 +1127,7 @@ class PyCommandArguments(PyStateContainer):
     def __getattr__(self, attr):
         for arg in self.static_info.commands[self.command].commandinfo.args:
             if arg.name == attr:
-                mode = AccessorModes.get_mode(arg.type)
+                mode = DataModelType.get_mode(arg.type)
                 py_class = mode.value[1]
                 return py_class(self, attr, self.service, self.rules, self.path, arg)
 
@@ -1228,13 +1228,13 @@ class PySingletonCommandArgumentsSubItem(PyCommandArgumentsSubItem):
     def __getattr__(self, attr):
         arg = self.parent_arg.info.parameters[attr]
 
-        mode = AccessorModes.get_mode(arg.type)
+        mode = DataModelType.get_mode(arg.type)
         py_class = mode.value[1]
         return py_class(self, attr, self.service, self.rules, self.path, arg)
 
 
-class AccessorModes(Enum):
-    """Provides the standard Fluent launch modes."""
+class DataModelType(Enum):
+    """An enumeration over datamodel types."""
 
     # Tuple:   Name, Solver object type, Meshing flag, Launcher options
     TEXT = (["String", "ListString", "String List"], PyTextualCommandArgumentsSubItem)
@@ -1250,9 +1250,9 @@ class AccessorModes(Enum):
     MODELOBJECT = (["ModelObject"], PySingletonCommandArgumentsSubItem)
 
     @staticmethod
-    def get_mode(mode: str) -> "AccessorModes":
-        """Returns the LaunchMode based on the mode in string format."""
-        for m in AccessorModes:
+    def get_mode(mode: str) -> Type[PyCommandArgumentsSubItem]:
+        """Returns the datamodel type."""
+        for m in DataModelType:
             if mode in m.value[0]:
                 return m
         else:

@@ -15,9 +15,7 @@ class RPVars:
 
     Methods
     -------
-    __call__(
-        var, val
-        )
+    __call__(var, val)
         Set or get a specific rpvar or get the full rpvar state.
     """
 
