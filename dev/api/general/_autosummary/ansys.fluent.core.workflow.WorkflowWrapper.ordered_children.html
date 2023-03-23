@@ -512,24 +512,21 @@ function checkPageExistsAndRedirect(event) {
 of the workflow order and only includes the top-level tasks, while other tasks
 can be obtained by calling ordered_children() on a parent task. Given the
 workflow:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Workflow
+├── A
+├── B
+│   ├── C
+│   └── D
+└── E
+</pre></div>
+</div>
+<p>the ordered children of the workflow are A, B, E, while B has ordered children
+C and D.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a></p>
 </dd>
 </dl>
-<p>o Workflow
-|
-<a href="#id1"><span class="problematic" id="id2">|</span></a>–o A
-|
-<a href="#id3"><span class="problematic" id="id4">|</span></a>–o B
-|  |
-|  <a href="#id5"><span class="problematic" id="id6">|</span></a>–o C
-|  |
-|  <a href="#id7"><span class="problematic" id="id8">|</span></a>–o D
-|
-<a href="#id9"><span class="problematic" id="id10">|</span></a>–o E</p>
-<p>the ordered children of the workflow are A, B, E, while B has ordered children
-C and D.</p>
 </dd></dl>
 
 </section>

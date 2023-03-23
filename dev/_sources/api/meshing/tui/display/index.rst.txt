@@ -14,11 +14,11 @@ meshing.tui.display
 .. toctree::
    :hidden:
 
-   advanced_rendering/index
-   xy_plot/index
-   update_scene/index
+   zones/index
    set/index
+   set_grid/index
+   update_scene/index
+   xy_plot/index
    display_states/index
    objects/index
-   set_grid/index
-   zones/index
+   advanced_rendering/index

@@ -14,25 +14,25 @@ solver.tui.define
 .. toctree::
    :hidden:
 
-   boundary_conditions/index
-   spectral/index
-   custom_field_functions/index
-   dynamic_mesh/index
-   mesh_interfaces/index
-   gap_model/index
-   materials/index
-   mixing_planes/index
+   turbo_model/index
+   solution_strategy/index
    models/index
+   custom_field_functions/index
+   named_expressions/index
+   periodic_conditions/index
+   spectral/index
+   gap_model/index
+   phases/index
+   boundary_conditions/index
+   user_defined/index
    overset_interfaces/index
+   materials/index
+   profiles/index
+   dynamic_mesh/index
+   curvilinear_coordinate_system/index
+   mesh_interfaces/index
    operating_conditions/index
    parameters/index
-   periodic_conditions/index
-   turbo_model/index
-   phases/index
-   profiles/index
-   solution_strategy/index
    reference_frames/index
-   user_defined/index
-   named_expressions/index
    virtual_boundary/index
-   curvilinear_coordinate_system/index
+   mixing_planes/index

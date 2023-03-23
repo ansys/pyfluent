@@ -15,5 +15,5 @@ solver.tui.solution.monitors
    :hidden:
 
    report_files/index
-   report_plots/index
    residual/index
+   report_plots/index

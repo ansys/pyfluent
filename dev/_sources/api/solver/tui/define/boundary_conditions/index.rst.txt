@@ -16,9 +16,9 @@ solver.tui.define.boundary\_conditions
 
    advanced/index
    modify_zones/index
-   non_reflecting_bc/index
-   rename_zone/index
+   set/index
    bc_settings/index
    perforated_walls/index
-   set/index
    impedance_data_fitting/index
+   rename_zone/index
+   non_reflecting_bc/index

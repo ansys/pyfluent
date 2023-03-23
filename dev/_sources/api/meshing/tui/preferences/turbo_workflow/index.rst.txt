@@ -14,6 +14,6 @@ meshing.tui.preferences.turbo\_workflow
 .. toctree::
    :hidden:
 
-   face_zone_settings/index
-   graphics_settings/index
    cell_zone_settings/index
+   graphics_settings/index
+   face_zone_settings/index

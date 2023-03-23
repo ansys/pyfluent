@@ -14,10 +14,10 @@ solver.tui.solution.expert
 .. toctree::
    :hidden:
 
+   secondary_gradient_limiting/index
+   non_reflecting_boundary_treatment/index
    divergence_prevention/index
+   previous_defaults/index
+   open_channel_wave_options/index
    high_speed_numerics/index
    poor_mesh_numerics/index
-   previous_defaults/index
-   non_reflecting_boundary_treatment/index
-   open_channel_wave_options/index
-   secondary_gradient_limiting/index

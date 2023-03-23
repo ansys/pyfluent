@@ -583,7 +583,7 @@ about the relationships between TaskObjects.</p>
 <td><p>Get the inactive ordered task list held by this task.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="ansys.fluent.core.workflow.Task.ordered_children.html#ansys.fluent.core.workflow.Task.ordered_children" title="ansys.fluent.core.workflow.Task.ordered_children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ordered_children</span></code></a>()</p></td>
-<td><p>Get the ordered task list held by this task.</p></td>
+<td><p>Get the ordered task list held by this task. Sorting is in terms of the workflow order and only includes this task's top-level tasks, while other tasks can be obtained by calling ordered_children() on a parent task. Given the workflow::.</p></td>
 </tr>
 </tbody>
 </table>

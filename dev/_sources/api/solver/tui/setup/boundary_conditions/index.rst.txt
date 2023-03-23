@@ -15,9 +15,9 @@ solver.tui.setup.boundary\_conditions
    :hidden:
 
    bc_settings/index
-   expert/index
+   set/index
+   rename_zone/index
    modify_zones/index
    profiles/index
+   expert/index
    query/index
-   rename_zone/index
-   set/index

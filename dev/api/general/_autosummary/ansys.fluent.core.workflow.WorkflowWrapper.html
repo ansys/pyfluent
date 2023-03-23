@@ -536,7 +536,7 @@ relationships between TaskObjects.</p>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="ansys.fluent.core.workflow.WorkflowWrapper.ordered_children.html#ansys.fluent.core.workflow.WorkflowWrapper.ordered_children" title="ansys.fluent.core.workflow.WorkflowWrapper.ordered_children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ordered_children</span></code></a>()</p></td>
-<td><p>Get the ordered task list held by the workflow.</p></td>
+<td><p>Get the ordered task list held by the workflow. Sorting is in terms of the workflow order and only includes the top-level tasks, while other tasks can be obtained by calling ordered_children() on a parent task. Given the workflow::.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="ansys.fluent.core.workflow.WorkflowWrapper.task.html#ansys.fluent.core.workflow.WorkflowWrapper.task" title="ansys.fluent.core.workflow.WorkflowWrapper.task"><code class="xref py py-obj docutils literal notranslate"><span class="pre">task</span></code></a>(name)</p></td>
 <td><p>Get a TaskObject by name, in a Task wrapper.</p></td>
