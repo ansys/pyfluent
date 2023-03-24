@@ -234,6 +234,9 @@ class ArgumentsWrapper(PyCallableStateObject):
     def set_state(self, args):
         self._task.Arguments.set_state(args)
 
+    def update_dict(self, args):
+        self._task.Arguments.update_dict(args)
+
     def get_state(self, explicit_only=False):
         return (
             self._task.Arguments() if explicit_only else self._task.CommandArguments()
