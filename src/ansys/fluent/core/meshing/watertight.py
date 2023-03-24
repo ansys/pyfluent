@@ -1,9 +1,9 @@
-from ansys.fluent.core.launcher.launcher import launch_fluent
+from ansys.fluent.core.launcher.launcher import LaunchMode, launch_fluent
 
 
 class WatertightWorkflow:
     def __init__(self, geometry_filepath, **launch_args) -> None:
-        args = dict(mode="pure-meshing")
+        args = dict(mode=LaunchMode.PURE_MESHING_MODE)
         args.update(launch_args)
         self._session = launch_fluent(**args)
         self._meshing_workflow = self._session.workflow
