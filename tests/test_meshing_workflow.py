@@ -13,6 +13,7 @@ from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invali
 )
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.meshing.watertight import WatertightWorkflow
 
 
 @pytest.mark.nightly
@@ -653,3 +654,8 @@ def test_iterate_meshing_workflow_task_container(new_mesh_session):
     tasks = [task for task in workflow.TaskObject]
     assert len(tasks) == 11
     assert tasks[0].name() == "Import Geometry"
+
+
+@pytest.mark.dev
+def test_watertight(mixing_elbow_geometry):
+    watertight = WatertightWorkflow(geometry_filepath=mixing_elbow_geometry)
