@@ -2,6 +2,7 @@
 Session."""
 import importlib
 import json
+import logging
 import os
 from typing import Any, Dict
 
@@ -10,7 +11,6 @@ from ansys.fluent.core.session_shared import (  # noqa: F401
     _CODEGEN_MSG_DATAMODEL,
     _CODEGEN_MSG_TUI,
 )
-from ansys.fluent.core.utils.logging import LOG
 
 from .rpvars import RPVars
 
@@ -18,6 +18,8 @@ try:
     from ansys.fluent.core.solver.settings import root
 except Exception:
     root = Any
+
+data_model_logger = logging.getLogger("ansys.fluent.services.datamodel")
 
 
 def parse_server_info_file(filename: str):
@@ -37,7 +39,7 @@ def _get_datamodel_attributes(session, attribute: str):
         )
         return preferences_module.Root(session._se_service, attribute, [])
     except (ImportError, ModuleNotFoundError):
-        LOG.warning(_CODEGEN_MSG_DATAMODEL)
+        data_model_logger.warning(_CODEGEN_MSG_DATAMODEL)
 
 
 def _get_preferences(session):

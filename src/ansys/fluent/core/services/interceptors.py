@@ -1,12 +1,14 @@
 """Interceptor classes to use with gRPC services."""
 
+import logging
 from typing import Any
 
 from google.protobuf.json_format import MessageToDict
 import grpc
 
 from ansys.fluent.core.services.batch_ops import BatchOps
-from ansys.fluent.core.utils.logging import LOG
+
+network_logger = logging.getLogger("ansys.fluent.networking")
 
 
 class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
@@ -22,14 +24,14 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
         client_call_details: grpc.ClientCallDetails,
         request: Any,
     ):
-        LOG.debug(
+        network_logger.debug(
             "GRPC_TRACE: rpc = %s, request = %s",
             client_call_details.method,
             MessageToDict(request),
         )
         response = continuation(client_call_details, request)
         if not response.exception():
-            LOG.debug(
+            network_logger.debug(
                 "GRPC_TRACE: response = %s",
                 MessageToDict(response.result()),
             )

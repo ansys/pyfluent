@@ -1,6 +1,7 @@
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
 from enum import Enum
 import itertools
+import logging
 from typing import Any, Callable, Dict, Iterator, List, Tuple, Type
 import warnings
 
@@ -14,6 +15,8 @@ from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInt
 from ansys.fluent.core.services.streaming import StreamingService
 
 Path = List[Tuple[str, str]]
+
+logger = logging.getLogger("ansys.fluent.services.datamodel")
 
 
 class Attribute(Enum):
@@ -119,6 +122,7 @@ class DatamodelService(StreamingService):
         self, request: DataModelProtoModule.ExecuteCommandRequest
     ) -> DataModelProtoModule.ExecuteCommandResponse:
         """executeCommand rpc of DataModel service."""
+        logger.debug(f"Command: {request.command}")
         return self._stub.executeCommand(request, metadata=self._metadata)
 
     @catch_grpc_error
