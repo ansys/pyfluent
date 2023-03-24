@@ -179,7 +179,9 @@ class CaseFile:
                     project_dir + _get_case_filepath_from_flprj(project_filepath)
                 )
             else:
-                raise RuntimeError("Please provide a valid fluent project file path")
+                raise FileNotFoundError(
+                    "Please provide a valid fluent project file path"
+                )
         try:
             if "".join(Path(case_filepath).suffixes) == ".cas.h5":
                 file = h5py.File(case_filepath)
@@ -197,8 +199,8 @@ class CaseFile:
             else:
                 raise RuntimeError()
 
-        except FileNotFoundError:
-            raise RuntimeError(f"The case file {case_filepath} cannot be found.")
+        except FileNotFoundError as e:
+            raise RuntimeError(f"The case file {case_filepath} cannot be found.") from e
 
         except OSError:
             error_message = (
@@ -207,8 +209,8 @@ class CaseFile:
             )
             raise RuntimeError(error_message)
 
-        except BaseException:
-            raise RuntimeError(f"Could not read case file {case_filepath}")
+        except BaseException as e:
+            raise RuntimeError(f"Could not read case file {case_filepath}") from e
 
         self._rp_vars = {v[0]: v[1] for v in lispy.parse(rp_vars_str)[1]}
 
