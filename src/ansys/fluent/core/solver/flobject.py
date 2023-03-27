@@ -173,7 +173,8 @@ class Base:
 
     def is_read_only(self) -> bool:
         """Whether the object is read-only."""
-        return self.get_attr("read-only?", bool)
+        attr = self.get_attr("read-only?")
+        return False if attr is None else attr
 
     def __setattr__(self, name, value):
         raise AttributeError(name)
@@ -455,6 +456,32 @@ class Group(SettingsBase[DictStateType]):
                 ret.append(query)
         return ret
 
+    def get_completer_info(self, prefix=""):
+        """Return list of [name, type, doc]"""
+        ret = []
+        for child_name in self.child_names:
+            if child_name.startswith(prefix):
+                child = getattr(self, child_name)
+                if child.is_active():
+                    ret.append(
+                        [
+                            child_name,
+                            child.__class__.__bases__[0].__name__,
+                            child.__doc__,
+                        ]
+                    )
+        for command_name in self.command_names:
+            if command_name.startswith(prefix):
+                command = getattr(self, command_name)
+                if command.is_active():
+                    ret.append([command_name, Command.__name__, command.__doc__])
+        for query_name in self.query_names:
+            if query_name.startswith(prefix):
+                query = getattr(self, query_name)
+                if query.is_active():
+                    ret.append([query_name, Query.__name__, query.__doc__])
+        return ret
+
     def _get_parent_of_active_child_names(self, name):
         parents = ""
         for parent in self.get_active_child_names():
@@ -488,7 +515,7 @@ class Group(SettingsBase[DictStateType]):
         attr = None
         try:
             attr = getattr(self, name)
-        except BaseException as ex:
+        except AttributeError as ex:
             raise AttributeError(
                 allowed_name_error_message(
                     "Settings objects", name, super().__getattribute__("child_names")
@@ -544,7 +571,11 @@ class WildcardPath(Group):
                 self._state_cls,
                 child_settings_cls,
             )
-        raise AttributeError(name)
+        raise KeyError(
+            allowed_name_error_message(
+                "Settings objects", name, self.get_object_names()
+            )
+        )
 
     def to_scheme_keys(self, value):
         """Convert value to have keys with scheme names."""
@@ -841,6 +872,22 @@ class Action(Base):
             raise RuntimeError(f"{self.__class__.__name__} is not active")
         return attrs["arguments"] if attrs else None
 
+    def get_completer_info(self, prefix="", excluded=None):
+        """Return list of [name, type, doc]"""
+        excluded = excluded or []
+        ret = []
+        for argument_name in self.argument_names:
+            if argument_name not in excluded and argument_name.startswith(prefix):
+                argument = getattr(self, argument_name)
+                ret.append(
+                    [
+                        argument_name + "=",
+                        argument.__class__.__bases__[0].__name__,
+                        argument.__doc__,
+                    ]
+                )
+        return ret
+
 
 class Command(Action):
     """Command object."""
@@ -848,6 +895,19 @@ class Command(Action):
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""
         newkwds = _get_new_keywords(self, kwds)
+        if self.flproxy.is_interactive_mode():
+            prompt = self.flproxy.get_command_confirmation_prompt(
+                self._parent.path, self.obj_name, **newkwds
+            )
+            if prompt:
+                while True:
+                    response = input(prompt + ": y[es]/n[o] ")
+                    if response in ["y", "Y", "n", "N", "yes", "no"]:
+                        break
+                    else:
+                        print("Enter y[es]/n[o]")
+                if response in ["n", "N", "no"]:
+                    return
         return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
 
 
@@ -900,7 +960,7 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
 
     The following can be used:
     for name, boundary in setup.boundary_conditions.items():
-    print (name, boundary())
+        print (name, boundary())
 
     even though actual boundary conditions are stored one level lower to
     boundary_conditions.
@@ -951,7 +1011,7 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
 
 
 class _CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTypeT]):
-    def create(self, name: str) -> ChildTypeT:
+    def create(self, name: str = "") -> ChildTypeT:
         """Create a named object.
 
         Parameters

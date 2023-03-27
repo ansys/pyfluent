@@ -396,6 +396,9 @@ class Proxy:
     def get_static_info(cls):
         return cls.root.get_static_info()
 
+    def is_interactive_mode(self):
+        return False
+
 
 def test_primitives():
     r = flobject.get_root(Proxy())
@@ -657,7 +660,7 @@ def test_accessor_methods_on_settings_object(load_static_mixer_case):
 
     existing = solver.file.read.file_type.get_attr("read-only?", bool)
     modified = solver.file.read.file_type.is_read_only()
-    assert existing == modified
+    assert existing == None and modified == False
 
     existing = solver.setup.boundary_conditions.velocity_inlet.get_attr(
         "user-creatable?", bool
