@@ -5,6 +5,7 @@ remote instance with gRPC.
 """
 from enum import Enum
 import json
+import logging
 import os
 from pathlib import Path
 import platform
@@ -22,12 +23,12 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
-from ansys.fluent.core.utils.logging import LOG
 from ansys.fluent.core.utils.networking import find_remoting_ip
 import ansys.platform.instancemanagement as pypim
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
+logger = logging.getLogger("ansys.fluent.launcher")
 
 
 def _is_windows():
@@ -183,7 +184,7 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
                 if default is not None:
                     old_argval = argval
                     argval = default
-                    LOG.warning(
+                    logger.warning(
                         "Default value %s is chosen for %s as the passed "
                         "value  %s is outside allowed values %s.",
                         argval,
@@ -192,7 +193,7 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
                         allowed_values,
                     )
                 else:
-                    LOG.warning(
+                    logger.warning(
                         "%s = %s is discarded as it is outside " "allowed values %s.",
                         k,
                         argval,
@@ -331,13 +332,13 @@ def _await_fluent_launch(
     while True:
         if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:
             time.sleep(1)
-            LOG.info("Fluent process is successfully launched.")
+            logger.info("Fluent process is successfully launched.")
             break
         if start_timeout == 0:
             raise RuntimeError("The launch process has been timed out.")
         time.sleep(1)
         start_timeout -= 1
-        LOG.info(
+        logger.info(
             "Waiting for Fluent to launch...%02d seconds remaining",
             start_timeout,
         )
@@ -590,7 +591,7 @@ def launch_fluent(
         )
 
         try:
-            LOG.info("Launching Fluent with cmd: %s", launch_string)
+            logger.info("Launching Fluent with cmd: %s", launch_string)
             sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
             if env is None:
                 env = {}
@@ -641,7 +642,7 @@ def launch_fluent(
                 server_info_file.unlink()
     else:
         if pypim.is_configured():
-            LOG.info(
+            logger.info(
                 "Starting Fluent remotely. The startup configuration will be ignored."
             )
             return launch_remote_fluent(

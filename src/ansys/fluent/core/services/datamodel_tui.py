@@ -1,6 +1,7 @@
 """Wrappers over TUI-based datamodel gRPC service of Fluent."""
 
 import keyword
+import logging
 import types
 from typing import Any, Dict, Iterable, List, Tuple, Union
 
@@ -14,6 +15,8 @@ from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
 
 Path = List[str]
+
+logger = logging.getLogger("ansys.fluent.services.tui")
 
 
 class DatamodelService:
@@ -189,6 +192,7 @@ class PyMenu:
         if self._path.startswith("/query/"):
             return self._execute_query(request)
         else:
+            logger.debug(f"TUI Command: {request}")
             return self._execute_command(request)
 
     def get_doc_string(self, include_unavailable: bool = False) -> str:

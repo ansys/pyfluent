@@ -1,5 +1,4 @@
 """Module containing class encapsulating Fluent connection."""
-
 from typing import Any
 
 from ansys.fluent.core.fluent_connection import _FluentConnection
