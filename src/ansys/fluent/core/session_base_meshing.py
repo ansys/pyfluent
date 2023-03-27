@@ -1,4 +1,5 @@
 import importlib
+import logging
 
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.meshing.meshing import Meshing
@@ -9,7 +10,9 @@ from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL, _CODEGEN_MSG_TUI
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
-from ansys.fluent.core.utils.logging import LOG
+
+fluent_logger = logging.getLogger("ansys.fluent")
+data_model_logger = logging.getLogger("ansys.fluent.services.datamodel")
 
 
 class _BaseMeshing:
@@ -28,6 +31,7 @@ class _BaseMeshing:
 
     def get_fluent_version(self):
         """Gets and returns the fluent version."""
+        fluent_logger.info(self._fluent_connection.get_fluent_version())
         return self._fluent_connection.get_fluent_version()
 
     @property
@@ -60,7 +64,7 @@ class _BaseMeshing:
             )
             meshing_root = meshing_module.Root(self._se_service, "meshing", [])
         except (ImportError, ModuleNotFoundError):
-            LOG.warning(_CODEGEN_MSG_DATAMODEL)
+            data_model_logger.warning(_CODEGEN_MSG_DATAMODEL)
             meshing_root = PyMenuGeneric(self._se_service, "meshing")
         return meshing_root
 
@@ -84,7 +88,7 @@ class _BaseMeshing:
             )
             workflow_se = workflow_module.Root(self._se_service, "workflow", [])
         except (ImportError, ModuleNotFoundError):
-            LOG.warning(_CODEGEN_MSG_DATAMODEL)
+            data_model_logger.warning(_CODEGEN_MSG_DATAMODEL)
             workflow_se = PyMenuGeneric(self._se_service, "workflow")
         return workflow_se
 
@@ -106,7 +110,7 @@ class _BaseMeshing:
                     self._se_service, "PartManagement", []
                 )
             except (ImportError, ModuleNotFoundError):
-                LOG.warning(_CODEGEN_MSG_DATAMODEL)
+                data_model_logger.warning(_CODEGEN_MSG_DATAMODEL)
                 self._part_management = PyMenuGeneric(
                     self._se_service, "PartManagement"
                 )

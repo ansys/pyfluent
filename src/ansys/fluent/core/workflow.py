@@ -1,6 +1,9 @@
+import logging
 from typing import Any, Iterator, Tuple
 
 from ansys.fluent.core.services.datamodel_se import PyCallableStateObject
+
+datamodel_logger = logging.getLogger("ansys.fluent.services.datamodel")
 
 
 def _new_command_for_task(task, session):
@@ -153,6 +156,7 @@ class BaseTask:
             # pass
 
     def __setattr__(self, attr, value):
+        datamodel_logger.debug(f"BaseTask.__setattr__({attr}, {value})")
         if attr in self.__dict__:
             self.__dict__[attr] = value
         else:
@@ -214,6 +218,7 @@ class TaskContainer(PyCallableStateObject):
             yield self[name]
 
     def __getitem__(self, name):
+        datamodel_logger.debug(f"TaskContainer.__getitem__({name})")
         return makeTask(self._container, name)
 
     def __getattr__(self, attr):
