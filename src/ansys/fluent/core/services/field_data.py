@@ -2,7 +2,7 @@
 from enum import IntEnum
 from functools import reduce
 import pydoc
-from typing import Callable, Dict, List, Optional, Tuple, Union
+from typing import Generator, Callable, Dict, List, Optional, Tuple, Union
 
 import grpc
 import numpy as np
@@ -12,7 +12,7 @@ from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
 from ansys.fluent.core.allowed_name_error_msg import allowed_name_error_message
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
-
+from ansys.fluent.core.services.streaming import StreamingService
 
 def override_help_text(func, func_to_be_wrapped):
     func.__doc__ = "\n" + pydoc.text.document(func_to_be_wrapped)
@@ -25,35 +25,44 @@ def override_help_text(func, func_to_be_wrapped):
 validate_inputs = True
 
 
-class FieldDataService:
+class FieldDataService(StreamingService):
     def __init__(self, channel: grpc.Channel, metadata):
         intercept_channel = grpc.intercept_channel(channel, TracingInterceptor(), BatchInterceptor())
-        self.__stub = FieldGrpcModule.FieldDataStub(intercept_channel)
-        self.__metadata = metadata
+        super().__init__(
+            stub=FieldGrpcModule.FieldDataStub(intercept_channel),
+            metadata=metadata
+        )        
 
     @catch_grpc_error
     def get_range(self, request):
-        return self.__stub.GetRange(request, metadata=self.__metadata)
+        return self._stub.GetRange(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_fields_info(self, request):
-        return self.__stub.GetFieldsInfo(request, metadata=self.__metadata)
+        return self._stub.GetFieldsInfo(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_vector_fields_info(self, request):
-        return self.__stub.GetVectorFieldsInfo(request, metadata=self.__metadata)
+        return self._stub.GetVectorFieldsInfo(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_surfaces_info(self, request):
-        return self.__stub.GetSurfacesInfo(request, metadata=self.__metadata)
+        return self._stub.GetSurfacesInfo(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_fields(self, request):
-        return self.__stub.GetFields(request, metadata=self.__metadata)
+        return self._stub.GetFields(request, metadata=self._metadata)
         
     @catch_grpc_error
-    def begin_fields_streaming(self, request):
-        return self.__stub.BeginFieldsStreaming(request, metadata=self.__metadata)        
+    def begin_streaming(self, request, started_evt) -> Generator:
+        """Begin streaming from Fluent."""      
+        self._streams = self._stub.BeginFieldsStreaming(request, metadata=self._metadata)
+        started_evt.set()
+        while True:
+            try:
+                yield next(self._streams)
+            except Exception:
+                break        
 
 
 class FieldInfo:

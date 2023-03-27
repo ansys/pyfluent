@@ -19,7 +19,7 @@ from ansys.fluent.core.services.datamodel_tui import (
 )
 from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.services.field_data import FieldData, FieldDataService, FieldInfo
-from ansys.fluent.core.services.field_data_streaming import FieldDataStreamingService
+#from ansys.fluent.core.services.field_data_streaming import FieldDataStreamingService
 from ansys.fluent.core.services.health_check import HealthCheckService
 from ansys.fluent.core.services.monitor import MonitorsService
 from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
@@ -212,7 +212,7 @@ class _FluentConnection:
         self.scheme_eval = SchemeEval(self._scheme_eval_service)
 
         self._field_data_service = FieldDataService(self._channel, self._metadata)
-        self._field_data_streaming_service = FieldDataStreamingService(self._channel, self._metadata)
+        #self._field_data_streaming_service = FieldDataStreamingService(self._channel, self._metadata)
         
        
         
@@ -223,7 +223,7 @@ class _FluentConnection:
         )
 
         self.field_data_streaming = FieldDataStreaming(
-            self._id, self._field_data_streaming_service
+            self._id, self._field_data_service
         )
         self.journal = Journal(self.scheme_eval)
 
