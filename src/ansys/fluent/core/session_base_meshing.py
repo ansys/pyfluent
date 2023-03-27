@@ -51,7 +51,7 @@ class _BaseMeshing:
                 )
                 self._tui = tui_module.main_menu([], self._tui_service)
             except (ImportError, ModuleNotFoundError):
-                LOG.warning(_CODEGEN_MSG_TUI)
+                tui_module.warning(_CODEGEN_MSG_TUI)
                 self._tui = TUIMenu([], self._tui_service)
         return self._tui
 
@@ -128,7 +128,7 @@ class _BaseMeshing:
                     self._se_service, "PMFileManagement", []
                 )
             except (ImportError, ModuleNotFoundError):
-                LOG.warning(_CODEGEN_MSG_DATAMODEL)
+                data_model_logger.warning(_CODEGEN_MSG_DATAMODEL)
                 self._pm_file_management = PyMenuGeneric(
                     self._se_service, "PMFileManagement"
                 )
