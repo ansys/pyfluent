@@ -14,7 +14,6 @@ class TranscriptService(StreamingService):
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
         super().__init__(
-            stub=TranscriptGrpcModule.TranscriptStub(channel),
-            request=TranscriptModule.TranscriptRequest(),
+            stub=TranscriptGrpcModule.TranscriptStub(channel),            
             metadata=metadata,
         )

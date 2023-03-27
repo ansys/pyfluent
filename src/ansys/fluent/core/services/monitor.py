@@ -17,8 +17,7 @@ class MonitorsService(StreamingService):
         self._stub = MonitorGrpcModule.MonitorStub(intercept_channel)
         self._metadata = metadata
         super().__init__(
-            stub=self._stub,
-            request=MonitorModule.StreamingRequest(),
+            stub=self._stub,            
             metadata=self._metadata,
         )
 

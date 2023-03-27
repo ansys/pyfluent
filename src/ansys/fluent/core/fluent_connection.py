@@ -27,7 +27,7 @@ from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
-from ansys.fluent.core.streaming_services.fielddata_streaming import FieldDataStreaming
+from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 
 def _get_max_c_int_limit() -> int:
     """Get the maximum limit of a C int.

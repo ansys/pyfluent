@@ -12,7 +12,6 @@ class EventsService(StreamingService):
 
     def __init__(self, channel: grpc.Channel, metadata):
         super().__init__(
-            stub=EventsGrpcModule.EventsStub(channel),
-            request=EventsProtoModule.BeginStreamingRequest(),
+            stub=EventsGrpcModule.EventsStub(channel),           
             metadata=metadata,
         )

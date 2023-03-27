@@ -15,19 +15,14 @@ class StreamingService:
         End streaming
     """
 
-    def __init__(self, stub, request, metadata: List[Tuple[str, str]]):
+    def __init__(self, stub, metadata: List[Tuple[str, str]]):
         self._stub = stub
         self._metadata = metadata
-        self.request = request
         self._streams = None
 
-    def begin_streaming(self, started_evt, method_name=None) -> Generator:
-        """Begin streaming from Fluent."""
-        request = self.request
-        if method_name is not None:
-             self._streams = getattr(self._stub, method_name)(request, metadata=self._metadata)
-        else:
-            self._streams = self._stub.BeginStreaming(request, metadata=self._metadata)
+    def begin_streaming(self, request, started_evt) -> Generator:
+        """Begin streaming from Fluent."""     
+        self._streams = self._stub.BeginStreaming(request, metadata=self._metadata)
         started_evt.set()
         while True:
             try:
