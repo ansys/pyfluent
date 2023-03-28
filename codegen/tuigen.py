@@ -259,7 +259,7 @@ class TUIGenerator:
         with open(index_file, "w", encoding="utf8") as f:
             ref = "_ref_" + "_".join([x.strip("_") for x in heading.split(".")])
             f.write(f".. {ref}:\n\n")
-            if class_name == "Root":
+            if class_name == "main_menu":
                 heading_ = heading.replace("_", "\_")
             else:
                 heading_ = class_name.split(".")[-1]
