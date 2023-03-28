@@ -178,15 +178,12 @@ def test_add_on_command_executed(new_mesh_session):
 def test_datamodel_streaming_full_diff_state(new_mesh_session):
     meshing = new_mesh_session
     datamodel_service_se = meshing.datamodel_service_se
-    data_model_request = datamodel_se_pb2.DataModelRequest()
-    data_model_request.rules = "meshing"
     datamodel_streaming = StreamingService(
         stub=datamodel_service_se._stub,
-        request=data_model_request,
         metadata=datamodel_service_se._metadata,
     )
     stream = DatamodelStream(datamodel_streaming)
-    stream.start()
+    stream.start(rules="meshing", diff_state=False)
 
     def cb(state, deleted_paths, events):
         cb.states.append(state)
@@ -214,11 +211,10 @@ def test_datamodel_streaming_no_commands_diff_state(new_mesh_session):
     data_model_request.diffstate = datamodel_se_pb2.DIFFSTATE_NOCOMMANDS
     datamodel_streaming = StreamingService(
         stub=datamodel_service_se._stub,
-        request=data_model_request,
         metadata=datamodel_service_se._metadata,
     )
     stream = DatamodelStream(datamodel_streaming)
-    stream.start()
+    stream.start(rules="meshing", diff_state=True)
 
     def cb(state, deleted_paths, events):
         cb.states.append(state)
