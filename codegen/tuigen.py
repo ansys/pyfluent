@@ -259,7 +259,7 @@ class TUIGenerator:
         with open(index_file, "w", encoding="utf8") as f:
             ref = "_ref_" + "_".join([x.strip("_") for x in heading.split(".")])
             f.write(f".. {ref}:\n\n")
-            heading_ = heading.replace("_", "\_")
+            heading_ = class_name.split(".")[-1]
             f.write(f"{heading_}\n")
             f.write(f"{'=' * len(heading_)}\n")
             desc = MENU_DESCRIPTIONS.get(heading)
