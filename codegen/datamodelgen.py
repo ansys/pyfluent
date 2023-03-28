@@ -5,7 +5,7 @@ import shutil
 from typing import Any, Dict
 
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
-from ansys.fluent.core.session import _BaseSession as Session
+from ansys.fluent.core.session import BaseSession as Session
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 
 _THIS_DIR = Path(__file__).parent

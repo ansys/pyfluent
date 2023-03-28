@@ -22,7 +22,7 @@ except Exception:
 data_model_logger = logging.getLogger("ansys.fluent.services.datamodel")
 
 
-def parse_server_info_file(filename: str):
+def _parse_server_info_file(filename: str):
     with open(filename, encoding="utf-8") as f:
         lines = f.readlines()
     ip_and_port = lines[0].strip().split(":")
@@ -50,7 +50,7 @@ def _get_solverworkflow(session):
     return _get_datamodel_attributes(session, "solverworkflow")
 
 
-class _BaseSession:
+class BaseSession:
     """Instantiates a Fluent connection.
 
     Attributes
@@ -71,7 +71,7 @@ class _BaseSession:
     """
 
     def __init__(self, fluent_connection: FluentConnection):
-        _BaseSession.build_from_fluent_connection(self, fluent_connection)
+        BaseSession.build_from_fluent_connection(self, fluent_connection)
 
     def build_from_fluent_connection(self, fluent_connection: FluentConnection):
         self.fluent_connection = fluent_connection
@@ -110,7 +110,7 @@ class _BaseSession:
         Session
             Session instance
         """
-        ip, port, password = parse_server_info_file(server_info_filepath)
+        ip, port, password = _parse_server_info_file(server_info_filepath)
         session = cls(
             fluent_connection=FluentConnection(
                 ip=ip,

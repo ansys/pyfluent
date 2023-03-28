@@ -19,7 +19,7 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples, launch_fluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.session import _BaseSession
+from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.utils.networking import get_free_port
 
 
@@ -82,7 +82,7 @@ def test_create_session_by_passing_ip_and_port_and_password() -> None:
         MockSchemeEvalServicer(), server
     )
     server.start()
-    session = _BaseSession(
+    session = BaseSession(
         FluentConnection(ip=ip, port=port, password="12345", cleanup_on_exit=False)
     )
     assert session.health_check_service.is_serving
@@ -105,7 +105,7 @@ def test_create_session_by_setting_ip_and_port_env_var(
     server.start()
     monkeypatch.setenv("PYFLUENT_FLUENT_IP", ip)
     monkeypatch.setenv("PYFLUENT_FLUENT_PORT", str(port))
-    session = _BaseSession(FluentConnection(password="12345", cleanup_on_exit=False))
+    session = BaseSession(FluentConnection(password="12345", cleanup_on_exit=False))
     assert session.health_check_service.is_serving
     server.stop(None)
     session.exit()
@@ -123,7 +123,7 @@ def test_create_session_by_passing_grpc_channel() -> None:
     )
     server.start()
     channel = grpc.insecure_channel(f"{ip}:{port}")
-    session = _BaseSession(
+    session = BaseSession(
         FluentConnection(channel=channel, cleanup_on_exit=False, password="12345")
     )
     assert session.health_check_service.is_serving
@@ -144,7 +144,7 @@ def test_create_session_from_server_info_file(tmp_path: Path) -> None:
     server.start()
     server_info_file = tmp_path / "server_info.txt"
     server_info_file.write_text(f"{ip}:{port}\n12345")
-    session = _BaseSession.create_from_server_info_file(
+    session = BaseSession.create_from_server_info_file(
         server_info_filepath=str(server_info_file), cleanup_on_exit=False
     )
     assert session.health_check_service.is_serving
@@ -167,7 +167,7 @@ def test_create_session_from_server_info_file_with_wrong_password(
     server_info_file = tmp_path / "server_info.txt"
     server_info_file.write_text(f"{ip}:{port}\n1234")
     with pytest.raises(RuntimeError):
-        session = _BaseSession.create_from_server_info_file(
+        session = BaseSession.create_from_server_info_file(
             server_info_filepath=str(server_info_file), cleanup_on_exit=False
         )
         session.scheme_eval.scheme_eval("")

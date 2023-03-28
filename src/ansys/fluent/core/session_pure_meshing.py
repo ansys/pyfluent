@@ -5,12 +5,12 @@
 
 
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.session import _BaseSession
+from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_base_meshing import _BaseMeshing
 from ansys.fluent.core.utils.data_transfer import transfer_case
 
 
-class PureMeshing(_BaseSession):
+class PureMeshing(BaseSession):
     """Encapsulates a Fluent meshing session. A ``tui`` object
     for meshing TUI commanding, and ``meshing`` and ``workflow``
     objects for access to task-based meshing workflows are all

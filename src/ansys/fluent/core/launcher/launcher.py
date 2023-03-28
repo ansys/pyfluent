@@ -18,7 +18,7 @@ import warnings
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
-from ansys.fluent.core.session import parse_server_info_file
+from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
@@ -354,7 +354,7 @@ def _connect_to_running_server(argvals, server_info_filepath: str):
             "The server-info file was not parsed because ip and port were provided explicitly."
         )
     elif server_info_filepath:
-        ip, port, password = parse_server_info_file(server_info_filepath)
+        ip, port, password = _parse_server_info_file(server_info_filepath)
     elif os.getenv("PYFLUENT_FLUENT_IP") and os.getenv("PYFLUENT_FLUENT_PORT"):
         ip = port = None
     else:
