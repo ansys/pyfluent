@@ -3,16 +3,13 @@
 Example
 -------
 
-from ansys.fluent.core.filereader.case import Case
+.. code-block:: python
 
-Instantiate a case reader
+    from ansys.fluent.core.filereader.case import Case
+    reader = Case(case_filepath=case_filepath)      # Instantiate a case reader
+    input_parameters = reader.input_parameters()    # Get lists of input parameters
+    output_parameters = reader.output_parameters()  # Get lists of output parameters
 
-reader = Case(case_filepath=case_filepath)
-
-Get lists of input and output parameters
-
-input_parameters = reader.input_parameters()
-output_parameters = reader.output_parameters()
 """
 import codecs
 import glob
