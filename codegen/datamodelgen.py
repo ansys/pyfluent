@@ -289,7 +289,10 @@ class DataModelGenerator:
         with open(index_file, "w", encoding="utf8") as f:
             ref = "_ref_" + "_".join([x.strip("_") for x in heading.split(".")])
             f.write(f".. {ref}:\n\n")
-            heading_ = class_name.split(".")[-1]
+            if class_name == "Root":
+                heading_ = heading.replace("_", "\_")
+            else:
+                heading_ = class_name.split(".")[-1]
             f.write(f"{heading_}\n")
             f.write(f"{'=' * len(heading_)}\n")
             f.write("\n")
