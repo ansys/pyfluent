@@ -75,7 +75,7 @@ class StreamingService:
 
     def refresh(self, session_id, event_info) -> None:
         """Refresh stream.
-        
+
         Parameters
         ----------
         session_id : str
