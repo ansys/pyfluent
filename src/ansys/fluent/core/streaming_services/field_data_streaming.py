@@ -1,4 +1,4 @@
-"""Module for monitors management."""
+"""Module for Field data streaming."""
 
 import threading
 from typing import Callable, Dict, List, Union
