@@ -1,7 +1,8 @@
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
 from enum import Enum
 import itertools
-from typing import Any, Callable, Dict, Iterator, List, Tuple
+import logging
+from typing import Any, Callable, Dict, Iterator, List, Tuple, Type
 import warnings
 
 import grpc
@@ -14,6 +15,8 @@ from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInt
 from ansys.fluent.core.services.streaming import StreamingService
 
 Path = List[Tuple[str, str]]
+
+logger = logging.getLogger("ansys.fluent.services.datamodel")
 
 
 class Attribute(Enum):
@@ -119,6 +122,7 @@ class DatamodelService(StreamingService):
         self, request: DataModelProtoModule.ExecuteCommandRequest
     ) -> DataModelProtoModule.ExecuteCommandResponse:
         """executeCommand rpc of DataModel service."""
+        logger.debug(f"Command: {request.command}")
         return self._stub.executeCommand(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -349,8 +353,12 @@ class PyStateContainer(PyCallableStateObject):
     getAttribValue = get_attr
 
     def is_active(self):
-        """Returns true if the parameter is active."""
+        """Returns true if the object is active."""
         return true_if_none(self.get_attr(Attribute.IS_ACTIVE.value))
+
+    def is_read_only(self):
+        """Checks whether the object is read only."""
+        return false_if_none(self.get_attr(Attribute.IS_READ_ONLY.value))
 
     def help(self) -> None:
         """Print help string."""
@@ -677,10 +685,6 @@ class PyParameter(PyStateContainer):
         """Get default value of the parameter."""
         return self.get_attr(Attribute.DEFAULT.value)
 
-    def is_read_only(self):
-        """Checks whether the parameter is read only."""
-        return true_if_none(self.get_attr(Attribute.IS_READ_ONLY.value))
-
     def add_on_changed(self, cb: Callable) -> EventSubscription:
         """Register a callback for when the object is modified.
 
@@ -727,12 +731,20 @@ class PyParameter(PyStateContainer):
         return subscription
 
 
+def _bool_value_if_none(val, default):
+    if isinstance(val, bool) or val is None:
+        return default if val is None else val
+    raise TypeError(f"{val} should be a bool or None")
+
+
 def true_if_none(val):
     """Returns true if 'val' is true or None, else returns false."""
-    if val in [True, False, None]:
-        return True if val is None else val
-    else:
-        raise RuntimeError(f"In-correct value passed")
+    return _bool_value_if_none(val, default=True)
+
+
+def false_if_none(val):
+    """Returns true if 'val' is true or None, else returns false."""
+    return _bool_value_if_none(val, default=False)
 
 
 class PyTextual(PyParameter):
@@ -1119,7 +1131,7 @@ class PyCommandArguments(PyStateContainer):
     def __getattr__(self, attr):
         for arg in self.static_info.commands[self.command].commandinfo.args:
             if arg.name == attr:
-                mode = AccessorModes.get_mode(arg.type)
+                mode = DataModelType.get_mode(arg.type)
                 py_class = mode.value[1]
                 return py_class(self, attr, self.service, self.rules, self.path, arg)
 
@@ -1220,13 +1232,13 @@ class PySingletonCommandArgumentsSubItem(PyCommandArgumentsSubItem):
     def __getattr__(self, attr):
         arg = self.parent_arg.info.parameters[attr]
 
-        mode = AccessorModes.get_mode(arg.type)
+        mode = DataModelType.get_mode(arg.type)
         py_class = mode.value[1]
         return py_class(self, attr, self.service, self.rules, self.path, arg)
 
 
-class AccessorModes(Enum):
-    """Provides the standard Fluent launch modes."""
+class DataModelType(Enum):
+    """An enumeration over datamodel types."""
 
     # Tuple:   Name, Solver object type, Meshing flag, Launcher options
     TEXT = (["String", "ListString", "String List"], PyTextualCommandArgumentsSubItem)
@@ -1242,9 +1254,9 @@ class AccessorModes(Enum):
     MODELOBJECT = (["ModelObject"], PySingletonCommandArgumentsSubItem)
 
     @staticmethod
-    def get_mode(mode: str) -> "AccessorModes":
-        """Returns the LaunchMode based on the mode in string format."""
-        for m in AccessorModes:
+    def get_mode(mode: str) -> Type[PyCommandArgumentsSubItem]:
+        """Returns the datamodel type."""
+        for m in DataModelType:
             if mode in m.value[0]:
                 return m
         else:
