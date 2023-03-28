@@ -128,7 +128,7 @@ def test_processed_string():
 
 
 def test_casereader_no_file():
-    with pytest.raises(RuntimeError):
+    with pytest.raises(FileNotFoundError):
         call_casereader("no_file.cas.h5")
 
 
