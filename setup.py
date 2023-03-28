@@ -30,6 +30,7 @@ install_requires = [
     "pandas>=1.1.5",
     "h5py>=3.8.0",
     "lxml>=4.9.2",
+    "pyyaml",
 ]
 
 

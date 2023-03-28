@@ -17,6 +17,8 @@ Matplotlib
 matplotlib
 mesher
 meshing's
+metaclass
+metaclasses
 MonitorsManager
 numpy
 pathlines

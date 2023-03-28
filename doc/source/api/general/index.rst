@@ -6,73 +6,72 @@ General
 Launcher
 ########
 
-:ref:`ref_launcher` provides access to starting Fluent locally in server mode or connecting to a running Fluent
-server instance.
-
-Asynchronous execution
-######################
-
-:ref:`ref_utils` consists solely of a function to allow for asynchronous execution.
+:ref:`ref_launcher` includes instructions on how to launch and connect to Fluent.
 
 Sessions
 ########
 
-:ref:`ref_sessions` consists of available Fluent sessions.
+:ref:`ref_sessions` describes the various types of PyFluent session objects, which connect to Fluent sessions.
 
 Services
 ########
 
-:ref:`ref_services` consists of gRPC services for Fluent sessions.
+:ref:`ref_services` outlines fundamental gRPC services, upon which PyFluent depends (and are directly usable).
 
 Streaming services
 ##################
 
-:ref:`ref_streaming_services` consists of streaming services for management of gRPC services.
-
-Post objects
-############
-
-:ref:`ref_post_objects` consists of visualization objects for Matplotlib.
+:ref:`ref_streaming_services` outlines fundamental gRPC streaming services, upon which PyFluent depends (and are directly usable).
 
 Scheduler
 #########
 
-:ref:`ref_scheduler` consists of abstract machine objects and their use for queue system interface.
+:ref:`ref_scheduler` describes a module for facilitating use of external job scheduling systems.
 
-Case reader
-###########
+Case
+####
 
-:ref:`ref_case_reader` demonstrates reading of Fluent's case files.
+:ref:`ref_case_reader` documents a class for parsing Fluent case files in pure Python code.
 
 Data transfer
 #############
 
-:ref:`ref_data_transfer` demonstrates transfer of Fluent's case files.
+:ref:`ref_data_transfer` describes how to transfer mesh data between PyFluent sessions.
 
 Journaling
 ##########
 
-:ref:`ref_journaling` consists of read-write of journal.
-
-Meta
-####
-
-:ref:`ref_meta` consists of used meta classes.
-
-Quantity
-########
-
-:ref:`ref_quantity` is a module for creation and manipulation of physical quantities.
-
-rpvars
-######
-
-:ref:`ref_rpvars` shows access and modification of rpvars.
+:ref:`ref_journaling` explains how to read and write Python journals that are reusable between PyFluent and Fluent.
 
 Workflow
 ########
 
-:ref:`ref_workflow` used for creation of TaskObject instance.
+:ref:`ref_workflow` documents high-level interfaces to the task-based workflows, including meshing workflow.
+
+rpvars
+######
+
+:ref:`ref_rpvars` shows how you can access and modify live Fluent rpvars via PyFluent.
+
+Quantity
+########
+
+:ref:`ref_quantity` reveals a powerful quantity class that exposes real values and units of API (and other) objects.
+
+Post objects
+############
+
+:ref:`ref_post_objects` documents visualization objects for interfacing to Matplotlib and pyvista.
+
+Asynchronous execution
+######################
+
+:ref:`ref_utils` documents tools for asynchronous function execution.
+
+Meta
+####
+
+:ref:`ref_meta` consists of some metaclasses used in the PyFluent codebase.
 
 .. currentmodule:: ansys.fluent.core
 
