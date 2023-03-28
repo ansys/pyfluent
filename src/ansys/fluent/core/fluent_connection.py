@@ -76,7 +76,7 @@ class _IsDataValid:
         return self._scheme_eval.scheme_eval("(data-valid?)")
 
 
-class _FluentConnection:
+class FluentConnection:
     """Encapsulates a Fluent connection.
 
     Methods
@@ -182,11 +182,11 @@ class _FluentConnection:
                     f"The connection to the Fluent server could not be established within the configurable {start_timeout} second time limit."
                 )
 
-        self._id = f"session-{next(_FluentConnection._id_iter)}"
+        self._id = f"session-{next(FluentConnection._id_iter)}"
 
-        if not _FluentConnection._monitor_thread:
-            _FluentConnection._monitor_thread = MonitorThread()
-            _FluentConnection._monitor_thread.start()
+        if not FluentConnection._monitor_thread:
+            FluentConnection._monitor_thread = MonitorThread()
+            FluentConnection._monitor_thread.start()
 
         self._batch_ops_service = BatchOpsService(self._channel, self._metadata)
 
@@ -236,7 +236,7 @@ class _FluentConnection:
         self.launcher_args = launcher_args
         self._finalizer = weakref.finalize(
             self,
-            _FluentConnection._exit,
+            FluentConnection._exit,
             self._channel,
             self._cleanup_on_exit,
             self.scheme_eval,
@@ -247,7 +247,7 @@ class _FluentConnection:
             self.monitors_manager,
             self._remote_instance,
         )
-        _FluentConnection._monitor_thread.cbs.append(self._finalizer)
+        FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
     @property
     def id(self) -> str:

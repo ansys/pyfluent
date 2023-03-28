@@ -18,7 +18,7 @@ from ansys.api.fluent.v0 import (
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples, launch_fluent
 from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.fluent_connection import _FluentConnection
+from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.session import _BaseSession
 from ansys.fluent.core.utils.networking import get_free_port
 
@@ -83,7 +83,7 @@ def test_create_session_by_passing_ip_and_port_and_password() -> None:
     )
     server.start()
     session = _BaseSession(
-        _FluentConnection(ip=ip, port=port, password="12345", cleanup_on_exit=False)
+        FluentConnection(ip=ip, port=port, password="12345", cleanup_on_exit=False)
     )
     assert session.health_check_service.is_serving
     server.stop(None)
@@ -105,7 +105,7 @@ def test_create_session_by_setting_ip_and_port_env_var(
     server.start()
     monkeypatch.setenv("PYFLUENT_FLUENT_IP", ip)
     monkeypatch.setenv("PYFLUENT_FLUENT_PORT", str(port))
-    session = _BaseSession(_FluentConnection(password="12345", cleanup_on_exit=False))
+    session = _BaseSession(FluentConnection(password="12345", cleanup_on_exit=False))
     assert session.health_check_service.is_serving
     server.stop(None)
     session.exit()
@@ -124,7 +124,7 @@ def test_create_session_by_passing_grpc_channel() -> None:
     server.start()
     channel = grpc.insecure_channel(f"{ip}:{port}")
     session = _BaseSession(
-        _FluentConnection(channel=channel, cleanup_on_exit=False, password="12345")
+        FluentConnection(channel=channel, cleanup_on_exit=False, password="12345")
     )
     assert session.health_check_service.is_serving
     server.stop(None)

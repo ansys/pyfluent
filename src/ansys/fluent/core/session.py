@@ -6,7 +6,7 @@ import logging
 import os
 from typing import Any, Dict
 
-from ansys.fluent.core.fluent_connection import _FluentConnection
+from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.session_shared import (  # noqa: F401
     _CODEGEN_MSG_DATAMODEL,
     _CODEGEN_MSG_TUI,
@@ -70,10 +70,10 @@ class _BaseSession:
         Close the Fluent connection and exit Fluent.
     """
 
-    def __init__(self, fluent_connection: _FluentConnection):
+    def __init__(self, fluent_connection: FluentConnection):
         _BaseSession.build_from_fluent_connection(self, fluent_connection)
 
-    def build_from_fluent_connection(self, fluent_connection: _FluentConnection):
+    def build_from_fluent_connection(self, fluent_connection: FluentConnection):
         self.fluent_connection = fluent_connection
         self.scheme_eval = self.fluent_connection.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
@@ -112,7 +112,7 @@ class _BaseSession:
         """
         ip, port, password = parse_server_info_file(server_info_filepath)
         session = cls(
-            fluent_connection=_FluentConnection(
+            fluent_connection=FluentConnection(
                 ip=ip,
                 port=port,
                 password=password,

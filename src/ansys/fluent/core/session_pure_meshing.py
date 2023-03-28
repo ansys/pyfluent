@@ -4,7 +4,7 @@
 """
 
 
-from ansys.fluent.core.fluent_connection import _FluentConnection
+from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.session import _BaseSession
 from ansys.fluent.core.session_base_meshing import _BaseMeshing
 from ansys.fluent.core.utils.data_transfer import transfer_case
@@ -17,7 +17,7 @@ class PureMeshing(_BaseSession):
     exposed here. No ``switch_to_solver`` method is available
     in this mode."""
 
-    def __init__(self, fluent_connection: _FluentConnection):
+    def __init__(self, fluent_connection: FluentConnection):
         super(PureMeshing, self).__init__(fluent_connection=fluent_connection)
         self._base_meshing = _BaseMeshing(self.execute_tui, fluent_connection)
 
