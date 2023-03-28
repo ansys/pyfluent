@@ -3,11 +3,10 @@
 Asynchronous execution
 ======================
 
-.. currentmodule:: ansys.fluent.core.utils
-
-.. autosummary::
-    :toctree: _autosummary
-    :template: flobject-module-template.rst
-    :recursive:
-
-    async_execution
+.. automodule:: ansys.fluent.core.utils.async_execution
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
