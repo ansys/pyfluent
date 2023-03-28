@@ -1,11 +1,13 @@
 from concurrent import futures
+import logging
 import socket
 from typing import Any
 
 import grpc
 
 from ansys.api.fluent.v0 import health_pb2, health_pb2_grpc
-from ansys.fluent.core.utils.logging import LOG
+
+network_logger = logging.getLogger("ansys.fluent.networking")
 
 
 def get_free_port() -> int:
@@ -75,8 +77,8 @@ def find_remoting_ip() -> str:
                         ).status
                         == health_pb2.HealthCheckResponse.ServingStatus.SERVING
                     ):
-                        LOG.debug(f"Can use {ip} as remoting ip")
+                        network_logger.debug(f"Can use {ip} as remoting ip")
                         return ip
                 except Exception:
-                    LOG.debug(f"Cannot use {ip} as remoting ip")
+                    network_logger.debug(f"Cannot use {ip} as remoting ip")
                     pass
