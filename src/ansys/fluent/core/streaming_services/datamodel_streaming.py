@@ -13,11 +13,11 @@ class DatamodelStream(StreamingService):
             streaming_service=service,
         )
 
-    def _process_streaming(self, started_evt, rules, diff_state, *args, **kwargs):
+    def _process_streaming(self, started_evt, rules, no_commands_diff_state, *args, **kwargs):
         """Processes datamodel events."""
         data_model_request = datamodel_se_pb2.DataModelRequest()
         data_model_request.rules = rules
-        if diff_state:
+        if no_commands_diff_state:
             data_model_request.diffstate = datamodel_se_pb2.DIFFSTATE_NOCOMMANDS
         responses = self._streaming_service.begin_streaming(
             data_model_request, started_evt

@@ -183,7 +183,7 @@ def test_datamodel_streaming_full_diff_state(new_mesh_session):
         metadata=datamodel_service_se._metadata,
     )
     stream = DatamodelStream(datamodel_streaming)
-    stream.start(rules="meshing", diff_state=False)
+    stream.start(rules="meshing", no_commands_diff_state=False)
 
     def cb(state, deleted_paths, events):
         cb.states.append(state)
@@ -211,7 +211,7 @@ def test_datamodel_streaming_no_commands_diff_state(new_mesh_session):
         metadata=datamodel_service_se._metadata,
     )
     stream = DatamodelStream(datamodel_streaming)
-    stream.start(rules="meshing", diff_state=True)
+    stream.start(rules="meshing", no_commands_diff_state=True)
 
     def cb(state, deleted_paths, events):
         cb.states.append(state)
