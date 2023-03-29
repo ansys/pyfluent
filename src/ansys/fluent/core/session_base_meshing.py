@@ -11,6 +11,7 @@ from ansys.fluent.core.workflow import WorkflowWrapper
 
 fluent_logger = logging.getLogger("ansys.fluent")
 data_model_logger = logging.getLogger("ansys.fluent.services.datamodel")
+tui_logger = logging.getLogger("ansys.fluent.services.tui")
 
 
 class BaseMeshing:
@@ -49,7 +50,7 @@ class BaseMeshing:
                 )
                 self._tui = tui_module.main_menu([], self._tui_service)
             except (ImportError, ModuleNotFoundError):
-                tui_module.warning(_CODEGEN_MSG_TUI)
+                tui_logger.warning(_CODEGEN_MSG_TUI)
                 self._tui = TUIMenu([], self._tui_service)
         return self._tui
 

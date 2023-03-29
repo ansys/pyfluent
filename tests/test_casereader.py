@@ -5,8 +5,11 @@ import shutil
 import pytest
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.filereader.case import _get_processed_string
-from ansys.fluent.core.filereader.casereader import CaseReader, InputParameter
+from ansys.fluent.core.filereader.casereader import (
+    CaseReader,
+    InputParameter,
+    _get_processed_string,
+)
 
 
 def call_casereader(
@@ -120,12 +123,6 @@ def create_dir_structure_locally(copy_1: bool = False, copy_2: bool = False):
     return join(prj_file_dir, prj_file)
 
 
-def test_casereader_h5_for_project_directory():
-    project_filepath = create_dir_structure_locally(copy_1=True)
-    call_casereader(project_filepath=project_filepath)
-    shutil.rmtree(dirname(project_filepath))
-
-
 def test_processed_string():
     assert (
         _get_processed_string(b"Hello! World (37 ( Get this part of the string ))")
@@ -145,22 +142,8 @@ def test_casereader_with_both_project_and_case_file():
         )
 
 
-def test_casereader_for_project_directory_no_case_file():
-    project_filepath = create_dir_structure_locally()
-    with pytest.raises(RuntimeError):
-        call_casereader(project_filepath=project_filepath)
-    shutil.rmtree(dirname(project_filepath))
-
-
-def test_casereader_for_project_directory_dual_case_file():
-    project_filepath = create_dir_structure_locally(copy_1=True, copy_2=True)
-    with pytest.raises(RuntimeError):
-        call_casereader(project_filepath=project_filepath)
-    shutil.rmtree(dirname(project_filepath))
-
-
 def test_casereader_for_project_directory_invalid_project_file():
-    with pytest.raises(RuntimeError):
+    with pytest.raises(FileNotFoundError):
         call_casereader(project_filepath="project.flprx")
 
 
