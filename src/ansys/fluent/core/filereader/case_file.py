@@ -15,14 +15,15 @@ input_parameters = reader.input_parameters()
 output_parameters = reader.output_parameters()
 """
 import codecs
-import glob
 import gzip
-import itertools
+import os
 from os.path import dirname
 from pathlib import Path
 from typing import List
+import xml.etree.ElementTree as ET
 
 import h5py
+from lxml import etree
 
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
@@ -126,7 +127,7 @@ class _CaseVariable:
             return _CaseVariable(self._variables, name + "/")
 
 
-class Case:
+class CaseFile:
     """Class to read a Fluent case file.
 
     Methods
@@ -170,9 +171,17 @@ class Case:
             )
         if project_filepath:
             if Path(project_filepath).suffix in [".flprj", ".flprz"]:
-                case_filepath = _get_case_filepath(dirname(project_filepath))
+                project_dir = os.path.join(
+                    dirname(project_filepath),
+                    Path(project_filepath).name.split(".")[0] + ".cffdb",
+                )
+                case_filepath = Path(
+                    project_dir + _get_case_filepath_from_flprj(project_filepath)
+                )
             else:
-                raise RuntimeError("Please provide a valid fluent project file path")
+                raise FileNotFoundError(
+                    "Please provide a valid fluent project file path"
+                )
         try:
             if "".join(Path(case_filepath).suffixes) == ".cas.h5":
                 file = h5py.File(case_filepath)
@@ -190,8 +199,8 @@ class Case:
             else:
                 raise RuntimeError()
 
-        except FileNotFoundError:
-            raise RuntimeError(f"The case file {case_filepath} cannot be found.")
+        except FileNotFoundError as e:
+            raise RuntimeError(f"The case file {case_filepath} cannot be found.") from e
 
         except OSError:
             error_message = (
@@ -200,8 +209,8 @@ class Case:
             )
             raise RuntimeError(error_message)
 
-        except BaseException:
-            raise RuntimeError(f"Could not read case file {case_filepath}")
+        except BaseException as e:
+            raise RuntimeError(f"Could not read case file {case_filepath}") from e
 
         self._rp_vars = {v[0]: v[1] for v in lispy.parse(rp_vars_str)[1]}
 
@@ -285,29 +294,9 @@ def _get_processed_string(input_string: bytes) -> str:
     return string_identifier + rp_vars_str.split(string_identifier)[1]
 
 
-def _get_case_filepath(project_dir_path: str) -> str:
-    """Gets case file path within the provided project directory path.
-
-    Parameters
-    ----------
-    project_dir_path : str
-        The directory containing the case file
-
-    Returns
-    -------
-    case file path (str)
-    """
-    file_list = list(
-        itertools.chain(
-            *(
-                glob.glob(project_dir_path + r"/**/**-Solve/*.%s" % ext)
-                for ext in ["cas", "cas.h5", "cas.gz"]
-            )
-        )
-    )
-    if len(file_list) < 1:
-        raise RuntimeError(f"No case files are present in: {project_dir_path}")
-    elif len(file_list) > 1:
-        raise RuntimeError(f"More than one case file is present in: {project_dir_path}")
-    else:
-        return file_list[0]
+def _get_case_filepath_from_flprj(flprj_file):
+    parser = etree.XMLParser(recover=True)
+    tree = ET.parse(flprj_file, parser)
+    root = tree.getroot()
+    folder_name = root.find("Metadata").find("CurrentSimulation").get("value")[5:-1]
+    return root.find(folder_name).find("Input").find("Case").find("Target").get("value")
