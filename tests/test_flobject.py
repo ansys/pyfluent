@@ -2,15 +2,12 @@
 # import codegen.settingsgen
 from collections.abc import MutableMapping
 import io
-import os
 import weakref
 
 import pytest
 from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 
 from ansys.fluent.core.solver import flobject
-
-os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
 
 
 class Setting:
@@ -748,26 +745,15 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     assert energy_parent == "\n energy is a child of models \n"
 
 
-import time
-
-from ansys.fluent.core.solver import flobject
-
-
 def test_accessor_methods_on_settings_objects(load_static_mixer_case):
-    st = time.time()
     solver = load_static_mixer_case
-
     solver.solution.initialization.hybrid_initialize()
-
     root = solver._root
 
     nodes = {}
-
     type_list = []
 
     get_child_nodes(root, nodes, type_list)
-
-    print(type_list)
 
     for type_data in type_list:
         if type_data == "Boolean":
@@ -778,8 +764,7 @@ def test_accessor_methods_on_settings_objects(load_static_mixer_case):
                 "get_state",
                 "set_state",
             }.issubset(set(dir(nodes[type_data])))
-            print(nodes[type_data].is_read_only(), "*-*-*-*")
-            print(nodes[type_data].default_value(), "*****")
+
         elif type_data in ["Integer", "Real", "IntegerList", "RealList"]:
             assert {
                 "is_active",
@@ -791,8 +776,7 @@ def test_accessor_methods_on_settings_objects(load_static_mixer_case):
                 "max",
             }.issubset(set(dir(nodes[type_data])))
             assert not {"allowed_values"}.issubset(set(dir(nodes[type_data])))
-            print(nodes[type_data].min(), "*-*##-*-*")
-            print(nodes[type_data].max(), "**##***")
+
         elif type_data in ["String", "StringList", "Filename"]:
             assert {
                 "is_active",
@@ -803,15 +787,11 @@ def test_accessor_methods_on_settings_objects(load_static_mixer_case):
                 "allowed_values",
             }.issubset(set(dir(nodes[type_data])))
             assert not {"min", "max"}.issubset(set(dir(nodes[type_data])))
-            print(nodes[type_data].allowed_values(), "---#**#---")
+
         elif type_data == "ListObject":
             assert {"is_active", "is_read_only", "get_state", "set_state"}.issubset(
                 set(dir(nodes[type_data]))
             )
-
-    et = time.time()
-
-    print(et - st, "-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-")
 
 
 def get_child_nodes(node, nodes, type_list):
