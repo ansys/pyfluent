@@ -128,7 +128,7 @@ def test_processed_string():
 
 
 def test_casereader_no_file():
-    with pytest.raises(FileNotFoundError):
+    with pytest.raises(RuntimeError):
         call_casereader("no_file.cas.h5")
 
 
@@ -140,7 +140,7 @@ def test_casereader_with_both_project_and_case_file():
 
 
 def test_casereader_for_project_directory_invalid_project_file():
-    with pytest.raises(RuntimeError):
+    with pytest.raises(FileNotFoundError):
         call_casereader(project_filepath="project.flprx")
 
 
