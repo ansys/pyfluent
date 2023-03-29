@@ -17,7 +17,7 @@ class DatamodelStream(StreamingService):
         self, started_evt, rules, no_commands_diff_state, *args, **kwargs
     ):
         """Processes datamodel events."""
-        data_model_request = datamodel_se_pb2.DataModelRequest()
+        data_model_request = datamodel_se_pb2.DataModelRequest(*args, **kwargs)
         data_model_request.rules = rules
         if no_commands_diff_state:
             data_model_request.diffstate = datamodel_se_pb2.DIFFSTATE_NOCOMMANDS
