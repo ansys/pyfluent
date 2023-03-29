@@ -13,7 +13,7 @@ fluent_logger = logging.getLogger("ansys.fluent")
 data_model_logger = logging.getLogger("ansys.fluent.services.datamodel")
 
 
-class _BaseMeshing:
+class BaseMeshing:
     def __init__(self, session_execute_tui, fluent_connection: FluentConnection):
         self._tui_service = fluent_connection.datamodel_service_tui
         self._se_service = fluent_connection.datamodel_service_se

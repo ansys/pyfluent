@@ -6,7 +6,7 @@
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.session import BaseSession
-from ansys.fluent.core.session_base_meshing import _BaseMeshing
+from ansys.fluent.core.session_base_meshing import BaseMeshing
 from ansys.fluent.core.utils.data_transfer import transfer_case
 
 
@@ -19,7 +19,7 @@ class PureMeshing(BaseSession):
 
     def __init__(self, fluent_connection: FluentConnection):
         super(PureMeshing, self).__init__(fluent_connection=fluent_connection)
-        self._base_meshing = _BaseMeshing(self.execute_tui, fluent_connection)
+        self._base_meshing = BaseMeshing(self.execute_tui, fluent_connection)
 
     @property
     def tui(self):
