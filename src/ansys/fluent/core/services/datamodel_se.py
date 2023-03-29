@@ -858,6 +858,9 @@ class PyNamedObjectContainer:
             )
         return child_object_display_names
 
+    def get_object_names(self):
+        return self._get_child_object_display_names()
+
     def __len__(self) -> int:
         """Return a count of child objects.
 
