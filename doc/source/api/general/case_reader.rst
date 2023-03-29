@@ -51,7 +51,7 @@ Along with basic functionality, the case reader provides many additional feature
     >>> reader.config_vars()
 
 
-.. automodule:: ansys.fluent.core.filereader.case
+.. automodule:: ansys.fluent.core.filereader.case_file
    :members:
    :show-inheritance:
    :undoc-members:
