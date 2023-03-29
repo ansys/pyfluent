@@ -253,7 +253,7 @@ class Reduction:
     docstring = None
 
     @staticmethod
-    def _get_location_string(locations, ctxt) -> list[str]:
+    def _get_location_string(locations, ctxt) -> List[str]:
         try:
             return _locns(locations, ctxt)[0][1]
         except BadReductionRequest:
