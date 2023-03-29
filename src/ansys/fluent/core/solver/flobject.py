@@ -169,7 +169,8 @@ class Base:
 
     def is_active(self) -> bool:
         """Whether the object is active."""
-        return self.get_attr("active?", bool)
+        attr = self.get_attr("active?")
+        return False if attr is False else True
 
     def is_read_only(self) -> bool:
         """Whether the object is read-only."""
