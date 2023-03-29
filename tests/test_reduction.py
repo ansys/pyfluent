@@ -297,7 +297,7 @@ def _test_moment(solver):
 
 
 @pytest.mark.dev
-@pytest.mark.fluent_231
+@pytest.mark.fluent_232
 def test_reductions(load_static_mixer_case, load_static_mixer_case_2) -> None:
     solver1 = load_static_mixer_case
     solver2 = load_static_mixer_case_2
