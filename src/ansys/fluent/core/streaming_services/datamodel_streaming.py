@@ -13,7 +13,9 @@ class DatamodelStream(StreamingService):
             streaming_service=service,
         )
 
-    def _process_streaming(self, started_evt, rules, no_commands_diff_state, *args, **kwargs):
+    def _process_streaming(
+        self, started_evt, rules, no_commands_diff_state, *args, **kwargs
+    ):
         """Processes datamodel events."""
         data_model_request = datamodel_se_pb2.DataModelRequest()
         data_model_request.rules = rules
