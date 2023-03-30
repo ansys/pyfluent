@@ -13,7 +13,8 @@ from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invali
 )
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.meshing.watertight import WatertightWorkflow
+from ansys.fluent.core.meshing.faulttolerant import fault_tolerant_workflow
+from ansys.fluent.core.meshing.watertight import watertight_workflow
 
 
 @pytest.mark.nightly
@@ -606,8 +607,8 @@ def test_meshing_workflow_structure(new_mesh_session):
 @pytest.mark.dev
 @pytest.mark.fluent_231
 def test_extended_wrapper(new_mesh_session, mixing_elbow_geometry):
-    watertight_workflow = new_mesh_session.watertight()
-    import_geometry = watertight_workflow.import_geometry
+    watertight = new_mesh_session.watertight()
+    import_geometry = watertight.import_geometry
     assert import_geometry.Arguments() == {}
     import_geometry.Arguments = dict(FileName=mixing_elbow_geometry)
     assert 12 < len(import_geometry.arguments.get_state()) < 15
@@ -626,7 +627,7 @@ def test_extended_wrapper(new_mesh_session, mixing_elbow_geometry):
     assert import_geometry.FileName() == "bob"
     import_geometry.FileName.set_state(mixing_elbow_geometry)
     import_geometry.Execute()
-    add_local_sizing = watertight_workflow.add_local_sizing
+    add_local_sizing = watertight.add_local_sizing
     assert not add_local_sizing.ordered_children()
     add_local_sizing.add_child(state={"BOIFaceLabelList": ["cold-inlet"]})
     assert not add_local_sizing.ordered_children()
@@ -638,13 +639,11 @@ def test_extended_wrapper(new_mesh_session, mixing_elbow_geometry):
     assert added_sizing
     assert added_sizing.CommandArguments.BOIFaceLabelList() == ["elbow-fluid"]
     # restart
-    watertight_workflow = new_mesh_session.watertight()
-    assert watertight_workflow.import_geometry.State() == "Out-of-date"
-    watertight_workflow.import_geometry(
-        FileName=mixing_elbow_geometry, AppendMesh=False
-    )
-    assert watertight_workflow.import_geometry.State() == "Up-to-date"
-    import_geometry_state = watertight_workflow.import_geometry.arguments()
+    watertight = new_mesh_session.watertight()
+    assert watertight.import_geometry.State() == "Out-of-date"
+    watertight.import_geometry(FileName=mixing_elbow_geometry, AppendMesh=False)
+    assert watertight.import_geometry.State() == "Up-to-date"
+    import_geometry_state = watertight.import_geometry.arguments()
     assert len(import_geometry_state) > 2
 
 
@@ -657,5 +656,29 @@ def test_iterate_meshing_workflow_task_container(new_mesh_session):
 
 
 @pytest.mark.dev
-def test_watertight(mixing_elbow_geometry):
-    watertight = WatertightWorkflow(geometry_filepath=mixing_elbow_geometry)
+def test_watertight_workflow(mixing_elbow_geometry):
+    watertight = watertight_workflow(geometry_filepath=mixing_elbow_geometry)
+    add_local_sizing = watertight.add_local_sizing
+    assert not add_local_sizing.ordered_children()
+
+
+# TODO upload fmd file to examples
+@pytest.mark.dev
+def test_fault_tolerant_workflow():
+    fault_tolerant = fault_tolerant_workflow()
+    part_management = fault_tolerant.part_management
+    filename = r"E:/engine_new.fmd"
+    part_management.LoadFmdFile(FilePath=filename)
+    part_management.MoveCADComponentsToNewObject(
+        Paths=[r"/Bottom,1", r"/Left,1", r"/Others,1", r"/Right,1", r"/Top,1"]
+    )
+    part_management.Node["Object"].Rename(NewName=r"Engine")
+    fault_tolerant.TaskObject["Import CAD and Part Management"].Arguments.setState(
+        {
+            r"CreateObjectPer": r"Custom",
+            r"FMDFileName": filename,
+            r"FileLoaded": r"yes",
+            r"ObjectSetting": r"DefaultObjectSetting",
+        }
+    )
+    fault_tolerant.TaskObject["Import CAD and Part Management"].Execute()

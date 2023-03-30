@@ -96,7 +96,12 @@ class _BaseMeshing:
     @property
     def workflow(self):
         if not self._workflow:
-            self._workflow = MeshingWorkflow(self._workflow_se, self.meshing)
+            self._workflow = MeshingWorkflow(
+                self._workflow_se,
+                self.meshing,
+                self.PartManagement,
+                self.PMFileManagement,
+            )
         return self._workflow
 
     @property
