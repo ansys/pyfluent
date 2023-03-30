@@ -4,6 +4,9 @@
 """
 
 
+import functools
+
+from ansys.api.fluent.v0 import datamodel_se_pb2
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services.streaming import StreamingService
@@ -36,7 +39,7 @@ class PureMeshing(BaseSession):
                 request.rules = rules
                 request.diffstate = (
                     datamodel_se_pb2.DIFFSTATE_NOCOMMANDS
-                )  # DIFFSTATE_FULL
+                )  # DIFFSTATE_FULL?
                 streaming = StreamingService(
                     stub=datamodel_service_se._stub,
                     request=request,

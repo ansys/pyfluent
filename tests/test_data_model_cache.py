@@ -88,6 +88,13 @@ def test_data_model_cache():
                 }
             },
         ),
+        (
+            {"r1": {"B:B-1": {"__iname__": "B1", "_name_": "B-1", "C": 5.0}}},
+            "r1",
+            {"B:B1": {"_name_": "B-2", "C": 5.0}},
+            ["B:B1"],
+            {"r1": {"B:B-2": {"__iname__": "B1", "_name_": "B-2", "C": 5.0}}},
+        ),
     ],
 )
 def test_update_cache_display_names_as_keys(
@@ -169,6 +176,13 @@ def test_update_cache_display_names_as_keys(
                     }
                 }
             },
+        ),
+        (
+            {"r1": {"B:B1": {"_name_": "B-1", "C": 5.0}}},
+            "r1",
+            {"B:B1": {"_name_": "B-2", "C": 5.0}},
+            ["B:B1"],
+            {"r1": {"B:B1": {"_name_": "B-2", "C": 5.0}}},
         ),
     ],
 )
