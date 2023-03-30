@@ -241,7 +241,7 @@ class MeshingQueries:
 
     def GetObjectsOfType(self, type_name) -> Any:
         """GetObjectsOfType."""
-        request = MeshingQueriesProtoModule.GetNodeZonesOfFilterRequest()
+        request = MeshingQueriesProtoModule.GetObjectsOfTypeRequest()
         request.type = type_name
         response = self.service.GetObjectsOfType(request)
         return response.objects
@@ -279,7 +279,8 @@ class MeshingQueries:
         """GetFaceZonesOfRegions."""
         request = MeshingQueriesProtoModule.GetFaceZonesOfRegionsRequest()
         request.object = object_name
-        request.types = type_list
+        for types in type_list:
+            request.types.append(types)
         response = self.service.GetFaceZonesOfRegions(request)
         return response.zone_ids
 
@@ -287,7 +288,8 @@ class MeshingQueries:
         """GetFaceZonesOfLabels."""
         request = MeshingQueriesProtoModule.GetFaceZonesOfLabelsRequest()
         request.object = object_name
-        request.types = type_list
+        for types in type_list:
+            request.types.append(types)
         response = self.service.GetFaceZonesOfLabels(request)
         return response.zone_ids
 
@@ -295,21 +297,24 @@ class MeshingQueries:
         """TgapiUtilGetFaceZoneIdListOfLabels."""
         request = MeshingQueriesProtoModule.TgapiUtilGetFaceZoneIdListOfLabelsRequest()
         request.object = object_name
-        request.types = type_list
+        for types in type_list:
+            request.types.append(types)
         response = self.service.TgapiUtilGetFaceZoneIdListOfLabels(request)
         return response.zone_ids
 
     def GetFaceZonesOfObjects(self, type_list) -> Any:
         """GetFaceZonesOfObjects."""
         request = MeshingQueriesProtoModule.GetFaceZonesOfObjectsRequest()
-        request.types = type_list
+        for types in type_list:
+            request.types.append(types)
         response = self.service.GetFaceZonesOfObjects(request)
         return response.zone_ids
 
     def GetEdgeZonesOfObjects(self, type_list) -> Any:
         """GetEdgeZonesOfObjects."""
         request = MeshingQueriesProtoModule.GetEdgeZonesOfObjectsRequest()
-        request.types = type_list
+        for types in type_list:
+            request.types.append(types)
         response = self.service.GetEdgeZonesOfObjects(request)
         return response.zone_ids
 
@@ -317,6 +322,7 @@ class MeshingQueries:
         """TgapiUtilGetFaceZoneIdListOfRegions."""
         request = MeshingQueriesProtoModule.TgapiUtilGetFaceZoneIdListOfRegionsRequest()
         request.object = object_name
-        request.types = type_list
+        for types in type_list:
+            request.types.append(types)
         response = self.service.TgapiUtilGetFaceZoneIdListOfRegions(request)
         return response.zone_ids
