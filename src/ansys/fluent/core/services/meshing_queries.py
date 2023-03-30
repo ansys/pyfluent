@@ -167,15 +167,6 @@ class MeshingQueriesService:
             request, metadata=self._metadata
         )
 
-    @catch_grpc_error
-    def TgapiUtilGetPrismCellZones(
-        self, request: MeshingQueriesProtoModule.TgapiUtilGetPrismCellZonesRequest
-    ) -> MeshingQueriesProtoModule.TgapiUtilGetPrismCellZonesResponse:
-        """TgapiUtilGetPrismCellZones rpc of MeshingQueriesService."""
-        return self._stub.TgapiUtilGetPrismCellZonesRegions(
-            request, metadata=self._metadata
-        )
-
 
 class MeshingQueries:
     """
