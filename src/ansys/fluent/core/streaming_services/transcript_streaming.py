@@ -33,7 +33,7 @@ class Transcript(StreamingService):
         )
         self.callback_ids = []
 
-    def start(self, file_path: str = None, write_to_interpreter: bool = False) -> None:
+    def start(self, file_path: str = None, write_to_stdout: bool = False) -> None:
         """Start streaming of Fluent transcript.
 
          Parameters
@@ -50,10 +50,13 @@ class Transcript(StreamingService):
             self.callback_ids.append(
                 self.register_callback(append_to_file, keep_new_lines=True)
             )
-        if not Transcript._writing_transcript_to_interpreter:
-            if write_to_interpreter:
-                self.callback_ids.append(self.register_callback(print))
-                Transcript._writing_transcript_to_interpreter = True
+            if not Transcript._writing_transcript_to_interpreter:
+                if write_to_stdout:
+                    self.callback_ids.append(self.register_callback(print))
+                    Transcript._writing_transcript_to_interpreter = True
+        else:
+            self.callback_ids.append(self.register_callback(print))
+            Transcript._writing_transcript_to_interpreter = True
         super().start()
 
     def stop(self) -> None:
