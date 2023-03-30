@@ -55,8 +55,9 @@ class Transcript(StreamingService):
                     self.callback_ids.append(self.register_callback(print))
                     Transcript._writing_transcript_to_interpreter = True
         else:
-            self.callback_ids.append(self.register_callback(print))
-            Transcript._writing_transcript_to_interpreter = True
+            if not Transcript._writing_transcript_to_interpreter:
+                self.callback_ids.append(self.register_callback(print))
+                Transcript._writing_transcript_to_interpreter = True
         super().start()
 
     def stop(self) -> None:
