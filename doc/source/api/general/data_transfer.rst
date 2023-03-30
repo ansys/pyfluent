@@ -42,3 +42,11 @@ pure meshing session and transfer it to a solver session.
 
 Similarly, you can use the ``transfer_case`` method to transfer a case file from one instance of Fluent
 to another.
+
+.. automodule:: ansys.fluent.core.utils.data_transfer
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
