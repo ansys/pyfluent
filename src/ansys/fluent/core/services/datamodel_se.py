@@ -168,14 +168,19 @@ class DatamodelService(StreamingService):
 
     def begin_event_streaming(self, request, started_evt):
         """Begin datamodel event streaming."""
-        self._streams = self._stub.BeginEventStreaming(request, metadata=self._metadata)
+        self._event_streams = self._stub.BeginEventStreaming(request, metadata=self._metadata)
         started_evt.set()
         while True:
             try:
-                yield next(self._streams)
+                yield next(self._event_streams)
             except Exception:
                 break
 
+    def end_event_streaming(self) -> None:
+        """End datamodel event streaming from Fluent."""
+        if self._event_streams and not self._event_streams.cancelled():
+            self._event_streams.cancel()
+            
     def unsubscribe_all_events(self):
         """Unsubscribe all subscribed events."""
         for event in list(self.events.values()):
