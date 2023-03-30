@@ -6,7 +6,7 @@ from typing import Callable, Optional
 class StreamingService:
     """Encapsulates a Fluent streaming service."""
 
-    def __init__(self, target, streaming_service, stop_service = None):
+    def __init__(self, target, streaming_service, stop_service=None):
         """__init__ method of StreamingService class."""
         self._lock: threading.RLock = threading.RLock()
         self._streaming: bool = False
@@ -71,7 +71,7 @@ class StreamingService:
             if self._stop_service is None:
                 self._streaming_service.end_streaming()
             else:
-                self._stop_service()            
+                self._stop_service()
             self._stream_thread.join()
             self._streaming = False
             self._stream_thread = None

@@ -14,7 +14,7 @@ class DatamodelEvents(StreamingService):
         super().__init__(
             target=DatamodelEvents._process_streaming,
             streaming_service=service,
-            stop_service = service.end_event_streaming
+            stop_service=service.end_event_streaming,
         )
         self._cbs = {}
         service.event_streaming = self
