@@ -119,15 +119,22 @@ class DumpDataReader:
             SurfaceDataType.FacesNormal: "face-normal",
         }
 
-        surface_data = [
-            self._session_data["fields"][tag_id][surface_id][
-                enum_to_field_name[data_type]
-            ]
-            for data_type in data_types
-            for surface_id in surface_ids
-        ]
+        surfaces_data = []
+        surfaces_data_int = []
 
-        return surface_data
+        for data_type in data_types:
+            for surface_id in surface_ids:
+                surfaces_data_int.append(
+                    self._session_data["fields"][tag_id][surface_id][
+                        enum_to_field_name[data_type]
+                    ]
+                )
+                print(surfaces_data_int)
+
+            surfaces_data.append(surfaces_data_int[:])
+            surfaces_data_int = []
+
+        return surfaces_data
 
     def get_scalar_field_data(
         self, surface_ids, data_location, provide_boundary_values, field_names
