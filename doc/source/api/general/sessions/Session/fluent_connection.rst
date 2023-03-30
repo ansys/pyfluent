@@ -1,9 +1,9 @@
-.. _ref_utils:
+.. _ref_fluent_connection:
 
-Asynchronous execution
-======================
+fluent_connection
+=================
 
-.. automodule:: ansys.fluent.core.utils.async_execution
+.. automodule:: ansys.fluent.core.fluent_connection
    :members:
    :show-inheritance:
    :undoc-members:

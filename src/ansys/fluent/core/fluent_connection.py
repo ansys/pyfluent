@@ -25,6 +25,7 @@ from ansys.fluent.core.services.meshing_queries import (
     MeshingQueriesService,
 )
 from ansys.fluent.core.services.monitor import MonitorsService
+from ansys.fluent.core.services.reduction import Reduction, ReductionService
 from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
 from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
@@ -80,7 +81,7 @@ class _IsDataValid:
         return self._scheme_eval.scheme_eval("(data-valid?)")
 
 
-class _FluentConnection:
+class FluentConnection:
     """Encapsulates a Fluent connection.
 
     Methods
@@ -186,11 +187,11 @@ class _FluentConnection:
                     f"The connection to the Fluent server could not be established within the configurable {start_timeout} second time limit."
                 )
 
-        self._id = f"session-{next(_FluentConnection._id_iter)}"
+        self._id = f"session-{next(FluentConnection._id_iter)}"
 
-        if not _FluentConnection._monitor_thread:
-            _FluentConnection._monitor_thread = MonitorThread()
-            _FluentConnection._monitor_thread.start()
+        if not FluentConnection._monitor_thread:
+            FluentConnection._monitor_thread = MonitorThread()
+            FluentConnection._monitor_thread.start()
 
         self._batch_ops_service = BatchOpsService(self._channel, self._metadata)
 
@@ -221,6 +222,9 @@ class _FluentConnection:
         self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
         self.datamodel_events.start()
 
+        self._reduction_service = ReductionService(self._channel, self._metadata)
+        self.reduction = Reduction(self._reduction_service)
+
         self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
         self.scheme_eval = SchemeEval(self._scheme_eval_service)
         self.settings_service = SettingsService(
@@ -245,7 +249,7 @@ class _FluentConnection:
         self.launcher_args = launcher_args
         self._finalizer = weakref.finalize(
             self,
-            _FluentConnection._exit,
+            FluentConnection._exit,
             self._channel,
             self._cleanup_on_exit,
             self.scheme_eval,
@@ -256,7 +260,7 @@ class _FluentConnection:
             self.monitors_manager,
             self._remote_instance,
         )
-        _FluentConnection._monitor_thread.cbs.append(self._finalizer)
+        FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
     @property
     def id(self) -> str:

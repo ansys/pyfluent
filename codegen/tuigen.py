@@ -12,6 +12,7 @@ Usage
 `python codegen/tuigen.py`
 """
 
+import logging
 import os
 from pathlib import Path
 import pickle
@@ -27,7 +28,6 @@ from data.fluent_gui_help_patch import XML_HELP_PATCH
 from data.tui_menu_descriptions import MENU_DESCRIPTIONS
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import LOG
 from ansys.fluent.core.launcher.launcher import get_ansys_version
 from ansys.fluent.core.services.datamodel_tui import (
     PyMenu,
@@ -35,6 +35,8 @@ from ansys.fluent.core.services.datamodel_tui import (
     convert_tui_menu_to_func_name,
 )
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
+
+logger = logging.getLogger("ansys.fluent.tui")
 
 _THIS_DIRNAME = os.path.dirname(__file__)
 
@@ -109,7 +111,7 @@ def _copy_tui_help_xml_file(version: str):
         if xml_source.exists():
             shutil.copy(str(xml_source), _XML_HELP_FILE)
         else:
-            LOG.warning("fluent_gui_help.xml is not found.")
+            logger.warning("fluent_gui_help.xml is not found.")
 
 
 def _populate_xml_helpstrings():
@@ -257,7 +259,10 @@ class TUIGenerator:
         with open(index_file, "w", encoding="utf8") as f:
             ref = "_ref_" + "_".join([x.strip("_") for x in heading.split(".")])
             f.write(f".. {ref}:\n\n")
-            heading_ = heading.replace("_", "\_")
+            if class_name == "main_menu":
+                heading_ = heading.replace("_", "\_")
+            else:
+                heading_ = class_name.split(".")[-1]
             f.write(f"{heading_}\n")
             f.write(f"{'=' * len(heading_)}\n")
             desc = MENU_DESCRIPTIONS.get(heading)
@@ -339,12 +344,12 @@ def generate():
     _populate_xml_helpstrings()
     TUIGenerator("meshing", version).generate()
     TUIGenerator("solver", version).generate()
-    LOG.warning(
+    logger.warning(
         "XML help is available but not picked for the following %i paths:",
         len(_XML_HELPSTRINGS),
     )
     for k, _ in _XML_HELPSTRINGS.items():
-        LOG.warning(k)
+        logger.warning(k)
 
 
 if __name__ == "__main__":

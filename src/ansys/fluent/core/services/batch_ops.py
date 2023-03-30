@@ -1,6 +1,7 @@
 """Batch rpc service."""
 
 import inspect
+import logging
 from typing import List, Tuple
 import weakref
 
@@ -9,7 +10,8 @@ import grpc
 import ansys.api.fluent.v0 as api
 from ansys.api.fluent.v0 import batch_ops_pb2, batch_ops_pb2_grpc
 from ansys.fluent.core.services.error_handler import catch_grpc_error
-from ansys.fluent.core.utils.logging import LOG
+
+network_logger = logging.getLogger("ansys.fluent.networking")
 
 
 class BatchOpsService:
@@ -148,7 +150,7 @@ class BatchOps:
 
     def __exit__(self, exc_type, exc_value, exc_tb):
         """Exiting from the with block."""
-        LOG.debug("Executing batch operations")
+        network_logger.debug("Executing batch operations")
         self.batching = False
         if not exc_type:
             requests = (x._request for x in self._ops)
@@ -179,7 +181,7 @@ class BatchOps:
         """
         op = BatchOps.Op(package, service, method, request.SerializeToString())
         if op._supported:
-            LOG.debug(
+            network_logger.debug(
                 f"Adding batch operation with package {package}, service {service} and method {method}"
             )
             self._ops.append(op)

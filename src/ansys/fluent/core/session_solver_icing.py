@@ -4,7 +4,7 @@
 """
 import importlib
 
-from ansys.fluent.core.fluent_connection import _FluentConnection
+from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 
@@ -18,7 +18,7 @@ class SolverIcing(Solver):
 
     def __init__(
         self,
-        fluent_connection: _FluentConnection,
+        fluent_connection: FluentConnection,
     ):
         super(SolverIcing, self).__init__(fluent_connection=fluent_connection)
         self._flserver_root = None

@@ -5,6 +5,7 @@ remote instance with gRPC.
 """
 from enum import Enum
 import json
+import logging
 import os
 from pathlib import Path
 import platform
@@ -14,20 +15,20 @@ import time
 from typing import Any, Dict, Union
 import warnings
 
-from ansys.fluent.core.fluent_connection import _FluentConnection
+from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
-from ansys.fluent.core.session import parse_server_info_file
+from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
-from ansys.fluent.core.utils.logging import LOG
 from ansys.fluent.core.utils.networking import find_remoting_ip
 import ansys.platform.instancemanagement as pypim
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
+logger = logging.getLogger("ansys.fluent.launcher")
 
 
 def _is_windows():
@@ -183,7 +184,7 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
                 if default is not None:
                     old_argval = argval
                     argval = default
-                    LOG.warning(
+                    logger.warning(
                         "Default value %s is chosen for %s as the passed "
                         "value  %s is outside allowed values %s.",
                         argval,
@@ -192,7 +193,7 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
                         allowed_values,
                     )
                 else:
-                    LOG.warning(
+                    logger.warning(
                         "%s = %s is discarded as it is outside " "allowed values %s.",
                         k,
                         argval,
@@ -275,7 +276,7 @@ def launch_remote_fluent(
     # nb pymapdl sets max msg len here:
     channel = instance.build_grpc_channel()
     return session_cls(
-        fluent_connection=_FluentConnection(
+        fluent_connection=FluentConnection(
             channel=channel,
             cleanup_on_exit=cleanup_on_exit,
             remote_instance=instance,
@@ -331,13 +332,13 @@ def _await_fluent_launch(
     while True:
         if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:
             time.sleep(1)
-            LOG.info("Fluent process is successfully launched.")
+            logger.info("Fluent process is successfully launched.")
             break
         if start_timeout == 0:
             raise RuntimeError("The launch process has been timed out.")
         time.sleep(1)
         start_timeout -= 1
-        LOG.info(
+        logger.info(
             "Waiting for Fluent to launch...%02d seconds remaining",
             start_timeout,
         )
@@ -353,7 +354,7 @@ def _connect_to_running_server(argvals, server_info_filepath: str):
             "The server-info file was not parsed because ip and port were provided explicitly."
         )
     elif server_info_filepath:
-        ip, port, password = parse_server_info_file(server_info_filepath)
+        ip, port, password = _parse_server_info_file(server_info_filepath)
     elif os.getenv("PYFLUENT_FLUENT_IP") and os.getenv("PYFLUENT_FLUENT_PORT"):
         ip = port = None
     else:
@@ -365,7 +366,7 @@ def _connect_to_running_server(argvals, server_info_filepath: str):
 
 
 def _get_running_session_mode(
-    fluent_connection: _FluentConnection, mode: LaunchMode = None
+    fluent_connection: FluentConnection, mode: LaunchMode = None
 ):
     """Get the mode of the running session if the mode has not been mentioned
     explicitly."""
@@ -590,7 +591,7 @@ def launch_fluent(
         )
 
         try:
-            LOG.info("Launching Fluent with cmd: %s", launch_string)
+            logger.info("Launching Fluent with cmd: %s", launch_string)
             sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
             if env is None:
                 env = {}
@@ -641,7 +642,7 @@ def launch_fluent(
                 server_info_file.unlink()
     else:
         if pypim.is_configured():
-            LOG.info(
+            logger.info(
                 "Starting Fluent remotely. The startup configuration will be ignored."
             )
             return launch_remote_fluent(
@@ -667,7 +668,7 @@ def launch_fluent(
                 pyfluent.EXAMPLES_PATH, pyfluent.EXAMPLES_PATH, args
             )
             return new_session(
-                fluent_connection=_FluentConnection(
+                fluent_connection=FluentConnection(
                     start_timeout=start_timeout,
                     port=port,
                     password=password,
@@ -680,7 +681,7 @@ def launch_fluent(
             ip, port, password = _connect_to_running_server(
                 argvals, server_info_filepath
             )
-            fluent_connection = _FluentConnection(
+            fluent_connection = FluentConnection(
                 ip=ip,
                 port=port,
                 password=password,

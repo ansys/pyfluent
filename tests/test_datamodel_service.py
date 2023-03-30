@@ -234,3 +234,29 @@ def test_datamodel_streaming_no_commands_diff_state(new_mesh_session):
     meshing.meshing.ImportGeometry(FileName=import_filename)
     sleep(5)
     assert "ImportGeometry:ImportGeometry1" not in (y for x in cb.states for y in x)
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_232
+def test_get_object_names_wtm(new_mesh_session):
+    meshing = new_mesh_session
+
+    assert not meshing.workflow.TaskObject.get_object_names()
+
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    child_object_names = [
+        "Import Geometry",
+        "Add Local Sizing",
+        "Generate the Surface Mesh",
+        "Describe Geometry",
+        "Apply Share Topology",
+        "Enclose Fluid Regions (Capping)",
+        "Update Boundaries",
+        "Create Regions",
+        "Update Regions",
+        "Add Boundary Layers",
+        "Generate the Volume Mesh",
+    ]
+
+    assert meshing.workflow.TaskObject.get_object_names() == child_object_names

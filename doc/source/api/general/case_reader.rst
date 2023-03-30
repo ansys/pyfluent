@@ -50,3 +50,11 @@ Along with basic functionality, the case reader provides many additional feature
     >>> reader.rp_vars()
     >>> reader.config_vars()
 
+
+.. automodule:: ansys.fluent.core.filereader.case_file
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
