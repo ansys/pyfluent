@@ -27,6 +27,8 @@ from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents,
 )
+
+# from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
@@ -212,6 +214,8 @@ class FluentConnection:
         self.datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
         self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
         self.datamodel_events.start()
+        # self.datamodel_stream = DatamodelStream(self.datamodel_service_se)
+        # self.datamodel_stream.start()
 
         self._reduction_service = ReductionService(self._channel, self._metadata)
         self.reduction = Reduction(self._reduction_service)
