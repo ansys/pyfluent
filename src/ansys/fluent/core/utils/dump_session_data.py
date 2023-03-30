@@ -129,7 +129,6 @@ class DumpDataReader:
                         enum_to_field_name[data_type]
                     ]
                 )
-                print(surfaces_data_int)
 
             surfaces_data.append(surfaces_data_int[:])
             surfaces_data_int = []
