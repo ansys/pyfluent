@@ -419,6 +419,7 @@ class WorkflowWrapper:
     def __init__(self, workflow, command_source):
         self._workflow = workflow
         self._command_source = command_source
+        self._task_accessors = []
 
     def task(self, name: str) -> BaseTask:
         """Get a TaskObject by name, in a BaseTask wrapper. The wrapper adds extra
@@ -526,16 +527,23 @@ class WorkflowWrapper:
             pass
 
     def _task_with_cmd_matching_help_string(self, help_string):
+        self._refresh_task_accessors()
+        return getattr(self, help_string)
+
+    def _refresh_task_accessors(self):
+        for task in self._task_accessors:
+            delattr(self, task)
         child_tasks = self.ordered_children()
         for task in child_tasks:
             cmd = task._command()
             # temp reuse helpString
             py_name = cmd.get_attr("helpString")
-            if py_name == help_string:
-                return task
+            self._task_accessors.append(py_name)
+            setattr(self, py_name, task)
 
     def _new_workflow(self, name):
         self._workflow.InitializeWorkflow(WorkflowType=name)
+        self._refresh_task_accessors()
 
 
 class _MakeReadOnly:
