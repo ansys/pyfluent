@@ -29,7 +29,7 @@ def refresh_task_accessors(obj):
         py_name = task.python_name()
         obj._python_task_names.append(py_name)
         setattr(obj, py_name, task)
-        task._refresh_task_accessors()
+        refresh_task_accessors(task)
 
 
 class BaseTask:
@@ -165,18 +165,6 @@ class BaseTask:
             # temp reuse helpString
             self._python_name = this_command.get_attr("helpString")
         return self._python_name
-
-    # TODO factor out into TaskParent base class
-    # Perhaps in the ConditionalTask
-    def _refresh_task_accessors(self):
-        for task in self._python_task_names:
-            delattr(self, task)
-        self._python_task_names.clear()
-        for task in self.ordered_children():
-            py_name = task.python_name()
-            self._python_task_names.append(py_name)
-            setattr(self, py_name, task)
-            task._refresh_task_accessors()
 
     def __getattr__(self, attr):
         try:
@@ -467,7 +455,7 @@ def makeTask(command_source, name: str) -> BaseTask:
     return kind(command_source, task)
 
 
-class WorkflowWrapper(TaskParent):
+class WorkflowWrapper:
     """Wrap a Workflow object, adding methods to discover more about the
     relationships between TaskObjects.
 
@@ -594,22 +582,12 @@ class WorkflowWrapper(TaskParent):
             pass
 
     # def _task_with_cmd_matching_help_string(self, help_string):
-    #    self._refresh_task_accessors()
+    #    refresh_task_accessors(self)
     #    return getattr(self, help_string)
-
-    def _refresh_task_accessors(self):
-        for task in self._python_task_names:
-            delattr(self, task)
-        self._python_task_names.clear()
-        for task in self.ordered_children():
-            py_name = task.python_name()
-            self._python_task_names.append(py_name)
-            setattr(self, py_name, task)
-            task._refresh_task_accessors()
 
     def _new_workflow(self, name):
         self._workflow.InitializeWorkflow(WorkflowType=name)
-        self._refresh_task_accessors()
+        refresh_task_accessors(self)
 
 
 class _MakeReadOnly:
