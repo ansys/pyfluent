@@ -178,6 +178,16 @@ class DatamodelService(StreamingService):
             except Exception:
                 break
 
+    def begin_streaming(self, request, started_evt):
+        """Begin datamodel event streaming."""
+        self._streams = self._stub.BeginStreaming(request, metadata=self._metadata)
+        started_evt.set()
+        while True:
+            try:
+                yield next(self._streams)
+            except Exception:
+                break
+
     def end_event_streaming(self) -> None:
         """End datamodel event streaming from Fluent."""
         if self._event_streams and not self._event_streams.cancelled():
