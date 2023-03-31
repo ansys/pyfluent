@@ -1,5 +1,6 @@
 import logging
 from typing import Any, Iterator, Tuple
+import warnings
 
 from ansys.fluent.core.services.datamodel_se import PyCallableStateObject
 
@@ -45,6 +46,8 @@ class BaseTask:
                 _source=command_source._command_source,
                 _task=task,
                 _cmd=None,
+                _python_name=None,
+                _python_task_names=[],
             )
         )
 
@@ -141,6 +144,25 @@ class BaseTask:
             The integer index.
         """
         return int(self.get_id()[len("TaskObject") :])
+
+    def python_name(self):
+        if not self._python_name:
+            this_command = self._command()
+            # temp reuse helpString
+            self._python_name = this_command.get_attr("helpString")
+        return self._python_name
+
+    # TODO factor out into TaskParent base class
+    # Perhaps in the ConditionalTask
+    def _refresh_task_accessors(self):
+        for task in self._python_task_names:
+            delattr(self, task)
+        self._python_task_names.clear()
+        for task in self.ordered_children():
+            py_name = task.python_name()
+            self._python_task_names.append(py_name)
+            setattr(self, py_name, task)
+            task._refresh_task_accessors()
 
     def __getattr__(self, attr):
         try:
@@ -244,21 +266,21 @@ class ArgumentsWrapper(PyCallableStateObject):
 
     def get_state(self, explicit_only=False):
         return (
-            self._task.Arguments() if explicit_only else self._task.CommandArguments()
+            self._task.Arguments() if explicit_only else self._task._command_arguments()
         )
 
     def __getattr__(self, attr):
-        return getattr(self._task.CommandArguments, attr)
+        return getattr(self._task._command_arguments, attr)
 
     def __setitem__(self, key, value):
-        self._task.CommandArguments.__setitem__(key, value)
+        self._task._command_arguments.__setitem__(key, value)
 
 
 class ArgumentWrapper(PyCallableStateObject):
     def __init__(self, task, arg):
         self._task = task
         self._arg_name = arg
-        self._arg = getattr(task.CommandArguments, arg)
+        self._arg = getattr(task._command_arguments, arg)
 
     def set_state(self, value):
         self._task.Arguments.update_dict({self._arg_name: value})
@@ -280,6 +302,11 @@ class CommandTask(BaseTask):
 
     @property
     def CommandArguments(self):
+        warnings.warn("CommandArguments", DeprecationWarning)
+        return self._refreshed_command()
+
+    @property
+    def _command_arguments(self):
         return self._refreshed_command()
 
     @property
@@ -329,6 +356,11 @@ class CompositeTask(BaseTask):
 
     @property
     def CommandArguments(self):
+        warnings.warn("CommandArguments", DeprecationWarning)
+        return {}
+
+    @property
+    def _command_arguments(self):
         return {}
 
     @property
@@ -419,7 +451,7 @@ class WorkflowWrapper:
     def __init__(self, workflow, command_source):
         self._workflow = workflow
         self._command_source = command_source
-        self._task_accessors = []
+        self._python_task_names = []
 
     def task(self, name: str) -> BaseTask:
         """Get a TaskObject by name, in a BaseTask wrapper. The wrapper adds extra
@@ -469,6 +501,9 @@ class WorkflowWrapper:
             tasks.append(self._task_by_id_impl(task_id, workflow_state))
         return tasks
 
+    def child_task_python_names(self):
+        return self._python_task_names
+
     def inactive_ordered_children(self) -> list:
         """Get the inactive ordered task list held by this task.
 
@@ -488,7 +523,7 @@ class WorkflowWrapper:
         """
         return self._attr_from_wrapped_workflow(
             attr
-        ) or self._task_with_cmd_matching_help_string(attr)
+        )  # or self._task_with_cmd_matching_help_string(attr)
 
     def __dir__(self):
         """Override the behaviour of dir to include attributes in
@@ -526,20 +561,19 @@ class WorkflowWrapper:
         except AttributeError:
             pass
 
-    def _task_with_cmd_matching_help_string(self, help_string):
-        self._refresh_task_accessors()
-        return getattr(self, help_string)
+    # def _task_with_cmd_matching_help_string(self, help_string):
+    #    self._refresh_task_accessors()
+    #    return getattr(self, help_string)
 
     def _refresh_task_accessors(self):
-        for task in self._task_accessors:
+        for task in self._python_task_names:
             delattr(self, task)
-        child_tasks = self.ordered_children()
-        for task in child_tasks:
-            cmd = task._command()
-            # temp reuse helpString
-            py_name = cmd.get_attr("helpString")
-            self._task_accessors.append(py_name)
+        self._python_task_names.clear()
+        for task in self.ordered_children():
+            py_name = task.python_name()
+            self._python_task_names.append(py_name)
             setattr(self, py_name, task)
+            task._refresh_task_accessors()
 
     def _new_workflow(self, name):
         self._workflow.InitializeWorkflow(WorkflowType=name)
