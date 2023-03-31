@@ -660,6 +660,14 @@ def test_watertight_workflow(mixing_elbow_geometry):
     watertight = watertight_workflow(geometry_filepath=mixing_elbow_geometry)
     add_local_sizing = watertight.add_local_sizing
     assert not add_local_sizing.ordered_children()
+    add_local_sizing.add_child(state={"BOIFaceLabelList": ["cold-inlet"]})
+    assert not add_local_sizing.ordered_children()
+    added_sizing = add_local_sizing.add_child_and_update(
+        state={"BOIFaceLabelList": ["elbow-fluid"]}
+    )
+    assert len(add_local_sizing.ordered_children()) == 1
+    assert added_sizing
+    assert added_sizing.CommandArguments.BOIFaceLabelList() == ["elbow-fluid"]
 
 
 # TODO upload fmd file to examples

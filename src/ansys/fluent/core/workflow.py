@@ -256,13 +256,9 @@ class ArgumentsWrapper(PyCallableStateObject):
 
 class ArgumentWrapper(PyCallableStateObject):
     def __init__(self, task, arg):
-        print(1)
         self._task = task
-        print(2)
         self._arg_name = arg
-        print(3)
         self._arg = getattr(task.CommandArguments, arg)
-        print(4)
 
     def set_state(self, value):
         self._task.Arguments.update_dict({self._arg_name: value})
