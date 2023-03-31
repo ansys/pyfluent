@@ -1,6 +1,4 @@
 """Module containing class encapsulating Fluent connection.
-
-**********PRESENTLY SAME AS MESHING WITHOUT THE SWITCH TO SOLVER***********
 """
 
 
