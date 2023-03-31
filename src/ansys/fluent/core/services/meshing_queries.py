@@ -163,6 +163,14 @@ class MeshingQueriesService:
         """GetEdgeZonesOfObjects rpc of MeshingQueriesService."""
         return self._stub.GetFaceZoneIdListOfRegions(request, metadata=self._metadata)
 
+    @catch_grpc_error
+    def GetPrismCellZones(
+        self,
+        request: MeshingQueriesProtoModule.GetPrismCellZonesRequest,
+    ) -> MeshingQueriesProtoModule.GetPrismCellZonesResponse:
+        """GetPrismCellZones rpc of MeshingQueriesService."""
+        return self._stub.GetPrismCellZones(request, metadata=self._metadata)
+
 
 class MeshingQueries:
     """
@@ -193,47 +201,47 @@ class MeshingQueries:
         response = self.service.GetCellZoneAtLocation(request)
         return response.cell_zone_id
 
-    def GetZonesOfType(self, zone_type) -> Any:
+    def GetZonesOfType(self, object_name) -> Any:
         """GetZonesOfType."""
         request = MeshingQueriesProtoModule.GetZonesOfTypeRequest()
-        request.zone_type = zone_type
+        request.object = object_name
         response = self.service.GetZonesOfType(request)
         return response.zone_ids
 
-    def GetZonesOfGroup(self, group) -> Any:
+    def GetZonesOfGroup(self, object_name) -> Any:
         """GetZonesOfGroup."""
         request = MeshingQueriesProtoModule.GetZonesOfGroupRequest()
-        request.group = group
+        request.object = object_name
         response = self.service.GetZonesOfGroup(request)
         return response.zone_ids
 
-    def GetFaceZonesOfFilter(self, filter) -> Any:
+    def GetFaceZonesOfFilter(self, object_name) -> Any:
         """GetFaceZonesOfFilter."""
         request = MeshingQueriesProtoModule.GetFaceZonesOfFilterRequest()
-        request.filter = filter
+        request.object = object_name
         response = self.service.GetFaceZonesOfFilter(request)
-        return response.face_zone_ids
+        return response.zone_ids
 
-    def GetCellZonesOfFilter(self, filter) -> Any:
+    def GetCellZonesOfFilter(self, object_name) -> Any:
         """GetCellZonesOfFilter."""
         request = MeshingQueriesProtoModule.GetCellZonesOfFilterRequest()
-        request.filter = filter
+        request.object = object_name
         response = self.service.GetCellZonesOfFilter(request)
-        return response.cell_zone_ids
+        return response.zone_ids
 
-    def GetEdgeZonesOfFilter(self, filter) -> Any:
+    def GetEdgeZonesOfFilter(self, object_name) -> Any:
         """GetEdgeZonesOfFilter."""
         request = MeshingQueriesProtoModule.GetEdgeZonesOfFilterRequest()
-        request.filter = filter
+        request.object = object_name
         response = self.service.GetEdgeZonesOfFilter(request)
-        return response.edge_zone_ids
+        return response.zone_ids
 
-    def GetNodeZonesOfFilter(self, filter) -> Any:
+    def GetNodeZonesOfFilter(self, object_name) -> Any:
         """GetNodeZonesOfFilter."""
         request = MeshingQueriesProtoModule.GetNodeZonesOfFilterRequest()
-        request.filter = filter
+        request.object = object_name
         response = self.service.GetNodeZonesOfFilter(request)
-        return response.node_zone_ids
+        return response.zone_ids
 
     def GetObjectsOfType(self, type_name) -> Any:
         """GetObjectsOfType."""
@@ -321,4 +329,19 @@ class MeshingQueries:
         for types in type_list:
             request.types.append(types)
         response = self.service.GetFaceZoneIdListOfRegions(request)
+        return response.zone_ids
+
+    def GetPrismCellZones(self, object_name) -> Any:
+        """GetPrismCellZones."""
+        request = MeshingQueriesProtoModule.GetPrismCellZonesRequest()
+        request.object = object_name
+        response = self.service.GetPrismCellZones(request)
+        return response.zone_ids
+
+    def GetPrismCellZones(self, type_list) -> Any:
+        """GetPrismCellZones."""
+        request = MeshingQueriesProtoModule.GetPrismCellZonesRequest()
+        for types in type_list:
+            request.types.append(types)
+        response = self.service.GetPrismCellZones(request)
         return response.zone_ids

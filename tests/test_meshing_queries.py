@@ -92,3 +92,7 @@ def test_meshing_queries(new_mesh_session):
         30,
         29,
     ]  # noqa: E501
+
+    assert meshing_session.meshing_queries.GetPrismCellZones(["inlet", "outlet"]) == []
+
+    assert meshing_session.meshing_queries.GetPrismCellZones("*") == []
