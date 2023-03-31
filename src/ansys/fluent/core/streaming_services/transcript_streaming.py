@@ -40,7 +40,7 @@ class Transcript(StreamingService):
         ----------
         file_path: str, optional
             File path to write the transcript stream.
-        write_to_interpreter: bool, optional
+        write_to_stdout: bool, optional
             Flag to print transcript on the screen or not
         """
         if file_path:
