@@ -21,7 +21,7 @@ def call_casereader(
         assert reader.num_dimensions() == expected["num_dimensions"]
         assert reader.iter_count() == expected["iter_count"]
         assert {
-            p.name: (p.number, p.units) for p in reader.input_parameters()
+            p.name: (p.numeric_value, p.units) for p in reader.input_parameters()
         } == expected["input_parameters"]
         assert {p.name: p.units for p in reader.output_parameters()} == expected[
             "output_parameters"
@@ -204,14 +204,14 @@ def test_case_reader_input_parameter():
 
     assert number.name == "n"
     assert number.units == ""
-    assert number.number == 12.4
+    assert number.numeric_value == 12.4
     assert number.value == "12.4"
 
     length = InputParameter(raw_data=(("name", "x"), ("definition", "12.4 [m]")))
 
     assert length.name == "x"
     assert length.units == "m"
-    assert length.number == 12.4
+    assert length.numeric_value == 12.4
     assert length.value == "12.4 [m]"
 
     momentum = InputParameter(
@@ -220,5 +220,5 @@ def test_case_reader_input_parameter():
 
     assert momentum.name == "p"
     assert momentum.units == "kg m s^-1"
-    assert momentum.number == 12.4
+    assert momentum.numeric_value == 12.4
     assert momentum.value == "12.4 [kg m s^-1]"
