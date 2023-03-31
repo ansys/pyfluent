@@ -1,7 +1,7 @@
 import importlib
 import logging
 
-from ansys.fluent.core.fluent_connection import _FluentConnection
+from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.meshing.meshing import Meshing
 
 # from ansys.fluent.core.workflow import WorkflowWrapper
@@ -16,8 +16,8 @@ data_model_logger = logging.getLogger("ansys.fluent.services.datamodel")
 tui_logger = logging.getLogger("ansys.fluent.services.tui")
 
 
-class _BaseMeshing:
-    def __init__(self, session_execute_tui, fluent_connection: _FluentConnection):
+class BaseMeshing:
+    def __init__(self, session_execute_tui, fluent_connection: FluentConnection):
         self._tui_service = fluent_connection.datamodel_service_tui
         self._se_service = fluent_connection.datamodel_service_se
         self._fluent_connection = fluent_connection

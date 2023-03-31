@@ -1,9 +1,9 @@
-.. _ref_utils:
+.. _ref_session:
 
-Asynchronous execution
-======================
+session
+=======
 
-.. automodule:: ansys.fluent.core.utils.async_execution
+.. automodule:: ansys.fluent.core.session
    :members:
    :show-inheritance:
    :undoc-members:
