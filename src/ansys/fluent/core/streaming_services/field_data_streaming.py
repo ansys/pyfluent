@@ -28,12 +28,12 @@ class FieldDataStreaming(StreamingService):
         self._lock_refresh: threading.Lock = threading.Lock()
 
     def _process_streaming(self, started_evt, *args, **kwargs):
-        """Processes on field data streaming."""
+        """Processes field data streaming."""
         request = FieldDataProtoModule.BeginFieldsStreamingRequest(*args, **kwargs)
         ChunkParser(self).extract_fields(
             self._streaming_service.begin_streaming(request, started_evt)
         )
 
     def callbacks(self) -> List[List[Union[Callable, List, Dict]]]:
-        """Provides list of callbacks along with arguments and keyword arguments"""
+        """Get list of callbacks along with arguments and keyword arguments"""
         return self._service_callbacks.values()
