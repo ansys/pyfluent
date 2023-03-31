@@ -16,6 +16,13 @@ tui_logger = logging.getLogger("ansys.fluent.services.tui")
 
 class BaseMeshing:
     def __init__(self, session_execute_tui, fluent_connection: FluentConnection):
+        """BaseMeshing session.
+
+        Args:
+            session_execute_tui (_type_): Executes Fluent’s SolverTUI methods.
+
+            fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+        """
         self._tui_service = fluent_connection.datamodel_service_tui
         self._se_service = fluent_connection.datamodel_service_se
         self._fluent_connection = fluent_connection
