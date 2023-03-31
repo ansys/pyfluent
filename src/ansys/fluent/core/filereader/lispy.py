@@ -100,6 +100,7 @@ def readchar(in_port):
 
 def read(in_port):
     """Read a Scheme expression from an input port."""
+
     def read_ahead(token):
         if "(" == token:
             list_ = None
@@ -109,10 +110,10 @@ def read(in_port):
                 token = in_port.next_token()
                 if token == ")":
                     return (
-                        (tuple(list_) if to_tuple else list_) if list_ else (
-                            tuple(cons) if cons else (
-                                []
-                            )))
+                        (tuple(list_) if to_tuple else list_)
+                        if list_
+                        else (tuple(cons) if cons else ([]))
+                    )
                 if token == ".":
                     if list_:
                         cons = [list_.pop()]
@@ -173,8 +174,10 @@ def atom(token):
 
 def to_string(x):
     """Convert a Python object back into a Lisp-readable string."""
+
     def sequence(sep):
         return "(" + sep.join(map(to_string, x)) + ")"
+
     if x is True:
         return "#t"
     elif x is False:
@@ -182,7 +185,7 @@ def to_string(x):
     elif isa(x, Symbol):
         return x
     elif isa(x, str):
-        return x.replace("\'", '\"')
+        return x.replace("'", '"')
     elif isinstance(x, list):
         return sequence(" ")
     elif isinstance(x, tuple):

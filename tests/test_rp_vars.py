@@ -1,4 +1,3 @@
-
 import pytest
 from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 
@@ -14,20 +13,14 @@ def test_get_and_set_rp_vars(new_solver_session_no_transcript) -> None:
 
     # simple integer
     iter_count = 54321
-    rp_vars(
-        "number-of-iterations",
-        iter_count
-        )
+    rp_vars("number-of-iterations", iter_count)
     assert iter_count == rp_vars("number-of-iterations")
 
     # complex list structure
     before_init_mod = rp_vars("strategy/solution-strategy/before-init-modification")
     assert before_init_mod[1][1][1] == ("value", False)
     before_init_mod[1][1][1] = ("value", True)
-    rp_vars(
-        "strategy/solution-strategy/before-init-modification",
-        before_init_mod
-        )
+    rp_vars("strategy/solution-strategy/before-init-modification", before_init_mod)
     before_init_mod_2 = rp_vars("strategy/solution-strategy/before-init-modification")
     assert before_init_mod_2[1][1][1] == ("value", True)
 
@@ -67,9 +60,11 @@ def test_rp_vars_allowed_values(new_solver_session_no_transcript) -> None:
     with pytest.raises(RuntimeError) as msg:
         rp_vars("number-of-iterat")
 
-    assert msg.value.args[0] == "number-of-iterat is not an allowed rp-vars name.\n" \
-                                "The most similar names are: number-of-iterations, " \
-                                "number-of-time-steps, lb/number-of-timesteps, " \
-                                "number-of-samples, gpuapp/total-number-of-subiterations."
+    assert (
+        msg.value.args[0] == "number-of-iterat is not an allowed rp-vars name.\n"
+        "The most similar names are: number-of-iterations, "
+        "number-of-time-steps, lb/number-of-timesteps, "
+        "number-of-samples, gpuapp/total-number-of-subiterations."
+    )
 
     assert "number-of-iterations" in rp_vars.allowed_values()

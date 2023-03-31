@@ -21,13 +21,18 @@ class HealthCheckService:
     """
 
     class Status(Enum):
+        """Health check status."""
+
         UNKNOWN = 0
         SERVING = 1
         NOT_SERVING = 2
         SERVICE_UNKNOWN = 3
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
-        intercept_channel = grpc.intercept_channel(channel, TracingInterceptor(), BatchInterceptor())
+        """__init__ method of HealthCheckService class."""
+        intercept_channel = grpc.intercept_channel(
+            channel, TracingInterceptor(), BatchInterceptor()
+        )
         self._stub = HealthCheckGrpcModule.HealthStub(intercept_channel)
         self._metadata = metadata
         self._channel = channel
@@ -82,4 +87,5 @@ class HealthCheckService:
 
     @property
     def is_serving(self) -> bool:
+        """Checks whether Fluent is serving."""
         return True if self.status() == "SERVING" else False

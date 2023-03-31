@@ -6,8 +6,8 @@ interfaces: solver settings objects and task-based meshing workflow.
 """
 from typing import Any, List
 
-from ansys.fluent.core.allowed_name_error_msg import allowed_name_error_message
 import ansys.fluent.core.filereader.lispy as lispy
+from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 
 class RPVars:
@@ -15,9 +15,7 @@ class RPVars:
 
     Methods
     -------
-    __call__(
-        var, val
-        )
+    __call__(var, val)
         Set or get a specific rpvar or get the full rpvar state.
     """
 
@@ -45,18 +43,24 @@ class RPVars:
             unspecified, or the value of the rpvar if only var is specified,
             or None if both arguments are specified.
         """
-        return self._set_var(var, val) if val else (
-            self._get_var(var) if var else self._get_vars()
+        return (
+            self._set_var(var, val)
+            if val
+            else (self._get_var(var) if var else self._get_vars())
         )
 
     def allowed_values(self) -> List[str]:
         if not RPVars._allowed_values:
-            RPVars._allowed_values = lispy.parse(self._eval_fn("(cx-send '(map car rp-variables))"))
+            RPVars._allowed_values = lispy.parse(
+                self._eval_fn("(cx-send '(map car rp-variables))")
+            )
         return RPVars._allowed_values
 
     def _get_var(self, var: str):
         if var not in self.allowed_values():
-            raise RuntimeError(allowed_name_error_message("rp-vars", var, RPVars._allowed_values))
+            raise RuntimeError(
+                allowed_name_error_message("rp-vars", var, RPVars._allowed_values)
+            )
 
         cmd = f"(rpgetvar {RPVars._var(var)})"
         return self._execute(cmd)

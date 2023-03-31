@@ -23,8 +23,6 @@ Python code to control and monitor Ansys Fluent.
    materials
    boundary_conditions
    solution
-   case_reader
-   data_transfer
 
 
 Overview
@@ -50,7 +48,7 @@ You can launch Fluent in meshing mode with this code:
 
 
 For more information, see :ref:`ref_user_guide_launch` 
-and :ref:`ref_launcher_launcher`.
+and :ref:`ref_launcher`.
 
 You can use PyFluent to create and initialize multiple, independent session
 objects. Each session object provides full access to the Fluent components

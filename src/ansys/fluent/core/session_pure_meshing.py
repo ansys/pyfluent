@@ -4,23 +4,53 @@
 """
 
 
-from ansys.fluent.core.fluent_connection import _FluentConnection
-from ansys.fluent.core.session import _BaseSession
-from ansys.fluent.core.session_base_meshing import _BaseMeshing
+import functools
+
+from ansys.api.fluent.v0 import datamodel_se_pb2
+from ansys.fluent.core.data_model_cache import DataModelCache
+from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.services.streaming import StreamingService
+from ansys.fluent.core.session import BaseSession
+from ansys.fluent.core.session_base_meshing import BaseMeshing
+from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 from ansys.fluent.core.utils.data_transfer import transfer_case
 
 
-class PureMeshing(_BaseSession):
-    """Encapsulates a Fluent - Pure Meshing session connection.
-    PureMeshing(_BaseSession) holds the top-level objects
-    for meshing TUI and various meshing datamodel API calls.
-    In pure-meshing mode, switch to solver is not available.
-    Public attributes of this class or extracted from the _BaseMeshing
-    class"""
+class PureMeshing(BaseSession):
+    """Encapsulates a Fluent meshing session. A ``tui`` object
+    for meshing TUI commanding, and ``meshing`` and ``workflow``
+    objects for access to task-based meshing workflows are all
+    exposed here. No ``switch_to_solver`` method is available
+    in this mode."""
 
-    def __init__(self, fluent_connection: _FluentConnection):
+    use_cache = True
+    rules = ["workflow", "meshing", "PartManagement", "PMFileManagement"]
+    for r in rules:
+        DataModelCache.set_config(r, "internal_names_as_keys", True)
+
+    def __init__(self, fluent_connection: FluentConnection):
         super(PureMeshing, self).__init__(fluent_connection=fluent_connection)
-        self._base_meshing = _BaseMeshing(self.execute_tui, fluent_connection)
+        self._base_meshing = BaseMeshing(self.execute_tui, fluent_connection)
+        datamodel_service_se = fluent_connection.datamodel_service_se
+        self.datamodel_streams = {}
+        if self.use_cache:
+            for rules in self.__class__.rules:
+                request = datamodel_se_pb2.DataModelRequest()
+                request.rules = rules
+                request.diffstate = (
+                    datamodel_se_pb2.DIFFSTATE_NOCOMMANDS
+                )  # DIFFSTATE_FULL?
+                streaming = StreamingService(
+                    stub=datamodel_service_se._stub,
+                    request=request,
+                    metadata=datamodel_service_se._metadata,
+                )
+                stream = DatamodelStream(streaming)
+                stream.register_callback(
+                    functools.partial(DataModelCache.update_cache, rules=rules)
+                )
+                self.datamodel_streams[rules] = stream
+                stream.start()
 
     @property
     def tui(self):

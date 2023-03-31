@@ -19,13 +19,16 @@ import collections
 import hashlib
 import importlib
 import keyword
+import logging
 import pickle
 import string
 import sys
 from typing import Any, Dict, Generic, List, NewType, Tuple, TypeVar, Union
 import weakref
 
-from .logging import LOG
+from .error_message import allowed_name_error_message, allowed_values_error
+
+settings_logger = logging.getLogger("ansys.fluent.services.settings_api")
 
 # Type hints
 RealType = NewType("real", Union[float, str])  # constant or expression
@@ -157,18 +160,22 @@ class Base:
                 attr_type_or_types = (attr_type_or_types,)
             if isinstance(val, attr_type_or_types):
                 return val
-            if val is not None and any(issubclass(x, bool) for x in attr_type_or_types):  # cast to bool for boolean attributes
+            if val is not None and any(
+                issubclass(x, bool) for x in attr_type_or_types
+            ):  # cast to bool for boolean attributes
                 return bool(val)
             return None
         return val
 
     def is_active(self) -> bool:
         """Whether the object is active."""
-        return self.get_attr("active?", bool)
+        attr = self.get_attr("active?")
+        return False if attr is False else True
 
     def is_read_only(self) -> bool:
         """Whether the object is read-only."""
-        return self.get_attr("read-only?", bool)
+        attr = self.get_attr("read-only?")
+        return False if attr is None else attr
 
     def __setattr__(self, name, value):
         raise AttributeError(name)
@@ -450,14 +457,150 @@ class Group(SettingsBase[DictStateType]):
                 ret.append(query)
         return ret
 
+    def get_completer_info(self, prefix=""):
+        """Return list of [name, type, doc]"""
+        ret = []
+        for child_name in self.child_names:
+            if child_name.startswith(prefix):
+                child = getattr(self, child_name)
+                if child.is_active():
+                    ret.append(
+                        [
+                            child_name,
+                            child.__class__.__bases__[0].__name__,
+                            child.__doc__,
+                        ]
+                    )
+        for command_name in self.command_names:
+            if command_name.startswith(prefix):
+                command = getattr(self, command_name)
+                if command.is_active():
+                    ret.append([command_name, Command.__name__, command.__doc__])
+        for query_name in self.query_names:
+            if query_name.startswith(prefix):
+                query = getattr(self, query_name)
+                if query.is_active():
+                    ret.append([query_name, Query.__name__, query.__doc__])
+        return ret
+
+    def _get_parent_of_active_child_names(self, name):
+        parents = ""
+        for parent in self.get_active_child_names():
+            try:
+                if hasattr(getattr(self, parent), str(name)):
+                    if len(parents) != 0:
+                        parents += "." + parent
+                    else:
+                        parents += parent
+            except AttributeError:
+                pass
+        if len(parents):
+            print(f"\n {name} is a child of {parents} \n")
+            return f"\n {name} is a child of {parents} \n"
+
     def __getattribute__(self, name):
         if name in super().__getattribute__("child_names"):
-            if not self.is_active():
+            if self.is_active() is False:
                 raise RuntimeError(f"'{self.path}' is currently not active")
-        return super().__getattribute__(name)
+        try:
+            return super().__getattribute__(name)
+        except AttributeError as ex:
+            self._get_parent_of_active_child_names(name)
+            raise AttributeError(
+                allowed_name_error_message(
+                    "Settings objects", name, super().__getattribute__("child_names")
+                )
+            ) from ex
 
     def __setattr__(self, name: str, value):
-        return getattr(self, name).set_state(value)
+        attr = None
+        try:
+            attr = getattr(self, name)
+        except AttributeError as ex:
+            raise AttributeError(
+                allowed_name_error_message(
+                    "Settings objects", name, super().__getattribute__("child_names")
+                )
+            ) from ex
+        try:
+            return attr.set_state(value)
+        except BaseException as ex:
+            allowed = attr.allowed_values()
+            if allowed and value not in allowed:
+                raise allowed_values_error(name, value, allowed) from ex
+
+
+class WildcardPath(Group):
+    """Class wrapping a wildcard path to perform get_var and set_var on
+    flproxy."""
+
+    def __init__(self, flproxy, path: str, state_cls, settings_cls):
+        """__init__ of WildcardPath class."""
+        self._setattr("_flproxy", flproxy)
+        self._setattr("_path", path)
+        # _state_cls is the settings class at which the state is constructed.
+        # _state_cls isn't changed after the first wildcard, i.e.
+        # a.b["*"], a.b["*"].c, a.b["*"].c.d["*"] have the same _state_cls.
+        # It is used to convert between python and scheme keys within the state.
+        self._setattr("_state_cls", state_cls)
+        # _settings_cls is the settings cls at the wildcard path level. It is used to
+        # construct the scheme path for children.
+        self._setattr("_settings_cls", settings_cls)
+
+    @property
+    def flproxy(self):
+        """Proxy object."""
+        return self._flproxy
+
+    @property
+    def path(self):
+        """Path with wildcards."""
+        return self._path
+
+    def __getattr__(self, name: str):
+        if hasattr(self._settings_cls, name):
+            child_settings_cls = getattr(self._settings_cls, name)
+            scheme_name = child_settings_cls.fluent_name
+            wildcard_cls = (
+                NamedObjectWildcardPath
+                if issubclass(child_settings_cls, NamedObject)
+                else WildcardPath
+            )
+            return wildcard_cls(
+                self.flproxy,
+                self.path + "/" + scheme_name,
+                self._state_cls,
+                child_settings_cls,
+            )
+        raise KeyError(
+            allowed_name_error_message(
+                "Settings objects", name, self.get_object_names()
+            )
+        )
+
+    def to_scheme_keys(self, value):
+        """Convert value to have keys with scheme names."""
+        return self._state_cls.to_scheme_keys(value)
+
+    def to_python_keys(self, value):
+        """Convert value to have keys with Python names."""
+        return self._state_cls.to_python_keys(value)
+
+
+class NamedObjectWildcardPath(WildcardPath):
+    """WildcardPath at a NamedObject path, so it can be looked up by wildcard
+    again."""
+
+    def __getitem__(self, name: str):
+        return WildcardPath(
+            self.flproxy,
+            self.path + "/" + name,
+            self._state_cls,
+            self._settings_cls.child_object_type,
+        )
+
+    def __setitem__(self, name, value):
+        self[name].set_state(value)
 
 
 ChildTypeT = TypeVar("ChildTypeT")
@@ -585,7 +728,17 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
 
     def __getitem__(self, name: str) -> ChildTypeT:
         if name not in self.get_object_names():
-            raise KeyError(name)
+            if self.flproxy.has_wildcard(name):
+                child_cls = self.__class__.child_object_type
+                return WildcardPath(
+                    self.flproxy, self.path + "/" + name, self.__class__, child_cls
+                )
+            raise KeyError(
+                allowed_name_error_message(
+                    "Settings objects", name, self.get_object_names()
+                )
+            )
+
         obj = self._objects.get(name)
         if not obj:
             obj = self._create_child_object(name)
@@ -720,6 +873,22 @@ class Action(Base):
             raise RuntimeError(f"{self.__class__.__name__} is not active")
         return attrs["arguments"] if attrs else None
 
+    def get_completer_info(self, prefix="", excluded=None):
+        """Return list of [name, type, doc]"""
+        excluded = excluded or []
+        ret = []
+        for argument_name in self.argument_names:
+            if argument_name not in excluded and argument_name.startswith(prefix):
+                argument = getattr(self, argument_name)
+                ret.append(
+                    [
+                        argument_name + "=",
+                        argument.__class__.__bases__[0].__name__,
+                        argument.__doc__,
+                    ]
+                )
+        return ret
+
 
 class Command(Action):
     """Command object."""
@@ -727,6 +896,19 @@ class Command(Action):
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""
         newkwds = _get_new_keywords(self, kwds)
+        if self.flproxy.is_interactive_mode():
+            prompt = self.flproxy.get_command_confirmation_prompt(
+                self._parent.path, self.obj_name, **newkwds
+            )
+            if prompt:
+                while True:
+                    response = input(prompt + ": y[es]/n[o] ")
+                    if response in ["y", "Y", "n", "N", "yes", "no"]:
+                        break
+                    else:
+                        print("Enter y[es]/n[o]")
+                if response in ["n", "N", "no"]:
+                    return
         return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
 
 
@@ -779,7 +961,7 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
 
     The following can be used:
     for name, boundary in setup.boundary_conditions.items():
-    print (name, boundary())
+        print (name, boundary())
 
     even though actual boundary conditions are stored one level lower to
     boundary_conditions.
@@ -830,7 +1012,7 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
 
 
 class _CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTypeT]):
-    def create(self, name: str) -> ChildTypeT:
+    def create(self, name: str = "") -> ChildTypeT:
         """Create a named object.
 
         Parameters
@@ -877,7 +1059,7 @@ def get_cls(name, info, parent=None, version=None):
         obj_type = info["type"]
         base = _baseTypes.get(obj_type)
         if base is None:
-            LOG.error(
+            settings_logger.error(
                 f"Unable to find base class for '{name}' "
                 f"(type = '{obj_type}'). "
                 f"Falling back to String."
@@ -1019,7 +1201,7 @@ def get_root(flproxy, version: str = "") -> Group:
         )
 
         if settings.SHASH != _gethash(obj_info):
-            LOG.warning(
+            settings_logger.warning(
                 "Mismatch between generated file and server object "
                 "info. Dynamically created settings classes will "
                 "be used."

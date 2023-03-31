@@ -262,15 +262,9 @@ Some sample use cases are demonstrated below:
 .. currentmodule:: ansys.fluent.core.services
 
 .. autosummary::
-   :toctree: _autosummary
+    :toctree: _autosummary
+    :template: flobject-class-template.rst
+    :recursive:
 
-.. automethod:: ansys.fluent.core.services.field_data.FieldTransaction.add_surfaces_request
-.. automethod:: ansys.fluent.core.services.field_data.FieldTransaction.add_scalar_fields_request
-.. automethod:: ansys.fluent.core.services.field_data.FieldTransaction.add_vector_fields_request
-.. automethod:: ansys.fluent.core.services.field_data.FieldTransaction.add_pathlines_fields_request
-.. automethod:: ansys.fluent.core.services.field_data.FieldTransaction.get_fields
-
-.. automethod:: ansys.fluent.core.services.field_data.FieldData.get_surface_data
-.. automethod:: ansys.fluent.core.services.field_data.FieldData.get_scalar_field_data
-.. automethod:: ansys.fluent.core.services.field_data.FieldData.get_vector_field_data
-.. automethod:: ansys.fluent.core.services.field_data.FieldData.get_pathlines_field_data
+    field_data.FieldTransaction
+    field_data.FieldData

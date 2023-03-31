@@ -1,2 +1,3 @@
 include src/ansys/fluent/core/launcher/fluent_launcher_options.json
 include src/ansys/fluent/core/docs/README.rst
+include src/ansys/fluent/core/logging_config.yaml

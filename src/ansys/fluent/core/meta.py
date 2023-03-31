@@ -43,13 +43,22 @@ class Command:
             _self.obj = obj
 
         self.command_cls = type(
-            'command', (), {
-                '__init__': _init,
-                '__call__': lambda _self, *args, **kwargs: method(_self.obj, *args, **kwargs),
+            "command",
+            (),
+            {
+                "__init__": _init,
+                "__call__": lambda _self, *args, **kwargs: method(
+                    _self.obj, *args, **kwargs
+                ),
                 "argument_attribute": lambda _self, argument_name, attr_name: self.arguments_attrs[
-                    argument_name][attr_name](_self.obj),
+                    argument_name
+                ][
+                    attr_name
+                ](
+                    _self.obj
+                ),
                 "arguments": lambda _self: list(self.arguments_attrs.keys()),
-            }
+            },
         )
 
     def __set_name__(self, obj, name):
@@ -68,9 +77,13 @@ class Command:
 def CommandArgs(command_object, argument_name):
     def wrapper(attribute):
         if argument_name in command_object.arguments_attrs:
-            command_object.arguments_attrs[argument_name].update({attribute.__name__: attribute})
+            command_object.arguments_attrs[argument_name].update(
+                {attribute.__name__: attribute}
+            )
         else:
-            command_object.arguments_attrs[argument_name] = {attribute.__name__: attribute}
+            command_object.arguments_attrs[argument_name] = {
+                attribute.__name__: attribute
+            }
         return attribute
 
     return wrapper
@@ -236,7 +249,10 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
                             name,
                             cls(self, api_helper),
                         )
-                    if cls.__class__.__name__ == "PyLocalNamedObjectMeta"  or cls.__class__.__name__ == "PyLocalNamedObjectMetaAbstract" :
+                    if (
+                        cls.__class__.__name__ == "PyLocalNamedObjectMeta"
+                        or cls.__class__.__name__ == "PyLocalNamedObjectMetaAbstract"
+                    ):
                         setattr(
                             self,
                             cls.PLURAL,
@@ -286,7 +302,6 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
 
             def update_state(clss):
                 for name, cls in clss.__dict__.items():
-
                     availability = (
                         getattr(self, "_availability")(name)
                         if hasattr(self, "_availability")
@@ -368,7 +383,10 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
                             name,
                             cls(self, api_helper),
                         )
-                    elif cls.__class__.__name__ == "PyLocalNamedObjectMeta" or cls.__class__.__name__ == "PyLocalNamedObjectMetaAbstract" :
+                    elif (
+                        cls.__class__.__name__ == "PyLocalNamedObjectMeta"
+                        or cls.__class__.__name__ == "PyLocalNamedObjectMetaAbstract"
+                    ):
                         setattr(
                             self,
                             cls.PLURAL,
@@ -445,11 +463,11 @@ class PyLocalContainer(MutableMapping):
         return list(self)
 
     @Command
-    def Create(self, name = None):
+    def Create(self, name=None):
         if not name:
             name = self._get_unique_chid_name()
 
-        new_object =  self.__getitem__(name)
+        new_object = self.__getitem__(name)
         return new_object._name
 
     @CommandArgs(Create, "name")

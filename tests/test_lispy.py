@@ -33,6 +33,7 @@ def test_scm_to_py():
     for scm_py in scm_pys + extra_scm_pys:
         assert lispy.parse(scm_py[0]) == scm_py[1]
 
+
 def test_py_to_scm():
     for scm_py in scm_pys:
         expec = scm_py[2] if len(scm_py) == 3 else scm_py[0]

@@ -5,6 +5,7 @@ import io
 import weakref
 
 import pytest
+from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 
 from ansys.fluent.core.solver import flobject
 
@@ -395,6 +396,9 @@ class Proxy:
     def get_static_info(cls):
         return cls.root.get_static_info()
 
+    def is_interactive_mode(self):
+        return False
+
 
 def test_primitives():
     r = flobject.get_root(Proxy())
@@ -656,7 +660,10 @@ def test_accessor_methods_on_settings_object(load_static_mixer_case):
 
     existing = solver.file.read.file_type.get_attr("read-only?", bool)
     modified = solver.file.read.file_type.is_read_only()
-    assert existing == modified
+    if solver.get_fluent_version() < "23.2.0":
+        assert existing == modified
+    else:
+        assert existing == None and modified == False
 
     existing = solver.setup.boundary_conditions.velocity_inlet.get_attr(
         "user-creatable?", bool
@@ -716,3 +723,29 @@ def test_accessor_methods_on_settings_object_types(load_static_mixer_case):
         )
         == 1000000
     )
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_232
+def test_settings_matching_names(new_solver_session_no_transcript) -> None:
+    solver = new_solver_session_no_transcript
+
+    with pytest.raises(AttributeError) as msg:
+        solver.setup.mod
+
+    assert (
+        msg.value.args[0] == "mod is not an allowed Settings objects name.\n"
+        "The most similar names are: models."
+    )
+
+    with pytest.raises(ValueError) as msg:
+        solver.setup.models.viscous.model = "k_epsilon"
+
+    assert (
+        msg.value.args[0] == "k_epsilon is not an allowed model name.\n"
+        "The most similar names are: k-epsilon."
+    )
+
+    energy_parent = solver.setup._get_parent_of_active_child_names("energy")
+
+    assert energy_parent == "\n energy is a child of models \n"

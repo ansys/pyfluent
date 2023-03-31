@@ -1,21 +1,21 @@
 """A package providing Fluent's Solver and Meshing capabilities in Python."""
 
+import logging.config
 import os
 import pydoc
-from typing import Any, Optional
 
 import appdirs
+import yaml
 
 from ansys.fluent.core._version import __version__  # noqa: F401
 from ansys.fluent.core.launcher.launcher import (  # noqa: F401
     FluentVersion,
-    LaunchModes,
+    LaunchMode,
     launch_fluent,
 )
 from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
-from ansys.fluent.core.session import _BaseSession as Fluent  # noqa: F401
+from ansys.fluent.core.session import BaseSession as Fluent  # noqa: F401
 from ansys.fluent.core.utils import fldoc
-from ansys.fluent.core.utils.logging import LOG
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 
 _VERSION_INFO = None
@@ -44,44 +44,16 @@ def version_info() -> str:
     return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
 
-def set_log_level(level: Any) -> None:
-    """Set logging level.
+file_path = os.path.abspath(__file__)
+file_dir = os.path.dirname(file_path)
+yaml_path = os.path.join(file_dir, "logging_config.yaml")
 
-    Parameters
-    ----------
-    level : Any
-        Any of the logging level (CRITICAL, ERROR, WARNING, INFO, DEBUG)
-        in string or enum format
-    """
-    LOG.set_level(level)
+# Load the logging configuration from a YAML file
+with open(yaml_path, "rt") as f:
+    config = yaml.safe_load(f)
 
-
-def enable_logging_to_stdout() -> None:
-    """Enable logging to stdout."""
-    LOG.enable_logging_to_stdout()
-
-
-def disable_logging_to_stdout() -> None:
-    """Disable logging to stdout."""
-    LOG.disable_logging_to_stdout()
-
-
-def enable_logging_to_file(filepath: Optional[str] = None) -> None:
-    """Enable logging to file.
-
-    Parameters
-    ----------
-    filepath : str, optional
-        filapath, a default filepath will be chosen if filepath is not
-        passed
-    """
-    LOG.enable_logging_to_file(filepath)
-
-
-def disable_logging_to_file() -> None:
-    """Disable logging to file."""
-    LOG.disable_logging_to_file()
-
+# Configure the logging system
+logging.config.dictConfig(config)
 
 # Setup data directory
 try:
@@ -98,6 +70,10 @@ except Exception:
 
 BUILDING_GALLERY = False
 
-pydoc.text.docother = fldoc.docother.__get__(pydoc.text, pydoc.TextDoc)
+# Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS
+INFER_REMOTING_IP = True
 
-USE_LIGHT_IO = False
+# Time in second to wait for response for each ip while inferring remoting ip
+INFER_REMOTING_IP_TIMEOUT_PER_IP = 2
+
+pydoc.text.docother = fldoc.docother.__get__(pydoc.text, pydoc.TextDoc)

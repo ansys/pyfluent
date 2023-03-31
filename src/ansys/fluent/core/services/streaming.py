@@ -16,6 +16,7 @@ class StreamingService:
     """
 
     def __init__(self, stub, request, metadata: List[Tuple[str, str]]):
+        """__init__ method of StreamingService class."""
         self._stub = stub
         self._metadata = metadata
         self.request = request

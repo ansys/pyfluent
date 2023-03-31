@@ -1,24 +1,41 @@
-"""Module providing visualization objects for Matplotlib."""
+"""Module providing visualization objects to facilitate
+   integration with libraries like Matplotlib and pyvista."""
 import inspect
 
 from ansys.fluent.core.meta import PyLocalContainer
 
 
 class Container:
-    def __init__(self, session, child, module, post_api_helper, local_surfaces_provider=None):
-        """Instantiate Plots, container of plot objects.
+    """
+    Base class for containers, e.g. Plots, Graphics.
 
-        Parameters
+    Parameters
         ----------
-        session :
+        session : object
             Session object.
+        container_type: object
+            Container type (e.g. Plots, Graphics)
+        module: object
+            Python module containing post definitions
+        post_api_helper: object
+            Provides helper APIs for post-processing
         local_surfaces_provider : object, optional
-            Object providing local surfaces.
-        """
-        session_state = child._sessions_state.get(session)
+            Object providing local surfaces so that user can access surfaces
+            created in other modules, such as PyVista. The default is ``None``.
+    """
+
+    def __init__(
+        self,
+        session,
+        container_type,
+        module,
+        post_api_helper,
+        local_surfaces_provider=None,
+    ):
+        session_state = container_type._sessions_state.get(session)
         if not session_state:
             session_state = self.__dict__
-            child._sessions_state[session] = session_state
+            container_type._sessions_state[session] = session_state
             self.session = session
             self._init_module(self, module, post_api_helper)
         else:
@@ -33,7 +50,6 @@ class Container:
 
     def _init_module(self, obj, mod, post_api_helper):
         for name, cls in mod.__dict__.items():
-
             if cls.__class__.__name__ in (
                 "PyLocalNamedObjectMetaAbstract",
             ) and not inspect.isabstract(cls):
@@ -54,9 +70,13 @@ class Plots(Container):
         ----------
         session : obj
             Session object.
+        module: object
+            Python module containing post definitions
+        post_api_helper: object
+            Provides helper APIs for post-processing
         local_surfaces_provider : object, optional
             Object providing local surfaces so that you can access surfaces
-            created in other modules, such as PyVista. The default is ``None``.
+            created in other modules, such as pyvista. The default is ``None``.
 
     Attributes
     ----------
@@ -69,11 +89,13 @@ class Plots(Container):
     _sessions_state = {}
 
     def __init__(self, session, module, post_api_helper, local_surfaces_provider=None):
-        super().__init__(session, self.__class__, module, post_api_helper, local_surfaces_provider)
+        super().__init__(
+            session, self.__class__, module, post_api_helper, local_surfaces_provider
+        )
 
 
 class Graphics(Container):
-    """Provides the PyVista ``Graphics`` objects manager.
+    """Provides the pyvista ``Graphics`` objects manager.
 
     This class provides access to ``Graphics`` object containers for a given
     session so that graphics objects can be created.
@@ -82,9 +104,13 @@ class Graphics(Container):
     ----------
     session : obj
         Session object.
+    module: object
+        Python module containing post definitions
+    post_api_helper: object
+        Provides helper APIs for post-processing
     local_surfaces_provider : object, optional
         Object providing local surfaces so that you can access surfaces
-        created in other modules, such as PyVista. The default is ``None``.
+        created in other modules, such as pyvista. The default is ``None``.
 
     Attributes
     ----------
@@ -101,7 +127,9 @@ class Graphics(Container):
     _sessions_state = {}
 
     def __init__(self, session, module, post_api_helper, local_surfaces_provider=None):
-        super().__init__(session, self.__class__, module, post_api_helper, local_surfaces_provider)
+        super().__init__(
+            session, self.__class__, module, post_api_helper, local_surfaces_provider
+        )
 
     def add_outline_mesh(self):
         """Add a mesh outline.
