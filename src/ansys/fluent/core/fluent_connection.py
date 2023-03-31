@@ -271,11 +271,11 @@ class FluentConnection:
             return "meshing"
 
     def start_transcript(
-        self, file_path: str = None, write_to_interpreter: bool = True
+        self, file_path: str = None, write_to_stdout: bool = True
     ) -> None:
         """Start streaming of Fluent transcript."""
         warnings.warn("Use -> transcript.start()", DeprecationWarning)
-        self.transcript.start(file_path, write_to_interpreter)
+        self.transcript.start(file_path, write_to_stdout)
 
     def stop_transcript(self) -> None:
         """Stop streaming of Fluent transcript."""
