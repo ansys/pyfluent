@@ -57,12 +57,12 @@ class InputParameter:
         return self._component(1).lstrip("[").rstrip("]")
 
     @property
-    def number(self):
-        """Get the value of a Fluent input parameter.
+    def numeric_value(self):
+        """Get the numeric value of a Fluent input parameter.
         Returns
         -------
         float
-            Value of the Fluent input parameter.
+            Numeric value of the Fluent input parameter.
         """
         return float(self._component(0))
 
