@@ -134,14 +134,12 @@ class MeshingQueriesService:
         return self._stub.GetFaceZonesOfLabels(request, metadata=self._metadata)
 
     @catch_grpc_error
-    def TgapiUtilGetFaceZoneIdListOfLabels(
+    def GetFaceZoneIdListOfLabels(
         self,
-        request: MeshingQueriesProtoModule.TgapiUtilGetFaceZoneIdListOfLabelsRequest,
-    ) -> MeshingQueriesProtoModule.TgapiUtilGetFaceZoneIdListOfLabelsResponse:
-        """TgapiUtilGetFaceZoneIdListOfLabels rpc of MeshingQueriesService."""
-        return self._stub.TgapiUtilGetFaceZoneIdListOfLabels(
-            request, metadata=self._metadata
-        )
+        request: MeshingQueriesProtoModule.GetFaceZoneIdListOfLabelsRequest,
+    ) -> MeshingQueriesProtoModule.GetFaceZoneIdListOfLabelsResponse:
+        """GetFaceZoneIdListOfLabels rpc of MeshingQueriesService."""
+        return self._stub.GetFaceZoneIdListOfLabels(request, metadata=self._metadata)
 
     @catch_grpc_error
     def GetFaceZonesOfObjects(
@@ -158,14 +156,12 @@ class MeshingQueriesService:
         return self._stub.GetEdgeZonesOfObjects(request, metadata=self._metadata)
 
     @catch_grpc_error
-    def TgapiUtilGetFaceZoneIdListOfRegions(
+    def GetFaceZoneIdListOfRegions(
         self,
-        request: MeshingQueriesProtoModule.TgapiUtilGetFaceZoneIdListOfRegionsRequest,
-    ) -> MeshingQueriesProtoModule.TgapiUtilGetFaceZoneIdListOfRegionsResponse:
+        request: MeshingQueriesProtoModule.GetFaceZoneIdListOfRegionsRequest,
+    ) -> MeshingQueriesProtoModule.GetFaceZoneIdListOfRegionsResponse:
         """GetEdgeZonesOfObjects rpc of MeshingQueriesService."""
-        return self._stub.TgapiUtilGetFaceZoneIdListOfRegions(
-            request, metadata=self._metadata
-        )
+        return self._stub.GetFaceZoneIdListOfRegions(request, metadata=self._metadata)
 
 
 class MeshingQueries:
@@ -293,13 +289,13 @@ class MeshingQueries:
         response = self.service.GetFaceZonesOfLabels(request)
         return response.zone_ids
 
-    def TgapiUtilGetFaceZoneIdListOfLabels(self, object_name, type_list) -> Any:
-        """TgapiUtilGetFaceZoneIdListOfLabels."""
-        request = MeshingQueriesProtoModule.TgapiUtilGetFaceZoneIdListOfLabelsRequest()
+    def GetFaceZoneIdListOfLabels(self, object_name, type_list) -> Any:
+        """GetFaceZoneIdListOfLabels."""
+        request = MeshingQueriesProtoModule.GetFaceZoneIdListOfLabelsRequest()
         request.object = object_name
         for types in type_list:
             request.types.append(types)
-        response = self.service.TgapiUtilGetFaceZoneIdListOfLabels(request)
+        response = self.service.GetFaceZoneIdListOfLabels(request)
         return response.zone_ids
 
     def GetFaceZonesOfObjects(self, type_list) -> Any:
@@ -318,11 +314,11 @@ class MeshingQueries:
         response = self.service.GetEdgeZonesOfObjects(request)
         return response.zone_ids
 
-    def TgapiUtilGetFaceZoneIdListOfRegions(self, object_name, type_list) -> Any:
-        """TgapiUtilGetFaceZoneIdListOfRegions."""
-        request = MeshingQueriesProtoModule.TgapiUtilGetFaceZoneIdListOfRegionsRequest()
+    def GetFaceZoneIdListOfRegions(self, object_name, type_list) -> Any:
+        """GetFaceZoneIdListOfRegions."""
+        request = MeshingQueriesProtoModule.GetFaceZoneIdListOfRegionsRequest()
         request.object = object_name
         for types in type_list:
             request.types.append(types)
-        response = self.service.TgapiUtilGetFaceZoneIdListOfRegions(request)
+        response = self.service.GetFaceZoneIdListOfRegions(request)
         return response.zone_ids

@@ -67,7 +67,7 @@ def test_meshing_queries(new_mesh_session):
         32
     ]  # noqa: E501
 
-    assert meshing_session.meshing_queries.TgapiUtilGetFaceZoneIdListOfLabels(
+    assert meshing_session.meshing_queries.GetFaceZoneIdListOfLabels(
         "elbow-fluid", ["outlet"]
     ) == [32]
 
@@ -82,7 +82,7 @@ def test_meshing_queries(new_mesh_session):
 
     assert meshing_session.meshing_queries.GetEdgeZonesOfObjects(["elbow-fluid"]) == []
 
-    assert meshing_session.meshing_queries.TgapiUtilGetFaceZoneIdListOfRegions(
+    assert meshing_session.meshing_queries.GetFaceZoneIdListOfRegions(
         "elbow-fluid", ["fluid"]
     ) == [
         34,
