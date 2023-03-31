@@ -4,9 +4,12 @@ from .meshing_workflow import MeshingWorkflow
 
 
 def watertight_workflow(geometry_filepath, **launch_args) -> MeshingWorkflow:
-    args = dict(mode=LaunchMode.PURE_MESHING_MODE)
-    args.update(launch_args)
-    session = launch_fluent(**args)
+    if "session" in launch_args:
+        session = launch_args["session"]
+    else:
+        args = dict(mode=LaunchMode.PURE_MESHING_MODE)
+        args.update(launch_args)
+        session = launch_fluent(**args)
     meshing_workflow = session.workflow
     meshing_workflow.watertight()
     if geometry_filepath:

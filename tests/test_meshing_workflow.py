@@ -192,9 +192,9 @@ def test_command_args_datamodel_se(new_mesh_session):
     w = session_new.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
     igt = w.task("Import Geometry")
-    assert igt.CommandArguments.CadImportOptions()
-    assert igt.CommandArguments.CadImportOptions.OneZonePer()
-    assert igt.CommandArguments.CadImportOptions.OneZonePer.getAttribValue("default")
+    assert igt.arguments.CadImportOptions()
+    assert igt.arguments.CadImportOptions.OneZonePer()
+    assert igt.arguments.CadImportOptions.OneZonePer.getAttribValue("default")
 
 
 @pytest.mark.dev
@@ -205,9 +205,9 @@ def test_command_args_including_task_object_datamodel_se(new_mesh_session):
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
     igt = w.TaskObject["Import Geometry"]
     assert igt.Arguments() == {}
-    assert igt.CommandArguments.CadImportOptions()
-    assert igt.CommandArguments.CadImportOptions.OneZonePer()
-    assert igt.CommandArguments.CadImportOptions.OneZonePer.getAttribValue("default")
+    assert igt.arguments.CadImportOptions()
+    assert igt.arguments.CadImportOptions.OneZonePer()
+    assert igt.arguments.CadImportOptions.OneZonePer.getAttribValue("default")
 
 
 @pytest.mark.dev
@@ -237,9 +237,7 @@ def test_attribute_query_list_types(new_mesh_session):
     w = session_new.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
     igt = w.TaskObject["Import Geometry"]
-    assert ["CAD", "Mesh"] == igt.CommandArguments.FileFormat.getAttribValue(
-        "allowedValues"
-    )
+    assert ["CAD", "Mesh"] == igt.arguments.FileFormat.getAttribValue("allowedValues")
 
 
 @pytest.mark.dev
@@ -251,45 +249,44 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
 
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
-    assert w.task("Import Geometry").CommandArguments.LengthUnit.default_value() == "mm"
-    assert w.task("Import Geometry").CommandArguments.MeshUnit.is_read_only()
-    assert w.task("Import Geometry").CommandArguments.LengthUnit.is_active()
-    assert w.task("Import Geometry").CommandArguments.FileName.is_read_only()
+    assert w.task("Import Geometry").arguments.LengthUnit.default_value() == "mm"
+    assert w.task("Import Geometry").arguments.MeshUnit.is_read_only()
+    assert w.task("Import Geometry").arguments.LengthUnit.is_active()
+    assert w.task("Import Geometry").arguments.FileName.is_read_only()
     assert w.task(
         "Import Geometry"
-    ).CommandArguments.CadImportOptions.OneZonePer.is_read_only()
+    ).arguments.CadImportOptions.OneZonePer.is_read_only()
     assert (
         w.task(
             "Generate the Volume Mesh"
-        ).CommandArguments.VolumeFillControls.Type.default_value()
+        ).arguments.VolumeFillControls.Type.default_value()
         == "Cartesian"
     )
 
     # Test particular to string type (allowed_values() only available in string types)
     assert w.task(
         "Generate the Volume Mesh"
-    ).CommandArguments.VolumeFillControls.Type.allowed_values() == [
+    ).arguments.VolumeFillControls.Type.allowed_values() == [
         "Octree",
         "Cartesian",
     ]
     assert (
         w.task(
             "Import Geometry"
-        ).CommandArguments.CadImportOptions.FeatureAngle.default_value()
+        ).arguments.CadImportOptions.FeatureAngle.default_value()
         == 40.0
     )
 
     # Test particular to numerical type (min() only available in numerical types)
     assert (
-        w.task("Import Geometry").CommandArguments.CadImportOptions.FeatureAngle.min()
-        == 0.0
+        w.task("Import Geometry").arguments.CadImportOptions.FeatureAngle.min() == 0.0
     )
 
     # Test intended to fail in numerical type (allowed_values() only available in string types)
     with pytest.raises(AttributeError) as msg:
         assert w.task(
             "Import Geometry"
-        ).CommandArguments.CadImportOptions.FeatureAngle.allowed_values()
+        ).arguments.CadImportOptions.FeatureAngle.allowed_values()
     assert (
         msg.value.args[0]
         == "'PyNumericalCommandArgumentsSubItem' object has no attribute 'allowed_values'"
@@ -297,7 +294,7 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
 
     # Test intended to fail in numerical type (allowed_values() only available in string types)
     with pytest.raises(AttributeError) as msg:
-        assert w.task("Import Geometry").CommandArguments.NumParts.allowed_values()
+        assert w.task("Import Geometry").arguments.NumParts.allowed_values()
     assert (
         msg.value.args[0]
         == "'PyNumericalCommandArgumentsSubItem' object has no attribute 'allowed_values'"
@@ -305,7 +302,7 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
 
     # Test intended to fail in string type (min() only available in numerical types)
     with pytest.raises(AttributeError) as msg:
-        assert w.task("Import Geometry").CommandArguments.LengthUnit.min()
+        assert w.task("Import Geometry").arguments.LengthUnit.min()
     assert (
         msg.value.args[0]
         == "'PyTextualCommandArgumentsSubItem' object has no attribute 'min'"
@@ -320,23 +317,12 @@ def test_read_only_behaviour_of_command_arguments(new_mesh_session):
     m = session_new.meshing
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
-    assert "set_state" not in dir(w.task("Import Geometry").CommandArguments)
-    assert "set_state" not in dir(w.task("Import Geometry").CommandArguments.LengthUnit)
-    assert "set_state" not in dir(
-        w.task("Import Geometry").CommandArguments.CadImportOptions
-    )
-    assert "set_state" not in dir(
-        w.task("Import Geometry").CommandArguments.CadImportOptions.OneZonePer
-    )
-
     with pytest.raises(AttributeError) as msg:
-        w.task("Import Geometry").CommandArguments.MeshUnit.set_state("in")
+        w.task("Import Geometry").arguments.MeshUnit.set_state("in")
     assert msg.value.args[0] == "Command Arguments are read-only."
 
     with pytest.raises(AttributeError) as msg:
-        w.task(
-            "Import Geometry"
-        ).CommandArguments.CadImportOptions.OneZonePer.set_state(None)
+        w.task("Import Geometry").arguments.CadImportOptions.OneZonePer.set_state(None)
     assert msg.value.args[0] == "Command Arguments are read-only."
 
     assert "set_state" in dir(m.ImportGeometry.create_instance())
@@ -350,7 +336,7 @@ def test_sample_use_of_command_arguments(new_mesh_session):
 
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
-    assert w.task("Import Geometry").CommandArguments.LengthUnit.allowed_values() == [
+    assert w.task("Import Geometry").arguments.LengthUnit.allowed_values() == [
         "m",
         "cm",
         "mm",
@@ -359,9 +345,9 @@ def test_sample_use_of_command_arguments(new_mesh_session):
         "um",
         "nm",
     ]
-    assert w.task("Import Geometry").CommandArguments.LengthUnit.default_value() == "mm"
+    assert w.task("Import Geometry").arguments.LengthUnit.default_value() == "mm"
     w.TaskObject["Import Geometry"].Arguments = dict(LengthUnit="in")
-    assert w.task("Import Geometry").CommandArguments.LengthUnit() == "in"
+    assert w.task("Import Geometry").arguments.LengthUnit() == "in"
 
 
 def test_dummy_journal_data_model_methods(new_mesh_session):
@@ -637,7 +623,7 @@ def test_extended_wrapper(new_mesh_session, mixing_elbow_geometry):
     )
     assert len(add_local_sizing.ordered_children()) == 1
     assert added_sizing
-    assert added_sizing.CommandArguments.BOIFaceLabelList() == ["elbow-fluid"]
+    assert added_sizing.arguments.BOIFaceLabelList() == ["elbow-fluid"]
     # restart
     watertight = new_mesh_session.watertight()
     assert watertight.import_geometry.State() == "Out-of-date"
@@ -667,7 +653,39 @@ def test_watertight_workflow(mixing_elbow_geometry):
     )
     assert len(add_local_sizing.ordered_children()) == 1
     assert added_sizing
-    assert added_sizing.CommandArguments.BOIFaceLabelList() == ["elbow-fluid"]
+    assert added_sizing.arguments.BOIFaceLabelList() == ["elbow-fluid"]
+
+
+@pytest.mark.dev
+def test_watertight_workflow_children(mixing_elbow_geometry):
+    watertight = watertight_workflow(geometry_filepath=mixing_elbow_geometry)
+    add_local_sizing = watertight.add_local_sizing
+    assert not add_local_sizing.ordered_children()
+    add_local_sizing.add_child(state={"BOIFaceLabelList": ["cold-inlet"]})
+    assert not add_local_sizing.ordered_children()
+    added_sizing = add_local_sizing.add_child_and_update(
+        state={"BOIFaceLabelList": ["elbow-fluid"]}
+    )
+    assert len(add_local_sizing.ordered_children()) == 1
+    assert added_sizing
+    assert added_sizing.arguments.BOIFaceLabelList() == ["elbow-fluid"]
+    assert added_sizing.name() == "facesize_1"
+    assert len(added_sizing.arguments())
+    added_sizing_by_name = add_local_sizing.compound_child("facesize_1")
+    added_sizing_by_pos = add_local_sizing.last_child()
+    assert added_sizing.arguments() == added_sizing_by_name.arguments()
+    assert added_sizing.arguments() == added_sizing_by_pos.arguments()
+    assert not added_sizing.python_name()
+    describe_geometry = watertight.describe_geometry
+    describe_geometry_children = describe_geometry.ordered_children()
+    assert len(describe_geometry_children) == 2
+    describe_geometry_child_task_python_names = (
+        describe_geometry.child_task_python_names()
+    )
+    assert describe_geometry_child_task_python_names == [
+        "enclose_fluid_regions",
+        "create_regions",
+    ]
 
 
 # TODO upload fmd file to examples

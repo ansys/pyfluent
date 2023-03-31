@@ -21,6 +21,17 @@ def _new_command_for_task(task, session):
     raise NewCommandError(task._name_())
 
 
+def refresh_task_accessors(obj):
+    for task in obj._python_task_names:
+        delattr(obj, task)
+    obj._python_task_names.clear()
+    for task in obj.ordered_children():
+        py_name = task.python_name()
+        obj._python_task_names.append(py_name)
+        setattr(obj, py_name, task)
+        task._refresh_task_accessors()
+
+
 class BaseTask:
     """Base class Task representation for wrapping a Workflow TaskObject instance,
     adding methods to discover more about the relationships between TaskObjects.
@@ -116,6 +127,9 @@ class BaseTask:
 
     def inactive_ordered_children(self) -> list:
         return []
+
+    def child_task_python_names(self):
+        return self._python_task_names
 
     def get_id(self) -> str:
         """Get the unique string identifier of this task, as it is in the
@@ -335,7 +349,7 @@ class CommandTask(BaseTask):
 
 class SimpleTask(CommandTask):
     """Simple task representation for wrapping a Workflow TaskObject
-    instance of TaskType Simple or Compound Child.
+    instance of TaskType Simple.
     """
 
     def __init__(self, command_source, task) -> None:
@@ -344,6 +358,18 @@ class SimpleTask(CommandTask):
     def ordered_children(self) -> list:
         """Get the ordered task list held by the workflow. SimpleTasks have no TaskList"""
         return []
+
+
+class CompoundChild(SimpleTask):
+    """Compound Child representation for wrapping a Workflow TaskObject
+    instance of TaskType Compound Child.
+    """
+
+    def __init__(self, command_source, task) -> None:
+        super().__init__(command_source, task)
+
+    def python_name(self):
+        pass
 
 
 class CompositeTask(BaseTask):
@@ -413,13 +439,19 @@ class CompoundTask(CommandTask):
         if children:
             return children[-1]
 
+    def compound_child(self, name):
+        try:
+            return next(filter(lambda t: t.name() == name, self.ordered_children()))
+        except StopIteration:
+            pass
+
 
 def makeTask(command_source, name: str) -> BaseTask:
     task = command_source._workflow.TaskObject[name]
     task_type = task.TaskType()
     kinds = {
         "Simple": SimpleTask,
-        "Compound Child": SimpleTask,
+        "Compound Child": CompoundChild,
         "Compound": CompoundTask,
         "Composite": CompositeTask,
         "Conditional": ConditionalTask,
@@ -435,7 +467,7 @@ def makeTask(command_source, name: str) -> BaseTask:
     return kind(command_source, task)
 
 
-class WorkflowWrapper:
+class WorkflowWrapper(TaskParent):
     """Wrap a Workflow object, adding methods to discover more about the
     relationships between TaskObjects.
 
