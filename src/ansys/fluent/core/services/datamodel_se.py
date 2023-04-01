@@ -192,7 +192,6 @@ class DatamodelService(StreamingService):
         self.events.clear()
 
 
-
 def _convert_value_to_variant(val: Any, var: Variant):
     """Convert a Python data type to Fluent's variant type."""
     if isinstance(val, bool):

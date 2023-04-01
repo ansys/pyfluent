@@ -1,4 +1,5 @@
 from ctypes import c_int, sizeof
+from functools import partial
 import itertools
 import os
 import threading
@@ -8,7 +9,7 @@ import warnings
 import weakref
 
 import grpc
-from functools import partial
+
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services.batch_ops import BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
@@ -212,7 +213,9 @@ class FluentConnection:
         self.events_manager.start()
         self.datamodel_service_tui = DatamodelService_TUI(self._channel, self._metadata)
 
-        self.datamodel_service_se =  partial(DatamodelService_SE, self._channel, self._metadata) 
+        self.datamodel_service_se = partial(
+            DatamodelService_SE, self._channel, self._metadata
+        )
         self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
         self.datamodel_events.start()
 

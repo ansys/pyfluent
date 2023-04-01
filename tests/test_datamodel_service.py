@@ -51,7 +51,9 @@ def test_event_subscription(new_mesh_session):
     e8 = request.eventrequest.add(rules="workflow")
     e8.commandExecutedEventRequest.path = ""
     e8.commandExecutedEventRequest.command = "InitializeWorkflow"
-    response = session.fluent_connection.datamodel_service_se().subscribe_events(request)
+    response = session.fluent_connection.datamodel_service_se().subscribe_events(
+        request
+    )
     assert all(
         [
             r.status == datamodel_se_pb2.STATUS_SUBSCRIBED and r.tag == t
