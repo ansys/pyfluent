@@ -179,18 +179,9 @@ class DatamodelService(StreamingService):
             except Exception:
                 break
 
-    def begin_streaming(self, request, started_evt):
-        """Begin datamodel event streaming."""
-        self._streams = self._stub.BeginStreaming(request, metadata=self._metadata)
-        started_evt.set()
-        while True:
-            try:
-                yield next(self._streams)
-            except Exception:
-                break
-
     def end_event_streaming(self) -> None:
         """End datamodel event streaming from Fluent."""
+        self.unsubscribe_all_events()
         if self._event_streams and not self._event_streams.cancelled():
             self._event_streams.cancel()
 
@@ -199,6 +190,7 @@ class DatamodelService(StreamingService):
         for event in list(self.events.values()):
             event.unsubscribe()
         self.events.clear()
+
 
 
 def _convert_value_to_variant(val: Any, var: Variant):

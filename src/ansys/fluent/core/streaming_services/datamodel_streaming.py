@@ -9,7 +9,7 @@ class DatamodelStream(StreamingService):
         """Instantiate DatamodelStream."""
         super().__init__(
             target=DatamodelStream._process_streaming,
-            streaming_service=service,
+            streaming_service=service(),
         )
 
     def _process_streaming(

@@ -17,7 +17,7 @@ tui_logger = logging.getLogger("ansys.fluent.services.tui")
 class BaseMeshing:
     def __init__(self, session_execute_tui, fluent_connection: FluentConnection):
         self._tui_service = fluent_connection.datamodel_service_tui
-        self._se_service = fluent_connection.datamodel_service_se
+        self._se_service = fluent_connection.datamodel_service_se()
         self._fluent_connection = fluent_connection
         self._tui = None
         self._meshing = None

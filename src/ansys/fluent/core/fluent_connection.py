@@ -8,7 +8,7 @@ import warnings
 import weakref
 
 import grpc
-
+from functools import partial
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services.batch_ops import BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
@@ -212,11 +212,9 @@ class FluentConnection:
         self.events_manager.start()
         self.datamodel_service_tui = DatamodelService_TUI(self._channel, self._metadata)
 
-        self.datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
+        self.datamodel_service_se =  partial(DatamodelService_SE, self._channel, self._metadata) 
         self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
         self.datamodel_events.start()
-        # self.datamodel_stream = DatamodelStream(self.datamodel_service_se)
-        # self.datamodel_stream.start()
 
         self._reduction_service = ReductionService(self._channel, self._metadata)
         self.reduction = Reduction(self._reduction_service)
@@ -251,7 +249,6 @@ class FluentConnection:
             self._channel,
             self._cleanup_on_exit,
             self.scheme_eval,
-            self.datamodel_service_se,
             self.datamodel_events,
             self.transcript,
             self.events_manager,
@@ -313,7 +310,6 @@ class FluentConnection:
         channel,
         cleanup_on_exit,
         scheme_eval,
-        datamodel_service_se,
         datamodel_events,
         transcript,
         events_manager,
@@ -321,7 +317,6 @@ class FluentConnection:
         remote_instance,
     ) -> None:
         if channel:
-            datamodel_service_se.unsubscribe_all_events()
             datamodel_events.stop()
             transcript.stop()
             events_manager.stop()
