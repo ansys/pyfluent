@@ -11,10 +11,11 @@ class DatamodelEvents(StreamingService):
 
     def __init__(self, service):
         """Instantiate DatamodelEvents."""
+        streaming_service = service()
         super().__init__(
             target=DatamodelEvents._process_streaming,
-            streaming_service=service(),
-            stop_service=service.end_event_streaming,
+            streaming_service=streaming_service,
+            stop_service=streaming_service.end_event_streaming,
         )
         self._cbs = {}
         service.event_streaming = self
