@@ -61,7 +61,9 @@ class DatamodelService(StreamingService):
     Using the methods from the ``PyMenu`` class is recommended.
     """
 
-    def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
+    def __init__(
+        self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_connection
+    ):
         """__init__ method of DatamodelService class."""
         intercept_channel = grpc.intercept_channel(
             channel, TracingInterceptor(), BatchInterceptor()
@@ -72,8 +74,12 @@ class DatamodelService(StreamingService):
             stub=self._stub,
             metadata=metadata,
         )
-        self.event_streaming = None
+        self._fluent_connection = fluent_connection
         self.events = {}
+
+    @property
+    def event_streaming(self):
+        return self._fluent_connection.datamodel_events
 
     @catch_grpc_error
     def initialize_datamodel(

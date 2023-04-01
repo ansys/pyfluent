@@ -214,7 +214,7 @@ class FluentConnection:
         self.datamodel_service_tui = DatamodelService_TUI(self._channel, self._metadata)
 
         self.datamodel_service_se = partial(
-            DatamodelService_SE, self._channel, self._metadata
+            DatamodelService_SE, self._channel, self._metadata, self
         )
         self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
         self.datamodel_events.start()
