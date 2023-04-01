@@ -18,7 +18,7 @@ class DatamodelEvents(StreamingService):
             stop_service=streaming_service.end_event_streaming,
         )
         self._cbs = {}
-        service.event_streaming = self
+        streaming_service.event_streaming = self
         self._lock = threading.RLock()
 
     def register_callback(self, tag: str, obj, cb: Callable):
