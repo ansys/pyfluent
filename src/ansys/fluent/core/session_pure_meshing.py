@@ -1,6 +1,4 @@
 """Module containing class encapsulating Fluent connection.
-
-**********PRESENTLY SAME AS MESHING WITHOUT THE SWITCH TO SOLVER***********
 """
 
 
@@ -29,6 +27,11 @@ class PureMeshing(BaseSession):
         DataModelCache.set_config(r, "internal_names_as_keys", True)
 
     def __init__(self, fluent_connection: FluentConnection):
+        """PureMeshing session.
+
+        Args:
+            fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+        """
         super(PureMeshing, self).__init__(fluent_connection=fluent_connection)
         self._base_meshing = BaseMeshing(self.execute_tui, fluent_connection)
         datamodel_service_se = fluent_connection.datamodel_service_se

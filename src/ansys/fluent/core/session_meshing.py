@@ -17,6 +17,11 @@ class Meshing(PureMeshing):
         self,
         fluent_connection: FluentConnection,
     ):
+        """Meshing session.
+
+        Args:
+            fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+        """
         super(Meshing, self).__init__(fluent_connection=fluent_connection)
         self.switch_to_solver = lambda: self._switch_to_solver()
         self.switched = False
