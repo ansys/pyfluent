@@ -77,3 +77,6 @@ INFER_REMOTING_IP = True
 INFER_REMOTING_IP_TIMEOUT_PER_IP = 2
 
 pydoc.text.docother = fldoc.docother.__get__(pydoc.text, pydoc.TextDoc)
+
+DATAMODEL_USE_STATE_CACHE = True
+DATAMODEL_USE_ATTR_CACHE = True

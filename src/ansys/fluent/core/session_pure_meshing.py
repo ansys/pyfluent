@@ -5,6 +5,7 @@
 import functools
 
 from ansys.api.fluent.v0 import datamodel_se_pb2
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services.streaming import StreamingService
@@ -21,7 +22,6 @@ class PureMeshing(BaseSession):
     exposed here. No ``switch_to_solver`` method is available
     in this mode."""
 
-    use_cache = True
     rules = ["workflow", "meshing", "PartManagement", "PMFileManagement"]
     for r in rules:
         DataModelCache.set_config(r, "internal_names_as_keys", True)
@@ -36,7 +36,7 @@ class PureMeshing(BaseSession):
         self._base_meshing = BaseMeshing(self.execute_tui, fluent_connection)
         datamodel_service_se = fluent_connection.datamodel_service_se
         self.datamodel_streams = {}
-        if self.use_cache:
+        if pyfluent.DATAMODEL_USE_STATE_CACHE:
             for rules in self.__class__.rules:
                 request = datamodel_se_pb2.DataModelRequest()
                 request.rules = rules

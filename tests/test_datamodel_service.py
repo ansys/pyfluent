@@ -4,13 +4,13 @@ import pytest
 from util.meshing_workflow import new_mesh_session  # noqa: F401
 
 from ansys.api.fluent.v0 import datamodel_se_pb2
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.services.datamodel_se import (
     _convert_variant_to_value,
     convert_path_to_se_path,
 )
 from ansys.fluent.core.services.streaming import StreamingService
-from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 
 
@@ -179,7 +179,7 @@ def test_add_on_command_executed(new_mesh_session):
 
 @pytest.fixture
 def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
-    monkeypatch.setattr(Meshing, "use_cache", False)
+    monkeypatch.setattr(pyfluent, "DATAMODEL_USE_STATE_CACHE", False)
 
 
 @pytest.mark.dev
