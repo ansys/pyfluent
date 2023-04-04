@@ -204,144 +204,144 @@ class MeshingQueries:
     def GetZonesOfType(self, object_name) -> Any:
         """GetZonesOfType."""
         request = MeshingQueriesProtoModule.GetZonesOfTypeRequest()
-        request.object = object_name
+        request.input = object_name
         response = self.service.GetZonesOfType(request)
-        return response.zone_ids
+        return response.outputs
 
     def GetZonesOfGroup(self, object_name) -> Any:
         """GetZonesOfGroup."""
         request = MeshingQueriesProtoModule.GetZonesOfGroupRequest()
-        request.object = object_name
+        request.input = object_name
         response = self.service.GetZonesOfGroup(request)
-        return response.zone_ids
+        return response.outputs
 
     def GetFaceZonesOfFilter(self, object_name) -> Any:
         """GetFaceZonesOfFilter."""
         request = MeshingQueriesProtoModule.GetFaceZonesOfFilterRequest()
-        request.object = object_name
+        request.input = object_name
         response = self.service.GetFaceZonesOfFilter(request)
-        return response.zone_ids
+        return response.outputs
 
     def GetCellZonesOfFilter(self, object_name) -> Any:
         """GetCellZonesOfFilter."""
         request = MeshingQueriesProtoModule.GetCellZonesOfFilterRequest()
-        request.object = object_name
+        request.input = object_name
         response = self.service.GetCellZonesOfFilter(request)
-        return response.zone_ids
+        return response.outputs
 
     def GetEdgeZonesOfFilter(self, object_name) -> Any:
         """GetEdgeZonesOfFilter."""
         request = MeshingQueriesProtoModule.GetEdgeZonesOfFilterRequest()
-        request.object = object_name
+        request.input = object_name
         response = self.service.GetEdgeZonesOfFilter(request)
-        return response.zone_ids
+        return response.outputs
 
     def GetNodeZonesOfFilter(self, object_name) -> Any:
         """GetNodeZonesOfFilter."""
         request = MeshingQueriesProtoModule.GetNodeZonesOfFilterRequest()
-        request.object = object_name
+        request.input = object_name
         response = self.service.GetNodeZonesOfFilter(request)
-        return response.zone_ids
+        return response.outputs
 
     def GetObjectsOfType(self, type_name) -> Any:
         """GetObjectsOfType."""
         request = MeshingQueriesProtoModule.GetObjectsOfTypeRequest()
-        request.type = type_name
+        request.input = type_name
         response = self.service.GetObjectsOfType(request)
-        return response.objects
+        return response.outputs
 
     def GetFaceZoneIdListOfObject(self, object_name) -> Any:
         """GetFaceZoneIdListOfObject."""
         request = MeshingQueriesProtoModule.GetFaceZoneIdListOfObjectRequest()
-        request.object = object_name
+        request.input = object_name
         response = self.service.GetFaceZoneIdListOfObject(request)
-        return response.zone_ids
+        return response.outputs
 
     def GetEdgeZoneIdListOfObject(self, object_name) -> Any:
         """GetEdgeZoneIdListOfObject."""
         request = MeshingQueriesProtoModule.GetEdgeZoneIdListOfObjectRequest()
-        request.object = object_name
+        request.input = object_name
         response = self.service.GetEdgeZoneIdListOfObject(request)
-        return response.zone_ids
+        return response.outputs
 
     def GetCellZoneIdListOfObject(self, object_name) -> Any:
         """GetCellZoneIdListOfObject."""
         request = MeshingQueriesProtoModule.GetCellZoneIdListOfObjectRequest()
-        request.object = object_name
+        request.input = object_name
         response = self.service.GetCellZoneIdListOfObject(request)
-        return response.zone_ids
+        return response.outputs
 
     def GetFaceZonesSharedByRegionsOfType(self, object_name, type_name) -> Any:
         """GetFaceZonesSharedByRegionsOfType."""
         request = MeshingQueriesProtoModule.GetFaceZonesSharedByRegionsOfTypeRequest()
-        request.object = object_name
-        request.type = type_name
+        request.input_1 = object_name
+        request.input_2 = type_name
         response = self.service.GetFaceZonesSharedByRegionsOfType(request)
-        return response.zone_ids
+        return response.outputs
 
     def GetFaceZonesOfRegions(self, object_name, type_list) -> Any:
         """GetFaceZonesOfRegions."""
         request = MeshingQueriesProtoModule.GetFaceZonesOfRegionsRequest()
-        request.object = object_name
+        request.input = object_name
         for types in type_list:
-            request.types.append(types)
+            request.inputs.append(types)
         response = self.service.GetFaceZonesOfRegions(request)
-        return response.zone_ids
+        return response.outputs
 
     def GetFaceZonesOfLabels(self, object_name, type_list) -> Any:
         """GetFaceZonesOfLabels."""
         request = MeshingQueriesProtoModule.GetFaceZonesOfLabelsRequest()
-        request.object = object_name
+        request.input = object_name
         for types in type_list:
-            request.types.append(types)
+            request.inputs.append(types)
         response = self.service.GetFaceZonesOfLabels(request)
-        return response.zone_ids
+        return response.outputs
 
     def GetFaceZoneIdListOfLabels(self, object_name, type_list) -> Any:
         """GetFaceZoneIdListOfLabels."""
         request = MeshingQueriesProtoModule.GetFaceZoneIdListOfLabelsRequest()
-        request.object = object_name
+        request.input = object_name
         for types in type_list:
-            request.types.append(types)
+            request.inputs.append(types)
         response = self.service.GetFaceZoneIdListOfLabels(request)
-        return response.zone_ids
+        return response.outputs
 
     def GetFaceZonesOfObjects(self, type_list) -> Any:
         """GetFaceZonesOfObjects."""
         request = MeshingQueriesProtoModule.GetFaceZonesOfObjectsRequest()
         for types in type_list:
-            request.types.append(types)
+            request.inputs.append(types)
         response = self.service.GetFaceZonesOfObjects(request)
-        return response.zone_ids
+        return response.outputs
 
     def GetEdgeZonesOfObjects(self, type_list) -> Any:
         """GetEdgeZonesOfObjects."""
         request = MeshingQueriesProtoModule.GetEdgeZonesOfObjectsRequest()
         for types in type_list:
-            request.types.append(types)
+            request.inputs.append(types)
         response = self.service.GetEdgeZonesOfObjects(request)
-        return response.zone_ids
+        return response.outputs
 
     def GetFaceZoneIdListOfRegions(self, object_name, type_list) -> Any:
         """GetFaceZoneIdListOfRegions."""
         request = MeshingQueriesProtoModule.GetFaceZoneIdListOfRegionsRequest()
-        request.object = object_name
+        request.input = object_name
         for types in type_list:
-            request.types.append(types)
+            request.inputs.append(types)
         response = self.service.GetFaceZoneIdListOfRegions(request)
-        return response.zone_ids
+        return response.outputs
 
     def GetPrismCellZones(self, object_name) -> Any:
         """GetPrismCellZones."""
         request = MeshingQueriesProtoModule.GetPrismCellZonesRequest()
-        request.object = object_name
+        request.input = object_name
         response = self.service.GetPrismCellZones(request)
-        return response.zone_ids
+        return response.outputs
 
     def GetPrismCellZones(self, type_list) -> Any:
         """GetPrismCellZones."""
         request = MeshingQueriesProtoModule.GetPrismCellZonesRequest()
         for types in type_list:
-            request.types.append(types)
+            request.inputs.append(types)
         response = self.service.GetPrismCellZones(request)
-        return response.zone_ids
+        return response.outputs
