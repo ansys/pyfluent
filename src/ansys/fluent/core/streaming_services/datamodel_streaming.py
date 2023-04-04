@@ -5,15 +5,24 @@ from ansys.fluent.core.streaming_services.streaming import StreamingService
 class DatamodelStream(StreamingService):
     """Encapsulates a datamodel streaming service."""
 
-    def __init__(self, service):
+    def __init__(self, service, id="dm-stream-0"):
         """Instantiate DatamodelStream."""
         super().__init__(
+            id=id,
+            stream_begin_method="BeginStreaming",
             target=DatamodelStream._process_streaming,
             streaming_service=service,
         )
 
     def _process_streaming(
-        self, started_evt, rules, no_commands_diff_state, *args, **kwargs
+        self,
+        id,
+        stream_begin_method,
+        started_evt,
+        rules,
+        no_commands_diff_state,
+        *args,
+        **kwargs
     ):
         """Processes datamodel events."""
         data_model_request = datamodel_se_pb2.DataModelRequest(*args, **kwargs)
@@ -21,7 +30,10 @@ class DatamodelStream(StreamingService):
         if no_commands_diff_state:
             data_model_request.diffstate = datamodel_se_pb2.DIFFSTATE_NOCOMMANDS
         responses = self._streaming_service.begin_streaming(
-            data_model_request, started_evt
+            data_model_request,
+            started_evt,
+            id=id,
+            stream_begin_method=stream_begin_method,
         )
         while True:
             try:

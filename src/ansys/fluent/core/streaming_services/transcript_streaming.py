@@ -26,9 +26,11 @@ class Transcript(StreamingService):
 
     _writing_transcript_to_interpreter = False
 
-    def __init__(self, channel, metadata):
+    def __init__(self, channel, metadata, id="transcript-stream-0"):
         """__init__ method of Transcript class."""
         super().__init__(
+            id=id,
+            stream_begin_method="BeginStreaming",
             target=Transcript._process_streaming,
             streaming_service=TranscriptService(channel, metadata),
         )
@@ -63,11 +65,13 @@ class Transcript(StreamingService):
             self.unregister_callback(callback_id)
         super().stop()
 
-    def _process_streaming(self, started_evt, *args, **kwargs):
+    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
         """Performs processes on transcript depending on the callback
         functions."""
         request = TranscriptModule.TranscriptRequest(*args, **kwargs)
-        responses = self._streaming_service.begin_streaming(request, started_evt)
+        responses = self._streaming_service.begin_streaming(
+            request, started_evt, id=id, stream_begin_method=stream_begin_method
+        )
         transcript = ""
         while True:
             try:

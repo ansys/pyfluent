@@ -1,7 +1,7 @@
 """Wrappers over FieldData gRPC service of Fluent."""
 from enum import IntEnum
 from functools import reduce
-from typing import Callable, Dict, Generator, List, Optional, Tuple, Union
+from typing import Callable, Dict, List, Optional, Tuple, Union
 
 import grpc
 import numpy as np
@@ -67,19 +67,6 @@ class FieldDataService(StreamingService):
                 "Unexpectedly encountered empty chunk during field extraction."
             )
         return chunk_iterator
-
-    @catch_grpc_error
-    def begin_streaming(self, request, started_evt) -> Generator:
-        """Begin fields streaming from Fluent."""
-        self._streams = self._stub.BeginFieldsStreaming(
-            request, metadata=self._metadata
-        )
-        started_evt.set()
-        while True:
-            try:
-                yield next(self._streams)
-            except Exception:
-                break
 
 
 class FieldInfo:

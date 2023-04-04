@@ -19,19 +19,23 @@ class FieldDataStreaming(StreamingService):
         FieldData streaming service.
     """
 
-    def __init__(self, session_id: str, service):
+    def __init__(self, session_id: str, service, id="field-stream-0"):
         super().__init__(
+            id=id,
+            stream_begin_method="BeginFieldsStreaming",
             target=FieldDataStreaming._process_streaming,
             streaming_service=service,
         )
         self._session_id: str = session_id
         self._lock_refresh: threading.Lock = threading.Lock()
 
-    def _process_streaming(self, started_evt, *args, **kwargs):
+    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
         """Processes field data streaming."""
         request = FieldDataProtoModule.BeginFieldsStreamingRequest(*args, **kwargs)
         ChunkParser(self).extract_fields(
-            self._streaming_service.begin_streaming(request, started_evt)
+            self._streaming_service.begin_streaming(
+                request, started_evt, id=id, stream_begin_method=stream_begin_method
+            )
         )
 
     def callbacks(self) -> List[List[Union[Callable, List, Dict]]]:

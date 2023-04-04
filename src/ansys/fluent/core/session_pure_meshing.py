@@ -8,7 +8,6 @@ import functools
 
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_base_meshing import BaseMeshing
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
@@ -34,11 +33,7 @@ class PureMeshing(BaseSession):
         self.datamodel_streams = {}
         if self.use_cache:
             for rules in self.__class__.rules:
-                streaming = StreamingService(
-                    stub=datamodel_service_se._stub,
-                    metadata=datamodel_service_se._metadata,
-                )
-                stream = DatamodelStream(streaming)
+                stream = DatamodelStream(datamodel_service_se, id=rules)
                 stream.register_callback(
                     functools.partial(DataModelCache.update_cache, rules=rules)
                 )
