@@ -8,7 +8,6 @@ import functools
 
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_base_meshing import BaseMeshing
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream

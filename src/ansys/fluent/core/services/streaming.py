@@ -24,7 +24,9 @@ class StreamingServiceHelper:
 
     def begin_streaming(self, request, started_evt) -> Generator:
         """Begin streaming from Fluent."""
-        self._streams = getattr(self._stub, self._stream_begin_method)(request, metadata=self._metadata)
+        self._streams = getattr(self._stub, self._stream_begin_method)(
+            request, metadata=self._metadata
+        )
         started_evt.set()
         while True:
             try:
@@ -36,7 +38,8 @@ class StreamingServiceHelper:
         """End streaming from Fluent."""
         if self._streams and not self._streams.cancelled():
             self._streams.cancel()
-            
+
+
 class StreamingService:
     """Class wrapping the streaming gRPC services of Fluent.
 
@@ -55,16 +58,22 @@ class StreamingService:
         self._metadata = metadata
         self._streamHelper = {}
 
-    def begin_streaming(self, request, started_evt, id="stream-0", stream_begin_method="BeginStreaming") -> Generator:
+    def begin_streaming(
+        self, request, started_evt, id="stream-0", stream_begin_method="BeginStreaming"
+    ) -> Generator:
         """Begin streaming from Fluent."""
         if id in self._streamHelper:
             return
-        self._streamHelper[id+stream_begin_method] = StreamingServiceHelper(self._stub, self._metadata, stream_begin_method)
-        return self._streamHelper[id+stream_begin_method].begin_streaming(request, started_evt)            
+        self._streamHelper[id + stream_begin_method] = StreamingServiceHelper(
+            self._stub, self._metadata, stream_begin_method
+        )
+        return self._streamHelper[id + stream_begin_method].begin_streaming(
+            request, started_evt
+        )
 
-    def end_streaming(self, id="stream-0", stream_begin_method="BeginStreaming") -> None:
+    def end_streaming(
+        self, id="stream-0", stream_begin_method="BeginStreaming"
+    ) -> None:
         """End streaming from Fluent."""
-        self._streamHelper[id+stream_begin_method].end_streaming()
-        del self._streamHelper[id+stream_begin_method]
-        
-
+        self._streamHelper[id + stream_begin_method].end_streaming()
+        del self._streamHelper[id + stream_begin_method]

@@ -169,8 +169,9 @@ class DatamodelService(StreamingService):
 
     def begin_event_streaming(self, request, started_evt):
         """Begin datamodel event streaming."""
-        return self.begin_streaming(request, started_evt, stream_begin_method="BeginEventStreaming")
-         
+        return self.begin_streaming(
+            request, started_evt, stream_begin_method="BeginEventStreaming"
+        )
 
     def end_event_streaming(self) -> None:
         """End datamodel event streaming from Fluent."""

@@ -21,7 +21,10 @@ class DatamodelStream(StreamingService):
         if no_commands_diff_state:
             data_model_request.diffstate = datamodel_se_pb2.DIFFSTATE_NOCOMMANDS
         responses = self._streaming_service.begin_streaming(
-            data_model_request, started_evt, id=rules, stream_begin_method="BeginStreaming"
+            data_model_request,
+            started_evt,
+            id=rules,
+            stream_begin_method="BeginStreaming",
         )
         while True:
             try:
