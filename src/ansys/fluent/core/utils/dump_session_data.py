@@ -1,7 +1,7 @@
 """Module providing dump session data functionality."""
 from pathlib import Path
 import pickle
-from typing import Dict, Optional, Union
+from typing import Optional, Union
 
 import numpy as np
 
@@ -165,11 +165,15 @@ class DumpDataReader:
 
         return vector_field_data
 
-    def get_pathlines_data(self, surface_ids, field_names) -> list[Dict]:
+    def get_pathlines_data(
+        self, surface_ids, field_names, key
+    ) -> list[Union[np.array, None]]:
         pathlines_data = []
         for surface_id in surface_ids:
             for field_name in field_names:
                 tag_id = (("type", "pathlines-field"), ("field", field_name))
-                pathlines_data.append(self._session_data["fields"][tag_id][surface_id])
+                pathlines_data.append(
+                    self._session_data["fields"][tag_id][surface_id][key]
+                )
 
         return pathlines_data
