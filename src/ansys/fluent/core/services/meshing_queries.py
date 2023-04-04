@@ -171,6 +171,60 @@ class MeshingQueriesService:
         """GetPrismCellZones rpc of MeshingQueriesService."""
         return self._stub.GetPrismCellZones(request, metadata=self._metadata)
 
+    @catch_grpc_error
+    def GetTetCellZones(
+        self,
+        request: MeshingQueriesProtoModule.GetTetCellZonesRequest,
+    ) -> MeshingQueriesProtoModule.GetTetCellZonesResponse:
+        """GetTetCellZones rpc of MeshingQueriesService."""
+        return self._stub.GetTetCellZones(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetAdjacentCellZones(
+        self,
+        request: MeshingQueriesProtoModule.GetAdjacentCellZonesRequest,
+    ) -> MeshingQueriesProtoModule.GetAdjacentCellZonesResponse:
+        """GetAdjacentCellZones rpc of MeshingQueriesService."""
+        return self._stub.GetAdjacentCellZones(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetAdjacentFaceZones(
+        self,
+        request: MeshingQueriesProtoModule.GetAdjacentFaceZonesRequest,
+    ) -> MeshingQueriesProtoModule.GetAdjacentFaceZonesResponse:
+        """GetAdjacentFaceZones rpc of MeshingQueriesService."""
+        return self._stub.GetAdjacentFaceZones(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetAdjacentInteriorAndBoundaryFaceZones(
+        self,
+        request: MeshingQueriesProtoModule.GetAdjacentInteriorAndBoundaryFaceZonesRequest,
+    ) -> MeshingQueriesProtoModule.GetAdjacentInteriorAndBoundaryFaceZonesResponse:
+        """GetAdjacentInteriorAndBoundaryFaceZones rpc of MeshingQueriesService."""
+        return self._stub.GetAdjacentInteriorAndBoundaryFaceZones(
+            request, metadata=self._metadata
+        )
+
+    @catch_grpc_error
+    def GetAdjacentZonesByEdgeConnectivity(
+        self,
+        request: MeshingQueriesProtoModule.GetAdjacentZonesByEdgeConnectivityRequest,
+    ) -> MeshingQueriesProtoModule.GetAdjacentZonesByEdgeConnectivityResponse:
+        """GetAdjacentZonesByEdgeConnectivity rpc of MeshingQueriesService."""
+        return self._stub.GetAdjacentZonesByEdgeConnectivity(
+            request, metadata=self._metadata
+        )
+
+    @catch_grpc_error
+    def GetAdjacentZonesByNodeConnectivity(
+        self,
+        request: MeshingQueriesProtoModule.GetAdjacentZonesByNodeConnectivityRequest,
+    ) -> MeshingQueriesProtoModule.GetAdjacentZonesByNodeConnectivityResponse:
+        """GetAdjacentZonesByNodeConnectivity rpc of MeshingQueriesService."""
+        return self._stub.GetAdjacentZonesByNodeConnectivity(
+            request, metadata=self._metadata
+        )
+
 
 class MeshingQueries:
     """
@@ -201,147 +255,241 @@ class MeshingQueries:
         response = self.service.GetCellZoneAtLocation(request)
         return response.cell_zone_id
 
-    def GetZonesOfType(self, object_name) -> Any:
+    def GetZonesOfType(self, type) -> Any:
         """GetZonesOfType."""
         request = MeshingQueriesProtoModule.GetZonesOfTypeRequest()
-        request.input = object_name
+        request.input = type
         response = self.service.GetZonesOfType(request)
         return response.outputs
 
-    def GetZonesOfGroup(self, object_name) -> Any:
+    def GetZonesOfGroup(self, group) -> Any:
         """GetZonesOfGroup."""
         request = MeshingQueriesProtoModule.GetZonesOfGroupRequest()
-        request.input = object_name
+        request.input = group
         response = self.service.GetZonesOfGroup(request)
         return response.outputs
 
-    def GetFaceZonesOfFilter(self, object_name) -> Any:
+    def GetFaceZonesOfFilter(self, filter) -> Any:
         """GetFaceZonesOfFilter."""
         request = MeshingQueriesProtoModule.GetFaceZonesOfFilterRequest()
-        request.input = object_name
+        request.input = filter
         response = self.service.GetFaceZonesOfFilter(request)
         return response.outputs
 
-    def GetCellZonesOfFilter(self, object_name) -> Any:
+    def GetCellZonesOfFilter(self, filter) -> Any:
         """GetCellZonesOfFilter."""
         request = MeshingQueriesProtoModule.GetCellZonesOfFilterRequest()
-        request.input = object_name
+        request.input = filter
         response = self.service.GetCellZonesOfFilter(request)
         return response.outputs
 
-    def GetEdgeZonesOfFilter(self, object_name) -> Any:
+    def GetEdgeZonesOfFilter(self, filter) -> Any:
         """GetEdgeZonesOfFilter."""
         request = MeshingQueriesProtoModule.GetEdgeZonesOfFilterRequest()
-        request.input = object_name
+        request.input = filter
         response = self.service.GetEdgeZonesOfFilter(request)
         return response.outputs
 
-    def GetNodeZonesOfFilter(self, object_name) -> Any:
+    def GetNodeZonesOfFilter(self, filter) -> Any:
         """GetNodeZonesOfFilter."""
         request = MeshingQueriesProtoModule.GetNodeZonesOfFilterRequest()
-        request.input = object_name
+        request.input = filter
         response = self.service.GetNodeZonesOfFilter(request)
         return response.outputs
 
-    def GetObjectsOfType(self, type_name) -> Any:
+    def GetObjectsOfType(self, type) -> Any:
         """GetObjectsOfType."""
         request = MeshingQueriesProtoModule.GetObjectsOfTypeRequest()
-        request.input = type_name
+        request.input = type
         response = self.service.GetObjectsOfType(request)
         return response.outputs
 
-    def GetFaceZoneIdListOfObject(self, object_name) -> Any:
+    def GetFaceZoneIdListOfObject(self, object) -> Any:
         """GetFaceZoneIdListOfObject."""
         request = MeshingQueriesProtoModule.GetFaceZoneIdListOfObjectRequest()
-        request.input = object_name
+        request.input = object
         response = self.service.GetFaceZoneIdListOfObject(request)
         return response.outputs
 
-    def GetEdgeZoneIdListOfObject(self, object_name) -> Any:
+    def GetEdgeZoneIdListOfObject(self, object) -> Any:
         """GetEdgeZoneIdListOfObject."""
         request = MeshingQueriesProtoModule.GetEdgeZoneIdListOfObjectRequest()
-        request.input = object_name
+        request.input = object
         response = self.service.GetEdgeZoneIdListOfObject(request)
         return response.outputs
 
-    def GetCellZoneIdListOfObject(self, object_name) -> Any:
+    def GetCellZoneIdListOfObject(self, object) -> Any:
         """GetCellZoneIdListOfObject."""
         request = MeshingQueriesProtoModule.GetCellZoneIdListOfObjectRequest()
-        request.input = object_name
+        request.input = object
         response = self.service.GetCellZoneIdListOfObject(request)
         return response.outputs
 
-    def GetFaceZonesSharedByRegionsOfType(self, object_name, type_name) -> Any:
+    def GetFaceZonesSharedByRegionsOfType(self, mesh_object, region_type) -> Any:
         """GetFaceZonesSharedByRegionsOfType."""
         request = MeshingQueriesProtoModule.GetFaceZonesSharedByRegionsOfTypeRequest()
-        request.input_1 = object_name
-        request.input_2 = type_name
+        request.input_1 = mesh_object
+        request.input_2 = region_type
         response = self.service.GetFaceZonesSharedByRegionsOfType(request)
         return response.outputs
 
-    def GetFaceZonesOfRegions(self, object_name, type_list) -> Any:
+    def GetFaceZonesOfRegions(self, object, region_name_list) -> Any:
         """GetFaceZonesOfRegions."""
         request = MeshingQueriesProtoModule.GetFaceZonesOfRegionsRequest()
-        request.input = object_name
-        for types in type_list:
-            request.inputs.append(types)
+        request.input = object
+        for region in region_name_list:
+            request.inputs.append(region)
         response = self.service.GetFaceZonesOfRegions(request)
         return response.outputs
 
-    def GetFaceZonesOfLabels(self, object_name, type_list) -> Any:
+    def GetFaceZonesOfLabels(self, object, label_name_list) -> Any:
         """GetFaceZonesOfLabels."""
         request = MeshingQueriesProtoModule.GetFaceZonesOfLabelsRequest()
-        request.input = object_name
-        for types in type_list:
-            request.inputs.append(types)
+        request.input = object
+        for label in label_name_list:
+            request.inputs.append(label)
         response = self.service.GetFaceZonesOfLabels(request)
         return response.outputs
 
-    def GetFaceZoneIdListOfLabels(self, object_name, type_list) -> Any:
+    def GetFaceZoneIdListOfLabels(self, object, zone_label_list) -> Any:
         """GetFaceZoneIdListOfLabels."""
         request = MeshingQueriesProtoModule.GetFaceZoneIdListOfLabelsRequest()
-        request.input = object_name
-        for types in type_list:
-            request.inputs.append(types)
+        request.input = object
+        for zone_label in zone_label_list:
+            request.inputs.append(zone_label)
         response = self.service.GetFaceZoneIdListOfLabels(request)
         return response.outputs
 
-    def GetFaceZonesOfObjects(self, type_list) -> Any:
+    def GetFaceZonesOfObjects(self, object_list) -> Any:
         """GetFaceZonesOfObjects."""
         request = MeshingQueriesProtoModule.GetFaceZonesOfObjectsRequest()
-        for types in type_list:
-            request.inputs.append(types)
+        for object in object_list:
+            request.inputs.append(object)
         response = self.service.GetFaceZonesOfObjects(request)
         return response.outputs
 
-    def GetEdgeZonesOfObjects(self, type_list) -> Any:
+    def GetEdgeZonesOfObjects(self, object_list) -> Any:
         """GetEdgeZonesOfObjects."""
         request = MeshingQueriesProtoModule.GetEdgeZonesOfObjectsRequest()
-        for types in type_list:
-            request.inputs.append(types)
+        for object in object_list:
+            request.inputs.append(object)
         response = self.service.GetEdgeZonesOfObjects(request)
         return response.outputs
 
-    def GetFaceZoneIdListOfRegions(self, object_name, type_list) -> Any:
+    def GetFaceZoneIdListOfRegions(self, object, region_list) -> Any:
         """GetFaceZoneIdListOfRegions."""
         request = MeshingQueriesProtoModule.GetFaceZoneIdListOfRegionsRequest()
-        request.input = object_name
-        for types in type_list:
-            request.inputs.append(types)
+        request.input = object
+        for region in region_list:
+            request.inputs.append(region)
         response = self.service.GetFaceZoneIdListOfRegions(request)
         return response.outputs
 
-    def GetPrismCellZones(self, object_name) -> Any:
+    def GetPrismCellZones(self, pattern) -> Any:
         """GetPrismCellZones."""
         request = MeshingQueriesProtoModule.GetPrismCellZonesRequest()
-        request.input = object_name
+        request.input = pattern
         response = self.service.GetPrismCellZones(request)
         return response.outputs
 
-    def GetPrismCellZones(self, type_list) -> Any:
+    def GetPrismCellZones(self, zone_list) -> Any:
         """GetPrismCellZones."""
         request = MeshingQueriesProtoModule.GetPrismCellZonesRequest()
-        for types in type_list:
-            request.inputs.append(types)
+        for zone in zone_list:
+            request.inputs.append(zone)
         response = self.service.GetPrismCellZones(request)
+        return response.outputs
+
+    def GetTetCellZones(self, pattern) -> Any:
+        """GetTetCellZones."""
+        request = MeshingQueriesProtoModule.GetTetCellZonesRequest()
+        request.input = pattern
+        response = self.service.GetTetCellZones(request)
+        return response.outputs
+
+    def GetTetCellZones(self, zone_list) -> Any:
+        """GetTetCellZones."""
+        request = MeshingQueriesProtoModule.GetTetCellZonesRequest()
+        for zone in zone_list:
+            request.inputs.append(zone)
+        response = self.service.GetTetCellZones(request)
+        return response.outputs
+
+    def GetAdjacentCellZones(self, pattern) -> Any:
+        """GetAdjacentCellZones."""
+        request = MeshingQueriesProtoModule.GetAdjacentCellZonesRequest()
+        request.input = pattern
+        response = self.service.GetAdjacentCellZones(request)
+        return response.outputs
+
+    def GetAdjacentCellZones(self, zone_list) -> Any:
+        """GetAdjacentCellZones."""
+        request = MeshingQueriesProtoModule.GetAdjacentCellZonesRequest()
+        for zone in zone_list:
+            request.inputs.append(zone)
+        response = self.service.GetAdjacentCellZones(request)
+        return response.outputs
+
+    def GetAdjacentFaceZones(self, pattern) -> Any:
+        """GetAdjacentFaceZones."""
+        request = MeshingQueriesProtoModule.GetAdjacentCellZonesRequest()
+        request.input = pattern
+        response = self.service.GetAdjacentCellZones(request)
+        return response.outputs
+
+    def GetAdjacentFaceZones(self, zone_list) -> Any:
+        """GetAdjacentFaceZones."""
+        request = MeshingQueriesProtoModule.GetAdjacentFaceZonesRequest()
+        for zone in zone_list:
+            request.inputs.append(zone)
+        response = self.service.GetAdjacentFaceZones(request)
+        return response.outputs
+
+    def GetAdjacentInteriorAndBoundaryFaceZones(self, pattern) -> Any:
+        """GetAdjacentInteriorAndBoundaryFaceZones."""
+        request = (
+            MeshingQueriesProtoModule.GetAdjacentInteriorAndBoundaryFaceZonesGetAdjacentCellZonesRequest()
+        )
+        request.input = pattern
+        response = self.service.GetAdjacentInteriorAndBoundaryFaceZones(request)
+        return response.outputs
+
+    def GetAdjacentInteriorAndBoundaryFaceZones(self, zone_list) -> Any:
+        """GetAdjacentInteriorAndBoundaryFaceZones."""
+        request = (
+            MeshingQueriesProtoModule.GetAdjacentInteriorAndBoundaryFaceZonesRequest()
+        )
+        for zone in zone_list:
+            request.inputs.append(zone)
+        response = self.service.GetAdjacentInteriorAndBoundaryFaceZones(request)
+        return response.outputs
+
+    def GetAdjacentZonesByEdgeConnectivity(self, pattern) -> Any:
+        """GetAdjacentZonesByEdgeConnectivity."""
+        request = MeshingQueriesProtoModule.GetAdjacentZonesByEdgeConnectivityRequest()
+        request.input = pattern
+        response = self.service.GetAdjacentZonesByEdgeConnectivity(request)
+        return response.outputs
+
+    def GetAdjacentZonesByEdgeConnectivity(self, zone_list) -> Any:
+        """GetAdjacentZonesByEdgeConnectivity."""
+        request = MeshingQueriesProtoModule.GetAdjacentZonesByEdgeConnectivityRequest()
+        for zone in zone_list:
+            request.inputs.append(zone)
+        response = self.service.GetAdjacentZonesByEdgeConnectivity(request)
+        return response.outputs
+
+    def GetAdjacentZonesByNodeConnectivity(self, pattern) -> Any:
+        """GetAdjacentZonesByNodeConnectivity."""
+        request = MeshingQueriesProtoModule.GetAdjacentZonesByNodeConnectivityRequest()
+        request.input = pattern
+        response = self.service.GetAdjacentZonesByNodeConnectivity(request)
+        return response.outputs
+
+    def GetAdjacentZonesByEdgeConnectivity(self, zone_list) -> Any:
+        """GetAdjacentZonesByNodeConnectivity."""
+        request = MeshingQueriesProtoModule.GetAdjacentZonesByNodeConnectivityRequest()
+        for zone in zone_list:
+            request.inputs.append(zone)
+        response = self.service.GetAdjacentZonesByNodeConnectivity(request)
         return response.outputs

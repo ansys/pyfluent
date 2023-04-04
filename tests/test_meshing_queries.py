@@ -96,3 +96,60 @@ def test_meshing_queries(new_mesh_session):
     assert meshing_session.meshing_queries.GetPrismCellZones(["inlet", "outlet"]) == []
 
     assert meshing_session.meshing_queries.GetPrismCellZones("*") == []
+
+    assert meshing_session.meshing_queries.GetTetCellZones(["inlet", "outlet"]) == []
+
+    assert meshing_session.meshing_queries.GetTetCellZones("*") == []
+
+    assert meshing_session.meshing_queries.GetAdjacentCellZones([30]) == [3460]
+
+    assert meshing_session.meshing_queries.GetAdjacentCellZones("*") == [3460]
+
+    assert meshing_session.meshing_queries.GetAdjacentFaceZones([3460]) == [
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+    ]
+
+    assert meshing_session.meshing_queries.GetAdjacentFaceZones("*") == [
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+    ]
+
+    assert (
+        meshing_session.meshing_queries.GetAdjacentInteriorAndBoundaryFaceZones([30])
+        == []
+    )
+
+    assert meshing_session.meshing_queries.GetAdjacentInteriorAndBoundaryFaceZones(
+        "*"
+    ) == [
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        3462,
+    ]  # noqa: E501
+
+    assert meshing_session.meshing_queries.GetAdjacentZonesByEdgeConnectivity([30]) == [
+        33,
+        29,
+    ]
+
+    assert meshing_session.meshing_queries.GetAdjacentZonesByEdgeConnectivity("*") == []
+
+    assert meshing_session.meshing_queries.GetAdjacentZonesByNodeConnectivity([30]) == [
+        29,
+        33,
+    ]
+
+    assert meshing_session.meshing_queries.GetAdjacentZonesByNodeConnectivity("*") == []
