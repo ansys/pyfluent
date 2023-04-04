@@ -37,12 +37,12 @@ class FieldDataService:
         self.__metadata = metadata
 
     @catch_grpc_error
-    def get_range(self, request):
+    def get_scalar_fields_range(self, request):
         """GetRange rpc of FieldData service."""
         return self.__stub.GetRange(request, metadata=self.__metadata)
 
     @catch_grpc_error
-    def get_fields_info(self, request):
+    def get_scalar_fields_info(self, request):
         """GetFieldsInfo rpc of FieldData service."""
         return self.__stub.GetFieldsInfo(request, metadata=self.__metadata)
 
@@ -67,11 +67,11 @@ class FieldInfo:
 
     Methods
     -------
-    get_range(field: str, node_value: bool, surface_ids: List[int])
+    get_scalar_fields_range(field: str, node_value: bool, surface_ids: List[int])
     -> List[float]
         Get the range (minimum and maximum values) of the field.
 
-    get_fields_info(self) -> dict
+    get_scalar_fields_info(self) -> dict
         Get fields information (field name, domain, and section).
 
     get_vector_fields_info(self) -> dict
@@ -85,7 +85,7 @@ class FieldInfo:
         """__init__ method of FieldInfo class."""
         self._service = service
 
-    def get_range(
+    def get_scalar_fields_range(
         self, field: str, node_value: bool = False, surface_ids: List[int] = None
     ) -> List[float]:
         """Get the range (minimum and maximum values) of the field.
@@ -110,10 +110,10 @@ class FieldInfo:
         request.surfaceid.extend(
             [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]
         )
-        response = self._service.get_range(request)
+        response = self._service.get_scalar_fields_range(request)
         return [response.minimum, response.maximum]
 
-    def get_fields_info(self) -> dict:
+    def get_scalar_fields_info(self) -> dict:
         """Get fields information (field name, domain, and section).
 
         Returns
@@ -121,7 +121,7 @@ class FieldInfo:
         Dict
         """
         request = FieldDataProtoModule.GetFieldsInfoRequest()
-        response = self._service.get_fields_info(request)
+        response = self._service.get_scalar_fields_info(request)
         return {
             field_info.solverName: {
                 "display_name": field_info.displayName,
@@ -303,7 +303,7 @@ class _AllowedScalarFieldNames(_AllowedFieldNames):
     _field_unavailable_error = ScalarFieldUnavailable
 
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
-        field_dict = self._field_info.get_fields_info()
+        field_dict = self._field_info.get_scalar_fields_info()
         return (
             field_dict
             if (not respect_data_valid or self._is_data_valid())
