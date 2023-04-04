@@ -420,13 +420,13 @@ class MeshingQueries:
 
     def GetAdjacentFaceZones(self, list_or_pattern) -> Any:
         """GetAdjacentFaceZones."""
-        request = MeshingQueriesProtoModule.GetAdjacentCellZonesRequest()
+        request = MeshingQueriesProtoModule.GetAdjacentFaceZonesRequest()
         if isinstance(list_or_pattern, str):
             request.input = list_or_pattern
         elif isinstance(list_or_pattern, list):
             for items in list_or_pattern:
                 request.inputs.append(items)
-        response = self.service.GetAdjacentCellZones(request)
+        response = self.service.GetAdjacentFaceZones(request)
         return response.outputs
 
     def GetAdjacentInteriorAndBoundaryFaceZones(self, list_or_pattern) -> Any:
