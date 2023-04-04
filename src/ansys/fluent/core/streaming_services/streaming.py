@@ -65,11 +65,11 @@ class StreamingService:
                 self._stream_thread.start()
                 started_evt.wait()
 
-    def stop(self) -> None:
+    def stop(self, id="stream-0", stream_begin_method="BeginStreaming") -> None:
         """Stop streaming of Fluent transcript."""
         if self.is_streaming:
             if self._stop_service is None:
-                self._streaming_service.end_streaming()
+                self._streaming_service.end_streaming(id, stream_begin_method)
             else:
                 self._stop_service()
             self._stream_thread.join()

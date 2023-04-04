@@ -34,11 +34,7 @@ class PureMeshing(BaseSession):
         self.datamodel_streams = {}
         if self.use_cache:
             for rules in self.__class__.rules:
-                streaming = StreamingService(
-                    stub=datamodel_service_se._stub,
-                    metadata=datamodel_service_se._metadata,
-                )
-                stream = DatamodelStream(streaming)
+                stream = DatamodelStream(datamodel_service_se)
                 stream.register_callback(
                     functools.partial(DataModelCache.update_cache, rules=rules)
                 )
