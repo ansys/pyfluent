@@ -388,11 +388,11 @@ class PyStateContainer(PyCallableStateObject):
         cached_val = self.cached_attrs.get(attrib)
         if cached_val is None:
             cached_val = self._get_remote_attr(attrib)
-            self.cached_attrs[attrib] = cached_val
             self.add_on_attribute_changed(
                 attrib,
                 functools.partial(dict.__setitem__, self.cached_attrs, attrib),
             )
+            self.cached_attrs[attrib] = cached_val
         return cached_val
 
     def get_attr(self, attrib: str) -> Any:
@@ -466,6 +466,34 @@ class PyStateContainer(PyCallableStateObject):
         e = request.eventrequest.add(rules=self.rules)
         e.attributeChangedEventRequest.path = convert_path_to_se_path(self.path)
         e.attributeChangedEventRequest.attribute = attribute
+        subscription = EventSubscription(self.service, request)
+        self.service.event_streaming.register_callback(subscription.tag, self, cb)
+        return subscription
+
+    def add_on_command_attribute_changed(
+        self, command: str, attribute: str, cb: Callable
+    ) -> EventSubscription:
+        """Register a callback for when an attribute is changed
+
+        Parameters
+        ----------
+        command : str
+            command name
+        attribute : str
+            attribute name
+        cb : Callable
+            Callback function
+
+        Returns
+        -------
+        EventSubscription
+            EventSubscription instance which can be used to unregister the callback
+        """
+        request = DataModelProtoModule.SubscribeEventsRequest()
+        e = request.eventrequest.add(rules=self.rules)
+        e.commandAttributeChangedEventRequest.path = convert_path_to_se_path(self.path)
+        e.commandAttributeChangedEventRequest.command = command
+        e.commandAttributeChangedEventRequest.attribute = attribute
         subscription = EventSubscription(self.service, request)
         self.service.event_streaming.register_callback(subscription.tag, self, cb)
         return subscription
@@ -646,34 +674,6 @@ class PyMenu(PyStateContainer):
         e = request.eventrequest.add(rules=self.rules)
         e.affectedEventRequest.path = convert_path_to_se_path(self.path)
         e.affectedEventRequest.subtype = child_type
-        subscription = EventSubscription(self.service, request)
-        self.service.event_streaming.register_callback(subscription.tag, self, cb)
-        return subscription
-
-    def add_on_command_attribute_changed(
-        self, command: str, attribute: str, cb: Callable
-    ) -> EventSubscription:
-        """Register a callback for when an attribute is changed
-
-        Parameters
-        ----------
-        command : str
-            command name
-        attribute : str
-            attribute name
-        cb : Callable
-            Callback function
-
-        Returns
-        -------
-        EventSubscription
-            EventSubscription instance which can be used to unregister the callback
-        """
-        request = DataModelProtoModule.SubscribeEventsRequest()
-        e = request.eventrequest.add(rules=self.rules)
-        e.commandAttributeChangedEventRequest.path = convert_path_to_se_path(self.path)
-        e.commandAttributeChangedEventRequest.command = command
-        e.commandAttributeChangedEventRequest.attribute = attribute
         subscription = EventSubscription(self.service, request)
         self.service.event_streaming.register_callback(subscription.tag, self, cb)
         return subscription
@@ -1133,6 +1133,20 @@ class PyCommandArguments(PyStateContainer):
         except ValueError:
             # "Cannot invoke RPC on closed channel!"
             pass
+
+    # Currently getting an error whenever I'm calling add_on_command_attribute_changed on self or parent
+    # def _get_cached_attr(self, attrib: str) -> Any:
+    #     cached_val = self.cached_attrs.get(attrib)
+    #     if cached_val is None:
+    #         cached_val = self._get_remote_attr(attrib)
+    #         parent = PyStateContainer(self.service, self.rules, self.path[0:-1])
+    #         parent.add_on_command_attribute_changed(
+    #             self.command,
+    #             attrib,
+    #             functools.partial(dict.__setitem__, self.cached_attrs, attrib),
+    #         )
+    #         self.cached_attrs[attrib] = cached_val
+    #     return cached_val
 
     def __getattr__(self, attr):
         for arg in self.static_info.commands[self.command].commandinfo.args:
