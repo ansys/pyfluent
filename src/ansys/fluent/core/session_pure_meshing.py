@@ -40,9 +40,8 @@ class PureMeshing(BaseSession):
             for rules in self.__class__.rules:
                 request = datamodel_se_pb2.DataModelRequest()
                 request.rules = rules
-                request.diffstate = (
-                    datamodel_se_pb2.DIFFSTATE_NOCOMMANDS
-                )  # DIFFSTATE_FULL?
+                if pyfluent.DATAMODEL_USE_NOCOMMANDS_DIFF_STATE:
+                    request.diffstate = datamodel_se_pb2.DIFFSTATE_NOCOMMANDS
                 streaming = StreamingService(
                     stub=datamodel_service_se._stub,
                     request=request,

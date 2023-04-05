@@ -345,7 +345,6 @@ class PyStateContainer(PyCallableStateObject):
         else:
             self.path = path
         self.cached_attrs = {}
-        self.event_subscriptions = []
 
     docstring = None
 
@@ -390,11 +389,9 @@ class PyStateContainer(PyCallableStateObject):
         if cached_val is None:
             cached_val = self._get_remote_attr(attrib)
             self.cached_attrs[attrib] = cached_val
-            self.event_subscriptions.append(
-                self.add_on_attribute_changed(
-                    attrib,
-                    functools.partial(dict.__setitem__, self.cached_attrs, attrib),
-                )
+            self.add_on_attribute_changed(
+                attrib,
+                functools.partial(dict.__setitem__, self.cached_attrs, attrib),
             )
         return cached_val
 
@@ -411,7 +408,9 @@ class PyStateContainer(PyCallableStateObject):
         Any
             Value of the attribute.
         """
-        if pyfluent.DATAMODEL_USE_ATTR_CACHE:
+        if pyfluent.DATAMODEL_USE_ATTR_CACHE and hasattr(
+            DataModelProtoModule, "SubscribeEventsRequest"
+        ):
             return self._get_cached_attr(attrib)
         return self._get_remote_attr(attrib)
 

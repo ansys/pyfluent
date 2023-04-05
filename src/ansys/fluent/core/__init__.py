@@ -78,5 +78,11 @@ INFER_REMOTING_IP_TIMEOUT_PER_IP = 2
 
 pydoc.text.docother = fldoc.docother.__get__(pydoc.text, pydoc.TextDoc)
 
+# Whether to use datamodel state caching
 DATAMODEL_USE_STATE_CACHE = True
+
+# Whether to use datamodel attribute caching
 DATAMODEL_USE_ATTR_CACHE = True
+
+# Whether stream and cache commands state
+DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
