@@ -151,3 +151,49 @@ def test_meshing_queries(new_mesh_session):
     ]
 
     assert meshing_session.meshing_queries.GetAdjacentZonesByNodeConnectivity("*") == []
+
+    assert meshing_session.meshing_queries.GetInteriorZonesConnectedToCellZones(
+        [3460]
+    ) == [3462]
+
+    assert meshing_session.meshing_queries.GetInteriorZonesConnectedToCellZones(
+        "*"
+    ) == [3462]
+
+    assert (
+        meshing_session.meshing_queries.GetFaceZonesWithZoneSpecificPrismsApplied()
+        == []
+    )
+
+    assert meshing_session.meshing_queries.GetBaffles([29, 30]) == [30, 29]
+
+    assert meshing_session.meshing_queries.GetEmbeddedBaffles() == []
+
+    assert meshing_session.meshing_queries.GetWrappedZones() == []
+
+    assert meshing_session.meshing_queries.GetUnreferencedEdgeZones() == []
+
+    assert meshing_session.meshing_queries.GetUnreferencedEdgeZones() == []
+
+    assert meshing_session.meshing_queries.GetUnreferencedEdgeZones() == []
+
+    assert meshing_session.meshing_queries.GetUnreferencedEdgeZonesOfFilter("*") == []
+
+    assert meshing_session.meshing_queries.GetUnreferencedFaceZonesOfFilter("*") == []
+
+    assert meshing_session.meshing_queries.GetUnreferencedCellZonesOfFilter("*") == []
+
+    assert (
+        meshing_session.meshing_queries.GetUnreferencedEdgeZoneIdListOfPattern("*")
+        == []
+    )
+
+    assert (
+        meshing_session.meshing_queries.GetUnreferencedFaceZoneIdListOfPattern("*")
+        == []
+    )
+
+    assert (
+        meshing_session.meshing_queries.GetUnreferencedCellZoneIdListOfPattern("*")
+        == []
+    )

@@ -225,6 +225,154 @@ class MeshingQueriesService:
             request, metadata=self._metadata
         )
 
+    # @catch_grpc_error
+    # def GetSharedBoundaryZones(
+    #     self,
+    #     request: MeshingQueriesProtoModule.GetSharedBoundaryZonesRequest,
+    # ) -> MeshingQueriesProtoModule.GetSharedBoundaryZonesResponse:
+    #     """GetSharedBoundaryZones rpc of MeshingQueriesService."""
+    #     return self._stub.GetSharedBoundaryZones(
+    #         request, metadata=self._metadata
+    #     )
+
+    @catch_grpc_error
+    def GetInteriorZonesConnectedToCellZones(
+        self,
+        request: MeshingQueriesProtoModule.GetInteriorZonesConnectedToCellZonesRequest,
+    ) -> MeshingQueriesProtoModule.GetInteriorZonesConnectedToCellZonesResponse:
+        """GetInteriorZonesConnectedToCellZones rpc of MeshingQueriesService."""
+        return self._stub.GetInteriorZonesConnectedToCellZones(
+            request, metadata=self._metadata
+        )
+
+    @catch_grpc_error
+    def GetFaceZonesWithZoneSpecificPrismsApplied(
+        self,
+        request: MeshingQueriesProtoModule.Empty,
+    ) -> MeshingQueriesProtoModule.GetFaceZonesWithZoneSpecificPrismsAppliedResponse:
+        """GetFaceZonesWithZoneSpecificPrismsApplied rpc of MeshingQueriesService."""
+        return self._stub.GetFaceZonesWithZoneSpecificPrismsApplied(
+            request, metadata=self._metadata
+        )
+
+    # @catch_grpc_error
+    # def GetFaceZonesOfPrismControls(
+    #     self,
+    #     request: MeshingQueriesProtoModule.GetFaceZonesOfPrismControlsRequest,
+    # ) -> MeshingQueriesProtoModule.GetFaceZonesOfPrismControlsResponse:
+    #     """GetFaceZonesOfPrismControls rpc of MeshingQueriesService."""
+    #     return self._stub.GetFaceZonesOfPrismControls(
+    #         request, metadata=self._metadata
+    #     )
+
+    @catch_grpc_error
+    def GetBaffles(
+        self,
+        request: MeshingQueriesProtoModule.GetBafflesRequest,
+    ) -> MeshingQueriesProtoModule.GetBafflesResponse:
+        """GetBaffles rpc of MeshingQueriesService."""
+        return self._stub.GetBaffles(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetEmbeddedBaffles(
+        self,
+        request: MeshingQueriesProtoModule.Empty,
+    ) -> MeshingQueriesProtoModule.GetEmbeddedBafflesResponse:
+        """GetEmbeddedBaffles rpc of MeshingQueriesService."""
+        return self._stub.GetEmbeddedBaffles(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetWrappedZones(
+        self,
+        request: MeshingQueriesProtoModule.Empty,
+    ) -> MeshingQueriesProtoModule.GetWrappedZonesResponse:
+        """GetWrappedZones rpc of MeshingQueriesService."""
+        return self._stub.GetWrappedZones(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetUnreferencedEdgeZones(
+        self,
+        request: MeshingQueriesProtoModule.Empty,
+    ) -> MeshingQueriesProtoModule.GetUnreferencedEdgeZonesResponse:
+        """GetUnreferencedEdgeZones rpc of MeshingQueriesService."""
+        return self._stub.GetUnreferencedEdgeZones(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetUnreferencedFaceZones(
+        self,
+        request: MeshingQueriesProtoModule.Empty,
+    ) -> MeshingQueriesProtoModule.GetUnreferencedFaceZonesResponse:
+        """GetUnreferencedFaceZones rpc of MeshingQueriesService."""
+        return self._stub.GetUnreferencedFaceZones(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetUnreferencedCellZones(
+        self,
+        request: MeshingQueriesProtoModule.Empty,
+    ) -> MeshingQueriesProtoModule.GetUnreferencedCellZonesResponse:
+        """GetUnreferencedCellZones rpc of MeshingQueriesService."""
+        return self._stub.GetUnreferencedCellZones(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetUnreferencedEdgeZonesOfFilter(
+        self,
+        request: MeshingQueriesProtoModule.GetUnreferencedEdgeZonesOfFilterRequest,
+    ) -> MeshingQueriesProtoModule.GetUnreferencedEdgeZonesOfFilterResponse:
+        """GetUnreferencedEdgeZonesOfFilter rpc of MeshingQueriesService."""
+        return self._stub.GetUnreferencedEdgeZonesOfFilter(
+            request, metadata=self._metadata
+        )
+
+    @catch_grpc_error
+    def GetUnreferencedFaceZonesOfFilter(
+        self,
+        request: MeshingQueriesProtoModule.GetUnreferencedFaceZonesOfFilterRequest,
+    ) -> MeshingQueriesProtoModule.GetUnreferencedFaceZonesOfFilterResponse:
+        """GetUnreferencedFaceZonesOfFilter rpc of MeshingQueriesService."""
+        return self._stub.GetUnreferencedFaceZonesOfFilter(
+            request, metadata=self._metadata
+        )
+
+    @catch_grpc_error
+    def GetUnreferencedCellZonesOfFilter(
+        self,
+        request: MeshingQueriesProtoModule.GetUnreferencedCellZonesOfFilterRequest,
+    ) -> MeshingQueriesProtoModule.GetUnreferencedCellZonesOfFilterResponse:
+        """GetUnreferencedCellZonesOfFilter rpc of MeshingQueriesService."""
+        return self._stub.GetUnreferencedCellZonesOfFilter(
+            request, metadata=self._metadata
+        )
+
+    @catch_grpc_error
+    def GetUnreferencedEdgeZoneIdListOfPattern(
+        self,
+        request: MeshingQueriesProtoModule.GetUnreferencedEdgeZoneIdListOfPatternRequest,
+    ) -> MeshingQueriesProtoModule.GetUnreferencedEdgeZoneIdListOfPatternResponse:
+        """GetUnreferencedEdgeZoneIdListOfPattern rpc of MeshingQueriesService."""
+        return self._stub.GetUnreferencedEdgeZoneIdListOfPattern(
+            request, metadata=self._metadata
+        )
+
+    @catch_grpc_error
+    def GetUnreferencedFaceZoneIdListOfPattern(
+        self,
+        request: MeshingQueriesProtoModule.GetUnreferencedFaceZoneIdListOfPatternRequest,
+    ) -> MeshingQueriesProtoModule.GetUnreferencedFaceZoneIdListOfPatternResponse:
+        """GetUnreferencedFaceZoneIdListOfPattern rpc of MeshingQueriesService."""
+        return self._stub.GetUnreferencedFaceZoneIdListOfPattern(
+            request, metadata=self._metadata
+        )
+
+    @catch_grpc_error
+    def GetUnreferencedCellZoneIdListOfPattern(
+        self,
+        request: MeshingQueriesProtoModule.GetUnreferencedCellZoneIdListOfPatternRequest,
+    ) -> MeshingQueriesProtoModule.GetUnreferencedCellZoneIdListOfPatternResponse:
+        """GetUnreferencedCellZoneIdListOfPattern rpc of MeshingQueriesService."""
+        return self._stub.GetUnreferencedCellZoneIdListOfPattern(
+            request, metadata=self._metadata
+        )
+
 
 class MeshingQueries:
     """
@@ -462,4 +610,127 @@ class MeshingQueries:
             for items in list_or_pattern:
                 request.inputs.append(items)
         response = self.service.GetAdjacentZonesByNodeConnectivity(request)
+        return response.outputs
+
+    # def GetSharedBoundaryZones(self, list_or_pattern) -> Any:
+    #     """GetSharedBoundaryZones."""
+    #     request = MeshingQueriesProtoModule.GetSharedBoundaryZonesRequest()
+    #     if isinstance(list_or_pattern, str):
+    #         request.input = list_or_pattern
+    #     elif isinstance(list_or_pattern, list):
+    #         for items in list_or_pattern:
+    #             request.inputs.append(items)
+    #     response = self.service.GetSharedBoundaryZones(request)
+    #     return response.outputs
+
+    def GetInteriorZonesConnectedToCellZones(self, list_or_pattern) -> Any:
+        """GetInteriorZonesConnectedToCellZones."""
+        request = (
+            MeshingQueriesProtoModule.GetInteriorZonesConnectedToCellZonesRequest()
+        )
+        if isinstance(list_or_pattern, str):
+            request.input = list_or_pattern
+        elif isinstance(list_or_pattern, list):
+            for items in list_or_pattern:
+                request.inputs.append(items)
+        response = self.service.GetInteriorZonesConnectedToCellZones(request)
+        return response.outputs
+
+    def GetFaceZonesWithZoneSpecificPrismsApplied(self) -> Any:
+        """GetFaceZonesWithZoneSpecificPrismsApplied."""
+        request = MeshingQueriesProtoModule.Empty()
+        response = self.service.GetFaceZonesWithZoneSpecificPrismsApplied(request)
+        return response.outputs
+
+    # def GetFaceZonesOfPrismControls(self, control_name) -> Any:
+    #     """GetInteriorZonesConnectedToCellZones."""
+    #     request = MeshingQueriesProtoModule.GetFaceZonesOfPrismControlsRequest()
+    #     request.input = control_name
+    #     response = self.service.GetFaceZonesOfPrismControls(request)
+    #     return response.outputs
+
+    def GetBaffles(self, face_zone_list) -> Any:
+        """GetBaffles."""
+        request = MeshingQueriesProtoModule.GetBafflesRequest()
+        for items in face_zone_list:
+            request.inputs.append(items)
+        response = self.service.GetBaffles(request)
+        return response.outputs
+
+    def GetEmbeddedBaffles(self) -> Any:
+        """GetEmbeddedBaffles."""
+        request = MeshingQueriesProtoModule.Empty()
+        response = self.service.GetEmbeddedBaffles(request)
+        return response.outputs
+
+    def GetWrappedZones(self) -> Any:
+        """GetWrappedZones."""
+        request = MeshingQueriesProtoModule.Empty()
+        response = self.service.GetWrappedZones(request)
+        return response.outputs
+
+    def GetUnreferencedEdgeZones(self) -> Any:
+        """GetUnreferencedEdgeZones."""
+        request = MeshingQueriesProtoModule.Empty()
+        response = self.service.GetUnreferencedEdgeZones(request)
+        return response.outputs
+
+    def GetUnreferencedFaceZones(self) -> Any:
+        """GetUnreferencedFaceZones."""
+        request = MeshingQueriesProtoModule.Empty()
+        response = self.service.GetUnreferencedFaceZones(request)
+        return response.outputs
+
+    def GetUnreferencedCellZones(self) -> Any:
+        """GetUnreferencedCellZones."""
+        request = MeshingQueriesProtoModule.Empty()
+        response = self.service.GetUnreferencedCellZones(request)
+        return response.outputs
+
+    def GetUnreferencedEdgeZonesOfFilter(self, filter) -> Any:
+        """GetUnreferencedEdgeZonesOfFilter."""
+        request = MeshingQueriesProtoModule.GetUnreferencedEdgeZonesOfFilterRequest()
+        request.input = filter
+        response = self.service.GetUnreferencedEdgeZonesOfFilter(request)
+        return response.outputs
+
+    def GetUnreferencedFaceZonesOfFilter(self, filter) -> Any:
+        """GetUnreferencedFaceZonesOfFilter."""
+        request = MeshingQueriesProtoModule.GetUnreferencedFaceZonesOfFilterRequest()
+        request.input = filter
+        response = self.service.GetUnreferencedFaceZonesOfFilter(request)
+        return response.outputs
+
+    def GetUnreferencedCellZonesOfFilter(self, filter) -> Any:
+        """GetUnreferencedEdgeZonesOfFilter."""
+        request = MeshingQueriesProtoModule.GetUnreferencedCellZonesOfFilterRequest()
+        request.input = filter
+        response = self.service.GetUnreferencedCellZonesOfFilter(request)
+        return response.outputs
+
+    def GetUnreferencedEdgeZoneIdListOfPattern(self, pattern) -> Any:
+        """GetUnreferencedEdgeZoneIdListOfPattern."""
+        request = (
+            MeshingQueriesProtoModule.GetUnreferencedEdgeZoneIdListOfPatternRequest()
+        )
+        request.input = pattern
+        response = self.service.GetUnreferencedEdgeZoneIdListOfPattern(request)
+        return response.outputs
+
+    def GetUnreferencedFaceZoneIdListOfPattern(self, pattern) -> Any:
+        """GetUnreferencedFaceZoneIdListOfPattern."""
+        request = (
+            MeshingQueriesProtoModule.GetUnreferencedFaceZoneIdListOfPatternRequest()
+        )
+        request.input = pattern
+        response = self.service.GetUnreferencedFaceZoneIdListOfPattern(request)
+        return response.outputs
+
+    def GetUnreferencedCellZoneIdListOfPattern(self, pattern) -> Any:
+        """GetUnreferencedCellZoneIdListOfPattern."""
+        request = (
+            MeshingQueriesProtoModule.GetUnreferencedCellZoneIdListOfPatternRequest()
+        )
+        request.input = pattern
+        response = self.service.GetUnreferencedCellZoneIdListOfPattern(request)
         return response.outputs
