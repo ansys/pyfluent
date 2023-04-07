@@ -839,7 +839,7 @@ class ChunkParser:
                     )
                 else:
                     payload_tag_id = None
-
+            field =  None 
             if payload_tag_id is not None:
                 field = _extract_field(
                     _FieldDataConstants.proto_field_type_to_np_data_type[
@@ -852,6 +852,7 @@ class ChunkParser:
             if self._callbacks_provider is not None:
                 for callback_data in self._callbacks_provider.callbacks():
                     callback, args, kwargs = callback_data
+                    #print('cb', surface_id, payload_info.fieldName)
                     callback(surface_id, payload_info.fieldName, field, *args, **kwargs)
             else:
                 payload_data = fields_data.get(payload_tag_id)
