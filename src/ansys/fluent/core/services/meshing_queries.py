@@ -373,6 +373,232 @@ class MeshingQueriesService:
             request, metadata=self._metadata
         )
 
+    @catch_grpc_error
+    def GetMaxsizeCellZoneByVolume(
+        self,
+        request: MeshingQueriesProtoModule.GetMaxsizeCellZoneByVolumeRequest,
+    ) -> MeshingQueriesProtoModule.GetMaxsizeCellZoneByVolumeResponse:
+        """GetMaxsizeCellZoneByVolume rpc of MeshingQueriesService."""
+        return self._stub.GetMaxsizeCellZoneByVolume(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetMaxsizeCellZoneByCount(
+        self,
+        request: MeshingQueriesProtoModule.GetMaxsizeCellZoneByCountRequest,
+    ) -> MeshingQueriesProtoModule.GetMaxsizeCellZoneByCountResponse:
+        """GetMaxsizeCellZoneByCount rpc of MeshingQueriesService."""
+        return self._stub.GetMaxsizeCellZoneByCount(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetMinsizeFaceZoneByArea(
+        self,
+        request: MeshingQueriesProtoModule.GetMinsizeFaceZoneByAreaRequest,
+    ) -> MeshingQueriesProtoModule.GetMinsizeFaceZoneByAreaResponse:
+        """GetMinsizeFaceZoneByArea rpc of MeshingQueriesService."""
+        return self._stub.GetMinsizeFaceZoneByArea(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetMinsizeFaceZoneByCount(
+        self,
+        request: MeshingQueriesProtoModule.GetMinsizeFaceZoneByCountRequest,
+    ) -> MeshingQueriesProtoModule.GetMinsizeFaceZoneByCountResponse:
+        """GetMinsizeFaceZoneByCount rpc of MeshingQueriesService."""
+        return self._stub.GetMinsizeFaceZoneByCount(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetFaceZoneListByMaximumEntityCount(
+        self,
+        request: MeshingQueriesProtoModule.GetFaceZoneListByMaximumEntityCountRequest,
+    ) -> MeshingQueriesProtoModule.GetFaceZoneListByMaximumEntityCountResponse:
+        """GetFaceZoneListByMaximumEntityCount rpc of MeshingQueriesService."""
+        return self._stub.GetFaceZoneListByMaximumEntityCount(
+            request, metadata=self._metadata
+        )
+
+    @catch_grpc_error
+    def GetEdgeZoneListByMaximumEntityCount(
+        self,
+        request: MeshingQueriesProtoModule.GetEdgeZoneListByMaximumEntityCountRequest,
+    ) -> MeshingQueriesProtoModule.GetEdgeZoneListByMaximumEntityCountResponse:
+        """GetEdgeZoneListByMaximumEntityCount rpc of MeshingQueriesService."""
+        return self._stub.GetEdgeZoneListByMaximumEntityCount(
+            request, metadata=self._metadata
+        )
+
+    @catch_grpc_error
+    def GetCellZoneListByMaximumEntityCount(
+        self,
+        request: MeshingQueriesProtoModule.GetCellZoneListByMaximumEntityCountRequest,
+    ) -> MeshingQueriesProtoModule.GetCellZoneListByMaximumEntityCountResponse:
+        """GetCellZoneListByMaximumEntityCount rpc of MeshingQueriesService."""
+        return self._stub.GetCellZoneListByMaximumEntityCount(
+            request, metadata=self._metadata
+        )
+
+    @catch_grpc_error
+    def GetFaceZoneListByMaximumZoneArea(
+        self,
+        request: MeshingQueriesProtoModule.GetFaceZoneListByMaximumZoneAreaRequest,
+    ) -> MeshingQueriesProtoModule.GetFaceZoneListByMaximumZoneAreaResponse:
+        """GetFaceZoneListByMaximumZoneArea rpc of MeshingQueriesService."""
+        return self._stub.GetFaceZoneListByMaximumZoneArea(
+            request, metadata=self._metadata
+        )
+
+    @catch_grpc_error
+    def GetFaceZoneListByMinimumZoneArea(
+        self,
+        request: MeshingQueriesProtoModule.GetFaceZoneListByMinimumZoneAreaRequest,
+    ) -> MeshingQueriesProtoModule.GetFaceZoneListByMinimumZoneAreaResponse:
+        """GetFaceZoneListByMinimumZoneArea rpc of MeshingQueriesService."""
+        return self._stub.GetFaceZoneListByMinimumZoneArea(
+            request, metadata=self._metadata
+        )
+
+    @catch_grpc_error
+    def GetZonesWithFreeFaces(
+        self,
+        request: MeshingQueriesProtoModule.GetZonesWithFreeFacesRequest,
+    ) -> MeshingQueriesProtoModule.GetZonesWithFreeFacesResponse:
+        """GetZonesWithFreeFaces rpc of MeshingQueriesService."""
+        return self._stub.GetZonesWithFreeFaces(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetZonesWithFreeFaces(
+        self,
+        request: MeshingQueriesProtoModule.GetZonesWithFreeFacesRequest,
+    ) -> MeshingQueriesProtoModule.GetZonesWithFreeFacesResponse:
+        """GetZonesWithFreeFaces rpc of MeshingQueriesService."""
+        return self._stub.GetZonesWithFreeFaces(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetZonesWithMultiFaces(
+        self,
+        request: MeshingQueriesProtoModule.GetZonesWithMultiFacesRequest,
+    ) -> MeshingQueriesProtoModule.GetZonesWithMultiFacesResponse:
+        """GetZonesWithMultiFaces rpc of MeshingQueriesService."""
+        return self._stub.GetZonesWithMultiFaces(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetOverlappingFaceZones(
+        self,
+        request: MeshingQueriesProtoModule.GetOverlappingFaceZonesRequest,
+    ) -> MeshingQueriesProtoModule.GetOverlappingFaceZonesResponse:
+        """GetOverlappingFaceZones rpc of MeshingQueriesService."""
+        return self._stub.GetOverlappingFaceZones(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetZonesWithMultiFaces(
+        self,
+        request: MeshingQueriesProtoModule.GetZonesWithMultiFacesRequest,
+    ) -> MeshingQueriesProtoModule.GetZonesWithMultiFacesResponse:
+        """GetZonesWithMultiFaces rpc of MeshingQueriesService."""
+        return self._stub.GetZonesWithMultiFaces(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetZonesWithMarkedFaces(
+        self,
+        request: MeshingQueriesProtoModule.GetZonesWithMarkedFacesRequest,
+    ) -> MeshingQueriesProtoModule.GetZonesWithMarkedFacesResponse:
+        """GetZonesWithMarkedFaces rpc of MeshingQueriesService."""
+        return self._stub.GetZonesWithMarkedFaces(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetZonesWithMarkedFaces(
+        self,
+        request: MeshingQueriesProtoModule.GetZonesWithMarkedFacesRequest,
+    ) -> MeshingQueriesProtoModule.GetZonesWithMarkedFacesResponse:
+        """GetZonesWithMarkedFaces rpc of MeshingQueriesService."""
+        return self._stub.GetZonesWithMarkedFaces(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetAllObjectNameList(
+        self,
+        request: MeshingQueriesProtoModule.Empty,
+    ) -> MeshingQueriesProtoModule.GetAllObjectNameListResponse:
+        """GetAllObjectNameList rpc of MeshingQueriesService."""
+        return self._stub.GetAllObjectNameList(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetObjectNameListOfType(
+        self,
+        request: MeshingQueriesProtoModule.GetObjectNameListOfTypeRequest,
+    ) -> MeshingQueriesProtoModule.GetObjectNameListOfTypeResponse:
+        """GetObjectNameListOfType rpc of MeshingQueriesService."""
+        return self._stub.GetObjectNameListOfType(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetObjectsOfFilter(
+        self,
+        request: MeshingQueriesProtoModule.GetObjectsOfFilterRequest,
+    ) -> MeshingQueriesProtoModule.GetObjectsOfFilterResponse:
+        """GetObjectsOfFilter rpc of MeshingQueriesService."""
+        return self._stub.GetObjectsOfFilter(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetObjectsOfFilter(
+        self,
+        request: MeshingQueriesProtoModule.GetObjectsOfFilterRequest,
+    ) -> MeshingQueriesProtoModule.GetObjectsOfFilterResponse:
+        """GetObjectsOfFilter rpc of MeshingQueriesService."""
+        return self._stub.GetObjectsOfFilter(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetRegionsOfObject(
+        self,
+        request: MeshingQueriesProtoModule.GetRegionsOfObjectRequest,
+    ) -> MeshingQueriesProtoModule.GetRegionsOfObjectResponse:
+        """GetRegionsOfObject rpc of MeshingQueriesService."""
+        return self._stub.GetRegionsOfObject(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetRegionNameListOfObject(
+        self,
+        request: MeshingQueriesProtoModule.GetRegionNameListOfObjectRequest,
+    ) -> MeshingQueriesProtoModule.GetRegionNameListOfObjectResponse:
+        """GetRegionNameListOfObject rpc of MeshingQueriesService."""
+        return self._stub.GetRegionNameListOfObject(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetRegionVolume(
+        self,
+        request: MeshingQueriesProtoModule.GetRegionVolumeRequest,
+    ) -> MeshingQueriesProtoModule.GetRegionVolumeResponse:
+        """GetRegionVolume rpc of MeshingQueriesService."""
+        return self._stub.GetRegionVolume(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetRegionsOfFilter(
+        self,
+        request: MeshingQueriesProtoModule.GetRegionsOfFilterRequest,
+    ) -> MeshingQueriesProtoModule.GetRegionsOfFilterResponse:
+        """GetRegionsOfFilter rpc of MeshingQueriesService."""
+        return self._stub.GetRegionsOfFilter(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetRegionNameListOfPattern(
+        self,
+        request: MeshingQueriesProtoModule.GetRegionNameListOfPatternRequest,
+    ) -> MeshingQueriesProtoModule.GetRegionNameListOfPatternResponse:
+        """GetRegionNameListOfPattern rpc of MeshingQueriesService."""
+        return self._stub.GetRegionNameListOfPattern(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetRegionsOfFaceZones(
+        self,
+        request: MeshingQueriesProtoModule.GetRegionsOfFaceZonesRequest,
+    ) -> MeshingQueriesProtoModule.GetRegionsOfFaceZonesResponse:
+        """GetRegionsOfFaceZones rpc of MeshingQueriesService."""
+        return self._stub.GetRegionsOfFaceZones(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def GetRegionNameListOfFaceZones(
+        self,
+        request: MeshingQueriesProtoModule.GetRegionNameListOfFaceZonesRequest,
+    ) -> MeshingQueriesProtoModule.GetRegionNameListOfFaceZonesResponse:
+        """GetRegionNameListOfFaceZones rpc of MeshingQueriesService."""
+        return self._stub.GetRegionNameListOfFaceZones(request, metadata=self._metadata)
+
 
 class MeshingQueries:
     """
@@ -733,4 +959,238 @@ class MeshingQueries:
         )
         request.input = pattern
         response = self.service.GetUnreferencedCellZoneIdListOfPattern(request)
+        return response.outputs
+
+    def GetMaxsizeCellZoneByVolume(self, list_or_pattern) -> Any:
+        """GetMaxsizeCellZoneByVolume."""
+        request = MeshingQueriesProtoModule.GetMaxsizeCellZoneByVolumeRequest()
+        if isinstance(list_or_pattern, str):
+            request.string_input = list_or_pattern
+        elif isinstance(list_or_pattern, list):
+            if isinstance(list_or_pattern[0], int):
+                for items in list_or_pattern:
+                    request.int_inputs.append(items)
+            elif isinstance(list_or_pattern[0], str):
+                for items in list_or_pattern:
+                    request.string_inputs.append(items)
+        response = self.service.GetMaxsizeCellZoneByVolume(request)
+        return response.outputs
+
+    def GetMaxsizeCellZoneByCount(self, list_or_pattern) -> Any:
+        """GetMaxsizeCellZoneByCount."""
+        request = MeshingQueriesProtoModule.GetMaxsizeCellZoneByCountRequest()
+        if isinstance(list_or_pattern, str):
+            request.string_input = list_or_pattern
+        elif isinstance(list_or_pattern, list):
+            if isinstance(list_or_pattern[0], int):
+                for items in list_or_pattern:
+                    request.int_inputs.append(items)
+            elif isinstance(list_or_pattern[0], str):
+                for items in list_or_pattern:
+                    request.string_inputs.append(items)
+        response = self.service.GetMaxsizeCellZoneByCount(request)
+        return response.outputs
+
+    def GetMinsizeFaceZoneByArea(self, list_or_pattern) -> Any:
+        """GetMinsizeFaceZoneByArea."""
+        request = MeshingQueriesProtoModule.GetMinsizeFaceZoneByAreaRequest()
+        if isinstance(list_or_pattern, str):
+            request.string_input = list_or_pattern
+        elif isinstance(list_or_pattern, list):
+            if isinstance(list_or_pattern[0], int):
+                for items in list_or_pattern:
+                    request.int_inputs.append(items)
+            elif isinstance(list_or_pattern[0], str):
+                for items in list_or_pattern:
+                    request.string_inputs.append(items)
+        response = self.service.GetMinsizeFaceZoneByArea(request)
+        return response.outputs
+
+    def GetMinsizeFaceZoneByCount(self, list_or_pattern) -> Any:
+        """GetMinsizeFaceZoneByCount."""
+        request = MeshingQueriesProtoModule.GetMinsizeFaceZoneByCountRequest()
+        if isinstance(list_or_pattern, str):
+            request.string_input = list_or_pattern
+        elif isinstance(list_or_pattern, list):
+            if isinstance(list_or_pattern[0], int):
+                for items in list_or_pattern:
+                    request.int_inputs.append(items)
+            elif isinstance(list_or_pattern[0], str):
+                for items in list_or_pattern:
+                    request.string_inputs.append(items)
+        response = self.service.GetMinsizeFaceZoneByCount(request)
+        return response.outputs
+
+    def GetFaceZoneListByMaximumEntityCount(
+        self, max_entity_count, only_boundary
+    ) -> Any:
+        """GetFaceZoneListByMaximumEntityCount."""
+        request = MeshingQueriesProtoModule.GetFaceZoneListByMaximumEntityCountRequest()
+        request.int_input = max_entity_count
+        request.bool_input = only_boundary
+        response = self.service.GetFaceZoneListByMaximumEntityCount(request)
+        return response.outputs
+
+    def GetEdgeZoneListByMaximumEntityCount(
+        self, max_entity_count, only_boundary
+    ) -> Any:
+        """GetEdgeZoneListByMaximumEntityCount."""
+        request = MeshingQueriesProtoModule.GetEdgeZoneListByMaximumEntityCountRequest()
+        request.int_input = max_entity_count
+        request.bool_input = only_boundary
+        response = self.service.GetEdgeZoneListByMaximumEntityCount(request)
+        return response.outputs
+
+    def GetCellZoneListByMaximumEntityCount(self, max_entity_count) -> Any:
+        """GetCellZoneListByMaximumEntityCount."""
+        request = MeshingQueriesProtoModule.GetCellZoneListByMaximumEntityCountRequest()
+        request.int_input = max_entity_count
+        response = self.service.GetCellZoneListByMaximumEntityCount(request)
+        return response.outputs
+
+    def GetFaceZoneListByMaximumZoneArea(self, max_entity_count) -> Any:
+        """GetFaceZoneListByMaximumZoneArea."""
+        request = MeshingQueriesProtoModule.GetFaceZoneListByMaximumZoneAreaRequest()
+        request.int_input = max_entity_count
+        response = self.service.GetFaceZoneListByMaximumZoneArea(request)
+        return response.outputs
+
+    def GetFaceZoneListByMinimumZoneArea(self, max_entity_count) -> Any:
+        """GetFaceZoneListByMinimumZoneArea."""
+        request = MeshingQueriesProtoModule.GetFaceZoneListByMinimumZoneAreaRequest()
+        request.int_input = max_entity_count
+        response = self.service.GetFaceZoneListByMinimumZoneArea(request)
+        return response.outputs
+
+    def GetZonesWithFreeFaces(self, list_or_pattern) -> Any:
+        """GetZonesWithFreeFaces."""
+        request = MeshingQueriesProtoModule.GetZonesWithFreeFacesRequest()
+        if isinstance(list_or_pattern, str):
+            request.string_input = list_or_pattern
+        elif isinstance(list_or_pattern, list):
+            if isinstance(list_or_pattern[0], int):
+                for items in list_or_pattern:
+                    request.int_inputs.append(items)
+            elif isinstance(list_or_pattern[0], str):
+                for items in list_or_pattern:
+                    request.string_inputs.append(items)
+        response = self.service.GetZonesWithFreeFaces(request)
+        return response.outputs
+
+    def GetZonesWithMultiFaces(self, list_or_pattern) -> Any:
+        """GetZonesWithMultiFaces."""
+        request = MeshingQueriesProtoModule.GetZonesWithMultiFacesRequest()
+        if isinstance(list_or_pattern, str):
+            request.string_input = list_or_pattern
+        elif isinstance(list_or_pattern, list):
+            if isinstance(list_or_pattern[0], int):
+                for items in list_or_pattern:
+                    request.int_inputs.append(items)
+            elif isinstance(list_or_pattern[0], str):
+                for items in list_or_pattern:
+                    request.string_inputs.append(items)
+        response = self.service.GetZonesWithMultiFaces(request)
+        return response.outputs
+
+    def GetOverlappingFaceZones(
+        self, zone_name_pattern, areal_tolerance, distance_tolerance
+    ) -> Any:
+        """GetOverlappingFaceZones."""
+        request = MeshingQueriesProtoModule.GetOverlappingFaceZonesRequest()
+        request.string_input = zone_name_pattern
+        request.double_input_1 = areal_tolerance
+        request.double_input_2 = distance_tolerance
+        response = self.service.GetOverlappingFaceZones(request)
+        return response.outputs
+
+    def GetZonesWithMarkedFaces(self, list_or_pattern) -> Any:
+        """GetZonesWithMarkedFaces."""
+        request = MeshingQueriesProtoModule.GetZonesWithMarkedFacesRequest()
+        if isinstance(list_or_pattern, str):
+            request.string_input = list_or_pattern
+        elif isinstance(list_or_pattern, list):
+            if isinstance(list_or_pattern[0], int):
+                for items in list_or_pattern:
+                    request.int_inputs.append(items)
+            elif isinstance(list_or_pattern[0], str):
+                for items in list_or_pattern:
+                    request.string_inputs.append(items)
+        response = self.service.GetZonesWithMarkedFaces(request)
+        return response.outputs
+
+    def GetAllObjectNameList(self) -> Any:
+        """GetAllObjectNameList."""
+        request = MeshingQueriesProtoModule.Empty()
+        response = self.service.GetAllObjectNameList(request)
+        return response.outputs
+
+    def GetObjectNameListOfType(self, type) -> Any:
+        """GetObjectNameListOfType."""
+        request = MeshingQueriesProtoModule.GetObjectNameListOfTypeRequest()
+        request.input = type
+        response = self.service.GetObjectNameListOfType(request)
+        return response.outputs
+
+    def GetObjectsOfFilter(self, filter) -> Any:
+        """GetObjectsOfFilter."""
+        request = MeshingQueriesProtoModule.GetObjectsOfFilterRequest()
+        request.input = filter
+        response = self.service.GetObjectsOfFilter(request)
+        return response.outputs
+
+    def GetRegionsOfObject(self, object) -> Any:
+        """GetRegionsOfObject."""
+        request = MeshingQueriesProtoModule.GetRegionsOfObjectRequest()
+        request.input = object
+        response = self.service.GetRegionsOfObject(request)
+        return response.outputs
+
+    def GetRegionNameListOfObject(self, object) -> Any:
+        """GetRegionNameListOfObject."""
+        request = MeshingQueriesProtoModule.GetRegionNameListOfObjectRequest()
+        request.input = object
+        response = self.service.GetRegionNameListOfObject(request)
+        return response.outputs
+
+    def GetRegionVolume(self, object_name, region_name) -> Any:
+        """GetRegionVolume."""
+        request = MeshingQueriesProtoModule.GetRegionVolumeRequest()
+        request.string_input_1 = object_name
+        request.string_input_2 = region_name
+        response = self.service.GetRegionVolume(request)
+        return response.outputs
+
+    def GetRegionsOfFilter(self, object, filter) -> Any:
+        """GetRegionsOfFilter."""
+        request = MeshingQueriesProtoModule.GetRegionsOfFilterRequest()
+        request.string_input_1 = object
+        request.string_input_2 = filter
+        response = self.service.GetRegionsOfFilter(request)
+        return response.outputs
+
+    def GetRegionNameListOfPattern(self, object, region_name_pattern) -> Any:
+        """GetRegionNameListOfPattern."""
+        request = MeshingQueriesProtoModule.GetRegionNameListOfPatternRequest()
+        request.string_input_1 = object
+        request.string_input_2 = region_name_pattern
+        response = self.service.GetRegionNameListOfPattern(request)
+        return response.outputs
+
+    def GetRegionsOfFaceZones(self, face_zone_id_list) -> Any:
+        """GetRegionsOfFaceZones."""
+        request = MeshingQueriesProtoModule.GetRegionsOfFaceZonesRequest()
+        for id in face_zone_id_list:
+            request.inputs.append(id)
+        response = self.service.GetRegionsOfFaceZones(request)
+        return response.outputs
+
+    def GetRegionNameListOfFaceZones(self, list_or_pattern) -> Any:
+        """GetRegionNameListOfFaceZones."""
+        request = MeshingQueriesProtoModule.GetRegionNameListOfFaceZonesRequest()
+        if isinstance(list_or_pattern, str):
+            request.input = list_or_pattern
+        elif isinstance(list_or_pattern, list):
+            for items in list_or_pattern:
+                request.inputs.append(items)
+        response = self.service.GetRegionNameListOfFaceZones(request)
         return response.outputs

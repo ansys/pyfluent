@@ -197,3 +197,103 @@ def test_meshing_queries(new_mesh_session):
         meshing_session.meshing_queries.GetUnreferencedCellZoneIdListOfPattern("*")
         == []
     )
+
+    # assert meshing_session.meshing_queries.GetMaxsizeCellZoneByVolume("*") == [3460]
+    #
+    # assert meshing_session.meshing_queries.GetMaxsizeCellZoneByVolume([3460]) == [3460]
+    #
+    # assert meshing_session.meshing_queries.GetMaxsizeCellZoneByCount("*") == [3460]
+    #
+    # assert meshing_session.meshing_queries.GetMaxsizeCellZoneByCount([3460]) == [3460]
+    #
+    # assert meshing_session.meshing_queries.GetMinsizeFaceZoneByArea("*") == [30]
+    #
+    # assert meshing_session.meshing_queries.GetMinsizeFaceZoneByArea([29, 30, 31, 32, 33, 34]) == [30]
+    #
+    # assert meshing_session.meshing_queries.GetMinsizeFaceZoneByCount("*") == [30]
+    #
+    # assert meshing_session.meshing_queries.GetMinsizeFaceZoneByCount([29, 30, 31, 32, 33, 34]) == [30]
+
+    assert (
+        meshing_session.meshing_queries.GetFaceZoneListByMaximumEntityCount(20, True)
+        == []
+    )
+
+    assert (
+        meshing_session.meshing_queries.GetEdgeZoneListByMaximumEntityCount(20, False)
+        == []
+    )
+
+    assert meshing_session.meshing_queries.GetCellZoneListByMaximumEntityCount(1) == []
+
+    assert meshing_session.meshing_queries.GetFaceZoneListByMaximumZoneArea(100) == [
+        33,
+        32,
+        31,
+        30,
+    ]
+
+    assert meshing_session.meshing_queries.GetFaceZoneListByMinimumZoneArea(10) == [
+        34,
+        29,
+    ]
+
+    assert meshing_session.meshing_queries.GetZonesWithFreeFaces("*") == []
+    assert meshing_session.meshing_queries.GetZonesWithFreeFaces([29, 30, 31, 32]) == []
+    assert (
+        meshing_session.meshing_queries.GetZonesWithFreeFaces(["inlet", "outlet"]) == []
+    )
+
+    assert meshing_session.meshing_queries.GetZonesWithMultiFaces("*") == []
+    assert (
+        meshing_session.meshing_queries.GetZonesWithMultiFaces([29, 30, 31, 32]) == []
+    )
+    assert (
+        meshing_session.meshing_queries.GetZonesWithMultiFaces(["inlet", "outlet"])
+        == []
+    )
+
+    assert meshing_session.meshing_queries.GetOverlappingFaceZones("*", 0.1, 0.1) == []
+
+    assert meshing_session.meshing_queries.GetZonesWithMarkedFaces("*") == []
+    assert (
+        meshing_session.meshing_queries.GetZonesWithMarkedFaces([29, 30, 31, 32]) == []
+    )
+    assert (
+        meshing_session.meshing_queries.GetZonesWithMarkedFaces(["inlet", "outlet"])
+        == []
+    )
+
+    assert meshing_session.meshing_queries.GetAllObjectNameList() == ["elbow-fluid"]
+
+    assert meshing_session.meshing_queries.GetObjectNameListOfType("mesh") == [
+        "elbow-fluid"
+    ]
+
+    assert meshing_session.meshing_queries.GetObjectsOfFilter("*") == ["elbow-fluid"]
+
+    assert meshing_session.meshing_queries.GetRegionsOfObject("elbow-fluid") == [
+        "fluid"
+    ]
+
+    assert meshing_session.meshing_queries.GetRegionNameListOfObject("elbow-fluid") == [
+        "fluid"
+    ]
+
+    # assert meshing_session.meshing_queries.GetRegionVolume("elbow-fluid", "fluid") == [152.59942]
+
+    assert meshing_session.meshing_queries.GetRegionsOfFilter("elbow-fluid", "*") == [
+        "fluid"
+    ]
+
+    assert meshing_session.meshing_queries.GetRegionNameListOfPattern(
+        "elbow-fluid", "*"
+    ) == ["fluid"]
+
+    assert meshing_session.meshing_queries.GetRegionsOfFaceZones(
+        [29, 30, 31, 32, 33, 34]
+    ) == ["fluid"]
+
+    assert meshing_session.meshing_queries.GetRegionNameListOfFaceZones(
+        [29, 30, 31, 32, 33, 34]
+    ) == ["fluid"]
