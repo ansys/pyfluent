@@ -770,6 +770,8 @@ def test_accessor_methods_on_settings_objects(load_static_mixer_case):
                 "get_state",
                 "set_state",
             }.issubset(set(dir(nodes[type_data])))
+            assert not nodes[type_data].is_read_only()
+            assert nodes[type_data].is_active()
 
         elif type_data in ["Integer", "Real", "IntegerList", "RealList"]:
             assert {
@@ -782,6 +784,8 @@ def test_accessor_methods_on_settings_objects(load_static_mixer_case):
                 "max",
             }.issubset(set(dir(nodes[type_data])))
             assert not {"allowed_values"}.issubset(set(dir(nodes[type_data])))
+            assert not nodes[type_data].is_read_only()
+            assert nodes[type_data].is_active()
 
         elif type_data in ["String", "StringList", "Filename"]:
             assert {
@@ -793,11 +797,15 @@ def test_accessor_methods_on_settings_objects(load_static_mixer_case):
                 "allowed_values",
             }.issubset(set(dir(nodes[type_data])))
             assert not {"min", "max"}.issubset(set(dir(nodes[type_data])))
+            assert not nodes[type_data].is_read_only()
+            assert nodes[type_data].is_active()
 
         elif type_data == "ListObject":
             assert {"is_active", "is_read_only", "get_state", "set_state"}.issubset(
                 set(dir(nodes[type_data]))
             )
+            assert not nodes[type_data].is_read_only()
+            assert nodes[type_data].is_active()
 
 
 def get_child_nodes(node, nodes, type_list):
