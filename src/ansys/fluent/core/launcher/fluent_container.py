@@ -5,7 +5,7 @@ import tempfile
 import time
 from typing import List
 
-from ansys.fluent.core.session import parse_server_info_file
+from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.networking import get_free_port
 
 
@@ -66,7 +66,7 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
         while True:
             if os.stat(sifile).st_mtime > sifile_last_mtime:
                 time.sleep(1)
-                _, _, password = parse_server_info_file(sifile)
+                _, _, password = _parse_server_info_file(sifile)
                 break
             if timeout == 0:
                 break

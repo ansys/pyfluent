@@ -1,7 +1,7 @@
 """Module containing class encapsulating Fluent connection."""
 from typing import Any
 
-from ansys.fluent.core.fluent_connection import _FluentConnection
+from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 
@@ -15,8 +15,13 @@ class Meshing(PureMeshing):
 
     def __init__(
         self,
-        fluent_connection: _FluentConnection,
+        fluent_connection: FluentConnection,
     ):
+        """Meshing session.
+
+        Args:
+            fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+        """
         super(Meshing, self).__init__(fluent_connection=fluent_connection)
         self.switch_to_solver = lambda: self._switch_to_solver()
         self.switched = False

@@ -15,10 +15,10 @@ import time
 from typing import Any, Dict, Union
 import warnings
 
-from ansys.fluent.core.fluent_connection import _FluentConnection
+from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
-from ansys.fluent.core.session import parse_server_info_file
+from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
@@ -276,7 +276,7 @@ def launch_remote_fluent(
     # nb pymapdl sets max msg len here:
     channel = instance.build_grpc_channel()
     return session_cls(
-        fluent_connection=_FluentConnection(
+        fluent_connection=FluentConnection(
             channel=channel,
             cleanup_on_exit=cleanup_on_exit,
             remote_instance=instance,
@@ -354,7 +354,7 @@ def _connect_to_running_server(argvals, server_info_filepath: str):
             "The server-info file was not parsed because ip and port were provided explicitly."
         )
     elif server_info_filepath:
-        ip, port, password = parse_server_info_file(server_info_filepath)
+        ip, port, password = _parse_server_info_file(server_info_filepath)
     elif os.getenv("PYFLUENT_FLUENT_IP") and os.getenv("PYFLUENT_FLUENT_PORT"):
         ip = port = None
     else:
@@ -366,7 +366,7 @@ def _connect_to_running_server(argvals, server_info_filepath: str):
 
 
 def _get_running_session_mode(
-    fluent_connection: _FluentConnection, mode: LaunchMode = None
+    fluent_connection: FluentConnection, mode: LaunchMode = None
 ):
     """Get the mode of the running session if the mode has not been mentioned
     explicitly."""
@@ -668,7 +668,7 @@ def launch_fluent(
                 pyfluent.EXAMPLES_PATH, pyfluent.EXAMPLES_PATH, args
             )
             return new_session(
-                fluent_connection=_FluentConnection(
+                fluent_connection=FluentConnection(
                     start_timeout=start_timeout,
                     port=port,
                     password=password,
@@ -681,7 +681,7 @@ def launch_fluent(
             ip, port, password = _connect_to_running_server(
                 argvals, server_info_filepath
             )
-            fluent_connection = _FluentConnection(
+            fluent_connection = FluentConnection(
                 ip=ip,
                 port=port,
                 password=password,

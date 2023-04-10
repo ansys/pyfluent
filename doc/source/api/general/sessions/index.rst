@@ -3,47 +3,42 @@
 Sessions
 ========
 
-
 Session
 -------
 
-.. currentmodule:: ansys.fluent.core
+==============================  ===============================================================================
+:ref:`ref_session`              | Module containing class encapsulating Fluent connection and the Base Session.
 
-.. autosummary::
-    :toctree: _autosummary
-    :template: flobject-module-template.rst
-    :recursive:
-
-    session
-    fluent_connection
-
+:ref:`ref_fluent_connection`    Encapsulates a Fluent connection.
+==============================  ===============================================================================
 
 Meshing sessions
 ----------------
 
-.. currentmodule:: ansys.fluent.core
+=================================  ===========================================================
+:ref:`ref_session_meshing`         | Module containing class encapsulating Fluent connection.
 
-.. autosummary::
-    :toctree: _autosummary
-    :template: flobject-module-template.rst
-    :recursive:
+:ref:`ref_session_base_meshing`    Module containing class encapsulating Fluent connection.
 
-    session_meshing
-    session_base_meshing
-    session_pure_meshing
-
+:ref:`ref_session_pure_meshing`    Module containing class encapsulating Fluent connection.
+=================================  ===========================================================
 
 Solver sessions
 ---------------
 
-.. currentmodule:: ansys.fluent.core
+=================================  ===========================================================
+:ref:`ref_session_solver`          | Module containing class encapsulating Fluent connection.
 
-.. autosummary::
-    :toctree: _autosummary
-    :template: flobject-module-template.rst
-    :recursive:
+:ref:`ref_session_solver_icing`    Module containing class encapsulating Fluent connection.
 
-    session_solver
-    session_solver_icing
-    session_solver_lite
+:ref:`ref_session_solver_lite`     Module containing class encapsulating Fluent connection.
+=================================  ===========================================================
 
+
+.. toctree::
+    :maxdepth: 1
+    :hidden:
+
+    Session/index
+    Meshing/index
+    Solver/index

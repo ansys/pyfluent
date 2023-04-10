@@ -10,7 +10,7 @@ from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.session import (
     _CODEGEN_MSG_TUI,
-    _BaseSession,
+    BaseSession,
     _get_preferences,
     _get_solverworkflow,
 )
@@ -24,7 +24,7 @@ tui_logger = logging.getLogger("ansys.fluent.services.tui")
 data_model_logger = logging.getLogger("ansys.fluent.services.datamodel")
 
 
-class Solver(_BaseSession):
+class Solver(BaseSession):
     """Encapsulates a Fluent solver session. A ``tui`` object for solver TUI
     commanding, and solver settings objects are all exposed here."""
 
@@ -32,6 +32,11 @@ class Solver(_BaseSession):
         self,
         fluent_connection,
     ):
+        """Solver session.
+
+        Args:
+            fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+        """
         super(Solver, self).__init__(fluent_connection=fluent_connection)
         self._build_from_fluent_connection(fluent_connection)
 
