@@ -307,13 +307,14 @@ class PyRemoteObjectMeta(type):
 
     @classmethod
     def __create_init(cls):
-        def wrapper(self, parent, app_name, path, accessor):
+        def wrapper(self, parent, app_name, path, accessor, location, session):
+
             self._parent = parent
             self.type = "object"
             property_editor_data = accessor(
-                "AnsysUser", "session-0", app_name
+                "AnsysUser", session, app_name
             )                 
-            obj, cmd_data = property_editor_data.get_object_and_command_data_from_properties_info({'path':path, 'properties':{},'type':'remote'})  
+            obj, cmd_data = property_editor_data.get_object_and_command_data_from_properties_info({'path':path, 'properties':{},'type':location})  
             self._object = obj                                                      
         return wrapper
 
@@ -361,7 +362,7 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
                         setattr(
                             self,
                             name,
-                            cls(self, cls.APP, cls.PATH, cls.ACCESSOR)
+                            cls(self, cls.APP, cls.PATH, cls.ACCESSOR, cls.LOCATION, cls.SESSION)
                         )                        
                 for base_class in clss.__bases__:
                     update(base_class)
