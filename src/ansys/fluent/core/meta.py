@@ -302,7 +302,7 @@ class PyRemoteObject:
     def display_text(self):        
         return self._attributes.get("display-text")  
         
-class PyRemoteObjectMeta(type):
+class PyReferenceObjectMeta(type):
     """Metaclass for local object classes."""
 
     @classmethod
@@ -320,7 +320,7 @@ class PyRemoteObjectMeta(type):
 
     def __new__(cls, name, bases, attrs):
         attrs["__init__"] = attrs.get("__init__", cls.__create_init())
-        return super(PyRemoteObjectMeta, cls).__new__(cls, name, bases, attrs)
+        return super(PyReferenceObjectMeta, cls).__new__(cls, name, bases, attrs)
 
 
 class PyLocalObjectMeta(PyLocalBaseMeta):
@@ -358,7 +358,7 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
                             cls.PLURAL,
                             PyLocalContainer(self, cls, api_helper),
                         )
-                    if cls.__class__.__name__ == "PyRemoteObjectMeta":
+                    if cls.__class__.__name__ == "PyReferenceObjectMeta":
                         setattr(
                             self,
                             name,
