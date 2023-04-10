@@ -24,10 +24,9 @@ class EventsManager(StreamingService):
         List of supported events.
     """
 
-    def __init__(self, session_id: str, service, id="event-stream-0"):
+    def __init__(self, session_id: str, service):
         """__init__ method of EventsManager class."""
         super().__init__(
-            id=id,
             stream_begin_method="BeginStreaming",
             target=EventsManager._process_streaming,
             streaming_service=service,

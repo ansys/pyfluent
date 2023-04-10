@@ -9,10 +9,9 @@ from ansys.fluent.core.streaming_services.streaming import StreamingService
 class DatamodelEvents(StreamingService):
     """Encapsulates a datamodel events streaming service."""
 
-    def __init__(self, service, id="dm-event-stream-0"):
+    def __init__(self, service):
         """Instantiate DatamodelEvents."""
         super().__init__(
-            id=id,
             stream_begin_method="BeginEventStreaming",
             target=DatamodelEvents._process_streaming,
             streaming_service=service,

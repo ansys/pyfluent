@@ -6,11 +6,13 @@ from typing import Callable, Optional
 class StreamingService:
     """Encapsulates a Fluent streaming service."""
 
-    def __init__(self, id, stream_begin_method, target, streaming_service):
+    _service_id = itertools.count()
+
+    def __init__(self, stream_begin_method, target, streaming_service):
         """__init__ method of StreamingService class."""
         self._lock: threading.RLock = threading.RLock()
         self._streaming: bool = False
-        self._id = id
+        self._id = next(StreamingService._service_id)
         self._stream_begin_method = stream_begin_method
         self._target = target
         self._streaming_service = streaming_service

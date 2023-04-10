@@ -5,10 +5,9 @@ from ansys.fluent.core.streaming_services.streaming import StreamingService
 class DatamodelStream(StreamingService):
     """Encapsulates a datamodel streaming service."""
 
-    def __init__(self, service, id="dm-stream-0"):
+    def __init__(self, service):
         """Instantiate DatamodelStream."""
         super().__init__(
-            id=id,
             stream_begin_method="BeginStreaming",
             target=DatamodelStream._process_streaming,
             streaming_service=service,

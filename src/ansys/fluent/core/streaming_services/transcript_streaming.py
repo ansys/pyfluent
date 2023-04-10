@@ -26,10 +26,9 @@ class Transcript(StreamingService):
 
     _writing_transcript_to_interpreter = False
 
-    def __init__(self, channel, metadata, id="transcript-stream-0"):
+    def __init__(self, channel, metadata):
         """__init__ method of Transcript class."""
         super().__init__(
-            id=id,
             stream_begin_method="BeginStreaming",
             target=Transcript._process_streaming,
             streaming_service=TranscriptService(channel, metadata),

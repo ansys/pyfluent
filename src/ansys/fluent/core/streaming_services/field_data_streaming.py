@@ -19,9 +19,8 @@ class FieldDataStreaming(StreamingService):
         FieldData streaming service.
     """
 
-    def __init__(self, session_id: str, service, id="field-stream-0"):
+    def __init__(self, session_id: str, service):
         super().__init__(
-            id=id,
             stream_begin_method="BeginFieldsStreaming",
             target=FieldDataStreaming._process_streaming,
             streaming_service=service,

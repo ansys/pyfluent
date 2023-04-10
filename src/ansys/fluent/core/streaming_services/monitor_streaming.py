@@ -21,10 +21,9 @@ class MonitorsManager(StreamingService):
         Monitors streaming service.
     """
 
-    def __init__(self, session_id: str, service, id="monitor-stream-0"):
+    def __init__(self, session_id: str, service):
         """__init__ method of MonitorsManager class."""
         super().__init__(
-            id=id,
             stream_begin_method="BeginStreaming",
             target=MonitorsManager._process_streaming,
             streaming_service=service,
