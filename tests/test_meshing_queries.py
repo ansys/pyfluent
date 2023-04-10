@@ -297,3 +297,51 @@ def test_meshing_queries(new_mesh_session):
     assert meshing_session.meshing_queries.GetRegionNameListOfFaceZones(
         [29, 30, 31, 32, 33, 34]
     ) == ["fluid"]
+
+    assert meshing_session.meshing_queries.ConvertZoneNameSymbolsToIds(["outlet"]) == [
+        32
+    ]
+
+    assert meshing_session.meshing_queries.ConvertZoneNameStringsToIds(["outlet"]) == [
+        32
+    ]
+
+    assert meshing_session.meshing_queries.ConvertZoneIdsToNameStrings([29]) == [
+        "symmetry-xyplane"
+    ]
+
+    assert meshing_session.meshing_queries.ConvertZoneIdsToNameSymbols([31]) == [
+        "cold-inlet"
+    ]
+
+    assert (
+        meshing_session.meshing_queries.ConvertSymbolListToString(["inlet", "outlet"])
+        == "inlet outlet "
+    )
+
+    assert (
+        meshing_session.meshing_queries.CreateStringFromSymbolList(["inlet", "outlet"])
+        == "inlet outlet"
+    )
+
+    assert meshing_session.meshing_queries.IntegerListSubstract(
+        [1, 2, 3, 4], [2, 3]
+    ) == [1, 4]
+
+    assert meshing_session.meshing_queries.ListReplace(4, 2, [1, 2, 3]) == [1, 4, 3]
+
+    assert meshing_session.meshing_queries.ListReplace(4.4, 2.2, [1.1, 2.2, 3.3]) == [
+        1.1,
+        4.4,
+        3.3,
+    ]
+
+    assert meshing_session.meshing_queries.RemoveElementFromList(2, [1, 2, 3]) == [1, 3]
+
+    assert meshing_session.meshing_queries.RemoveElementFromList(
+        2.2, [1.1, 2.2, 3.3]
+    ) == [1.1, 3.3]
+
+    assert meshing_session.meshing_queries.ListContains(4, [1, 2, 3]) is False
+
+    assert meshing_session.meshing_queries.ListContains(2.2, [1.1, 2.2, 3.3]) is True
