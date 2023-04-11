@@ -1238,7 +1238,7 @@ class MeshingQueries:
         request.string_input_1 = object_name
         request.string_input_2 = region_name
         response = self.service.GetRegionVolume(request)
-        return response.outputs
+        return response.output
 
     def GetRegionsOfFilter(self, object, filter) -> Any:
         """GetRegionsOfFilter."""

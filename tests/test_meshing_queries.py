@@ -280,7 +280,10 @@ def test_meshing_queries(new_mesh_session):
         "fluid"
     ]
 
-    # assert meshing_session.meshing_queries.GetRegionVolume("elbow-fluid", "fluid") == [152.59942]
+    assert (
+        meshing_session.meshing_queries.GetRegionVolume("elbow-fluid", "fluid")
+        == 152.599422561798
+    )
 
     assert meshing_session.meshing_queries.GetRegionsOfFilter("elbow-fluid", "*") == [
         "fluid"
