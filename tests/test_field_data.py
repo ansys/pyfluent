@@ -189,6 +189,8 @@ def test_field_data_allowed_values(new_solver_session) -> None:
     assert expected_allowed_args == allowed_args
 
 
+@pytest.mark.dev
+@pytest.mark.fluent_232
 def test_field_data_objects(new_solver_session) -> None:
     solver = new_solver_session
     import_filename = examples.download_file(
