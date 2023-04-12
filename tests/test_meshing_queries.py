@@ -165,6 +165,8 @@ def test_meshing_queries(new_mesh_session):
         == []
     )
 
+    assert meshing_session.meshing_queries.GetFaceZonesOfPrismControls("*") == [33, 34]
+
     assert meshing_session.meshing_queries.GetBaffles([29, 30]) == [30, 29]
 
     assert meshing_session.meshing_queries.GetEmbeddedBaffles() == []
@@ -198,21 +200,31 @@ def test_meshing_queries(new_mesh_session):
         == []
     )
 
-    # assert meshing_session.meshing_queries.GetMaxsizeCellZoneByVolume("*") == [3460]
-    #
-    # assert meshing_session.meshing_queries.GetMaxsizeCellZoneByVolume([3460]) == [3460]
-    #
-    # assert meshing_session.meshing_queries.GetMaxsizeCellZoneByCount("*") == [3460]
-    #
-    # assert meshing_session.meshing_queries.GetMaxsizeCellZoneByCount([3460]) == [3460]
-    #
-    # assert meshing_session.meshing_queries.GetMinsizeFaceZoneByArea("*") == [30]
-    #
-    # assert meshing_session.meshing_queries.GetMinsizeFaceZoneByArea([29, 30, 31, 32, 33, 34]) == [30]
-    #
-    # assert meshing_session.meshing_queries.GetMinsizeFaceZoneByCount("*") == [30]
-    #
-    # assert meshing_session.meshing_queries.GetMinsizeFaceZoneByCount([29, 30, 31, 32, 33, 34]) == [30]
+    assert meshing_session.meshing_queries.GetMaxsizeCellZoneByVolume("*") == 3460
+
+    assert meshing_session.meshing_queries.GetMaxsizeCellZoneByVolume([3460]) == 3460
+
+    assert meshing_session.meshing_queries.GetMaxsizeCellZoneByCount("*") == 3460
+
+    assert meshing_session.meshing_queries.GetMaxsizeCellZoneByCount([3460]) == 3460
+
+    assert meshing_session.meshing_queries.GetMinsizeFaceZoneByArea("*") == 30
+
+    assert (
+        meshing_session.meshing_queries.GetMinsizeFaceZoneByArea(
+            [29, 30, 31, 32, 33, 34]
+        )
+        == 30
+    )
+
+    assert meshing_session.meshing_queries.GetMinsizeFaceZoneByCount("*") == 30
+
+    assert (
+        meshing_session.meshing_queries.GetMinsizeFaceZoneByCount(
+            [29, 30, 31, 32, 33, 34]
+        )
+        == 30
+    )
 
     assert (
         meshing_session.meshing_queries.GetFaceZoneListByMaximumEntityCount(20, True)

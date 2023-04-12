@@ -255,15 +255,13 @@ class MeshingQueriesService:
             request, metadata=self._metadata
         )
 
-    # @catch_grpc_error
-    # def GetFaceZonesOfPrismControls(
-    #     self,
-    #     request: MeshingQueriesProtoModule.GetFaceZonesOfPrismControlsRequest,
-    # ) -> MeshingQueriesProtoModule.GetFaceZonesOfPrismControlsResponse:
-    #     """GetFaceZonesOfPrismControls rpc of MeshingQueriesService."""
-    #     return self._stub.GetFaceZonesOfPrismControls(
-    #         request, metadata=self._metadata
-    #     )
+    @catch_grpc_error
+    def GetFaceZonesOfPrismControls(
+        self,
+        request: MeshingQueriesProtoModule.GetFaceZonesOfPrismControlsRequest,
+    ) -> MeshingQueriesProtoModule.GetFaceZonesOfPrismControlsResponse:
+        """GetFaceZonesOfPrismControls rpc of MeshingQueriesService."""
+        return self._stub.GetFaceZonesOfPrismControls(request, metadata=self._metadata)
 
     @catch_grpc_error
     def GetBaffles(
@@ -948,12 +946,12 @@ class MeshingQueries:
         response = self.service.GetFaceZonesWithZoneSpecificPrismsApplied(request)
         return response.outputs
 
-    # def GetFaceZonesOfPrismControls(self, control_name) -> Any:
-    #     """GetInteriorZonesConnectedToCellZones."""
-    #     request = MeshingQueriesProtoModule.GetFaceZonesOfPrismControlsRequest()
-    #     request.input = control_name
-    #     response = self.service.GetFaceZonesOfPrismControls(request)
-    #     return response.outputs
+    def GetFaceZonesOfPrismControls(self, control_name) -> Any:
+        """GetInteriorZonesConnectedToCellZones."""
+        request = MeshingQueriesProtoModule.GetFaceZonesOfPrismControlsRequest()
+        request.input = control_name
+        response = self.service.GetFaceZonesOfPrismControls(request)
+        return response.outputs
 
     def GetBaffles(self, face_zone_list) -> Any:
         """GetBaffles."""
@@ -1054,7 +1052,7 @@ class MeshingQueries:
                 for items in list_or_pattern:
                     request.string_inputs.append(items)
         response = self.service.GetMaxsizeCellZoneByVolume(request)
-        return response.outputs
+        return response.output
 
     def GetMaxsizeCellZoneByCount(self, list_or_pattern) -> Any:
         """GetMaxsizeCellZoneByCount."""
@@ -1069,7 +1067,7 @@ class MeshingQueries:
                 for items in list_or_pattern:
                     request.string_inputs.append(items)
         response = self.service.GetMaxsizeCellZoneByCount(request)
-        return response.outputs
+        return response.output
 
     def GetMinsizeFaceZoneByArea(self, list_or_pattern) -> Any:
         """GetMinsizeFaceZoneByArea."""
@@ -1084,7 +1082,7 @@ class MeshingQueries:
                 for items in list_or_pattern:
                     request.string_inputs.append(items)
         response = self.service.GetMinsizeFaceZoneByArea(request)
-        return response.outputs
+        return response.output
 
     def GetMinsizeFaceZoneByCount(self, list_or_pattern) -> Any:
         """GetMinsizeFaceZoneByCount."""
@@ -1099,7 +1097,7 @@ class MeshingQueries:
                 for items in list_or_pattern:
                     request.string_inputs.append(items)
         response = self.service.GetMinsizeFaceZoneByCount(request)
-        return response.outputs
+        return response.output
 
     def GetFaceZoneListByMaximumEntityCount(
         self, max_entity_count, only_boundary
