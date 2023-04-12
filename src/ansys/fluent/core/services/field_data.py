@@ -1169,60 +1169,47 @@ class FieldData:
         fields = extract_fields(self._service.get_fields(fields_request))
         surface_data = next(iter(fields.values()))
 
+        def _get_surfaces_data(parent_class, surf_id, _data_type):
+            return parent_class(
+                surf_id,
+                surface_data[surf_id][enum_to_field_name[_data_type]],
+            )
+
         if data_type == SurfaceDataType.Vertices:
             if surface_name:
-                return Vertices(
-                    surface_ids[0],
-                    surface_data[surface_ids[0]][enum_to_field_name[data_type]],
-                )
+                return _get_surfaces_data(Vertices, surface_ids[0], data_type)
             else:
                 return {
-                    surface_id: Vertices(
-                        surface_id,
-                        surface_data[surface_id][enum_to_field_name[data_type]],
-                    )
+                    surface_id: _get_surfaces_data(Vertices, surface_id, data_type)
                     for surface_id in surface_ids
                 }
+
         if data_type == SurfaceDataType.FacesCentroid:
             if surface_name:
-                return FacesCentroid(
-                    surface_ids[0],
-                    surface_data[surface_ids[0]][enum_to_field_name[data_type]],
-                )
+                return _get_surfaces_data(FacesCentroid, surface_ids[0], data_type)
             else:
                 return {
-                    surface_id: FacesCentroid(
-                        surface_id,
-                        surface_data[surface_id][enum_to_field_name[data_type]],
-                    )
+                    surface_id: _get_surfaces_data(FacesCentroid, surface_id, data_type)
                     for surface_id in surface_ids
                 }
+
         if data_type == SurfaceDataType.FacesConnectivity:
             if surface_name:
-                return FacesConnectivity(
-                    surface_ids[0],
-                    surface_data[surface_ids[0]][enum_to_field_name[data_type]],
-                )
+                return _get_surfaces_data(FacesConnectivity, surface_ids[0], data_type)
             else:
                 return {
-                    surface_id: FacesConnectivity(
-                        surface_id,
-                        surface_data[surface_id][enum_to_field_name[data_type]],
+                    surface_id: _get_surfaces_data(
+                        FacesConnectivity, surface_id, data_type
                     )
                     for surface_id in surface_ids
                 }
+
         if data_type == SurfaceDataType.FacesNormal:
             if surface_name:
-                return FacesNormal(
-                    surface_ids[0],
-                    surface_data[surface_ids[0]][enum_to_field_name[data_type]],
-                )
+                return _get_surfaces_data(FacesNormal, surface_ids[0], data_type)
             else:
                 return {
-                    surface_id: FacesNormal(
-                        surface_id,
-                        surface_data[surface_id][enum_to_field_name[data_type]],
-                    )
+                    surface_id: _get_surfaces_data(FacesNormal, surface_id, data_type)
                     for surface_id in surface_ids
                 }
 
