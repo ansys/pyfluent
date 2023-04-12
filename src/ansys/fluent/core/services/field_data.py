@@ -838,7 +838,7 @@ def extract_fields(chunk_iterator):
     return fields_data
 
 
-class CommonProperties:
+class _FieldDataBase:
     def __init__(self, i_d, data):
         self._data = data
         self._id = i_d
@@ -859,10 +859,10 @@ class CommonProperties:
         return self._data[item]
 
 
-class ScalarFieldData(CommonProperties):
+class ScalarFieldData(_FieldDataBase):
     class _ScalarData:
         def __init__(self, data):
-            self.field_data = data
+            self.scalar_data = data
 
     def __init__(self, i_d, data):
         self._data = []
@@ -890,7 +890,7 @@ class Vector:
         return self._z
 
 
-class VectorFieldData(CommonProperties):
+class VectorFieldData(_FieldDataBase):
     class _VectorData(Vector):
         def __init__(self, x, y, z):
             super().__init__(x, y, z)
@@ -908,7 +908,7 @@ class VectorFieldData(CommonProperties):
         return self._scale
 
 
-class Vertices(CommonProperties):
+class Vertices(_FieldDataBase):
     class _Vertex(Vector):
         def __init__(self, x, y, z):
             super().__init__(x, y, z)
@@ -921,7 +921,7 @@ class Vertices(CommonProperties):
         super().__init__(i_d, self._data)
 
 
-class FacesCentroid(CommonProperties):
+class FacesCentroid(_FieldDataBase):
     class _Centroid(Vector):
         def __init__(self, x, y, z):
             super().__init__(x, y, z)
@@ -934,7 +934,7 @@ class FacesCentroid(CommonProperties):
         super().__init__(i_d, self._data)
 
 
-class FacesConnectivity(CommonProperties):
+class FacesConnectivity(_FieldDataBase):
     class _Faces:
         def __init__(self, node_number, node_data):
             self.node = node_number
@@ -953,7 +953,7 @@ class FacesConnectivity(CommonProperties):
         super().__init__(i_d, self._data)
 
 
-class FacesNormal(CommonProperties):
+class FacesNormal(_FieldDataBase):
     class _Normal(Vector):
         def __init__(self, x, y, z):
             super().__init__(x, y, z)

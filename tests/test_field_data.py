@@ -218,7 +218,7 @@ def test_field_data_objects(new_solver_session) -> None:
     )
 
     assert abs_press_data.size == 241
-    assert abs_press_data[120].field_data == 101325.0
+    assert abs_press_data[120].scalar_data == 101325.0
 
     vertices_data = field_data.get_surface_data(
         data_type=SurfaceDataType.Vertices, surface_name="cold-inlet"
