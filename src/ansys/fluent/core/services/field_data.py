@@ -838,6 +838,128 @@ def extract_fields(chunk_iterator):
     return fields_data
 
 
+class CommonProperties:
+    def __init__(self, i_d, data):
+        self._data = data
+        self._id = i_d
+
+    @property
+    def data(self):
+        return self._data
+
+    @property
+    def surface_id(self):
+        return self._id
+
+    @property
+    def size(self):
+        return len(self._data)
+
+    def __getitem__(self, item):
+        return self._data[item]
+
+
+class ScalarFieldData(CommonProperties):
+    class _ScalarData:
+        def __init__(self, data):
+            self.field_data = data
+
+    def __init__(self, i_d, data):
+        self._data = []
+        for _data in data:
+            self._data.append(ScalarFieldData._ScalarData(_data))
+        super().__init__(i_d, self._data)
+
+
+class Vector:
+    def __init__(self, x, y, z):
+        self._x = x
+        self._y = y
+        self._z = z
+
+    @property
+    def x(self):
+        return self._x
+
+    @property
+    def y(self):
+        return self._y
+
+    @property
+    def z(self):
+        return self._z
+
+
+class VectorFieldData(CommonProperties):
+    class _VectorData(Vector):
+        def __init__(self, x, y, z):
+            super().__init__(x, y, z)
+
+    def __init__(self, i_d, data, scale):
+        data.shape = data.size // 3, 3
+        self._data = []
+        self._scale = scale
+        for x, y, z in data:
+            self._data.append(VectorFieldData._VectorData(x, y, z))
+        super().__init__(i_d, self._data)
+
+    @property
+    def scale(self):
+        return self._scale
+
+
+class Vertices(CommonProperties):
+    class _Vertex(Vector):
+        def __init__(self, x, y, z):
+            super().__init__(x, y, z)
+
+    def __init__(self, i_d, data):
+        data.shape = data.size // 3, 3
+        self._data = []
+        for x, y, z in data:
+            self._data.append(Vertices._Vertex(x, y, z))
+        super().__init__(i_d, self._data)
+
+
+class FacesCentroid(CommonProperties):
+    class _Centroid(Vector):
+        def __init__(self, x, y, z):
+            super().__init__(x, y, z)
+
+    def __init__(self, i_d, data):
+        data.shape = data.size // 3, 3
+        self._data = []
+        for x, y, z in data:
+            self._data.append(FacesCentroid._Centroid(x, y, z))
+        super().__init__(i_d, self._data)
+
+
+class FacesConnectivity(CommonProperties):
+    class _Connectivity(Vector):
+        def __init__(self, x, y, z):
+            super().__init__(x, y, z)
+
+    def __init__(self, i_d, data):
+        data.shape = data.size // 3, 3
+        self._data = []
+        for x, y, z in data:
+            self._data.append(FacesConnectivity._Connectivity(x, y, z))
+        super().__init__(i_d, self._data)
+
+
+class FacesNormal(CommonProperties):
+    class _Normal(Vector):
+        def __init__(self, x, y, z):
+            super().__init__(x, y, z)
+
+    def __init__(self, i_d, data):
+        data.shape = data.size // 3, 3
+        self._data = []
+        for x, y, z in data:
+            self._data.append(FacesNormal._Normal(x, y, z))
+        super().__init__(i_d, self._data)
+
+
 class FieldData:
     """Provides access to Fluent field data on surfaces."""
 
@@ -922,7 +1044,7 @@ class FieldData:
         surface_name: Optional[str] = None,
         node_value: Optional[bool] = True,
         boundary_value: Optional[bool] = False,
-    ) -> Dict[int, np.array]:
+    ) -> Union[ScalarFieldData, Dict[int, ScalarFieldData]]:
         """Get scalar field data on a surface.
 
         Parameters
@@ -970,10 +1092,18 @@ class FieldData:
 
         fields = extract_fields(self._service.get_fields(fields_request))
         scalar_field_data = next(iter(fields.values()))
-        return {
-            surface_id: scalar_field_data[surface_id][field_name]
-            for surface_id in surface_ids
-        }
+
+        if surface_name:
+            return ScalarFieldData(
+                surface_ids[0], scalar_field_data[surface_ids[0]][field_name]
+            )
+        else:
+            return {
+                surface_id: ScalarFieldData(
+                    surface_id, scalar_field_data[surface_id][field_name]
+                )
+                for surface_id in surface_ids
+            }
 
     def get_surface_data(
         self,
@@ -981,7 +1111,10 @@ class FieldData:
         surface_ids: Optional[List[int]] = None,
         surface_name: Optional[str] = None,
         overset_mesh: Optional[bool] = False,
-    ) -> Dict[int, np.array]:
+    ) -> Union[
+        Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid],
+        Dict[int, Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid]],
+    ]:
         """Get surface data (vertices, faces connectivity, centroids, and
         normals).
 
@@ -1029,17 +1162,70 @@ class FieldData:
         }
         fields = extract_fields(self._service.get_fields(fields_request))
         surface_data = next(iter(fields.values()))
-        return {
-            surface_id: surface_data[surface_id][enum_to_field_name[data_type]]
-            for surface_id in surface_ids
-        }
+
+        if data_type == SurfaceDataType.Vertices:
+            if surface_name:
+                return Vertices(
+                    surface_ids[0],
+                    surface_data[surface_ids[0]][enum_to_field_name[data_type]],
+                )
+            else:
+                return {
+                    surface_id: Vertices(
+                        surface_id,
+                        surface_data[surface_id][enum_to_field_name[data_type]],
+                    )
+                    for surface_id in surface_ids
+                }
+        if data_type == SurfaceDataType.FacesCentroid:
+            if surface_name:
+                return FacesCentroid(
+                    surface_ids[0],
+                    surface_data[surface_ids[0]][enum_to_field_name[data_type]],
+                )
+            else:
+                return {
+                    surface_id: FacesCentroid(
+                        surface_id,
+                        surface_data[surface_id][enum_to_field_name[data_type]],
+                    )
+                    for surface_id in surface_ids
+                }
+        if data_type == SurfaceDataType.FacesConnectivity:
+            if surface_name:
+                return FacesConnectivity(
+                    surface_ids[0],
+                    surface_data[surface_ids[0]][enum_to_field_name[data_type]],
+                )
+            else:
+                return {
+                    surface_id: FacesConnectivity(
+                        surface_id,
+                        surface_data[surface_id][enum_to_field_name[data_type]],
+                    )
+                    for surface_id in surface_ids
+                }
+        if data_type == SurfaceDataType.FacesNormal:
+            if surface_name:
+                return FacesNormal(
+                    surface_ids[0],
+                    surface_data[surface_ids[0]][enum_to_field_name[data_type]],
+                )
+            else:
+                return {
+                    surface_id: FacesNormal(
+                        surface_id,
+                        surface_data[surface_id][enum_to_field_name[data_type]],
+                    )
+                    for surface_id in surface_ids
+                }
 
     def get_vector_field_data(
         self,
         field_name: str,
         surface_ids: Optional[List[int]] = None,
         surface_name: Optional[str] = None,
-    ) -> Dict[int, Tuple[np.array, float]]:
+    ) -> Union[VectorFieldData, Dict[int, VectorFieldData]]:
         """Get vector field data on a surface.
 
         Parameters
@@ -1076,13 +1262,22 @@ class FieldData:
         )
         fields = extract_fields(self._service.get_fields(fields_request))
         vector_field_data = next(iter(fields.values()))
-        return {
-            surface_id: (
-                vector_field_data[surface_id][field_name],
-                vector_field_data[surface_id]["vector-scale"][0],
+
+        if surface_name:
+            return VectorFieldData(
+                surface_ids[0],
+                vector_field_data[surface_ids[0]][field_name],
+                vector_field_data[surface_ids[0]]["vector-scale"][0],
             )
-            for surface_id in surface_ids
-        }
+        else:
+            return {
+                surface_id: VectorFieldData(
+                    surface_id,
+                    vector_field_data[surface_id][field_name],
+                    vector_field_data[surface_id]["vector-scale"][0],
+                )
+                for surface_id in surface_ids
+            }
 
     def get_pathlines_field_data(
         self,
@@ -1101,7 +1296,7 @@ class FieldData:
         coarsen: Optional[int] = 1,
         velocity_domain: Optional[str] = "all-phases",
         zones: Optional[list] = [],
-    ) -> Dict[int, Dict[str, np.array]]:
+    ) -> Dict:
         """Get pathlines field data on a surface.
 
         Parameters
@@ -1175,4 +1370,34 @@ class FieldData:
         fields = extract_fields(self._service.get_fields(fields_request))
         vector_field_data = next(iter(fields.values()))
         pathlines_data = next(iter(fields.values()))
-        return pathlines_data
+
+        if surface_name:
+            vertices_data = Vertices(
+                surface_ids[0], pathlines_data[surface_ids[0]]["vertices"]
+            )
+            lines_data = FacesConnectivity(
+                surface_ids[0], pathlines_data[surface_ids[0]]["lines"]
+            )
+            field_data = ScalarFieldData(
+                surface_ids[0], pathlines_data[surface_ids[0]][field_name]
+            )
+            return {
+                "vertices": vertices_data,
+                "lines": lines_data,
+                field_name: field_data,
+            }
+        else:
+            path_lines_dict = {}
+            for surface_id in surface_ids:
+                path_lines_dict[surface_id] = {
+                    "vertices": Vertices(
+                        surface_id, pathlines_data[surface_id]["vertices"]
+                    ),
+                    "lines": FacesConnectivity(
+                        surface_id, pathlines_data[surface_id]["lines"]
+                    ),
+                    field_name: ScalarFieldData(
+                        surface_id, pathlines_data[surface_id][field_name]
+                    ),
+                }
+            return path_lines_dict
