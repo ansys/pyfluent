@@ -222,97 +222,19 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
         attrs["set_state"] = cls.__create_set_state()
         return super(PyLocalPropertyMeta, cls).__new__(cls, name, bases, attrs)
 
-class PyRemoteProperty:
-
-    def __init__(self, parent, name, data):
-        self._parent = parent
-        self._on_change_cbs = []    
-        self._name = name 
-        self._value = data['value'] 
-        self._attributes = data['attributes']
-        self.type = data['type']
         
-    def __call__(self):
-        return self._value 
-        
-    def __repr__(self):
-        return f"{self()}"     
-        
-    def set_state(self, value):
-        self._value = value 
-        
-    @property    
-    def allowed_values(self):        
-        return self._attributes.get("allowed-values")
-        
-    @property    
-    def range(self):        
-        return self._attributes.get("range")  
-
-    @property    
-    def display_text(self):        
-        return self._attributes.get("display-text")        
-          
-    #@property    
-    #def type(self):        
-    #    return self.type        
-
-class PyRemoteObject:
-
-    def __init__(self, parent, name, data):
-        self._parent = parent  
-        self._name = name 
-        state = data['value'] 
-        self._attributes = data['attributes']
-        self.type = "object"
-        for name,data in state.items():
-            if data['type']=="object":
-                setattr(
-                  self,
-                  name,
-                  PyRemoteObject(self, name, data),
-                )  
-            else:
-                setattr(
-                  self,
-                  name,
-                  PyRemoteProperty(self, name, data),
-                )        
-        
-    def __call(self, show_attributes=False):
-        state = {}
-        for name, data in self.__dict__.items():
-            o = getattr(self, name)
-            if o.__class__.__name__ == "PyRemoteObject":
-                state[name] = o(show_attributes)
-
-            if o.__class__.__name__ == "PyRemoteProperty":
-                state[name] = o()
-                attrs = show_attributes and getattr(o, "attributes", None)
-                if attrs:
-                    for attr in attrs:
-                        state[name + "." + attr] = getattr(o, attr)
-        return state    
-              
-    def __repr__(self):
-        return f"{self()}"     
-        
-
-    @property    
-    def display_text(self):        
-        return self._attributes.get("display-text")  
-        
-class PyReferenceObjectMeta(type):
+class PyReferenceObjectMeta(PyLocalBaseMeta):
     """Metaclass for local object classes."""
 
     @classmethod
     def __create_init(cls):
-        def wrapper(self, parent, app_name, path, accessor, location, session):
+        def wrapper(self, parent, path, location, session):
 
             self._parent = parent
             self.type = "object"
-            property_editor_data = accessor(
-                "AnsysUser", session, app_name
+            top_most_parent = self._get_top_most_parent(self)
+            property_editor_data = top_most_parent.accessor(
+                "AnsysUser", session
             )                 
             obj, cmd_data = property_editor_data.get_object_and_command_data_from_properties_info({'path':path, 'properties':{},'type':location})  
             self._object = obj                                                      
@@ -362,7 +284,7 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
                         setattr(
                             self,
                             name,
-                            cls(self, cls.APP, cls.PATH, cls.ACCESSOR, cls.LOCATION, cls.SESSION)
+                            cls(self, cls.PATH, cls.LOCATION, cls.SESSION)
                         )                        
                 for base_class in clss.__bases__:
                     update(base_class)
