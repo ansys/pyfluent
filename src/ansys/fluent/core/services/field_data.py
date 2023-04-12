@@ -936,8 +936,8 @@ class FacesCentroid(_FieldDataBase):
 
 class FacesConnectivity(_FieldDataBase):
     class _Faces:
-        def __init__(self, node_number, node_data):
-            self.node = node_number
+        def __init__(self, node_count, node_data):
+            self.node_count = node_count
             self.node_data = node_data
 
     def __init__(self, i_d, data):
