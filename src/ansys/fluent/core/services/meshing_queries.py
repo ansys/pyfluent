@@ -225,15 +225,13 @@ class MeshingQueriesService:
             request, metadata=self._metadata
         )
 
-    # @catch_grpc_error
-    # def GetSharedBoundaryZones(
-    #     self,
-    #     request: MeshingQueriesProtoModule.GetSharedBoundaryZonesRequest,
-    # ) -> MeshingQueriesProtoModule.GetSharedBoundaryZonesResponse:
-    #     """GetSharedBoundaryZones rpc of MeshingQueriesService."""
-    #     return self._stub.GetSharedBoundaryZones(
-    #         request, metadata=self._metadata
-    #     )
+    @catch_grpc_error
+    def GetSharedBoundaryZones(
+        self,
+        request: MeshingQueriesProtoModule.GetSharedBoundaryZonesRequest,
+    ) -> MeshingQueriesProtoModule.GetSharedBoundaryZonesResponse:
+        """GetSharedBoundaryZones rpc of MeshingQueriesService."""
+        return self._stub.GetSharedBoundaryZones(request, metadata=self._metadata)
 
     @catch_grpc_error
     def GetInteriorZonesConnectedToCellZones(
@@ -924,16 +922,16 @@ class MeshingQueries:
         response = self.service.GetAdjacentZonesByNodeConnectivity(request)
         return response.outputs
 
-    # def GetSharedBoundaryZones(self, list_or_pattern) -> Any:
-    #     """GetSharedBoundaryZones."""
-    #     request = MeshingQueriesProtoModule.GetSharedBoundaryZonesRequest()
-    #     if isinstance(list_or_pattern, str):
-    #         request.input = list_or_pattern
-    #     elif isinstance(list_or_pattern, list):
-    #         for items in list_or_pattern:
-    #             request.inputs.append(items)
-    #     response = self.service.GetSharedBoundaryZones(request)
-    #     return response.outputs
+    def GetSharedBoundaryZones(self, list_or_pattern) -> Any:
+        """GetSharedBoundaryZones."""
+        request = MeshingQueriesProtoModule.GetSharedBoundaryZonesRequest()
+        if isinstance(list_or_pattern, str):
+            request.input = list_or_pattern
+        elif isinstance(list_or_pattern, list):
+            for items in list_or_pattern:
+                request.inputs.append(items)
+        response = self.service.GetSharedBoundaryZones(request)
+        return response.outputs
 
     def GetInteriorZonesConnectedToCellZones(self, list_or_pattern) -> Any:
         """GetInteriorZonesConnectedToCellZones."""

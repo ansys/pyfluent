@@ -121,6 +121,10 @@ def test_meshing_queries(new_mesh_session):
         34,
     ]
 
+    assert meshing_session.meshing_queries.GetSharedBoundaryZones("*") == []
+
+    assert meshing_session.meshing_queries.GetSharedBoundaryZones([3460]) == []
+
     assert (
         meshing_session.meshing_queries.GetAdjacentInteriorAndBoundaryFaceZones([30])
         == []
