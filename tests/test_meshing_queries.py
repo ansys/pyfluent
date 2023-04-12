@@ -293,6 +293,15 @@ def test_meshing_queries(new_mesh_session):
     ]
 
     assert (
+        str(
+            meshing_session.meshing_queries.SortRegionsByVolume(
+                "elbow-fluid", "ascending"
+            )
+        )
+        == '[double_output: 152.599422561798\nstring_output: "fluid"\n]'
+    )
+
+    assert (
         meshing_session.meshing_queries.GetRegionVolume("elbow-fluid", "fluid")
         == 152.599422561798
     )

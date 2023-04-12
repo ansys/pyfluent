@@ -558,6 +558,14 @@ class MeshingQueriesService:
         return self._stub.GetRegionNameListOfObject(request, metadata=self._metadata)
 
     @catch_grpc_error
+    def SortRegionsByVolume(
+        self,
+        request: MeshingQueriesProtoModule.SortRegionsByVolumeRequest,
+    ) -> MeshingQueriesProtoModule.SortRegionsByVolumeResponse:
+        """SortRegionsByVolume rpc of MeshingQueriesService."""
+        return self._stub.SortRegionsByVolume(request, metadata=self._metadata)
+
+    @catch_grpc_error
     def GetRegionVolume(
         self,
         request: MeshingQueriesProtoModule.GetRegionVolumeRequest,
@@ -1228,6 +1236,14 @@ class MeshingQueries:
         request = MeshingQueriesProtoModule.GetRegionNameListOfObjectRequest()
         request.input = object
         response = self.service.GetRegionNameListOfObject(request)
+        return response.outputs
+
+    def SortRegionsByVolume(self, object_name, order) -> Any:
+        """SortRegionsByVolume."""
+        request = MeshingQueriesProtoModule.SortRegionsByVolumeRequest()
+        request.string_input_1 = object_name
+        request.string_input_2 = order
+        response = self.service.SortRegionsByVolume(request)
         return response.outputs
 
     def GetRegionVolume(self, object_name, region_name) -> Any:
