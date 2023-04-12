@@ -935,15 +935,21 @@ class FacesCentroid(CommonProperties):
 
 
 class FacesConnectivity(CommonProperties):
-    class _Connectivity(Vector):
-        def __init__(self, x, y, z):
-            super().__init__(x, y, z)
+    class _Faces:
+        def __init__(self, node_number, node_data):
+            self.node = node_number
+            self.node_data = node_data
 
     def __init__(self, i_d, data):
-        data.shape = data.size // 3, 3
         self._data = []
-        for x, y, z in data:
-            self._data.append(FacesConnectivity._Connectivity(x, y, z))
+        i = 0
+
+        while i < len(data):
+            self._data.append(
+                FacesConnectivity._Faces(data[i], data[i + 1 : i + 1 + data[i]])
+            )
+            i = i + 1 + data[i]
+
         super().__init__(i_d, self._data)
 
 

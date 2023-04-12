@@ -231,7 +231,8 @@ def test_field_data_objects(new_solver_session) -> None:
     faces_connectivity_data = field_data.get_surface_data(
         data_type=SurfaceDataType.FacesConnectivity, surface_name="cold-inlet"
     )
-    assert faces_connectivity_data[5].z == 1
+    assert faces_connectivity_data[5].node == 4
+    assert (faces_connectivity_data[5].node_data == [12, 13, 17, 16]).all()
 
     faces_normal_data = field_data.get_surface_data(
         data_type=SurfaceDataType.FacesNormal, surface_name="cold-inlet"
@@ -254,7 +255,8 @@ def test_field_data_objects(new_solver_session) -> None:
     assert path_lines_data["lines"].size == 76000
     assert path_lines_data["velocity"].size == 76152
 
-    assert path_lines_data["lines"][100].x == 2
+    assert path_lines_data["lines"][100].node == 2
+    assert all(path_lines_data["lines"][100].node_data == [100, 101])
 
 
 def test_field_data_errors(new_solver_session) -> None:
