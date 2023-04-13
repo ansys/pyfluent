@@ -802,29 +802,29 @@ class MeshingQueries:
     def GetFaceZonesOfRegions(self, object, region_name_list) -> Any:
         """GetFaceZonesOfRegions."""
         request = MeshingQueriesProtoModule.GetFaceZonesOfRegionsRequest()
-        request.input = object
+        request.object = object
         for region in region_name_list:
-            request.inputs.append(region)
+            request.regions.append(region)
         response = self.service.GetFaceZonesOfRegions(request)
-        return response.outputs
+        return response.zone_ids
 
     def GetFaceZonesOfLabels(self, object, label_name_list) -> Any:
         """GetFaceZonesOfLabels."""
         request = MeshingQueriesProtoModule.GetFaceZonesOfLabelsRequest()
-        request.input = object
+        request.object = object
         for label in label_name_list:
-            request.inputs.append(label)
+            request.labels.append(label)
         response = self.service.GetFaceZonesOfLabels(request)
-        return response.outputs
+        return response.zone_ids
 
     def GetFaceZoneIdListOfLabels(self, object, zone_label_list) -> Any:
         """GetFaceZoneIdListOfLabels."""
         request = MeshingQueriesProtoModule.GetFaceZoneIdListOfLabelsRequest()
-        request.input = object
+        request.object = object
         for zone_label in zone_label_list:
-            request.inputs.append(zone_label)
+            request.labels.append(zone_label)
         response = self.service.GetFaceZoneIdListOfLabels(request)
-        return response.outputs
+        return response.zone_ids
 
     def GetFaceZonesOfObjects(self, object_list) -> Any:
         """GetFaceZonesOfObjects."""
@@ -845,11 +845,11 @@ class MeshingQueries:
     def GetFaceZoneIdListOfRegions(self, object, region_list) -> Any:
         """GetFaceZoneIdListOfRegions."""
         request = MeshingQueriesProtoModule.GetFaceZoneIdListOfRegionsRequest()
-        request.input = object
+        request.object = object
         for region in region_list:
-            request.inputs.append(region)
+            request.labels.append(region)
         response = self.service.GetFaceZoneIdListOfRegions(request)
-        return response.outputs
+        return response.zone_ids
 
     def GetPrismCellZones(self, list_or_pattern) -> Any:
         """GetPrismCellZones."""
