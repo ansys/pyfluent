@@ -596,6 +596,14 @@ class MeshingQueriesService:
         return self._stub.GetRegionsOfFaceZones(request, metadata=self._metadata)
 
     @catch_grpc_error
+    def FindJoinPairs(
+        self,
+        request: MeshingQueriesProtoModule.FindJoinPairsRequest,
+    ) -> MeshingQueriesProtoModule.FindJoinPairsResponse:
+        """FindJoinPairs rpc of MeshingQueriesService."""
+        return self._stub.FindJoinPairs(request, metadata=self._metadata)
+
+    @catch_grpc_error
     def GetRegionNameListOfFaceZones(
         self,
         request: MeshingQueriesProtoModule.GetRegionNameListOfFaceZonesRequest,
@@ -1274,6 +1282,26 @@ class MeshingQueries:
         for id in face_zone_id_list:
             request.inputs.append(id)
         response = self.service.GetRegionsOfFaceZones(request)
+        return response.outputs
+
+    def FindJoinPairs(
+        self, list_or_pattern, join_tolerance, absolute_tolerance, join_angle
+    ) -> Any:
+        """FindJoinPairs."""
+        request = MeshingQueriesProtoModule.FindJoinPairsRequest()
+        if isinstance(list_or_pattern, str):
+            request.input_1 = list_or_pattern
+        elif isinstance(list_or_pattern, list):
+            if isinstance(list_or_pattern[0], int):
+                for items in list_or_pattern:
+                    request.int_inputs.append(items)
+            elif isinstance(list_or_pattern[0], str):
+                for items in list_or_pattern:
+                    request.string_inputs.append(items)
+        request.input_2 = join_tolerance
+        request.input_3 = absolute_tolerance
+        request.input_4 = join_angle
+        response = self.service.FindJoinPairs(request)
         return response.outputs
 
     def GetRegionNameListOfFaceZones(self, list_or_pattern) -> Any:

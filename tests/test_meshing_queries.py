@@ -322,6 +322,20 @@ def test_meshing_queries(new_mesh_session):
         [29, 30, 31, 32, 33, 34]
     ) == ["fluid"]
 
+    assert (
+        str(meshing_session.meshing_queries.FindJoinPairs("outlet", 0.1, True, 40))
+        == "[]"
+    )
+
+    assert (
+        str(meshing_session.meshing_queries.FindJoinPairs([32], 0.1, True, 40)) == "[]"
+    )
+
+    assert (
+        str(meshing_session.meshing_queries.FindJoinPairs(["outlet"], 0.1, True, 40))
+        == "[]"
+    )
+
     assert meshing_session.meshing_queries.GetRegionNameListOfFaceZones(
         [29, 30, 31, 32, 33, 34]
     ) == ["fluid"]
