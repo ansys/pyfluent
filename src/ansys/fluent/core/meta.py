@@ -236,6 +236,7 @@ class PyReferenceObjectMeta(PyLocalBaseMeta):
             property_editor_data = top_most_parent.accessor(
                 "AnsysUser", session
             )                 
+            #import pdb; pdb.set_trace()
             obj, cmd_data = property_editor_data.get_object_and_command_data_from_properties_info({'path':path, 'properties':{},'type':location})  
             self._object = obj                                                      
         return wrapper
