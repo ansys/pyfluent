@@ -1361,16 +1361,17 @@ class FieldData:
             ]
         )
         fields = extract_fields(self._service.get_fields(fields_request))
-        vector_field_data = next(iter(fields.values()))
         pathlines_data = next(iter(fields.values()))
 
+        def _get_surfaces_data(parent_class, surf_id, _data_type):
+            return parent_class(
+                surf_id,
+                pathlines_data[surf_id][_data_type],
+            )
+
         if surface_name:
-            vertices_data = Vertices(
-                surface_ids[0], pathlines_data[surface_ids[0]]["vertices"]
-            )
-            lines_data = FacesConnectivity(
-                surface_ids[0], pathlines_data[surface_ids[0]]["lines"]
-            )
+            vertices_data = _get_surfaces_data(Vertices, surface_ids[0], "vertices")
+            lines_data = _get_surfaces_data(FacesConnectivity, surface_ids[0], "lines")
             field_data = ScalarFieldData(
                 surface_ids[0], pathlines_data[surface_ids[0]][field_name]
             )
@@ -1383,12 +1384,8 @@ class FieldData:
             path_lines_dict = {}
             for surface_id in surface_ids:
                 path_lines_dict[surface_id] = {
-                    "vertices": Vertices(
-                        surface_id, pathlines_data[surface_id]["vertices"]
-                    ),
-                    "lines": FacesConnectivity(
-                        surface_id, pathlines_data[surface_id]["lines"]
-                    ),
+                    "vertices": _get_surfaces_data(Vertices, surface_id, "vertices"),
+                    "lines": _get_surfaces_data(FacesConnectivity, surface_id, "lines"),
                     field_name: ScalarFieldData(
                         surface_id, pathlines_data[surface_id][field_name]
                     ),
