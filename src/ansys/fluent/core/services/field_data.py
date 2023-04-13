@@ -865,10 +865,7 @@ class ScalarFieldData(_FieldDataBase):
             self.scalar_data = data
 
     def __init__(self, i_d, data):
-        self._data = []
-        for _data in data:
-            self._data.append(ScalarFieldData._ScalarData(_data))
-        super().__init__(i_d, self._data)
+        super().__init__(i_d, [ScalarFieldData._ScalarData(_data) for _data in data])
 
 
 class Vector:
@@ -897,11 +894,10 @@ class VectorFieldData(_FieldDataBase):
 
     def __init__(self, i_d, data, scale):
         data.shape = data.size // 3, 3
-        self._data = []
         self._scale = scale
-        for x, y, z in data:
-            self._data.append(VectorFieldData._VectorData(x, y, z))
-        super().__init__(i_d, self._data)
+        super().__init__(
+            i_d, [VectorFieldData._VectorData(x, y, z) for x, y, z in data]
+        )
 
     @property
     def scale(self):
@@ -915,10 +911,7 @@ class Vertices(_FieldDataBase):
 
     def __init__(self, i_d, data):
         data.shape = data.size // 3, 3
-        self._data = []
-        for x, y, z in data:
-            self._data.append(Vertices._Vertex(x, y, z))
-        super().__init__(i_d, self._data)
+        super().__init__(i_d, [(Vertices._Vertex(x, y, z)) for x, y, z in data])
 
 
 class FacesCentroid(_FieldDataBase):
@@ -928,10 +921,7 @@ class FacesCentroid(_FieldDataBase):
 
     def __init__(self, i_d, data):
         data.shape = data.size // 3, 3
-        self._data = []
-        for x, y, z in data:
-            self._data.append(FacesCentroid._Centroid(x, y, z))
-        super().__init__(i_d, self._data)
+        super().__init__(i_d, [(FacesCentroid._Centroid(x, y, z)) for x, y, z in data])
 
 
 class FacesConnectivity(_FieldDataBase):
@@ -941,16 +931,16 @@ class FacesConnectivity(_FieldDataBase):
             self.node_data = node_data
 
     def __init__(self, i_d, data):
-        self._data = []
+        faces_data = []
         i = 0
 
         while i < len(data):
-            self._data.append(
+            faces_data.append(
                 FacesConnectivity._Faces(data[i], data[i + 1 : i + 1 + data[i]])
             )
             i = i + 1 + data[i]
 
-        super().__init__(i_d, self._data)
+        super().__init__(i_d, faces_data)
 
 
 class FacesNormal(_FieldDataBase):
@@ -960,10 +950,7 @@ class FacesNormal(_FieldDataBase):
 
     def __init__(self, i_d, data):
         data.shape = data.size // 3, 3
-        self._data = []
-        for x, y, z in data:
-            self._data.append(FacesNormal._Normal(x, y, z))
-        super().__init__(i_d, self._data)
+        super().__init__(i_d, [FacesNormal._Normal(x, y, z) for x, y, z in data])
 
 
 class FieldData:
