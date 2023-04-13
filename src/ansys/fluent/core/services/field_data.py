@@ -838,7 +838,7 @@ def extract_fields(chunk_iterator):
     return fields_data
 
 
-class _FieldDataBase:
+class BaseFieldData:
     def __init__(self, i_d, data):
         self._data = data
         self._id = i_d
@@ -859,13 +859,13 @@ class _FieldDataBase:
         return self._data[item]
 
 
-class ScalarFieldData(_FieldDataBase):
-    class _ScalarData:
+class ScalarFieldData(BaseFieldData):
+    class ScalarData:
         def __init__(self, data):
             self.scalar_data = data
 
     def __init__(self, i_d, data):
-        super().__init__(i_d, [ScalarFieldData._ScalarData(_data) for _data in data])
+        super().__init__(i_d, [ScalarFieldData.ScalarData(_data) for _data in data])
 
 
 class Vector:
@@ -887,45 +887,43 @@ class Vector:
         return self._z
 
 
-class VectorFieldData(_FieldDataBase):
-    class _VectorData(Vector):
+class VectorFieldData(BaseFieldData):
+    class VectorData(Vector):
         def __init__(self, x, y, z):
             super().__init__(x, y, z)
 
     def __init__(self, i_d, data, scale):
         data.shape = data.size // 3, 3
         self._scale = scale
-        super().__init__(
-            i_d, [VectorFieldData._VectorData(x, y, z) for x, y, z in data]
-        )
+        super().__init__(i_d, [VectorFieldData.VectorData(x, y, z) for x, y, z in data])
 
     @property
     def scale(self):
         return self._scale
 
 
-class Vertices(_FieldDataBase):
-    class _Vertex(Vector):
+class Vertices(BaseFieldData):
+    class Vertex(Vector):
         def __init__(self, x, y, z):
             super().__init__(x, y, z)
 
     def __init__(self, i_d, data):
         data.shape = data.size // 3, 3
-        super().__init__(i_d, [(Vertices._Vertex(x, y, z)) for x, y, z in data])
+        super().__init__(i_d, [(Vertices.Vertex(x, y, z)) for x, y, z in data])
 
 
-class FacesCentroid(_FieldDataBase):
-    class _Centroid(Vector):
+class FacesCentroid(BaseFieldData):
+    class Centroid(Vector):
         def __init__(self, x, y, z):
             super().__init__(x, y, z)
 
     def __init__(self, i_d, data):
         data.shape = data.size // 3, 3
-        super().__init__(i_d, [(FacesCentroid._Centroid(x, y, z)) for x, y, z in data])
+        super().__init__(i_d, [(FacesCentroid.Centroid(x, y, z)) for x, y, z in data])
 
 
-class FacesConnectivity(_FieldDataBase):
-    class _Faces:
+class FacesConnectivity(BaseFieldData):
+    class Faces:
         def __init__(self, node_count, node_data):
             self.node_count = node_count
             self.node_data = node_data
@@ -936,21 +934,21 @@ class FacesConnectivity(_FieldDataBase):
 
         while i < len(data):
             faces_data.append(
-                FacesConnectivity._Faces(data[i], data[i + 1 : i + 1 + data[i]])
+                FacesConnectivity.Faces(data[i], data[i + 1 : i + 1 + data[i]])
             )
             i = i + 1 + data[i]
 
         super().__init__(i_d, faces_data)
 
 
-class FacesNormal(_FieldDataBase):
-    class _Normal(Vector):
+class FacesNormal(BaseFieldData):
+    class Normal(Vector):
         def __init__(self, x, y, z):
             super().__init__(x, y, z)
 
     def __init__(self, i_d, data):
         data.shape = data.size // 3, 3
-        super().__init__(i_d, [FacesNormal._Normal(x, y, z) for x, y, z in data])
+        super().__init__(i_d, [FacesNormal.Normal(x, y, z) for x, y, z in data])
 
 
 class FieldData:
