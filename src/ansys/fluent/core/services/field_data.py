@@ -862,10 +862,10 @@ class BaseFieldData:
 
 
 class ScalarFieldData(BaseFieldData):
-    """Get scalar field data on a surface."""
+    """Container for scalar field data."""
 
     class ScalarData:
-        """Stores and provides the data as a scalar."""
+        """Store and provide the data as a scalar."""
 
         def __init__(self, data):
             self.scalar_data = data
@@ -896,10 +896,10 @@ class Vector:
 
 
 class VectorFieldData(BaseFieldData):
-    """Get vector field data on a surface."""
+    """Container for vector field data."""
 
     class VectorData(Vector):
-        """Stores and provides the data as a vector."""
+        """Store and provide the data as vector."""
 
         def __init__(self, x, y, z):
             super().__init__(x, y, z)
@@ -915,10 +915,10 @@ class VectorFieldData(BaseFieldData):
 
 
 class Vertices(BaseFieldData):
-    """Get surface data (vertices)."""
+    """Container for Vertex data."""
 
     class Vertex(Vector):
-        """Stores and provides the data as a vector of Vertex."""
+        """Store and provide the data as a vector of Vertex."""
 
         def __init__(self, x, y, z):
             super().__init__(x, y, z)
@@ -929,10 +929,10 @@ class Vertices(BaseFieldData):
 
 
 class FacesCentroid(BaseFieldData):
-    """Get surface data (faces centroids)."""
+    """Container for Faces Centroid data."""
 
     class Centroid(Vector):
-        """Stores and provides the data as a vector of Centroid."""
+        """Store and provide the data as a vector of Faces Centroid."""
 
         def __init__(self, x, y, z):
             super().__init__(x, y, z)
@@ -943,10 +943,10 @@ class FacesCentroid(BaseFieldData):
 
 
 class FacesConnectivity(BaseFieldData):
-    """Get surface data (faces connectivity)."""
+    """Container for Faces Connectivity data."""
 
     class Faces:
-        """Stores and provides the data as a vector of Faces."""
+        """Store and provide the data as an array of Faces Connectivity."""
 
         def __init__(self, node_count, node_data):
             self.node_count = node_count
@@ -966,10 +966,10 @@ class FacesConnectivity(BaseFieldData):
 
 
 class FacesNormal(BaseFieldData):
-    """Get surface data (faces normals)."""
+    """Container for Faces Normal data."""
 
     class Normal(Vector):
-        """Stores and provides the data as a vector of Normal."""
+        """Store and provide the data as a vector of Faces Normal."""
 
         def __init__(self, x, y, z):
             super().__init__(x, y, z)
@@ -1151,10 +1151,9 @@ class FieldData:
 
         Returns
         -------
-        Union[
-        Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid],
+        Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid,
         Dict[int, Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid]]]
-            Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid]
+            Either of Vertices, FacesConnectivity, FacesNormal or FacesCentroid
             if surface name is provided as input.
             Dictionary containing a map of surface IDs to Union[Vertices, FacesConnectivity,
             FacesNormal, FacesCentroid] if surface_ids is provided as input.
