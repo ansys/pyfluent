@@ -82,10 +82,20 @@ class InputPort:
         while True:
             if self.line == "":
                 self.line = self.file.readline()
+                # Capture multiline string and replace newline characters with
+                # "<newline>" before passing to tokenizer
+                if self.line.count('"') % 2:
+                    while True:
+                        next_line = self.file.readline()
+                        self.line = self.line.rstrip() + "<newline>" + next_line
+                        if '"' in next_line:
+                            break
             if self.line == "":
                 return eof_object
             token, self.line = re.match(InputPort.tokenizer, self.line).groups()
             if token != "" and not token.startswith(";"):
+                # Replace back "<newline>" to newline character after tokenizing
+                token = token.replace("<newline>", "\n")
                 return token
 
 

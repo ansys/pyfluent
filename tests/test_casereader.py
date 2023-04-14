@@ -5,6 +5,7 @@ import shutil
 import pytest
 
 from ansys.fluent.core import examples
+from ansys.fluent.core.filereader import lispy
 from ansys.fluent.core.filereader.casereader import (
     CaseReader,
     InputParameter,
@@ -222,3 +223,7 @@ def test_case_reader_input_parameter():
     assert momentum.units == "kg m s^-1"
     assert momentum.numeric_value == 12.4
     assert momentum.value == "12.4 [kg m s^-1]"
+
+
+def test_lispy_for_multiline_string():
+    assert lispy.parse('(define x "abc\ndef")') == ["define", "x", '"abc\ndef"']
