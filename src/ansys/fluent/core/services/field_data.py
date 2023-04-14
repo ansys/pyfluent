@@ -883,15 +883,15 @@ class Vector:
         self._z = z
 
     @property
-    def x(self):
+    def x(self) -> float:
         return self._x
 
     @property
-    def y(self):
+    def y(self) -> float:
         return self._y
 
     @property
-    def z(self):
+    def z(self) -> float:
         return self._z
 
 
@@ -910,7 +910,7 @@ class VectorFieldData(BaseFieldData):
         super().__init__(i_d, [VectorFieldData.VectorData(x, y, z) for x, y, z in data])
 
     @property
-    def scale(self):
+    def scale(self) -> float:
         return self._scale
 
 
@@ -957,10 +957,9 @@ class FacesConnectivity(BaseFieldData):
         i = 0
 
         while i < len(data):
-            faces_data.append(
-                FacesConnectivity.Faces(data[i], data[i + 1 : i + 1 + data[i]])
-            )
-            i = i + 1 + data[i]
+            end = i + 1 + data[i]
+            faces_data.append(FacesConnectivity.Faces(data[i], data[i + 1 : end]))
+            i = end
 
         super().__init__(i_d, faces_data)
 
@@ -1085,7 +1084,7 @@ class FieldData:
         -------
         Union[ScalarFieldData, Dict[int, ScalarFieldData]]
             ScalarFieldData if surface name is provided as input.
-            Dictionary containing a map of surface IDs to ScalarFieldData if surface_ids is provided as input.
+            Dictionary containing a map of surface IDs to ScalarFieldData if surface_ids are provided as input.
         """
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
@@ -1153,10 +1152,10 @@ class FieldData:
         -------
         Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid,
         Dict[int, Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid]]]
-            Either of Vertices, FacesConnectivity, FacesNormal or FacesCentroid
+            Either of Vertices, FacesConnectivity, FacesNormal, or FacesCentroid
             if surface name is provided as input.
-            Dictionary containing a map of surface IDs to Union[Vertices, FacesConnectivity,
-            FacesNormal, FacesCentroid] if surface_ids is provided as input.
+            Dictionary containing a map of surface IDs to Either of Vertices, FacesConnectivity,
+            FacesNormal, or FacesCentroid if surface_ids are provided as input.
         """
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
@@ -1253,7 +1252,7 @@ class FieldData:
         Union[VectorFieldData, Dict[int, VectorFieldData]]
             VectorFieldData if surface name is provided as input.
             Dictionary containing a map of surface IDs to VectorFieldData
-            if surface_ids is provided as input.
+            if surface_ids are provided as input.
         """
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
