@@ -46,7 +46,7 @@ For comprehensive information on PyFluent, see the latest release
 
 On the `PyFluent Issues <https://github.com/pyansys/pyfluent/issues>`_ page, you can create
 issues to submit questions, report bugs, and request new features. To reach
-the PyAnsys support team, email `pyansys.support@ansys.com <pyansys.support@ansys.com>`_.
+the PyAnsys support team, email `pyansys.core@ansys.com <pyansys.core@ansys.com>`_.
 
 Installation
 ------------
@@ -91,7 +91,7 @@ To launch Fluent from Python, use the ``launch_fluent`` method:
 
 On Windows systems the environment variable ``AWP_ROOT<ver>`` is configured
 when Fluent is installed, where ``<ver>`` is the Fluent release number such as
-``231`` for release 2023 R1.  PyFluent automatically uses this environment
+``231`` for release 2023 R1. PyFluent automatically uses this environment
 variable to locate the latest Fluent installation. On Linux systems configure
 ``AWP_ROOT<ver>`` to point to the absolute path of an Ansys installation such as
 ``/apps/ansys_inc/v231``.
