@@ -839,6 +839,8 @@ def extract_fields(chunk_iterator):
 
 
 class BaseFieldData:
+    """Contain common properties required by all field data types."""
+
     def __init__(self, i_d, data):
         self._data = data
         self._id = i_d
@@ -860,7 +862,11 @@ class BaseFieldData:
 
 
 class ScalarFieldData(BaseFieldData):
+    """Get scalar field data on a surface."""
+
     class ScalarData:
+        """Stores and provides the data as a scalar."""
+
         def __init__(self, data):
             self.scalar_data = data
 
@@ -869,6 +875,8 @@ class ScalarFieldData(BaseFieldData):
 
 
 class Vector:
+    """Stores the data in form of a vector (x, y, z)"""
+
     def __init__(self, x, y, z):
         self._x = x
         self._y = y
@@ -888,7 +896,11 @@ class Vector:
 
 
 class VectorFieldData(BaseFieldData):
+    """Get vector field data on a surface."""
+
     class VectorData(Vector):
+        """Stores and provides the data as a vector."""
+
         def __init__(self, x, y, z):
             super().__init__(x, y, z)
 
@@ -903,7 +915,11 @@ class VectorFieldData(BaseFieldData):
 
 
 class Vertices(BaseFieldData):
+    """Get surface data (vertices)."""
+
     class Vertex(Vector):
+        """Stores and provides the data as a vector of Vertex."""
+
         def __init__(self, x, y, z):
             super().__init__(x, y, z)
 
@@ -913,7 +929,11 @@ class Vertices(BaseFieldData):
 
 
 class FacesCentroid(BaseFieldData):
+    """Get surface data (faces centroids)."""
+
     class Centroid(Vector):
+        """Stores and provides the data as a vector of Centroid."""
+
         def __init__(self, x, y, z):
             super().__init__(x, y, z)
 
@@ -923,7 +943,11 @@ class FacesCentroid(BaseFieldData):
 
 
 class FacesConnectivity(BaseFieldData):
+    """Get surface data (faces connectivity)."""
+
     class Faces:
+        """Stores and provides the data as a vector of Faces."""
+
         def __init__(self, node_count, node_data):
             self.node_count = node_count
             self.node_data = node_data
@@ -942,7 +966,11 @@ class FacesConnectivity(BaseFieldData):
 
 
 class FacesNormal(BaseFieldData):
+    """Get surface data (faces normals)."""
+
     class Normal(Vector):
+        """Stores and provides the data as a vector of Normal."""
+
         def __init__(self, x, y, z):
             super().__init__(x, y, z)
 
@@ -1055,8 +1083,9 @@ class FieldData:
 
         Returns
         -------
-        Dict[int, np.array]
-            Dictionary containing a map of surface IDs to the scalar field.
+        Union[ScalarFieldData, Dict[int, ScalarFieldData]]
+            ScalarFieldData if surface name is provided as input.
+            Dictionary containing a map of surface IDs to ScalarFieldData if surface_ids is provided as input.
         """
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
@@ -1122,8 +1151,13 @@ class FieldData:
 
         Returns
         -------
-        Dict[int, np.array]
-            Dictionary containing a map of surface IDs to surface data.
+        Union[
+        Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid],
+        Dict[int, Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid]]]
+            Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid]
+            if surface name is provided as input.
+            Dictionary containing a map of surface IDs to Union[Vertices, FacesConnectivity,
+            FacesNormal, FacesCentroid] if surface_ids is provided as input.
         """
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
@@ -1217,8 +1251,10 @@ class FieldData:
 
         Returns
         -------
-        Dict[int, Tuple[np.array, float]]
-            Dictionary containing a map of surface IDs to a tuple of vector field and vector scale.
+        Union[VectorFieldData, Dict[int, VectorFieldData]]
+            VectorFieldData if surface name is provided as input.
+            Dictionary containing a map of surface IDs to VectorFieldData
+            if surface_ids is provided as input.
         """
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
@@ -1311,7 +1347,7 @@ class FieldData:
 
         Returns
         -------
-        Dict[int, Dict[str, np.array]]
+        Dict
             Dictionary containing a map of surface IDs to the pathline data
             For example, pathlines connectivity, vertices, and field.
         """
