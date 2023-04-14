@@ -895,6 +895,15 @@ class Vector:
         return self._z
 
 
+def _resolve_into_array_of_vectors(data):
+    if data.size % 3:
+        raise ValueError(
+            "Data set has to be resolved as set of vectors."
+            "The length of data set should always be in multiples of 3."
+        )
+    data.shape = data.size // 3, 3
+
+
 class VectorFieldData(BaseFieldData):
     """Container for vector field data."""
 
@@ -905,7 +914,7 @@ class VectorFieldData(BaseFieldData):
             super().__init__(x, y, z)
 
     def __init__(self, i_d, data, scale):
-        data.shape = data.size // 3, 3
+        _resolve_into_array_of_vectors(data)
         self._scale = scale
         super().__init__(i_d, [VectorFieldData.VectorData(x, y, z) for x, y, z in data])
 
@@ -924,7 +933,7 @@ class Vertices(BaseFieldData):
             super().__init__(x, y, z)
 
     def __init__(self, i_d, data):
-        data.shape = data.size // 3, 3
+        _resolve_into_array_of_vectors(data)
         super().__init__(i_d, [(Vertices.Vertex(x, y, z)) for x, y, z in data])
 
 
@@ -938,7 +947,7 @@ class FacesCentroid(BaseFieldData):
             super().__init__(x, y, z)
 
     def __init__(self, i_d, data):
-        data.shape = data.size // 3, 3
+        _resolve_into_array_of_vectors(data)
         super().__init__(i_d, [(FacesCentroid.Centroid(x, y, z)) for x, y, z in data])
 
 
@@ -974,7 +983,7 @@ class FacesNormal(BaseFieldData):
             super().__init__(x, y, z)
 
     def __init__(self, i_d, data):
-        data.shape = data.size // 3, 3
+        _resolve_into_array_of_vectors(data)
         super().__init__(i_d, [FacesNormal.Normal(x, y, z) for x, y, z in data])
 
 
