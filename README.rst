@@ -46,7 +46,7 @@ For comprehensive information on PyFluent, see the latest release
 
 On the `PyFluent Issues <https://github.com/pyansys/pyfluent/issues>`_ page, you can create
 issues to submit questions, report bugs, and request new features. To reach
-the PyAnsys support team, email `pyansys.core@ansys.com <pyansys.core@ansys.com>`_.
+the project support team, email `pyansys.core@ansys.com <pyansys.core@ansys.com>`_.
 
 Installation
 ------------
