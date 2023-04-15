@@ -977,7 +977,7 @@ class FacesNormal(BaseFieldData):
     """Container for Faces Normal data."""
 
     class Normal(Vector):
-        """Store and provide the data as a vector of Faces Normal."""
+        """Stores and provides the face's normal data as a vector."""
 
         def __init__(self, x, y, z):
             super().__init__(x, y, z)
