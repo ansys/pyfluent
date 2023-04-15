@@ -908,7 +908,7 @@ class VectorFieldData(BaseFieldData):
     """Container for vector field data."""
 
     class VectorData(Vector):
-        """Store and provide the data as vector."""
+        """Stores and provides the data as a vector."""
 
         def __init__(self, x, y, z):
             super().__init__(x, y, z)
