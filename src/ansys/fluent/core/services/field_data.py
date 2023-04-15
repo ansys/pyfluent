@@ -862,7 +862,7 @@ class BaseFieldData:
 
 
 class ScalarFieldData(BaseFieldData):
-    """Container for scalar field data."""
+    """Contains scalar field data."""
 
     class ScalarData:
         """Store and provide the data as a scalar."""
