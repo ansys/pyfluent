@@ -952,7 +952,7 @@ class FacesCentroid(BaseFieldData):
 
 
 class FacesConnectivity(BaseFieldData):
-    """Container for Faces Connectivity data."""
+    """Provides the container for face connectivity data."""
 
     class Faces:
         """Store and provide the data as an array of Faces Connectivity."""
