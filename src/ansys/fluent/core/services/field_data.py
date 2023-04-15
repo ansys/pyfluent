@@ -924,7 +924,7 @@ class VectorFieldData(BaseFieldData):
 
 
 class Vertices(BaseFieldData):
-    """Container for Vertex data."""
+    """Provides a container for vertex data."""
 
     class Vertex(Vector):
         """Store and provide the data as a vector of Vertex."""
