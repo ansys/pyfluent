@@ -875,7 +875,7 @@ class ScalarFieldData(BaseFieldData):
 
 
 class Vector:
-    """Stores the data in form of a vector (x, y, z)"""
+    """Stores the data in form of a vector ``(x, y, z)``."""
 
     def __init__(self, x, y, z):
         self._x = x
