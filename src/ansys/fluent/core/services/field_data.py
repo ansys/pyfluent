@@ -839,7 +839,7 @@ def extract_fields(chunk_iterator):
 
 
 class BaseFieldData:
-    """Contain common properties required by all field data types."""
+    """Contains common properties required by all field data types."""
 
     def __init__(self, i_d, data):
         self._data = data
