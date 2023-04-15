@@ -927,7 +927,7 @@ class Vertices(BaseFieldData):
     """Provides a container for vertex data."""
 
     class Vertex(Vector):
-        """Store and provide the data as a vector of Vertex."""
+        """Stores and provides the data as a vector of a vertex."""
 
         def __init__(self, x, y, z):
             super().__init__(x, y, z)
