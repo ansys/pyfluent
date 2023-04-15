@@ -898,8 +898,8 @@ class Vector:
 def _resolve_into_array_of_vectors(data):
     if data.size % 3:
         raise ValueError(
-            "Data set has to be resolved as set of vectors."
-            "The length of data set should always be in multiples of 3."
+            "Dataset must be resolved as a set of vectors."
+            "The length of the dataset should always be in multiples of 3."
         )
     data.shape = data.size // 3, 3
 
