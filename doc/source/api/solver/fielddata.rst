@@ -138,7 +138,7 @@ You can call the ``get_pathlines_field_data`` method to get pathlines field data
   >>> path_lines_data["lines"][100].node_data
   [100, 101]
 
-Dictionary containing a map of surface IDs to the pathline data is returned.
+Dictionary containing a map of surface IDs to the path-line data is returned.
 or example, pathlines connectivity, vertices, and field.
 
 
