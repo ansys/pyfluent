@@ -59,8 +59,8 @@ the ``get_surface_data`` method and specifying ``Vertices`` for ``data_type``.
   >>> vertices_data[5].z
   0.0036200774
 
-You can call the same method to get the corresponding surface face normals, and centroids
-by specifying ``FacesNormal`` and ``FacesCentroid`` respectively for ``data_type``.
+You can call the same method to get the corresponding surface face normals and centroids.
+For ``data_type``, specifying ``FacesNormal`` and ``FacesCentroid`` respectively.
 
 .. code-block:: python
 
