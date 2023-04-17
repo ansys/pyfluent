@@ -86,9 +86,9 @@ the ``get_surface_data`` method and specifying ``FacesConnectivity`` for ``data_
   [12, 13, 17, 16]
 
 
-If a surface name is provided as input response contains, face vertices, connectivity, normal, or centroid data.
-If surface IDs are provided as input response contains, a dictionary containing a map of surface IDs to face
-vertices, connectivity, normal, or centroid data..
+If a surface name is provided as input, the response contains face vertices, connectivity data, and normal or centroid data.
+If surface IDs are provided as input, the response is a dictionary containing a map of surface IDs to face
+vertices, connectivity data, and normal or centroid data.
 
 Get scalar field data
 ~~~~~~~~~~~~~~~~~~~~~
