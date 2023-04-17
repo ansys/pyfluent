@@ -865,7 +865,7 @@ class ScalarFieldData(BaseFieldData):
     """Contains scalar field data."""
 
     class ScalarData:
-        """Store and provide the data as a scalar."""
+        """Stores and provides the data as a scalar."""
 
         def __init__(self, data):
             self.scalar_data = data
