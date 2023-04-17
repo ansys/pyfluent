@@ -905,7 +905,7 @@ def _resolve_into_array_of_vectors(data):
 
 
 class VectorFieldData(BaseFieldData):
-    """Container for vector field data."""
+    """Provides a container for vector field data."""
 
     class VectorData(Vector):
         """Stores and provides the data as a vector."""
