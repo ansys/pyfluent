@@ -924,7 +924,7 @@ class VectorFieldData(BaseFieldData):
 
 
 class Vertices(BaseFieldData):
-    """Provides a container for vertex data."""
+    """Provides a container for the vertex data."""
 
     class Vertex(Vector):
         """Stores and provides the data as a vector of a vertex."""
@@ -938,10 +938,10 @@ class Vertices(BaseFieldData):
 
 
 class FacesCentroid(BaseFieldData):
-    """Container for Faces Centroid data."""
+    """Provides the container for the face centroid data."""
 
     class Centroid(Vector):
-        """Store and provide the data as a vector of Faces Centroid."""
+        """Stores and provides the face centroid data as a vector."""
 
         def __init__(self, x, y, z):
             super().__init__(x, y, z)
@@ -952,10 +952,10 @@ class FacesCentroid(BaseFieldData):
 
 
 class FacesConnectivity(BaseFieldData):
-    """Provides the container for face connectivity data."""
+    """Provides the container for the face connectivity data."""
 
     class Faces:
-        """Store and provide the data as an array of Faces Connectivity."""
+        """Stores and provides the face connectivity data as an array."""
 
         def __init__(self, node_count, node_data):
             self.node_count = node_count
@@ -974,7 +974,7 @@ class FacesConnectivity(BaseFieldData):
 
 
 class FacesNormal(BaseFieldData):
-    """Container for Faces Normal data."""
+    """Provides the container for the face normal data."""
 
     class Normal(Vector):
         """Stores and provides the face's normal data as a vector."""
@@ -1318,7 +1318,7 @@ class FieldData:
         velocity_domain: Optional[str] = "all-phases",
         zones: Optional[list] = [],
     ) -> Dict:
-        """Get pathlines field data on a surface.
+        """Get the pathline's field data on a surface.
 
         Parameters
         ----------
