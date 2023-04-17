@@ -1355,7 +1355,7 @@ class FieldData:
         Returns
         -------
         Dict
-            Dictionary containing a map of surface IDs to the pathline data
+            Dictionary containing a map of surface IDs to the pathline data.
             For example, pathlines connectivity, vertices, and field.
         """
         surface_ids = _get_surface_ids(
