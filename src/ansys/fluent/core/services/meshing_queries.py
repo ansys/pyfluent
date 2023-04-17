@@ -644,44 +644,44 @@ class MeshingQueries:
     def GetZonesOfType(self, type) -> Any:
         """GetZonesOfType."""
         request = MeshingQueriesProtoModule.GetZonesOfTypeRequest()
-        request.input = type
+        request.type = type
         response = self.service.GetZonesOfType(request)
-        return response.outputs
+        return response.zone_ids
 
     def GetZonesOfGroup(self, group) -> Any:
         """GetZonesOfGroup."""
         request = MeshingQueriesProtoModule.GetZonesOfGroupRequest()
-        request.input = group
+        request.group = group
         response = self.service.GetZonesOfGroup(request)
-        return response.outputs
+        return response.zone_ids
 
     def GetFaceZonesOfFilter(self, filter) -> Any:
         """GetFaceZonesOfFilter."""
         request = MeshingQueriesProtoModule.GetFaceZonesOfFilterRequest()
-        request.input = filter
+        request.filter = filter
         response = self.service.GetFaceZonesOfFilter(request)
-        return response.outputs
+        return response.face_zone_ids
 
     def GetCellZonesOfFilter(self, filter) -> Any:
         """GetCellZonesOfFilter."""
         request = MeshingQueriesProtoModule.GetCellZonesOfFilterRequest()
-        request.input = filter
+        request.filter = filter
         response = self.service.GetCellZonesOfFilter(request)
-        return response.outputs
+        return response.cell_zone_ids
 
     def GetEdgeZonesOfFilter(self, filter) -> Any:
         """GetEdgeZonesOfFilter."""
         request = MeshingQueriesProtoModule.GetEdgeZonesOfFilterRequest()
-        request.input = filter
+        request.filter = filter
         response = self.service.GetEdgeZonesOfFilter(request)
-        return response.outputs
+        return response.edge_zone_ids
 
     def GetNodeZonesOfFilter(self, filter) -> Any:
         """GetNodeZonesOfFilter."""
         request = MeshingQueriesProtoModule.GetNodeZonesOfFilterRequest()
-        request.input = filter
+        request.filter = filter
         response = self.service.GetNodeZonesOfFilter(request)
-        return response.outputs
+        return response.node_zone_ids
 
     def GetObjectsOfType(self, type) -> Any:
         """GetObjectsOfType."""
@@ -693,23 +693,23 @@ class MeshingQueries:
     def GetFaceZoneIdListOfObject(self, object) -> Any:
         """GetFaceZoneIdListOfObject."""
         request = MeshingQueriesProtoModule.GetFaceZoneIdListOfObjectRequest()
-        request.input = object
+        request.object = object
         response = self.service.GetFaceZoneIdListOfObject(request)
-        return response.outputs
+        return response.face_zone_ids
 
     def GetEdgeZoneIdListOfObject(self, object) -> Any:
         """GetEdgeZoneIdListOfObject."""
         request = MeshingQueriesProtoModule.GetEdgeZoneIdListOfObjectRequest()
-        request.input = object
+        request.object = object
         response = self.service.GetEdgeZoneIdListOfObject(request)
-        return response.outputs
+        return response.edge_zone_ids
 
     def GetCellZoneIdListOfObject(self, object) -> Any:
         """GetCellZoneIdListOfObject."""
         request = MeshingQueriesProtoModule.GetCellZoneIdListOfObjectRequest()
-        request.input = object
+        request.object = object
         response = self.service.GetCellZoneIdListOfObject(request)
-        return response.outputs
+        return response.cell_zone_ids
 
     def GetFaceZonesSharedByRegionsOfType(self, mesh_object, region_type) -> Any:
         """GetFaceZonesSharedByRegionsOfType."""
@@ -928,50 +928,50 @@ class MeshingQueries:
     def GetUnreferencedEdgeZonesOfFilter(self, filter) -> Any:
         """GetUnreferencedEdgeZonesOfFilter."""
         request = MeshingQueriesProtoModule.GetUnreferencedEdgeZonesOfFilterRequest()
-        request.input = filter
+        request.filter = filter
         response = self.service.GetUnreferencedEdgeZonesOfFilter(request)
-        return response.outputs
+        return response.unreferenced_edge_zone_ids
 
     def GetUnreferencedFaceZonesOfFilter(self, filter) -> Any:
         """GetUnreferencedFaceZonesOfFilter."""
         request = MeshingQueriesProtoModule.GetUnreferencedFaceZonesOfFilterRequest()
-        request.input = filter
+        request.filter = filter
         response = self.service.GetUnreferencedFaceZonesOfFilter(request)
-        return response.outputs
+        return response.unreferenced_face_zone_ids
 
     def GetUnreferencedCellZonesOfFilter(self, filter) -> Any:
         """GetUnreferencedEdgeZonesOfFilter."""
         request = MeshingQueriesProtoModule.GetUnreferencedCellZonesOfFilterRequest()
-        request.input = filter
+        request.filter = filter
         response = self.service.GetUnreferencedCellZonesOfFilter(request)
-        return response.outputs
+        return response.unreferenced_cell_zone_ids
 
     def GetUnreferencedEdgeZoneIdListOfPattern(self, pattern) -> Any:
         """GetUnreferencedEdgeZoneIdListOfPattern."""
         request = (
             MeshingQueriesProtoModule.GetUnreferencedEdgeZoneIdListOfPatternRequest()
         )
-        request.input = pattern
+        request.pattern = pattern
         response = self.service.GetUnreferencedEdgeZoneIdListOfPattern(request)
-        return response.outputs
+        return response.unreferenced_edge_zone_ids
 
     def GetUnreferencedFaceZoneIdListOfPattern(self, pattern) -> Any:
         """GetUnreferencedFaceZoneIdListOfPattern."""
         request = (
             MeshingQueriesProtoModule.GetUnreferencedFaceZoneIdListOfPatternRequest()
         )
-        request.input = pattern
+        request.pattern = pattern
         response = self.service.GetUnreferencedFaceZoneIdListOfPattern(request)
-        return response.outputs
+        return response.unreferenced_face_zone_ids
 
     def GetUnreferencedCellZoneIdListOfPattern(self, pattern) -> Any:
         """GetUnreferencedCellZoneIdListOfPattern."""
         request = (
             MeshingQueriesProtoModule.GetUnreferencedCellZoneIdListOfPatternRequest()
         )
-        request.input = pattern
+        request.pattern = pattern
         response = self.service.GetUnreferencedCellZoneIdListOfPattern(request)
-        return response.outputs
+        return response.unreferenced_cell_zone_ids
 
     def GetMaxsizeCellZoneByVolume(self, list_or_pattern) -> Any:
         """GetMaxsizeCellZoneByVolume."""
