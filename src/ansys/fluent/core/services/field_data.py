@@ -1162,9 +1162,9 @@ class FieldData:
         -------
         Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid,
         Dict[int, Union[Vertices, FacesConnectivity, FacesNormal, FacesCentroid]]]
-             If a surface name is provided as input, face vertices, connectivity, normal, or centroid data.
+             If a surface name is provided as input, face vertices, connectivity data, and normal or centroid data are returned.
              If surface IDs are provided as input, a dictionary containing a map of surface IDs to face
-             vertices, connectivity, normal, or centroid data.
+             vertices, connectivity data, and normal or centroid data is returned.
         """
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
