@@ -1092,8 +1092,9 @@ class FieldData:
         Returns
         -------
         Union[ScalarFieldData, Dict[int, ScalarFieldData]]
-            ScalarFieldData if surface name is provided as input.
-            Dictionary containing a map of surface IDs to ScalarFieldData if surface_ids are provided as input.
+            If a surface name is provided as input, scalar field data is returned. If surface
+            IDs are provided as input, a dictionary containing a map of surface IDs to scalar
+            field data.
         """
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
