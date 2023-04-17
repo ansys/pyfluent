@@ -136,7 +136,7 @@ Compute the force acting on the locations specified (should be walls) as a vecto
 
   >>> reduction.force(locations)
 
-Pressure Force
+Pressure force
 ~~~~~~~~~~~~~~
 Compute the pressure force acting on the locations specified (should be walls) as a vector.
 
@@ -144,7 +144,7 @@ Compute the pressure force acting on the locations specified (should be walls) a
 
   >>> reduction.pressure_force(locations)
 
-Viscous Force
+Viscous force
 ~~~~~~~~~~~~~
 Compute the viscous force acting on the locations specified (should be walls) as a vector.
 
@@ -295,3 +295,12 @@ specified locations as shown:
   >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet2"]]
   >>> )
   [ 1.15005117e-24,  1.15218653e-24, -6.60723735e-20]
+
+.. currentmodule:: ansys.fluent.core.solver.function
+
+.. autosummary::
+    :toctree: _autosummary
+    :template: flobject-module-template.rst
+    :recursive:
+
+    reduction

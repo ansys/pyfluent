@@ -1,6 +1,4 @@
-"""
-Unit tests for flobject module
-"""
+"""Unit tests for flobject module."""
 # import codegen.settingsgen
 from collections.abc import MutableMapping
 import io
@@ -8,6 +6,7 @@ import os
 import weakref
 
 import pytest
+from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import find_children
@@ -16,7 +15,7 @@ os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
 
 
 class Setting:
-    """Base class for setting objects"""
+    """Base class for setting objects."""
 
     def __init__(self, parent):
         self.parent = None if parent is None else weakref.proxy(parent)
@@ -41,7 +40,7 @@ class Setting:
 
 
 class PrimitiveSetting(Setting):
-    """Primitive setting objects"""
+    """Primitive setting objects."""
 
     value = None
 
@@ -92,7 +91,7 @@ class StringList(PrimitiveSetting):
 
 
 class Group(Setting):
-    """Group objects"""
+    """Group objects."""
 
     objtype = "group"
     children = {}
@@ -135,7 +134,7 @@ class Group(Setting):
 
 
 class NamedObject(Setting, MutableMapping):
-    """NamedObject class"""
+    """NamedObject class."""
 
     objtype = "named-object"
     commands = {}
@@ -199,7 +198,7 @@ class NamedObject(Setting, MutableMapping):
 
 
 class ListObject(Setting):
-    """ListObject class"""
+    """ListObject class."""
 
     objtype = "list-object"
     commands = {}
@@ -259,7 +258,7 @@ class ListObject(Setting):
 
 
 class Command(Setting):
-    """Command class"""
+    """Command class."""
 
     objtype = "command"
     # To be overridden by child classes
@@ -286,7 +285,7 @@ class Command(Setting):
 
 
 class Root(Group):
-    """Root class"""
+    """Root class."""
 
     class G1(Group):
         class S1(String):
@@ -321,7 +320,7 @@ class Root(Group):
         child_object_type = LC
 
     class Command1(Command):
-        """Command1 class"""
+        """Command1 class."""
 
         class A1(Real):
             value = 2.3
@@ -352,7 +351,7 @@ class Root(Group):
 
 
 class Proxy:
-    """Proxy class"""
+    """Proxy class."""
 
     root = Root
 
@@ -394,12 +393,15 @@ class Proxy:
     def execute_cmd(self, path, command, **kwds):
         return self.get_obj(path).get_command(command)(**kwds)
 
-    def get_attrs(self, path, attrs):
+    def get_attrs(self, path, attrs, recursive=False):
         return self.get_obj(path).get_attrs(attrs)
 
     @classmethod
     def get_static_info(cls):
         return cls.root.get_static_info()
+
+    def is_interactive_mode(self):
+        return False
 
 
 def test_primitives():
@@ -414,7 +416,6 @@ def test_primitives():
     assert r.g_1.b_3() is False
     r.g_1.s_4 = "foo"
     assert r.g_1.s_4() == "foo"
-    return True
 
 
 def test_group():
@@ -425,7 +426,6 @@ def test_group():
     assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "bar"}
     r.g_1.i_2 = 4
     assert r.g_1() == {"r_1": 3.2, "i_2": 4, "b_3": False, "s_4": "bar"}
-    return True
 
 
 def test_settings_input_set_state():
@@ -468,8 +468,6 @@ def test_named_object():
     assert r.n_1.get_object_names() == ["n2", "n4", "n1", "n5"]
     assert r.n_1["n5"]() == {"rl_1": [4.3, 2.1], "sl_1": ["oof", "rab"]}
 
-    return True
-
 
 def test_list_object():
     r = flobject.get_root(Proxy())
@@ -489,8 +487,6 @@ def test_list_object():
     ]
     r.l_1 = [{"il_1": [3], "bl_1": [True, False]}]
     assert r.l_1() == [{"il_1": [3], "bl_1": [True, False]}]
-
-    return True
 
 
 def test_command():
@@ -666,12 +662,15 @@ def test_accessor_methods_on_settings_object(load_static_mixer_case):
     modified = solver.file.read.file_type.allowed_values()
     assert existing == modified
 
-    existing = solver.file.read.file_type.get_attr("read-only?")
+    existing = solver.file.read.file_type.get_attr("read-only?", bool)
     modified = solver.file.read.file_type.is_read_only()
-    assert existing == modified
+    if solver.get_fluent_version() < "23.2.0":
+        assert existing == modified
+    else:
+        assert existing == None and modified == False
 
     existing = solver.setup.boundary_conditions.velocity_inlet.get_attr(
-        "user-creatable?"
+        "user-creatable?", bool
     )
     modified = solver.setup.boundary_conditions.velocity_inlet.user_creatable()
     assert existing == modified
@@ -790,3 +789,28 @@ def test_find_children_from_fluent_solver_session(load_static_mixer_case):
         "number_of_coefficients",
         "coefficients",
     ]
+
+
+@pytest.mark.fluent_232
+def test_settings_matching_names(new_solver_session_no_transcript) -> None:
+    solver = new_solver_session_no_transcript
+
+    with pytest.raises(AttributeError) as msg:
+        solver.setup.mod
+
+    assert (
+        msg.value.args[0] == "mod is not an allowed Settings objects name.\n"
+        "The most similar names are: models."
+    )
+
+    with pytest.raises(ValueError) as msg:
+        solver.setup.models.viscous.model = "k_epsilon"
+
+    assert (
+        msg.value.args[0] == "k_epsilon is not an allowed model name.\n"
+        "The most similar names are: k-epsilon."
+    )
+
+    energy_parent = solver.setup._get_parent_of_active_child_names("energy")
+
+    assert energy_parent == "\n energy is a child of models \n"

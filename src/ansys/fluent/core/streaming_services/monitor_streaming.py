@@ -21,6 +21,7 @@ class MonitorsManager(StreamingService):
     """
 
     def __init__(self, session_id: str, service):
+        """__init__ method of MonitorsManager class."""
         super().__init__(
             target=MonitorsManager._process_streaming,
             streaming_service=service,

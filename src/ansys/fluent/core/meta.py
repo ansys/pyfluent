@@ -1,6 +1,7 @@
 """Metaclasses used in various explicit classes in PyFluent."""
 from abc import ABCMeta
 from collections.abc import MutableMapping
+import inspect
 from pprint import pformat
 
 # pylint: disable=unused-private-member
@@ -28,6 +29,64 @@ class Attribute:
 
     def __get__(self, obj, objtype=None):
         return self.function(obj)
+
+
+class Command:
+    def __init__(self, method):
+        self.arguments_attrs = {}
+        cmd_args = inspect.signature(method).parameters
+        for arg_name in cmd_args:
+            if arg_name != "self":
+                self.arguments_attrs[arg_name] = {}
+
+        def _init(_self, obj):
+            _self.obj = obj
+
+        self.command_cls = type(
+            "command",
+            (),
+            {
+                "__init__": _init,
+                "__call__": lambda _self, *args, **kwargs: method(
+                    _self.obj, *args, **kwargs
+                ),
+                "argument_attribute": lambda _self, argument_name, attr_name: self.arguments_attrs[
+                    argument_name
+                ][
+                    attr_name
+                ](
+                    _self.obj
+                ),
+                "arguments": lambda _self: list(self.arguments_attrs.keys()),
+            },
+        )
+
+    def __set_name__(self, obj, name):
+        self.obj = obj
+        if not hasattr(obj, "commands"):
+            obj.commands = {}
+        obj.commands[name] = {}
+
+    def __get__(self, obj, obj_type=None):
+        if hasattr(self, "command"):
+            return self.command
+        else:
+            return self.command_cls(obj)
+
+
+def CommandArgs(command_object, argument_name):
+    def wrapper(attribute):
+        if argument_name in command_object.arguments_attrs:
+            command_object.arguments_attrs[argument_name].update(
+                {attribute.__name__: attribute}
+            )
+        else:
+            command_object.arguments_attrs[argument_name] = {
+                attribute.__name__: attribute
+            }
+        return attribute
+
+    return wrapper
 
 
 class PyLocalBaseMeta(type):
@@ -109,7 +168,7 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
                 value_annotation = annotations.get("_value")
             else:
                 value_annotation = annotations.get("value")
-            self._type = value_annotation
+            self.type = value_annotation
             reset_on_change = (
                 hasattr(self, "_reset_on_change")
                 and getattr(self, "_reset_on_change")()
@@ -172,6 +231,12 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
         def wrapper(self, parent, api_helper):
             self._parent = parent
             self._api_helper = api_helper(self)
+            self.type = "object"
+            commands = getattr(self.__class__, "commands", None)
+            if commands:
+                for cmd in commands:
+                    cmd_class = self.__class__.__dict__[cmd]
+                    cmd_class.command = getattr(cmd_class, "command_cls")(self)
 
             def update(clss):
                 for name, cls in clss.__dict__.items():
@@ -184,7 +249,10 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
                             name,
                             cls(self, api_helper),
                         )
-                    if cls.__class__.__name__ == "PyLocalNamedObjectMeta":
+                    if (
+                        cls.__class__.__name__ == "PyLocalNamedObjectMeta"
+                        or cls.__class__.__name__ == "PyLocalNamedObjectMetaAbstract"
+                    ):
                         setattr(
                             self,
                             cls.PLURAL,
@@ -234,7 +302,6 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
 
             def update_state(clss):
                 for name, cls in clss.__dict__.items():
-
                     availability = (
                         getattr(self, "_availability")(name)
                         if hasattr(self, "_availability")
@@ -297,6 +364,13 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
             self._name = name
             self._api_helper = api_helper(self)
             self._parent = parent
+            self.type = "object"
+
+            commands = getattr(self.__class__, "commands", None)
+            if commands:
+                for cmd in commands:
+                    cmd_class = self.__class__.__dict__[cmd]
+                    cmd_class.command = getattr(cmd_class, "command_cls")(self)
 
             def update(clss):
                 for name, cls in clss.__dict__.items():
@@ -309,7 +383,10 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
                             name,
                             cls(self, api_helper),
                         )
-                    if cls.__class__.__name__ == "PyLocalNamedObjectMeta":
+                    elif (
+                        cls.__class__.__name__ == "PyLocalNamedObjectMeta"
+                        or cls.__class__.__name__ == "PyLocalNamedObjectMetaAbstract"
+                    ):
                         setattr(
                             self,
                             cls.PLURAL,
@@ -339,6 +416,7 @@ class PyLocalContainer(MutableMapping):
         self.__object_class = object_class
         self.__collection: dict = {}
         self.__api_helper = api_helper
+        self.type = "named-object"
 
     def __iter__(self):
         return iter(self.__collection)
@@ -360,3 +438,38 @@ class PyLocalContainer(MutableMapping):
 
     def __delitem__(self, name):
         del self.__collection[name]
+
+    def _get_unique_chid_name(self):
+        children = list(self)
+        index = 0
+        while True:
+            unique_name = f"{self._PyLocalContainer__object_class.__name__}-{index}"
+            if unique_name not in children:
+                break
+            index += 1
+        return unique_name
+
+    @Command
+    def Delete(self, names):
+        for item in names:
+            self.__delitem__(item)
+
+    @CommandArgs(Delete, "names")
+    def type(self):
+        return "string-list"
+
+    @CommandArgs(Delete, "names")
+    def allowed_values(self):
+        return list(self)
+
+    @Command
+    def Create(self, name=None):
+        if not name:
+            name = self._get_unique_chid_name()
+
+        new_object = self.__getitem__(name)
+        return new_object._name
+
+    @CommandArgs(Create, "name")
+    def type(self):
+        return "string"

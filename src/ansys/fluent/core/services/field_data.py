@@ -1,7 +1,6 @@
 """Wrappers over FieldData gRPC service of Fluent."""
-import difflib
 from enum import IntEnum
-from functools import partial, reduce
+from functools import reduce
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
 import grpc
@@ -10,7 +9,16 @@ import numpy as np
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
 from ansys.fluent.core.services.error_handler import catch_grpc_error
-from ansys.fluent.core.services.interceptors import TracingInterceptor
+from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
+from ansys.fluent.core.solver.error_message import allowed_name_error_message
+
+
+def override_help_text(func, func_to_be_wrapped):
+    """Override function help text."""
+    func.__doc__ = "\n" + func_to_be_wrapped.__doc__
+    func.__name__ = func_to_be_wrapped.__qualname__
+    return func
+
 
 # this can be switched to False in scenarios where the field_data request inputs are
 # fed by results of field_info queries, which might be true in GUI code.
@@ -18,30 +26,39 @@ validate_inputs = True
 
 
 class FieldDataService:
+    """FieldData service of Fluent."""
+
     def __init__(self, channel: grpc.Channel, metadata):
-        tracing_interceptor = TracingInterceptor()
-        intercept_channel = grpc.intercept_channel(channel, tracing_interceptor)
+        """__init__ method of FieldDataService class."""
+        intercept_channel = grpc.intercept_channel(
+            channel, TracingInterceptor(), BatchInterceptor()
+        )
         self.__stub = FieldGrpcModule.FieldDataStub(intercept_channel)
         self.__metadata = metadata
 
     @catch_grpc_error
-    def get_range(self, request):
+    def get_scalar_fields_range(self, request):
+        """GetRange rpc of FieldData service."""
         return self.__stub.GetRange(request, metadata=self.__metadata)
 
     @catch_grpc_error
-    def get_fields_info(self, request):
+    def get_scalar_fields_info(self, request):
+        """GetFieldsInfo rpc of FieldData service."""
         return self.__stub.GetFieldsInfo(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def get_vector_fields_info(self, request):
+        """GetVectorFieldsInfo rpc of FieldData service."""
         return self.__stub.GetVectorFieldsInfo(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def get_surfaces_info(self, request):
+        """GetSurfacesInfo rpc of FieldData service."""
         return self.__stub.GetSurfacesInfo(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def get_fields(self, request):
+        """GetFields rpc of FieldData service."""
         return self.__stub.GetFields(request, metadata=self.__metadata)
 
 
@@ -50,26 +67,41 @@ class FieldInfo:
 
     Methods
     -------
-    get_range(field: str, node_value: bool, surface_ids: List[int])
+    get_scalar_fields_range(field: str, node_value: bool, surface_ids: List[int])
     -> List[float]
         Get the range (minimum and maximum values) of the field.
 
-    get_fields_info(self) -> dict
+    get_scalar_fields_info(self) -> dict
         Get fields information (field name, domain, and section).
 
     get_vector_fields_info(self) -> dict
-        Get vector fields information (vector of and components).
+        Get vector fields information.
 
     get_surfaces_info(self) -> dict
         Get surfaces information (surface name, ID, and type).
     """
 
     def __init__(self, service: FieldDataService):
+        """__init__ method of FieldInfo class."""
         self._service = service
 
-    def get_range(
+    def get_scalar_fields_range(
         self, field: str, node_value: bool = False, surface_ids: List[int] = None
     ) -> List[float]:
+        """Get the range (minimum and maximum values) of the field.
+
+        Parameters
+        ----------
+        field: str
+            Name of the field
+        node_value: bool
+        surface_ids : List[int], optional
+            List of surface IDS for the surface data.
+
+        Returns
+        -------
+        List[float]
+        """
         if not surface_ids:
             surface_ids = []
         request = FieldDataProtoModule.GetRangeRequest()
@@ -78,12 +110,18 @@ class FieldInfo:
         request.surfaceid.extend(
             [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]
         )
-        response = self._service.get_range(request)
+        response = self._service.get_scalar_fields_range(request)
         return [response.minimum, response.maximum]
 
-    def get_fields_info(self) -> dict:
+    def get_scalar_fields_info(self) -> dict:
+        """Get fields information (field name, domain, and section).
+
+        Returns
+        -------
+        Dict
+        """
         request = FieldDataProtoModule.GetFieldsInfoRequest()
-        response = self._service.get_fields_info(request)
+        response = self._service.get_scalar_fields_info(request)
         return {
             field_info.solverName: {
                 "display_name": field_info.displayName,
@@ -94,6 +132,12 @@ class FieldInfo:
         }
 
     def get_vector_fields_info(self) -> dict:
+        """Get vector fields information (vector components).
+
+        Returns
+        -------
+        Dict
+        """
         request = FieldDataProtoModule.GetVectorFieldsInfoRequest()
         response = self._service.get_vector_fields_info(request)
         return {
@@ -106,6 +150,12 @@ class FieldInfo:
         }
 
     def get_surfaces_info(self) -> dict:
+        """Get surfaces information (surface name, ID, and type).
+
+        Returns
+        -------
+        Dict
+        """
         request = FieldDataProtoModule.GetSurfacesInfoResponse()
         response = self._service.get_surfaces_info(request)
         info = {
@@ -120,31 +170,22 @@ class FieldInfo:
         return info
 
 
-def closest_allowed_names(trial_name: str, allowed_names: str) -> List[str]:
-    f = partial(difflib.get_close_matches, trial_name, allowed_names)
-    return f(cutoff=0.6, n=5) or f(cutoff=0.3, n=1)
-
-
-def allowed_name_error_message(
-    context: str, trial_name: str, allowed_values: List[str]
-) -> str:
-    message = f"{trial_name} is not an allowed {context} name.\n"
-    matches = closest_allowed_names(trial_name, allowed_values)
-    if matches:
-        message += f"The most similar names are: {', '.join(matches)}."
-    return message
-
-
 def unavailable_field_error_message(context: str, field_name: str) -> str:
+    """Error message for unavailable fields."""
     return f"{field_name} is not a currently available {context}."
 
 
 class FieldNameError(ValueError):
+    """Exception class for errors in field name."""
+
     pass
 
 
 class ScalarFieldNameError(FieldNameError):
+    """Exception class for errors in scalar field name."""
+
     def __init__(self, field_name: str, allowed_values: List[str]):
+        """__init__ method of ScalarFieldNameError class."""
         self.field_name = field_name
         super().__init__(
             allowed_name_error_message("scalar field", field_name, allowed_values)
@@ -152,7 +193,10 @@ class ScalarFieldNameError(FieldNameError):
 
 
 class VectorFieldNameError(FieldNameError):
+    """Exception class for errors in vector field name."""
+
     def __init__(self, field_name: str, allowed_values: List[str]):
+        """__init__ method of VectorFieldNameError class."""
         self.field_name = field_name
         super().__init__(
             allowed_name_error_message("vector field", field_name, allowed_values)
@@ -160,23 +204,34 @@ class VectorFieldNameError(FieldNameError):
 
 
 class FieldUnavailable(RuntimeError):
+    """Exception class for when field is unavailable."""
+
     pass
 
 
 class ScalarFieldUnavailable(FieldUnavailable):
+    """Exception class for when scalar field is unavailable."""
+
     def __init__(self, field_name: str):
+        """__init__ method of ScalarFieldUnavailable class."""
         self.field_name = field_name
         super().__init__(unavailable_field_error_message("scalar field", field_name))
 
 
 class VectorFieldUnavailable(FieldUnavailable):
+    """Exception class for when vector field is unavailable."""
+
     def __init__(self, field_name: str):
+        """__init__ method of VectorFieldUnavailable class."""
         self.field_name = field_name
         super().__init__(unavailable_field_error_message("vector field", field_name))
 
 
 class SurfaceNameError(ValueError):
+    """Exception class for errors in surface name."""
+
     def __init__(self, surface_name: str, allowed_values: List[str]):
+        """__init__ method of SurfaceNameError class."""
         self.surface_name = surface_name
         super().__init__(
             allowed_name_error_message("surface", surface_name, allowed_values)
@@ -248,7 +303,7 @@ class _AllowedScalarFieldNames(_AllowedFieldNames):
     _field_unavailable_error = ScalarFieldUnavailable
 
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
-        field_dict = self._field_info.get_fields_info()
+        field_dict = self._field_info.get_scalar_fields_info()
         return (
             field_dict
             if (not respect_data_valid or self._is_data_valid())
@@ -304,6 +359,7 @@ class FieldTransaction:
         allowed_scalar_field_names,
         allowed_vector_field_names,
     ):
+        """__init__ method of FieldTransaction class."""
         self._service = service
         self._field_info = field_info
         self._fields_request = get_fields_request()
@@ -320,24 +376,36 @@ class FieldTransaction:
             **dict(field_name=self._allowed_scalar_field_names),
             **surface_args,
         }
-        self.add_scalar_fields_request = _FieldMethod(
-            field_data_accessor=self.add_scalar_fields_request,
-            args_allowed_values_accessors=scalar_field_args,
+        self.add_scalar_fields_request = override_help_text(
+            _FieldMethod(
+                field_data_accessor=self.add_scalar_fields_request,
+                args_allowed_values_accessors=scalar_field_args,
+            ),
+            self.add_scalar_fields_request,
         )
-        self.add_vector_fields_request = _FieldMethod(
-            field_data_accessor=self.add_vector_fields_request,
-            args_allowed_values_accessors={
-                **dict(field_name=self._allowed_vector_field_names),
-                **surface_args,
-            },
+        self.add_vector_fields_request = override_help_text(
+            _FieldMethod(
+                field_data_accessor=self.add_vector_fields_request,
+                args_allowed_values_accessors={
+                    **dict(field_name=self._allowed_vector_field_names),
+                    **surface_args,
+                },
+            ),
+            self.add_vector_fields_request,
         )
-        self.add_surfaces_request = _FieldMethod(
-            field_data_accessor=self.add_surfaces_request,
-            args_allowed_values_accessors=surface_args,
+        self.add_surfaces_request = override_help_text(
+            _FieldMethod(
+                field_data_accessor=self.add_surfaces_request,
+                args_allowed_values_accessors=surface_args,
+            ),
+            self.add_surfaces_request,
         )
-        self.add_pathlines_fields_request = _FieldMethod(
-            field_data_accessor=self.add_pathlines_fields_request,
-            args_allowed_values_accessors=scalar_field_args,
+        self.add_pathlines_fields_request = override_help_text(
+            _FieldMethod(
+                field_data_accessor=self.add_pathlines_fields_request,
+                args_allowed_values_accessors=scalar_field_args,
+            ),
+            self.add_pathlines_fields_request,
         )
 
     def add_surfaces_request(
@@ -653,6 +721,7 @@ def get_fields_request():
         chunkSize=_FieldDataConstants.chunk_size,
     )
 
+
 def extract_fields(chunk_iterator):
     """Extracts field data via a server call."""
 
@@ -709,7 +778,6 @@ def extract_fields(chunk_iterator):
 
     fields_data = {}
     for chunk in chunk_iterator:
-
         payload_info = chunk.payloadInfo
         field = _extract_field(
             _FieldDataConstants.proto_field_type_to_np_data_type[
@@ -756,7 +824,13 @@ def extract_fields(chunk_iterator):
         surface_data = payload_data.get(surface_id)
         if surface_data:
             if payload_info.fieldName in surface_data:
-                surface_data.update({payload_info.fieldName: np.concatenate((surface_data[payload_info.fieldName], field))})
+                surface_data.update(
+                    {
+                        payload_info.fieldName: np.concatenate(
+                            (surface_data[payload_info.fieldName], field)
+                        )
+                    }
+                )
             else:
                 surface_data.update({payload_info.fieldName: field})
         else:
@@ -773,6 +847,7 @@ class FieldData:
         field_info: FieldInfo,
         is_data_valid: Callable[[], bool],
     ):
+        """__init__ method of FieldData class."""
         self._service = service
         self._field_info = field_info
         self.is_data_valid = is_data_valid
@@ -797,27 +872,40 @@ class FieldData:
             **dict(field_name=self._allowed_scalar_field_names),
             **surface_args,
         }
-        self.get_scalar_field_data = _FieldMethod(
-            field_data_accessor=self.get_scalar_field_data,
-            args_allowed_values_accessors=scalar_field_args,
+        self.get_scalar_field_data = override_help_text(
+            _FieldMethod(
+                field_data_accessor=self.get_scalar_field_data,
+                args_allowed_values_accessors=scalar_field_args,
+            ),
+            self.get_scalar_field_data,
         )
-        self.get_vector_field_data = _FieldMethod(
-            field_data_accessor=self.get_vector_field_data,
-            args_allowed_values_accessors={
-                **dict(field_name=self._allowed_vector_field_names),
-                **surface_args,
-            },
+        self.get_vector_field_data = override_help_text(
+            _FieldMethod(
+                field_data_accessor=self.get_vector_field_data,
+                args_allowed_values_accessors={
+                    **dict(field_name=self._allowed_vector_field_names),
+                    **surface_args,
+                },
+            ),
+            self.get_vector_field_data,
         )
-        self.get_surface_data = _FieldMethod(
-            field_data_accessor=self.get_surface_data,
-            args_allowed_values_accessors=surface_args,
+        self.get_surface_data = override_help_text(
+            _FieldMethod(
+                field_data_accessor=self.get_surface_data,
+                args_allowed_values_accessors=surface_args,
+            ),
+            self.get_surface_data,
         )
-        self.get_pathlines_field_data = _FieldMethod(
-            field_data_accessor=self.get_pathlines_field_data,
-            args_allowed_values_accessors=scalar_field_args,
+        self.get_pathlines_field_data = override_help_text(
+            _FieldMethod(
+                field_data_accessor=self.get_pathlines_field_data,
+                args_allowed_values_accessors=scalar_field_args,
+            ),
+            self.get_pathlines_field_data,
         )
 
     def new_transaction(self):
+        """Create a new field transaction."""
         return FieldTransaction(
             self._service,
             self._field_info,

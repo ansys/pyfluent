@@ -7,6 +7,7 @@ variables, respectively.
 """
 import csv
 import os
+from pathlib import Path
 import subprocess
 from typing import Dict, List
 
@@ -118,22 +119,15 @@ def _parse_host_info(host_info):
         A list of dictionaries formatted as:
         {'machine-name' : ###, 'core-count' : ###}
     """
-
-    if (
-        (":" in host_info or "," in host_info)
-        and not "\\" in host_info
-        and not "/" in host_info
-    ):
-        # Filenames generally shouldn't have ':',
-        # so assume it's a string list and parse accordingly
-        sMod = 1 if host_info[0] == "[" else 0
-        sBeg = sMod
-        sEnd = len(host_info) - sMod
-        machine_data = host_info[sBeg:sEnd].split(",")
-    else:
-        # Read from the file
+    if Path(host_info).is_file():
+        # Only opens a file if it exists
         with open(host_info, "r") as f:
-            machine_data = f.read().splitlines()
+            host_info = f.read()
+
+    sMod = 1 if host_info[0] == "[" else 0
+    sBeg = sMod
+    sEnd = len(host_info) - sMod
+    machine_data = host_info[sBeg:sEnd].split(",")
 
     return _parse_machine_data(machine_data)
 
@@ -156,7 +150,6 @@ def _parse_machine_data(machine_data):
         The return value is a list of dictionaries formatted as:
         {'machine-name' : ###, 'core-count' : ###}
     """
-
     machineList = MachineList()
 
     for datum in machine_data:
@@ -223,7 +216,6 @@ def _restrict_machines_to_core_count(old_machine_list, ncores):
     total of x cores are available on the machines and x <= ncores, then the
     returned machine list will be identical to the input.
     """
-
     if ncores >= old_machine_list.number_of_cores:
         return old_machine_list
 
@@ -263,9 +255,12 @@ def _construct_machine_list_uge(host_filename):
         peReader = csv.reader(peFile, dialect="pemachines")
         for row in peReader:
             if len(row) == 0:
-                break
-            m = Machine(row[0], int(row[1]), row[2], None if len(row) == 4 else row[3])
-            machineList.add(m)
+                continue
+            if len(row) == 1:
+                row.append(1)
+            else:
+                row[1] = int(row[1])
+            machineList.add(Machine(*row))
     return machineList
 
 
@@ -289,15 +284,18 @@ def _construct_machine_list_pbs(host_filename):
     with open(host_filename, "r") as pbsFile:
         for hostname in pbsFile:
             hostname = hostname.rstrip("\r\n")
+            if len(hostname) == 0:
+                continue
             if hostname in machineDict:
-                machineDict[hostname].number_of_cores += 1
+                machineDict[hostname] += 1
             else:
-                machineDict[hostname] = Machine(hostname, 1)
+                machineDict[hostname] = 1
 
     # Convert accumulated dictionary to a MachineList
     machineList = MachineList()
-    for m in list(machineDict.values()):
-        machineList.add(m)
+    for m in list(machineDict):
+        machine = Machine(m, machineDict[m])
+        machineList.add(machine)
     return machineList
 
 
@@ -336,7 +334,7 @@ def _construct_machine_list_slurm(host_list):
     # Regular expression to identify if a host entry contains a single range of machines
     pRange = re.compile(r"\[.*\]")
     # Regular expressions to identify a single machine ID within brackets
-    pIDOne = re.compile(r"^.*\[(\d*)$")
+    pIDOne = re.compile(r"^.*\[(\d*).$")
     pIDOneNext = re.compile(r"^(\d*)")
     # Regular expressions to identify a range of machine IDs within brackets
     pIDRangeFirst = re.compile(r"^.*\[(\d*)-(\d*).*$")
@@ -375,7 +373,7 @@ def _construct_machine_list_slurm(host_list):
             else:
                 machineIDs = pIDOne.match(hosts)
                 id = int(machineIDs.group(1))
-                numch = len(re.compile(r"^.*\[(\d*)$").match(hosts).group(1))
+                numch = len(re.compile(r"^.*\[(\d*).$").match(hosts).group(1))
                 machineName = machinePrefix + str(id).rjust(numch, "0")
                 machineList.add(Machine(machineName, coresPerMachine))
 

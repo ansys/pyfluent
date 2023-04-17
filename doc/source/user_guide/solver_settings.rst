@@ -5,7 +5,7 @@ Specify solver settings
 PyFluent supports using :ref:`ref_solver_tui_commands` and :ref:`ref_settings`
 to specify solver settings.
 
-The examples on this page show how to use :ref:`ref_solver_tui_commands` to
+The examples on this page show how you use :ref:`ref_solver_tui_commands` to
 specify solver settings.
 
 Set steady or transient solution model
@@ -31,8 +31,8 @@ enabling and disabling the steady and unsteady (transient) solution model.
     solver.tui.define.models.steady("yes")
     solver.tui.define.models.unsteady_1st_order("yes")
 
-Set a pressure-based or density-based solver
---------------------------------------------
+Set pressure-based or density-based solver
+------------------------------------------
 This example shows a comparison between the TUI commands and the Python code for
 enabling and disabling the pressure-based and density-based solver models.
 

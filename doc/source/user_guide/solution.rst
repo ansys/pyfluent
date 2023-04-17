@@ -6,7 +6,7 @@ PyFluent allows you to use :ref:`ref_solver_tui_commands` and
 
 Use solver TUI commands
 -----------------------
-The examples on this page show how to use :ref:`ref_solver_tui_commands` to
+The examples on this page show how you use :ref:`ref_solver_tui_commands` to
 apply solution settings.
 
 Select solution method 
@@ -39,7 +39,7 @@ options. Five solution methods (Index-Model) are available: 20-SIMPLE,
 Select solution controls 
 ~~~~~~~~~~~~~~~~~~~~~~~~
 This example shows a comparison between the TUI command and the Python code for
-selecting the pressure velocity controls.
+selecting pressure velocity controls.
 
 **TUI command**
 
@@ -100,7 +100,7 @@ initializing and performing a specified number of iterations.
 
 Use settings objects
 --------------------
-This example shows how to use :ref:`ref_settings` to apply solution settings.
+This example shows how you use :ref:`ref_settings` to apply solution settings.
 
 **Python code**
 

@@ -78,24 +78,24 @@ distributed across more than one machine:
 
 Logging support
 ---------------
-There is also an option to run PyFluent with logging enabled.
-You can use this code to enable logging:
+PyFluent has an option to run with logging enabled.
+This command enables logging:
 
 .. code:: python
 
    pyfluent.set_log_level("ERROR")
 
-You must pass the log level while enabling logging. PyFluent supports any of the
-logging levels (``"CRITICAL"``, ``"ERROR"``, ``"WARNING"``, ``"INFO"``, and ``"DEBUG"``)
-in string or enum format.
+When enabling logging, you must pass the log level. PyFluent supports any of the
+Python logging levels (``"CRITICAL"``, ``"ERROR"``, ``"WARNING"``, ``"INFO"``, and ``"DEBUG"``)
+in string or ``enum`` format.
 
 Scheduler support
 -----------------
-When PyFluent is run within a job scheduler environment :func:`launch_fluent()
-<ansys.fluent.core.launcher.launcher.launch_fluent>` automatically determines
+When PyFluent is run within a job scheduler environment, the :func:`launch_fluent()
+<ansys.fluent.core.launcher.launcher.launch_fluent>` method automatically determines
 the list of machines and core counts to start Fluent with. The supported
 scheduler environments are Univa Grid Engine (UGE), Load Sharing Facility (LSF),
-Portable Batch System (PBS) and Slurm.
+Portable Batch System (PBS), and Slurm.
 
 This example shows a bash shell script that can be submitted to a Slurm
 scheduler using the ```sbatch``` command:  
@@ -126,7 +126,7 @@ Here are a few notes about this example:
 
 - Eight machines with a total of 32 cores are requested. Fluent is started with
   the appropriate command line arguments passed to ``-t`` and ``-cnf``.
-- The variable AWP_ROOT231 is configured so that PyFluent knows where to find
+- The variable ``AWP_ROOT231`` is configured so that PyFluent knows where to find
   the Fluent installation.
 - The code assumes that a Python virtual environment was pre-configured with
   PyFluent installed before the job script is submitted to Slurm. You could
@@ -136,7 +136,7 @@ Here are a few notes about this example:
 
 Once running within the scheduler environment, the
 :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
-method can be used in a few different ways. This example shows how to start up
+method can be used in a few different ways. This example shows how to start
 the three-dimensional, double precision version of Fluent on all the requested
 machines and cores:
 
@@ -154,12 +154,12 @@ pass the ``processor_count`` parameter:
    )
 
 Passing the ``processor_count`` parameter like this forces execution of Fluent on 16
-cores despite the fact that the Slurm submission requests 32 total cores from
+cores, despite the fact that the Slurm submission requests 32 total cores from
 the job scheduler. This behavior may be useful in situations where the scheduler
 environment allocates all the cores on a machine and you know that Fluent may
 not scale well on all the allocated cores.
 
-Finally, if you want to ignore the scheduler allocation you can pass the ``-t``
+Finally, if you want to ignore the scheduler allocation, you can pass the ``-t``
 or ``-t`` and ``-cnf`` arguments to the
 :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` method
 using the ``additional_arguments`` parameter. For local parallel execution, simply pass the ``-t``
@@ -171,7 +171,7 @@ argument:
       precision="double", version="3d", mode="solver", additional_arguments="-t16"
    )
 
-For distributed parallel processing, you would usually pass both parameters:
+For distributed parallel processing, you usually pass both parameters:
 
 .. code:: python
 

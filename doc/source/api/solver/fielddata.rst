@@ -3,13 +3,14 @@
 Field data
 ==========
 
-You can use field data objects to access Fluent surface, scalar, vector, and pathlines data.
+You can use field data objects to access Fluent surface, scalar, vector, and
+pathlines data.
 
 Accessing field data objects
 ----------------------------
 
-In order to access field data, launch the fluent solver, and make field
-data available (for example, by reading case and data files):
+In order to access field data, launch the fluent solver, and make field data
+available (for example, by reading case and data files):
 
 .. code-block:: python
 
@@ -190,12 +191,13 @@ The surface ID is the same one that is passed in the request.
 
 Field name
 ----------
-A request returns multiple fields. The number of fields depends on the request type.
+A request returns multiple fields. The number of fields depends on the request
+type.
 
 Surface request
 ~~~~~~~~~~~~~~~
-The response to a surface request contains any of the following fields, depending on the
-request arguments:
+The response to a surface request contains any of the following fields,
+depending on the request arguments:
 
 - ``faces``, which contain face connectivity
 - ``vertices``, which contain node coordinates
@@ -205,14 +207,15 @@ request arguments:
 
 Scalar field request
 ~~~~~~~~~~~~~~~~~~~~
-The response to a scalar field request contains a single field with the same name as the
-scalar field name passed in the request.
+The response to a scalar field request contains a single field with the same
+name as the scalar field name passed in the request.
 
 Vector field request
 ~~~~~~~~~~~~~~~~~~~~
 The response to a vector field request contains two fields:
 
-- ``vector field``, with the same name as the vector field name that is passed in the request 
+- ``vector field``, with the same name as the vector field name that is passed
+  in the request 
 - ``vector-scale``, a float value indicating the vector scale.
  
 Pathlines field request
@@ -222,22 +225,46 @@ The response to a pathlines field request contains the following fields:
 - ``pathlines-count``, which contains pathlines count.
 - ``lines``, which contain pathlines connectivity.
 - ``vertices``, which contain node coordinates.
-- ``field name``, which contains pathlines field. field name is the same name as the scalar field name passed in the request.
+- ``field name``, which contains pathlines field. field name is the same name as
+  the scalar field name passed in the request.
 - ``particle-time``, which contains  particle time, if requested. 
-- ``additional field name``, which contains  additional field, if requested. additional field name is the same name as the additional field name passed in the request.
+- ``additional field name``, which contains  additional field, if requested.
+  additional field name is the same name as the additional field name passed in
+  the request.
+
+Allowed values
+--------------
+Additionally there is an ``allowed_values`` method provided on all of
+``field_name``, ``surface_name`` and ``surface_ids`` which tells you what object
+names are accessible.
+
+Some sample use cases are demonstrated below:
+
+.. code-block:: python
+
+  >>> field_data.get_scalar_field_data.field_name.allowed_values()
+  ['abs-angular-coordinate', 'absolute-pressure', 'angular-coordinate',
+  'anisotropic-adaption-cells', 'axial-coordinate', 'axial-velocity',
+  'boundary-cell-dist', 'boundary-layer-cells', 'boundary-normal-dist', ...]
+
+  >>> transaction = field_data.new_transaction()
+  >>> transaction.add_scalar_fields_request.field_name.allowed_values()
+  ['abs-angular-coordinate', 'absolute-pressure', 'angular-coordinate',
+  'anisotropic-adaption-cells', 'axial-coordinate', 'axial-velocity',
+  'boundary-cell-dist', 'boundary-layer-cells', 'boundary-normal-dist', ...]
+
+  >>> field_data.get_scalar_field_data.surface_name.allowed_values()
+  ['cold-inlet', 'hot-inlet', 'outlet', 'symmetry-xyplane', 'wall-elbow', 'wall-inlet']
+
+  >>> field_data.get_surface_data.surface_ids.allowed_values()
+  [0, 1, 2, 3, 4, 5]
 
 .. currentmodule:: ansys.fluent.core.services
 
 .. autosummary::
-   :toctree: _autosummary
+    :toctree: _autosummary
+    :template: flobject-class-template.rst
+    :recursive:
 
-.. automethod:: ansys.fluent.core.services.field_data.FieldTransaction.add_surfaces_request
-.. automethod:: ansys.fluent.core.services.field_data.FieldTransaction.add_scalar_fields_request
-.. automethod:: ansys.fluent.core.services.field_data.FieldTransaction.add_vector_fields_request
-.. automethod:: ansys.fluent.core.services.field_data.FieldTransaction.add_pathlines_fields_request
-.. automethod:: ansys.fluent.core.services.field_data.FieldTransaction.get_fields
-
-.. automethod:: ansys.fluent.core.services.field_data.FieldData.get_surface_data
-.. automethod:: ansys.fluent.core.services.field_data.FieldData.get_scalar_field_data
-.. automethod:: ansys.fluent.core.services.field_data.FieldData.get_vector_field_data
-.. automethod:: ansys.fluent.core.services.field_data.FieldData.get_pathlines_field_data
+    field_data.FieldTransaction
+    field_data.FieldData

@@ -22,35 +22,35 @@ unittest: unittest-dev-231
 unittest-dev-222:
 	@echo "Running unittests"
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest -v -m "dev and not fluent_231 and not fluent_232" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
+	@python -m pytest -v -m "dev and fluent_222" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html
 
 unittest-dev-231:
 	@echo "Running unittests"
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest -v -m "dev and not fluent_222" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
+	@python -m pytest -v -m "dev and fluent_231" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html
 
 unittest-dev-232:
 	@echo "Running unittests"
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest -v -m "dev and not fluent_222 and not fluent_231" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
+	@python -m pytest -v -m "dev and fluent_232" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html
 
 unittest-all-222:
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@echo "Running all unittests"
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest -v -m "not fluent_231 and not fluent_232" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc --durations=0
+	@python -m pytest -v -m "fluent_222" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html --durations=0
 
 unittest-all-231:
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@echo "Running all unittests"
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest -v -m "not fluent_222" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc --durations=0
+	@python -m pytest -v -m "fluent_231" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html --durations=0
 
 unittest-all-232:
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@echo "Running all unittests"
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest -v -m "not fluent_222 and not fluent_231" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc --durations=0
+	@python -m pytest -v -m "fluent_232" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html --durations=0
 
 api-codegen:
 	@echo "Running API codegen"
@@ -60,7 +60,18 @@ api-codegen:
 	@python codegen/allapigen.py
 	@rm -rf env
 
-build-doc:
+build-doc-source:
+	@sudo rm -rf doc/source/api/meshing/datamodel
+	@sudo rm -rf doc/source/api/meshing/tui
+	@sudo rm -rf doc/source/api/solver/datamodel
+	@sudo rm -rf doc/source/api/solver/tui
+	@sudo rm -rf doc/source/api/solver/_autosummary/settings
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
+	@pip install -r requirements/requirements_doc.txt
+	@xvfb-run make -C doc html
+
+build-all-docs:
+	@python doc/settings_rstgen.py
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@pip install -r requirements/requirements_doc.txt
 	@xvfb-run make -C doc html

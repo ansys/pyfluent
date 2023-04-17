@@ -1,4 +1,4 @@
-name: Nightly Documentation Build
+name: Nightly Development Documentation Build
 
 on:
   schedule:  # UTC at 0400
@@ -7,7 +7,7 @@ on:
 
 env:
   DOCUMENTATION_CNAME: 'fluent.docs.pyansys.com'
-  DOC_DEPLOYMENT_IMAGE_TAG: v22.2.0
+  DOC_DEPLOYMENT_IMAGE_TAG: v23.1.0
 
 jobs:
   nightly_docs_build:
@@ -20,23 +20,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # used for documentation deployment
-      - name: Get Bot Application Token
-        id: get_workflow_token
-        uses: peter-murray/workflow-application-token-action@v2
-        with:
-          application_id: ${{ secrets.BOT_APPLICATION_ID }}
-          application_private_key: ${{ secrets.BOT_APPLICATION_PRIVATE_KEY }}
-
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: '3.10'
 
       - name: Install OS packages
         run: |
           sudo apt update
-          sudo apt install pandoc libegl1
+          sudo apt-get install pandoc libegl1 make xvfb libfontconfig1 libxrender1 libxkbcommon-x11-0 -y
 
       - name: Install pyfluent
         run: make install
@@ -61,24 +53,32 @@ jobs:
           PYFLUENT_LAUNCH_CONTAINER: 1
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Build Documentation
-        run: make build-doc
+      - name: Build All Documentation
+        run: make build-all-docs
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Upload HTML documentation
-        if: matrix.image-tag == env.DOC_DEPLOYMENT_IMAGE_TAG
+      - name: Zip HTML Documentation before upload
+        run: |
+          sudo apt install zip -y
+          pushd doc/_build/html
+          zip -r ../../../HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip .
+          popd
+
+      - name: Upload HTML Documentation
         uses: actions/upload-artifact@v3
         with:
-          name: documentation-html
-          path: doc/_build/html
+          name: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
           retention-days: 7
 
       - name: "Deploy development documentation"
         if: matrix.image-tag == env.DOC_DEPLOYMENT_IMAGE_TAG
-        uses: pyansys/actions/doc-deploy-dev@v2
+        uses: pyansys/actions/doc-deploy-dev@v3
         with:
+            doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
+            decompress_artifact: true
             cname: ${{ env.DOCUMENTATION_CNAME }}
             token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,11 +1,8 @@
 """Provide a module to generate the documentation classes for Fluent settings
 tree.
-
 Running this module generates a .rst files for the Fluent
 settings classes. The out is placed at:
-
 - doc/source/api/solver/_autosummary/settings
-
 Process
 -------
     - From the settings API classes recursively generate the list of parents for the current class.
@@ -126,16 +123,13 @@ def _populate_rst_from_settings(rst_dir, cls, version):
         r.write(f"{cls_name}\n")
         r.write(f'{"="*(len(cls_name))}\n\n')
         r.write(
-            f".. currentmodule:: ansys.fluent.core.solver.settings_{version}.{file_name}\n\n"
+            f".. autoclass:: ansys.fluent.core.solver.settings_{version}.{file_name}.{cls_name}\n\n"
         )
-        r.write(f".. autoclass:: {cls_name}\n")
-        r.write(f"{istr1}:show-inheritance:\n")
-        r.write(f"{istr1}:undoc-members:\n")
 
         if has_children:
-            r.write(f".. rubric:: Children\n\n")
+            r.write(f".. rubric:: Attributes\n\n")
             data_dict = {}
-            data_dict["Child"] = "Summary"
+            data_dict["Attribute"] = "Summary"
             for child in cls.child_names:
                 child_cls = getattr(cls, child)
                 ref_string = f":ref:`{child} <{child_cls.__module__.split('.')[-1]}>`"
@@ -143,9 +137,9 @@ def _populate_rst_from_settings(rst_dir, cls, version):
             _generate_table_for_rst(r, data_dict)
 
         if has_commands:
-            r.write(f".. rubric:: Commands\n\n")
+            r.write(f".. rubric:: Methods\n\n")
             data_dict = {}
-            data_dict["Command"] = "Summary"
+            data_dict["Method"] = "Summary"
             for child in cls.command_names:
                 child_cls = getattr(cls, child)
                 ref_string = f":ref:`{child} <{child_cls.__module__.split('.')[-1]}>`"
@@ -218,7 +212,7 @@ if __name__ == "__main__":
     if not os.path.exists(rst_dir):
         os.makedirs(rst_dir)
 
-    image_tag = os.getenv("FLUENT_IMAGE_TAG", "v23.1.0")
+    image_tag = os.getenv("FLUENT_IMAGE_TAG", "v23.2.0")
     version = get_version_for_filepath(image_tag.lstrip("v"))
     settings = importlib.import_module(f"ansys.fluent.core.solver.settings_{version}")
     _populate_parents_list(settings.root)

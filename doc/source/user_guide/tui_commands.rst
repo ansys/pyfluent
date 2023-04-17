@@ -1,7 +1,7 @@
 .. _ref_user_guide_tui_commands:
 
-Using TUI commands
-==================
+Use TUI commands
+================
 
 TUI commands refer to a programming interface that mirrors the Fluent TUI (text
 user interface). There is a TUI command hierarchy defined for each of the two
@@ -18,7 +18,7 @@ command abbreviation. To make using PyFluent commands in an interactive
 session easier, you can install a tool such as
 `pyreadline3 <https://github.com/pyreadline3/pyreadline3>`_, which provides
 both command line completion and history. To inspect any PyFluent TUI object further,
-you can use the Python built-in`help <https://docs.python.org/3/library/functions.html#help>`_
+you can use the Python built-in `help <https://docs.python.org/3/library/functions.html#help>`_
 and `dir <https://docs.python.org/3/library/functions.html#dir>`_ functions.
 
 The arguments to a TUI command are those that would be passed in direct
@@ -36,8 +36,8 @@ console to set velocity inlet properties:
 
     /define/boundary_conditions/set/velocity-inlet
 
-This command instigates a sequence of prompts in the console. Assume that you respond
-to each prompt in turn as follows:
+This command instigates a sequence of prompts in the console. Assume that your responses
+to each prompt are as follows:
 
 .. code:: scheme
 
@@ -108,7 +108,7 @@ The following rules are implied in the preceding examples:
   - Each hyphen in a path element is transformed to an underscore.
   - Each question mark in a path element is removed.
 
-- Some are some rules about strings:
+- Here are some rules about strings:
   
   - String-type arguments must be surrounded by quotation marks in Python.
   - A target Fluent TUI argument that is surrounded by quotation marks (like

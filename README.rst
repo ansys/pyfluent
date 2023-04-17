@@ -1,6 +1,6 @@
 PyFluent
 ========
-|pyansys| |pypi| |GH-CI| |MIT| |black|
+|pyansys| |pypi| |GH-CI| |codecov| |MIT| |black| |pre-commit|
 
 .. |pyansys| image:: https://img.shields.io/badge/Py-Ansys-ffc107.svg?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAABDklEQVQ4jWNgoDfg5mD8vE7q/3bpVyskbW0sMRUwofHD7Dh5OBkZGBgW7/3W2tZpa2tLQEOyOzeEsfumlK2tbVpaGj4N6jIs1lpsDAwMJ278sveMY2BgCA0NFRISwqkhyQ1q/Nyd3zg4OBgYGNjZ2ePi4rB5loGBhZnhxTLJ/9ulv26Q4uVk1NXV/f///////69du4Zdg78lx//t0v+3S88rFISInD59GqIH2esIJ8G9O2/XVwhjzpw5EAam1xkkBJn/bJX+v1365hxxuCAfH9+3b9/+////48cPuNehNsS7cDEzMTAwMMzb+Q2u4dOnT2vWrMHu9ZtzxP9vl/69RVpCkBlZ3N7enoDXBwEAAA+YYitOilMVAAAAAElFTkSuQmCC
    :target: https://docs.pyansys.com/
@@ -14,6 +14,9 @@ PyFluent
    :target: https://github.com/pyansys/pyfluent/actions/workflows/ci.yml
    :alt: GH-CI
 
+.. |codecov| image:: https://codecov.io/gh/pyansys/pyfluent/branch/main/graph/badge.svg
+   :target: https://codecov.io/gh/pyansys/pyfluent
+
 .. |MIT| image:: https://img.shields.io/badge/License-MIT-yellow.svg
    :target: https://opensource.org/licenses/MIT
    :alt: MIT
@@ -21,6 +24,10 @@ PyFluent
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg?style=flat
    :target: https://github.com/psf/black
    :alt: Black
+
+.. |pre-commit| image:: https://results.pre-commit.ci/badge/github/pyansys/pyfluent/main.svg
+   :target: https://results.pre-commit.ci/latest/github/pyansys/pyfluent/main
+   :alt: pre-commit.ci status
 
 Overview
 --------
@@ -34,7 +41,7 @@ ability to:
 
 Documentation and issues
 ------------------------
-For comprehesive information on PyFluent, see the latest release
+For comprehensive information on PyFluent, see the latest release
 `documentation <https://fluent.docs.pyansys.com>`_.
 
 On the `PyFluent Issues <https://github.com/pyansys/pyfluent/issues>`_ page, you can create
@@ -82,19 +89,22 @@ To launch Fluent from Python, use the ``launch_fluent`` method:
   solver_session = pyfluent.launch_fluent(mode="solver")
   solver_session.health_check_service.is_serving
 
-On Windows systems the environment variable ``AWP_ROOT<ver>``, is configured
+On Windows systems the environment variable ``AWP_ROOT<ver>`` is configured
 when Fluent is installed, where ``<ver>`` is the Fluent release number such as
-``232`` for release 2022 R2.  PyFluent automatically uses this environment
-variable to locate the Fluent installation. On Linux systems configure
+``231`` for release 2023 R1.  PyFluent automatically uses this environment
+variable to locate the latest Fluent installation. On Linux systems configure
 ``AWP_ROOT<ver>`` to point to the absolute path of an Ansys installation such as
-``/apps/ansys_inc/v232``.
+``/apps/ansys_inc/v231``.
 
 To use a non-default installation location set ``AWP_ROOT<ver>`` or set the
-``PYFLUENT_FLUENT_ROOT`` environment variable to the ``<install
-location>/<version>/fluent`` directory, where ``<version>`` is the Fluent
-release that you would like to use. For example, ``v232`` uses release 2022 R2.
+``PYFLUENT_FLUENT_ROOT`` environment variable to the ``<install location>/<version>/fluent`` directory,
+where ``<version>`` is the Fluent release that you would like to use.
+For example, ``v231`` uses release 2023 R1.
 
-Basic Usage
+For information on other ways of specifying the Fluent location for PyFluent,
+see `Frequently asked questions <https://fluent.docs.pyansys.com/release/0.12/getting_started/faqs.html>`_.
+
+Basic usage
 ~~~~~~~~~~~
 You can use the ``solver_session.tui`` interface to run all Fluent TUI commands:
 
@@ -107,9 +117,9 @@ You can use the ``solver_session.tui`` interface to run all Fluent TUI commands:
 
 You can also install and use these PyFluent libraries:
 
-- `PyFluent Parametric <https://fluentparametric.docs.pyansys.com/>`_, which provides
+- `PyFluent Parametric <https://parametric.fluent.docs.pyansys.com/>`_, which provides
   access to Fluent's parametric workflows.
-- `PyFluent Visualization <https://fluentvisualization.docs.pyansys.com/>`_, which
+- `PyFluent Visualization <https://visualization.fluent.docs.pyansys.com/>`_, which
   provides postprocessing and visualization capabilities using the `pyvista <https://docs.pyvista.org/>`_
   and `matplotlib <https://matplotlib.org/>`_ packages.
 

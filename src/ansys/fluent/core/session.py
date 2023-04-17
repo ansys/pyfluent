@@ -2,23 +2,27 @@
 Session."""
 import importlib
 import json
+import logging
 import os
-from typing import Any
+from typing import Any, Dict
 
-from ansys.fluent.core.fluent_connection import _FluentConnection
+from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.session_shared import (  # noqa: F401
     _CODEGEN_MSG_DATAMODEL,
     _CODEGEN_MSG_TUI,
 )
-from ansys.fluent.core.utils.logging import LOG
+
+from .rpvars import RPVars
 
 try:
     from ansys.fluent.core.solver.settings import root
 except Exception:
     root = Any
 
+data_model_logger = logging.getLogger("ansys.fluent.services.datamodel")
 
-def parse_server_info_file(filename: str):
+
+def _parse_server_info_file(filename: str):
     with open(filename, encoding="utf-8") as f:
         lines = f.readlines()
     ip_and_port = lines[0].strip().split(":")
@@ -35,7 +39,7 @@ def _get_datamodel_attributes(session, attribute: str):
         )
         return preferences_module.Root(session._se_service, attribute, [])
     except (ImportError, ModuleNotFoundError):
-        LOG.warning(_CODEGEN_MSG_DATAMODEL)
+        data_model_logger.warning(_CODEGEN_MSG_DATAMODEL)
 
 
 def _get_preferences(session):
@@ -46,7 +50,7 @@ def _get_solverworkflow(session):
     return _get_datamodel_attributes(session, "solverworkflow")
 
 
-class _BaseSession:
+class BaseSession:
     """Instantiates a Fluent connection.
 
     Attributes
@@ -66,9 +70,18 @@ class _BaseSession:
         Close the Fluent connection and exit Fluent.
     """
 
-    def __init__(self, fluent_connection: _FluentConnection):
+    def __init__(self, fluent_connection: FluentConnection):
+        """BaseSession
+
+        Args:
+            fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+        """
+        BaseSession.build_from_fluent_connection(self, fluent_connection)
+
+    def build_from_fluent_connection(self, fluent_connection: FluentConnection):
         self.fluent_connection = fluent_connection
         self.scheme_eval = self.fluent_connection.scheme_eval
+        self.rp_vars = RPVars(self.scheme_eval.string_eval)
         self._uploader = None
         self._preferences = None
         self._solverworkflow = None
@@ -79,6 +92,7 @@ class _BaseSession:
         server_info_filepath: str,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
+        launcher_args: Dict[str, Any] = None,
     ):
         """Create a Session instance from server-info file.
 
@@ -101,14 +115,15 @@ class _BaseSession:
         Session
             Session instance
         """
-        ip, port, password = parse_server_info_file(server_info_filepath)
+        ip, port, password = _parse_server_info_file(server_info_filepath)
         session = cls(
-            fluent_connection=_FluentConnection(
+            fluent_connection=FluentConnection(
                 ip=ip,
                 port=port,
                 password=password,
                 cleanup_on_exit=cleanup_on_exit,
                 start_transcript=start_transcript,
+                launcher_args=launcher_args,
             )
         )
         return session
@@ -127,6 +142,16 @@ class _BaseSession:
         self.fluent_connection.exit()
 
     def __getattr__(self, attr):
+        if attr == "root":
+            raise RuntimeError(
+                "Please use the new structure where the settings objects can be accessed directly."
+                " For example: 'solver.setup' or 'solver.solution'"
+            )
+        if attr == "solver":
+            raise RuntimeError(
+                "'Solver' is the parent object."
+                " Please use the new structure, where: session.solver => solver."
+            )
         return getattr(self.fluent_connection, attr)
 
     def __dir__(self):

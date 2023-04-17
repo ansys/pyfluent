@@ -27,6 +27,7 @@ extensions = [
     "jupyter_sphinx",
     "notfound.extension",
     "numpydoc",
+    "autodocsumm",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.coverage",
@@ -42,7 +43,7 @@ extensions = [
 # Intersphinx mapping
 intersphinx_mapping = {
     "python": ("https://docs.python.org/dev", None),
-    "numpy": ("https://numpy.org/devdocs", None),
+    "numpy": ("https://numpy.org/doc/stable", None),
     "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
 }
 
@@ -69,6 +70,7 @@ numpydoc_validation_checks = {
 numpydoc_validation_exclude = {
     "ansys.fluent.core.solver.settings_231.",
     "ansys.fluent.core.solver.settings_232.",
+    "ansys.fluent.core.services.batch_ops.BatchOps.__init__",
 }
 
 # Favicon
@@ -163,12 +165,20 @@ html_theme_options = {
     "additional_breadcrumbs": [
         ("PyAnsys", "https://docs.pyansys.com/"),
     ],
+    "icon_links": [
+        {
+            "name": "Support",
+            "url": "https://github.com/pyansys/pyfluent/discussions",
+            "icon": "fa fa-comment fa-fw",
+        },
+    ],
     "switcher": {
-        "json_url": f"{cname}/release/versions.json",
+        "json_url": f"https://{cname}/release/versions.json",
         "version_match": get_version_match(__version__),
     },
     "navbar_end": ["version-switcher", "theme-switcher", "navbar-icon-links"],
     "navigation_depth": -1,
+    "collapse_navigation": True,
 }
 
 # -- Options for HTMLHelp output ---------------------------------------------
