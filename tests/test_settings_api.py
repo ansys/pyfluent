@@ -6,6 +6,9 @@ from ansys.fluent.core.examples import download_file
 
 def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     solver_session = new_solver_session
+    case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
+    solver_session.file.read_case(file_name=case_path)
+    solver_session.solution.initialization.hybrid_initialize()
     assert solver_session.setup.models.viscous.model() == "laminar"
     assert "inviscid" in solver_session.setup.models.viscous.model.get_attr(
         "allowed-values"
