@@ -1133,6 +1133,7 @@ class PyCommandArguments(PyStateContainer):
         except ValueError:
             # "Cannot invoke RPC on closed channel!"
             pass
+        # TODO delete cached state
 
     # Currently getting an error whenever I'm calling add_on_command_attribute_changed on self or parent
     # def _get_cached_attr(self, attrib: str) -> Any:
@@ -1147,6 +1148,13 @@ class PyCommandArguments(PyStateContainer):
     #         )
     #         self.cached_attrs[attrib] = cached_val
     #     return cached_val
+
+    def get_state(self):
+        state = DataModelCache.get_state(self.rules, self)
+        if DataModelCache.is_unassigned(state):
+            state = super().get_state()
+            DataModelCache.set_state(self.rules, self, state)
+        return state
 
     def __getattr__(self, attr):
         for arg in self.static_info.commands[self.command].commandinfo.args:
