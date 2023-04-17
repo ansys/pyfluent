@@ -92,7 +92,7 @@ vertices, connectivity, normal, or centroid data..
 
 Get scalar field data
 ~~~~~~~~~~~~~~~~~~~~~
-You can call the ``get_scalar_field_data`` method to get scalar field data, such as absolute-pressure:
+You can call the ``get_scalar_field_data`` method to get scalar field data, such as absolute pressure:
 
 .. code-block:: python
 
