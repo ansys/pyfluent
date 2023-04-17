@@ -1259,9 +1259,9 @@ class FieldData:
         Returns
         -------
         Union[VectorFieldData, Dict[int, VectorFieldData]]
-            If a surface name is provided as input, vector field data.
+            If a surface name is provided as input, vector field data is returned.
             If surface IDs are provided as input, a dictionary containing a map of
-            surface IDs to vector field data.
+            surface IDs to vector field data is returned.
         """
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
