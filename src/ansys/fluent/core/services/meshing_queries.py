@@ -793,86 +793,86 @@ class MeshingQueries:
         response = self.service.GetTetCellZones(request)
         return response.outputs
 
-    def GetAdjacentCellZones(self, list_or_pattern) -> Any:
+    def GetAdjacentCellZones(self, list_or_name_or_pattern) -> Any:
         """GetAdjacentCellZones."""
         request = MeshingQueriesProtoModule.GetAdjacentCellZonesRequest()
-        if isinstance(list_or_pattern, str):
-            request.input = list_or_pattern
-        elif isinstance(list_or_pattern, list):
-            for items in list_or_pattern:
-                request.inputs.append(items)
+        if isinstance(list_or_name_or_pattern, str):
+            request.zone_name_or_pattern = list_or_name_or_pattern
+        elif isinstance(list_or_name_or_pattern, list):
+            for items in list_or_name_or_pattern:
+                request.face_zone_ids.append(items)
         response = self.service.GetAdjacentCellZones(request)
-        return response.outputs
+        return response.adjacent_cell_zones
 
-    def GetAdjacentFaceZones(self, list_or_pattern) -> Any:
+    def GetAdjacentFaceZones(self, list_or_name_or_pattern) -> Any:
         """GetAdjacentFaceZones."""
         request = MeshingQueriesProtoModule.GetAdjacentFaceZonesRequest()
-        if isinstance(list_or_pattern, str):
-            request.input = list_or_pattern
-        elif isinstance(list_or_pattern, list):
-            for items in list_or_pattern:
-                request.inputs.append(items)
+        if isinstance(list_or_name_or_pattern, str):
+            request.zone_name_or_pattern = list_or_name_or_pattern
+        elif isinstance(list_or_name_or_pattern, list):
+            for items in list_or_name_or_pattern:
+                request.cell_zone_ids.append(items)
         response = self.service.GetAdjacentFaceZones(request)
-        return response.outputs
+        return response.adjacent_boundary_face_zones
 
-    def GetAdjacentInteriorAndBoundaryFaceZones(self, list_or_pattern) -> Any:
+    def GetAdjacentInteriorAndBoundaryFaceZones(self, list_or_name_or_pattern) -> Any:
         """GetAdjacentInteriorAndBoundaryFaceZones."""
         request = (
             MeshingQueriesProtoModule.GetAdjacentInteriorAndBoundaryFaceZonesRequest()
         )
-        if isinstance(list_or_pattern, str):
-            request.input = list_or_pattern
-        elif isinstance(list_or_pattern, list):
-            for items in list_or_pattern:
-                request.inputs.append(items)
+        if isinstance(list_or_name_or_pattern, str):
+            request.zone_name_or_pattern = list_or_name_or_pattern
+        elif isinstance(list_or_name_or_pattern, list):
+            for items in list_or_name_or_pattern:
+                request.cell_zone_ids.append(items)
         response = self.service.GetAdjacentInteriorAndBoundaryFaceZones(request)
-        return response.outputs
+        return response.adjacent_interior_and_boundary_face_zones
 
-    def GetAdjacentZonesByEdgeConnectivity(self, list_or_pattern) -> Any:
+    def GetAdjacentZonesByEdgeConnectivity(self, list_or_name_or_pattern) -> Any:
         """GetAdjacentZonesByEdgeConnectivity."""
         request = MeshingQueriesProtoModule.GetAdjacentZonesByEdgeConnectivityRequest()
-        if isinstance(list_or_pattern, str):
-            request.input = list_or_pattern
-        elif isinstance(list_or_pattern, list):
-            for items in list_or_pattern:
-                request.inputs.append(items)
+        if isinstance(list_or_name_or_pattern, str):
+            request.zone_name_or_pattern = list_or_name_or_pattern
+        elif isinstance(list_or_name_or_pattern, list):
+            for items in list_or_name_or_pattern:
+                request.zone_ids.append(items)
         response = self.service.GetAdjacentZonesByEdgeConnectivity(request)
-        return response.outputs
+        return response.adjacent_zone_ids
 
-    def GetAdjacentZonesByNodeConnectivity(self, list_or_pattern) -> Any:
+    def GetAdjacentZonesByNodeConnectivity(self, list_or_name_or_pattern) -> Any:
         """GetAdjacentZonesByNodeConnectivity."""
         request = MeshingQueriesProtoModule.GetAdjacentZonesByNodeConnectivityRequest()
-        if isinstance(list_or_pattern, str):
-            request.input = list_or_pattern
-        elif isinstance(list_or_pattern, list):
-            for items in list_or_pattern:
-                request.inputs.append(items)
+        if isinstance(list_or_name_or_pattern, str):
+            request.zone_name_or_pattern = list_or_name_or_pattern
+        elif isinstance(list_or_name_or_pattern, list):
+            for items in list_or_name_or_pattern:
+                request.zone_ids.append(items)
         response = self.service.GetAdjacentZonesByNodeConnectivity(request)
-        return response.outputs
+        return response.adjacent_zone_ids
 
-    def GetSharedBoundaryZones(self, list_or_pattern) -> Any:
+    def GetSharedBoundaryZones(self, list_or_name_or_pattern) -> Any:
         """GetSharedBoundaryZones."""
         request = MeshingQueriesProtoModule.GetSharedBoundaryZonesRequest()
-        if isinstance(list_or_pattern, str):
-            request.input = list_or_pattern
-        elif isinstance(list_or_pattern, list):
-            for items in list_or_pattern:
-                request.inputs.append(items)
+        if isinstance(list_or_name_or_pattern, str):
+            request.cell_zone_name_or_pattern = list_or_name_or_pattern
+        elif isinstance(list_or_name_or_pattern, list):
+            for items in list_or_name_or_pattern:
+                request.cell_zone_ids.append(items)
         response = self.service.GetSharedBoundaryZones(request)
-        return response.outputs
+        return response.shared_boundary_zone_ids
 
-    def GetInteriorZonesConnectedToCellZones(self, list_or_pattern) -> Any:
+    def GetInteriorZonesConnectedToCellZones(self, list_or_name_or_pattern) -> Any:
         """GetInteriorZonesConnectedToCellZones."""
         request = (
             MeshingQueriesProtoModule.GetInteriorZonesConnectedToCellZonesRequest()
         )
-        if isinstance(list_or_pattern, str):
-            request.input = list_or_pattern
-        elif isinstance(list_or_pattern, list):
-            for items in list_or_pattern:
-                request.inputs.append(items)
+        if isinstance(list_or_name_or_pattern, str):
+            request.cell_zone_name_or_pattern = list_or_name_or_pattern
+        elif isinstance(list_or_name_or_pattern, list):
+            for items in list_or_name_or_pattern:
+                request.face_zone_ids.append(items)
         response = self.service.GetInteriorZonesConnectedToCellZones(request)
-        return response.outputs
+        return response.interior_zone_ids
 
     def GetFaceZonesWithZoneSpecificPrismsApplied(self) -> Any:
         """GetFaceZonesWithZoneSpecificPrismsApplied."""

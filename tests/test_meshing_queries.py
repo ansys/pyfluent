@@ -131,6 +131,10 @@ def test_meshing_queries(new_mesh_session):
     )
 
     assert meshing_session.meshing_queries.GetAdjacentInteriorAndBoundaryFaceZones(
+        "fluid"
+    ) == [29, 30, 31, 32, 33, 34, 3462]
+
+    assert meshing_session.meshing_queries.GetAdjacentInteriorAndBoundaryFaceZones(
         "*"
     ) == [
         29,
