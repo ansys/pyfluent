@@ -8,6 +8,7 @@ import weakref
 import pytest
 from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 
+from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import find_children
 
@@ -794,6 +795,11 @@ def test_find_children_from_fluent_solver_session(load_static_mixer_case):
 @pytest.mark.fluent_232
 def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     solver = new_solver_session_no_transcript
+
+    case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
+    solver.file.read_case(file_name=case_path)
+
+    solver.solution.initialization.hybrid_initialize()
 
     with pytest.raises(AttributeError) as msg:
         solver.setup.mod
