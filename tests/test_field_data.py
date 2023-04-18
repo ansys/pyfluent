@@ -234,7 +234,7 @@ def test_field_data_objects_3d(new_solver_session) -> None:
         data_type=SurfaceDataType.FacesConnectivity, surface_name="cold-inlet"
     )
     assert faces_connectivity_data[5].node_count == 4
-    assert (faces_connectivity_data[5].node_data == [12, 13, 17, 16]).all()
+    assert (faces_connectivity_data[5].node_indices == [12, 13, 17, 16]).all()
 
     faces_normal_data = field_data.get_surface_data(
         data_type=SurfaceDataType.FacesNormal, surface_name="cold-inlet"
@@ -258,7 +258,7 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     assert path_lines_data["velocity"].size == 76152
 
     assert path_lines_data["lines"][100].node_count == 2
-    assert all(path_lines_data["lines"][100].node_data == [100, 101])
+    assert all(path_lines_data["lines"][100].node_indices == [100, 101])
 
 
 @pytest.mark.dev
@@ -299,7 +299,7 @@ def test_field_data_objects_2d(load_disk_mesh) -> None:
         data_type=SurfaceDataType.FacesConnectivity, surface_name="velocity-inlet-2"
     )
     assert faces_connectivity_data[5].node_count == 2
-    assert (faces_connectivity_data[5].node_data == [5, 6]).all()
+    assert (faces_connectivity_data[5].node_indices == [5, 6]).all()
 
     velocity_vector_data = field_data.get_vector_field_data(
         field_name="velocity", surface_name="velocity-inlet-2"
@@ -317,7 +317,7 @@ def test_field_data_objects_2d(load_disk_mesh) -> None:
     assert path_lines_data["velocity"].size == 5010
 
     assert path_lines_data["lines"][100].node_count == 2
-    assert all(path_lines_data["lines"][100].node_data == [100, 101])
+    assert all(path_lines_data["lines"][100].node_indices == [100, 101])
 
 
 def test_field_data_errors(new_solver_session) -> None:

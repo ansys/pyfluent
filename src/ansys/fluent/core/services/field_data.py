@@ -957,9 +957,9 @@ class FacesConnectivity(BaseFieldData):
     class Faces:
         """Stores and provides the face connectivity data as an array."""
 
-        def __init__(self, node_count, node_data):
+        def __init__(self, node_count, node_indices):
             self.node_count = node_count
-            self.node_data = node_data
+            self.node_indices = node_indices
 
     def __init__(self, i_d, data):
         faces_data = []

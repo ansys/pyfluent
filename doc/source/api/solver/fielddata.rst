@@ -68,7 +68,7 @@ For ``data_type``, specifying ``FacesNormal`` and ``FacesCentroid`` respectively
   >>>     data_type=SurfaceDataType.FacesNormal, surface_name="cold-inlet"
   >>> )
 
-  >>> faces_normal_data = field_data.get_surface_data(
+  >>> faces_centroid_data = field_data.get_surface_data(
   >>>     data_type=SurfaceDataType.FacesCentroid, surface_name="cold-inlet"
   >>> )
 
@@ -82,7 +82,7 @@ the ``get_surface_data`` method and specifying ``FacesConnectivity`` for ``data_
   >>> )
   >>> faces_connectivity_data[5].node_count
   4
-  >>> faces_connectivity_data[5].node_data
+  >>> faces_connectivity_data[5].node_indices
   [12, 13, 17, 16]
 
 
