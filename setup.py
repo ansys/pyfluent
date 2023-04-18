@@ -50,7 +50,7 @@ setup(
     long_description_content_type="text/x-rst",
     license="MIT",
     author="ANSYS, Inc.",
-    author_email="pyansys.support@ansys.com",
+    author_email="pyansys.core@ansys.com",
     maintainer="PyAnsys developers",
     maintainer_email="pyansys.maintainers@ansys.com",
     classifiers=[
