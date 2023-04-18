@@ -977,61 +977,61 @@ class MeshingQueries:
         """GetMaxsizeCellZoneByVolume."""
         request = MeshingQueriesProtoModule.GetMaxsizeCellZoneByVolumeRequest()
         if isinstance(list_or_pattern, str):
-            request.string_input = list_or_pattern
+            request.cell_zone_pattern = list_or_pattern
         elif isinstance(list_or_pattern, list):
             if isinstance(list_or_pattern[0], int):
                 for items in list_or_pattern:
-                    request.int_inputs.append(items)
+                    request.cell_zone_ids.append(items)
             elif isinstance(list_or_pattern[0], str):
                 for items in list_or_pattern:
-                    request.string_inputs.append(items)
+                    request.cell_zone_names.append(items)
         response = self.service.GetMaxsizeCellZoneByVolume(request)
-        return response.output
+        return response.cell_zone_id
 
     def GetMaxsizeCellZoneByCount(self, list_or_pattern) -> Any:
         """GetMaxsizeCellZoneByCount."""
         request = MeshingQueriesProtoModule.GetMaxsizeCellZoneByCountRequest()
         if isinstance(list_or_pattern, str):
-            request.string_input = list_or_pattern
+            request.cell_zone_pattern = list_or_pattern
         elif isinstance(list_or_pattern, list):
             if isinstance(list_or_pattern[0], int):
                 for items in list_or_pattern:
-                    request.int_inputs.append(items)
+                    request.cell_zone_ids.append(items)
             elif isinstance(list_or_pattern[0], str):
                 for items in list_or_pattern:
-                    request.string_inputs.append(items)
+                    request.cell_zone_names.append(items)
         response = self.service.GetMaxsizeCellZoneByCount(request)
-        return response.output
+        return response.cell_zone_id
 
     def GetMinsizeFaceZoneByArea(self, list_or_pattern) -> Any:
         """GetMinsizeFaceZoneByArea."""
         request = MeshingQueriesProtoModule.GetMinsizeFaceZoneByAreaRequest()
         if isinstance(list_or_pattern, str):
-            request.string_input = list_or_pattern
+            request.face_zone_pattern = list_or_pattern
         elif isinstance(list_or_pattern, list):
             if isinstance(list_or_pattern[0], int):
                 for items in list_or_pattern:
-                    request.int_inputs.append(items)
+                    request.face_zone_ids.append(items)
             elif isinstance(list_or_pattern[0], str):
                 for items in list_or_pattern:
-                    request.string_inputs.append(items)
+                    request.face_zone_names.append(items)
         response = self.service.GetMinsizeFaceZoneByArea(request)
-        return response.output
+        return response.face_zone_id
 
     def GetMinsizeFaceZoneByCount(self, list_or_pattern) -> Any:
         """GetMinsizeFaceZoneByCount."""
         request = MeshingQueriesProtoModule.GetMinsizeFaceZoneByCountRequest()
         if isinstance(list_or_pattern, str):
-            request.string_input = list_or_pattern
+            request.face_zone_pattern = list_or_pattern
         elif isinstance(list_or_pattern, list):
             if isinstance(list_or_pattern[0], int):
                 for items in list_or_pattern:
-                    request.int_inputs.append(items)
+                    request.face_zone_ids.append(items)
             elif isinstance(list_or_pattern[0], str):
                 for items in list_or_pattern:
-                    request.string_inputs.append(items)
+                    request.face_zone_names.append(items)
         response = self.service.GetMinsizeFaceZoneByCount(request)
-        return response.output
+        return response.face_zone_id
 
     def GetFaceZoneListByMaximumEntityCount(
         self, max_entity_count, only_boundary
