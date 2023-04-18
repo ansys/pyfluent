@@ -750,17 +750,17 @@ class MeshingQueries:
         """GetFaceZonesOfObjects."""
         request = MeshingQueriesProtoModule.GetFaceZonesOfObjectsRequest()
         for object in object_list:
-            request.inputs.append(object)
+            request.object_list.append(object)
         response = self.service.GetFaceZonesOfObjects(request)
-        return response.outputs
+        return response.face_zone_ids
 
     def GetEdgeZonesOfObjects(self, object_list) -> Any:
         """GetEdgeZonesOfObjects."""
         request = MeshingQueriesProtoModule.GetEdgeZonesOfObjectsRequest()
         for object in object_list:
-            request.inputs.append(object)
+            request.object_list.append(object)
         response = self.service.GetEdgeZonesOfObjects(request)
-        return response.outputs
+        return response.edge_zone_ids
 
     def GetFaceZoneIdListOfRegions(self, object, region_list) -> Any:
         """GetFaceZoneIdListOfRegions."""
