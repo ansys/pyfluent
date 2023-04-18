@@ -686,9 +686,9 @@ class MeshingQueries:
     def GetObjectsOfType(self, type) -> Any:
         """GetObjectsOfType."""
         request = MeshingQueriesProtoModule.GetObjectsOfTypeRequest()
-        request.input = type
+        request.type = type
         response = self.service.GetObjectsOfType(request)
-        return response.outputs
+        return response.objects
 
     def GetFaceZoneIdListOfObject(self, object) -> Any:
         """GetFaceZoneIdListOfObject."""
@@ -714,10 +714,10 @@ class MeshingQueries:
     def GetFaceZonesSharedByRegionsOfType(self, mesh_object, region_type) -> Any:
         """GetFaceZonesSharedByRegionsOfType."""
         request = MeshingQueriesProtoModule.GetFaceZonesSharedByRegionsOfTypeRequest()
-        request.input_1 = mesh_object
-        request.input_2 = region_type
+        request.mesh_object = mesh_object
+        request.region_type = region_type
         response = self.service.GetFaceZonesSharedByRegionsOfType(request)
-        return response.outputs
+        return response.shared_face_zone_ids
 
     def GetFaceZonesOfRegions(self, object, region_name_list) -> Any:
         """GetFaceZonesOfRegions."""
@@ -1139,30 +1139,30 @@ class MeshingQueries:
     def GetObjectNameListOfType(self, type) -> Any:
         """GetObjectNameListOfType."""
         request = MeshingQueriesProtoModule.GetObjectNameListOfTypeRequest()
-        request.input = type
+        request.type = type
         response = self.service.GetObjectNameListOfType(request)
-        return response.outputs
+        return response.objects
 
     def GetObjectsOfFilter(self, filter) -> Any:
         """GetObjectsOfFilter."""
         request = MeshingQueriesProtoModule.GetObjectsOfFilterRequest()
-        request.input = filter
+        request.filter = filter
         response = self.service.GetObjectsOfFilter(request)
-        return response.outputs
+        return response.objects
 
     def GetRegionsOfObject(self, object) -> Any:
         """GetRegionsOfObject."""
         request = MeshingQueriesProtoModule.GetRegionsOfObjectRequest()
-        request.input = object
+        request.object = object
         response = self.service.GetRegionsOfObject(request)
-        return response.outputs
+        return response.regions
 
     def GetRegionNameListOfObject(self, object) -> Any:
         """GetRegionNameListOfObject."""
         request = MeshingQueriesProtoModule.GetRegionNameListOfObjectRequest()
-        request.input = object
+        request.object = object
         response = self.service.GetRegionNameListOfObject(request)
-        return response.outputs
+        return response.regions
 
     def SortRegionsByVolume(self, object_name, order) -> Any:
         """SortRegionsByVolume."""
