@@ -878,7 +878,7 @@ class MeshingQueries:
         """GetFaceZonesWithZoneSpecificPrismsApplied."""
         request = MeshingQueriesProtoModule.Empty()
         response = self.service.GetFaceZonesWithZoneSpecificPrismsApplied(request)
-        return response.outputs
+        return response.face_zone_ids
 
     def GetFaceZonesOfPrismControls(self, control_name) -> Any:
         """GetInteriorZonesConnectedToCellZones."""
@@ -891,39 +891,39 @@ class MeshingQueries:
         """GetBaffles."""
         request = MeshingQueriesProtoModule.GetBafflesRequest()
         for items in face_zone_list:
-            request.inputs.append(items)
+            request.face_zone_ids.append(items)
         response = self.service.GetBaffles(request)
-        return response.outputs
+        return response.baffle_zone_ids
 
     def GetEmbeddedBaffles(self) -> Any:
         """GetEmbeddedBaffles."""
         request = MeshingQueriesProtoModule.Empty()
         response = self.service.GetEmbeddedBaffles(request)
-        return response.outputs
+        return response.embedded_baffles_zone_ids
 
     def GetWrappedZones(self) -> Any:
         """GetWrappedZones."""
         request = MeshingQueriesProtoModule.Empty()
         response = self.service.GetWrappedZones(request)
-        return response.outputs
+        return response.wrapped_face_zone_ids
 
     def GetUnreferencedEdgeZones(self) -> Any:
         """GetUnreferencedEdgeZones."""
         request = MeshingQueriesProtoModule.Empty()
         response = self.service.GetUnreferencedEdgeZones(request)
-        return response.outputs
+        return response.unreferenced_edge_zone_ids
 
     def GetUnreferencedFaceZones(self) -> Any:
         """GetUnreferencedFaceZones."""
         request = MeshingQueriesProtoModule.Empty()
         response = self.service.GetUnreferencedFaceZones(request)
-        return response.outputs
+        return response.unreferenced_face_zone_ids
 
     def GetUnreferencedCellZones(self) -> Any:
         """GetUnreferencedCellZones."""
         request = MeshingQueriesProtoModule.Empty()
         response = self.service.GetUnreferencedCellZones(request)
-        return response.outputs
+        return response.unreferenced_cell_zone_ids
 
     def GetUnreferencedEdgeZonesOfFilter(self, filter) -> Any:
         """GetUnreferencedEdgeZonesOfFilter."""
