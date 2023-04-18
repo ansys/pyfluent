@@ -977,7 +977,7 @@ class FacesNormal(BaseFieldData):
     """Provides the container for the face normal data."""
 
     class Normal(Vector):
-        """Stores and provides the face's normal data as a vector."""
+        """Stores and provides the face normal data as a vector."""
 
         def __init__(self, x, y, z):
             super().__init__(x, y, z)
@@ -1318,7 +1318,7 @@ class FieldData:
         velocity_domain: Optional[str] = "all-phases",
         zones: Optional[list] = [],
     ) -> Dict:
-        """Get the pathline's field data on a surface.
+        """Get the pathlines field data on a surface.
 
         Parameters
         ----------
