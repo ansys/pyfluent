@@ -215,13 +215,15 @@ class PyReferenceObjectMeta(PyLocalBaseMeta):
 
     @classmethod
     def __create_init(cls):
-        def wrapper(self, parent, path, location, session):
-
+        def wrapper(self, parent, path, location, session_id):
             self._parent = parent
             self.type = "object"
             top_most_parent = self._get_top_most_parent(self)
+            
+            if session_id is None:
+                session_id = top_most_parent.session.id 
             property_editor_data = top_most_parent.accessor(
-                "AnsysUser", session
+                "AnsysUser", session_id
             )                 
             #import pdb; pdb.set_trace()
             obj, cmd_data = property_editor_data.get_object_and_command_data_from_properties_info({'path':path, 'properties':{},'type':location})  
