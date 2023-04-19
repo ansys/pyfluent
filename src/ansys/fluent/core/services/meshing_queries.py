@@ -1105,15 +1105,15 @@ class MeshingQueries:
         return response.zones_with_multi_connected_faces
 
     def GetOverlappingFaceZones(
-        self, zone_name_pattern, areal_tolerance, distance_tolerance
+        self, zone_name_pattern, area_tolerance, distance_tolerance
     ) -> Any:
         """GetOverlappingFaceZones."""
         request = MeshingQueriesProtoModule.GetOverlappingFaceZonesRequest()
-        request.string_input = zone_name_pattern
-        request.double_input_1 = areal_tolerance
-        request.double_input_2 = distance_tolerance
+        request.face_zone_name_or_pattern = zone_name_pattern
+        request.area_tolerance = area_tolerance
+        request.distance_tolerance = distance_tolerance
         response = self.service.GetOverlappingFaceZones(request)
-        return response.outputs
+        return response.overlapping_face_zone_ids
 
     def GetZonesWithMarkedFaces(self, list_or_pattern) -> Any:
         """GetZonesWithMarkedFaces."""
@@ -1134,7 +1134,7 @@ class MeshingQueries:
         """GetAllObjectNameList."""
         request = MeshingQueriesProtoModule.Empty()
         response = self.service.GetAllObjectNameList(request)
-        return response.outputs
+        return response.objects
 
     def GetObjectNameListOfType(self, type) -> Any:
         """GetObjectNameListOfType."""
@@ -1175,10 +1175,10 @@ class MeshingQueries:
     def GetRegionVolume(self, object_name, region_name) -> Any:
         """GetRegionVolume."""
         request = MeshingQueriesProtoModule.GetRegionVolumeRequest()
-        request.string_input_1 = object_name
-        request.string_input_2 = region_name
+        request.object_name = object_name
+        request.region_name = region_name
         response = self.service.GetRegionVolume(request)
-        return response.output
+        return response.region_volume
 
     def GetRegionsOfFilter(self, object, filter) -> Any:
         """GetRegionsOfFilter."""
