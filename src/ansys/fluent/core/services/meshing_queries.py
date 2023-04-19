@@ -775,23 +775,23 @@ class MeshingQueries:
         """GetPrismCellZones."""
         request = MeshingQueriesProtoModule.GetPrismCellZonesRequest()
         if isinstance(list_or_pattern, str):
-            request.input = list_or_pattern
+            request.zone_name_or_pattern = list_or_pattern
         elif isinstance(list_or_pattern, list):
             for items in list_or_pattern:
-                request.inputs.append(items)
+                request.zones.append(items)
         response = self.service.GetPrismCellZones(request)
-        return response.outputs
+        return response.prism_cell_zones
 
     def GetTetCellZones(self, list_or_pattern) -> Any:
         """GetTetCellZones."""
         request = MeshingQueriesProtoModule.GetTetCellZonesRequest()
         if isinstance(list_or_pattern, str):
-            request.input = list_or_pattern
+            request.zone_name_or_pattern = list_or_pattern
         elif isinstance(list_or_pattern, list):
             for items in list_or_pattern:
-                request.inputs.append(items)
+                request.zones.append(items)
         response = self.service.GetTetCellZones(request)
-        return response.outputs
+        return response.tet_cell_zones
 
     def GetAdjacentCellZones(self, list_or_name_or_pattern) -> Any:
         """GetAdjacentCellZones."""
