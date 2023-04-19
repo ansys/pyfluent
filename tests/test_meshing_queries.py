@@ -306,7 +306,7 @@ def test_meshing_queries(new_mesh_session):
                 "elbow-fluid", "ascending"
             )
         )
-        == '[double_output: 152.599422561798\nstring_output: "fluid"\n]'
+        == '[volume: 152.599422561798\nregion: "fluid"\n]'
     )
 
     assert (

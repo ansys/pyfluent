@@ -883,9 +883,9 @@ class MeshingQueries:
     def GetFaceZonesOfPrismControls(self, control_name) -> Any:
         """GetInteriorZonesConnectedToCellZones."""
         request = MeshingQueriesProtoModule.GetFaceZonesOfPrismControlsRequest()
-        request.input = control_name
+        request.control_name = control_name
         response = self.service.GetFaceZonesOfPrismControls(request)
-        return response.outputs
+        return response.face_zone_ids
 
     def GetBaffles(self, face_zone_list) -> Any:
         """GetBaffles."""
@@ -1167,10 +1167,10 @@ class MeshingQueries:
     def SortRegionsByVolume(self, object_name, order) -> Any:
         """SortRegionsByVolume."""
         request = MeshingQueriesProtoModule.SortRegionsByVolumeRequest()
-        request.string_input_1 = object_name
-        request.string_input_2 = order
+        request.object_name = object_name
+        request.order = order
         response = self.service.SortRegionsByVolume(request)
-        return response.outputs
+        return response.regions
 
     def GetRegionVolume(self, object_name, region_name) -> Any:
         """GetRegionVolume."""
@@ -1183,54 +1183,54 @@ class MeshingQueries:
     def GetRegionsOfFilter(self, object, filter) -> Any:
         """GetRegionsOfFilter."""
         request = MeshingQueriesProtoModule.GetRegionsOfFilterRequest()
-        request.string_input_1 = object
-        request.string_input_2 = filter
+        request.object = object
+        request.filter = filter
         response = self.service.GetRegionsOfFilter(request)
-        return response.outputs
+        return response.regions
 
-    def GetRegionNameListOfPattern(self, object, region_name_pattern) -> Any:
+    def GetRegionNameListOfPattern(self, object, region_name_or_pattern) -> Any:
         """GetRegionNameListOfPattern."""
         request = MeshingQueriesProtoModule.GetRegionNameListOfPatternRequest()
-        request.string_input_1 = object
-        request.string_input_2 = region_name_pattern
+        request.object = object
+        request.region_name_or_pattern = region_name_or_pattern
         response = self.service.GetRegionNameListOfPattern(request)
-        return response.outputs
+        return response.regions
 
-    def GetRegionsOfFaceZones(self, face_zone_id_list) -> Any:
+    def GetRegionsOfFaceZones(self, list_of_face_zone_ids) -> Any:
         """GetRegionsOfFaceZones."""
         request = MeshingQueriesProtoModule.GetRegionsOfFaceZonesRequest()
-        for id in face_zone_id_list:
-            request.inputs.append(id)
+        for id in list_of_face_zone_ids:
+            request.face_zone_ids.append(id)
         response = self.service.GetRegionsOfFaceZones(request)
-        return response.outputs
+        return response.regions
 
     def FindJoinPairs(
-        self, list_or_pattern, join_tolerance, absolute_tolerance, join_angle
+        self, face_zone_list_or_pattern, join_tolerance, absolute_tolerance, join_angle
     ) -> Any:
         """FindJoinPairs."""
         request = MeshingQueriesProtoModule.FindJoinPairsRequest()
-        if isinstance(list_or_pattern, str):
-            request.input_1 = list_or_pattern
-        elif isinstance(list_or_pattern, list):
-            if isinstance(list_or_pattern[0], int):
-                for items in list_or_pattern:
-                    request.int_inputs.append(items)
-            elif isinstance(list_or_pattern[0], str):
-                for items in list_or_pattern:
-                    request.string_inputs.append(items)
-        request.input_2 = join_tolerance
-        request.input_3 = absolute_tolerance
-        request.input_4 = join_angle
+        if isinstance(face_zone_list_or_pattern, str):
+            request.face_zone_name_or_pattern = face_zone_list_or_pattern
+        elif isinstance(face_zone_list_or_pattern, list):
+            if isinstance(face_zone_list_or_pattern[0], int):
+                for items in face_zone_list_or_pattern:
+                    request.face_zone_ids.append(items)
+            elif isinstance(face_zone_list_or_pattern[0], str):
+                for items in face_zone_list_or_pattern:
+                    request.face_zone_names.append(items)
+        request.join_tolerance = join_tolerance
+        request.absolute_tolerance = absolute_tolerance
+        request.join_angle = join_angle
         response = self.service.FindJoinPairs(request)
-        return response.outputs
+        return response.pairs
 
     def GetRegionNameListOfFaceZones(self, list_or_pattern) -> Any:
         """GetRegionNameListOfFaceZones."""
         request = MeshingQueriesProtoModule.GetRegionNameListOfFaceZonesRequest()
         if isinstance(list_or_pattern, str):
-            request.input = list_or_pattern
+            request.face_zone_name_or_pattern = list_or_pattern
         elif isinstance(list_or_pattern, list):
             for items in list_or_pattern:
-                request.inputs.append(items)
+                request.face_zone_ids.append(items)
         response = self.service.GetRegionNameListOfFaceZones(request)
-        return response.outputs
+        return response.regions
