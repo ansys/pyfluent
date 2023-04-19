@@ -1038,71 +1038,71 @@ class MeshingQueries:
     ) -> Any:
         """GetFaceZoneListByMaximumEntityCount."""
         request = MeshingQueriesProtoModule.GetFaceZoneListByMaximumEntityCountRequest()
-        request.int_input = max_entity_count
-        request.bool_input = only_boundary
+        request.maximum_entity_count = max_entity_count
+        request.only_boundary = only_boundary
         response = self.service.GetFaceZoneListByMaximumEntityCount(request)
-        return response.outputs
+        return response.face_zone_ids
 
     def GetEdgeZoneListByMaximumEntityCount(
         self, max_entity_count, only_boundary
     ) -> Any:
         """GetEdgeZoneListByMaximumEntityCount."""
         request = MeshingQueriesProtoModule.GetEdgeZoneListByMaximumEntityCountRequest()
-        request.int_input = max_entity_count
-        request.bool_input = only_boundary
+        request.maximum_entity_count = max_entity_count
+        request.only_boundary = only_boundary
         response = self.service.GetEdgeZoneListByMaximumEntityCount(request)
-        return response.outputs
+        return response.edge_zone_ids
 
-    def GetCellZoneListByMaximumEntityCount(self, max_entity_count) -> Any:
+    def GetCellZoneListByMaximumEntityCount(self, maximum_entity_count) -> Any:
         """GetCellZoneListByMaximumEntityCount."""
         request = MeshingQueriesProtoModule.GetCellZoneListByMaximumEntityCountRequest()
-        request.int_input = max_entity_count
+        request.maximum_entity_count = maximum_entity_count
         response = self.service.GetCellZoneListByMaximumEntityCount(request)
-        return response.outputs
+        return response.cell_zone_ids
 
-    def GetFaceZoneListByMaximumZoneArea(self, max_entity_count) -> Any:
+    def GetFaceZoneListByMaximumZoneArea(self, maximum_zone_area) -> Any:
         """GetFaceZoneListByMaximumZoneArea."""
         request = MeshingQueriesProtoModule.GetFaceZoneListByMaximumZoneAreaRequest()
-        request.int_input = max_entity_count
+        request.maximum_zone_area = maximum_zone_area
         response = self.service.GetFaceZoneListByMaximumZoneArea(request)
-        return response.outputs
+        return response.face_zone_ids
 
-    def GetFaceZoneListByMinimumZoneArea(self, max_entity_count) -> Any:
+    def GetFaceZoneListByMinimumZoneArea(self, minimum_zone_area) -> Any:
         """GetFaceZoneListByMinimumZoneArea."""
         request = MeshingQueriesProtoModule.GetFaceZoneListByMinimumZoneAreaRequest()
-        request.int_input = max_entity_count
+        request.minimum_zone_area = minimum_zone_area
         response = self.service.GetFaceZoneListByMinimumZoneArea(request)
-        return response.outputs
+        return response.face_zone_ids
 
     def GetZonesWithFreeFaces(self, list_or_pattern) -> Any:
         """GetZonesWithFreeFaces."""
         request = MeshingQueriesProtoModule.GetZonesWithFreeFacesRequest()
         if isinstance(list_or_pattern, str):
-            request.string_input = list_or_pattern
+            request.face_zone_pattern = list_or_pattern
         elif isinstance(list_or_pattern, list):
             if isinstance(list_or_pattern[0], int):
                 for items in list_or_pattern:
-                    request.int_inputs.append(items)
+                    request.face_zone_ids.append(items)
             elif isinstance(list_or_pattern[0], str):
                 for items in list_or_pattern:
-                    request.string_inputs.append(items)
+                    request.face_zone_names.append(items)
         response = self.service.GetZonesWithFreeFaces(request)
-        return response.outputs
+        return response.zones_with_free_faces
 
     def GetZonesWithMultiFaces(self, list_or_pattern) -> Any:
         """GetZonesWithMultiFaces."""
         request = MeshingQueriesProtoModule.GetZonesWithMultiFacesRequest()
         if isinstance(list_or_pattern, str):
-            request.string_input = list_or_pattern
+            request.face_zone_pattern = list_or_pattern
         elif isinstance(list_or_pattern, list):
             if isinstance(list_or_pattern[0], int):
                 for items in list_or_pattern:
-                    request.int_inputs.append(items)
+                    request.face_zone_ids.append(items)
             elif isinstance(list_or_pattern[0], str):
                 for items in list_or_pattern:
-                    request.string_inputs.append(items)
+                    request.face_zone_names.append(items)
         response = self.service.GetZonesWithMultiFaces(request)
-        return response.outputs
+        return response.zones_with_multi_connected_faces
 
     def GetOverlappingFaceZones(
         self, zone_name_pattern, areal_tolerance, distance_tolerance
@@ -1119,16 +1119,16 @@ class MeshingQueries:
         """GetZonesWithMarkedFaces."""
         request = MeshingQueriesProtoModule.GetZonesWithMarkedFacesRequest()
         if isinstance(list_or_pattern, str):
-            request.string_input = list_or_pattern
+            request.face_zone_pattern = list_or_pattern
         elif isinstance(list_or_pattern, list):
             if isinstance(list_or_pattern[0], int):
                 for items in list_or_pattern:
-                    request.int_inputs.append(items)
+                    request.face_zone_ids.append(items)
             elif isinstance(list_or_pattern[0], str):
                 for items in list_or_pattern:
-                    request.string_inputs.append(items)
+                    request.face_zone_names.append(items)
         response = self.service.GetZonesWithMarkedFaces(request)
-        return response.outputs
+        return response.zones_with_marked_faces
 
     def GetAllObjectNameList(self) -> Any:
         """GetAllObjectNameList."""
