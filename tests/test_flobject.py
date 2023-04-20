@@ -822,9 +822,8 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     assert energy_parent == "\n energy is a child of models \n"
 
 
-def test_accessor_methods_on_settings_objects(load_static_mixer_case):
-    solver = load_static_mixer_case
-    solver.solution.initialization.hybrid_initialize()
+def test_accessor_methods_on_settings_objects(launch_fluent_solver_3ddp_t2):
+    solver = launch_fluent_solver_3ddp_t2
     root = solver._root
 
     nodes = {}
@@ -888,15 +887,15 @@ def test_accessor_methods_on_settings_objects(load_static_mixer_case):
 
 
 def get_child_nodes(node, nodes, type_list):
-    if node.is_active():
-        if isinstance(node, flobject.NamedObject):
-            for item in node.get_object_names():
-                get_child_nodes(node[item], nodes, type_list)
-        elif isinstance(node, flobject.Group):
-            for item in node.child_names:
-                get_child_nodes(getattr(node, item), nodes, type_list)
-        else:
-            node_type = node.__class__.__bases__[0].__name__
-            if node_type not in type_list:
-                type_list.append(node_type)
-                nodes[node_type] = node
+    if isinstance(node, flobject.Group):
+        for item in node.child_names:
+            get_child_nodes(
+                super(node.__class__.__bases__[0], node).__getattribute__(item),
+                nodes,
+                type_list,
+            )
+    else:
+        node_type = node.__class__.__bases__[0].__name__
+        if node_type not in type_list:
+            type_list.append(node_type)
+            nodes[node_type] = node
