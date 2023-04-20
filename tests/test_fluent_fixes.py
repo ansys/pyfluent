@@ -14,6 +14,21 @@ def test_1364(new_solver_session):
 
     solver.solution.report_definitions.volume.create("xxx")
 
+    solver.solution.report_definitions["xxx"].set_state(
+        {
+            "report_type": "volume-max",
+            "field": "temperature",
+            "average_over": 1,
+            "per_zone": False,
+            "zone_names": ["fluid"],
+            "expr_list": None,
+        }
+    )
+
+    assert solver.solution.report_definitions.volume[
+        "xxx"
+    ].zone_names.allowed_values() == ["fluid"]
+
     assert (
         solver.solution.report_definitions.volume["xxx"].expr_list.allowed_values()
         == None
