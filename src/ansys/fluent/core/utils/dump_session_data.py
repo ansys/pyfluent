@@ -1,7 +1,7 @@
 """Module providing dump session data functionality."""
 from pathlib import Path
 import pickle
-from typing import Dict, Optional, Union
+from typing import Optional, Union
 
 import numpy as np
 
@@ -30,7 +30,7 @@ def dump_session_data(
     session_data = {
         "scalar_fields_info": {
             k: v
-            for k, v in session.field_info.get_fields_info().items()
+            for k, v in session.field_info.get_scalar_fields_info().items()
             if (not fields or k in fields)
         },
         "surfaces_info": {
@@ -52,10 +52,10 @@ def dump_session_data(
             session_data["range"][field][surface] = {}
             session_data["range"][field][surface][
                 "node_value"
-            ] = session.field_info.get_range(field, True, [surface])
+            ] = session.field_info.get_scalar_fields_range(field, True, [surface])
             session_data["range"][field][surface][
                 "cell_value"
-            ] = session.field_info.get_range(field, False, [surface])
+            ] = session.field_info.get_scalar_fields_range(field, False, [surface])
 
     transaction = session.field_data.new_transaction()
     transaction.add_surfaces_request(
@@ -119,15 +119,21 @@ class DumpDataReader:
             SurfaceDataType.FacesNormal: "face-normal",
         }
 
-        surface_data = [
-            self._session_data["fields"][tag_id][surface_id][
-                enum_to_field_name[data_type]
-            ]
-            for data_type in data_types
-            for surface_id in surface_ids
-        ]
+        surfaces_data = []
+        surfaces_data_int = []
 
-        return surface_data
+        for data_type in data_types:
+            for surface_id in surface_ids:
+                surfaces_data_int.append(
+                    self._session_data["fields"][tag_id][surface_id][
+                        enum_to_field_name[data_type]
+                    ]
+                )
+
+            surfaces_data.append(surfaces_data_int[:])
+            surfaces_data_int = []
+
+        return surfaces_data
 
     def get_scalar_field_data(
         self, surface_ids, data_location, provide_boundary_values, field_names
@@ -159,11 +165,15 @@ class DumpDataReader:
 
         return vector_field_data
 
-    def get_pathlines_data(self, surface_ids, field_names) -> list[Dict]:
+    def get_pathlines_data(
+        self, surface_ids, field_names, key
+    ) -> list[Union[np.array, None]]:
         pathlines_data = []
         for surface_id in surface_ids:
             for field_name in field_names:
                 tag_id = (("type", "pathlines-field"), ("field", field_name))
-                pathlines_data.append(self._session_data["fields"][tag_id][surface_id])
+                pathlines_data.append(
+                    self._session_data["fields"][tag_id][surface_id][key]
+                )
 
         return pathlines_data

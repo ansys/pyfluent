@@ -1,5 +1,4 @@
 from ansys.api.fluent.v0 import datamodel_se_pb2
-from ansys.fluent.core.services.datamodel_se import _convert_variant_to_value
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 
@@ -19,19 +18,11 @@ class DatamodelStream(StreamingService):
         while True:
             try:
                 response: datamodel_se_pb2.DataModelResponse = next(responses)
-                print(response)
                 with self._lock:
                     self._streaming = True
                     for _, cb_list in self._service_callbacks.items():
-                        state = (
-                            _convert_variant_to_value(response.state)
-                            if hasattr(response, "state")
-                            else None
-                        )
+                        state = response.state if hasattr(response, "state") else None
                         deleted_paths = getattr(response, "deletedpaths", None)
-                        events = getattr(response, "events", None)
-                        cb_list[0](
-                            state=state, deleted_paths=deleted_paths, events=events
-                        )
+                        cb_list[0](state=state, deleted_paths=deleted_paths)
             except StopIteration:
                 break

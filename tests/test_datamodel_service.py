@@ -5,8 +5,12 @@ from util.meshing_workflow import new_mesh_session  # noqa: F401
 
 from ansys.api.fluent.v0 import datamodel_se_pb2
 from ansys.fluent.core import examples
-from ansys.fluent.core.services.datamodel_se import convert_path_to_se_path
+from ansys.fluent.core.services.datamodel_se import (
+    _convert_variant_to_value,
+    convert_path_to_se_path,
+)
 from ansys.fluent.core.services.streaming import StreamingService
+from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 
 
@@ -173,9 +177,14 @@ def test_add_on_command_executed(new_mesh_session):
     assert data == []
 
 
+@pytest.fixture
+def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setattr(Meshing, "use_cache", False)
+
+
 @pytest.mark.dev
 @pytest.mark.fluent_232
-def test_datamodel_streaming_full_diff_state(new_mesh_session):
+def test_datamodel_streaming_full_diff_state(disable_datamodel_cache, new_mesh_session):
     meshing = new_mesh_session
     datamodel_service_se = meshing.datamodel_service_se
     data_model_request = datamodel_se_pb2.DataModelRequest()
@@ -188,7 +197,9 @@ def test_datamodel_streaming_full_diff_state(new_mesh_session):
     stream = DatamodelStream(datamodel_streaming)
     stream.start()
 
-    def cb(state, deleted_paths, events):
+    def cb(state, deleted_paths):
+        if state:
+            state = _convert_variant_to_value(state)
         cb.states.append(state)
 
     cb.states = []
@@ -206,7 +217,9 @@ def test_datamodel_streaming_full_diff_state(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
-def test_datamodel_streaming_no_commands_diff_state(new_mesh_session):
+def test_datamodel_streaming_no_commands_diff_state(
+    disable_datamodel_cache, new_mesh_session
+):
     meshing = new_mesh_session
     datamodel_service_se = meshing.datamodel_service_se
     data_model_request = datamodel_se_pb2.DataModelRequest()
@@ -220,7 +233,9 @@ def test_datamodel_streaming_no_commands_diff_state(new_mesh_session):
     stream = DatamodelStream(datamodel_streaming)
     stream.start()
 
-    def cb(state, deleted_paths, events):
+    def cb(state, deleted_paths):
+        if state:
+            state = _convert_variant_to_value(state)
         cb.states.append(state)
 
     cb.states = []

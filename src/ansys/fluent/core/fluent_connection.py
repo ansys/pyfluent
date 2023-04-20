@@ -31,6 +31,8 @@ from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents,
 )
+
+# from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
@@ -221,6 +223,8 @@ class FluentConnection:
         self.datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
         self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
         self.datamodel_events.start()
+        # self.datamodel_stream = DatamodelStream(self.datamodel_service_se)
+        # self.datamodel_stream.start()
 
         self._reduction_service = ReductionService(self._channel, self._metadata)
         self.reduction = Reduction(self._reduction_service)
@@ -276,11 +280,11 @@ class FluentConnection:
             return "meshing"
 
     def start_transcript(
-        self, file_path: str = None, write_to_interpreter: bool = True
+        self, file_path: str = None, write_to_stdout: bool = True
     ) -> None:
         """Start streaming of Fluent transcript."""
         warnings.warn("Use -> transcript.start()", DeprecationWarning)
-        self.transcript.start(file_path, write_to_interpreter)
+        self.transcript.start(file_path, write_to_stdout)
 
     def stop_transcript(self) -> None:
         """Stop streaming of Fluent transcript."""

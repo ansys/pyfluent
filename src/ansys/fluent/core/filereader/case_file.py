@@ -5,10 +5,14 @@ Example
 
 .. code-block:: python
 
-    from ansys.fluent.core.filereader.case import Case
-    reader = Case(case_filepath=case_filepath)      # Instantiate a case reader
-    input_parameters = reader.input_parameters()    # Get lists of input parameters
-    output_parameters = reader.output_parameters()  # Get lists of output parameters
+    >>> from ansys.fluent.core import examples
+    >>> from ansys.fluent.core.filereader.casereader import CaseReader
+
+    >>> case_filepath = examples.download_file("Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer")
+
+    >>> reader = CaseReader(case_filepath=case_filepath) # Instantiate a CaseFile class
+    >>> input_parameters = reader.input_parameters()     # Get lists of input parameters
+    >>> output_parameters = reader.output_parameters()   # Get lists of output parameters
 
 """
 import codecs
@@ -57,12 +61,12 @@ class InputParameter:
         return self._component(1).lstrip("[").rstrip("]")
 
     @property
-    def number(self):
-        """Get the value of a Fluent input parameter.
+    def numeric_value(self):
+        """Get the numeric value of a Fluent input parameter.
         Returns
         -------
         float
-            Value of the Fluent input parameter.
+            Numeric value of the Fluent input parameter.
         """
         return float(self._component(0))
 

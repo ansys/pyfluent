@@ -20,6 +20,11 @@ class SolverIcing(Solver):
         self,
         fluent_connection: FluentConnection,
     ):
+        """SolverIcing session.
+
+        Args:
+            fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+        """
         super(SolverIcing, self).__init__(fluent_connection=fluent_connection)
         self._flserver_root = None
         self._version = None

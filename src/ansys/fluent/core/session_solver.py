@@ -32,6 +32,11 @@ class Solver(BaseSession):
         self,
         fluent_connection,
     ):
+        """Solver session.
+
+        Args:
+            fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+        """
         super(Solver, self).__init__(fluent_connection=fluent_connection)
         self._build_from_fluent_connection(fluent_connection)
 
