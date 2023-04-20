@@ -36,9 +36,12 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx_autodoc_typehints",
     "sphinx_copybutton",
-    "sphinx_gallery.gen_gallery",
+    #"sphinx_gallery.gen_gallery",
     "sphinxemoji.sphinxemoji",
+    'autoapi.extension'
 ]
+
+autoapi_dirs = ['../../src']
 
 # Intersphinx mapping
 intersphinx_mapping = {

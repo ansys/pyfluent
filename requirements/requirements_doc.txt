@@ -13,3 +13,4 @@ sphinx-notfound-page==0.8.3
 sphinxcontrib-websupport==1.2.4
 sphinxemoji==0.2.0
 autodocsumm==0.2.10
+sphinx-autoapi==2.1.0
