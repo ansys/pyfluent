@@ -827,11 +827,20 @@ def test_accessor_methods_on_settings_objects(launch_fluent_solver_3ddp_t2):
     root = solver._root
 
     nodes = {}
+    expected_type_list = [
+        "Boolean",
+        "String",
+        "Real",
+        "Integer",
+        "RealList",
+        "IntegerList",
+        "ListObject",
+    ]
     type_list = []
 
-    counter = [0, 0, 0, 0]
+    get_child_nodes(root, nodes, type_list, expected_type_list)
 
-    get_child_nodes(root, nodes, type_list)
+    assert type_list.sort() == expected_type_list.sort()
 
     for type_data in type_list:
         if type_data == "Boolean":
@@ -844,7 +853,6 @@ def test_accessor_methods_on_settings_objects(launch_fluent_solver_3ddp_t2):
             }.issubset(set(dir(nodes[type_data])))
             assert nodes[type_data].is_read_only() in [True, False]
             assert nodes[type_data].is_active() in [True, False]
-            counter[0] = 1
 
         elif type_data in ["Integer", "Real", "IntegerList", "RealList"]:
             assert {
@@ -859,7 +867,6 @@ def test_accessor_methods_on_settings_objects(launch_fluent_solver_3ddp_t2):
             assert not {"allowed_values"}.issubset(set(dir(nodes[type_data])))
             assert nodes[type_data].is_read_only() in [True, False]
             assert nodes[type_data].is_active() in [True, False]
-            counter[1] = 2
 
         elif type_data in ["String", "StringList", "Filename"]:
             assert {
@@ -873,7 +880,6 @@ def test_accessor_methods_on_settings_objects(launch_fluent_solver_3ddp_t2):
             assert not {"min", "max"}.issubset(set(dir(nodes[type_data])))
             assert nodes[type_data].is_read_only() in [True, False]
             assert nodes[type_data].is_active() in [True, False]
-            counter[2] = 3
 
         elif type_data == "ListObject":
             assert {"is_active", "is_read_only", "get_state", "set_state"}.issubset(
@@ -881,21 +887,22 @@ def test_accessor_methods_on_settings_objects(launch_fluent_solver_3ddp_t2):
             )
             assert nodes[type_data].is_read_only() in [True, False]
             assert nodes[type_data].is_active() in [True, False]
-            counter[3] = 4
-
-    assert all(counter)
 
 
-def get_child_nodes(node, nodes, type_list):
+def get_child_nodes(node, nodes, type_list, expected_type_list):
     if node.is_active():
         if isinstance(node, flobject.NamedObject):
             for item in node.get_object_names():
-                get_child_nodes(node[item], nodes, type_list)
+                get_child_nodes(node[item], nodes, type_list, expected_type_list)
         elif isinstance(node, flobject.Group):
             for item in node.child_names:
-                get_child_nodes(getattr(node, item), nodes, type_list)
+                get_child_nodes(
+                    getattr(node, item), nodes, type_list, expected_type_list
+                )
         else:
             node_type = node.__class__.__bases__[0].__name__
             if node_type not in type_list:
                 type_list.append(node_type)
                 nodes[node_type] = node
+                if type_list.sort() == expected_type_list.sort():
+                    return
