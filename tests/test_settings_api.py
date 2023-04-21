@@ -94,7 +94,8 @@ def test_wildcard_fnmatch(new_solver_session):
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
     solver.file.read_case(file_name=case_path)
 
-    solver.results.graphics.mesh.create("mesh-1")
+    solver.solution.initialization.hybrid_initialize()
+
     solver.results.graphics.mesh.create("mesh-2")
     solver.results.graphics.mesh.create("mesh-a")
     solver.results.graphics.mesh.create("mesh-bc")
@@ -104,7 +105,7 @@ def test_wildcard_fnmatch(new_solver_session):
         == ["mesh-1", "mesh-2", "mesh-a", "mesh-bc"].sort()
     )
 
-    assert list(solver.results.graphics.mesh["mesh-?z"]().keys()) == ["mesh-bc"]
+    assert list(solver.results.graphics.mesh["mesh-?c"]().keys()) == ["mesh-bc"]
 
     assert list(solver.results.graphics.mesh["mesh-[2-5]"]().keys()) == ["mesh-2"]
 
