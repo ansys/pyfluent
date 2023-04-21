@@ -85,3 +85,30 @@ def test_wildcard(new_solver_session):
             }
         }
     }
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_232
+def test_wildcard_fnmatch(new_solver_session):
+    solver = new_solver_session
+    case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
+    solver.file.read_case(file_name=case_path)
+
+    solver.results.graphics.mesh.create("mesh-1")
+    solver.results.graphics.mesh.create("mesh-2")
+    solver.results.graphics.mesh.create("mesh-a")
+    solver.results.graphics.mesh.create("mesh-bc")
+
+    assert (
+        list(solver.results.graphics.mesh["mesh-*"]().keys()).sort()
+        == ["mesh-1", "mesh-2", "mesh-a", "mesh-bc"].sort()
+    )
+
+    assert list(solver.results.graphics.mesh["mesh-?z"]().keys()) == ["mesh-bc"]
+
+    assert list(solver.results.graphics.mesh["mesh-[2-5]"]().keys()) == ["mesh-2"]
+
+    assert (
+        list(solver.results.graphics.mesh["mesh-[!2-5]"]().keys()).sort()
+        == ["mesh-1", "mesh-a"].sort()
+    )
