@@ -820,3 +820,86 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     energy_parent = solver.setup._get_parent_of_active_child_names("energy")
 
     assert energy_parent == "\n energy is a child of models \n"
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_232
+def test_accessor_methods_on_settings_objects(launch_fluent_solver_3ddp_t2):
+    solver = launch_fluent_solver_3ddp_t2
+    root = solver._root
+
+    nodes = {}
+    expected_type_list = [
+        "Boolean",
+        "String",
+        "Real",
+        "Integer",
+        "RealList",
+        "IntegerList",
+        "ListObject",
+    ]
+    type_list = expected_type_list.copy()
+
+    get_child_nodes(root, nodes, type_list)
+
+    assert type_list.sort() == expected_type_list.sort()
+
+    for type_data in type_list:
+        if type_data == "Boolean":
+            assert {
+                "is_active",
+                "is_read_only",
+                "default_value",
+                "get_state",
+                "set_state",
+            }.issubset(set(dir(nodes[type_data])))
+            assert nodes[type_data].is_read_only() in [True, False]
+            assert nodes[type_data].is_active() in [True, False]
+
+        elif type_data in ["Integer", "Real", "IntegerList", "RealList"]:
+            assert {
+                "is_active",
+                "is_read_only",
+                "default_value",
+                "get_state",
+                "set_state",
+                "min",
+                "max",
+            }.issubset(set(dir(nodes[type_data])))
+            assert not {"allowed_values"}.issubset(set(dir(nodes[type_data])))
+            assert nodes[type_data].is_read_only() in [True, False]
+            assert nodes[type_data].is_active() in [True, False]
+
+        elif type_data in ["String", "StringList", "Filename"]:
+            assert {
+                "is_active",
+                "is_read_only",
+                "default_value",
+                "get_state",
+                "set_state",
+                "allowed_values",
+            }.issubset(set(dir(nodes[type_data])))
+            assert not {"min", "max"}.issubset(set(dir(nodes[type_data])))
+            assert nodes[type_data].is_read_only() in [True, False]
+            assert nodes[type_data].is_active() in [True, False]
+
+        elif type_data == "ListObject":
+            assert {"is_active", "is_read_only", "get_state", "set_state"}.issubset(
+                set(dir(nodes[type_data]))
+            )
+            assert nodes[type_data].is_read_only() in [True, False]
+            assert nodes[type_data].is_active() in [True, False]
+
+
+def get_child_nodes(node, nodes, type_list):
+    if node.is_active():
+        if isinstance(node, flobject.Group):
+            for item in node.child_names:
+                get_child_nodes(getattr(node, item), nodes, type_list)
+        else:
+            node_type = node.__class__.__bases__[0].__name__
+            if node_type in type_list:
+                type_list.remove(node_type)
+                nodes[node_type] = node
+                if not type_list:
+                    return
