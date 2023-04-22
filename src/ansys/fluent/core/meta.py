@@ -246,8 +246,7 @@ class PyReferenceObjectMeta(PyLocalBaseMeta):
     def __new__(cls, name, bases, attrs):
         attrs["__init__"] = attrs.get("__init__", cls.__create_init())
         return super(PyReferenceObjectMeta, cls).__new__(cls, name, bases, attrs)
-
-
+       
 class PyLocalObjectMeta(PyLocalBaseMeta):
     """Metaclass for local object classes."""
 
