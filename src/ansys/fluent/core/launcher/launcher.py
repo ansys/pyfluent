@@ -459,6 +459,7 @@ def launch_fluent(
     server_info_filepath: str = None,
     password: str = None,
     py: bool = None,
+    gpu: bool = None,
     cwd: str = None,
     topy: Union[str, list] = None,
     **kwargs,
@@ -550,6 +551,8 @@ def launch_fluent(
         Password to connect to existing Fluent instance.
     py : bool, optional
         If True, Fluent will run in Python mode. Default is None.
+    gpu : bool, optional
+        If True, Fluent will start with GPU Solver.
     cwd: str, Optional
         Path to specify current working directory to launch fluent from the defined directory as
         current working directory.
