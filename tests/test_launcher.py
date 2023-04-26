@@ -35,7 +35,7 @@ def test_additional_argument_g_gu(with_launching_container):
     launcher._is_windows = lambda: default_windows_flag
 
 
-def test_gpu_launch_arg(with_launching_container):
+def test_gpu_launch_arg():
     # The launch process is terminated intentionally to verify whether the fluent launch string
     # (which is available in the error message) is generated correctly.
     with pytest.raises(LaunchFluentError) as error:
@@ -44,7 +44,7 @@ def test_gpu_launch_arg(with_launching_container):
     assert "-gpu" in str(error.value).split()
 
 
-def test_gpu_launch_arg_additional_arg(with_launching_container):
+def test_gpu_launch_arg_additional_arg():
     # The launch process is terminated intentionally to verify whether the fluent launch string
     # (which is available in the error message) is generated correctly.
     with pytest.raises(LaunchFluentError) as error:
