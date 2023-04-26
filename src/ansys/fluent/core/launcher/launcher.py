@@ -304,8 +304,9 @@ def _get_session_info(argvals, mode: Union[LaunchMode, str, None] = None):
 
 def _raise_exception_g_gu_in_windows_os(additional_arguments: str) -> None:
     """If -g or -gu is passed in Windows OS, the exception should be raised."""
+    additional_arg_list = additional_arguments.split()
     if _is_windows() and (
-        ("-g" in additional_arguments) or ("-gu" in additional_arguments)
+        ("-g" in additional_arg_list) or ("-gu" in additional_arg_list)
     ):
         raise ValueError("'-g' and '-gu' is not supported on windows platform.")
 
