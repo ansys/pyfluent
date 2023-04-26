@@ -31,6 +31,16 @@ def test_additional_argument_g_gu(with_launching_container):
     launcher._is_windows = lambda: default_windows_flag
 
 
+def test_gpu_launch_arg(with_launching_container):
+    s1 = pyfluent.launch_fluent(additional_arguments="-gpu")
+    assert s1.launcher_args["additional_arguments"] == "-gpu"
+    s1.exit()
+
+    s2 = pyfluent.launch_fluent(gpu=True)
+    assert s2.launcher_args["gpu"]
+    s2.exit()
+
+
 def test_kwargs():
     with pytest.raises(RuntimeError):
         pyfluent.launch_fluent(abc=1, meshing_mode=True)
