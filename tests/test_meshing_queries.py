@@ -1,3 +1,5 @@
+import pytest
+
 from ansys.fluent.core import examples
 
 import_filename = examples.download_file(
@@ -5,6 +7,7 @@ import_filename = examples.download_file(
 )
 
 
+@pytest.mark.fluent_232
 def test_meshing_queries(new_mesh_session):
     meshing_session = new_mesh_session
     meshing_session.tui.file.read_case(import_filename)
