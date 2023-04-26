@@ -5,7 +5,11 @@ import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher import launcher
-from ansys.fluent.core.launcher.launcher import get_ansys_version, get_fluent_exe_path
+from ansys.fluent.core.launcher.launcher import (
+    LaunchFluentError,
+    get_ansys_version,
+    get_fluent_exe_path,
+)
 
 
 @pytest.mark.skip(reason="Can be used only locally.")
@@ -32,15 +36,21 @@ def test_additional_argument_g_gu(with_launching_container):
 
 
 def test_gpu_launch_arg(with_launching_container):
-    s = pyfluent.launch_fluent(gpu=True)
-    assert s.launcher_args["gpu"]
-    s.exit()
+    # The launch process is terminated intentionally to verify whether the fluent launch string
+    # (which is available in the error message) is generated correctly.
+    with pytest.raises(LaunchFluentError) as error:
+        pyfluent.launch_fluent(gpu=True, start_timeout=1)
+
+    assert "-gpu" in str(error.value).split()
 
 
 def test_gpu_launch_arg_additional_arg(with_launching_container):
-    s = pyfluent.launch_fluent(additional_arguments="-gpu")
-    assert s.launcher_args["additional_arguments"] == "-gpu"
-    s.exit()
+    # The launch process is terminated intentionally to verify whether the fluent launch string
+    # (which is available in the error message) is generated correctly.
+    with pytest.raises(LaunchFluentError) as error:
+        pyfluent.launch_fluent(additional_arguments="-gpu", start_timeout=1)
+
+    assert "-gpu" in str(error.value).split()
 
 
 def test_kwargs():
