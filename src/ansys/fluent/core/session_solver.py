@@ -3,13 +3,14 @@
 from asyncio import Future
 import functools
 import importlib
+import logging
 import threading
 
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.session import (
     _CODEGEN_MSG_TUI,
-    _BaseSession,
+    BaseSession,
     _get_preferences,
     _get_solverworkflow,
 )
@@ -17,19 +18,25 @@ from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 from ansys.fluent.core.utils.async_execution import asynchronous
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
-from ansys.fluent.core.utils.logging import LOG
 from ansys.fluent.core.workflow import WorkflowWrapper
 
+tui_logger = logging.getLogger("ansys.fluent.services.tui")
+data_model_logger = logging.getLogger("ansys.fluent.services.datamodel")
 
-class Solver(_BaseSession):
-    """Encapsulates a Fluent - Solver session connection.
-    Solver(Session) holds the top-level objects
-    for solver TUI and settings objects calls."""
+
+class Solver(BaseSession):
+    """Encapsulates a Fluent solver session. A ``tui`` object for solver TUI
+    commanding, and solver settings objects are all exposed here."""
 
     def __init__(
         self,
         fluent_connection,
     ):
+        """Solver session.
+
+        Args:
+            fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+        """
         super(Solver, self).__init__(fluent_connection=fluent_connection)
         self._build_from_fluent_connection(fluent_connection)
 
@@ -66,7 +73,7 @@ class Solver(_BaseSession):
                 )
                 self._tui = tui_module.main_menu([], self._tui_service)
             except ImportError:
-                LOG.warning(_CODEGEN_MSG_TUI)
+                tui_logger.warning(_CODEGEN_MSG_TUI)
                 self._tui = TUIMenu([], self._tui_service)
         return self._tui
 
@@ -79,7 +86,7 @@ class Solver(_BaseSession):
             )
             workflow_se = workflow_module.Root(self._se_service, "workflow", [])
         except (ImportError, ModuleNotFoundError):
-            LOG.warning(_CODEGEN_MSG_DATAMODEL)
+            data_model_logger.warning(_CODEGEN_MSG_DATAMODEL)
             workflow_se = PyMenuGeneric(self._se_service, "workflow")
         return workflow_se
 

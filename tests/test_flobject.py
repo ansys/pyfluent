@@ -2,12 +2,17 @@
 # import codegen.settingsgen
 from collections.abc import MutableMapping
 import io
+import os
 import weakref
 
 import pytest
 from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 
+from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver import flobject
+from ansys.fluent.core.solver.flobject import find_children
+
+os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
 
 
 class Setting:
@@ -396,6 +401,9 @@ class Proxy:
     def get_static_info(cls):
         return cls.root.get_static_info()
 
+    def is_interactive_mode(self):
+        return False
+
 
 def test_primitives():
     r = flobject.get_root(Proxy())
@@ -657,7 +665,10 @@ def test_accessor_methods_on_settings_object(load_static_mixer_case):
 
     existing = solver.file.read.file_type.get_attr("read-only?", bool)
     modified = solver.file.read.file_type.is_read_only()
-    assert existing == modified
+    if solver.get_fluent_version() < "23.2.0":
+        assert existing == modified
+    else:
+        assert existing == None and modified == False
 
     existing = solver.setup.boundary_conditions.velocity_inlet.get_attr(
         "user-creatable?", bool
@@ -720,9 +731,75 @@ def test_accessor_methods_on_settings_object_types(load_static_mixer_case):
 
 
 @pytest.mark.dev
+@pytest.mark.fluent_231
+def test_find_children_from_settings_root():
+    from ansys.fluent.core.solver.settings_231.setup import setup
+
+    assert len(find_children(setup())) == 18514
+    assert len(find_children(setup(), "gen*")) == 9
+    assert find_children(setup(), "general*") == [
+        "general",
+        "models/discrete_phase/general_settings",
+        "models/virtual_blade_model/disk/general",
+    ]
+    assert find_children(setup(), "general") == [
+        "general",
+        "models/virtual_blade_model/disk/general",
+    ]
+    assert find_children(setup(), "*gen") == [
+        "boundary_conditions/exhaust_fan/phase/p_backflow_spec_gen",
+        "boundary_conditions/exhaust_fan/p_backflow_spec_gen",
+        "boundary_conditions/outlet_vent/phase/p_backflow_spec_gen",
+        "boundary_conditions/outlet_vent/p_backflow_spec_gen",
+        "boundary_conditions/pressure_outlet/phase/p_backflow_spec_gen",
+        "boundary_conditions/pressure_outlet/p_backflow_spec_gen",
+    ]
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_231
+def test_find_children_from_fluent_solver_session(load_static_mixer_case):
+    setup_children = find_children(load_static_mixer_case.setup)
+
+    assert len(setup_children) == 18514
+
+    viscous = load_static_mixer_case.setup.models.viscous
+    assert find_children(viscous, "prod*") == [
+        "options/production_kato_launder",
+        "turbulence_expert/production_limiter",
+    ]
+
+    assert find_children(
+        load_static_mixer_case.setup.boundary_conditions.pressure_outlet, "*_dir_*"
+    ) == [
+        "phase/geom_dir_spec",
+        "phase/geom_dir_x",
+        "phase/geom_dir_y",
+        "phase/geom_dir_z",
+        "geom_dir_spec",
+        "geom_dir_x",
+        "geom_dir_y",
+        "geom_dir_z",
+    ]
+
+    assert find_children(
+        load_static_mixer_case.setup.materials.fluid["air"].density.piecewise_polynomial
+    ) == [
+        "minimum",
+        "maximum",
+        "number_of_coefficients",
+        "coefficients",
+    ]
+
+
 @pytest.mark.fluent_232
 def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     solver = new_solver_session_no_transcript
+
+    case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
+    solver.file.read_case(file_name=case_path)
+
+    solver.solution.initialization.hybrid_initialize()
 
     with pytest.raises(AttributeError) as msg:
         solver.setup.mod
@@ -743,3 +820,86 @@ def test_settings_matching_names(new_solver_session_no_transcript) -> None:
     energy_parent = solver.setup._get_parent_of_active_child_names("energy")
 
     assert energy_parent == "\n energy is a child of models \n"
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_232
+def test_accessor_methods_on_settings_objects(launch_fluent_solver_3ddp_t2):
+    solver = launch_fluent_solver_3ddp_t2
+    root = solver._root
+
+    nodes = {}
+    expected_type_list = [
+        "Boolean",
+        "String",
+        "Real",
+        "Integer",
+        "RealList",
+        "IntegerList",
+        "ListObject",
+    ]
+    type_list = expected_type_list.copy()
+
+    get_child_nodes(root, nodes, type_list)
+
+    assert type_list.sort() == expected_type_list.sort()
+
+    for type_data in type_list:
+        if type_data == "Boolean":
+            assert {
+                "is_active",
+                "is_read_only",
+                "default_value",
+                "get_state",
+                "set_state",
+            }.issubset(set(dir(nodes[type_data])))
+            assert nodes[type_data].is_read_only() in [True, False]
+            assert nodes[type_data].is_active() in [True, False]
+
+        elif type_data in ["Integer", "Real", "IntegerList", "RealList"]:
+            assert {
+                "is_active",
+                "is_read_only",
+                "default_value",
+                "get_state",
+                "set_state",
+                "min",
+                "max",
+            }.issubset(set(dir(nodes[type_data])))
+            assert not {"allowed_values"}.issubset(set(dir(nodes[type_data])))
+            assert nodes[type_data].is_read_only() in [True, False]
+            assert nodes[type_data].is_active() in [True, False]
+
+        elif type_data in ["String", "StringList", "Filename"]:
+            assert {
+                "is_active",
+                "is_read_only",
+                "default_value",
+                "get_state",
+                "set_state",
+                "allowed_values",
+            }.issubset(set(dir(nodes[type_data])))
+            assert not {"min", "max"}.issubset(set(dir(nodes[type_data])))
+            assert nodes[type_data].is_read_only() in [True, False]
+            assert nodes[type_data].is_active() in [True, False]
+
+        elif type_data == "ListObject":
+            assert {"is_active", "is_read_only", "get_state", "set_state"}.issubset(
+                set(dir(nodes[type_data]))
+            )
+            assert nodes[type_data].is_read_only() in [True, False]
+            assert nodes[type_data].is_active() in [True, False]
+
+
+def get_child_nodes(node, nodes, type_list):
+    if node.is_active():
+        if isinstance(node, flobject.Group):
+            for item in node.child_names:
+                get_child_nodes(getattr(node, item), nodes, type_list)
+        else:
+            node_type = node.__class__.__bases__[0].__name__
+            if node_type in type_list:
+                type_list.remove(node_type)
+                nodes[node_type] = node
+                if not type_list:
+                    return

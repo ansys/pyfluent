@@ -20,12 +20,20 @@ from ansys.fluent.core.services.datamodel_tui import (
 from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.services.field_data import FieldData, FieldDataService, FieldInfo
 from ansys.fluent.core.services.health_check import HealthCheckService
+from ansys.fluent.core.services.meshing_queries import (
+    MeshingQueries,
+    MeshingQueriesService,
+)
 from ansys.fluent.core.services.monitor import MonitorsService
+from ansys.fluent.core.services.reduction import Reduction, ReductionService
 from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
 from ansys.fluent.core.services.settings import SettingsService
+from ansys.fluent.core.services.svar import SVARData, SVARInfo, SVARService
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents,
 )
+
+# from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
@@ -76,7 +84,7 @@ class _IsDataValid:
         return self._scheme_eval.scheme_eval("(data-valid?)")
 
 
-class _FluentConnection:
+class FluentConnection:
     """Encapsulates a Fluent connection.
 
     Methods
@@ -182,11 +190,11 @@ class _FluentConnection:
                     f"The connection to the Fluent server could not be established within the configurable {start_timeout} second time limit."
                 )
 
-        self._id = f"session-{next(_FluentConnection._id_iter)}"
+        self._id = f"session-{next(FluentConnection._id_iter)}"
 
-        if not _FluentConnection._monitor_thread:
-            _FluentConnection._monitor_thread = MonitorThread()
-            _FluentConnection._monitor_thread.start()
+        if not FluentConnection._monitor_thread:
+            FluentConnection._monitor_thread = MonitorThread()
+            FluentConnection._monitor_thread.start()
 
         self._batch_ops_service = BatchOpsService(self._channel, self._metadata)
 
@@ -208,9 +216,19 @@ class _FluentConnection:
         self.events_manager.start()
         self.datamodel_service_tui = DatamodelService_TUI(self._channel, self._metadata)
 
+        self.meshing_queries_service = MeshingQueriesService(
+            self._channel, self._metadata
+        )
+        self.meshing_queries = MeshingQueries(self.meshing_queries_service)
+
         self.datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
         self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
         self.datamodel_events.start()
+        # self.datamodel_stream = DatamodelStream(self.datamodel_service_se)
+        # self.datamodel_stream.start()
+
+        self._reduction_service = ReductionService(self._channel, self._metadata)
+        self.reduction = Reduction(self._reduction_service)
 
         self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
         self.scheme_eval = SchemeEval(self._scheme_eval_service)
@@ -220,10 +238,12 @@ class _FluentConnection:
 
         self._field_data_service = FieldDataService(self._channel, self._metadata)
         self.field_info = FieldInfo(self._field_data_service)
-
         self.field_data = FieldData(
             self._field_data_service, self.field_info, _IsDataValid(self.scheme_eval)
         )
+
+        self._svar_service = SVARService(self._channel, self._metadata)
+        self.svar_info = SVARInfo(self._svar_service)
 
         self.journal = Journal(self.scheme_eval)
 
@@ -236,7 +256,7 @@ class _FluentConnection:
         self.launcher_args = launcher_args
         self._finalizer = weakref.finalize(
             self,
-            _FluentConnection._exit,
+            FluentConnection._exit,
             self._channel,
             self._cleanup_on_exit,
             self.scheme_eval,
@@ -247,7 +267,15 @@ class _FluentConnection:
             self.monitors_manager,
             self._remote_instance,
         )
-        _FluentConnection._monitor_thread.cbs.append(self._finalizer)
+        FluentConnection._monitor_thread.cbs.append(self._finalizer)
+
+    @property
+    def svar_data(self) -> SVARData:
+        """Return the SVARData handle."""
+        try:
+            return SVARData(self._svar_service, self.svar_info)
+        except RuntimeError:
+            return None
 
     @property
     def id(self) -> str:
@@ -263,11 +291,11 @@ class _FluentConnection:
             return "meshing"
 
     def start_transcript(
-        self, file_path: str = None, write_to_interpreter: bool = True
+        self, file_path: str = None, write_to_stdout: bool = True
     ) -> None:
         """Start streaming of Fluent transcript."""
         warnings.warn("Use -> transcript.start()", DeprecationWarning)
-        self.transcript.start(file_path, write_to_interpreter)
+        self.transcript.start(file_path, write_to_stdout)
 
     def stop_transcript(self) -> None:
         """Stop streaming of Fluent transcript."""

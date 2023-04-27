@@ -3,6 +3,7 @@ environments for machines to run on."""
 from builtins import range
 import os
 import socket
+import tempfile
 import unittest
 
 from ansys.fluent.core.scheduler import build_parallel_options
@@ -177,11 +178,32 @@ class TestLoadMachines(unittest.TestCase):
         )
         self.assertEqual(machineList, old_machine_list)
 
+    def test_pe_hostfile(self):
+        with tempfile.NamedTemporaryFile(delete=False) as fp:
+            fp.write(b"m1\r\n\r\nm2 3 None None\r\nm3 4\r\nm4 2 queueName1")
+            os.environ["PE_HOSTFILE"] = fp.name
+        machineList = load_machines()
+        os.unlink(fp.name)
+        self.assertEqual(machineList.number_of_cores, 10)
+        self.assertEqual(machineList.machines[1].host_name, "m2")
+        self.assertEqual(machineList.machines[2].number_of_cores, 4)
+        self.assertEqual(machineList.machines[3].queue_name, "queueName1")
+        del os.environ["PE_HOSTFILE"]
+
     def test_lsb_mcpu(self):
         os.environ["LSB_MCPU_HOSTS"] = "m1 3 m2 3"
         machineList = load_machines()
-        del os.environ["LSB_MCPU_HOSTS"]
         self.assertEqual(machineList.number_of_cores, 6)
+        del os.environ["LSB_MCPU_HOSTS"]
+
+    def test_pbs_nodefile(self):
+        with tempfile.NamedTemporaryFile(delete=False) as fp:
+            fp.write(b"m1\r\n\r\nm2\r\nm2\r\nm2")
+            os.environ["PBS_NODEFILE"] = fp.name
+        machineList = load_machines()
+        os.unlink(fp.name)
+        self.assertEqual(machineList[1].number_of_cores, 3)
+        del os.environ["PBS_NODEFILE"]
 
     def test_no_environment(self):
         machineList = load_machines()
@@ -205,8 +227,11 @@ class TestLoadMachines(unittest.TestCase):
         self.assertEqual(fluentOpts, "-t4 -cnf=M0:1,M1:2,M2:1")
 
     def test_constrain_machines2(self):
-        machineList = load_machines(host_info="M0:2,M1:3,M2:2", ncores=3)
+        with tempfile.NamedTemporaryFile(delete=False) as fp:
+            fp.write(b"M0:2,M1:3,M2:2")
+        machineList = load_machines(host_info=fp.name, ncores=3)
         expectedValue = {"M0": 1, "M1": 1, "M2": 1}
+        os.unlink(fp.name)
         self.assertEqual(len(machineList.machines), 3)
         for machine in machineList.machines:
             self.assertEqual(machine.number_of_cores, expectedValue[machine.host_name])
@@ -248,6 +273,17 @@ class TestLoadMachines(unittest.TestCase):
         fluentOpts = build_parallel_options(machineList)
         self.assertEqual(fluentOpts, "-t32 -cnf=M0:8,M1:8,M2:16")
         del os.environ["CCP_NODES"]
+
+    def test_slurm_single_num(self):
+        os.environ["SLURM_JOB_NODELIST"] = "M[1-2],M[3]"
+        os.environ["SLURM_TASKS_PER_NODE"] = "8,10(x2)"
+        hostList = os.environ.get("SLURM_JOB_NODELIST")
+        machineList = _construct_machine_list_slurm(hostList)
+        self.assertEqual(machineList[1].number_of_cores, 10)
+        self.assertEqual(machineList[2].number_of_cores, 10)
+        self.assertEqual(machineList[2].host_name, "M3")
+        del os.environ["SLURM_JOB_NODELIST"]
+        del os.environ["SLURM_TASKS_PER_NODE"]
 
     def test_slurm_no_brackets(self):
         os.environ["SLURM_JOB_NODELIST"] = "M0,M1,M2"
@@ -424,10 +460,6 @@ class TestMachineListCmdLine(unittest.TestCase):
                 self.assertEqual(
                     machine.number_of_cores, self._expectedValues[machine.host_name]
                 )
-
-    def test_file_not_found(self):
-        hostfile = "nonExistentFile.txt"
-        self.assertRaises(IOError, _parse_host_info, hostfile)
 
 
 suite1 = unittest.TestLoader().loadTestsFromTestCase(TestMachine)

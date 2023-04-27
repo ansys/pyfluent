@@ -1,15 +1,15 @@
 .. _ref_case_reader:
 
-Case reader
-===========
+CaseFile
+========
 
-The case reader provides a reader for Fluent case files.
+The CaseFile class provides a reader for Fluent case files.
 
 Sample usage
 ------------
 
-You can use the case reader by importing it and passing a case file path.
-This example shows how to have the case reader read a case file (.cas.h5)
+You can use the CaseFile class by importing it and passing a case file path.
+This example shows how to have the CaseFile class read a case file (.cas.h5)
 from the ``examples`` repository:
 
 .. code-block:: python
@@ -30,12 +30,12 @@ from the ``examples`` repository:
 
 Additional features
 -------------------
-Along with basic functionality, the case reader provides many additional features, including these:
+Along with basic functionality, the CaseFile class provides many additional features, including these:
 
 - **Supports multiple file formats**
-  The case reader can read Fluent case files (CAS, CAS.HF, and CAS.GZ) in both text and binary formats.
+  The CaseFile class can read Fluent case files (CAS, CAS.HF, and CAS.GZ) in both text and binary formats.
 - **Takes a project path as an argument**
-  The case reader has an option for taking a Fluent project path (FLPRJ) as an argument and locating
+  The CaseFile class has an option for taking a Fluent project path (FLPRJ) as an argument and locating
   the case file path:
   
   .. code-block:: python
@@ -43,10 +43,18 @@ Along with basic functionality, the case reader provides many additional feature
     >>> reader = CaseReader(project_filepath="Dir1/Dir2/project.flprj")
 
 - **Reads ``rp_vars`` and ``config_vars`` variables**
-  The case reader can provide the ``rp_vars`` and ``config_vars`` variables:
+  The CaseFile class can provide the ``rp_vars`` and ``config_vars`` variables:
   
   .. code-block:: python
 
     >>> reader.rp_vars()
     >>> reader.config_vars()
 
+
+.. automodule:: ansys.fluent.core.filereader.case_file
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:

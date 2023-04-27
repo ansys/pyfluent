@@ -1,3 +1,7 @@
 # Compatibility aliases
-from .case import Case as CaseReader  # noqa: F401
-from .case import InputParameter, OutputParameter  # noqa: F401
+from .case_file import (  # noqa: F401
+    InputParameter,
+    OutputParameter,
+    _get_processed_string,
+)
+from .case_file import CaseFile as CaseReader  # noqa: F401

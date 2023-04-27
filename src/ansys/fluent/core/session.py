@@ -2,15 +2,15 @@
 Session."""
 import importlib
 import json
+import logging
 import os
 from typing import Any, Dict
 
-from ansys.fluent.core.fluent_connection import _FluentConnection
+from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.session_shared import (  # noqa: F401
     _CODEGEN_MSG_DATAMODEL,
     _CODEGEN_MSG_TUI,
 )
-from ansys.fluent.core.utils.logging import LOG
 
 from .rpvars import RPVars
 
@@ -19,8 +19,10 @@ try:
 except Exception:
     root = Any
 
+data_model_logger = logging.getLogger("ansys.fluent.services.datamodel")
 
-def parse_server_info_file(filename: str):
+
+def _parse_server_info_file(filename: str):
     with open(filename, encoding="utf-8") as f:
         lines = f.readlines()
     ip_and_port = lines[0].strip().split(":")
@@ -37,7 +39,7 @@ def _get_datamodel_attributes(session, attribute: str):
         )
         return preferences_module.Root(session._se_service, attribute, [])
     except (ImportError, ModuleNotFoundError):
-        LOG.warning(_CODEGEN_MSG_DATAMODEL)
+        data_model_logger.warning(_CODEGEN_MSG_DATAMODEL)
 
 
 def _get_preferences(session):
@@ -48,7 +50,7 @@ def _get_solverworkflow(session):
     return _get_datamodel_attributes(session, "solverworkflow")
 
 
-class _BaseSession:
+class BaseSession:
     """Instantiates a Fluent connection.
 
     Attributes
@@ -68,10 +70,15 @@ class _BaseSession:
         Close the Fluent connection and exit Fluent.
     """
 
-    def __init__(self, fluent_connection: _FluentConnection):
-        _BaseSession.build_from_fluent_connection(self, fluent_connection)
+    def __init__(self, fluent_connection: FluentConnection):
+        """BaseSession
 
-    def build_from_fluent_connection(self, fluent_connection: _FluentConnection):
+        Args:
+            fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+        """
+        BaseSession.build_from_fluent_connection(self, fluent_connection)
+
+    def build_from_fluent_connection(self, fluent_connection: FluentConnection):
         self.fluent_connection = fluent_connection
         self.scheme_eval = self.fluent_connection.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
@@ -108,9 +115,9 @@ class _BaseSession:
         Session
             Session instance
         """
-        ip, port, password = parse_server_info_file(server_info_filepath)
+        ip, port, password = _parse_server_info_file(server_info_filepath)
         session = cls(
-            fluent_connection=_FluentConnection(
+            fluent_connection=FluentConnection(
                 ip=ip,
                 port=port,
                 password=password,

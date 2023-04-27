@@ -1,8 +1,8 @@
 .. _ref_contributing:
 
-============
-Contributing
-============
+==========
+Contribute
+==========
 Overall guidance on contributing to a PyAnsys library appears in the
 `Contributing <https://dev.docs.pyansys.com/dev/how-to/contributing.html>`_ topic
 in the *PyAnsys Developer's Guide*. Ensure that you are thoroughly familiar with

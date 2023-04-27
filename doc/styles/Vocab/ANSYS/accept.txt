@@ -1,6 +1,7 @@
 ANSYS
 Ansys
 ansys
+CaseFile
 CommandArguments
 EventsManager
 endblock
@@ -8,6 +9,7 @@ endfor
 endif
 Fluent
 fluent
+fluent_connection
 Fluent's
 fullname
 hexahedral
@@ -17,6 +19,8 @@ Matplotlib
 matplotlib
 mesher
 meshing's
+metaclass
+metaclasses
 MonitorsManager
 numpy
 pathlines
@@ -31,6 +35,14 @@ Pythonic
 pyvista
 rpvars
 sbatch
+session
+session_meshing
+session_base_meshing
+session_pure_meshing
+session_solver
+session_solver_icing
+session_solver_lite
+Session
 Slurm
 UDFs
 Univa

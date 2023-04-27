@@ -14,6 +14,11 @@ class SolverLite(Solver):
         self,
         fluent_connection=None,
     ):
+        """SolverLite session.
+
+        Args:
+            fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
+        """
         super().__init__(
             fluent_connection=fluent_connection,
         )

@@ -1,7 +1,8 @@
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
 from enum import Enum
 import itertools
-from typing import Any, Callable, Dict, Iterator, List, Tuple
+import logging
+from typing import Any, Callable, Dict, Iterator, List, Tuple, Type
 import warnings
 
 import grpc
@@ -9,11 +10,14 @@ import grpc
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
+from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
 from ansys.fluent.core.services.streaming import StreamingService
 
 Path = List[Tuple[str, str]]
+
+logger = logging.getLogger("ansys.fluent.services.datamodel")
 
 
 class Attribute(Enum):
@@ -119,6 +123,7 @@ class DatamodelService(StreamingService):
         self, request: DataModelProtoModule.ExecuteCommandRequest
     ) -> DataModelProtoModule.ExecuteCommandResponse:
         """executeCommand rpc of DataModel service."""
+        logger.debug(f"Command: {request.command}")
         return self._stub.executeCommand(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -304,13 +309,19 @@ class PyStateContainer(PyCallableStateObject):
 
     docstring = None
 
-    def get_state(self) -> Any:
+    def get_remote_state(self) -> Any:
         """Get state of the current object."""
         request = DataModelProtoModule.GetStateRequest()
         request.rules = self.rules
         request.path = convert_path_to_se_path(self.path)
         response = self.service.get_state(request)
         return _convert_variant_to_value(response.state)
+
+    def get_state(self) -> Any:
+        state = DataModelCache.get_state(self.rules, self)
+        if DataModelCache.is_unassigned(state):
+            state = self.get_remote_state()
+        return state
 
     getState = get_state
 
@@ -349,8 +360,12 @@ class PyStateContainer(PyCallableStateObject):
     getAttribValue = get_attr
 
     def is_active(self):
-        """Returns true if the parameter is active."""
+        """Returns true if the object is active."""
         return true_if_none(self.get_attr(Attribute.IS_ACTIVE.value))
+
+    def is_read_only(self):
+        """Checks whether the object is read only."""
+        return false_if_none(self.get_attr(Attribute.IS_READ_ONLY.value))
 
     def help(self) -> None:
         """Print help string."""
@@ -677,10 +692,6 @@ class PyParameter(PyStateContainer):
         """Get default value of the parameter."""
         return self.get_attr(Attribute.DEFAULT.value)
 
-    def is_read_only(self):
-        """Checks whether the parameter is read only."""
-        return true_if_none(self.get_attr(Attribute.IS_READ_ONLY.value))
-
     def add_on_changed(self, cb: Callable) -> EventSubscription:
         """Register a callback for when the object is modified.
 
@@ -727,12 +738,20 @@ class PyParameter(PyStateContainer):
         return subscription
 
 
+def _bool_value_if_none(val, default):
+    if isinstance(val, bool) or val is None:
+        return default if val is None else val
+    raise TypeError(f"{val} should be a bool or None")
+
+
 def true_if_none(val):
     """Returns true if 'val' is true or None, else returns false."""
-    if val in [True, False, None]:
-        return True if val is None else val
-    else:
-        raise RuntimeError(f"In-correct value passed")
+    return _bool_value_if_none(val, default=True)
+
+
+def false_if_none(val):
+    """Returns true if 'val' is true or None, else returns false."""
+    return _bool_value_if_none(val, default=False)
 
 
 class PyTextual(PyParameter):
@@ -845,6 +864,9 @@ class PyNamedObjectContainer:
                 PyMenu(self.service, self.rules, name_path).get_state()
             )
         return child_object_display_names
+
+    def get_object_names(self):
+        return self._get_child_object_display_names()
 
     def __len__(self) -> int:
         """Return a count of child objects.
@@ -1119,7 +1141,7 @@ class PyCommandArguments(PyStateContainer):
     def __getattr__(self, attr):
         for arg in self.static_info.commands[self.command].commandinfo.args:
             if arg.name == attr:
-                mode = AccessorModes.get_mode(arg.type)
+                mode = DataModelType.get_mode(arg.type)
                 py_class = mode.value[1]
                 return py_class(self, attr, self.service, self.rules, self.path, arg)
 
@@ -1220,15 +1242,18 @@ class PySingletonCommandArgumentsSubItem(PyCommandArgumentsSubItem):
     def __getattr__(self, attr):
         arg = self.parent_arg.info.parameters[attr]
 
-        mode = AccessorModes.get_mode(arg.type)
+        mode = DataModelType.get_mode(arg.type)
         py_class = mode.value[1]
         return py_class(self, attr, self.service, self.rules, self.path, arg)
 
 
-class AccessorModes(Enum):
-    """Provides the standard Fluent launch modes."""
+class DataModelType(Enum):
+    """An enumeration over datamodel types."""
+
+    # Really???
 
     # Tuple:   Name, Solver object type, Meshing flag, Launcher options
+    # Really???
     TEXT = (["String", "ListString", "String List"], PyTextualCommandArgumentsSubItem)
     NUMBER = (
         ["Real", "Int", "ListReal", "Real List", "Integer"],
@@ -1242,9 +1267,9 @@ class AccessorModes(Enum):
     MODELOBJECT = (["ModelObject"], PySingletonCommandArgumentsSubItem)
 
     @staticmethod
-    def get_mode(mode: str) -> "AccessorModes":
-        """Returns the LaunchMode based on the mode in string format."""
-        for m in AccessorModes:
+    def get_mode(mode: str) -> Type[PyCommandArgumentsSubItem]:
+        """Returns the datamodel type."""
+        for m in DataModelType:
             if mode in m.value[0]:
                 return m
         else:

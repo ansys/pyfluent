@@ -15,8 +15,10 @@ available (for example, by reading case and data files):
 .. code-block:: python
 
   >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core import examples
+  >>> import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
   >>> solver = pyfluent.launch_fluent(mode="solver")
-  >>> solver.file.read(file_type="case-dats", file_name=mixing_elbow_case_path)
+  >>> solver.file.read(file_type="case", file_name=import_filename)
 
 
 The field data object is an attribute of the solver object:
@@ -45,40 +47,63 @@ the ``get_surface_data`` method and specifying ``Vertices`` for ``data_type``.
 
   >>> from ansys.fluent.core.services.field_data import SurfaceDataType
 
-  >>> field_data.get_surface_data(surface_name="inlet", data_type=SurfaceDataType.Vertices)
-  {4: array([-0.34760258,  0.        , -0.04240644, ..., -0.2953132 ,
-        0.        , -0.06207064], dtype=float32)}
+  >>> vertices_data = field_data.get_surface_data(surface_name="cold-inlet", data_type=SurfaceDataType.Vertices)
+  >>> vertices_data.size
+  241
+  >>> vertices_data.surface_id
+  3
+  >>> vertices_data[5].x
+  -0.2
+  >>> vertices_data[5].y
+  -0.10167995
+  >>> vertices_data[5].z
+  0.0036200774
 
-
-You can call the same method to get the corresponding surface face connectivity, normals, and centroids
-by specifying ``FacesConnectivity``, ``FacesNormal`` and ``FacesCentroid`` respectively for ``data_type``.
+You can call the same method to get the corresponding surface face normals and centroids.
+For ``data_type``, specifying ``FacesNormal`` and ``FacesCentroid`` respectively.
 
 .. code-block:: python
 
-  >>> field_data.get_surface_data(surface_name="inlet", data_type=SurfaceDataType.FacesConnectivity)
-  {4: array([  4,   3,   2, ..., 379, 382, 388])}
+  >>> faces_normal_data = field_data.get_surface_data(
+  >>>     data_type=SurfaceDataType.FacesNormal, surface_name="cold-inlet"
+  >>> )
 
-  >>> field_data.get_surface_data(surface_name="inlet", data_type=SurfaceDataType.FacesNormal)
-  {4: array([ 0.0000000e+00,  2.5835081e-06,  ...,
-          2.7459005e-06,  0.0000000e+00,  0.0000000e+00,  3.0340884e-06], dtype=float32)}
-  
-  >>> field_data.get_surface_data(surface_name="inlet", data_type=SurfaceDataType.FacesCentroid)
-  {4: array([-0.34724122,  0.        , -0.0442204 , -0.34724477, ...,
-         -0.04050309, -0.34645557,  0.        , -0.04421487, -0.34646705], dtype=float32)}
-       
-Response contains a dictionary of surface IDs to numpy array of the requested field. 
+  >>> faces_centroid_data = field_data.get_surface_data(
+  >>>     data_type=SurfaceDataType.FacesCentroid, surface_name="cold-inlet"
+  >>> )
+
+You can request face connectivity data for a given ``surface_name`` by calling
+the ``get_surface_data`` method and specifying ``FacesConnectivity`` for ``data_type``.
+
+.. code-block:: python
+
+  >>> faces_connectivity_data = field_data.get_surface_data(
+  >>>     data_type=SurfaceDataType.FacesConnectivity, surface_name="cold-inlet"
+  >>> )
+  >>> faces_connectivity_data[5].node_count
+  4
+  >>> faces_connectivity_data[5].node_indices
+  [12, 13, 17, 16]
+
+
+If a surface name is provided as input, the response contains face vertices, connectivity data, and normal or centroid data.
+If surface IDs are provided as input, the response is a dictionary containing a map of surface IDs to face
+vertices, connectivity data, and normal or centroid data.
 
 Get scalar field data
 ~~~~~~~~~~~~~~~~~~~~~
-You can call the ``get_scalar_field_data`` method to get scalar field data, such as temperature:
+You can call the ``get_scalar_field_data`` method to get scalar field data, such as absolute pressure:
 
 .. code-block:: python
 
-  >>> field_data.get_scalar_field_data(surface_name="inlet", field_name="temperature")
-  {4: array([922.6778 , 923.7954 , 923.791  , 922.67017, 922.88135,  ...,
-         924.94556, 924.9451 , 924.9536 , 923.87366, 922.8334 , 922.82434], dtype=float32)}
+  >>> abs_press_data = field_data.get_scalar_field_data(field_name="absolute-pressure", surface_name="cold-inlet")
+  >>> abs_press_data.size
+  241
+  >>> abs_press_data[120].scalar_data
+  101325.0
          
-The response contains a dictionary of surface IDs to a numpy array of the requested field.          
+If a surface name is provided as input, scalar field data is returned.
+If surface IDs are provided as input, a dictionary containing a map of surface IDs to scalar field data is returned.
 
 Get vector field data
 ~~~~~~~~~~~~~~~~~~~~~
@@ -86,11 +111,14 @@ You can call the ``get_vector_field_data`` method to get vector field data.
 
 .. code-block:: python
 
-  >>> field_data.get_vector_field_data(surface_name="inlet", vector_field="velocity")
-  {4: (array([ 5.81938386e-01, -1.01187916e+01,  3.14891455e-03,  ...,
-        -6.49216697e-02,  1.44923580e+00, -1.04387817e+01], dtype=float32), 0.00012235096)}
-  
-Response is a dictionary of surface IDs to a tuple containing a numpy array of ``vector field`` and ``vector-scale``. 
+  >>> velocity_vector_data = field_data.get_vector_field_data(field_name="velocity", surface_name="cold-inlet")
+  >>> velocity_vector_data.size
+  152
+  >>> velocity_vector_data.scale
+  1.0
+
+If a surface name is provided as input, vector field data is returned.
+If surface IDs are provided as input, a dictionary containing a map of surface IDs to vector field data is returned.
 
 Get pathlines field data
 ~~~~~~~~~~~~~~~~~~~~~~~~  
@@ -98,12 +126,20 @@ You can call the ``get_pathlines_field_data`` method to get pathlines field data
 
 .. code-block:: python
 
-  >>> field_data.get_pathlines_field_data(surface_name="inlet", field_name="temperature")
-  {4: {'vertices': array([-0.34724122,  0.        , -0.0442204 , ..., -0.20095952, -0.1250188 , -0.0317937 ], dtype=float32), 
-      'lines': array([    2,     0,     1, ...,     2, 29581, 29582]), 'temperature': array([879.1005 , 831.87085, 861.82495, ..., 899.1867 , 892.27   ,
-       896.4489 ], dtype=float32), 'pathlines-count': array([90])}}
+  >>> path_lines_data = field_data.get_pathlines_field_data(field_name="velocity", surface_name="cold-inlet")
+  >>> path_lines_data["vertices"].size
+  76152
+  >>> path_lines_data["lines"].size
+  76000
+  >>> path_lines_data["velocity"].size
+  76152
+  >>> path_lines_data["lines"][100].node_count
+  2
+  >>> path_lines_data["lines"][100].node_data
+  [100, 101]
 
-Pathlines data is returned as line surface. So response is a dictionary of surface IDs to a information about line surface. 
+Dictionary containing a map of surface IDs to the path-line data is returned.
+or example, pathlines connectivity, vertices, and field.
 
 
 .. note:: 
