@@ -47,9 +47,10 @@ def test_gpu_launch_arg():
 def test_gpu_launch_arg_additional_arg():
     # The launch process is terminated intentionally to verify whether the fluent launch string
     # (which is available in the error message) is generated correctly.
-    with pytest.raises(RuntimeError):
-        with pytest.raises(LaunchFluentError) as error:
-            pyfluent.launch_fluent(additional_arguments="-gpu", start_timeout=1)
+    with pytest.raises(LaunchFluentError) as error:
+        pyfluent.launch_fluent(
+            additional_arguments="-gpu", start_timeout=1, start_instance=True
+        )
 
     assert "-gpu" in str(error.value).split()
 
