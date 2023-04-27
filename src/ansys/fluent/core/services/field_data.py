@@ -664,6 +664,12 @@ class _FieldDataConstants:
         FieldDataProtoModule.FieldType.FLOAT_ARRAY: np.float32,
         FieldDataProtoModule.FieldType.DOUBLE_ARRAY: np.float64,
     }
+    np_data_type_to_proto_field_type = {
+        np.int32: FieldDataProtoModule.FieldType.INT_ARRAY,
+        np.int64: FieldDataProtoModule.FieldType.LONG_ARRAY,
+        np.float32: FieldDataProtoModule.FieldType.FLOAT_ARRAY,
+        np.float64: FieldDataProtoModule.FieldType.DOUBLE_ARRAY,
+    }
     chunk_size = 256 * 1024
     bytes_stream = True
     payloadTags = {
