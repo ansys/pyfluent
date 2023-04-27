@@ -24,6 +24,8 @@ env:
   RESET_EXAMPLES_CACHE: 6
   API_CODE_CACHE: 3
   DOCUMENTATION_CNAME: 'fluent.docs.pyansys.com'
+  PACKAGE_NAME: 'ansys-fluent-core'
+  PACKAGE_NAMESPACE: 'ansys.fluent.core'
 
 jobs:
 
@@ -46,45 +48,26 @@ jobs:
           vale_flags: "--config=doc/.vale.ini"
 
   test-import:
-    name: Smoke Tests
+    name: Build and Smoke tests
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-latest]
-        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
-
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.8', '3.9', '3.10', '3.11']
+        should-release:
+          - ${{ github.event_name == 'push' && contains(github.ref, 'refs/tags') }}
+        exclude:
+          - should-release: false
+            os: macos-latest
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+      - name: Build wheelhouse and perform smoke test
+        uses: pyansys/actions/build-wheelhouse@v4
         with:
+          library-name: ${{ env.PACKAGE_NAME }}
+          library-namespace: ${{ env.PACKAGE_NAMESPACE }}
+          operating-system: ${{ matrix.os }}
           python-version: ${{ matrix.python-version }}
-
-      - name: Linux pip cache
-        uses: actions/cache@v3
-        if: ${{ runner.os == 'Linux' }}
-        with:
-          path: ~/.cache/pip
-          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements/requirements_*.txt') }}
-          restore-keys: |
-            Python-${{ runner.os }}-${{ matrix.python-version }}
-
-      - name: Windows pip cache
-        uses: actions/cache@v3
-        if: ${{ runner.os == 'Windows' }}
-        with:
-          path: ~\AppData\Local\pip\Cache
-          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements/requirements_*.txt') }}
-          restore-keys: |
-            Python-${{ runner.os }}-${{ matrix.python-version }}
-
-      - name: Install pyfluent
-        run: make install
-
-      - name: Test import
-        run: make test-import
 
   docs_build:
     name: Build Documentation
@@ -513,3 +496,4 @@ jobs:
           files: |
             ./**/*.whl
             ./**/*.tar.gz
+            ./**/*-wheelhouse-*.zip
