@@ -20,10 +20,15 @@ from ansys.fluent.core.services.datamodel_tui import (
 from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.services.field_data import FieldData, FieldDataService, FieldInfo
 from ansys.fluent.core.services.health_check import HealthCheckService
+from ansys.fluent.core.services.meshing_queries import (
+    MeshingQueries,
+    MeshingQueriesService,
+)
 from ansys.fluent.core.services.monitor import MonitorsService
 from ansys.fluent.core.services.reduction import Reduction, ReductionService
 from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
 from ansys.fluent.core.services.settings import SettingsService
+from ansys.fluent.core.services.svar import SVARData, SVARInfo, SVARService
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents,
 )
@@ -211,6 +216,11 @@ class FluentConnection:
         self.events_manager.start()
         self.datamodel_service_tui = DatamodelService_TUI(self._channel, self._metadata)
 
+        self.meshing_queries_service = MeshingQueriesService(
+            self._channel, self._metadata
+        )
+        self.meshing_queries = MeshingQueries(self.meshing_queries_service)
+
         self.datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
         self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
         self.datamodel_events.start()
@@ -228,10 +238,12 @@ class FluentConnection:
 
         self._field_data_service = FieldDataService(self._channel, self._metadata)
         self.field_info = FieldInfo(self._field_data_service)
-
         self.field_data = FieldData(
             self._field_data_service, self.field_info, _IsDataValid(self.scheme_eval)
         )
+
+        self._svar_service = SVARService(self._channel, self._metadata)
+        self.svar_info = SVARInfo(self._svar_service)
 
         self.journal = Journal(self.scheme_eval)
 
@@ -256,6 +268,14 @@ class FluentConnection:
             self._remote_instance,
         )
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
+
+    @property
+    def svar_data(self) -> SVARData:
+        """Return the SVARData handle."""
+        try:
+            return SVARData(self._svar_service, self.svar_info)
+        except RuntimeError:
+            return None
 
     @property
     def id(self) -> str:
