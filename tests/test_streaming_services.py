@@ -1,5 +1,6 @@
 import time
 
+import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -39,6 +40,8 @@ def run_transcript(i, ip, port, password):
     return transcript_counter
 
 
+@pytest.mark.dev
+@pytest.mark.fluent_232
 def test_transcript(new_solver_session):
     solver = new_solver_session
     ip = solver._channel_str.split(":")[0]
