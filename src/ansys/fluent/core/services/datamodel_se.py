@@ -1155,13 +1155,6 @@ class PyCommandArguments(PyStateContainer):
             # "Cannot invoke RPC on closed channel!"
             pass
 
-    def get_state(self):
-        state = DataModelCache.get_state(self.rules, self)
-        if DataModelCache.is_unassigned(state):
-            state = super().get_state()
-            DataModelCache.set_state(self.rules, self, state)
-        return state
-
     def __getattr__(self, attr):
         for arg in self.static_info.commands[self.command].commandinfo.args:
             if arg.name == attr:
