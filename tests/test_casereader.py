@@ -224,12 +224,12 @@ def test_case_reader_input_parameter():
     assert momentum.numeric_value == 12.4
     assert momentum.value == "12.4 [kg m s^-1]"
 
-    velocity = InputParameter(raw_data=(("name", "v"), ("definition", "2[m / s]")))
+    velocity = InputParameter(raw_data=(("name", "v"), ("definition", "2[m/s]")))
 
     assert velocity.name == "v"
-    assert velocity.units == "m / s"
+    assert velocity.units == "m/s"
     assert velocity.numeric_value == 2
-    assert velocity.value == "2[m / s]"
+    assert velocity.value == "2 [m/s]"
 
 
 def test_lispy_for_multiline_string():

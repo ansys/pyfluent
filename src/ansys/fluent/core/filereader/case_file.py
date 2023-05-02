@@ -49,6 +49,12 @@ class InputParameter:
                 self.name = v.strip('"')
             elif k == "definition":
                 self.value = v.strip('"')
+                if "[" in self.value:
+                    sep_index = self.value.index("[")
+                    if not self.value[sep_index - 1] == " ":
+                        self.value = "".join(
+                            (self.value[:sep_index], " ", self.value[sep_index:])
+                        )
 
     @property
     def units(self) -> str:
@@ -72,7 +78,7 @@ class InputParameter:
 
     def _component(self, idx: int):
         try:
-            return self.value.split("[", maxsplit=1)[idx].strip()
+            return self.value.split(maxsplit=1)[idx]
         except IndexError:
             return ""
 
