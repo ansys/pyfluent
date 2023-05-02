@@ -94,6 +94,21 @@ def test_add_on_child_created(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+def test_add_on_deleted(new_mesh_session):
+    meshing = new_mesh_session
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    data = []
+    subscription = meshing.workflow.TaskObject["Import Geometry"].add_on_deleted(
+        lambda obj: data.append(convert_path_to_se_path(obj.path))
+    )
+    assert data == []
+    meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
+    sleep(5)
+    assert len(data) > 0
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_232
 def test_add_on_changed(new_mesh_session):
     meshing = new_mesh_session
     task_list = meshing.workflow.Workflow.TaskList

@@ -613,6 +613,26 @@ class PyMenu(PyStateContainer):
         self.service.event_streaming.register_callback(subscription.tag, self, cb)
         return subscription
 
+    def add_on_deleted(self, cb: Callable) -> EventSubscription:
+        """Register a callback for when the object is deleted.
+
+        Parameters
+        ----------
+        cb : Callable
+            Callback function
+
+        Returns
+        -------
+        EventSubscription
+            EventSubscription instance which can be used to unregister the callback
+        """
+        request = DataModelProtoModule.SubscribeEventsRequest()
+        e = request.eventrequest.add(rules=self.rules)
+        e.deletedEventRequest.path = convert_path_to_se_path(self.path)
+        subscription = EventSubscription(self.service, request)
+        self.service.event_streaming.register_callback(subscription.tag, self, cb)
+        return subscription
+
     def add_on_changed(self, cb: Callable) -> EventSubscription:
         """Register a callback for when the object is modified.
 
@@ -1134,20 +1154,6 @@ class PyCommandArguments(PyStateContainer):
             # "Cannot invoke RPC on closed channel!"
             pass
         # TODO delete cached state
-
-    # Currently getting an error whenever I'm calling add_on_command_attribute_changed on self or parent
-    # def _get_cached_attr(self, attrib: str) -> Any:
-    #     cached_val = self.cached_attrs.get(attrib)
-    #     if cached_val is None:
-    #         cached_val = self._get_remote_attr(attrib)
-    #         parent = PyStateContainer(self.service, self.rules, self.path[0:-1])
-    #         parent.add_on_command_attribute_changed(
-    #             self.command,
-    #             attrib,
-    #             functools.partial(dict.__setitem__, self.cached_attrs, attrib),
-    #         )
-    #         self.cached_attrs[attrib] = cached_val
-    #     return cached_val
 
     def get_state(self):
         state = DataModelCache.get_state(self.rules, self)
