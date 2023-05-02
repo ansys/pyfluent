@@ -68,7 +68,12 @@ class InputParameter:
         float
             Numeric value of the Fluent input parameter.
         """
-        return float(self._component(0))
+        try:
+            num_val = float(self._component(0))
+        except ValueError:
+            num_val = float(self._component(0).split("[")[0])
+
+        return num_val
 
     def _component(self, idx: int):
         try:
