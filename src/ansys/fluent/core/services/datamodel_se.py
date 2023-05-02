@@ -388,11 +388,14 @@ class PyStateContainer(PyCallableStateObject):
         cached_val = self.cached_attrs.get(attrib)
         if cached_val is None:
             cached_val = self._get_remote_attr(attrib)
-            self.add_on_attribute_changed(
-                attrib,
-                functools.partial(dict.__setitem__, self.cached_attrs, attrib),
-            )
-            self.cached_attrs[attrib] = cached_val
+            try:  # will fail for Fluent 23.1 or before
+                self.add_on_attribute_changed(
+                    attrib,
+                    functools.partial(dict.__setitem__, self.cached_attrs, attrib),
+                )
+                self.cached_attrs[attrib] = cached_val
+            except Exception:
+                pass
         return cached_val
 
     def get_attr(self, attrib: str) -> Any:
@@ -408,9 +411,7 @@ class PyStateContainer(PyCallableStateObject):
         Any
             Value of the attribute.
         """
-        if pyfluent.DATAMODEL_USE_ATTR_CACHE and hasattr(
-            DataModelProtoModule, "SubscribeEventsRequest"
-        ):
+        if pyfluent.DATAMODEL_USE_ATTR_CACHE:
             return self._get_cached_attr(attrib)
         return self._get_remote_attr(attrib)
 
@@ -1153,7 +1154,6 @@ class PyCommandArguments(PyStateContainer):
         except ValueError:
             # "Cannot invoke RPC on closed channel!"
             pass
-        # TODO delete cached state
 
     def get_state(self):
         state = DataModelCache.get_state(self.rules, self)
@@ -1168,6 +1168,21 @@ class PyCommandArguments(PyStateContainer):
                 mode = DataModelType.get_mode(arg.type)
                 py_class = mode.value[1]
                 return py_class(self, attr, self.service, self.rules, self.path, arg)
+
+    def get_attr(self, attrib: str) -> Any:
+        """Get attribute value of the current object.
+
+        Parameters
+        ----------
+        attrib : str
+            Name of the attribute.
+
+        Returns
+        -------
+        Any
+            Value of the attribute.
+        """
+        return self._get_remote_attr(attrib)
 
 
 class PyTextualCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyTextual):
