@@ -586,8 +586,8 @@ class WorkflowWrapper:
     #    return getattr(self, help_string)
 
     def _new_workflow(self, name):
+        self.add_on_affected(lambda _: refresh_task_accessors(self))
         self._workflow.InitializeWorkflow(WorkflowType=name)
-        refresh_task_accessors(self)
 
 
 class _MakeReadOnly:
