@@ -22,7 +22,7 @@ _DOCS_FILE = os.path.join(
 shutil.copy2(_README_FILE, _DOCS_FILE)
 
 install_requires = [
-    "ansys-api-fluent==0.3.11",
+    "ansys-api-fluent==0.3.12",
     "ansys-platform-instancemanagement~=1.0",
     "grpcio>=1.30.0",
     "numpy>=1.21.5",
@@ -50,7 +50,7 @@ setup(
     long_description_content_type="text/x-rst",
     license="MIT",
     author="ANSYS, Inc.",
-    author_email="pyansys.support@ansys.com",
+    author_email="pyansys.core@ansys.com",
     maintainer="PyAnsys developers",
     maintainer_email="pyansys.maintainers@ansys.com",
     classifiers=[

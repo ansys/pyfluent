@@ -43,7 +43,7 @@ def test_get_all_rp_vars(new_solver_session_no_transcript) -> None:
     all_vars = rp_vars()
     assert len(all_vars) == pytest.approx(9000, 20)
 
-    # case reader comparison
+    # CaseFile comparison
     case = CaseReader(case_filepath=case_path)
     case_vars = case.rp_vars()
     assert len(case_vars) == pytest.approx(9000, 450)

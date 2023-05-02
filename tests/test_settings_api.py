@@ -4,9 +4,15 @@ from util.solver_workflow import new_solver_session  # noqa: F401
 from ansys.fluent.core.examples import download_file
 
 
+@pytest.mark.dev
+@pytest.mark.fluent_231
+@pytest.mark.fluent_232
 def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     solver_session = new_solver_session
-    assert solver_session.setup.models.viscous.model() == "laminar"
+    case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
+    solver_session.file.read_case(file_name=case_path)
+    solver_session.solution.initialization.hybrid_initialize()
+    assert solver_session.setup.models.viscous.model() == "k-epsilon"
     assert "inviscid" in solver_session.setup.models.viscous.model.get_attr(
         "allowed-values"
     )
@@ -79,3 +85,31 @@ def test_wildcard(new_solver_session):
             }
         }
     }
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_232
+def test_wildcard_fnmatch(new_solver_session):
+    solver = new_solver_session
+    case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
+    solver.file.read_case(file_name=case_path)
+
+    solver.solution.initialization.hybrid_initialize()
+
+    solver.results.graphics.mesh.create("mesh-2")
+    solver.results.graphics.mesh.create("mesh-a")
+    solver.results.graphics.mesh.create("mesh-bc")
+
+    assert (
+        list(solver.results.graphics.mesh["mesh-*"]().keys()).sort()
+        == ["mesh-1", "mesh-2", "mesh-a", "mesh-bc"].sort()
+    )
+
+    assert list(solver.results.graphics.mesh["mesh-?c"]().keys()) == ["mesh-bc"]
+
+    assert list(solver.results.graphics.mesh["mesh-[2-5]"]().keys()) == ["mesh-2"]
+
+    assert (
+        list(solver.results.graphics.mesh["mesh-[!2-5]"]().keys()).sort()
+        == ["mesh-1", "mesh-a"].sort()
+    )
