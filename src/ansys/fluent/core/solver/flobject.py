@@ -589,7 +589,7 @@ class WildcardPath(Group):
 
     def __iter__(self):
         for item in self._parent:
-            if fnmatch.fnmatch(item, self._path.split("/")[-1]):
+            if fnmatch.fnmatch(item, self._path.rsplit(sep="/", maxsplit=1)[-1]):
                 yield item
 
     def to_scheme_keys(self, value):
