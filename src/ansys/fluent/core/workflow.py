@@ -24,7 +24,7 @@ def _new_command_for_task(task, session):
 
 def init_task_accessors(obj):
     print("init_task_accessors")
-    for task in obj.ordered_children():
+    for task in obj.ordered_children(recompute=True):
         py_name = task.python_name()
         print("py_name:", py_name)
         obj._python_task_names.append(py_name)
@@ -39,7 +39,7 @@ def init_task_accessors(obj):
 def refresh_task_accessors(obj):
     old_task_names = set(obj._python_task_names)
     print("refresh_task_accessors old_task_names:", old_task_names)
-    tasks = obj.ordered_children()
+    tasks = obj.ordered_children(recompute=True)
     current_task_names = [task.python_name() for task in tasks]
     print("current_task_names:", current_task_names)
     current_task_name_set = set(current_task_names)
@@ -90,6 +90,8 @@ class BaseTask:
                 _cmd=None,
                 _python_name=None,
                 _python_task_names=[],
+                _ordered_children=[],
+                _task_list=[],
             )
         )
 
@@ -131,7 +133,7 @@ class BaseTask:
             attr="outputs", other_attr="requiredInputs"
         )
 
-    def ordered_children(self) -> list:
+    def ordered_children(self, recompute=False) -> list:
         """Get the ordered task list held by this task. Sorting is in terms
         of the workflow order and only includes this task's top-level tasks, while other tasks
         can be obtained by calling ordered_children() on a parent task. Given the
@@ -151,14 +153,29 @@ class BaseTask:
         children : list
             Ordered children.
         """
+        if recompute:
 
-        def task_by_id(task_id):
-            try:
-                return self._command_source._task_by_id(task_id)
-            except BaseException:
-                pass
+            def task_by_id(mappings):
+                def _task_by_id(task_id):
+                    if task_id in mappings:
+                        return mappings[task_id]
+                    try:
+                        return self._command_source._task_by_id(task_id)
+                    except BaseException:
+                        pass
 
-        return list(filter(None, map(task_by_id, self._task.TaskList())))
+                return _task_by_id
+
+            task_list = self._task.TaskList()
+            if task_list != self._task_list:
+                mappings = {
+                    k: v for k, v in zip(self._task_list, self._ordered_children)
+                }
+                self._ordered_children = list(
+                    filter(None, map(task_by_id(mappings), task_list))
+                )
+                self._task_list = task_list
+        return self._ordered_children
 
     def inactive_ordered_children(self) -> list:
         return []
@@ -382,7 +399,7 @@ class SimpleTask(CommandTask):
     def __init__(self, command_source, task) -> None:
         super().__init__(command_source, task)
 
-    def ordered_children(self) -> list:
+    def ordered_children(self, recompute=False) -> list:
         """Get the ordered task list held by the workflow. SimpleTasks have no TaskList"""
         return []
 
@@ -512,6 +529,8 @@ class WorkflowWrapper:
         self._command_source = command_source
         self._python_task_names = []
         self.updating = False
+        self._ordered_children = []
+        self._task_list = []
 
     def task(self, name: str) -> BaseTask:
         """Get a TaskObject by name, in a BaseTask wrapper. The wrapper adds extra
@@ -539,7 +558,7 @@ class WorkflowWrapper:
         """
         return TaskContainer(self)
 
-    def ordered_children(self) -> list:
+    def ordered_children(self, recompute=False) -> list:
         """Get the ordered task list held by the workflow. Sorting is in terms
         of the workflow order and only includes the top-level tasks, while other tasks
         can be obtained by calling ordered_children() on a parent task. Given the
@@ -555,15 +574,29 @@ class WorkflowWrapper:
         the ordered children of the workflow are A, B, E, while B has ordered children
         C and D.
         """
-        workflow_state, task_list_state = self._workflow_and_task_list_state()
+        if recompute:
+            workflow_state, task_list = self._workflow_and_task_list_state()
 
-        def task_by_id(task_id):
-            try:
-                return self._task_by_id_impl(task_id, workflow_state)
-            except BaseException:
-                pass
+            def task_by_id(mappings):
+                def _task_by_id(task_id):
+                    if task_id in mappings:
+                        return mappings[task_id]
+                    try:
+                        return self._task_by_id_impl(task_id, workflow_state)
+                    except BaseException:
+                        pass
 
-        return list(filter(None, map(task_by_id, task_list_state)))
+                return _task_by_id
+
+            if task_list != self._task_list:
+                mappings = {
+                    k: v for k, v in zip(self._task_list, self._ordered_children)
+                }
+                self._ordered_children = list(
+                    filter(None, map(task_by_id(mappings), task_list))
+                )
+                self._task_list = task_list
+        return self._ordered_children
 
     def child_task_python_names(self):
         return self._python_task_names
