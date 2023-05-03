@@ -23,18 +23,25 @@ def _new_command_for_task(task, session):
 
 
 def init_task_accessors(obj):
+    print("init_task_accessors")
     for task in obj.ordered_children():
         py_name = task.python_name()
+        print("py_name:", py_name)
         obj._python_task_names.append(py_name)
-        setattr(obj, py_name, task)
+        if not getattr(obj, py_name, None):
+            print("adding", py_name, type(task))
+            setattr(obj, py_name, task)
+        else:
+            print("Could not add task", py_name, type(getattr(obj, py_name, None)))
         init_task_accessors(task)
 
 
 def refresh_task_accessors(obj):
     old_task_names = set(obj._python_task_names)
-    # print("number of children:", "of", this_name, "is", len(obj.ordered_children()))
+    print("refresh_task_accessors old_task_names:", old_task_names)
     tasks = obj.ordered_children()
     current_task_names = [task.python_name() for task in tasks]
+    print("current_task_names:", current_task_names)
     current_task_name_set = set(current_task_names)
     created_task_names = current_task_name_set - old_task_names
     deleted_task_names = old_task_names - current_task_name_set
@@ -44,8 +51,15 @@ def refresh_task_accessors(obj):
         except AttributeError:
             pass
     for task_name in created_task_names:
-        setattr(obj, task_name, tasks[current_task_names.index(task_name)])
+        if not getattr(obj, task_name, None):
+            print("Add task", task_name)
+            setattr(obj, task_name, tasks[current_task_names.index(task_name)])
+        else:
+            print("Could not add task", task_name, type(getattr(obj, task_name, None)))
+    obj._python_task_names = current_task_names
+    print("updated_task_names:", obj._python_task_names)
     for task in tasks:
+        print("next task", task.python_name(), id(task))
         refresh_task_accessors(task)
 
 
@@ -201,7 +215,6 @@ class BaseTask:
             return ArgumentWrapper(self, attr)
         except BaseException as ex:
             print(str(ex))
-            # pass
 
     def __setattr__(self, attr, value):
         datamodel_logger.debug(f"BaseTask.__setattr__({attr}, {value})")
@@ -307,6 +320,8 @@ class ArgumentWrapper(PyCallableStateObject):
         self._task = task
         self._arg_name = arg
         self._arg = getattr(task._command_arguments, arg)
+        if self._arg is None:
+            raise RuntimeError(f"{arg} is not an argument")
 
     def set_state(self, value):
         self._task.Arguments.update_dict({self._arg_name: value})
@@ -616,14 +631,17 @@ class WorkflowWrapper:
 
     def _new_workflow(self, name: str, dynamic_interface: bool):
         self._workflow.InitializeWorkflow(WorkflowType=name)
-        init_task_accessors(self)
 
+    def _initialize_methods(self, dynamic_interface: bool):
+        init_task_accessors(self)
         if dynamic_interface:
 
             def refresh_after_sleep(_):
                 while self.updating:
-                    sleep(1)
+                    print("Already refreshing, ...")
+                    sleep(0.1)
                 self.updating = True
+                print("Call refresh_task_accessors")
                 refresh_task_accessors(self)
                 self.updating = False
 
