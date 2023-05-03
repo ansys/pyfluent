@@ -584,7 +584,7 @@ class WildcardPath(Group):
     def items(self):
         """Items."""
         for key, value in self._parent.items():
-            if fnmatch.fnmatch(key, self._path.split("/")[-1]):
+            if fnmatch.fnmatch(key, self._path.rsplit(sep="/", maxsplit=1)[-1]):
                 yield key, value
 
     def __iter__(self):
