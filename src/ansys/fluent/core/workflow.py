@@ -23,25 +23,25 @@ def _new_command_for_task(task, session):
 
 
 def init_task_accessors(obj):
-    print("init_task_accessors")
+    # print("init_task_accessors")
     for task in obj.ordered_children(recompute=True):
         py_name = task.python_name()
-        print("py_name:", py_name)
+        # print("py_name:", py_name)
         obj._python_task_names.append(py_name)
         if not getattr(obj, py_name, None):
-            print("adding", py_name, type(task))
+            # print("adding", py_name, type(task))
             setattr(obj, py_name, task)
-        else:
-            print("Could not add task", py_name, type(getattr(obj, py_name, None)))
+        # else:
+        # print("Could not add task", py_name, type(getattr(obj, py_name, None)))
         init_task_accessors(task)
 
 
 def refresh_task_accessors(obj):
     old_task_names = set(obj._python_task_names)
-    print("refresh_task_accessors old_task_names:", old_task_names)
+    # print("refresh_task_accessors old_task_names:", old_task_names)
     tasks = obj.ordered_children(recompute=True)
     current_task_names = [task.python_name() for task in tasks]
-    print("current_task_names:", current_task_names)
+    # print("current_task_names:", current_task_names)
     current_task_name_set = set(current_task_names)
     created_task_names = current_task_name_set - old_task_names
     deleted_task_names = old_task_names - current_task_name_set
@@ -52,14 +52,14 @@ def refresh_task_accessors(obj):
             pass
     for task_name in created_task_names:
         if not getattr(obj, task_name, None):
-            print("Add task", task_name)
+            # print("Add task", task_name)
             setattr(obj, task_name, tasks[current_task_names.index(task_name)])
-        else:
-            print("Could not add task", task_name, type(getattr(obj, task_name, None)))
+        # else:
+        # print("Could not add task", task_name, type(getattr(obj, task_name, None)))
     obj._python_task_names = current_task_names
-    print("updated_task_names:", obj._python_task_names)
+    # print("updated_task_names:", obj._python_task_names)
     for task in tasks:
-        print("next task", task.python_name(), id(task))
+        # print("next task", task.python_name(), id(task))
         refresh_task_accessors(task)
 
 
@@ -231,7 +231,8 @@ class BaseTask:
         try:
             return ArgumentWrapper(self, attr)
         except BaseException as ex:
-            print(str(ex))
+            # print(str(ex))
+            pass
 
     def __setattr__(self, attr, value):
         datamodel_logger.debug(f"BaseTask.__setattr__({attr}, {value})")
@@ -671,10 +672,10 @@ class WorkflowWrapper:
 
             def refresh_after_sleep(_):
                 while self.updating:
-                    print("Already refreshing, ...")
+                    # print("Already refreshing, ...")
                     sleep(0.1)
                 self.updating = True
-                print("Call refresh_task_accessors")
+                # print("Call refresh_task_accessors")
                 refresh_task_accessors(self)
                 self.updating = False
 
