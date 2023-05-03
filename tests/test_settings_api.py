@@ -113,3 +113,43 @@ def test_wildcard_fnmatch(new_solver_session):
         list(solver.results.graphics.mesh["mesh-[!2-5]"]().keys()).sort()
         == ["mesh-1", "mesh-a"].sort()
     )
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_232
+def test_wildcard_path_is_iterable(new_solver_session):
+    solver = new_solver_session
+    case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
+    solver.file.read_case(file_name=case_path)
+
+    assert [x for x in solver.setup.boundary_conditions.velocity_inlet] == [
+        "inlet2",
+        "inlet1",
+    ]
+
+    assert [x for x in solver.setup.boundary_conditions.velocity_inlet["*let*"]] == [
+        "inlet2",
+        "inlet1",
+    ]
+
+    assert [x for x in solver.setup.boundary_conditions.velocity_inlet["*1*"]] == [
+        "inlet1"
+    ]
+
+    test_data = []
+    for k, v in solver.setup.boundary_conditions.velocity_inlet.items():
+        test_data.append((k, v))
+
+    assert test_data[0][0] == "inlet2"
+    assert test_data[0][1].path == r"setup/boundary-conditions/velocity-inlet/inlet2"
+    assert test_data[1][0] == "inlet1"
+    assert test_data[1][1].path == r"setup/boundary-conditions/velocity-inlet/inlet1"
+
+    test_data = []
+    for k, v in solver.setup.boundary_conditions.velocity_inlet["*let*"].items():
+        test_data.append((k, v))
+
+    assert test_data[0][0] == "inlet2"
+    assert test_data[0][1].path == r"setup/boundary-conditions/velocity-inlet/inlet2"
+    assert test_data[1][0] == "inlet1"
+    assert test_data[1][1].path == r"setup/boundary-conditions/velocity-inlet/inlet1"
