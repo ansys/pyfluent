@@ -11,7 +11,10 @@ from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
 from ansys.fluent.core.data_model_cache import DataModelCache
-from ansys.fluent.core.services.error_handler import catch_grpc_error
+from ansys.fluent.core.services.error_handler import (
+    catch_grpc_error,
+    catch_grpc_error_quiet,
+)
 from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
 from ansys.fluent.core.services.streaming import StreamingService
 
@@ -123,7 +126,7 @@ class DatamodelService(StreamingService):
         self, request: DataModelProtoModule.ExecuteCommandRequest
     ) -> DataModelProtoModule.ExecuteCommandResponse:
         """executeCommand rpc of DataModel service."""
-        # logger.debug(f"Command: {request.command}")
+        logger.debug(f"Command: {request.command}")
         return self._stub.executeCommand(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -133,7 +136,7 @@ class DatamodelService(StreamingService):
         """createCommandArguments rpc of DataModel service."""
         return self._stub.createCommandArguments(request, metadata=self._metadata)
 
-    @catch_grpc_error
+    @catch_grpc_error_quiet
     def delete_command_arguments(
         self, request: DataModelProtoModule.DeleteCommandArgumentsRequest
     ) -> DataModelProtoModule.DeleteCommandArgumentsResponse:

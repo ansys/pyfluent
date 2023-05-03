@@ -22,24 +22,30 @@ def _new_command_for_task(task, session):
     raise NewCommandError(task._name_())
 
 
-def refresh_task_accessors(obj):
-    # this_name = "Root"
-    # try:
-    #    this_name = obj.name()
-    # except BaseException:
-    #    pass
-    # print("refresh_task_accessors", this_name)
-    # print("task names", obj._python_task_names)
-    for task in obj._python_task_names:
-        # print("delete", task, "from", this_name)
-        delattr(obj, task)
-    obj._python_task_names.clear()
-    # print("number of children:", "of", this_name, "is", len(obj.ordered_children()))
+def init_task_accessors(obj):
     for task in obj.ordered_children():
         py_name = task.python_name()
-        # print("add", py_name, "to", this_name)
         obj._python_task_names.append(py_name)
         setattr(obj, py_name, task)
+        init_task_accessors(task)
+
+
+def refresh_task_accessors(obj):
+    old_task_names = set(obj._python_task_names)
+    # print("number of children:", "of", this_name, "is", len(obj.ordered_children()))
+    tasks = obj.ordered_children()
+    current_task_names = [task.python_name() for task in tasks]
+    current_task_name_set = set(current_task_names)
+    created_task_names = current_task_name_set - old_task_names
+    deleted_task_names = old_task_names - current_task_name_set
+    for task_name in deleted_task_names:
+        try:
+            delattr(obj, task_name)
+        except AttributeError:
+            pass
+    for task_name in created_task_names:
+        setattr(obj, task_name, tasks[current_task_names.index(task_name)])
+    for task in tasks:
         refresh_task_accessors(task)
 
 
@@ -131,10 +137,14 @@ class BaseTask:
         children : list
             Ordered children.
         """
-        return [
-            self._command_source._task_by_id(task_id)
-            for task_id in self._task.TaskList()
-        ]
+
+        def task_by_id(task_id):
+            try:
+                return self._command_source._task_by_id(task_id)
+            except BaseException:
+                pass
+
+        return list(filter(None, map(task_by_id, self._task.TaskList())))
 
     def inactive_ordered_children(self) -> list:
         return []
@@ -172,9 +182,12 @@ class BaseTask:
 
     def python_name(self):
         if not self._python_name:
-            this_command = self._command()
-            # temp reuse helpString
-            self._python_name = this_command.get_attr("helpString")
+            try:
+                this_command = self._command()
+                # temp reuse helpString
+                self._python_name = this_command.get_attr("helpString")
+            except BaseException:
+                pass
         return self._python_name
 
     def __getattr__(self, attr):
@@ -483,6 +496,7 @@ class WorkflowWrapper:
         self._workflow = workflow
         self._command_source = command_source
         self._python_task_names = []
+        self.updating = False
 
     def task(self, name: str) -> BaseTask:
         """Get a TaskObject by name, in a BaseTask wrapper. The wrapper adds extra
@@ -527,10 +541,14 @@ class WorkflowWrapper:
         C and D.
         """
         workflow_state, task_list_state = self._workflow_and_task_list_state()
-        tasks = []
-        for task_id in task_list_state:
-            tasks.append(self._task_by_id_impl(task_id, workflow_state))
-        return tasks
+
+        def task_by_id(task_id):
+            try:
+                return self._task_by_id_impl(task_id, workflow_state)
+            except BaseException:
+                pass
+
+        return list(filter(None, map(task_by_id, task_list_state)))
 
     def child_task_python_names(self):
         return self._python_task_names
@@ -593,17 +611,21 @@ class WorkflowWrapper:
             pass
 
     # def _task_with_cmd_matching_help_string(self, help_string):
-    #    refresh_task_accessors(self)
+    #    init_task_accessors(self)
     #    return getattr(self, help_string)
 
     def _new_workflow(self, name: str, dynamic_interface: bool):
         self._workflow.InitializeWorkflow(WorkflowType=name)
-        refresh_task_accessors(self)
+        init_task_accessors(self)
+
         if dynamic_interface:
 
             def refresh_after_sleep(_):
-                sleep(5)
+                while self.updating:
+                    sleep(1)
+                self.updating = True
                 refresh_task_accessors(self)
+                self.updating = False
 
             self.add_on_affected(refresh_after_sleep)
 
