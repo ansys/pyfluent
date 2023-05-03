@@ -1,5 +1,6 @@
 from functools import partial
 import os
+from time import sleep
 
 import pytest
 from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invalid_arg,
@@ -15,8 +16,6 @@ from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invali
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.meshing.faulttolerant import fault_tolerant_workflow
 from ansys.fluent.core.meshing.watertight import watertight_workflow
-
-# from time import sleep
 
 
 @pytest.mark.nightly
@@ -699,7 +698,6 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry):
     create_volume_mesh = watertight.create_volume_mesh
     assert create_volume_mesh is not None
     watertight.DeleteTasks(ListOfTasks=["Generate the Volume Mesh"])
-    """
     # I assume that what's going on here is that due to DeleteTasks we are triggering
     # change events in the server but those events are (still) being transmitted after
     # DeleteTasks has returned. Hence, the dynamic watertight Python interface
@@ -710,10 +708,9 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry):
     create_volume_mesh = watertight.create_volume_mesh
     assert create_volume_mesh is None
     watertight.InsertNewTask(CommandName="GenerateTheVolumeMeshWTM")
-    sleep(2)
+    sleep(5)
     create_volume_mesh = watertight.create_volume_mesh
     assert create_volume_mesh is not None
-    """
 
 
 # TODO upload fmd file to examples
