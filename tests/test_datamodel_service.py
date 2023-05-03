@@ -4,13 +4,13 @@ import pytest
 from util.meshing_workflow import new_mesh_session  # noqa: F401
 
 from ansys.api.fluent.v0 import datamodel_se_pb2
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.services.datamodel_se import (
     _convert_variant_to_value,
     convert_path_to_se_path,
 )
 from ansys.fluent.core.services.streaming import StreamingService
-from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 
 
@@ -90,6 +90,21 @@ def test_add_on_child_created(new_mesh_session):
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
     sleep(5)
     assert child_paths == []
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_232
+def test_add_on_deleted(new_mesh_session):
+    meshing = new_mesh_session
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    data = []
+    subscription = meshing.workflow.TaskObject["Import Geometry"].add_on_deleted(
+        lambda obj: data.append(convert_path_to_se_path(obj.path))
+    )
+    assert data == []
+    meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
+    sleep(5)
+    assert len(data) > 0
 
 
 @pytest.mark.dev
@@ -179,7 +194,7 @@ def test_add_on_command_executed(new_mesh_session):
 
 @pytest.fixture
 def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
-    monkeypatch.setattr(Meshing, "use_cache", False)
+    monkeypatch.setattr(pyfluent, "DATAMODEL_USE_STATE_CACHE", False)
 
 
 @pytest.mark.dev

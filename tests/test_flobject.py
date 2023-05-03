@@ -2,7 +2,6 @@
 # import codegen.settingsgen
 from collections.abc import MutableMapping
 import io
-import os
 import weakref
 
 import pytest
@@ -11,8 +10,6 @@ from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import find_children
-
-os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
 
 
 class Setting:
