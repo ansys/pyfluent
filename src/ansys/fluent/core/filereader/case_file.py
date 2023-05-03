@@ -189,6 +189,7 @@ class CaseFile:
                 raise FileNotFoundError(
                     "Please provide a valid fluent project file path"
                 )
+
         try:
             if Path(case_filepath).match("*.cas.h5"):
                 file = h5py.File(case_filepath)
@@ -204,17 +205,19 @@ class CaseFile:
                     rp_vars_str = file.read()
                 rp_vars_str = _get_processed_string(rp_vars_str)
             else:
-                raise RuntimeError()
+                error_message = (
+                    "Could not read case file. "
+                    "Only valid Case files (.h5, .cas, .cas.gz) can be read. "
+                )
+                raise RuntimeError(error_message)
 
         except FileNotFoundError as e:
-            raise RuntimeError(f"The case file {case_filepath} cannot be found.") from e
+            raise FileNotFoundError(
+                f"The case file {case_filepath} cannot be found."
+            ) from e
 
-        except OSError:
-            error_message = (
-                "Could not read case file. "
-                "Only valid Case files (.h5, .cas, .cas.gz) can be read. "
-            )
-            raise RuntimeError(error_message)
+        except OSError as e:
+            raise OSError(f"Error while reading case file {case_filepath}") from e
 
         except BaseException as e:
             raise RuntimeError(f"Could not read case file {case_filepath}") from e
