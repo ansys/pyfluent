@@ -708,7 +708,7 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry):
     create_volume_mesh = watertight.create_volume_mesh
     assert create_volume_mesh is None
     watertight.InsertNewTask(CommandName="GenerateTheVolumeMeshWTM")
-    sleep(5)
+    sleep(2)
     create_volume_mesh = watertight.create_volume_mesh
     assert create_volume_mesh is not None
 
