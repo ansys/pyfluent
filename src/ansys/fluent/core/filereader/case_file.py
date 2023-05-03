@@ -190,16 +190,16 @@ class CaseFile:
                     "Please provide a valid fluent project file path"
                 )
         try:
-            if "".join(Path(case_filepath).suffixes) == ".cas.h5":
+            if case_filepath.endswith(".cas.h5"):
                 file = h5py.File(case_filepath)
                 settings = file["settings"]
                 rpvars = settings["Rampant Variables"][0]
                 rp_vars_str = rpvars.decode()
-            elif Path(case_filepath).suffix == ".cas":
+            elif case_filepath.endswith(".cas"):
                 with open(case_filepath, "rb") as file:
                     rp_vars_str = file.read()
                 rp_vars_str = _get_processed_string(rp_vars_str)
-            elif "".join(Path(case_filepath).suffixes) == ".cas.gz":
+            elif case_filepath.endswith(".cas.gz"):
                 with gzip.open(case_filepath, "rb") as file:
                     rp_vars_str = file.read()
                 rp_vars_str = _get_processed_string(rp_vars_str)
