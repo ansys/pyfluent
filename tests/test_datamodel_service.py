@@ -5,7 +5,6 @@ from util.meshing_workflow import new_mesh_session  # noqa: F401
 
 from ansys.api.fluent.v0 import datamodel_se_pb2
 from ansys.fluent.core import examples
-from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.services.datamodel_se import (
     _convert_variant_to_value,
     convert_path_to_se_path,
@@ -130,7 +129,7 @@ def test_add_on_affected(new_mesh_session):
 
     calls = []
     subscription2 = meshing.workflow.add_on_affected(lambda obj: calls.append(True))
-    geom = download_file(
+    geom = examples.download_file(
         filename="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
     )
     import_geom = meshing.workflow.TaskObject["Import Geometry"]

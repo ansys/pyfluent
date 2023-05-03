@@ -1,5 +1,6 @@
 from functools import partial
 import os
+from time import sleep
 
 import pytest
 from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invalid_arg,
@@ -687,6 +688,27 @@ def test_watertight_workflow_children(mixing_elbow_geometry):
         "enclose_fluid_regions",
         "create_regions",
     ]
+
+
+@pytest.mark.dev
+def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry):
+    watertight = watertight_workflow(geometry_filepath=mixing_elbow_geometry)
+    create_volume_mesh = watertight.create_volume_mesh
+    assert create_volume_mesh is not None
+    watertight.DeleteTasks(ListOfTasks=["Generate the Volume Mesh"])
+    # I assume that what's going on here is that due to DeleteTasks we are triggering
+    # change events in the server but those events are (still) being transmitted after
+    # DeleteTasks has returned. Hence, the dynamic watertight Python interface
+    # is still updating after the command has returned and the client can try to access
+    # while it is in that update phase, leading to (difficult to understand) exceptions.
+    # Temporarily sleeping in the test. I note that the core event tests use sleeps also.
+    sleep(1)
+    create_volume_mesh = watertight.create_volume_mesh
+    assert create_volume_mesh is None
+    watertight.InsertNewTask(CommandName="GenerateTheVolumeMeshWTM")
+    sleep(1)
+    create_volume_mesh = watertight.create_volume_mesh
+    assert create_volume_mesh is not None
 
 
 # TODO upload fmd file to examples

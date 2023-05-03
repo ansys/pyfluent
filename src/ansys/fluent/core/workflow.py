@@ -1,4 +1,5 @@
 import logging
+from time import sleep
 from typing import Any, Iterator, Tuple
 import warnings
 
@@ -22,11 +23,21 @@ def _new_command_for_task(task, session):
 
 
 def refresh_task_accessors(obj):
+    # this_name = "Root"
+    # try:
+    #    this_name = obj.name()
+    # except BaseException:
+    #    pass
+    # print("refresh_task_accessors", this_name)
+    # print("task names", obj._python_task_names)
     for task in obj._python_task_names:
+        # print("delete", task, "from", this_name)
         delattr(obj, task)
     obj._python_task_names.clear()
+    # print("number of children:", "of", this_name, "is", len(obj.ordered_children()))
     for task in obj.ordered_children():
         py_name = task.python_name()
+        # print("add", py_name, "to", this_name)
         obj._python_task_names.append(py_name)
         setattr(obj, py_name, task)
         refresh_task_accessors(task)
@@ -585,9 +596,16 @@ class WorkflowWrapper:
     #    refresh_task_accessors(self)
     #    return getattr(self, help_string)
 
-    def _new_workflow(self, name):
-        self.add_on_affected(lambda _: refresh_task_accessors(self))
+    def _new_workflow(self, name: str, dynamic_interface: bool):
         self._workflow.InitializeWorkflow(WorkflowType=name)
+        refresh_task_accessors(self)
+        if dynamic_interface:
+
+            def refresh_after_sleep(_):
+                sleep(5)
+                refresh_task_accessors(self)
+
+            self.add_on_affected(refresh_after_sleep)
 
 
 class _MakeReadOnly:

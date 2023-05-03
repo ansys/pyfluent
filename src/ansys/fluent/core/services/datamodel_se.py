@@ -123,7 +123,7 @@ class DatamodelService(StreamingService):
         self, request: DataModelProtoModule.ExecuteCommandRequest
     ) -> DataModelProtoModule.ExecuteCommandResponse:
         """executeCommand rpc of DataModel service."""
-        logger.debug(f"Command: {request.command}")
+        # logger.debug(f"Command: {request.command}")
         return self._stub.executeCommand(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -1134,7 +1134,7 @@ class PyCommandArguments(PyStateContainer):
         request.commandid = self.path[-1][1]
         try:
             self.service.delete_command_arguments(request)
-        except ValueError:
+        except BaseException:
             # "Cannot invoke RPC on closed channel!"
             pass
 
