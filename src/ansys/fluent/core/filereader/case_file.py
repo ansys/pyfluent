@@ -49,6 +49,12 @@ class InputParameter:
                 self.name = v.strip('"')
             elif k == "definition":
                 self.value = v.strip('"')
+                if "[" in self.value:
+                    sep_index = self.value.index("[")
+                    if not self.value[sep_index - 1] == " ":
+                        self.value = "".join(
+                            (self.value[:sep_index], " ", self.value[sep_index:])
+                        )
 
     @property
     def units(self) -> str:
@@ -183,32 +189,35 @@ class CaseFile:
                 raise FileNotFoundError(
                     "Please provide a valid fluent project file path"
                 )
+
         try:
-            if "".join(Path(case_filepath).suffixes) == ".cas.h5":
+            if Path(case_filepath).match("*.cas.h5"):
                 file = h5py.File(case_filepath)
                 settings = file["settings"]
                 rpvars = settings["Rampant Variables"][0]
                 rp_vars_str = rpvars.decode()
-            elif Path(case_filepath).suffix == ".cas":
+            elif Path(case_filepath).match("*.cas"):
                 with open(case_filepath, "rb") as file:
                     rp_vars_str = file.read()
                 rp_vars_str = _get_processed_string(rp_vars_str)
-            elif "".join(Path(case_filepath).suffixes) == ".cas.gz":
+            elif Path(case_filepath).match("*.cas.gz"):
                 with gzip.open(case_filepath, "rb") as file:
                     rp_vars_str = file.read()
                 rp_vars_str = _get_processed_string(rp_vars_str)
             else:
-                raise RuntimeError()
+                error_message = (
+                    "Could not read case file. "
+                    "Only valid Case files (.h5, .cas, .cas.gz) can be read. "
+                )
+                raise RuntimeError(error_message)
 
         except FileNotFoundError as e:
-            raise RuntimeError(f"The case file {case_filepath} cannot be found.") from e
+            raise FileNotFoundError(
+                f"The case file {case_filepath} cannot be found."
+            ) from e
 
-        except OSError:
-            error_message = (
-                "Could not read case file. "
-                "Only valid Case files (.h5, .cas, .cas.gz) can be read. "
-            )
-            raise RuntimeError(error_message)
+        except OSError as e:
+            raise OSError(f"Error while reading case file {case_filepath}") from e
 
         except BaseException as e:
             raise RuntimeError(f"Could not read case file {case_filepath}") from e
