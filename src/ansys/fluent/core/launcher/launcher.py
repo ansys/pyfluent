@@ -304,8 +304,9 @@ def _get_session_info(argvals, mode: Union[LaunchMode, str, None] = None):
 
 def _raise_exception_g_gu_in_windows_os(additional_arguments: str) -> None:
     """If -g or -gu is passed in Windows OS, the exception should be raised."""
+    additional_arg_list = additional_arguments.split()
     if _is_windows() and (
-        ("-g" in additional_arguments) or ("-gu" in additional_arguments)
+        ("-g" in additional_arg_list) or ("-gu" in additional_arg_list)
     ):
         raise ValueError("'-g' and '-gu' is not supported on windows platform.")
 
@@ -459,6 +460,7 @@ def launch_fluent(
     server_info_filepath: str = None,
     password: str = None,
     py: bool = None,
+    gpu: bool = None,
     cwd: str = None,
     topy: Union[str, list] = None,
     **kwargs,
@@ -550,6 +552,8 @@ def launch_fluent(
         Password to connect to existing Fluent instance.
     py : bool, optional
         If True, Fluent will run in Python mode. Default is None.
+    gpu : bool, optional
+        If True, Fluent will start with GPU Solver.
     cwd: str, Optional
         Path to specify current working directory to launch fluent from the defined directory as
         current working directory.
