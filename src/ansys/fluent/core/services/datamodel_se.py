@@ -1,5 +1,6 @@
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
 from enum import Enum
+import functools
 import itertools
 import logging
 from typing import Any, Callable, Dict, Iterator, List, Tuple, Type
@@ -10,6 +11,7 @@ import grpc
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
@@ -273,122 +275,6 @@ class PyCallableStateObject:
         return self.get_state()
 
 
-class PyStateContainer(PyCallableStateObject):
-    """Object class using StateEngine based DatamodelService as backend. Use
-    this class instead of directly calling DatamodelService's method.
-
-    Methods
-    -------
-    get_attr(attrib)
-        Get the attribute value of the current object.
-    getAttribValue(attrib)
-        Get the attribute value of the current object.
-        (This method is the same as the get_attr(attrib)
-        method.)
-    get_state()
-        Get the state of the current object.
-    getState()
-        Deprecated camel case alias of get_state.
-    set_state()
-        Set the state of the current object.
-    setState()
-        Deprecated camel case alias of set_state.
-    __call__()
-        Set the state of the current object if state is provided else get its state.
-    """
-
-    def __init__(self, service: DatamodelService, rules: str, path: Path = None):
-        """__init__ method of PyStateContainer class."""
-        super().__init__()
-        self.service = service
-        self.rules = rules
-        if path is None:
-            self.path = []
-        else:
-            self.path = path
-
-    docstring = None
-
-    def get_remote_state(self) -> Any:
-        """Get state of the current object."""
-        request = DataModelProtoModule.GetStateRequest()
-        request.rules = self.rules
-        request.path = convert_path_to_se_path(self.path)
-        response = self.service.get_state(request)
-        return _convert_variant_to_value(response.state)
-
-    def get_state(self) -> Any:
-        state = DataModelCache.get_state(self.rules, self)
-        if DataModelCache.is_unassigned(state):
-            state = self.get_remote_state()
-        return state
-
-    getState = get_state
-
-    def set_state(self, state: Any = None, **kwargs) -> None:
-        """Set state of the current object."""
-        request = DataModelProtoModule.SetStateRequest()
-        request.rules = self.rules
-        request.path = convert_path_to_se_path(self.path)
-        _convert_value_to_variant(
-            kwargs, request.state
-        ) if kwargs else _convert_value_to_variant(state, request.state)
-        self.service.set_state(request)
-
-    setState = set_state
-
-    def get_attr(self, attrib: str) -> Any:
-        """Get attribute value of the current object.
-
-        Parameters
-        ----------
-        attrib : str
-            Name of the attribute.
-
-        Returns
-        -------
-        Any
-            Value of the attribute.
-        """
-        request = DataModelProtoModule.GetAttributeValueRequest()
-        request.rules = self.rules
-        request.path = convert_path_to_se_path(self.path)
-        request.attribute = attrib
-        response = self.service.get_attribute_value(request)
-        return _convert_variant_to_value(response.result)
-
-    getAttribValue = get_attr
-
-    def is_active(self):
-        """Returns true if the object is active."""
-        return true_if_none(self.get_attr(Attribute.IS_ACTIVE.value))
-
-    def is_read_only(self):
-        """Checks whether the object is read only."""
-        return false_if_none(self.get_attr(Attribute.IS_READ_ONLY.value))
-
-    def help(self) -> None:
-        """Print help string."""
-        request = DataModelProtoModule.GetSpecsRequest()
-        request.rules = self.rules
-        request.path = convert_path_to_se_path(self.path)
-        response = self.service.get_specs(request)
-        help_string = getattr(
-            response.member, response.member.WhichOneof("as")
-        ).common.helpstring
-        print(help_string)
-
-    def __call__(self, *args, **kwargs):
-        if kwargs:
-            self.set_state(kwargs)
-        elif args:
-            self.set_state(args)
-        else:
-            return self.get_state()
-
-    docstring = None
-
-
 class EventSubscription:
     """EventSubscription class for any datamodel event."""
 
@@ -423,6 +309,195 @@ class EventSubscription:
     def __del__(self):
         """Unsubscribe the datamodel event."""
         self.unsubscribe()
+
+
+class PyStateContainer(PyCallableStateObject):
+    """Object class using StateEngine based DatamodelService as backend. Use
+    this class instead of directly calling DatamodelService's method.
+
+    Methods
+    -------
+    get_attr(attrib)
+        Get the attribute value of the current object.
+    getAttribValue(attrib)
+        Get the attribute value of the current object.
+        (This method is the same as the get_attr(attrib)
+        method.)
+    get_state()
+        Get the state of the current object.
+    getState()
+        Deprecated camel case alias of get_state.
+    set_state()
+        Set the state of the current object.
+    setState()
+        Deprecated camel case alias of set_state.
+    __call__()
+        Set the state of the current object if state is provided else get its state.
+    """
+
+    def __init__(self, service: DatamodelService, rules: str, path: Path = None):
+        """__init__ method of PyStateContainer class."""
+        super().__init__()
+        self.service = service
+        self.rules = rules
+        if path is None:
+            self.path = []
+        else:
+            self.path = path
+        self.cached_attrs = {}
+
+    docstring = None
+
+    def get_remote_state(self) -> Any:
+        """Get state of the current object."""
+        request = DataModelProtoModule.GetStateRequest()
+        request.rules = self.rules
+        request.path = convert_path_to_se_path(self.path)
+        response = self.service.get_state(request)
+        return _convert_variant_to_value(response.state)
+
+    def get_state(self) -> Any:
+        state = DataModelCache.get_state(self.rules, self)
+        if DataModelCache.is_unassigned(state):
+            state = self.get_remote_state()
+        return state
+
+    getState = get_state
+
+    def set_state(self, state: Any = None, **kwargs) -> None:
+        """Set state of the current object."""
+        request = DataModelProtoModule.SetStateRequest()
+        request.rules = self.rules
+        request.path = convert_path_to_se_path(self.path)
+        _convert_value_to_variant(
+            kwargs, request.state
+        ) if kwargs else _convert_value_to_variant(state, request.state)
+        self.service.set_state(request)
+
+    setState = set_state
+
+    def _get_remote_attr(self, attrib: str) -> Any:
+        request = DataModelProtoModule.GetAttributeValueRequest()
+        request.rules = self.rules
+        request.path = convert_path_to_se_path(self.path)
+        request.attribute = attrib
+        response = self.service.get_attribute_value(request)
+        return _convert_variant_to_value(response.result)
+
+    def _get_cached_attr(self, attrib: str) -> Any:
+        cached_val = self.cached_attrs.get(attrib)
+        if cached_val is None:
+            cached_val = self._get_remote_attr(attrib)
+            try:  # will fail for Fluent 23.1 or before
+                self.add_on_attribute_changed(
+                    attrib,
+                    functools.partial(dict.__setitem__, self.cached_attrs, attrib),
+                )
+                self.cached_attrs[attrib] = cached_val
+            except Exception:
+                pass
+        return cached_val
+
+    def get_attr(self, attrib: str) -> Any:
+        """Get attribute value of the current object.
+
+        Parameters
+        ----------
+        attrib : str
+            Name of the attribute.
+
+        Returns
+        -------
+        Any
+            Value of the attribute.
+        """
+        if pyfluent.DATAMODEL_USE_ATTR_CACHE:
+            return self._get_cached_attr(attrib)
+        return self._get_remote_attr(attrib)
+
+    getAttribValue = get_attr
+
+    def is_active(self):
+        """Returns true if the object is active."""
+        return true_if_none(self.get_attr(Attribute.IS_ACTIVE.value))
+
+    def is_read_only(self):
+        """Checks whether the object is read only."""
+        return false_if_none(self.get_attr(Attribute.IS_READ_ONLY.value))
+
+    def help(self) -> None:
+        """Print help string."""
+        request = DataModelProtoModule.GetSpecsRequest()
+        request.rules = self.rules
+        request.path = convert_path_to_se_path(self.path)
+        response = self.service.get_specs(request)
+        help_string = getattr(
+            response.member, response.member.WhichOneof("as")
+        ).common.helpstring
+        print(help_string)
+
+    def __call__(self, *args, **kwargs):
+        if kwargs:
+            self.set_state(kwargs)
+        elif args:
+            self.set_state(args)
+        else:
+            return self.get_state()
+
+    docstring = None
+
+    def add_on_attribute_changed(
+        self, attribute: str, cb: Callable
+    ) -> EventSubscription:
+        """Register a callback for when an attribute is changed
+
+        Parameters
+        ----------
+        attribute : str
+            attribute name
+        cb : Callable
+            Callback function
+
+        Returns
+        -------
+        EventSubscription
+            EventSubscription instance which can be used to unregister the callback
+        """
+        request = DataModelProtoModule.SubscribeEventsRequest()
+        e = request.eventrequest.add(rules=self.rules)
+        e.attributeChangedEventRequest.path = convert_path_to_se_path(self.path)
+        e.attributeChangedEventRequest.attribute = attribute
+        subscription = EventSubscription(self.service, request)
+        self.service.event_streaming.register_callback(subscription.tag, self, cb)
+        return subscription
+
+    def add_on_command_attribute_changed(
+        self, command: str, attribute: str, cb: Callable
+    ) -> EventSubscription:
+        """Register a callback for when an attribute is changed
+
+        Parameters
+        ----------
+        command : str
+            command name
+        attribute : str
+            attribute name
+        cb : Callable
+            Callback function
+
+        Returns
+        -------
+        EventSubscription
+            EventSubscription instance which can be used to unregister the callback
+        """
+        request = DataModelProtoModule.SubscribeEventsRequest()
+        e = request.eventrequest.add(rules=self.rules)
+        e.commandAttributeChangedEventRequest.path = convert_path_to_se_path(self.path)
+        e.commandAttributeChangedEventRequest.command = command
+        e.commandAttributeChangedEventRequest.attribute = attribute
+        subscription = EventSubscription(self.service, request)
+        self.service.event_streaming.register_callback(subscription.tag, self, cb)
+        return subscription
 
 
 class PyMenu(PyStateContainer):
@@ -539,6 +614,26 @@ class PyMenu(PyStateContainer):
         self.service.event_streaming.register_callback(subscription.tag, self, cb)
         return subscription
 
+    def add_on_deleted(self, cb: Callable) -> EventSubscription:
+        """Register a callback for when the object is deleted.
+
+        Parameters
+        ----------
+        cb : Callable
+            Callback function
+
+        Returns
+        -------
+        EventSubscription
+            EventSubscription instance which can be used to unregister the callback
+        """
+        request = DataModelProtoModule.SubscribeEventsRequest()
+        e = request.eventrequest.add(rules=self.rules)
+        e.deletedEventRequest.path = convert_path_to_se_path(self.path)
+        subscription = EventSubscription(self.service, request)
+        self.service.event_streaming.register_callback(subscription.tag, self, cb)
+        return subscription
+
     def add_on_changed(self, cb: Callable) -> EventSubscription:
         """Register a callback for when the object is modified.
 
@@ -604,59 +699,6 @@ class PyMenu(PyStateContainer):
         self.service.event_streaming.register_callback(subscription.tag, self, cb)
         return subscription
 
-    def add_on_attribute_changed(
-        self, attribute: str, cb: Callable
-    ) -> EventSubscription:
-        """Register a callback for when an attribute is changed
-
-        Parameters
-        ----------
-        attribute : str
-            attribute name
-        cb : Callable
-            Callback function
-
-        Returns
-        -------
-        EventSubscription
-            EventSubscription instance which can be used to unregister the callback
-        """
-        request = DataModelProtoModule.SubscribeEventsRequest()
-        e = request.eventrequest.add(rules=self.rules)
-        e.attributeChangedEventRequest.path = convert_path_to_se_path(self.path)
-        e.attributeChangedEventRequest.attribute = attribute
-        subscription = EventSubscription(self.service, request)
-        self.service.event_streaming.register_callback(subscription.tag, self, cb)
-        return subscription
-
-    def add_on_command_attribute_changed(
-        self, command: str, attribute: str, cb: Callable
-    ) -> EventSubscription:
-        """Register a callback for when an attribute is changed
-
-        Parameters
-        ----------
-        command : str
-            command name
-        attribute : str
-            attribute name
-        cb : Callable
-            Callback function
-
-        Returns
-        -------
-        EventSubscription
-            EventSubscription instance which can be used to unregister the callback
-        """
-        request = DataModelProtoModule.SubscribeEventsRequest()
-        e = request.eventrequest.add(rules=self.rules)
-        e.commandAttributeChangedEventRequest.path = convert_path_to_se_path(self.path)
-        e.commandAttributeChangedEventRequest.command = command
-        e.commandAttributeChangedEventRequest.attribute = attribute
-        subscription = EventSubscription(self.service, request)
-        self.service.event_streaming.register_callback(subscription.tag, self, cb)
-        return subscription
-
     def add_on_command_executed(self, command: str, cb: Callable) -> EventSubscription:
         """Register a callback for when a command is executed
 
@@ -708,31 +750,6 @@ class PyParameter(PyStateContainer):
         request = DataModelProtoModule.SubscribeEventsRequest()
         e = request.eventrequest.add(rules=self.rules)
         e.modifiedEventRequest.path = convert_path_to_se_path(self.path)
-        subscription = EventSubscription(self.service, request)
-        self.service.event_streaming.register_callback(subscription.tag, self, cb)
-        return subscription
-
-    def add_on_attribute_changed(
-        self, attribute: str, cb: Callable
-    ) -> EventSubscription:
-        """Register a callback for when an attribute is changed
-
-        Parameters
-        ----------
-        attribute : str
-            attribute name
-        cb : Callable
-            Callback function
-
-        Returns
-        -------
-        EventSubscription
-            EventSubscription instance which can be used to unregister the callback
-        """
-        request = DataModelProtoModule.SubscribeEventsRequest()
-        e = request.eventrequest.add(rules=self.rules)
-        e.attributeChangedEventRequest.path = convert_path_to_se_path(self.path)
-        e.attributeChangedEventRequest.attribute = attribute
         subscription = EventSubscription(self.service, request)
         self.service.event_streaming.register_callback(subscription.tag, self, cb)
         return subscription
@@ -1144,6 +1161,21 @@ class PyCommandArguments(PyStateContainer):
                 mode = DataModelType.get_mode(arg.type)
                 py_class = mode.value[1]
                 return py_class(self, attr, self.service, self.rules, self.path, arg)
+
+    def get_attr(self, attrib: str) -> Any:
+        """Get attribute value of the current object.
+
+        Parameters
+        ----------
+        attrib : str
+            Name of the attribute.
+
+        Returns
+        -------
+        Any
+            Value of the attribute.
+        """
+        return self._get_remote_attr(attrib)
 
 
 class PyTextualCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyTextual):
