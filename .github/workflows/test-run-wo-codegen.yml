@@ -78,7 +78,6 @@ jobs:
 
       - name: 23.2 Unit Testing
         run: make unittest-all-232
-        continue-on-error: true
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
