@@ -638,7 +638,7 @@ class WorkflowWrapper:
         if result is None and can_wait:
             print("thread id in recursion block in __getattr__", threading.get_ident())
             count = 0
-            tot = 20
+            tot = 5
             while (
                 not refreshing
                 and not self._refreshing
