@@ -1,4 +1,5 @@
 import logging
+import threading
 from time import sleep
 from typing import Any, Iterator, Tuple
 import warnings
@@ -23,6 +24,7 @@ def _new_command_for_task(task, session):
 
 
 def init_task_accessors(obj):
+    print("thread id in init_task_accessors", threading.get_ident())
     # print("init_task_accessors")
     for task in obj.ordered_children(recompute=True):
         py_name = task.python_name()
@@ -37,6 +39,7 @@ def init_task_accessors(obj):
 
 
 def refresh_task_accessors(obj):
+    print("thread id in refresh_task_accessors", threading.get_ident())
     old_task_names = set(obj._python_task_names)
     # print("refresh_task_accessors old_task_names:", old_task_names)
     tasks = obj.ordered_children(recompute=True)
@@ -529,9 +532,12 @@ class WorkflowWrapper:
         self._workflow = workflow
         self._command_source = command_source
         self._python_task_names = []
-        self.updating = False
+        self._refreshing = False
+        self._refresh_count = 0
         self._ordered_children = []
         self._task_list = []
+        self._getattr_recurse_depth = 0
+        self._main_thread_ident = None
 
     def task(self, name: str) -> BaseTask:
         """Get a TaskObject by name, in a BaseTask wrapper. The wrapper adds extra
@@ -619,9 +625,38 @@ class WorkflowWrapper:
         attr : str
             An attribute not defined in WorkflowWrapper
         """
-        return self._attr_from_wrapped_workflow(
+        refreshing = self._refreshing
+        refresh_count = self._refresh_count
+        can_wait = (
+            threading.get_ident() == self._main_thread_ident
+            and self._getattr_recurse_depth < 20
+        )
+        print("thread id in __getattr__", threading.get_ident())
+        result = self._attr_from_wrapped_workflow(
             attr
         )  # or self._task_with_cmd_matching_help_string(attr)
+        if result is None and can_wait:
+            print("thread id in recursion block in __getattr__", threading.get_ident())
+            count = 0
+            tot = 20
+            while (
+                not refreshing
+                and not self._refreshing
+                and refresh_count == self._refresh_count
+                and count < tot
+            ):
+                count += 1
+                sleep(0.2)  # make this configurable
+            if count < tot:
+                if count == 0:
+                    sleep(0.2)
+                self._getattr_recurse_depth += 1
+                result = getattr(self, attr)
+                self._getattr_recurse_depth = (
+                    0 if result else self._getattr_recurse_depth + 1
+                )
+                return result
+        return result
 
     def __dir__(self):
         """Override the behaviour of dir to include attributes in
@@ -669,15 +704,18 @@ class WorkflowWrapper:
     def _initialize_methods(self, dynamic_interface: bool):
         init_task_accessors(self)
         if dynamic_interface:
+            self._main_thread_ident = threading.get_ident()
+            print("setting main thread to", self._main_thread_ident)
 
             def refresh_after_sleep(_):
-                while self.updating:
-                    # print("Already refreshing, ...")
+                while self._refreshing:
+                    # print("Already _refreshing, ...")
                     sleep(0.1)
-                self.updating = True
+                self._refreshing = True
                 # print("Call refresh_task_accessors")
                 refresh_task_accessors(self)
-                self.updating = False
+                self._refresh_count += 1
+                self._refreshing = False
 
             self.add_on_affected(refresh_after_sleep)
 

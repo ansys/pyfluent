@@ -1,6 +1,5 @@
 from functools import partial
 import os
-from time import sleep
 
 import pytest
 from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invalid_arg,
@@ -704,17 +703,9 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry):
     # is still updating after the command has returned and the client can try to access
     # while it is in that update phase, leading to (difficult to understand) exceptions.
     # Temporarily sleeping in the test. I note that the core event tests use sleeps also.
-    count = 0
-    while watertight.updating and count < 10:
-        sleep(0.1)
-        count += 1
     create_volume_mesh = watertight.create_volume_mesh
     assert create_volume_mesh is None
     watertight.InsertNewTask(CommandName="GenerateTheVolumeMeshWTM")
-    count = 0
-    while watertight.updating and count < 10:
-        sleep(0.1)
-        count += 1
     create_volume_mesh = watertight.create_volume_mesh
     assert create_volume_mesh is not None
 
