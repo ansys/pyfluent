@@ -225,6 +225,9 @@ class BaseTask:
                 pass
         return self._python_name
 
+    def delete(self):
+        self._command_source.DeleteTasks(ListOfTasks=[self.name()])
+
     def __getattr__(self, attr):
         try:
             result = getattr(self._task, attr)

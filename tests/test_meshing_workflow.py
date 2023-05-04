@@ -714,6 +714,9 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry):
     )
     watertight.DeleteTasks(ListOfTasks=["Create Regions"])
     assert watertight.describe_geometry.create_regions is None
+    assert watertight.describe_geometry.enclose_fluid_regions
+    watertight.describe_geometry.enclose_fluid_regions.delete()
+    assert watertight.describe_geometry.enclose_fluid_regions is None
 
 
 # TODO upload fmd file to examples
