@@ -24,7 +24,7 @@ def _new_command_for_task(task, session):
 
 
 def init_task_accessors(obj):
-    print("thread id in init_task_accessors", threading.get_ident())
+    # print("thread id in init_task_accessors", threading.get_ident())
     # print("init_task_accessors")
     for task in obj.ordered_children(recompute=True):
         py_name = task.python_name()
@@ -39,7 +39,7 @@ def init_task_accessors(obj):
 
 
 def refresh_task_accessors(obj):
-    print("thread id in refresh_task_accessors", threading.get_ident())
+    # print("thread id in refresh_task_accessors", threading.get_ident())
     old_task_names = set(obj._python_task_names)
     # print("refresh_task_accessors old_task_names:", old_task_names)
     tasks = obj.ordered_children(recompute=True)
@@ -631,12 +631,12 @@ class WorkflowWrapper:
             threading.get_ident() == self._main_thread_ident
             and self._getattr_recurse_depth < 20
         )
-        print("thread id in __getattr__", threading.get_ident())
+        # print("thread id in __getattr__", threading.get_ident())
         result = self._attr_from_wrapped_workflow(
             attr
         )  # or self._task_with_cmd_matching_help_string(attr)
-        if result is None and can_wait:
-            print("thread id in recursion block in __getattr__", threading.get_ident())
+        if can_wait:
+            # print("thread id in recursion block in __getattr__", threading.get_ident())
             count = 0
             tot = 5
             while (
@@ -646,10 +646,10 @@ class WorkflowWrapper:
                 and count < tot
             ):
                 count += 1
-                sleep(0.2)  # make this configurable
-            if count < tot:
+                sleep(0.4)  # make this configurable
+            if count < tot or result is not None:
                 if count == 0:
-                    sleep(0.2)
+                    sleep(0.4)
                 self._getattr_recurse_depth += 1
                 result = getattr(self, attr)
                 self._getattr_recurse_depth = (
@@ -705,7 +705,7 @@ class WorkflowWrapper:
         init_task_accessors(self)
         if dynamic_interface:
             self._main_thread_ident = threading.get_ident()
-            print("setting main thread to", self._main_thread_ident)
+            # print("setting main thread to", self._main_thread_ident)
 
             def refresh_after_sleep(_):
                 while self._refreshing:
