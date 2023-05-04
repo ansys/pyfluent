@@ -237,7 +237,7 @@ class BaseTask:
         except BaseException as ex:
             # print(str(ex))
             pass
-        # self._wait_on_refresh()
+        self._command_source._wait_on_refresh()
         return self._task_objects.get(attr, None)
 
     def __setattr__(self, attr, value):

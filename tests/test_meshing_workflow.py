@@ -708,6 +708,12 @@ def test_watertight_workflow_dynamic_interface(mixing_elbow_geometry):
     watertight.InsertNewTask(CommandName="GenerateTheVolumeMeshWTM")
     create_volume_mesh = watertight.create_volume_mesh
     assert create_volume_mesh is not None
+    assert (
+        watertight.describe_geometry.create_regions.arguments()["NumberOfFlowVolumes"]
+        == 1
+    )
+    watertight.DeleteTasks(ListOfTasks=["Create Regions"])
+    assert watertight.describe_geometry.create_regions is None
 
 
 # TODO upload fmd file to examples
