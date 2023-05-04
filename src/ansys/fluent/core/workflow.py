@@ -1,6 +1,6 @@
 import logging
 import threading
-from time import sleep
+from time import sleep, time
 from typing import Any, Iterator, Tuple
 import warnings
 
@@ -625,38 +625,28 @@ class WorkflowWrapper:
         attr : str
             An attribute not defined in WorkflowWrapper
         """
-        refreshing = self._refreshing
-        refresh_count = self._refresh_count
-        can_wait = (
-            threading.get_ident() == self._main_thread_ident
-            and self._getattr_recurse_depth < 20
+        print(
+            "thread id in __getattr__",
+            threading.get_ident(),
+            "for",
+            attr,
+            ", going to wait",
         )
-        # print("thread id in __getattr__", threading.get_ident())
-        result = self._attr_from_wrapped_workflow(
+        # self._wait_on_refresh()
+        print(
+            "thread id in __getattr__", threading.get_ident(), "for", attr, ", waited"
+        )
+        return self._attr_from_wrapped_workflow(
             attr
         )  # or self._task_with_cmd_matching_help_string(attr)
-        if can_wait:
-            # print("thread id in recursion block in __getattr__", threading.get_ident())
-            count = 0
-            tot = 5
-            while (
-                not refreshing
-                and not self._refreshing
-                and refresh_count == self._refresh_count
-                and count < tot
-            ):
-                count += 1
-                sleep(0.4)  # make this configurable
-            if count < tot or result is not None:
-                if count == 0:
-                    sleep(0.4)
-                self._getattr_recurse_depth += 1
-                result = getattr(self, attr)
-                self._getattr_recurse_depth = (
-                    0 if result else self._getattr_recurse_depth + 1
-                )
-                return result
-        return result
+
+    def __getattribute__(self, attr):
+        # print("__getattribute__", attr)
+        if attr[0] != "_":  #  and (obj is None or isinstance(obj, BaseTask)):
+            print("__getattribute__", attr, "inside if block, going to wait")
+            self._wait_on_refresh()
+            print("__getattribute__", attr, "inside if block, waited")
+        return super().__getattribute__(attr)
 
     def __dir__(self):
         """Override the behaviour of dir to include attributes in
@@ -668,6 +658,21 @@ class WorkflowWrapper:
     def __call__(self):
         """Delegate calls to the underlying workflow."""
         return self._workflow()
+
+    def _wait_on_refresh(self, time_unit=0.1, skip_check=False):
+        if not skip_check:
+            t0 = time()
+        if skip_check or threading.get_ident() == self._main_thread_ident:
+            refresh_count = self._refresh_count
+            orig_refresh_count = refresh_count
+            sleep(20 * time_unit)
+            while self._refreshing or self._refresh_count > refresh_count:
+                refresh_count = self._refresh_count
+                sleep(time_unit)
+            if self._refresh_count > orig_refresh_count:
+                self._wait_on_refresh(time_unit=time_unit, skip_check=True)
+        if not skip_check:
+            print("_wait_on_refresh time taken", time() - t0)
 
     def _workflow_state(self):
         return self._workflow()
