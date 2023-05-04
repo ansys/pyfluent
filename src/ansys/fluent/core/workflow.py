@@ -30,9 +30,9 @@ def init_task_accessors(obj):
         py_name = task.python_name()
         # print("py_name:", py_name)
         obj._python_task_names.append(py_name)
-        if not getattr(obj, py_name, None):
+        if py_name not in obj._task_objects:
             # print("adding", py_name, type(task))
-            setattr(obj, py_name, task)
+            obj._task_objects[py_name] = task
         # else:
         # print("Could not add task", py_name, type(getattr(obj, py_name, None)))
         init_task_accessors(task)
@@ -50,13 +50,13 @@ def refresh_task_accessors(obj):
     deleted_task_names = old_task_names - current_task_name_set
     for task_name in deleted_task_names:
         try:
-            delattr(obj, task_name)
-        except AttributeError:
+            del obj._task_objects[task_name]
+        except KeyError:
             pass
     for task_name in created_task_names:
-        if not getattr(obj, task_name, None):
+        if task_name not in obj._task_objects:
             # print("Add task", task_name)
-            setattr(obj, task_name, tasks[current_task_names.index(task_name)])
+            obj._task_objects[task_name] = tasks[current_task_names.index(task_name)]
         # else:
         # print("Could not add task", task_name, type(getattr(obj, task_name, None)))
     obj._python_task_names = current_task_names
@@ -95,6 +95,7 @@ class BaseTask:
                 _python_task_names=[],
                 _ordered_children=[],
                 _task_list=[],
+                _task_objects={},
             )
         )
 
@@ -236,6 +237,8 @@ class BaseTask:
         except BaseException as ex:
             # print(str(ex))
             pass
+        # self._wait_on_refresh()
+        return self._task_objects.get(attr, None)
 
     def __setattr__(self, attr, value):
         datamodel_logger.debug(f"BaseTask.__setattr__({attr}, {value})")
@@ -538,6 +541,7 @@ class WorkflowWrapper:
         self._task_list = []
         self._getattr_recurse_depth = 0
         self._main_thread_ident = None
+        self._task_objects = {}
 
     def task(self, name: str) -> BaseTask:
         """Get a TaskObject by name, in a BaseTask wrapper. The wrapper adds extra
@@ -625,28 +629,13 @@ class WorkflowWrapper:
         attr : str
             An attribute not defined in WorkflowWrapper
         """
-        print(
-            "thread id in __getattr__",
-            threading.get_ident(),
-            "for",
-            attr,
-            ", going to wait",
-        )
-        # self._wait_on_refresh()
-        print(
-            "thread id in __getattr__", threading.get_ident(), "for", attr, ", waited"
-        )
-        return self._attr_from_wrapped_workflow(
+        obj = self._attr_from_wrapped_workflow(
             attr
         )  # or self._task_with_cmd_matching_help_string(attr)
-
-    def __getattribute__(self, attr):
-        # print("__getattribute__", attr)
-        if attr[0] != "_":  #  and (obj is None or isinstance(obj, BaseTask)):
-            print("__getattribute__", attr, "inside if block, going to wait")
-            self._wait_on_refresh()
-            print("__getattribute__", attr, "inside if block, waited")
-        return super().__getattribute__(attr)
+        if obj:
+            return obj
+        self._wait_on_refresh()
+        return self._task_objects.get(attr, None)
 
     def __dir__(self):
         """Override the behaviour of dir to include attributes in
