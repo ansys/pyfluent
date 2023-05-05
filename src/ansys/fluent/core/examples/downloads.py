@@ -9,6 +9,7 @@ Examples
 '/home/user/.local/share/ansys_fluent_core/examples/bracket.iges'
 """
 import os
+import re
 import shutil
 from typing import Optional
 import urllib.request
@@ -45,25 +46,33 @@ def _get_file_url(filename: str, directory: Optional[str] = None) -> str:
     return f"https://github.com/pyansys/example-data/raw/master/{filename}"
 
 
-def _retrieve_file(url: str, filename: str):
-    # First check if file has already been downloaded
-    local_path = os.path.join(pyfluent.EXAMPLES_PATH, os.path.basename(filename))
-    local_path_no_zip = local_path.replace(".zip", "")
-    if os.path.isfile(local_path_no_zip) or os.path.isdir(local_path_no_zip):
-        return local_path_no_zip, None
+def _retrieve_file(url: str, filename: str, save_path: Optional[str] = None) -> str:
+    if save_path is None:
+        # First check if file has already been downloaded
+        local_path: str = os.path.join(
+            pyfluent.EXAMPLES_PATH, os.path.basename(filename)
+        )
+        local_path_no_zip = re.sub(".zip$", "", local_path)
+        if os.path.isfile(local_path_no_zip) or os.path.isdir(local_path_no_zip):
+            return local_path_no_zip
+    else:
+        local_path = os.path.join(save_path, os.path.basename(filename))
+        local_path_no_zip = re.sub(".zip$", "", local_path)
 
     # grab the correct url retriever
     urlretrieve = urllib.request.urlretrieve
 
     # Perform download
-    saved_file, resp = urlretrieve(url)
+    saved_file, _ = urlretrieve(url)
     shutil.move(saved_file, local_path)
     if get_ext(local_path) in [".zip"]:
         _decompress(local_path)
-        local_path = local_path[:-4]
-    return local_path, resp
+        local_path = local_path_no_zip
+    return local_path
 
 
-def download_file(filename: str, directory: Optional[str] = None):
+def download_file(
+    filename: str, directory: Optional[str] = None, save_path: Optional[str] = None
+):
     url = _get_file_url(filename, directory)
-    return _retrieve_file(url, filename)[0]
+    return _retrieve_file(url, filename, save_path)
