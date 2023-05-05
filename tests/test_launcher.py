@@ -49,7 +49,10 @@ def test_gpu_launch_arg_additional_arg(with_launching_container):
     # (which is available in the error message) is generated correctly.
     with pytest.raises(LaunchFluentError) as error:
         pyfluent.launch_fluent(
-            additional_arguments="-gpu", start_timeout=0, start_instance=True
+            additional_arguments="-gpu",
+            start_timeout=0,
+            start_instance=True,
+            product_version="23.2",
         )
 
     assert "-gpu" in str(error.value).split()
