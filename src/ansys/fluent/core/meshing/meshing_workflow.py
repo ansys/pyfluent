@@ -9,11 +9,15 @@ class MeshingWorkflow(WorkflowWrapper):
         self._pm_file_management = pm_file_management
 
     def watertight(self, dynamic_interface: bool):
-        self._new_workflow("Watertight Geometry", dynamic_interface)
+        self._new_workflow(
+            name="Watertight Geometry", dynamic_interface=dynamic_interface
+        )
         self._is_ftm = False
 
     def fault_tolerant(self, dynamic_interface: bool):
-        self._new_workflow("Fault-tolerant Meshing", dynamic_interface)
+        self._new_workflow(
+            "Fault-tolerant Meshing", dynamic_interface=dynamic_interface
+        )
         self._is_ftm = True
 
     @property

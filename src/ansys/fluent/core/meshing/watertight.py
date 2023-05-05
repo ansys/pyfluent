@@ -27,5 +27,4 @@ def watertight_workflow(geometry_filepath, **launch_args) -> MeshingWorkflow:
         # or import_geometry.FileName = geometry_filepath
         import_geometry.arguments.update_dict(dict(FileName=geometry_filepath))
         import_geometry.Execute()
-    meshing_workflow._initialize_methods(dynamic_interface=dynamic_interface)
     return meshing_workflow

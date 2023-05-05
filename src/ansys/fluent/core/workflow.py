@@ -137,7 +137,7 @@ class BaseTask:
             attr="outputs", other_attr="requiredInputs"
         )
 
-    def ordered_children(self, recompute=False) -> list:
+    def ordered_children(self, recompute=True) -> list:
         """Get the ordered task list held by this task. Sorting is in terms
         of the workflow order and only includes this task's top-level tasks, while other tasks
         can be obtained by calling ordered_children() on a parent task. Given the
@@ -409,7 +409,7 @@ class SimpleTask(CommandTask):
     def __init__(self, command_source, task) -> None:
         super().__init__(command_source, task)
 
-    def ordered_children(self, recompute=False) -> list:
+    def ordered_children(self, recompute=True) -> list:
         """Get the ordered task list held by the workflow. SimpleTasks have no TaskList"""
         return []
 
@@ -572,7 +572,7 @@ class WorkflowWrapper:
         """
         return TaskContainer(self)
 
-    def ordered_children(self, recompute=False) -> list:
+    def ordered_children(self, recompute=True) -> list:
         """Get the ordered task list held by the workflow. Sorting is in terms
         of the workflow order and only includes the top-level tasks, while other tasks
         can be obtained by calling ordered_children() on a parent task. Given the
@@ -697,6 +697,7 @@ class WorkflowWrapper:
 
     def _new_workflow(self, name: str, dynamic_interface: bool):
         self._workflow.InitializeWorkflow(WorkflowType=name)
+        self._initialize_methods(dynamic_interface=dynamic_interface)
 
     def _initialize_methods(self, dynamic_interface: bool):
         init_task_accessors(self)
