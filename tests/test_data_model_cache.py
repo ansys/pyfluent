@@ -1,7 +1,6 @@
 import pytest
 
 from ansys.api.fluent.v0.variant_pb2 import Variant
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.services.datamodel_se import _convert_value_to_variant
 
@@ -199,45 +198,21 @@ def test_update_cache_internal_names_as_keys(
     assert DataModelCache.rules_str_to_cache == final_cache
 
 
-def test_get_cached_values_in_command_arguments(with_launching_container):
-    using_cache = pyfluent.DATAMODEL_USE_STATE_CACHE
-    exc = None
-    try:
-        pyfluent.DATAMODEL_USE_STATE_CACHE = False
-        m = pyfluent.launch_fluent(
-            mode="meshing", show_gui=True, start_transcript=False
-        )
-        m.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-        m.workflow.TaskObject["Import Geometry"].Arguments = dict(FileName="Bob")
-        assert m.workflow.TaskObject["Import Geometry"].Arguments() == {
-            "FileName": "Bob"
-        }
-        m.workflow.TaskObject["Import Geometry"].Arguments = dict(FileName=None)
-        assert m.workflow.TaskObject["Import Geometry"].Arguments() == {
-            "FileName": None
-        }
-        assert "FileName" in m.workflow.TaskObject["Import Geometry"].CommandArguments()
-        assert (
-            m.workflow.TaskObject["Import Geometry"].CommandArguments()["FileName"]
-            is None
-        )
-
-        pyfluent.DATAMODEL_USE_STATE_CACHE = True
-        m2 = pyfluent.launch_fluent(
-            mode="meshing", show_gui=True, start_transcript=False
-        )
-        m2.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-        m2.workflow.TaskObject["Import Geometry"].Arguments = dict(FileName="Bob")
-        m2.workflow.TaskObject["Import Geometry"].Arguments = dict(FileName=None)
-        m2.workflow.TaskObject["Import Geometry"].CommandArguments()["FileName"]
-        assert "FileName" in m.workflow.TaskObject["Import Geometry"].CommandArguments()
-        assert (
-            m2.workflow.TaskObject["Import Geometry"].CommandArguments()["FileName"]
-            is None
-        )
-    except BaseException as ex:
-        exc = ex
-    finally:
-        pyfluent.DATAMODEL_USE_STATE_CACHE = using_cache
-    if exc:
-        raise exc
+def test_get_cached_values_in_command_arguments(new_mesh_session):
+    new_mesh_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    new_mesh_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
+        FileName="Bob"
+    )
+    new_mesh_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
+        FileName=None
+    )
+    assert (
+        "FileName"
+        in new_mesh_session.workflow.TaskObject["Import Geometry"].CommandArguments()
+    )
+    assert (
+        new_mesh_session.workflow.TaskObject["Import Geometry"].CommandArguments()[
+            "FileName"
+        ]
+        is None
+    )
