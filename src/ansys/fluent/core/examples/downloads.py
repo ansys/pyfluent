@@ -52,7 +52,7 @@ def _retrieve_file(url: str, filename: str, save_path: Optional[str] = None) -> 
     # First check if file has already been downloaded
     if os.path.isfile(local_path_no_zip) or os.path.isdir(local_path_no_zip):
         logging.info("File already exists.")
-        logging.info(f"File path: {local_path_no_zip}")
+        logging.info(f"File path: {os.path.abspath(local_path_no_zip)}")
         return local_path_no_zip
 
     logging.info("Downloading specified file...")
@@ -67,7 +67,7 @@ def _retrieve_file(url: str, filename: str, save_path: Optional[str] = None) -> 
         _decompress(local_path)
         local_path = local_path_no_zip
     logging.info("Download successful.")
-    logging.info(f"File path: {local_path}")
+    logging.info(f"File path: {os.path.abspath(local_path)}")
     return local_path
 
 
