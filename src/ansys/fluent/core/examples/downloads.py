@@ -8,6 +8,7 @@ Examples
 >>> filename
 '/home/user/.local/share/ansys_fluent_core/examples/bracket.iges'
 """
+import logging
 import os
 import re
 import shutil
@@ -16,12 +17,6 @@ import urllib.request
 import zipfile
 
 import ansys.fluent.core as pyfluent
-
-
-def get_ext(filename: str) -> str:
-    """Extract the extension of a file."""
-    ext = os.path.splitext(filename)[1].lower()
-    return ext
 
 
 def delete_downloads() -> bool:
@@ -56,7 +51,11 @@ def _retrieve_file(url: str, filename: str, save_path: Optional[str] = None) -> 
     local_path_no_zip = re.sub(".zip$", "", local_path)
     # First check if file has already been downloaded
     if os.path.isfile(local_path_no_zip) or os.path.isdir(local_path_no_zip):
+        logging.info("File already exists.")
+        logging.info(f"File path: {local_path_no_zip}")
         return local_path_no_zip
+
+    logging.info("Downloading specified file...")
 
     # grab the correct url retriever
     urlretrieve = urllib.request.urlretrieve
@@ -64,9 +63,11 @@ def _retrieve_file(url: str, filename: str, save_path: Optional[str] = None) -> 
     # Perform download
     saved_file, _ = urlretrieve(url)
     shutil.move(saved_file, local_path)
-    if get_ext(local_path) in [".zip"]:
+    if local_path.endswith(".zip"):
         _decompress(local_path)
         local_path = local_path_no_zip
+    logging.info("Download successful.")
+    logging.info(f"File path: {local_path}")
     return local_path
 
 
