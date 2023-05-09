@@ -614,7 +614,7 @@ class MeshingQueriesService:
 
 class MeshingQueries:
     """
-    MeshingQueries.
+    Meshing Queries.
     """
 
     def __init__(self, service: MeshingQueriesService):
@@ -624,7 +624,16 @@ class MeshingQueries:
     docstring = None
 
     def GetFaceZoneAtLocation(self, location) -> Any:
-        """GetFaceZoneAtLocation."""
+        """
+        Return face zone at or closest to a specified location.
+
+        Note:  This function is not applicable to polyhedra meshes.
+
+        .. code-block:: python
+
+            >>> meshing_session.meshing_queries.GetFaceZoneAtLocation([1.4, 1.4, 1.4])
+
+        """
         request = MeshingQueriesProtoModule.GetFaceZoneAtLocationRequest()
         request.location.x = location[0]
         request.location.y = location[1]
@@ -633,7 +642,14 @@ class MeshingQueries:
         return response.face_zone_id
 
     def GetCellZoneAtLocation(self, location) -> Any:
-        """GetCellZoneAtLocation."""
+        """
+        Return cell zone at or closest to a specified location.
+
+        .. code-block:: python
+
+            >>> meshing_session.meshing_queries.GetCellZoneAtLocation([1.4, 1.4, 1.4])
+
+        """
         request = MeshingQueriesProtoModule.GetCellZoneAtLocationRequest()
         request.location.x = location[0]
         request.location.y = location[1]
@@ -642,7 +658,14 @@ class MeshingQueries:
         return response.cell_zone_id
 
     def GetZonesOfType(self, type) -> Any:
-        """GetZonesOfType."""
+        """
+        Return a list of zones of the specified default zone type.
+
+        .. code-block:: python
+
+            >>> meshing_session.meshing_queries.GetZonesOfType("velocity-inlet")
+
+        """
         request = MeshingQueriesProtoModule.GetZonesOfTypeRequest()
         request.type = type
         response = self.service.GetZonesOfType(request)
