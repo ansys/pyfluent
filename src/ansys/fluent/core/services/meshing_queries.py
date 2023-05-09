@@ -672,42 +672,84 @@ class MeshingQueries:
         return response.zone_ids
 
     def GetZonesOfGroup(self, group) -> Any:
-        """GetZonesOfGroup."""
+        """
+        Return a list of zones of the specified default zone group or user-defined group.
+
+        .. code-block:: python
+
+            >>> meshing_session.meshing_queries.GetZonesOfGroup("inlet")
+
+        """
         request = MeshingQueriesProtoModule.GetZonesOfGroupRequest()
         request.group = group
         response = self.service.GetZonesOfGroup(request)
         return response.zone_ids
 
     def GetFaceZonesOfFilter(self, filter) -> Any:
-        """GetFaceZonesOfFilter."""
+        """
+        Return a list of face zones whose names contain the specified filter string.
+
+        .. code-block:: python
+
+            >>> meshing_session.meshing_queries.GetFaceZonesOfFilter("*")
+
+        """
         request = MeshingQueriesProtoModule.GetFaceZonesOfFilterRequest()
         request.filter = filter
         response = self.service.GetFaceZonesOfFilter(request)
         return response.face_zone_ids
 
     def GetCellZonesOfFilter(self, filter) -> Any:
-        """GetCellZonesOfFilter."""
+        """
+        Return a list of cell zones whose names contain the specified filter string.
+
+        .. code-block:: python
+
+            >>> meshing_session.meshing_queries.GetCellZonesOfFilter("*")
+
+        """
         request = MeshingQueriesProtoModule.GetCellZonesOfFilterRequest()
         request.filter = filter
         response = self.service.GetCellZonesOfFilter(request)
         return response.cell_zone_ids
 
     def GetEdgeZonesOfFilter(self, filter) -> Any:
-        """GetEdgeZonesOfFilter."""
+        """
+        Return a list of edge zones whose names contain the specified filter string.
+
+        .. code-block:: python
+
+            >>> meshing_session.meshing_queries.GetEdgeZonesOfFilter("*")
+
+        """
         request = MeshingQueriesProtoModule.GetEdgeZonesOfFilterRequest()
         request.filter = filter
         response = self.service.GetEdgeZonesOfFilter(request)
         return response.edge_zone_ids
 
     def GetNodeZonesOfFilter(self, filter) -> Any:
-        """GetNodeZonesOfFilter."""
+        """
+        Return a list of node zones whose names contain the specified filter string.
+
+        .. code-block:: python
+
+            >>> meshing_session.meshing_queries.GetNodeZonesOfFilter("*")
+
+        """
         request = MeshingQueriesProtoModule.GetNodeZonesOfFilterRequest()
         request.filter = filter
         response = self.service.GetNodeZonesOfFilter(request)
         return response.node_zone_ids
 
     def GetObjectsOfType(self, type) -> Any:
-        """GetObjectsOfType."""
+        """
+        Return a list of objects of the specified type.
+
+        .. code-block:: python
+
+            >>> meshing_session.meshing_queries.GetObjectsOfType("mesh")
+
+        """
         request = MeshingQueriesProtoModule.GetObjectsOfTypeRequest()
         request.type = type
         response = self.service.GetObjectsOfType(request)
