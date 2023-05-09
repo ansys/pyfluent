@@ -186,9 +186,9 @@ def test_meshing_queries(new_mesh_session):
 
     assert meshing_session.meshing_queries.GetUnreferencedEdgeZones() == []
 
-    assert meshing_session.meshing_queries.GetUnreferencedEdgeZones() == []
+    assert meshing_session.meshing_queries.GetUnreferencedFaceZones() == []
 
-    assert meshing_session.meshing_queries.GetUnreferencedEdgeZones() == []
+    assert meshing_session.meshing_queries.GetUnreferencedCellZones() == []
 
     assert meshing_session.meshing_queries.GetUnreferencedEdgeZonesOfFilter("*") == []
 
