@@ -1,6 +1,7 @@
 ANSYS
 Ansys
 ansys
+batch_ops
 CaseFile
 CommandArguments
 EventsManager
