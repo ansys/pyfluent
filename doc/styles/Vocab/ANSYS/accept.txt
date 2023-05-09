@@ -15,6 +15,7 @@ fluent_connection
 Fluent's
 fullname
 grpc
+gRPC
 health_check
 hexahedral
 interceptors
