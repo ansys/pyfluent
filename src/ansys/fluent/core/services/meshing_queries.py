@@ -757,7 +757,7 @@ class MeshingQueries:
 
     def GetFaceZoneIdListOfObject(self, object) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of face zones by ID in the specified face zone labels of an object.
 
         .. code-block:: python
 
@@ -771,7 +771,7 @@ class MeshingQueries:
 
     def GetEdgeZoneIdListOfObject(self, object) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of edge zones by ID in the specified face zone labels of an object
 
         .. code-block:: python
 
@@ -785,7 +785,7 @@ class MeshingQueries:
 
     def GetCellZoneIdListOfObject(self, object) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of cell zones by ID in the specified face zone labels of an object.
 
         .. code-block:: python
 
@@ -799,7 +799,8 @@ class MeshingQueries:
 
     def GetFaceZonesSharedByRegionsOfType(self, mesh_object, region_type) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of face zones shared by regions of specified types in the mesh object specified,
+        where region-type is fluid-fluid, solid-solid, or fluid-solid.
 
         .. code-block:: python
 
@@ -814,7 +815,7 @@ class MeshingQueries:
 
     def GetFaceZonesOfRegions(self, object, region_name_list) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of face zones in the specified regions.
 
         .. code-block:: python
 
@@ -830,7 +831,7 @@ class MeshingQueries:
 
     def GetFaceZonesOfLabels(self, object, label_name_list) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of face zones in the specified face zone labels of the object specified.
 
         .. code-block:: python
 
@@ -846,7 +847,7 @@ class MeshingQueries:
 
     def GetFaceZoneIdListOfLabels(self, object, zone_label_list) -> Any:
         """
-        Return a list of face zones by ID in the specified object.
+        Return a list of face zones by ID in the specified face zone labels of an object.
 
         .. code-block:: python
 
