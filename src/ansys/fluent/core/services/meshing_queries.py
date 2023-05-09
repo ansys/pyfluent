@@ -846,7 +846,7 @@ class MeshingQueries:
 
     def GetFaceZoneIdListOfLabels(self, object, zone_label_list) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of face zones by ID in the specified object.
 
         .. code-block:: python
 
@@ -862,7 +862,7 @@ class MeshingQueries:
 
     def GetFaceZonesOfObjects(self, object_list) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of face zones in the specified objects.
 
         .. code-block:: python
 
@@ -877,7 +877,7 @@ class MeshingQueries:
 
     def GetEdgeZonesOfObjects(self, object_list) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of edge zones in the specified objects.
 
         .. code-block:: python
 
@@ -892,7 +892,7 @@ class MeshingQueries:
 
     def GetFaceZoneIdListOfRegions(self, object, region_list) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of face zones by ID in the specified regions of an object.
 
         .. code-block:: python
 
@@ -908,7 +908,7 @@ class MeshingQueries:
 
     def GetPrismCellZones(self, list_or_pattern) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of prism cell zones.
 
         .. code-block:: python
 
@@ -928,7 +928,7 @@ class MeshingQueries:
 
     def GetTetCellZones(self, list_or_pattern) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of tet cell zones.
 
         .. code-block:: python
 
@@ -948,7 +948,7 @@ class MeshingQueries:
 
     def GetAdjacentCellZones(self, list_or_name_or_pattern) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return adjacent cell zones for given face zone
 
         .. code-block:: python
 
@@ -968,7 +968,7 @@ class MeshingQueries:
 
     def GetAdjacentFaceZones(self, list_or_name_or_pattern) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return adjacent boundary face zones for given cell zones.
 
         .. code-block:: python
 
@@ -988,7 +988,7 @@ class MeshingQueries:
 
     def GetAdjacentInteriorAndBoundaryFaceZones(self, list_or_name_or_pattern) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return adjacent interior and boundary face zones for given cell zones.
 
         .. code-block:: python
 
@@ -1012,7 +1012,7 @@ class MeshingQueries:
 
     def GetAdjacentZonesByEdgeConnectivity(self, list_or_name_or_pattern) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return adjacent zones based on edge connectivity
 
         .. code-block:: python
 
@@ -1032,7 +1032,7 @@ class MeshingQueries:
 
     def GetAdjacentZonesByNodeConnectivity(self, list_or_name_or_pattern) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return adjacent zones based on node connectivity
 
         .. code-block:: python
 
@@ -1052,7 +1052,7 @@ class MeshingQueries:
 
     def GetSharedBoundaryZones(self, list_or_name_or_pattern) -> Any:
         """
-        Return a list of objects of the specified type.
+        Returns the number of faces and the boundary face zones that are shared with the specified cell zones.
 
         .. code-block:: python
 
@@ -1072,7 +1072,7 @@ class MeshingQueries:
 
     def GetInteriorZonesConnectedToCellZones(self, list_or_name_or_pattern) -> Any:
         """
-        Return a list of objects of the specified type.
+        Returns interior face zones connected to given cell zones.
 
         .. code-block:: python
 
@@ -1094,7 +1094,7 @@ class MeshingQueries:
 
     def GetFaceZonesWithZoneSpecificPrismsApplied(self) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of face zones with zone-specific prism settings applied.
 
         .. code-block:: python
 
@@ -1107,7 +1107,7 @@ class MeshingQueries:
 
     def GetFaceZonesOfPrismControls(self, control_name) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of face zones to which the specified prism controls apply.
 
         .. code-block:: python
 
@@ -1121,7 +1121,7 @@ class MeshingQueries:
 
     def GetBaffles(self, face_zone_list) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return the baffle zones based on the face zone list specified.
 
         .. code-block:: python
 
@@ -1136,7 +1136,7 @@ class MeshingQueries:
 
     def GetEmbeddedBaffles(self) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return the embedded baffle zones.
 
         .. code-block:: python
 
@@ -1149,7 +1149,7 @@ class MeshingQueries:
 
     def GetWrappedZones(self) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of wrapped face zones.
 
         .. code-block:: python
 
@@ -1162,7 +1162,7 @@ class MeshingQueries:
 
     def GetUnreferencedEdgeZones(self) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of unreferenced edge zones.
 
         .. code-block:: python
 
@@ -1175,7 +1175,7 @@ class MeshingQueries:
 
     def GetUnreferencedFaceZones(self) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of unreferenced face zones.
 
         .. code-block:: python
 
@@ -1188,7 +1188,7 @@ class MeshingQueries:
 
     def GetUnreferencedCellZones(self) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of unreferenced cell zones.
 
         .. code-block:: python
 
@@ -1201,7 +1201,7 @@ class MeshingQueries:
 
     def GetUnreferencedEdgeZonesOfFilter(self, filter) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of unreferenced edge zones whose names contain the specified filter string.
 
         .. code-block:: python
 
@@ -1215,7 +1215,7 @@ class MeshingQueries:
 
     def GetUnreferencedFaceZonesOfFilter(self, filter) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of unreferenced face zones whose names contain the specified filter string.
 
         .. code-block:: python
 
@@ -1229,7 +1229,7 @@ class MeshingQueries:
 
     def GetUnreferencedCellZonesOfFilter(self, filter) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of unreferenced cell zones whose names contain the specified filter string.
 
         .. code-block:: python
 
@@ -1243,7 +1243,7 @@ class MeshingQueries:
 
     def GetUnreferencedEdgeZoneIdListOfPattern(self, pattern) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of unreferenced edge zones by ID, whose names contain the specified pattern.
 
         .. code-block:: python
 
@@ -1259,7 +1259,7 @@ class MeshingQueries:
 
     def GetUnreferencedFaceZoneIdListOfPattern(self, pattern) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of unreferenced face zones by ID, whose names contain the specified pattern.
 
         .. code-block:: python
 
@@ -1275,7 +1275,7 @@ class MeshingQueries:
 
     def GetUnreferencedCellZoneIdListOfPattern(self, pattern) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of unreferenced cell zones by ID, whose names contain the specified pattern.
 
         .. code-block:: python
 
@@ -1291,7 +1291,7 @@ class MeshingQueries:
 
     def GetMaxsizeCellZoneByVolume(self, list_or_pattern) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return cell zone with maximum volume for given list or pattern of cell zones.
 
         .. code-block:: python
 
@@ -1315,7 +1315,7 @@ class MeshingQueries:
 
     def GetMaxsizeCellZoneByCount(self, list_or_pattern) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return cell zone with maximum count of elements for given list or pattern of cell zones.
 
         .. code-block:: python
 
@@ -1339,7 +1339,7 @@ class MeshingQueries:
 
     def GetMinsizeFaceZoneByArea(self, list_or_pattern) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return face zone with minimum area for given list or pattern of face zones.
 
         .. code-block:: python
 
@@ -1363,7 +1363,7 @@ class MeshingQueries:
 
     def GetMinsizeFaceZoneByCount(self, list_or_pattern) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return face zone with minimum count of elements for given list or pattern of face zones.
 
         .. code-block:: python
 
@@ -1389,7 +1389,8 @@ class MeshingQueries:
         self, max_entity_count, only_boundary
     ) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of face zones with a count below the maximum entity count (maximum-entity-count) specified.
+        You can choose to restrict the report to only boundary edge zones, if required (only-boundary? set to True or False).
 
         .. code-block:: python
 
@@ -1406,7 +1407,8 @@ class MeshingQueries:
         self, max_entity_count, only_boundary
     ) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of edge zones with a count below the maximum entity count (maximum-entity-count) specified.
+        You can choose to restrict the report to only boundary edge zones, if required (only-boundary? set to True or False).
 
         .. code-block:: python
 
@@ -1421,7 +1423,7 @@ class MeshingQueries:
 
     def GetCellZoneListByMaximumEntityCount(self, maximum_entity_count) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of cell zones with a count below the maximum entity count (maximum-entity-count) specified.
 
         .. code-block:: python
 
@@ -1435,7 +1437,7 @@ class MeshingQueries:
 
     def GetFaceZoneListByMaximumZoneArea(self, maximum_zone_area) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of face zones with a maximum zone area below the maximum-zone-area specified.
 
         .. code-block:: python
 
@@ -1449,7 +1451,7 @@ class MeshingQueries:
 
     def GetFaceZoneListByMinimumZoneArea(self, minimum_zone_area) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of face zones with a minimum zone area above the minimum-zone-area specified.
 
         .. code-block:: python
 
@@ -1463,7 +1465,7 @@ class MeshingQueries:
 
     def GetZonesWithFreeFaces(self, list_or_pattern) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of zones with free faces for the face zones specified.
 
         .. code-block:: python
 
@@ -1489,7 +1491,7 @@ class MeshingQueries:
 
     def GetZonesWithMultiFaces(self, list_or_pattern) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of zones with multi-connected faces for the face zones specified.
 
         .. code-block:: python
 
@@ -1517,7 +1519,7 @@ class MeshingQueries:
         self, zone_name_pattern, area_tolerance, distance_tolerance
     ) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of overlapping face zones based on the area-tolerance and distance-tolerance specified.
 
         .. code-block:: python
 
@@ -1533,7 +1535,7 @@ class MeshingQueries:
 
     def GetZonesWithMarkedFaces(self, list_or_pattern) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of zones with marked faces for the face zones specified.
 
         .. code-block:: python
 
@@ -1559,7 +1561,7 @@ class MeshingQueries:
 
     def GetAllObjectNameList(self) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of all objects.
 
         .. code-block:: python
 
@@ -1586,7 +1588,7 @@ class MeshingQueries:
 
     def GetObjectsOfFilter(self, filter) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of objects whose names contain the specified filter string.
 
         .. code-block:: python
 
@@ -1600,7 +1602,7 @@ class MeshingQueries:
 
     def GetRegionsOfObject(self, object) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of regions in the specified object.
 
         .. code-block:: python
 
@@ -1614,7 +1616,7 @@ class MeshingQueries:
 
     def GetRegionNameListOfObject(self, object) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of regions in the specified object.
 
         .. code-block:: python
 
@@ -1628,7 +1630,8 @@ class MeshingQueries:
 
     def SortRegionsByVolume(self, object_name, order) -> Any:
         """
-        Return a list of objects of the specified type.
+        Returns a sorted list of volumetric regions by volume for the object specified.
+        Specify the order (ascending or descending).
 
         .. code-block:: python
 
@@ -1643,7 +1646,7 @@ class MeshingQueries:
 
     def GetRegionVolume(self, object_name, region_name) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return the region volume for the specified region of an object.
 
         .. code-block:: python
 
@@ -1658,7 +1661,7 @@ class MeshingQueries:
 
     def GetRegionsOfFilter(self, object, filter) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of regions in the specified object, whose names contain the specified filter string.
 
         .. code-block:: python
 
@@ -1673,7 +1676,7 @@ class MeshingQueries:
 
     def GetRegionNameListOfPattern(self, object, region_name_or_pattern) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of regions in the specified object, whose names contain the specified name pattern.
 
         .. code-block:: python
 
@@ -1688,7 +1691,7 @@ class MeshingQueries:
 
     def GetRegionsOfFaceZones(self, list_of_face_zone_ids) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of regions containing the face zones specified.
 
         .. code-block:: python
 
@@ -1705,7 +1708,7 @@ class MeshingQueries:
         self, face_zone_list_or_pattern, join_tolerance, absolute_tolerance, join_angle
     ) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return the pairs of overlapping face zones based on the join tolerance and feature angle.
 
         .. code-block:: python
 
@@ -1734,7 +1737,7 @@ class MeshingQueries:
 
     def GetRegionNameListOfFaceZones(self, list_or_pattern) -> Any:
         """
-        Return a list of objects of the specified type.
+        Return a list of regions containing the face zones specified.
 
         .. code-block:: python
 
