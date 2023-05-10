@@ -3,7 +3,7 @@
 field_data
 ==========
 
-.. autoclass:: ansys.fluent.core.services.field_data
+.. automodule:: ansys.fluent.core.services.field_data
    :members:
    :show-inheritance:
    :undoc-members:
