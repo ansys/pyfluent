@@ -627,7 +627,7 @@ class MeshingQueries:
         """
         Return face zone at or closest to a specified location.
 
-        Note:  This function is not applicable to polyhedra meshes.
+        Note:  This function is not applicable to polyhedral meshes.
 
         .. code-block:: python
 
