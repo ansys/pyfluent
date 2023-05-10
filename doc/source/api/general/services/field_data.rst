@@ -1,4 +1,4 @@
-.. _ref_field_data:
+.. _ref_field_data_code:
 
 field_data
 ==========

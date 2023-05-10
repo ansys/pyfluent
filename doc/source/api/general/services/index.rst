@@ -8,9 +8,9 @@ Services
 
 :ref:`ref_error_handler`        Custom gRPC error handler.
 
-:ref:`ref_events`               Wrapper over the events gRPC service of Fluent.
+:ref:`ref_events_code`          Wrapper over the events gRPC service of Fluent.
 
-:ref:`ref_field_data`           Wrappers over FieldData gRPC service of Fluent.
+:ref:`ref_field_data_code`      Wrappers over FieldData gRPC service of Fluent.
 
 :ref:`ref_health_check`         Wrapper over the health check grpc service of Fluent.
 

@@ -1,9 +1,9 @@
-.. _ref_events:
+.. _ref_events_code:
 
 events
 ======
 
-.. autoclass:: ansys.fluent.core.services.events
+.. autoclass:: ansys.fluent.core.services.events.EventsService
    :members:
    :show-inheritance:
    :undoc-members:
