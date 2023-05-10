@@ -1322,7 +1322,7 @@ class MeshingQueries:
 
             >>> meshing_session.meshing_queries.GetMaxsizeCellZoneByCount("*")
 
-            >>> meshing_session.meshing_queries.GetMaxsizeCellZoneByCount([3460]) == 3460
+            >>> meshing_session.meshing_queries.GetMaxsizeCellZoneByCount([3460])
 
         """
         request = MeshingQueriesProtoModule.GetMaxsizeCellZoneByCountRequest()
