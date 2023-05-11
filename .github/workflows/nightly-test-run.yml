@@ -103,18 +103,16 @@ jobs:
         run: |
           rm -rf dist
           make install > /dev/null
-
-      - name: 22.2 Unit Testing
-        run: make unittest-all-222
-        continue-on-error: true
+      
+      - name: 23.2 Unit Testing
+        run: make unittest-all-232
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
-          FLUENT_IMAGE_TAG: v22.2.0
+          FLUENT_IMAGE_TAG: v23.2.0
 
       - name: 23.1 Unit Testing
         run: make unittest-all-231
-        continue-on-error: true
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
@@ -122,15 +120,13 @@ jobs:
 
       - name: Upload 23.1 Coverage Artifacts
         uses: actions/upload-artifact@v3
-        continue-on-error: true
         with:
           name: coverage_report
           path: ./htmlcov
 
-      - name: 23.2 Unit Testing
-        run: make unittest-all-232
-        continue-on-error: true
-        env:
-          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-          PYFLUENT_START_INSTANCE: 0
-          FLUENT_IMAGE_TAG: v23.2.0
+      - name: 22.2 Unit Testing
+          run: make unittest-all-222
+          env:
+            ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+            PYFLUENT_START_INSTANCE: 0
+            FLUENT_IMAGE_TAG: v22.2.0
