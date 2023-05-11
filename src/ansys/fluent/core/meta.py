@@ -102,6 +102,20 @@ class PyLocalBaseMeta(type):
             return parent
 
         return wrapper
+        
+        
+    @classmethod
+    def __create_get_parent_by_name(cls):
+        def wrapper(self, obj_type, obj=None):
+            obj = self if obj is None else obj
+            parent = None
+            if getattr(obj, "_parent", None):
+                if obj._parent.__class__.__name__ == obj_type:
+                    return obj._parent
+                parent = self._get_parent_by_name(obj_type, obj._parent)
+            return parent
+
+        return wrapper        
 
     @classmethod
     def __create_get_top_most_parent(cls):
@@ -116,6 +130,7 @@ class PyLocalBaseMeta(type):
 
     def __new__(cls, name, bases, attrs):
         attrs["_get_parent_by_type"] = cls.__create_get_parent_by_type()
+        attrs["_get_parent_by_name"] = cls.__create_get_parent_by_name()
         attrs["_get_top_most_parent"] = cls.__create_get_top_most_parent()
         return super(PyLocalBaseMeta, cls).__new__(cls, name, bases, attrs)
 
@@ -173,6 +188,10 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
                 hasattr(self, "_reset_on_change")
                 and getattr(self, "_reset_on_change")()
             )
+            
+            on_change = getattr(self, "_on_change", None)            
+            if on_change is not None:      
+                self._register_on_change_cb(on_change)
             if reset_on_change:
                 for obj in reset_on_change:
                     obj._register_on_change_cb(lambda: setattr(self, "_value", None))
@@ -183,7 +202,16 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
     def __create_get_state(cls, show_attributes=False):
         def wrapper(self):
             try:
-                return self.value
+                rv = self.value
+                
+                    
+                if  hasattr(self, "allowed_values"):
+                    allowed_values = self.allowed_values
+                    if len(allowed_values)> 0 and (rv is None or (not isinstance(rv, list) and rv not in allowed_values)):                                              
+                        self.set_state(allowed_values[0])
+                        rv = self.value
+                        
+                return rv 
             except AttributeError:
                 return None
 
@@ -231,20 +259,44 @@ class PyReferenceObjectMeta(PyLocalBaseMeta):
         def wrapper(self, parent, path, location, session_id):
             self._parent = parent
             self.type = "object"
-            top_most_parent = self._get_top_most_parent(self)
-            
-            if session_id is None:
-                session_id = top_most_parent.session.id 
-            property_editor_data = top_most_parent.accessor(
-                "AnsysUser", session_id
-            )                 
-            #import pdb; pdb.set_trace()
-            obj, cmd_data = property_editor_data.get_object_and_command_data_from_properties_info({'path':path, 'properties':{},'type':location})  
-            self._object = obj                                                      
+            self.parent = parent 
+            self.path = path 
+            self.location = location 
+            self.session_id = session_id                                                                
         return wrapper
+       
+    @classmethod
+    def __create_reset(cls):
+        def wrapper(self, path, location, session_id):           
+            self.path = path 
+            self.location = location 
+            self.session_id = session_id 
+            if hasattr(self, "_object"):
+                delattr(self, "_object")            
+        return wrapper
+        
+    @classmethod       
+    def __create_getattr(cls):
+        def wrapper(self, item):            
+            if item == "_object":
+                #import pdb; pdb.set_trace()
+                top_most_parent = self._get_top_most_parent(self)
+                
+                if self.session_id is None:
+                    self.session_id = top_most_parent.session.id 
+                property_editor_data = top_most_parent.accessor(
+                    "AnsysUser", self.session_id
+                )                 
+                obj, cmd_data = property_editor_data.get_object_and_command_data_from_properties_info({'path':self.path, 'properties':{},'type':self.location})  
+                if obj is not None:
+                    self._object = obj
+                return obj                
+        return wrapper                
 
     def __new__(cls, name, bases, attrs):
         attrs["__init__"] = attrs.get("__init__", cls.__create_init())
+        attrs["__getattr__"] = attrs.get("__getattr__", cls.__create_getattr())
+        attrs["reset"] =  cls.__create_reset()
         return super(PyReferenceObjectMeta, cls).__new__(cls, name, bases, attrs)
        
 class PyLocalObjectMeta(PyLocalBaseMeta):
@@ -422,6 +474,12 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
                             cls.PLURAL,
                             PyLocalContainer(self, cls, api_helper),
                         )
+                    elif cls.__class__.__name__ == "PyReferenceObjectMeta":
+                        setattr(
+                            self,
+                            name,
+                            cls(self, cls.PATH, cls.LOCATION, cls.SESSION)
+                        )                        
                 for base_class in clss.__bases__:
                     update(base_class)
 
