@@ -103,7 +103,7 @@ jobs:
         run: |
           rm -rf dist
           make install > /dev/null
-      
+
       - name: 23.2 Unit Testing
         run: make unittest-all-232
         env:
@@ -125,8 +125,8 @@ jobs:
           path: ./htmlcov
 
       - name: 22.2 Unit Testing
-          run: make unittest-all-222
-          env:
+        run: make unittest-all-222
+        env:
             ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
             PYFLUENT_START_INSTANCE: 0
             FLUENT_IMAGE_TAG: v22.2.0
