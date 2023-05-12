@@ -32,3 +32,34 @@ rotates at a velocity of 17,100 RPM and the stator has 30 passages. The total pr
 is 60,000 Pa and a radial equilibrium distribution of static pressure at the outlet, with a static
 pressure of 60500 Pa at the outlet along the hub.
 """
+
+# sphinx_gallery_thumbnail_path = '_static/turbo_machinery.png'
+
+###############################################################################
+# Example Setup
+# -------------
+# Before you can use the turbo workflow, you must set up the
+# example and initialize this workflow.
+#
+# Perform required imports
+# ~~~~~~~~~~~~~~~~~~~~~~~~
+# Perform required imports, which includes downloading and importing
+# the geometry files.
+
+import ansys.fluent.core as pyfluent
+from ansys.fluent.core import examples
+
+inlet_guide_vane_file, rotor_file, stator_file = [
+    examples.download_file(CAD_file, "pyfluent/turbo_workflow")
+    for CAD_file in ["IGV.gtm", "R1.gtm", "S1.gtm"]
+]
+
+###############################################################################
+# Launch Fluent
+# ~~~~~~~~~~~~~
+# Launch Fluent as a service in solver mode with double precision running on
+# two processors.
+
+solver_session = pyfluent.launch_fluent(
+    precision="double", processor_count=2, mode="solver"
+)
