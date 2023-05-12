@@ -620,10 +620,18 @@ class MeshingQueries:
     def __init__(self, service: MeshingQueriesService):
         """__init__ method of MeshingQueries class."""
         self.service = service
-        self.region_type = ["fluid-fluid", "solid-solid", "fluid-solid"]
-        self.order = ["ascending", "descending"]
+        self.region_types = ["fluid-fluid", "solid-solid", "fluid-solid"]
+        self.orders = ["ascending", "descending"]
 
     docstring = None
+
+    def get_allowed_region_type(self, region_type):
+        if region_type not in self.region_type:
+            raise ValueError(f"Allowed values are - {self.region_type}\n")
+
+    def get_allowed_orders(self, order):
+        if order not in self.orders:
+            raise ValueError(f"Allowed values are - {self.orders}\n")
 
     def GetAllObjectNameList(self) -> Any:
         """
@@ -662,6 +670,19 @@ class MeshingQueries:
         request.object = object
         response = self.service.GetRegionNameListOfObject(request)
         return response.regions
+
+    def get_allowed_region(self, region):
+        objects = [objs for objs in self.GetAllObjectNameList()]
+        regions = []
+        for obj in objects:
+            regions.extend(self.GetRegionNameListOfObject(obj))
+        if isinstance(region, list):
+            for reg in region:
+                if reg not in regions:
+                    raise ValueError(f"Allowed values are - {regions}\n")
+        elif isinstance(region, str):
+            if region not in regions:
+                raise ValueError(f"Allowed values are - {regions}\n")
 
     def GetFaceZoneAtLocation(self, location) -> Any:
         """
@@ -850,6 +871,8 @@ class MeshingQueries:
             >>> meshing_session.meshing_queries.GetFaceZonesSharedByRegionsOfType("elbow-fluid", "fluid-fluid")
 
         """
+        self.get_allowed_object(mesh_object)
+        self.get_allowed_region_type(region_type)
         request = MeshingQueriesProtoModule.GetFaceZonesSharedByRegionsOfTypeRequest()
         request.mesh_object = mesh_object
         request.region_type = region_type
@@ -865,6 +888,8 @@ class MeshingQueries:
             >>> meshing_session.meshing_queries.GetFaceZonesOfRegions("elbow-fluid", ["fluid"])
 
         """
+        self.get_allowed_object(object)
+        self.get_allowed_region(region_name_list)
         request = MeshingQueriesProtoModule.GetFaceZonesOfRegionsRequest()
         request.object = object
         for region in region_name_list:
@@ -945,6 +970,8 @@ class MeshingQueries:
             >>> meshing_session.meshing_queries.GetFaceZoneIdListOfRegions("elbow-fluid", ["fluid"])
 
         """
+        self.get_allowed_object(object)
+        self.get_allowed_region(region_list)
         request = MeshingQueriesProtoModule.GetFaceZoneIdListOfRegionsRequest()
         request.object = object
         for region in region_list:
@@ -1673,6 +1700,8 @@ class MeshingQueries:
             >>> meshing_session.meshing_queries.GetRegionVolume("elbow-fluid", "fluid")
 
         """
+        self.get_allowed_object(object_name)
+        self.get_allowed_region(region_name)
         request = MeshingQueriesProtoModule.GetRegionVolumeRequest()
         request.object_name = object_name
         request.region_name = region_name
