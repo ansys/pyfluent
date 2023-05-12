@@ -3,31 +3,32 @@
 Services
 ========
 
-==============================  ===============================================================================
-:ref:`ref_batch_ops`            | Batch rpc service.
+==============================  ==================================================================================
+:ref:`ref_batch_ops`            | Executes operations in batch in Fluent.
 
-:ref:`ref_error_handler`        Custom gRPC error handler.
+:ref:`ref_error_handler`        Handles gRPC service errors.
 
-:ref:`ref_events_code`          Wrapper over the events gRPC service of Fluent.
+:ref:`ref_events_code`          Begins and ends event streaming service of Fluent.
 
-:ref:`ref_field_data_code`      Wrappers over FieldData gRPC service of Fluent.
+:ref:`ref_field_data_code`      Extracts Fluent field data and provides access to Fluent field information.
 
-:ref:`ref_health_check`         Wrapper over the health check grpc service of Fluent.
+:ref:`ref_health_check`         Checks status of Fluent connection whether Fluent is serving or not.
 
-:ref:`ref_interceptors`         Interceptor classes to use with gRPC services.
+:ref:`ref_interceptors`         Intercepts batch gRPC calls and provides access to batch computation information.
 
-:ref:`ref_meshing_queries`      Wrapper over the meshing grpc service of Fluent.
+:ref:`ref_meshing_queries`      Query and utility functions that extracts information of particular labels, types
+                                group of zones involved in series of various meshing operations.
 
-:ref:`ref_monitor`              Wrapper over the monitor grpc service of Fluent.
+:ref:`ref_monitor`              Gives monitors information.
 
-:ref:`ref_scheme_eval`          Wrappers over SchemeEval gRPC service of Fluent.
+:ref:`ref_scheme_eval`          Evaluates and executes Fluent's scheme code.
 
-:ref:`ref_settings`             Wrapper to settings gRPC service of Fluent.
+:ref:`ref_settings`             Extracts and modifies Fluent settings services.
 
-:ref:`ref_streaming`            Wrapper over the streaming grpc services of Fluent.
+:ref:`ref_streaming`            Begins and ends streaming service of Fluent.
 
-:ref:`ref_transcript`           Wrapper over the transcript grpc service of Fluent.
-==============================  ===============================================================================
+:ref:`ref_transcript`           Begins and ends transcript streaming service of Fluent.
+==============================  ==================================================================================
 
 .. toctree::
     :maxdepth: 1
