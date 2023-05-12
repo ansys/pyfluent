@@ -63,3 +63,57 @@ inlet_guide_vane_file, rotor_file, stator_file = [
 solver_session = pyfluent.launch_fluent(
     precision="double", processor_count=2, mode="solver"
 )
+
+###############################################################################
+# Initialize workflow
+# ~~~~~~~~~~~~~~~~~~~
+# Initialize the turbo workflow.
+
+solver_session.tui.turbo_workflow.workflow.enable()
+
+###############################################################################
+# Edit turbo-related preferences
+# ------------------------------
+# The Turbo Workflow partially involves setting up an association between cell
+# and face zones and their proper region assignments in the turbo topology.
+# For turbo-related geometries with a large number of components, these mappings
+# can be more easily automated and optimized using Preferences where you can
+# instruct Fluent to look for certain string configurations and in a certain order.
+#
+# Updating inlet region
+# ~~~~~~~~~~~~~~~~~~~~~
+# Change the default value to: *inflow*, *in*
+
+solver_session.tui.preferences.turbo_workflow.face_zone_settings.inlet_region(
+    "*inflow* *in*"
+)
+
+###############################################################################
+# Updating outlet region
+# ~~~~~~~~~~~~~~~~~~~~~~
+# Change the default value to: *outflow*, *out*
+
+solver_session.tui.preferences.turbo_workflow.face_zone_settings.outlet_region(
+    "*outflow* *out*"
+)
+
+###############################################################################
+# Updating periodic 1 region
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Change the default value to: "*per*1*, *per*"
+
+solver_session.tui.preferences.turbo_workflow.face_zone_settings.periodic1_region(
+    "*per*1* *per*"
+)
+
+###############################################################################
+# Updating search order
+# ~~~~~~~~~~~~~~~~~~~~~
+# Change the default value to:
+# *int*, *def*, *bld*, *blade*, *tip*2*, *tip*b*, *tip*out*, *tip*, *sym*,
+# *per*1*, *per*2*, *per*b*, *high*per*, *per*, *hub*, *shr*, *cas*, *inflow*, *outflow*,
+# *in*, *out*
+
+solver_session.tui.preferences.turbo_workflow.face_zone_settings.fzsearch_region(
+    "*int* *def* *bld* *blade* *tip*2* *tip*b* *tip*out* *tip* *sym* *per*1* *per*2* *per*b* *high*per* *per* *hub* *shr* *cas* *inflow* *outflow* *in* *out*"
+)
