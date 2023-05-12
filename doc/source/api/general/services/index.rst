@@ -3,7 +3,7 @@
 Services
 ========
 
-==============================  ==================================================================================
+==============================  ====================================================================================
 :ref:`ref_batch_ops`            | Executes operations in batch in Fluent.
 
 :ref:`ref_error_handler`        Handles gRPC service errors.
@@ -19,7 +19,7 @@ Services
 :ref:`ref_meshing_queries`      Query and utility functions that extracts information of particular labels, types
                                 group of zones involved in series of various meshing operations.
 
-:ref:`ref_monitor`              Gives monitors information.
+:ref:`ref_monitor`              Begins and ends monitor streaming service of Fluent also gives monitors information.
 
 :ref:`ref_scheme_eval`          Evaluates and executes Fluent's scheme code.
 
@@ -28,7 +28,7 @@ Services
 :ref:`ref_streaming`            Begins and ends streaming service of Fluent.
 
 :ref:`ref_transcript`           Begins and ends transcript streaming service of Fluent.
-==============================  ==================================================================================
+==============================  ====================================================================================
 
 .. toctree::
     :maxdepth: 1
