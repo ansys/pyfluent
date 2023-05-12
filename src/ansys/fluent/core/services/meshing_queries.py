@@ -626,8 +626,8 @@ class MeshingQueries:
     docstring = None
 
     def get_allowed_region_type(self, region_type):
-        if region_type not in self.region_type:
-            raise ValueError(f"Allowed values are - {self.region_type}\n")
+        if region_type not in self.region_types:
+            raise ValueError(f"Allowed values are - {self.region_types}\n")
 
     def get_allowed_orders(self, order):
         if order not in self.orders:
@@ -1685,6 +1685,8 @@ class MeshingQueries:
             >>> meshing_session.meshing_queries.SortRegionsByVolume("elbow-fluid", "ascending")
 
         """
+        self.get_allowed_object(object_name)
+        self.get_allowed_orders(order)
         request = MeshingQueriesProtoModule.SortRegionsByVolumeRequest()
         request.object_name = object_name
         request.order = order
