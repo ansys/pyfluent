@@ -620,8 +620,48 @@ class MeshingQueries:
     def __init__(self, service: MeshingQueriesService):
         """__init__ method of MeshingQueries class."""
         self.service = service
+        self.region_type = ["fluid-fluid", "solid-solid", "fluid-solid"]
+        self.order = ["ascending", "descending"]
 
     docstring = None
+
+    def GetAllObjectNameList(self) -> Any:
+        """
+        Return a list of all objects.
+
+        .. code-block:: python
+
+            >>> meshing_session.meshing_queries.GetAllObjectNameList()
+
+        """
+        request = MeshingQueriesProtoModule.Empty()
+        response = self.service.GetAllObjectNameList(request)
+        return response.objects
+
+    def get_allowed_object(self, object):
+        allowed_args = [args for args in self.GetAllObjectNameList()]
+        if isinstance(object, list):
+            for obj in object:
+                if obj not in allowed_args:
+                    raise ValueError(f"Allowed values are - {allowed_args}\n")
+        elif isinstance(object, str):
+            if object not in allowed_args:
+                raise ValueError(f"Allowed values are - {allowed_args}\n")
+
+    def GetRegionNameListOfObject(self, object) -> Any:
+        """
+        Return a list of regions in the specified object.
+
+        .. code-block:: python
+
+            >>> meshing_session.meshing_queries.GetRegionNameListOfObject("elbow-fluid")
+
+        """
+        self.get_allowed_object(object)
+        request = MeshingQueriesProtoModule.GetRegionNameListOfObjectRequest()
+        request.object = object
+        response = self.service.GetRegionNameListOfObject(request)
+        return response.regions
 
     def GetFaceZoneAtLocation(self, location) -> Any:
         """
@@ -764,6 +804,7 @@ class MeshingQueries:
             >>> meshing_session.meshing_queries.GetFaceZoneIdListOfObject("elbow-fluid")
 
         """
+        self.get_allowed_object(object)
         request = MeshingQueriesProtoModule.GetFaceZoneIdListOfObjectRequest()
         request.object = object
         response = self.service.GetFaceZoneIdListOfObject(request)
@@ -778,6 +819,7 @@ class MeshingQueries:
             >>> meshing_session.meshing_queries.GetEdgeZoneIdListOfObject("elbow-fluid")
 
         """
+        self.get_allowed_object(object)
         request = MeshingQueriesProtoModule.GetEdgeZoneIdListOfObjectRequest()
         request.object = object
         response = self.service.GetEdgeZoneIdListOfObject(request)
@@ -792,6 +834,7 @@ class MeshingQueries:
             >>> meshing_session.meshing_queries.GetCellZoneIdListOfObject("elbow-fluid")
 
         """
+        self.get_allowed_object(object)
         request = MeshingQueriesProtoModule.GetCellZoneIdListOfObjectRequest()
         request.object = object
         response = self.service.GetCellZoneIdListOfObject(request)
@@ -870,6 +913,7 @@ class MeshingQueries:
             >>> meshing_session.meshing_queries.GetFaceZonesOfObjects(["elbow-fluid"])
 
         """
+        self.get_allowed_object(object_list)
         request = MeshingQueriesProtoModule.GetFaceZonesOfObjectsRequest()
         for object in object_list:
             request.object_list.append(object)
@@ -885,6 +929,7 @@ class MeshingQueries:
             >>> meshing_session.meshing_queries.GetEdgeZonesOfObjects(["elbow-fluid"])
 
         """
+        self.get_allowed_object(object_list)
         request = MeshingQueriesProtoModule.GetEdgeZonesOfObjectsRequest()
         for object in object_list:
             request.object_list.append(object)
@@ -1560,19 +1605,6 @@ class MeshingQueries:
         response = self.service.GetZonesWithMarkedFaces(request)
         return response.zones_with_marked_faces
 
-    def GetAllObjectNameList(self) -> Any:
-        """
-        Return a list of all objects.
-
-        .. code-block:: python
-
-            >>> meshing_session.meshing_queries.GetAllObjectNameList()
-
-        """
-        request = MeshingQueriesProtoModule.Empty()
-        response = self.service.GetAllObjectNameList(request)
-        return response.objects
-
     def GetObjectNameListOfType(self, type) -> Any:
         """
         Return a list of objects of the specified type.
@@ -1610,23 +1642,10 @@ class MeshingQueries:
             >>> meshing_session.meshing_queries.GetRegionsOfObject("elbow-fluid")
 
         """
+        self.get_allowed_object(object)
         request = MeshingQueriesProtoModule.GetRegionsOfObjectRequest()
         request.object = object
         response = self.service.GetRegionsOfObject(request)
-        return response.regions
-
-    def GetRegionNameListOfObject(self, object) -> Any:
-        """
-        Return a list of regions in the specified object.
-
-        .. code-block:: python
-
-            >>> meshing_session.meshing_queries.GetRegionNameListOfObject("elbow-fluid")
-
-        """
-        request = MeshingQueriesProtoModule.GetRegionNameListOfObjectRequest()
-        request.object = object
-        response = self.service.GetRegionNameListOfObject(request)
         return response.regions
 
     def SortRegionsByVolume(self, object_name, order) -> Any:
