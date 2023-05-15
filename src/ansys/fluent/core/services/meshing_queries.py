@@ -595,142 +595,6 @@ class MeshingQueriesService:
         """get_region_name_list_of_face_zones rpc of MeshingQueriesService."""
         return self._stub.GetRegionNameListOfFaceZones(request, metadata=self._metadata)
 
-    @catch_grpc_error
-    def add_labels_on_face_zones(
-        self,
-        request: MeshingQueriesProtoModule.AddLabelsOnFaceZonesRequest,
-    ) -> MeshingQueriesProtoModule.AddLabelsOnFaceZonesResponse:
-        """add_labels_on_face_zones rpc of MeshingQueriesService."""
-        return self._stub.AddLabelsOnFaceZones(request, metadata=self._metadata)
-
-    @catch_grpc_error
-    def add_labels_on_cell_zones(
-        self,
-        request: MeshingQueriesProtoModule.AddLabelsOnCellZonesRequest,
-    ) -> MeshingQueriesProtoModule.AddLabelsOnCellZonesResponse:
-        """add_labels_on_cell_zones rpc of MeshingQueriesService."""
-        return self._stub.AddLabelsOnCellZones(request, metadata=self._metadata)
-
-    @catch_grpc_error
-    def add_labels_on_edge_zones(
-        self,
-        request: MeshingQueriesProtoModule.AddLabelsOnEdgeZonesRequest,
-    ) -> MeshingQueriesProtoModule.AddLabelsOnEdgeZonesResponse:
-        """add_labels_on_edge_zones rpc of MeshingQueriesService."""
-        return self._stub.AddLabelsOnEdgeZones(request, metadata=self._metadata)
-
-    @catch_grpc_error
-    def get_labels_on_face_zones(
-        self,
-        request: MeshingQueriesProtoModule.GetLabelsOnFaceZonesRequest,
-    ) -> MeshingQueriesProtoModule.GetLabelsOnFaceZonesResponse:
-        """get_labels_on_face_zones rpc of MeshingQueriesService."""
-        return self._stub.AddLabelsOnFaceZones(request, metadata=self._metadata)
-
-    @catch_grpc_error
-    def get_labels_on_cell_zones(
-        self,
-        request: MeshingQueriesProtoModule.GetLabelsOnCellZonesRequest,
-    ) -> MeshingQueriesProtoModule.GetLabelsOnCellZonesResponse:
-        """get_labels_on_cell_zones rpc of MeshingQueriesService."""
-        return self._stub.AddLabelsOnCellZones(request, metadata=self._metadata)
-
-    @catch_grpc_error
-    def get_labels_on_edge_zones(
-        self,
-        request: MeshingQueriesProtoModule.GetLabelsOnEdgeZonesRequest,
-    ) -> MeshingQueriesProtoModule.GetLabelsOnEdgeZonesResponse:
-        """get_labels_on_edge_zones rpc of MeshingQueriesService."""
-        return self._stub.AddLabelsOnEdgeZones(request, metadata=self._metadata)
-
-    @catch_grpc_error
-    def get_labels_of_object(
-        self,
-        request: MeshingQueriesProtoModule.GetLabelsOfObjectRequest,
-    ) -> MeshingQueriesProtoModule.GetLabelsOfObjectResponse:
-        """get_labels_of_object rpc of MeshingQueriesService."""
-        return self._stub.GetLabelsOfObject(request, metadata=self._metadata)
-
-    @catch_grpc_error
-    def get_all_label_name_list(
-        self,
-        request: MeshingQueriesProtoModule.GetAllLabelNameListRequest,
-    ) -> MeshingQueriesProtoModule.GetAllLabelNameListResponse:
-        """get_all_label_name_list rpc of MeshingQueriesService."""
-        return self._stub.GetAllLabelNameList(request, metadata=self._metadata)
-
-    @catch_grpc_error
-    def get_labels_of_filter(
-        self,
-        request: MeshingQueriesProtoModule.GetLabelsOfFilterRequest,
-    ) -> MeshingQueriesProtoModule.GetLabelsOfFilterResponse:
-        """get_labels_of_filter rpc of MeshingQueriesService."""
-        return self._stub.GetLabelsOfFilter(request, metadata=self._metadata)
-
-    @catch_grpc_error
-    def get_label_name_list_of_pattern(
-        self,
-        request: MeshingQueriesProtoModule.GetLabelNameListOfPatternRequest,
-    ) -> MeshingQueriesProtoModule.GetLabelNameListOfPatternResponse:
-        """get_label_name_list_of_pattern rpc of MeshingQueriesService."""
-        return self._stub.GetLabelNameListOfPattern(request, metadata=self._metadata)
-
-    @catch_grpc_error
-    def get_labels_of_face_zones(
-        self,
-        request: MeshingQueriesProtoModule.GetLabelsOfFaceZonesRequest,
-    ) -> MeshingQueriesProtoModule.GetLabelsOfFaceZonesResponse:
-        """get_labels_of_face_zones rpc of MeshingQueriesService."""
-        return self._stub.GetLabelsOfFaceZones(request, metadata=self._metadata)
-
-    @catch_grpc_error
-    def get_face_zone_id_list_with_labels(
-        self,
-        request: MeshingQueriesProtoModule.GetFaceZoneIdListWithLabelsRequest,
-    ) -> MeshingQueriesProtoModule.GetFaceZoneIdListWithLabelsResponse:
-        """get_face_zone_id_list_with_labels rpc of MeshingQueriesService."""
-        return self._stub.GetFaceZoneIdListWithLabels(request, metadata=self._metadata)
-
-    @catch_grpc_error
-    def get_cell_zone_id_list_with_labels(
-        self,
-        request: MeshingQueriesProtoModule.GetCellZoneIdListWithLabelsRequest,
-    ) -> MeshingQueriesProtoModule.GetCellZoneIdListWithLabelsResponse:
-        """get_cell_zone_id_list_with_labels rpc of MeshingQueriesService."""
-        return self._stub.GetCellZoneIdListWithLabels(request, metadata=self._metadata)
-
-    @catch_grpc_error
-    def get_edge_zone_id_list_with_labels(
-        self,
-        request: MeshingQueriesProtoModule.GetEdgeZoneIdListWithLabelsRequest,
-    ) -> MeshingQueriesProtoModule.GetEdgeZoneIdListWithLabelsResponse:
-        """get_edge_zone_id_list_with_labels rpc of MeshingQueriesService."""
-        return self._stub.GetEdgeZoneIdListWithLabels(request, metadata=self._metadata)
-
-    @catch_grpc_error
-    def remove_labels_on_face_zones(
-        self,
-        request: MeshingQueriesProtoModule.RemoveLabelsOnFaceZonesRequest,
-    ) -> MeshingQueriesProtoModule.RemoveLabelsOnFaceZonesResponse:
-        """remove_labels_on_face_zones rpc of MeshingQueriesService."""
-        return self._stub.RemoveLabelsOnFaceZones(request, metadata=self._metadata)
-
-    @catch_grpc_error
-    def remove_labels_on_cell_zones(
-        self,
-        request: MeshingQueriesProtoModule.RemoveLabelsOnCellZonesRequest,
-    ) -> MeshingQueriesProtoModule.RemoveLabelsOnCellZonesResponse:
-        """remove_labels_on_cell_zones rpc of MeshingQueriesService."""
-        return self._stub.RemoveLabelsOnCellZones(request, metadata=self._metadata)
-
-    @catch_grpc_error
-    def remove_labels_on_edge_zones(
-        self,
-        request: MeshingQueriesProtoModule.RemoveLabelsOnEdgeZonesRequest,
-    ) -> MeshingQueriesProtoModule.RemoveLabelsOnEdgeZonesResponse:
-        """remove_labels_on_edge_zones rpc of MeshingQueriesService."""
-        return self._stub.RemoveLabelsOnEdgeZones(request, metadata=self._metadata)
-
 
 class MeshingQueries:
     """
@@ -747,11 +611,11 @@ class MeshingQueries:
 
     def get_allowed_region_type(self, region_type):
         if region_type not in self.region_types:
-            raise ValueError(f"Allowed values are - {self.region_types}\n")
+            raise ValueError(f"Allowed region types - {self.region_types}\n")
 
     def get_allowed_orders(self, order):
         if order not in self.orders:
-            raise ValueError(f"Allowed values are - {self.orders}\n")
+            raise ValueError(f"Allowed orders - {self.orders}\n")
 
     def get_all_object_name_list(self) -> Any:
         """
@@ -771,10 +635,10 @@ class MeshingQueries:
         if isinstance(object, list):
             for obj in object:
                 if obj not in allowed_args:
-                    raise ValueError(f"Allowed values are - {allowed_args}\n")
+                    raise ValueError(f"Allowed objects - {allowed_args}\n")
         elif isinstance(object, str):
             if object not in allowed_args:
-                raise ValueError(f"Allowed values are - {allowed_args}\n")
+                raise ValueError(f"Allowed objects - {allowed_args}\n")
 
     def get_region_name_list_of_object(self, object) -> Any:
         """
@@ -799,10 +663,10 @@ class MeshingQueries:
         if isinstance(region, list):
             for reg in region:
                 if reg not in regions:
-                    raise ValueError(f"Allowed values are - {regions}\n")
+                    raise ValueError(f"Allowed regions - {regions}\n")
         elif isinstance(region, str):
             if region not in regions:
-                raise ValueError(f"Allowed values are - {regions}\n")
+                raise ValueError(f"Allowed regions - {regions}\n")
 
     def get_face_zone_at_location(self, location) -> Any:
         """
@@ -1729,7 +1593,7 @@ class MeshingQueries:
         request.face_zone_name_or_pattern = zone_name_pattern
         request.area_tolerance = area_tolerance
         request.distance_tolerance = distance_tolerance
-        response = self.service.GetOverlappingFaceZones(request)
+        response = self.service.get_overlapping_face_zones(request)
         return response.overlapping_face_zone_ids
 
     def get_zones_with_marked_faces(self, list_or_pattern) -> Any:
