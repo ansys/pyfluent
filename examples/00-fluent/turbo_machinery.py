@@ -58,10 +58,10 @@ inlet_guide_vane_file, rotor_file, stator_file = [
 # Launch Fluent
 # ~~~~~~~~~~~~~
 # Launch Fluent as a service in solver mode with double precision running on
-# two processors.
+# four processors.
 
 solver_session = pyfluent.launch_fluent(
-    precision="double", processor_count=2, mode="solver"
+    precision="double", processor_count=4, mode="solver"
 )
 
 ###############################################################################
@@ -85,7 +85,7 @@ solver_session.tui.turbo_workflow.workflow.enable()
 # Change the default value to: *inflow*, *in*
 
 solver_session.tui.preferences.turbo_workflow.face_zone_settings.inlet_region(
-    "*inflow* *in*"
+    '"*inflow* *in*"'
 )
 
 ###############################################################################
@@ -94,7 +94,7 @@ solver_session.tui.preferences.turbo_workflow.face_zone_settings.inlet_region(
 # Change the default value to: *outflow*, *out*
 
 solver_session.tui.preferences.turbo_workflow.face_zone_settings.outlet_region(
-    "*outflow* *out*"
+    '"*outflow* *out*"'
 )
 
 ###############################################################################
@@ -103,7 +103,7 @@ solver_session.tui.preferences.turbo_workflow.face_zone_settings.outlet_region(
 # Change the default value to: "*per*1*, *per*"
 
 solver_session.tui.preferences.turbo_workflow.face_zone_settings.periodic1_region(
-    "*per*1* *per*"
+    '"*per*1* *per*"'
 )
 
 ###############################################################################
@@ -114,6 +114,104 @@ solver_session.tui.preferences.turbo_workflow.face_zone_settings.periodic1_regio
 # *per*1*, *per*2*, *per*b*, *high*per*, *per*, *hub*, *shr*, *cas*, *inflow*, *outflow*,
 # *in*, *out*
 
-solver_session.tui.preferences.turbo_workflow.face_zone_settings.fzsearch_region(
-    "*int* *def* *bld* *blade* *tip*2* *tip*b* *tip*out* *tip* *sym* *per*1* *per*2* *per*b* *high*per* *per* *hub* *shr* *cas* *inflow* *outflow* *in* *out*"
+solver_session.tui.preferences.turbo_workflow.face_zone_settings.fzsearch_order(
+    '"*int* *def* *bld* *blade* *tip*2* *tip*b* *tip*out* *tip* *sym* *per*1* *per*2* *per*b* *high*per* *per* *hub* *shr* *cas* *inflow* *outflow* *in* *out*"'
 )
+
+###############################################################################
+# Describe component
+# ~~~~~~~~~~~~~~~~~~
+# Describe the turbomachinery component. This task allows you to change properties
+# of the component. Set ``"ComponentType"`` to ``"Axial Turbine"``. Set ``"ComponentName"``
+# to ``"hannover"``. Set ``"NumberOfRows"`` to ``3.0``.
+
+solver_session.workflow.TaskObject["Describe Component"].Arguments.set_state = {
+    "ComponentType": "Axial Turbine",
+    "ComponentName": "hannover",
+    "NumberOfRows": 3.0,
+}
+
+solver_session.workflow.TaskObject["Describe Component"].Execute()
+
+###############################################################################
+# Define blade row scope
+# ~~~~~~~~~~~~~~~~~~~~~~
+# Define the scope of the blade-row analysis.
+
+solver_session.workflow.TaskObject["Define Blade Row Scope"].Arguments.set_state = {}
+
+###############################################################################
+# Import Mesh
+# ~~~~~~~~~~~
+# Import mesh files.
+
+solver_session.workflow.TaskObject["Import Mesh"].Arguments.set_state = {}
+
+###############################################################################
+# Association mesh
+# ~~~~~~~~~~~~~~~~
+# Associate the mesh.
+
+solver_session.workflow.TaskObject["Association Mesh"].Arguments.set_state = {}
+
+###############################################################################
+# Define map regions
+# ~~~~~~~~~~~~~~~~~~
+# Define map regions.
+
+solver_session.workflow.TaskObject["Map Regions"].Arguments.set_state = {}
+
+###############################################################################
+# Create CFD model
+# ~~~~~~~~~~~~~~~~
+# Create the CFD model.
+
+solver_session.workflow.TaskObject["Create CFD Model"].Arguments.set_state = {}
+
+###############################################################################
+# Define turbo physics
+# ~~~~~~~~~~~~~~~~~~
+# Define the turbo-related physics conditions.
+
+solver_session.workflow.TaskObject["Define Turbo Physics"].Arguments.set_state = {}
+
+###############################################################################
+# Turbo regions and zones
+# ~~~~~~~~~~~~~~~~~~~~~~~
+# Define the turbo-related region and zone boundary conditions.
+
+solver_session.workflow.TaskObject[
+    "Define Turbo Regions and Zones"
+].Arguments.set_state = {}
+
+###############################################################################
+# Define turbo-related topology
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Define the turbo-related topology.
+
+solver_session.workflow.TaskObject["Define Turbo Topology"].Arguments.set_state = {}
+
+###############################################################################
+# Describe turbo surfaces
+# ~~~~~~~~~~~~~~~~~~~~~~~
+# Define turbo-specific iso-surfaces.
+
+solver_session.workflow.TaskObject["Describe turbo Surfaces"].Arguments.set_state = {}
+
+###############################################################################
+# Create report definitions and monitors
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Create report definitions and monitors.
+
+solver_session.workflow.TaskObject[
+    "Create Report Definitions and Monitors"
+].Arguments.set_state = {}
+
+#########################################################################
+# Close Fluent
+# ~~~~~~~~~~~~
+# Close Fluent.
+
+solver_session.exit()
+
+###############################################################################
