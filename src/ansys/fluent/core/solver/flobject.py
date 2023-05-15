@@ -217,7 +217,10 @@ class Textual(Property):
 
     def allowed_values(self):
         """Get the allowed values of the object."""
-        return self.get_attr("allowed-values", (list, str))
+        try:
+            return self.get_attr("allowed-values", (list, str))
+        except BaseException as ex:
+            return []
 
 
 class SettingsBase(Base, Generic[StateT]):
