@@ -29,84 +29,84 @@ class MeshingQueriesService:
     def get_face_zone_at_location(
         self, request: MeshingQueriesProtoModule.GetFaceZoneAtLocationRequest
     ) -> MeshingQueriesProtoModule.GetFaceZoneAtLocationResponse:
-        """GetFaceZoneAtLocation rpc of MeshingQueriesService."""
+        """get_face_zone_at_location rpc of MeshingQueriesService."""
         return self._stub.GetFaceZoneAtLocation(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_cell_zone_at_location(
         self, request: MeshingQueriesProtoModule.GetCellZoneAtLocationRequest
     ) -> MeshingQueriesProtoModule.GetCellZoneAtLocationResponse:
-        """GetCellZoneAtLocation rpc of MeshingQueriesService."""
+        """get_cell_zone_at_location rpc of MeshingQueriesService."""
         return self._stub.GetCellZoneAtLocation(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_zones_of_type(
         self, request: MeshingQueriesProtoModule.GetZonesOfTypeRequest
     ) -> MeshingQueriesProtoModule.GetZonesOfTypeResponse:
-        """GetZonesOfType rpc of MeshingQueriesService."""
+        """get_zones_of_type rpc of MeshingQueriesService."""
         return self._stub.GetZonesOfType(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_zones_of_group(
         self, request: MeshingQueriesProtoModule.GetZonesOfGroupRequest
     ) -> MeshingQueriesProtoModule.GetZonesOfGroupResponse:
-        """GetZonesOfGroup rpc of MeshingQueriesService."""
+        """get_zones_of_group rpc of MeshingQueriesService."""
         return self._stub.GetZonesOfGroup(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_face_zones_of_filter(
         self, request: MeshingQueriesProtoModule.GetFaceZonesOfFilterRequest
     ) -> MeshingQueriesProtoModule.GetFaceZonesOfFilterResponse:
-        """GetFaceZonesOfFilter rpc of MeshingQueriesService."""
+        """get_face_zones_of_filter rpc of MeshingQueriesService."""
         return self._stub.GetFaceZonesOfFilter(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_cell_zones_of_filter(
         self, request: MeshingQueriesProtoModule.GetCellZonesOfFilterRequest
     ) -> MeshingQueriesProtoModule.GetCellZonesOfFilterResponse:
-        """GetCellZonesOfFilter rpc of MeshingQueriesService."""
+        """get_cell_zones_of_filter rpc of MeshingQueriesService."""
         return self._stub.GetCellZonesOfFilter(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_edge_zones_of_filter(
         self, request: MeshingQueriesProtoModule.GetEdgeZonesOfFilterRequest
     ) -> MeshingQueriesProtoModule.GetEdgeZonesOfFilterResponse:
-        """GetEdgeZonesOfFilter rpc of MeshingQueriesService."""
+        """get_edge_zones_of_filter rpc of MeshingQueriesService."""
         return self._stub.GetEdgeZonesOfFilter(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_node_zones_of_filter(
         self, request: MeshingQueriesProtoModule.GetNodeZonesOfFilterRequest
     ) -> MeshingQueriesProtoModule.GetNodeZonesOfFilterResponse:
-        """GetNodeZonesOfFilter rpc of MeshingQueriesService."""
+        """get_node_zones_of_filter rpc of MeshingQueriesService."""
         return self._stub.GetNodeZonesOfFilter(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_objects_of_type(
         self, request: MeshingQueriesProtoModule.GetObjectsOfTypeRequest
     ) -> MeshingQueriesProtoModule.GetObjectsOfTypeResponse:
-        """GetObjectsOfType rpc of MeshingQueriesService."""
+        """get_objects_of_type rpc of MeshingQueriesService."""
         return self._stub.GetObjectsOfType(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_face_zone_id_list_of_object(
         self, request: MeshingQueriesProtoModule.GetFaceZoneIdListOfObjectRequest
     ) -> MeshingQueriesProtoModule.GetFaceZoneIdListOfObjectResponse:
-        """GetFaceZoneIdListOfObject rpc of MeshingQueriesService."""
+        """get_face_zone_id_list_of_object rpc of MeshingQueriesService."""
         return self._stub.GetFaceZoneIdListOfObject(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_edge_zone_id_list_of_object(
         self, request: MeshingQueriesProtoModule.GetEdgeZoneIdListOfObjectRequest
     ) -> MeshingQueriesProtoModule.GetEdgeZoneIdListOfObjectResponse:
-        """GetEdgeZoneIdListOfObject rpc of MeshingQueriesService."""
+        """get_edge_zone_id_list_of_object rpc of MeshingQueriesService."""
         return self._stub.GetEdgeZoneIdListOfObject(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_cell_zone_id_list_of_object(
         self, request: MeshingQueriesProtoModule.GetCellZoneIdListOfObjectRequest
     ) -> MeshingQueriesProtoModule.GetCellZoneIdListOfObjectResponse:
-        """GetCellZoneIdListOfObject rpc of MeshingQueriesService."""
+        """get_cell_zone_id_list_of_object rpc of MeshingQueriesService."""
         return self._stub.GetCellZoneIdListOfObject(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -114,7 +114,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetFaceZonesSharedByRegionsOfTypeRequest,
     ) -> MeshingQueriesProtoModule.GetFaceZonesSharedByRegionsOfTypeResponse:
-        """GetFaceZonesSharedByRegionsOfType rpc of MeshingQueriesService."""
+        """get_face_zones_shared_by_regions_of_type rpc of MeshingQueriesService."""
         return self._stub.GetFaceZonesSharedByRegionsOfType(
             request, metadata=self._metadata
         )
@@ -123,14 +123,14 @@ class MeshingQueriesService:
     def get_face_zones_of_regions(
         self, request: MeshingQueriesProtoModule.GetFaceZonesOfRegionsRequest
     ) -> MeshingQueriesProtoModule.GetFaceZonesOfRegionsResponse:
-        """GetFaceZonesOfRegions rpc of MeshingQueriesService."""
+        """get_face_zones_of_regions rpc of MeshingQueriesService."""
         return self._stub.GetFaceZonesOfRegions(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_face_zones_of_labels(
         self, request: MeshingQueriesProtoModule.GetFaceZonesOfLabelsRequest
     ) -> MeshingQueriesProtoModule.GetFaceZonesOfLabelsResponse:
-        """GetFaceZonesOfLabels rpc of MeshingQueriesService."""
+        """get_face_zones_of_labels rpc of MeshingQueriesService."""
         return self._stub.GetFaceZonesOfLabels(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -138,21 +138,21 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetFaceZoneIdListOfLabelsRequest,
     ) -> MeshingQueriesProtoModule.GetFaceZoneIdListOfLabelsResponse:
-        """GetFaceZoneIdListOfLabels rpc of MeshingQueriesService."""
+        """get_face_zone_id_list_of_labels rpc of MeshingQueriesService."""
         return self._stub.GetFaceZoneIdListOfLabels(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_face_zones_of_objects(
         self, request: MeshingQueriesProtoModule.GetFaceZonesOfObjectsRequest
     ) -> MeshingQueriesProtoModule.GetFaceZonesOfObjectsResponse:
-        """GetFaceZonesOfObjects rpc of MeshingQueriesService."""
+        """get_face_zones_of_objects rpc of MeshingQueriesService."""
         return self._stub.GetFaceZonesOfObjects(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_edge_zones_of_objects(
         self, request: MeshingQueriesProtoModule.GetEdgeZonesOfObjectsRequest
     ) -> MeshingQueriesProtoModule.GetEdgeZonesOfObjectsResponse:
-        """GetEdgeZonesOfObjects rpc of MeshingQueriesService."""
+        """get_edge_zones_of_objects rpc of MeshingQueriesService."""
         return self._stub.GetEdgeZonesOfObjects(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -160,7 +160,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetFaceZoneIdListOfRegionsRequest,
     ) -> MeshingQueriesProtoModule.GetFaceZoneIdListOfRegionsResponse:
-        """GetEdgeZonesOfObjects rpc of MeshingQueriesService."""
+        """get_face_zone_id_list_of_regions rpc of MeshingQueriesService."""
         return self._stub.GetFaceZoneIdListOfRegions(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -168,7 +168,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetPrismCellZonesRequest,
     ) -> MeshingQueriesProtoModule.GetPrismCellZonesResponse:
-        """GetPrismCellZones rpc of MeshingQueriesService."""
+        """get_prism_cell_zones rpc of MeshingQueriesService."""
         return self._stub.GetPrismCellZones(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -176,7 +176,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetTetCellZonesRequest,
     ) -> MeshingQueriesProtoModule.GetTetCellZonesResponse:
-        """GetTetCellZones rpc of MeshingQueriesService."""
+        """get_tet_cell_zones rpc of MeshingQueriesService."""
         return self._stub.GetTetCellZones(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -184,7 +184,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetAdjacentCellZonesRequest,
     ) -> MeshingQueriesProtoModule.GetAdjacentCellZonesResponse:
-        """GetAdjacentCellZones rpc of MeshingQueriesService."""
+        """get_adjacent_cell_zones rpc of MeshingQueriesService."""
         return self._stub.GetAdjacentCellZones(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -192,7 +192,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetAdjacentFaceZonesRequest,
     ) -> MeshingQueriesProtoModule.GetAdjacentFaceZonesResponse:
-        """GetAdjacentFaceZones rpc of MeshingQueriesService."""
+        """get_adjacent_face_zones rpc of MeshingQueriesService."""
         return self._stub.GetAdjacentFaceZones(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -200,7 +200,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetAdjacentInteriorAndBoundaryFaceZonesRequest,
     ) -> MeshingQueriesProtoModule.GetAdjacentInteriorAndBoundaryFaceZonesResponse:
-        """GetAdjacentInteriorAndBoundaryFaceZones rpc of MeshingQueriesService."""
+        """get_adjacent_interior_and_boundary_face_zones rpc of MeshingQueriesService."""
         return self._stub.GetAdjacentInteriorAndBoundaryFaceZones(
             request, metadata=self._metadata
         )
@@ -210,7 +210,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetAdjacentZonesByEdgeConnectivityRequest,
     ) -> MeshingQueriesProtoModule.GetAdjacentZonesByEdgeConnectivityResponse:
-        """GetAdjacentZonesByEdgeConnectivity rpc of MeshingQueriesService."""
+        """get_adjacent_zones_by_edge_connectivity rpc of MeshingQueriesService."""
         return self._stub.GetAdjacentZonesByEdgeConnectivity(
             request, metadata=self._metadata
         )
@@ -220,7 +220,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetAdjacentZonesByNodeConnectivityRequest,
     ) -> MeshingQueriesProtoModule.GetAdjacentZonesByNodeConnectivityResponse:
-        """GetAdjacentZonesByNodeConnectivity rpc of MeshingQueriesService."""
+        """get_adjacent_zones_by_node_connectivity rpc of MeshingQueriesService."""
         return self._stub.GetAdjacentZonesByNodeConnectivity(
             request, metadata=self._metadata
         )
@@ -230,7 +230,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetSharedBoundaryZonesRequest,
     ) -> MeshingQueriesProtoModule.GetSharedBoundaryZonesResponse:
-        """GetSharedBoundaryZones rpc of MeshingQueriesService."""
+        """get_shared_boundary_zones rpc of MeshingQueriesService."""
         return self._stub.GetSharedBoundaryZones(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -238,7 +238,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetInteriorZonesConnectedToCellZonesRequest,
     ) -> MeshingQueriesProtoModule.GetInteriorZonesConnectedToCellZonesResponse:
-        """GetInteriorZonesConnectedToCellZones rpc of MeshingQueriesService."""
+        """get_interior_zones_connected_to_cell_zones rpc of MeshingQueriesService."""
         return self._stub.GetInteriorZonesConnectedToCellZones(
             request, metadata=self._metadata
         )
@@ -248,7 +248,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.Empty,
     ) -> MeshingQueriesProtoModule.GetFaceZonesWithZoneSpecificPrismsAppliedResponse:
-        """GetFaceZonesWithZoneSpecificPrismsApplied rpc of MeshingQueriesService."""
+        """get_face_zones_with_zone_specific_prisms_applied rpc of MeshingQueriesService."""
         return self._stub.GetFaceZonesWithZoneSpecificPrismsApplied(
             request, metadata=self._metadata
         )
@@ -258,7 +258,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetFaceZonesOfPrismControlsRequest,
     ) -> MeshingQueriesProtoModule.GetFaceZonesOfPrismControlsResponse:
-        """GetFaceZonesOfPrismControls rpc of MeshingQueriesService."""
+        """get_face_zones_of_prism_controls rpc of MeshingQueriesService."""
         return self._stub.GetFaceZonesOfPrismControls(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -266,7 +266,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetBafflesRequest,
     ) -> MeshingQueriesProtoModule.GetBafflesResponse:
-        """GetBaffles rpc of MeshingQueriesService."""
+        """get_baffles rpc of MeshingQueriesService."""
         return self._stub.GetBaffles(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -274,7 +274,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.Empty,
     ) -> MeshingQueriesProtoModule.GetEmbeddedBafflesResponse:
-        """GetEmbeddedBaffles rpc of MeshingQueriesService."""
+        """get_embedded_baffles rpc of MeshingQueriesService."""
         return self._stub.GetEmbeddedBaffles(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -282,7 +282,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.Empty,
     ) -> MeshingQueriesProtoModule.GetWrappedZonesResponse:
-        """GetWrappedZones rpc of MeshingQueriesService."""
+        """get_wrapped_zones rpc of MeshingQueriesService."""
         return self._stub.GetWrappedZones(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -290,7 +290,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.Empty,
     ) -> MeshingQueriesProtoModule.GetUnreferencedEdgeZonesResponse:
-        """GetUnreferencedEdgeZones rpc of MeshingQueriesService."""
+        """get_unreferenced_edge_zones rpc of MeshingQueriesService."""
         return self._stub.GetUnreferencedEdgeZones(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -298,7 +298,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.Empty,
     ) -> MeshingQueriesProtoModule.GetUnreferencedFaceZonesResponse:
-        """GetUnreferencedFaceZones rpc of MeshingQueriesService."""
+        """get_unreferenced_face_zones rpc of MeshingQueriesService."""
         return self._stub.GetUnreferencedFaceZones(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -306,7 +306,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.Empty,
     ) -> MeshingQueriesProtoModule.GetUnreferencedCellZonesResponse:
-        """GetUnreferencedCellZones rpc of MeshingQueriesService."""
+        """get_unreferenced_cell_zones rpc of MeshingQueriesService."""
         return self._stub.GetUnreferencedCellZones(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -314,7 +314,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetUnreferencedEdgeZonesOfFilterRequest,
     ) -> MeshingQueriesProtoModule.GetUnreferencedEdgeZonesOfFilterResponse:
-        """GetUnreferencedEdgeZonesOfFilter rpc of MeshingQueriesService."""
+        """get_unreferenced_edge_zones_of_filter rpc of MeshingQueriesService."""
         return self._stub.GetUnreferencedEdgeZonesOfFilter(
             request, metadata=self._metadata
         )
@@ -324,7 +324,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetUnreferencedFaceZonesOfFilterRequest,
     ) -> MeshingQueriesProtoModule.GetUnreferencedFaceZonesOfFilterResponse:
-        """GetUnreferencedFaceZonesOfFilter rpc of MeshingQueriesService."""
+        """get_unreferenced_face_zones_of_filter rpc of MeshingQueriesService."""
         return self._stub.GetUnreferencedFaceZonesOfFilter(
             request, metadata=self._metadata
         )
@@ -334,7 +334,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetUnreferencedCellZonesOfFilterRequest,
     ) -> MeshingQueriesProtoModule.GetUnreferencedCellZonesOfFilterResponse:
-        """GetUnreferencedCellZonesOfFilter rpc of MeshingQueriesService."""
+        """get_unreferenced_cell_zones_of_filter rpc of MeshingQueriesService."""
         return self._stub.GetUnreferencedCellZonesOfFilter(
             request, metadata=self._metadata
         )
@@ -344,7 +344,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetUnreferencedEdgeZoneIdListOfPatternRequest,
     ) -> MeshingQueriesProtoModule.GetUnreferencedEdgeZoneIdListOfPatternResponse:
-        """GetUnreferencedEdgeZoneIdListOfPattern rpc of MeshingQueriesService."""
+        """get_unreferenced_edge_zone_id_list_of_pattern rpc of MeshingQueriesService."""
         return self._stub.GetUnreferencedEdgeZoneIdListOfPattern(
             request, metadata=self._metadata
         )
@@ -354,7 +354,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetUnreferencedFaceZoneIdListOfPatternRequest,
     ) -> MeshingQueriesProtoModule.GetUnreferencedFaceZoneIdListOfPatternResponse:
-        """GetUnreferencedFaceZoneIdListOfPattern rpc of MeshingQueriesService."""
+        """get_unreferenced_face_zone_id_list_of_pattern rpc of MeshingQueriesService."""
         return self._stub.GetUnreferencedFaceZoneIdListOfPattern(
             request, metadata=self._metadata
         )
@@ -364,7 +364,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetUnreferencedCellZoneIdListOfPatternRequest,
     ) -> MeshingQueriesProtoModule.GetUnreferencedCellZoneIdListOfPatternResponse:
-        """GetUnreferencedCellZoneIdListOfPattern rpc of MeshingQueriesService."""
+        """get_unreferenced_cell_zone_id_list_of_pattern rpc of MeshingQueriesService."""
         return self._stub.GetUnreferencedCellZoneIdListOfPattern(
             request, metadata=self._metadata
         )
@@ -374,7 +374,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetMaxsizeCellZoneByVolumeRequest,
     ) -> MeshingQueriesProtoModule.GetMaxsizeCellZoneByVolumeResponse:
-        """GetMaxsizeCellZoneByVolume rpc of MeshingQueriesService."""
+        """get_maxsize_cell_zone_by_volume rpc of MeshingQueriesService."""
         return self._stub.GetMaxsizeCellZoneByVolume(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -382,7 +382,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetMaxsizeCellZoneByCountRequest,
     ) -> MeshingQueriesProtoModule.GetMaxsizeCellZoneByCountResponse:
-        """GetMaxsizeCellZoneByCount rpc of MeshingQueriesService."""
+        """get_maxsize_cell_zone_by_count rpc of MeshingQueriesService."""
         return self._stub.GetMaxsizeCellZoneByCount(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -390,7 +390,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetMinsizeFaceZoneByAreaRequest,
     ) -> MeshingQueriesProtoModule.GetMinsizeFaceZoneByAreaResponse:
-        """GetMinsizeFaceZoneByArea rpc of MeshingQueriesService."""
+        """get_minsize_face_zone_by_area rpc of MeshingQueriesService."""
         return self._stub.GetMinsizeFaceZoneByArea(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -398,7 +398,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetMinsizeFaceZoneByCountRequest,
     ) -> MeshingQueriesProtoModule.GetMinsizeFaceZoneByCountResponse:
-        """GetMinsizeFaceZoneByCount rpc of MeshingQueriesService."""
+        """get_minsize_face_zone_by_count rpc of MeshingQueriesService."""
         return self._stub.GetMinsizeFaceZoneByCount(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -406,7 +406,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetFaceZoneListByMaximumEntityCountRequest,
     ) -> MeshingQueriesProtoModule.GetFaceZoneListByMaximumEntityCountResponse:
-        """GetFaceZoneListByMaximumEntityCount rpc of MeshingQueriesService."""
+        """get_face_zone_list_by_maximum_entity_count rpc of MeshingQueriesService."""
         return self._stub.GetFaceZoneListByMaximumEntityCount(
             request, metadata=self._metadata
         )
@@ -416,7 +416,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetEdgeZoneListByMaximumEntityCountRequest,
     ) -> MeshingQueriesProtoModule.GetEdgeZoneListByMaximumEntityCountResponse:
-        """GetEdgeZoneListByMaximumEntityCount rpc of MeshingQueriesService."""
+        """get_edge_zone_list_by_maximum_entity_count rpc of MeshingQueriesService."""
         return self._stub.GetEdgeZoneListByMaximumEntityCount(
             request, metadata=self._metadata
         )
@@ -426,7 +426,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetCellZoneListByMaximumEntityCountRequest,
     ) -> MeshingQueriesProtoModule.GetCellZoneListByMaximumEntityCountResponse:
-        """GetCellZoneListByMaximumEntityCount rpc of MeshingQueriesService."""
+        """get_cell_zone_list_by_maximum_entity_count rpc of MeshingQueriesService."""
         return self._stub.GetCellZoneListByMaximumEntityCount(
             request, metadata=self._metadata
         )
@@ -436,7 +436,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetFaceZoneListByMaximumZoneAreaRequest,
     ) -> MeshingQueriesProtoModule.GetFaceZoneListByMaximumZoneAreaResponse:
-        """GetFaceZoneListByMaximumZoneArea rpc of MeshingQueriesService."""
+        """get_face_zone_list_by_maximum_zone_area rpc of MeshingQueriesService."""
         return self._stub.GetFaceZoneListByMaximumZoneArea(
             request, metadata=self._metadata
         )
@@ -446,7 +446,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetFaceZoneListByMinimumZoneAreaRequest,
     ) -> MeshingQueriesProtoModule.GetFaceZoneListByMinimumZoneAreaResponse:
-        """GetFaceZoneListByMinimumZoneArea rpc of MeshingQueriesService."""
+        """get_face_zone_list_by_minimum_zone_area rpc of MeshingQueriesService."""
         return self._stub.GetFaceZoneListByMinimumZoneArea(
             request, metadata=self._metadata
         )
@@ -456,7 +456,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetZonesWithFreeFacesRequest,
     ) -> MeshingQueriesProtoModule.GetZonesWithFreeFacesResponse:
-        """GetZonesWithFreeFaces rpc of MeshingQueriesService."""
+        """get_zones_with_free_faces rpc of MeshingQueriesService."""
         return self._stub.GetZonesWithFreeFaces(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -464,7 +464,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetZonesWithFreeFacesRequest,
     ) -> MeshingQueriesProtoModule.GetZonesWithFreeFacesResponse:
-        """GetZonesWithFreeFaces rpc of MeshingQueriesService."""
+        """get_zones_with_free_faces rpc of MeshingQueriesService."""
         return self._stub.GetZonesWithFreeFaces(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -472,15 +472,15 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetZonesWithMultiFacesRequest,
     ) -> MeshingQueriesProtoModule.GetZonesWithMultiFacesResponse:
-        """GetZonesWithMultiFaces rpc of MeshingQueriesService."""
+        """get_zones_with_multi_faces rpc of MeshingQueriesService."""
         return self._stub.GetZonesWithMultiFaces(request, metadata=self._metadata)
 
     @catch_grpc_error
-    def GetOverlappingFaceZones(
+    def get_overlapping_face_zones(
         self,
         request: MeshingQueriesProtoModule.GetOverlappingFaceZonesRequest,
     ) -> MeshingQueriesProtoModule.GetOverlappingFaceZonesResponse:
-        """GetOverlappingFaceZones rpc of MeshingQueriesService."""
+        """get_overlapping_face_zones rpc of MeshingQueriesService."""
         return self._stub.GetOverlappingFaceZones(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -488,7 +488,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetZonesWithMultiFacesRequest,
     ) -> MeshingQueriesProtoModule.GetZonesWithMultiFacesResponse:
-        """GetZonesWithMultiFaces rpc of MeshingQueriesService."""
+        """get_zones_with_multi_faces rpc of MeshingQueriesService."""
         return self._stub.GetZonesWithMultiFaces(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -496,7 +496,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetZonesWithMarkedFacesRequest,
     ) -> MeshingQueriesProtoModule.GetZonesWithMarkedFacesResponse:
-        """GetZonesWithMarkedFaces rpc of MeshingQueriesService."""
+        """get_zones_with_marked_faces rpc of MeshingQueriesService."""
         return self._stub.GetZonesWithMarkedFaces(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -504,7 +504,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.Empty,
     ) -> MeshingQueriesProtoModule.GetAllObjectNameListResponse:
-        """GetAllObjectNameList rpc of MeshingQueriesService."""
+        """get_all_object_name_list rpc of MeshingQueriesService."""
         return self._stub.GetAllObjectNameList(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -512,7 +512,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetObjectNameListOfTypeRequest,
     ) -> MeshingQueriesProtoModule.GetObjectNameListOfTypeResponse:
-        """GetObjectNameListOfType rpc of MeshingQueriesService."""
+        """get_object_name_list_of_type rpc of MeshingQueriesService."""
         return self._stub.GetObjectNameListOfType(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -520,7 +520,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetObjectsOfFilterRequest,
     ) -> MeshingQueriesProtoModule.GetObjectsOfFilterResponse:
-        """GetObjectsOfFilter rpc of MeshingQueriesService."""
+        """get_objects_of_filter rpc of MeshingQueriesService."""
         return self._stub.GetObjectsOfFilter(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -528,7 +528,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetRegionsOfObjectRequest,
     ) -> MeshingQueriesProtoModule.GetRegionsOfObjectResponse:
-        """GetRegionsOfObject rpc of MeshingQueriesService."""
+        """get_regions_of_object rpc of MeshingQueriesService."""
         return self._stub.GetRegionsOfObject(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -536,7 +536,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetRegionNameListOfObjectRequest,
     ) -> MeshingQueriesProtoModule.GetRegionNameListOfObjectResponse:
-        """GetRegionNameListOfObject rpc of MeshingQueriesService."""
+        """get_region_name_list_of_object rpc of MeshingQueriesService."""
         return self._stub.GetRegionNameListOfObject(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -544,7 +544,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.SortRegionsByVolumeRequest,
     ) -> MeshingQueriesProtoModule.SortRegionsByVolumeResponse:
-        """SortRegionsByVolume rpc of MeshingQueriesService."""
+        """sort_regions_by_volume rpc of MeshingQueriesService."""
         return self._stub.SortRegionsByVolume(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -552,7 +552,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetRegionVolumeRequest,
     ) -> MeshingQueriesProtoModule.GetRegionVolumeResponse:
-        """GetRegionVolume rpc of MeshingQueriesService."""
+        """get_region_volume rpc of MeshingQueriesService."""
         return self._stub.GetRegionVolume(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -560,7 +560,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetRegionsOfFilterRequest,
     ) -> MeshingQueriesProtoModule.GetRegionsOfFilterResponse:
-        """GetRegionsOfFilter rpc of MeshingQueriesService."""
+        """get_regions_of_filter rpc of MeshingQueriesService."""
         return self._stub.GetRegionsOfFilter(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -568,7 +568,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetRegionNameListOfPatternRequest,
     ) -> MeshingQueriesProtoModule.GetRegionNameListOfPatternResponse:
-        """GetRegionNameListOfPattern rpc of MeshingQueriesService."""
+        """get_region_name_list_of_pattern rpc of MeshingQueriesService."""
         return self._stub.GetRegionNameListOfPattern(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -576,7 +576,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetRegionsOfFaceZonesRequest,
     ) -> MeshingQueriesProtoModule.GetRegionsOfFaceZonesResponse:
-        """GetRegionsOfFaceZones rpc of MeshingQueriesService."""
+        """get_regions_of_face_zones rpc of MeshingQueriesService."""
         return self._stub.GetRegionsOfFaceZones(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -584,7 +584,7 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.FindJoinPairsRequest,
     ) -> MeshingQueriesProtoModule.FindJoinPairsResponse:
-        """FindJoinPairs rpc of MeshingQueriesService."""
+        """find_join_pairs rpc of MeshingQueriesService."""
         return self._stub.FindJoinPairs(request, metadata=self._metadata)
 
     @catch_grpc_error
@@ -592,8 +592,144 @@ class MeshingQueriesService:
         self,
         request: MeshingQueriesProtoModule.GetRegionNameListOfFaceZonesRequest,
     ) -> MeshingQueriesProtoModule.GetRegionNameListOfFaceZonesResponse:
-        """GetRegionNameListOfFaceZones rpc of MeshingQueriesService."""
+        """get_region_name_list_of_face_zones rpc of MeshingQueriesService."""
         return self._stub.GetRegionNameListOfFaceZones(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def add_labels_on_face_zones(
+        self,
+        request: MeshingQueriesProtoModule.AddLabelsOnFaceZonesRequest,
+    ) -> MeshingQueriesProtoModule.AddLabelsOnFaceZonesResponse:
+        """add_labels_on_face_zones rpc of MeshingQueriesService."""
+        return self._stub.AddLabelsOnFaceZones(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def add_labels_on_cell_zones(
+        self,
+        request: MeshingQueriesProtoModule.AddLabelsOnCellZonesRequest,
+    ) -> MeshingQueriesProtoModule.AddLabelsOnCellZonesResponse:
+        """add_labels_on_cell_zones rpc of MeshingQueriesService."""
+        return self._stub.AddLabelsOnCellZones(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def add_labels_on_edge_zones(
+        self,
+        request: MeshingQueriesProtoModule.AddLabelsOnEdgeZonesRequest,
+    ) -> MeshingQueriesProtoModule.AddLabelsOnEdgeZonesResponse:
+        """add_labels_on_edge_zones rpc of MeshingQueriesService."""
+        return self._stub.AddLabelsOnEdgeZones(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def get_labels_on_face_zones(
+        self,
+        request: MeshingQueriesProtoModule.GetLabelsOnFaceZonesRequest,
+    ) -> MeshingQueriesProtoModule.GetLabelsOnFaceZonesResponse:
+        """get_labels_on_face_zones rpc of MeshingQueriesService."""
+        return self._stub.AddLabelsOnFaceZones(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def get_labels_on_cell_zones(
+        self,
+        request: MeshingQueriesProtoModule.GetLabelsOnCellZonesRequest,
+    ) -> MeshingQueriesProtoModule.GetLabelsOnCellZonesResponse:
+        """get_labels_on_cell_zones rpc of MeshingQueriesService."""
+        return self._stub.AddLabelsOnCellZones(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def get_labels_on_edge_zones(
+        self,
+        request: MeshingQueriesProtoModule.GetLabelsOnEdgeZonesRequest,
+    ) -> MeshingQueriesProtoModule.GetLabelsOnEdgeZonesResponse:
+        """get_labels_on_edge_zones rpc of MeshingQueriesService."""
+        return self._stub.AddLabelsOnEdgeZones(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def get_labels_of_object(
+        self,
+        request: MeshingQueriesProtoModule.GetLabelsOfObjectRequest,
+    ) -> MeshingQueriesProtoModule.GetLabelsOfObjectResponse:
+        """get_labels_of_object rpc of MeshingQueriesService."""
+        return self._stub.GetLabelsOfObject(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def get_all_label_name_list(
+        self,
+        request: MeshingQueriesProtoModule.GetAllLabelNameListRequest,
+    ) -> MeshingQueriesProtoModule.GetAllLabelNameListResponse:
+        """get_all_label_name_list rpc of MeshingQueriesService."""
+        return self._stub.GetAllLabelNameList(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def get_labels_of_filter(
+        self,
+        request: MeshingQueriesProtoModule.GetLabelsOfFilterRequest,
+    ) -> MeshingQueriesProtoModule.GetLabelsOfFilterResponse:
+        """get_labels_of_filter rpc of MeshingQueriesService."""
+        return self._stub.GetLabelsOfFilter(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def get_label_name_list_of_pattern(
+        self,
+        request: MeshingQueriesProtoModule.GetLabelNameListOfPatternRequest,
+    ) -> MeshingQueriesProtoModule.GetLabelNameListOfPatternResponse:
+        """get_label_name_list_of_pattern rpc of MeshingQueriesService."""
+        return self._stub.GetLabelNameListOfPattern(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def get_labels_of_face_zones(
+        self,
+        request: MeshingQueriesProtoModule.GetLabelsOfFaceZonesRequest,
+    ) -> MeshingQueriesProtoModule.GetLabelsOfFaceZonesResponse:
+        """get_labels_of_face_zones rpc of MeshingQueriesService."""
+        return self._stub.GetLabelsOfFaceZones(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def get_face_zone_id_list_with_labels(
+        self,
+        request: MeshingQueriesProtoModule.GetFaceZoneIdListWithLabelsRequest,
+    ) -> MeshingQueriesProtoModule.GetFaceZoneIdListWithLabelsResponse:
+        """get_face_zone_id_list_with_labels rpc of MeshingQueriesService."""
+        return self._stub.GetFaceZoneIdListWithLabels(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def get_cell_zone_id_list_with_labels(
+        self,
+        request: MeshingQueriesProtoModule.GetCellZoneIdListWithLabelsRequest,
+    ) -> MeshingQueriesProtoModule.GetCellZoneIdListWithLabelsResponse:
+        """get_cell_zone_id_list_with_labels rpc of MeshingQueriesService."""
+        return self._stub.GetCellZoneIdListWithLabels(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def get_edge_zone_id_list_with_labels(
+        self,
+        request: MeshingQueriesProtoModule.GetEdgeZoneIdListWithLabelsRequest,
+    ) -> MeshingQueriesProtoModule.GetEdgeZoneIdListWithLabelsResponse:
+        """get_edge_zone_id_list_with_labels rpc of MeshingQueriesService."""
+        return self._stub.GetEdgeZoneIdListWithLabels(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def remove_labels_on_face_zones(
+        self,
+        request: MeshingQueriesProtoModule.RemoveLabelsOnFaceZonesRequest,
+    ) -> MeshingQueriesProtoModule.RemoveLabelsOnFaceZonesResponse:
+        """remove_labels_on_face_zones rpc of MeshingQueriesService."""
+        return self._stub.RemoveLabelsOnFaceZones(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def remove_labels_on_cell_zones(
+        self,
+        request: MeshingQueriesProtoModule.RemoveLabelsOnCellZonesRequest,
+    ) -> MeshingQueriesProtoModule.RemoveLabelsOnCellZonesResponse:
+        """remove_labels_on_cell_zones rpc of MeshingQueriesService."""
+        return self._stub.RemoveLabelsOnCellZones(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def remove_labels_on_edge_zones(
+        self,
+        request: MeshingQueriesProtoModule.RemoveLabelsOnEdgeZonesRequest,
+    ) -> MeshingQueriesProtoModule.RemoveLabelsOnEdgeZonesResponse:
+        """remove_labels_on_edge_zones rpc of MeshingQueriesService."""
+        return self._stub.RemoveLabelsOnEdgeZones(request, metadata=self._metadata)
 
 
 class MeshingQueries:
