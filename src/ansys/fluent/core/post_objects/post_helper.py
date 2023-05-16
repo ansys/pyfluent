@@ -16,7 +16,8 @@ class PostAPIHelper:
             return "_dummy_surface_for_pyfluent:" + local_surface_name.lower()
 
         def _get_api_handle(self):
-            return self.obj._get_top_most_parent().session.tui.surface
+            # return self.obj._get_top_most_parent().session.tui.surface
+            return self.obj._get_top_most_parent().session.results.surfaces
 
         def _delete_if_exist_on_server(self):
             field_info = self.obj._api_helper.field_info()
@@ -69,14 +70,42 @@ class PostAPIHelper:
                 zx_plane = plane_surface.zx_plane
                 self._delete_if_exist_on_server()
                 unit_info = self.obj._api_helper._fluent_unit_info("length")
-                self._get_api_handle().plane_surface(
-                    self._surface_name_on_server,
-                    "xy-plane" if xy_plane else "yz-plane" if yz_plane else "zx-plane",
-                    (xy_plane.z() / unit_info[1]) - unit_info[2]
+                # self._get_api_handle().plane_surface(
+                #     self._surface_name_on_server,
+                #     "xy-plane" if xy_plane else "yz-plane" if yz_plane else "zx-plane",
+                #     (xy_plane.z() / unit_info[1]) - unit_info[2]
+                #     if xy_plane
+                #     else (yz_plane.x() / unit_info[1]) - unit_info[2]
+                #     if yz_plane
+                #     else (zx_plane.y() / unit_info[1]) - unit_info[2],
+                # )
+                print("definitions", xy_plane, yz_plane, zx_plane)
+                state_dict = {
+                    "method": "xy-plane"
                     if xy_plane
-                    else (yz_plane.x() / unit_info[1]) - unit_info[2]
+                    else "yz-plane"
                     if yz_plane
-                    else (zx_plane.y() / unit_info[1]) - unit_info[2],
+                    else "zx-plane"
+                }
+                print(state_dict)
+                if xy_plane:
+                    print("z", xy_plane.z(), unit_info[1], unit_info[2])
+                    state_dict["z"] = (xy_plane.z() / unit_info[1]) - unit_info[2]
+                elif yz_plane:
+                    state_dict["x"] = (yz_plane.x() / unit_info[1]) - unit_info[2]
+                else:
+                    state_dict["y"] = (zx_plane.y() / unit_info[1]) - unit_info[2]
+                self._get_api_handle().plane_surface.create(
+                    self._surface_name_on_server
+                )
+                self._get_api_handle().plane_surface[
+                    self._surface_name_on_server
+                ].set_state(state_dict)
+                print(
+                    self._get_api_handle()
+                    .plane_surface[self._surface_name_on_server]
+                    .get_state(),
+                    "*-*-*-*-*-*-*-*",
                 )
             field_info = self.obj._api_helper.field_info()
             surfaces_list = list(field_info.get_surfaces_info().keys())
@@ -84,7 +113,10 @@ class PostAPIHelper:
                 raise RuntimeError("Surface creation failed.")
 
         def delete_surface_on_server(self):
-            self._get_api_handle().delete_surface(self._surface_name_on_server)
+            self.obj._get_top_most_parent().session.tui.surface.delete_surface(
+                self._surface_name_on_server
+            )
+            # self._get_api_handle().delete_surface(self._surface_name_on_server)
 
     def __init__(self, obj):
         self.obj = obj
