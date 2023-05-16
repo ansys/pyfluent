@@ -159,7 +159,7 @@ html_short_title = html_title = "PyFluent"
 html_theme = "ansys_sphinx_theme"
 html_logo = pyansys_logo_black
 html_theme_options = {
-    "github_url": "https://github.com/pyansys/pyfluent",
+    "github_url": "https://github.com/ansys/pyfluent",
     "show_prev_next": False,
     "show_breadcrumbs": True,
     "additional_breadcrumbs": [
@@ -168,7 +168,7 @@ html_theme_options = {
     "icon_links": [
         {
             "name": "Support",
-            "url": "https://github.com/pyansys/pyfluent/discussions",
+            "url": "https://github.com/ansys/pyfluent/discussions",
             "icon": "fa fa-comment fa-fw",
         },
     ],

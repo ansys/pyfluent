@@ -55,7 +55,7 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
                 f"REMOTING_PORTS={port}/portspan=2",
                 "-l",
                 f"test_name={test_name}",
-                f"ghcr.io/pyansys/pyfluent:{image_tag}",
+                f"ghcr.io/ansys/pyfluent:{image_tag}",
                 "-gu",
                 f"-sifile={container_sifile}",
             ]
