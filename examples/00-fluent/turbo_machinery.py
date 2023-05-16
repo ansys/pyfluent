@@ -84,14 +84,16 @@ solver_session.tui.turbo_workflow.workflow.enable()
 # ~~~~~~~~~~~~~~~~~~~~~
 # Change the default value to: *inflow*, *in*
 
-solver_session.preferences.TurboWorkflow.FaceZoneSettings.InletRegion('"*inflow* *in*"')
+solver_session.tui.preferences.turbo_workflow.face_zone_settings.inlet_region(
+    '"*inflow* *in*"'
+)
 
 ###############################################################################
 # Updating outlet region
 # ~~~~~~~~~~~~~~~~~~~~~~
 # Change the default value to: *outflow*, *out*
 
-solver_session.preferences.TurboWorkflow.FaceZoneSettings.OutletRegion(
+solver_session.tui.preferences.turbo_workflow.face_zone_settings.outlet_region(
     '"*outflow* *out*"'
 )
 
@@ -100,7 +102,7 @@ solver_session.preferences.TurboWorkflow.FaceZoneSettings.OutletRegion(
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Change the default value to: "*per*1*, *per*"
 
-solver_session.preferences.TurboWorkflow.FaceZoneSettings.Periodic1Region(
+solver_session.tui.preferences.turbo_workflow.face_zone_settings.periodic1_region(
     '"*per*1* *per*"'
 )
 
@@ -112,8 +114,8 @@ solver_session.preferences.TurboWorkflow.FaceZoneSettings.Periodic1Region(
 # *per*1*, *per*2*, *per*b*, *high*per*, *per*, *hub*, *shr*, *cas*, *inflow*, *outflow*,
 # *in*, *out*
 
-solver_session.preferences.TurboWorkflow.FaceZoneSettings.FZSearchOrder(
-    "*int* *def* *bld* *blade* *tip*2* *tip*b* *tip*out* *tip* *sym* *per*1* *per*2* *per*b* *high*per* *per* *hub* *shr* *cas* *inflow* *outflow* *in* *out*"
+solver_session.tui.preferences.turbo_workflow.face_zone_settings.fzsearch_order(
+    '"*int* *def* *bld* *blade* *tip*2* *tip*b* *tip*out* *tip* *sym* *per*1* *per*2* *per*b* *high*per* *per* *hub* *shr* *cas* *inflow* *outflow* *in* *out*"'
 )
 
 ###############################################################################
@@ -122,95 +124,156 @@ solver_session.preferences.TurboWorkflow.FaceZoneSettings.FZSearchOrder(
 #
 # Describe component
 # ~~~~~~~~~~~~~~~~~~
-# Describe the turbomachinery component. This task allows you to change properties
-# of the component. Set ``"ComponentType"`` to ``"Axial Turbine"``. Set ``"ComponentName"``
-# to ``"hannover"``. Set ``"NumRows"`` to ``3``. Set ``"OldRowNameList"`` to
-# ``["stator_1", "rotor_1", "stator_2"]``. Set ``"NewRowNameList"`` to ``["igv", "r1", "s1"]``.
-# Set ``"OldNumOfBladesList"`` to ``["26", "23", "30"]``. Set ``"NewNumOfBladesList"`` to
-# ["3", "3", "3"],
+# Describe the turbomachinery component.
 
-solver_session.solverworkflow.TWF_BasicMachineDescription()
+solver_session.workflow.TaskObject["Describe Component"].Arguments.set_state(
+    {
+        "ComponentType": "Axial Compressor",
+        "ComponentName": "hannover",
+        "NumRows": 3,
+        "OldRowNameList": ["stator_1", "rotor_1", "stator_2"],
+        "NewRowNameList": ["igv", "r1", "s1"],
+        "OldNumOfBladesList": ["3", "3", "3"],
+        "NewNumOfBladesList": ["26", "23", "30"],
+    }
+)
+
+solver_session.workflow.TaskObject["Describe Component"].Execute()
 
 ###############################################################################
 # Define blade row scope
 # ~~~~~~~~~~~~~~~~~~~~~~
-# Define the scope of the blade-row analysis. In the Define Blade Row Scope step,
-# to easily model a portion of the turbomachine, you can optionally choose whether
-# or not you want to include specific rows in the blade-row analysis (for example,
-# you can choose to model a single stage of a ten-stage compressor). For this tutorial,
-# you will want to model the whole machine, so keep the default settings.
+# Define the scope of the blade-row analysis.
 
-solver_session.solverworkflow.TWF_BladeRowAnalysisScope()
+solver_session.workflow.TaskObject["Define Blade Row Scope"].Arguments.set_state()
+
+solver_session.workflow.TaskObject["Define Blade Row Scope"].Execute()
 
 ###############################################################################
 # Import Mesh
 # ~~~~~~~~~~~
 # Import mesh files.
 
-solver_session.solverworkflow.TWF_ImportMesh()
+solver_session.workflow.TaskObject["Import Mesh"].Arguments.set_state(
+    {
+        "MeshFilePath": f"{inlet_guide_vane_file}",
+        "MeshFilePath_old": "",
+        "MeshName": "IGV.gtm",
+    }
+)
+
+solver_session.workflow.TaskObject["Import Mesh"].Execute()
+
+solver_session.workflow.TaskObject["Import Mesh"].Arguments.set_state(
+    {
+        "MeshFilePath": f"{rotor_file}",
+        "MeshFilePath_old": "",
+        "MeshName": "R1.gtm",
+    }
+)
+
+solver_session.workflow.TaskObject["Import Mesh"].Execute()
+
+solver_session.workflow.TaskObject["Import Mesh"].Arguments.set_state(
+    {
+        "MeshFilePath": f"{stator_file}",
+        "MeshFilePath_old": "",
+        "MeshName": "S1.gtm",
+    }
+)
+
+solver_session.workflow.TaskObject["Import Mesh"].Execute()
 
 ###############################################################################
 # Association mesh
 # ~~~~~~~~~~~~~~~~
 # Associate the mesh.
 
-solver_session.solverworkflow.TWF_AssociateMesh()
+solver_session.workflow.TaskObject["Associate Mesh"].Arguments.set_state(
+    {
+        "UseWireframe": True,
+        "RenameCellZones": "Yes, using row names",
+        "OldAMCellZonesList": [
+            "igv-inlet,igv-passage-main",
+            "r1-passage-main",
+            "s1-passage-main",
+        ],
+        "NewAMCellZonesList": ["igv.1,igv.2", "r1", "s1"],
+    }
+)
+
+solver_session.workflow.TaskObject["Associate Mesh"].Execute()
 
 ###############################################################################
 # Define map regions
 # ~~~~~~~~~~~~~~~~~~
 # Define map regions.
 
-solver_session.solverworkflow.TWF_MapRegionInfo()
+solver_session.workflow.TaskObject["Map Regions"].Arguments.set_state(
+    {
+        "UseWireframe": True,
+    }
+)
+
+solver_session.workflow.TaskObject["Map Regions"].Execute()
 
 ###############################################################################
 # Create CFD model
 # ~~~~~~~~~~~~~~~~
 # Create the CFD model.
 
-solver_session.solverworkflow.TWF_CreateCFDModel()
+solver_session.workflow.TaskObject["Create CFD Model"].Arguments.set_state()
+
+solver_session.workflow.TaskObject["Create CFD Model"].Execute()
 
 ###############################################################################
 # Define turbo physics
 # ~~~~~~~~~~~~~~~~~~
 # Define the turbo-related physics conditions.
 
-solver_session.solverworkflow.TWF_TurboPhysics()
+solver_session.workflow.TaskObject["Define Turbo Physics"].Arguments.set_state = {}
+
+solver_session.workflow.TaskObject["Define Turbo Physics"].Execute()
 
 ###############################################################################
 # Turbo regions and zones
 # ~~~~~~~~~~~~~~~~~~~~~~~
 # Define the turbo-related region and zone boundary conditions.
 
-solver_session.solverworkflow.TWF_TurboRegionsZones()
+solver_session.workflow.TaskObject[
+    "Define Turbo Regions and Zones"
+].Arguments.set_state = {}
+
+solver_session.workflow.TaskObject["Define Turbo Regions and Zones"].Execute()
 
 ###############################################################################
 # Define turbo-related topology
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Define the turbo-related topology.
 
-solver_session.solverworkflow.TWF_TurboTopology()
+solver_session.workflow.TaskObject["Define Turbo Topology"].Arguments.set_state = {}
+
+solver_session.workflow.TaskObject["Define Turbo Topology"].Execute()
 
 ###############################################################################
 # Describe turbo surfaces
 # ~~~~~~~~~~~~~~~~~~~~~~~
 # Define turbo-specific iso-surfaces.
 
-solver_session.solverworkflow.TWF_TurboSurfaces()
+solver_session.workflow.TaskObject["Describe turbo Surfaces"].Arguments.set_state = {}
+
+solver_session.workflow.TaskObject["Describe turbo Surfaces"].Execute()
 
 ###############################################################################
 # Create report definitions and monitors
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Create report definitions and monitors.
 
-solver_session.solverworkflow.TWF_ReportDefMonitors()
+solver_session.workflow.TaskObject[
+    "Create Report Definitions and Monitors"
+].Arguments.set_state = {}
 
-###############################################################################
-# Complete workflow setup.
-# ~~~~~~~~~~~~~~~~~~~~~~~~
-# Complete workflow setup.
-
-solver_session.solverworkflow.TWF_CompleteWorkflowSetup()
+solver_session.workflow.TaskObject["Create Report Definitions and Monitors"].Execute()
 
 #########################################################################
 # Close Fluent
