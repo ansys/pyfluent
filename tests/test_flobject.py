@@ -665,7 +665,7 @@ def test_accessor_methods_on_settings_object(load_static_mixer_case):
     if solver.get_fluent_version() < "23.2.0":
         assert existing == modified
     else:
-        assert existing == None and modified == False
+        assert existing == False and modified == []
 
     existing = solver.setup.boundary_conditions.velocity_inlet.get_attr(
         "user-creatable?", bool
@@ -758,7 +758,7 @@ def test_find_children_from_settings_root():
 def test_find_children_from_fluent_solver_session(load_static_mixer_case):
     setup_children = find_children(load_static_mixer_case.setup)
 
-    assert len(setup_children) == 18514
+    assert len(setup_children) == 19115
 
     viscous = load_static_mixer_case.setup.models.viscous
     assert find_children(viscous, "prod*") == [
