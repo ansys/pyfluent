@@ -54,9 +54,7 @@ import_filename = examples.download_file("mixing_elbow.pmdb", "pyfluent/mixing_e
 # Launch Fluent as a service in meshing mode with double precision running on
 # two processors.
 
-meshing = pyfluent.launch_fluent(
-    precision="double", processor_count=2, mode="meshing", show_gui=True
-)
+meshing = pyfluent.launch_fluent(precision="double", processor_count=2, mode="meshing")
 
 
 ###############################################################################
