@@ -26,6 +26,13 @@ class MeshingQueriesService:
         self._metadata = metadata
 
     @catch_grpc_error
+    def get_face_zones(
+        self, request: MeshingQueriesProtoModule.GetFaceZonesRequest
+    ) -> MeshingQueriesProtoModule.GetFaceZonesResponse:
+        """get_face_zones rpc of MeshingQueriesService."""
+        return self._stub.GetFaceZones(request, metadata=self._metadata)
+
+    @catch_grpc_error
     def get_face_zone_at_location(
         self, request: MeshingQueriesProtoModule.GetFaceZoneAtLocationRequest
     ) -> MeshingQueriesProtoModule.GetFaceZoneAtLocationResponse:
@@ -667,6 +674,55 @@ class MeshingQueries:
         elif isinstance(region, str):
             if region not in regions:
                 raise ValueError(f"Allowed regions - {regions}\n")
+
+    def get_face_zones(
+        self,
+        filter=None,
+        object=None,
+        region_type=None,
+        prism_control_name=None,
+        regions=None,
+        labels=None,
+        objects=None,
+        maximum_zone_area=None,
+        minimum_zone_area=None,
+        prisms_applied=None,
+        location_coordinates=None,
+    ) -> Any:
+        """get_face_zones rpc of MeshingQueriesService."""
+        request = MeshingQueriesProtoModule.GetFaceZonesRequest()
+        if object and regions:
+            request.object = object
+            for region in regions:
+                request.regions.append(region)
+        if object and labels:
+            request.object = object
+            for label in labels:
+                request.labels.append(label)
+        if object and region_type:
+            request.object = object
+            request.region_type = region_type
+        if filter:
+            request.filter = filter
+        if object:
+            request.object = object
+        if prisms_applied:
+            request.prisms_applied = prisms_applied
+        if prism_control_name:
+            request.prism_control_name = prism_control_name
+        if maximum_zone_area:
+            request.maximum_zone_area = maximum_zone_area
+        if minimum_zone_area:
+            request.minimum_zone_area = minimum_zone_area
+        if objects:
+            for object in objects:
+                request.objects.append(object)
+        response = self.service.get_face_zones(request)
+        if location_coordinates:
+            for coordinate in location_coordinates:
+                request.location_coordinates.append(coordinate)
+            return response.face_zone_id
+        return response.face_zone_ids
 
     def get_face_zone_at_location(self, location) -> Any:
         """
