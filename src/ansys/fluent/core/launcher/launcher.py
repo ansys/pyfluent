@@ -649,11 +649,17 @@ def launch_fluent(
             logger.info(
                 "Starting Fluent remotely. The startup configuration will be ignored."
             )
+
+            if product_version:
+                fluent_product_version = "".join(product_version.split("."))[:-1]
+            else:
+                fluent_product_version = "latest"
+
             return launch_remote_fluent(
                 session_cls=new_session,
                 start_timeout=start_timeout,
                 start_transcript=start_transcript,
-                product_version="".join(get_ansys_version().split("."))[:-1],
+                product_version=fluent_product_version,
                 cleanup_on_exit=cleanup_on_exit,
                 meshing_mode=meshing_mode,
                 dimensionality=version,
