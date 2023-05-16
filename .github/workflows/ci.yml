@@ -386,7 +386,7 @@ jobs:
 # Separate build+test job for 23.2 and 24.1 Fluent
 # Don't upload anything to artifacts/cache/release-package from here
   build_test_232_241:
-    name: Build and Test with 23.2 and 24.1 Fluent
+    name: Build and Test
     needs: test-import
     runs-on: ubuntu-latest
     strategy:
