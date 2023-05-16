@@ -758,7 +758,7 @@ def test_find_children_from_settings_root():
 def test_find_children_from_fluent_solver_session(load_static_mixer_case):
     setup_children = find_children(load_static_mixer_case.setup)
 
-    assert len(setup_children) == 19115
+    assert len(setup_children) == 18514
 
     viscous = load_static_mixer_case.setup.models.viscous
     assert find_children(viscous, "prod*") == [
