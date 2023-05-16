@@ -53,7 +53,7 @@ class FluentVersion(Enum):
             else:
                 raise RuntimeError(
                     f"The specified version '{version[:-2]}' is not supported."
-                    + f" Supported versions include: "
+                    + f" Supported versions are: "
                     + ", ".join([ver.value for ver in FluentVersion][::-1])
                 )
 
