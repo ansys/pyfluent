@@ -389,7 +389,7 @@ jobs:
     name: Build and Test with 23.2 and 24.1 Fluent
     needs: test-import
     runs-on: ubuntu-latest
-      strategy:
+    strategy:
       fail-fast: false
       matrix:
         include:
