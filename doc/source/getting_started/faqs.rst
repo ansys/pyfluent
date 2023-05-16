@@ -211,9 +211,6 @@ increasing order of precedence:
 #. Value of ``product_version`` parameter passed to :func:`launch_fluent()
    <ansys.fluent.core.launch_fluent>`.
 
-#. ``PYFLUENT_FLUENT_ROOT`` environment variable, set this to ``<install
-   location>/<ver>/fluent`` directory.
-
 
 How do you learn how to use PyFluent?
 -------------------------------------
