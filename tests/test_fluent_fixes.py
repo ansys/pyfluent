@@ -33,5 +33,5 @@ def test_1364(new_solver_session):
 
     assert (
         solver.solution.report_definitions.volume["xxx"].expr_list.allowed_values()
-        == None
+        == []
     )

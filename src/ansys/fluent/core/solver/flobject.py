@@ -152,7 +152,7 @@ class Base:
             attrs = attrs.get("attrs", attrs)
         if attr != "active?" and attrs and attrs.get("active?", True) is False:
             raise RuntimeError("Object is not active")
-        val = None
+        val = []
         if attrs:
             val = attrs[attr]
 
@@ -161,11 +161,11 @@ class Base:
                 attr_type_or_types = (attr_type_or_types,)
             if isinstance(val, attr_type_or_types):
                 return val
-            if val is not None and any(
+            if val is not [] and any(
                 issubclass(x, bool) for x in attr_type_or_types
             ):  # cast to bool for boolean attributes
                 return bool(val)
-            return None
+            return []
         return val
 
     def is_active(self) -> bool:
