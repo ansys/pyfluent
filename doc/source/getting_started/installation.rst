@@ -28,7 +28,7 @@ latest ``ansys-fluent-core`` package with this code:
 
 .. code:: console
 
-   git clone https://github.com/pyansys/pyfluent.git
+   git clone https://github.com/ansys/pyfluent.git
    cd pyfluent
    pip install pip -U
    pip install -e .

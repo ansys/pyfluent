@@ -10,12 +10,12 @@ PyFluent
    :target: https://pypi.org/project/ansys-fluent-core
    :alt: PyPI
 
-.. |GH-CI| image:: https://github.com/pyansys/pyfluent/actions/workflows/ci.yml/badge.svg
-   :target: https://github.com/pyansys/pyfluent/actions/workflows/ci.yml
+.. |GH-CI| image:: https://github.com/ansys/pyfluent/actions/workflows/ci.yml/badge.svg
+   :target: https://github.com/ansys/pyfluent/actions/workflows/ci.yml
    :alt: GH-CI
 
-.. |codecov| image:: https://codecov.io/gh/pyansys/pyfluent/branch/main/graph/badge.svg
-   :target: https://codecov.io/gh/pyansys/pyfluent
+.. |codecov| image:: https://codecov.io/gh/ansys/pyfluent/branch/main/graph/badge.svg
+   :target: https://codecov.io/gh/ansys/pyfluent
 
 .. |MIT| image:: https://img.shields.io/badge/License-MIT-yellow.svg
    :target: https://opensource.org/licenses/MIT
@@ -25,8 +25,8 @@ PyFluent
    :target: https://github.com/psf/black
    :alt: Black
 
-.. |pre-commit| image:: https://results.pre-commit.ci/badge/github/pyansys/pyfluent/main.svg
-   :target: https://results.pre-commit.ci/latest/github/pyansys/pyfluent/main
+.. |pre-commit| image:: https://results.pre-commit.ci/badge/github/ansys/pyfluent/main.svg
+   :target: https://results.pre-commit.ci/latest/github/ansys/pyfluent/main
    :alt: pre-commit.ci status
 
 Overview
@@ -44,7 +44,7 @@ Documentation and issues
 For comprehensive information on PyFluent, see the latest release
 `documentation <https://fluent.docs.pyansys.com>`_.
 
-On the `PyFluent Issues <https://github.com/pyansys/pyfluent/issues>`_ page, you can create
+On the `PyFluent Issues <https://github.com/ansys/pyfluent/issues>`_ page, you can create
 issues to submit questions, report bugs, and request new features. To reach
 the project support team, email `pyansys.core@ansys.com <pyansys.core@ansys.com>`_.
 
@@ -65,7 +65,7 @@ the latest release with:
 
 .. code:: console
 
-   git clone https://github.com/pyansys/pyfluent.git
+   git clone https://github.com/ansys/pyfluent.git
    cd pyfluent
    pip install pip -U
    pip install -e .

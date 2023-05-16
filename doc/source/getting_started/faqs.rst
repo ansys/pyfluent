@@ -259,8 +259,8 @@ How do you get help for PyFluent?
 Because PyFluent libraries are open source, support for issues, bugs, and
 feature requests are available in their respective GitHub repositories.
 
-- To log an issue for PyFluent, use the `PyFluent Issues page <https://github.com/pyansys/pyfluent/issues>`_.
-- To start a discussion, use the `PyFluent Discussions page <https://github.com/pyansys/pyfluent/discussions>`_.
+- To log an issue for PyFluent, use the `PyFluent Issues page <https://github.com/ansys/pyfluent/issues>`_.
+- To start a discussion, use the `PyFluent Discussions page <https://github.com/ansys/pyfluent/discussions>`_.
 
 For discussions about developer tools, engineering simulation, and physics for
 Ansys software, visit the `Ansys Developer portal

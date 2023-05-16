@@ -4,7 +4,7 @@ import uuid
 
 
 def compare_flobject():
-    image_name = f"ghcr.io/pyansys/pyfluent:v23.2.0"
+    image_name = f"ghcr.io/ansys/pyfluent:v23.2.0"
     container_name = uuid.uuid4().hex
     is_linux = platform.system() == "Linux"
     subprocess.run(

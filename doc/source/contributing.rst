@@ -19,7 +19,7 @@ mode, run:
 
 .. code::
 
-    git clone https://github.com/pyansys/pyfluent.git
+    git clone https://github.com/ansys/pyfluent.git
     cd pyfluent
     pip install pip -U
     pip install -e .
@@ -47,7 +47,7 @@ You can clear all HTML files from the ``_builds/html`` directory with:
 
 Post issues
 -----------
-Use the `PyFluent Issues <https://github.com/pyansys/pyfluent/issues>`_ page to
+Use the `PyFluent Issues <https://github.com/ansys/pyfluent/issues>`_ page to
 submit questions, report bugs, and request new features.
 
 
