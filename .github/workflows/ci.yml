@@ -212,7 +212,7 @@ jobs:
           retention-days: 7
 
       - name: Deploy stable documentation
-        uses: pyansys/actions/doc-deploy-stable@v3
+        uses: ansys/actions/doc-deploy-stable@v4
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
         with:
             doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
