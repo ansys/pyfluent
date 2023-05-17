@@ -419,3 +419,62 @@ def test_meshing_queries(new_mesh_session):
     assert meshing_session.meshing_queries.get_region_name_list_of_face_zones(
         [29, 30, 31, 32, 33, 34]
     ) == ["fluid"]
+
+    assert (
+        meshing_session.meshing_queries.get_face_zones(
+            location_coordinates=[1.4, 1.4, 1.4]
+        )
+        == 34
+    )
+
+    assert meshing_session.meshing_queries.get_face_zones(objects=["elbow-fluid"]) == [
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+    ]
+
+    assert meshing_session.meshing_queries.get_face_zones(object="elbow-fluid") == [
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+    ]
+
+    assert meshing_session.meshing_queries.get_face_zones(
+        object="elbow-fluid", regions=["fluid"]
+    ) == [34, 33, 32, 31, 30, 29]
+
+    assert meshing_session.meshing_queries.get_face_zones(
+        object="elbow-fluid", labels=["inlet", "outlet", "wall"]
+    ) == [32]
+
+    assert meshing_session.meshing_queries.get_face_zones(prism_control_name="*") == [
+        33,
+        34,
+    ]
+
+    assert meshing_session.meshing_queries.get_face_zones(prisms_applied=True) == []
+
+    assert meshing_session.meshing_queries.get_face_zones(maximum_zone_area=100) == [
+        33,
+        32,
+        31,
+        30,
+    ]
+
+    assert meshing_session.meshing_queries.get_face_zones(minimum_zone_area=10) == [
+        34,
+        29,
+    ]
+
+    assert (
+        meshing_session.meshing_queries.get_face_zones(
+            object="elbow-fluid", region_type="fluid-fluid"
+        )
+        == []
+    )
