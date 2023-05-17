@@ -52,9 +52,9 @@ class FluentVersion(Enum):
                     return FluentVersion(version)
             else:
                 raise RuntimeError(
-                    f"The passed version '{version[:-2]}' does not exist."
-                    f" Available version strings are: "
-                    f"{[ver.value for ver in FluentVersion]} "
+                    f"The specified version '{version[:-2]}' is not supported."
+                    + f" Supported versions are: "
+                    + ", ".join([ver.value for ver in FluentVersion][::-1])
                 )
 
     def __str__(self):
