@@ -695,32 +695,33 @@ class MeshingQueries:
             request.object = object
             for region in regions:
                 request.regions.append(region)
-        if object and labels:
+        elif object and labels:
             request.object = object
             for label in labels:
                 request.labels.append(label)
-        if object and region_type:
+        elif object and region_type:
             request.object = object
             request.region_type = region_type
-        if filter:
+        elif filter:
             request.filter = filter
-        if object:
+        elif object:
             request.object = object
-        if prisms_applied:
+        elif prisms_applied:
             request.prisms_applied = prisms_applied
-        if prism_control_name:
+        elif prism_control_name:
             request.prism_control_name = prism_control_name
-        if maximum_zone_area:
+        elif maximum_zone_area:
             request.maximum_zone_area = maximum_zone_area
-        if minimum_zone_area:
+        elif minimum_zone_area:
             request.minimum_zone_area = minimum_zone_area
-        if objects:
-            for object in objects:
-                request.objects.append(object)
-        response = self.service.get_face_zones(request)
-        if location_coordinates:
+        elif objects:
+            for obj in objects:
+                request.objects.append(obj)
+        elif location_coordinates:
             for coordinate in location_coordinates:
                 request.location_coordinates.append(coordinate)
+        response = self.service.get_face_zones(request)
+        if location_coordinates:
             return response.face_zone_id
         return response.face_zone_ids
 
