@@ -161,7 +161,7 @@ class Base:
                 attr_type_or_types = (attr_type_or_types,)
             if isinstance(val, attr_type_or_types):
                 return val
-            if val is not [] and any(
+            if val != [] and any(
                 issubclass(x, bool) for x in attr_type_or_types
             ):  # cast to bool for boolean attributes
                 return bool(val)
