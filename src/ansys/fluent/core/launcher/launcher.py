@@ -39,6 +39,7 @@ def _is_windows():
 class FluentVersion(Enum):
     """An enumeration over supported Fluent versions."""
 
+    version_24R1 = "24.1.0"
     version_23R2 = "23.2.0"
     version_23R1 = "23.1.0"
     version_22R2 = "22.2.0"
