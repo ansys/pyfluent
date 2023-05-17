@@ -7,7 +7,7 @@ pytest_plugins = [
 
 
 def pytest_collection_modifyitems(items, config):
-    version_markers = ["fluent_222", "fluent_231", "fluent_232"]
+    version_markers = ["fluent_222", "fluent_231", "fluent_232", "fluent_241"]
     for item in items:
         markers = [x.name for x in item.iter_markers()]
         # If no markers are defined add "dev" marker

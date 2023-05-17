@@ -60,6 +60,6 @@ setup(
         "Operating System :: OS Independent",
     ],
     url="https://github.com/ansys/pyfluent",
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     install_requires=install_requires,
 )
