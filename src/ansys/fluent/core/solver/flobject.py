@@ -152,7 +152,7 @@ class Base:
             attrs = attrs.get("attrs", attrs)
         if attr != "active?" and attrs and attrs.get("active?", True) is False:
             raise RuntimeError("Object is not active")
-        val = []
+        val = None
         if attrs:
             val = attrs[attr]
 
