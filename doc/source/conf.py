@@ -41,7 +41,7 @@ extensions = [
 
 # Intersphinx mapping
 intersphinx_mapping = {
-    "python": ("https://docs.python.org/dev", None),
+    "python": ("https://docs.python.org/", None),
     "numpy": ("https://numpy.org/devdocs", None),
     "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
 }
@@ -171,7 +171,7 @@ html_theme_options = {
         },
     ],
     "switcher": {
-        "json_url": f"{cname}/release/versions.json",
+        "json_url": f"{cname}/versions.json",
         "version_match": get_version_match(__version__),
     },
     "navbar_end": ["version-switcher", "theme-switcher", "navbar-icon-links"],
