@@ -684,9 +684,11 @@ class MeshingQueries:
         regions=None,
         labels=None,
         objects=None,
+        maximum_entity_count=None,
         maximum_zone_area=None,
         minimum_zone_area=None,
         prisms_applied=None,
+        only_boundary=None,
         location_coordinates=None,
     ) -> Any:
         """get_face_zones rpc of MeshingQueriesService."""
@@ -720,6 +722,9 @@ class MeshingQueries:
         elif location_coordinates:
             for coordinate in location_coordinates:
                 request.location_coordinates.append(coordinate)
+        elif maximum_entity_count:
+            request.maximum_entity_count = maximum_entity_count
+            request.only_boundary = only_boundary
         response = self.service.get_face_zones(request)
         if location_coordinates:
             return response.face_zone_id

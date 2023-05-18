@@ -478,3 +478,17 @@ def test_meshing_queries(new_mesh_session):
         )
         == []
     )
+
+    assert (
+        meshing_session.meshing_queries.get_face_zones(
+            maximum_entity_count=20, only_boundary=True
+        )
+        == []
+    )
+
+    assert (
+        meshing_session.meshing_queries.get_face_zones(
+            maximum_entity_count=20, only_boundary=False
+        )
+        == []
+    )
