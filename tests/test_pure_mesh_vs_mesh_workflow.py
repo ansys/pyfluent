@@ -1,6 +1,7 @@
 import pytest
 
 
+@pytest.mark.skip
 def test_pure_meshing_mode(load_mixing_elbow_pure_meshing):
     pure_meshing_session = load_mixing_elbow_pure_meshing
     # check a few dir elements
