@@ -28,8 +28,6 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
     int
         gPRC server port exposed from the container.
     """
-    if not os.path.exists(mounted_from):
-        os.makedirs(mounted_from)
     fd, sifile = tempfile.mkstemp(suffix=".txt", prefix="serverinfo-", dir=mounted_from)
     os.close(fd)
     timeout = 100
