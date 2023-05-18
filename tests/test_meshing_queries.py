@@ -420,6 +420,12 @@ def test_meshing_queries(new_mesh_session):
         [29, 30, 31, 32, 33, 34]
     ) == ["fluid"]
 
+
+@pytest.mark.fluent_241
+def test_meshing_queries(new_mesh_session):
+    meshing_session = new_mesh_session
+    meshing_session.tui.file.read_case(import_filename)
+
     assert (
         meshing_session.meshing_queries.get_face_zones(
             location_coordinates=[1.4, 1.4, 1.4]
