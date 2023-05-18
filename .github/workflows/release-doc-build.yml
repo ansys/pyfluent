@@ -76,6 +76,6 @@ jobs:
         uses: ansys/actions/doc-deploy-stable@v4
         with:
             doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
-            decompress_artifact: true
+            decompress-artifact: true
             cname: ${{ env.DOCUMENTATION_CNAME }}
             token: ${{ secrets.GITHUB_TOKEN }}
