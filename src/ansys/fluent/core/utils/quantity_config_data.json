@@ -1,256 +1,1902 @@
 {
-    "multipliers" : {
-        "^-1": 0.1,
-        "^-2": 0.01,
-        "^-3": 0.001,
-        "^-6": 0.000001,
-        "^-9": 0.000000001,
-        "^-12": 0.000000000001,
-        "^-15": 0.000000000000001,
-        "^-18": 0.000000000000000001,
-        "^-21": 0.000000000000000000001,
-        "^-24": 0.000000000000000000000001,
-        "^1": 10,
-        "^2": 100,
-        "^3": 1000,
-        "^6": 1000000,
-        "^9": 1000000000,
-        "^12": 1000000000000,
-        "^15": 1000000000000000,
-        "^18": 1000000000000000000,
-        "^21": 1000000000000000000000,
-        "^24": 1000000000000000000000000
+    "m/s2": {
+        "label": "m s^-2",
+        "factor": "1.0",
+        "offset": "0.0"
     },
-    "units": {
-        "kg": 1,
-        "g": 0.001,
-        "lb": 0.45359237,
-        "lbm": 0.45359237,
-        "slug": 14.59390293720637,
-        "m": 1,
-        "cm": 0.01,
-        "ft": 0.30479999999999996,
-        "in": 0.0254,
-        "s": 1,
-        "A": 1,
-        "mol": 1,
-        "slugmol": 14593.9,
-        "cd": 1,
-        "sr": 1,
-        "radian": 1,
-        "degree": 0.017453292519943295,
-        "K": 1,
-        "C": 1,
-        "F": 0.5555555555555556,
-        "R": 0.5555555555555556,
-        "delta_K": 1,
-        "delta_C": 1,
-        "delta_F": 0.5555555555555556,
-        "delta_R": 0.5555555555555556
+    "ft/s2": {
+        "label": "ft s^-2",
+        "factor": "0.3048000",
+        "offset": "0.0"
     },
-    "derived_units": {
-        "N": "kg m s^-2",
-        "Pa": "N m^-2",
-        "W": "N m s^-1",
-        "J": "N m",
-        "V": "A ohm",
-        "farad": "N m V^-2",
-        "H": "N m A^-2",
-        "S": "ohm^-1",
-        "Wb": "N m A^-1",
-        "T": "Wb m^-2",
-        "dyne": "g cm s^-2",
-        "erg": "dyne cm",
-        "pdl": "lbm ft s^-2",
-        "BTU": "J",
-        "psi": "lbf in^-2",
-        "lbf": "slug ft s^-2",
-        "psf": "lbf ft^-2",
-        "ohm": "kg m^2 s^-3 A^-2",
-        "Hz": "s^-1",
-        "cal": "J",
-        "delta_K": "K",
-        "delta_C": "C",
-        "delta_F": "F",
-        "delta_R": "R",
-        "coulomb": "A s"  
+    "cm/s2": {
+        "label": "cm s^-2",
+        "factor": "0.01",
+        "offset": "0.0"
     },
-    "formulas": {
-        "Acceleration": "m s^-2",
-        "Angular Acceleration": "radian s^-2",
-        "Angular Velocity": "radian s^-1",
-        "Area": "m^2",
-        "Capacitance": "farad",
-        "Compressibility": "Pa^-1",
-        "Concentration": "m^-3",
-        "Contact Resistance": "m^2 s kg^-1",
-        "Current Transfer Coefficient": "A m^-2 V^-1",
-        "Decay Constant": "s^-1",
-        "Density": "kg m^-3",
-        "Density Derivative": "m^-2 s^2",
-        "Density Derivative wrt Pressure": "m^-2 s^2",
-        "Density Derivative wrt Temperature": "kg m^-3 K^-1",
-        "Dielectric Contact Resistance": "farad^-1 m^2",
-        "Dynamic Viscosity": "Pa s",
-        "Electric Charge": "A s",
-        "Electric Charge Density": "A s m^-3",
-        "Electric Charge Transfer Coefficient": "farad m^-2",
-        "Electric Conductance Per Unit Area": "S m^-2",
-        "Electric Current Density": "A m^-2",
-        "Electric Current Source": "A m^-3",
-        "Electric Field": "V m^-1",
-        "Electric Flux Density": "coulomb m^-2",
-        "Electrical Conductance": "S",
-        "Electrical Conductivity": "S m^-1",
-        "Electrical Contact Resistance": "S^-1 m^2",
-        "Electrical Permittivity": "A s V^-1 m^-1",
-        "Electrical Resistance": "ohm",
-        "Electrical Resistivity": "ohm m",
-        "Energy Density by Mass": "J kg^-1",
-        "Energy Source": "W m^-3",
-        "Energy Source Coefficient": "W m^-3 K^-1",
-        "Enthalpy Variance": "m^4 s^-4",
-        "Epsilon": "m^2 s^-3",
-        "Epsilon Flux": "W m^-2 s^-1",
-        "Epsilon Flux Coefficient": "kg m^-2 s^-2",
-        "Epsilon Source": "W m^-3 s^-1",
-        "Epsilon Source Coefficient": "kg m^-3 s^-2",
-        "Flame Surface Density Source": "m^-1 s^-1",
-        "Force": "N",
-        "Force Density": "N m^-3",
-        "Force Intensity": "N m^-1",
-        "Force Per Angular Unit": "N radian^-1",
-        "Fracture Energy": "J m^-2",
-        "Fracture Energy Rate": "J m^-2 s^-1",
-        "Frequency": "Hz",
-        "Gasket Stiffness": "Pa m^-1",
-        "Heat Flux": "W m^-2",
-        "Heat Flux in": "W m^-2",
-        "Heat Generation": "W m^-3",
-        "Heat Rate": "W",
-        "Heat Transfer Coefficient": "W m^-2 K^-1",
-        "Impulse": "N s",
-        "Impulse Per Angular Unit": "N s radian^-1",
-        "Inductance": "H",
-        "Interphase Transfer Coefficient": "kg m^-2 s^-1",
-        "InvTemp1": "K^-1",
-        "InvTemp2": "K^-2",
-        "InvTemp3": "K^-3",
-        "InvTemp4": "K^-4",
-        "Inverse Angle": "radian^-1",
-        "Inverse Area": "m^-2",
-        "Inverse Length": "m^-1",
-        "Inverse Stress": "Pa^-1",
-        "Kinematic Diffusivity": "m^2 s^-1",
-        "MAPDL Enthalpy": "J m^-3",
-        "Magnetic Field": "A m^-1",
-        "Magnetic Field Intensity": "A m^-1",
-        "Magnetic Flux": "Wb",
-        "Magnetic Flux Density": "T",
-        "Magnetic Induction": "T",
-        "Magnetic Permeability": "H m^-1",
-        "Magnetic Potential": "T m",
-        "Mass Concentration": "kg m^-3",
-        "Mass Concentration Rate": "kg m^-3 s^-1",
-        "Mass Flow": "kg s^-1",
-        "Mass Flow Rate Per Area": "kg s^-1 m^-2",
-        "Mass Flow Rate Per Length": "kg s^-1 m^-1",
-        "Mass Flow Rate Per Volume": "kg s^-1 m^-3",
-        "Mass Flow in": "kg s^-1",
-        "Mass Flux": "kg s^-1 m^-2",
-        "Mass Flux Coefficient": "kg s^-1 m^-2",
-        "Mass Flux Pressure Coefficient": "kg s^-1 m^-2 Pa^-1",
-        "Mass Fraction": "kg kg^-1",
-        "Mass Per Area": "kg m^-2",
-        "Mass Source": "kg s^-1 m^-3",
-        "Mass Source Coefficient": "kg s^-1 m^-3 Pa^-1",
-        "Material Impedance": "kg m^-2 s^-1",
-        "Molar Concentration": "mol m^-3",
-        "Molar Concentration Henry Coefficient": "Pa m^3 mol^-1",
-        "Molar Concentration Rate": "mol m^-3 s^-1",
-        "Molar Energy": "J mol^-1",
-        "Molar Entropy": "J mol^-1 K^-1",
-        "Molar Fraction": "mol mol^-1",
-        "Molar Mass": "kg kmol^-1",
-        "Molar Volume": "m^3 mol^-1",
-        "Moment": "N m",
-        "Moment of Inertia of Area": "m^2 m^2",
-        "Moment of Inertia of Mass": "kg m^2",
-        "Momentum Source": "kg m^-2 s^-2",
-        "Momentum Source Lin Coeff": "kg m^-3 s^-1",
-        "Momentum Source Quad Coeff": "kg m^-4",
-        "Normalized Value": "m m^-1",
-        "Number Source": "m^-3 s^-1",
-        "Omega Source": "kg m^-3 s^-2",
-        "PSD Acceleration": "m^2 s^-4 Hz^-1",
-        "PSD Displacement": "m^2 Hz^-1",
-        "PSD Force": "N^2 Hz^-1",
-        "PSD Moment": "N^2 m^2 Hz^-1",
-        "PSD Pressure": "Pa^2 Hz^-1",
-        "PSD Strain": "m^2 m^-2 Hz^-1",
-        "PSD Stress": "Pa^2 Hz^-1",
-        "PSD Velocity": "m^2 s^-2 Hz^-1",
-        "Per Mass": "kg^-1",
-        "Per Mass Flow": "s kg^-1",
-        "Per Time": "s^-1",
-        "Per Time Cubed": "s^-3",
-        "Per Time Squared": "s^-2",
-        "Power Spectral Density": "W Hz^-1",
-        "Pressure": "Pa",
-        "Pressure Derivative wrt Temperature": "Pa K^-1",
-        "Pressure Derivative wrt Volume": "Pa kg m^-3",
-        "Pressure Gradient": "Pa m^-1",
-        "Relative Permeability": "H H^-1",
-        "Relative Permittivity": "farad farad^-1",
-        "Rotational Damping": "N m s radian^-1",
-        "Rotational Stiffness": "N m radian^-1",
-        "Section Modulus": "m^3",
-        "Seebeck Coefficient": "V K^-1",
-        "Shear Strain": "radian",
-        "Shear Strain Rate": "s^-1",
-        "Shock Velocity": "s m^-1",
-        "Soot Cross Coefficient": "m^3 mol^-1 s^-1",
-        "Soot PX Facto": "mol kg^-1 s^-1",
-        "Specific": "kg kg^-1",
-        "Specific Concentration": "mol kg^-1",
-        "Specific Energy": "J kg^-1",
-        "Specific Enthalpy": "J kg^-1",
-        "Specific Entropy": "J kg^-1 K^-1",
-        "Specific Flame Surface Density": "m^2 kg^-1",
-        "Specific Heat Capacity": "J kg^-1 K^-1",
-        "Specific Volume": "kg^-1 m^3",
-        "Specific Weight": "N m^-3",
-        "Stiffness": "N m^-1",
-        "Strain": "m m^-1",
-        "Strength": "Pa",
-        "Stress": "Pa",
-        "Stress Intensity Factor": "Pa m^0.5",
-        "Stress Per Temperature": "Pa K^-1",
-        "Surface Charge Density": "A s m^-2",
-        "Surface Force Density": "N m^-2",
-        "Surface Power Density": "W m^-2",
-        "Surface Tension": "N m^-1",
-        "Temperature Difference": "delta_K",
-        "Temperature Gradient": "K m^-1",
-        "Temperature Variance": "K^2",
-        "Temperature Variance Source": "kg m^-3 s^-1 K^2",
-        "Thermal Capacitance": "J K^-1",
-        "Thermal Conductance": "W K^-1",
-        "Thermal Conductivity": "W m^-1 K^-1",
-        "Thermal Contact Resistance": "W^-1 m^2 K",
-        "Thermal Expansivity": "K^-1",
-        "Torque": "N m",
-        "Torsional Spring Constant": "N m radian^-1",
-        "Total Mass Source Pressure Coefficient": "kg s^-1 Pa^-1",
-        "Total Radiative Intensity": "W m^-2 sr^-1",
-        "Translational Damping": "N s m^-1",
-        "Turbulent Heat Flux": "m^3 s^-3",
-        "Velocity": "m s^-1",
-        "Volume": "m^3",
-        "Volumetric": "kg m^-3",
-        "Volumetric Flow": "m^3 s^-1",
-        "Volumetric Flow in": "m^3 s^-1",
-        "Warping Factor": "m^6"
+    "deg": {
+        "label": "deg",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "rad": {
+        "label": "rad",
+        "factor": "57.29578779",
+        "offset": "0.0"
+    },
+    "rad/s": {
+        "label": "rad s^-1",
+        "factor": "9.549297964",
+        "offset": "0.0"
+    },
+    "deg/s": {
+        "label": "deg s^-1",
+        "factor": "0.1666666667",
+        "offset": "0.0"
+    },
+    "rpm": {
+        "label": "rev min^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "m2": {
+        "label": "m^2",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "cm2": {
+        "label": "cm^2",
+        "factor": "1.0e-4",
+        "offset": "0.0"
+    },
+    "mm2": {
+        "label": "mm^2",
+        "factor": "1.0e-6",
+        "offset": "0.0"
+    },
+    "ft2": {
+        "label": "ft^2",
+        "factor": "0.092903040",
+        "offset": "0.0"
+    },
+    "in2": {
+        "label": "in^2",
+        "factor": "6.4516e-04",
+        "offset": "0.0"
+    },
+    "1/m2": {
+        "label": "m^-2",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "1/cm2": {
+        "label": "cm^-2",
+        "factor": "1.0e+4",
+        "offset": "0.0"
+    },
+    "1/mm2": {
+        "label": "mm^-2",
+        "factor": "1.0e+6",
+        "offset": "0.0"
+    },
+    "1/ft2": {
+        "label": "ft^-2",
+        "factor": "10.76391042",
+        "offset": "0.0"
+    },
+    "1/in2": {
+        "label": "in^-2",
+        "factor": "1550.0031",
+        "offset": "0.0"
+    },
+    "collisions/m3-s": {
+        "label": "m^-3 s^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "collisions/ft3-s": {
+        "label": "ft^-3 s^-1",
+        "factor": "35.314724828",
+        "offset": "0.0"
+    },
+    "collisions/cm3-s": {
+        "label": "cm^-3 s^-1",
+        "factor": "1.0e6",
+        "offset": "0.0"
+    },
+    "1/m3-s": {
+        "label": "m^-3 s^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "1/ft3-s": {
+        "label": "ft^-3 s^-1",
+        "factor": "35.314724828",
+        "offset": "0.0"
+    },
+    "1/cm3-s": {
+        "label": "cm^-3 s^-1",
+        "factor": "1.0e6",
+        "offset": "0.0"
+    },
+    "kmol/m3": {
+        "label": "kmol m^-3",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "mol/cm3": {
+        "label": "mol cm^-3",
+        "factor": "1.0e+3",
+        "offset": "0.0"
+    },
+    "lbmol/ft3": {
+        "label": "lbmol ft^-3",
+        "factor": "16.0184",
+        "offset": "0.0"
+    },
+    "m2-K/W": {
+        "label": "m^2 K W^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "m2-C/W": {
+        "label": "m^2 C W^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "h-ft2-R/BTU": {
+        "label": "h ft^2 R BTU^-1",
+        "factor": "0.17615",
+        "offset": "0.0"
+    },
+    "h-ft2-F/BTU": {
+        "label": "h ft^2 F BTU^-1",
+        "factor": "0.17615",
+        "offset": "0.0"
+    },
+    "cm2-s-K/erg": {
+        "label": "cm^2 s K erg^-1",
+        "factor": "1.0e+03",
+        "offset": "0.0"
+    },
+    "Ohm-m3": {
+        "label": "ohm m^3",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "amps": {
+        "label": "A",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "amps/m2": {
+        "label": "A m^-2",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "amps/m3": {
+        "label": "A m^-3",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "kg/m3": {
+        "label": "kg m^-3",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbm/ft3": {
+        "label": "lbm ft^-3",
+        "factor": "16.0184633",
+        "offset": "0.0"
+    },
+    "slug/ft3": {
+        "label": "slug ft^-3",
+        "factor": "1690.8750",
+        "offset": "0.0"
+    },
+    "g/cm3": {
+        "label": "g cm^-3",
+        "factor": "1000",
+        "offset": "0.0"
+    },
+    "kg/m4": {
+        "label": "kg m^-4",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbm/ft4": {
+        "label": "lbm ft^-4",
+        "factor": "52.5540",
+        "offset": "0.0"
+    },
+    "g/cm4": {
+        "label": "0.0",
+        "factor": "",
+        "offset": "1.0e5"
+    },
+    "m3/kg": {
+        "label": "m^3 kg^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "ft3/lbm": {
+        "label": "ft^3 lbm^-1",
+        "factor": "0.062426",
+        "offset": "0.0"
+    },
+    "ft3/slug": {
+        "label": "ft^3 slug^-1",
+        "factor": "0.00194",
+        "offset": "0.0"
+    },
+    "cm3/g": {
+        "label": "cm^3 g^-1",
+        "factor": "0.001",
+        "offset": "0.0"
+    },
+    "J/m3": {
+        "label": "J m^-3",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "BTU/ft3": {
+        "label": "BTU ft^-3",
+        "factor": "37257.0",
+        "offset": "0.0"
+    },
+    "erg/cm3": {
+        "label": "erg cm^-3",
+        "factor": "0.1",
+        "offset": "0.0"
+    },
+    "J/m3-K": {
+        "label": "J m^-3 K^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "BTU/ft3-F": {
+        "label": "BTU ft^-3 F^-1",
+        "factor": "67066.59",
+        "offset": "0.0"
+    },
+    "erg/cm3-K": {
+        "label": "erg cm^-3 K^-1",
+        "factor": "0.1",
+        "offset": "0.0"
+    },
+    "kg/m2-s": {
+        "label": "kg m^-2 s^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbm/ft2-s": {
+        "label": "lbm ft^-2 s^-1",
+        "factor": "4.8824276270581",
+        "offset": "0.0"
+    },
+    "g/cm2-s": {
+        "label": "g cm^-2 s^-1",
+        "factor": "10",
+        "offset": "0.0"
+    },
+    "m": {
+        "label": "m",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "cm": {
+        "label": "cm",
+        "factor": "0.01",
+        "offset": "0.0"
+    },
+    "mm": {
+        "label": "mm",
+        "factor": "0.001",
+        "offset": "0.0"
+    },
+    "in": {
+        "label": "in",
+        "factor": "0.02540000",
+        "offset": "0.0"
+    },
+    "ft": {
+        "label": "ft",
+        "factor": "0.3048000",
+        "offset": "0.0"
+    },
+    "Ah": {
+        "label": "A h",
+        "factor": "3600.0",
+        "offset": "0.0"
+    },
+    "C": {
+        "label": "C",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "C/m3": {
+        "label": "A s m^-3",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "Siemens/m": {
+        "label": "S m^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "1/Ohm-m": {
+        "label": "ohm^-1 m^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "Ohm-m2": {
+        "label": "ohm m^2",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "V/m": {
+        "label": "V m^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "F/m": {
+        "label": "farad m^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "Ohm-m": {
+        "label": "ohm m",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "Ohm-cm": {
+        "label": "ohm cm",
+        "factor": "0.01",
+        "offset": "0.0"
+    },
+    "Ohm": {
+        "label": "ohm",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "J": {
+        "label": "J",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "kgf-m": {
+        "label": "kgf m",
+        "factor": "9.8067",
+        "offset": "0.0"
+    },
+    "erg": {
+        "label": "erg",
+        "factor": "1.0e-07",
+        "offset": "0.0"
+    },
+    "kWh": {
+        "label": "kWh",
+        "factor": "3.6e+06",
+        "offset": "0.0"
+    },
+    "BTU": {
+        "label": "BTU",
+        "factor": "1055.04",
+        "offset": "0.0"
+    },
+    "hp-h": {
+        "label": "hp h",
+        "factor": "2.6845e+06",
+        "offset": "0.0"
+    },
+    "ft-lbf": {
+        "label": "ft lbf",
+        "factor": "0.1356",
+        "offset": "0.0"
+    },
+    "kcal": {
+        "label": "kcal",
+        "factor": "4186.8",
+        "offset": "0.0"
+    },
+    "cal": {
+        "label": "cal",
+        "factor": "4.1868",
+        "offset": "0.0"
+    },
+    "J/m2": {
+        "label": "J/m2",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "BTU/ft2": {
+        "label": "BTU ft^-2",
+        "factor": "11356.36",
+        "offset": "0.0"
+    },
+    "erg/cm2": {
+        "label": "erg cm^-2",
+        "factor": "1.0e-03",
+        "offset": "0.0"
+    },
+    "N": {
+        "label": "N",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "dyn": {
+        "label": "dyne",
+        "factor": "1.0e-05",
+        "offset": "0.0"
+    },
+    "kgf": {
+        "label": "kgf",
+        "factor": "9.806805",
+        "offset": "0.0"
+    },
+    "tonf": {
+        "label": "tonf",
+        "factor": "9964.12914",
+        "offset": "0.0"
+    },
+    "lbf": {
+        "label": "lbf",
+        "factor": "4.44820",
+        "offset": "0.0"
+    },
+    "ozf": {
+        "label": "ozf",
+        "factor": "0.27802",
+        "offset": "0.0"
+    },
+    "pdl": {
+        "label": "pdl",
+        "factor": "0.13826",
+        "offset": "0.0"
+    },
+    "N/m2": {
+        "label": "N m^-2",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbf/ft2": {
+        "label": "lbf ft^-2",
+        "factor": "47.89",
+        "offset": "0.0"
+    },
+    "dyn/cm2": {
+        "label": "dyne cm^-2",
+        "factor": "1.0e-1",
+        "offset": "0.0"
+    },
+    "N/m3": {
+        "label": "N m^-3",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbf/ft3": {
+        "label": "lbf ft^-3",
+        "factor": "157.09",
+        "offset": "0.0"
+    },
+    "dyn/cm3": {
+        "label": "dyne cm^-3",
+        "factor": "10.0",
+        "offset": "0.0"
+    },
+    "N-s/m3": {
+        "label": "N s m^-3",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbf-s/ft3": {
+        "label": "lbf s ft^-3",
+        "factor": "157.09",
+        "offset": "0.0"
+    },
+    "dyn-s/cm3": {
+        "label": "dyne s cm^-3",
+        "factor": "10.0",
+        "offset": "0.0"
+    },
+    "Hz": {
+        "label": "Hz",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "J/kg-K": {
+        "label": "J kg^-1 K^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "J/kg-C": {
+        "label": "J kg^-1 C^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "BTU/lb-R": {
+        "label": "BTU lb^-1 R^-1",
+        "factor": "4186.69",
+        "offset": "0.0"
+    },
+    "BTU/lb-F": {
+        "label": "BTU lb^-1 F^-1",
+        "factor": "4186.69",
+        "offset": "0.0"
+    },
+    "cal/g-K": {
+        "label": "cal g^-1 K^-1",
+        "factor": "4186.69",
+        "offset": "0.0"
+    },
+    "cal/g-C": {
+        "label": "cal g^-1 C^-1",
+        "factor": "4186.69",
+        "offset": "0.0"
+    },
+    "kcal/kg-K": {
+        "label": "kcal kg^-1 K^-1",
+        "factor": "4186.69",
+        "offset": "0.0"
+    },
+    "kcal/kg-C": {
+        "label": "kcal kg^-1 C^-1",
+        "factor": "4186.69",
+        "offset": "0.0"
+    },
+    "erg/g-K": {
+        "label": "erg g^-1 K^-1",
+        "factor": "1.0e-04",
+        "offset": "0.0"
+    },
+    "W/m2": {
+        "label": "W m^-2",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "BTU/h-ft2": {
+        "label": "BTU h^-1 ft^-2",
+        "factor": "3.1537",
+        "offset": "0.0"
+    },
+    "erg/cm2-s": {
+        "label": "erg cm^-2 s^-1",
+        "factor": "1.0e-03",
+        "offset": "0.0"
+    },
+    "m-K/s": {
+        "label": "m K s^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "ft-C/s": {
+        "label": "ft C s^-1",
+        "factor": "0.3048000",
+        "offset": "0.0"
+    },
+    "cm-K/s": {
+        "label": "cm K s^-1",
+        "factor": "0.01",
+        "offset": "0.0"
+    },
+    "W/m3": {
+        "label": "W m^-3",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "BTU/h-ft3": {
+        "label": "BTU h^-1 ft^-3",
+        "factor": "10.35",
+        "offset": "0.0"
+    },
+    "erg/cm3-s": {
+        "label": "erg cm^-3 s^-1",
+        "factor": "0.1",
+        "offset": "0.0"
+    },
+    "W/m2-K": {
+        "label": "W m^-2 K^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "W/m2-C": {
+        "label": "W m^-2 C^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "BTU/h-ft2-R": {
+        "label": "BTU h^-1 ft^-2 R^-1",
+        "factor": "5.677",
+        "offset": "0.0"
+    },
+    "BTU/h-ft2-F": {
+        "label": "BTU h^-1 ft^-2 F^-1",
+        "factor": "5.677",
+        "offset": "0.0"
+    },
+    "erg/cm2-s-K": {
+        "label": "erg cm^-2 s^-1 K^-1",
+        "factor": "1.0e-03",
+        "offset": "0.0"
+    },
+    "J/mol": {
+        "label": "J mol^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "KJ/mol": {
+        "label": "KJ mol^-1",
+        "factor": "0.001",
+        "offset": "0.0"
+    },
+    "m2/s": {
+        "label": "m^2 s^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "ft2/s": {
+        "label": "ft^2 s^-1",
+        "factor": "0.09290304",
+        "offset": "0.0"
+    },
+    "cm2/s": {
+        "label": "cm^2 s^-1",
+        "factor": "0.0001",
+        "offset": "0.0"
+    },
+    "1/m": {
+        "label": "m^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "1/cm": {
+        "label": "cm^-1",
+        "factor": "100.0",
+        "offset": "0.0"
+    },
+    "1/mm": {
+        "label": "mm^-1",
+        "factor": "1000.0",
+        "offset": "0.0"
+    },
+    "1/in": {
+        "label": "in^-1",
+        "factor": "39.37008",
+        "offset": "0.0"
+    },
+    "1/ft": {
+        "label": "ft^-1",
+        "factor": "3.28",
+        "offset": "0.0"
+    },
+    "1/m-s": {
+        "label": "m^-1 s^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "1/cm-s": {
+        "label": "cm^-1 s^-1",
+        "factor": "100.",
+        "offset": "0.0"
+    },
+    "1/mm-s": {
+        "label": "mm^-1 s^-1",
+        "factor": "1000.",
+        "offset": "0.0"
+    },
+    "1/in-s": {
+        "label": "in^-1 s^-1",
+        "factor": "39.37007874",
+        "offset": "0.0"
+    },
+    "1/ft-s": {
+        "label": "ft^-1 s^-1",
+        "factor": "3.280839895",
+        "offset": "0.0"
+    },
+    "H/m": {
+        "label": "H m^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "kg": {
+        "label": "kg",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbm": {
+        "label": "lbm",
+        "factor": "0.4535924",
+        "offset": "0.0"
+    },
+    "g": {
+        "label": "g",
+        "factor": "0.001",
+        "offset": "0.0"
+    },
+    "kg/s": {
+        "label": "kg s^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbm/s": {
+        "label": "lbm s^-1",
+        "factor": "0.4535924",
+        "offset": "0.0"
+    },
+    "lbm/min": {
+        "label": "lbm min^-1",
+        "factor": "0.00755987",
+        "offset": "0.0"
+    },
+    "g/s": {
+        "label": "g s^-1",
+        "factor": "0.001",
+        "offset": "0.0"
+    },
+    "kg/s-m": {
+        "label": "kg m^-1 s^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbm/s-ft": {
+        "label": "lbm ft^-1 s^-1",
+        "factor": "1.488164",
+        "offset": "0.0"
+    },
+    "lbm/min-ft": {
+        "label": "lbm ft^-1 min^-1",
+        "factor": "0.024802733",
+        "offset": "0.0"
+    },
+    "g/s-cm": {
+        "label": "g cm^-1 s^-1",
+        "factor": "0.1",
+        "offset": "0.0"
+    },
+    "kg/s2": {
+        "label": "kg s^-2",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbm/s2": {
+        "label": "lbm s^-2",
+        "factor": "0.4535924",
+        "offset": "0.0"
+    },
+    "g/s2": {
+        "label": "g s^-2",
+        "factor": "0.001",
+        "offset": "0.0"
+    },
+    "kg/m3-s": {
+        "label": "kg m^-3 s^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbm/ft3-s": {
+        "label": "lbm ft^-3 s^-1",
+        "factor": "16.01846",
+        "offset": "0.0"
+    },
+    "g/cm3-s": {
+        "label": "g cm^-3 s^-1",
+        "factor": "1000",
+        "offset": "0.0"
+    },
+    "kgmol/m3-s": {
+        "label": "kgmol m^-3 s^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "gmol/cm3-s": {
+        "label": "gmol cm^-3 s^-1",
+        "factor": "1.0e+3",
+        "offset": "0.0"
+    },
+    "lbmol/ft3-s": {
+        "label": "lbmol ft^-3 s^-1",
+        "factor": "16.01846",
+        "offset": "0.0"
+    },
+    "kgmol/m2-s": {
+        "label": "kgmol m^-2 s^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "gmol/cm2-s": {
+        "label": "gmol cm^-2 s^-1",
+        "factor": "10.0",
+        "offset": "0.0"
+    },
+    "lbmol/ft2-s": {
+        "label": "lbmol ft^-2 s^-1",
+        "factor": "4.8824276270581",
+        "offset": "0.0"
+    },
+    "J/kgmol": {
+        "label": "J kgmol^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "BTU/lbmol": {
+        "label": "BTU lbmol^-1",
+        "factor": "2326.2",
+        "offset": "0.0"
+    },
+    "erg/gmol": {
+        "label": "erg gmol^-1",
+        "factor": "0.0001",
+        "offset": "0.0"
+    },
+    "J/kgmol-K": {
+        "label": "J kgmol^-1 K^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "kg/kmol": {
+        "label": "kg kmol^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "g/gmol": {
+        "label": "g gmol^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lb/lbmol": {
+        "label": "lb lbmol^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "N-m": {
+        "label": "N m",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbf-ft": {
+        "label": "lbf ft",
+        "factor": "1.3558",
+        "offset": "0.0"
+    },
+    "dyn-cm": {
+        "label": "dyne cm",
+        "factor": "1.0e-07",
+        "offset": "0.0"
+    },
+    "kg-m2": {
+        "label": "kg m^2",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbm-ft2": {
+        "label": "lbm ft^2",
+        "factor": "0.042140113",
+        "offset": "0.0"
+    },
+    "g-cm2": {
+        "label": "g cm^2",
+        "factor": "1.0e-7",
+        "offset": "0.0"
+    },
+    "1/m3": {
+        "label": "m^-3",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "1/cm3": {
+        "label": "cm^-3",
+        "factor": "1.0e6",
+        "offset": "0.0"
+    },
+    "1/mm3": {
+        "label": "mm^-3",
+        "factor": "1.0e9",
+        "offset": "0.0"
+    },
+    "1/ft3": {
+        "label": "ft^-3",
+        "factor": "35.314724828",
+        "offset": "0.0"
+    },
+    "1/in3": {
+        "label": "in^-3",
+        "factor": "6.10239824e4",
+        "offset": "0.0"
+    },
+    "1/gal": {
+        "label": "gal^-1",
+        "factor": "264.172874729",
+        "offset": "0.0"
+    },
+    "1.e15-particles/kg": {
+        "label": "1.e15-particles/kg",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "1.e15-particles/lbm": {
+        "label": "1.e15-particles/lbm",
+        "factor": "2.2046225",
+        "offset": "0.0"
+    },
+    "1.e15-particles/g": {
+        "label": "1.e15-particles/g",
+        "factor": "1000.0",
+        "offset": "0.0"
+    },
+    "1e+15-particles/m3-s": {
+        "label": "1e+15-particles/m3-s",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "1.e15-particles/ft3-s": {
+        "label": "1.e15-particles/ft3-s",
+        "factor": "35.314724828",
+        "offset": "0.0"
+    },
+    "1.e15-particles/cm3-s": {
+        "label": "1.e15-particles/cm3-s",
+        "factor": "1.0e6",
+        "offset": "0.0"
+    },
+    "%": {
+        "label": "%",
+        "factor": "0.01",
+        "offset": "0.0"
+    },
+    "fraction": {
+        "label": "fraction",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "W": {
+        "label": "W",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbf-ft/s": {
+        "label": "lbf ft s^-1",
+        "factor": "1.3558",
+        "offset": "0.0"
+    },
+    "hp": {
+        "label": "hp",
+        "factor": "745.70",
+        "offset": "0.0"
+    },
+    "BTU/h": {
+        "label": "BTU h^-1",
+        "factor": "0.2930722",
+        "offset": "0.0"
+    },
+    "erg/s": {
+        "label": "erg s^-1",
+        "factor": "1.0e-07",
+        "offset": "0.0"
+    },
+    "W/s": {
+        "label": "W s^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "BTU/h2": {
+        "label": "BTU h^-2",
+        "factor": "0.2930722",
+        "offset": "0.0"
+    },
+    "lbf-ft/s2": {
+        "label": "lbf ft s^-2",
+        "factor": "1.3558",
+        "offset": "0.0"
+    },
+    "hp/s": {
+        "label": "hp s^-1",
+        "factor": "745.70",
+        "offset": "0.0"
+    },
+    "erg/s2": {
+        "label": "erg s^-2",
+        "factor": "1.0e-07",
+        "offset": "0.0"
+    },
+    "pascal": {
+        "label": "Pa",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "atm": {
+        "label": "atm",
+        "factor": "101325.0",
+        "offset": "0.0"
+    },
+    "psi": {
+        "label": "psi",
+        "factor": "6894.757",
+        "offset": "0.0"
+    },
+    "torr": {
+        "label": "torr",
+        "factor": "133.3220",
+        "offset": "0.0"
+    },
+    "inches-water": {
+        "label": "inWg",
+        "factor": "249",
+        "offset": "0.0"
+    },
+    "pascal-m3/kgmol": {
+        "label": "Pa m^3 kgmol^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "atm-m3/kgmol": {
+        "label": "atm m^3 kgmol^-1",
+        "factor": "101325.0",
+        "offset": "0.0"
+    },
+    "psi-m3/kgmol": {
+        "label": "psi m^3 kgmol^-1",
+        "factor": "6894.757",
+        "offset": "0.0"
+    },
+    "lb-ft/kgmol": {
+        "label": "lb ft kgmol^-1",
+        "factor": "1690.886",
+        "offset": "0.0"
+    },
+    "pascal/m": {
+        "label": "Pa m^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "pascal/s": {
+        "label": "Pa s^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "atm/s": {
+        "label": "atm s^-1",
+        "factor": "101325.0",
+        "offset": "0.0"
+    },
+    "psi/s": {
+        "label": "psi s^-1",
+        "factor": "6894.757",
+        "offset": "0.0"
+    },
+    "torr/s": {
+        "label": "torr s^-1",
+        "factor": "133.3220",
+        "offset": "0.0"
+    },
+    "lbf/ft2-s": {
+        "label": "lbf ft^-2 s^-1",
+        "factor": "47.880",
+        "offset": "0.0"
+    },
+    "inches-water/s": {
+        "label": "inWg s^-1",
+        "factor": "249",
+        "offset": "0.0"
+    },
+    "dyn/cm2-s": {
+        "label": "dyne cm^-2 s^-1",
+        "factor": "0.1",
+        "offset": "0.0"
+    },
+    "pascal2/s2": {
+        "label": "Pa^2 s^-2",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "atm2/s2": {
+        "label": "atm^2 s^-2",
+        "factor": "1.02668e+10",
+        "offset": "0.0"
+    },
+    "psi2/s2": {
+        "label": "psi^2 s^-2",
+        "factor": "4.753767e+7",
+        "offset": "0.0"
+    },
+    "torr2/s2": {
+        "label": "torr^2 s^-2",
+        "factor": "1.777476e+4",
+        "offset": "0.0"
+    },
+    "lbf2/ft4-s2": {
+        "label": "lbf^2 ft^-4 s^-2",
+        "factor": "2.2925e+3",
+        "offset": "0.0"
+    },
+    "inches-water2/s2": {
+        "label": "inWg^2 s^-2",
+        "factor": "6.20e+4",
+        "offset": "0.0"
+    },
+    "dyn2/cm4-s2": {
+        "label": "dyne^2 cm^-4 s^-2",
+        "factor": "0.01",
+        "offset": "0.0"
+    },
+    "pascal/s2": {
+        "label": "Pa s^-2",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "atm/s2": {
+        "label": "atm s^-2",
+        "factor": "101325.0",
+        "offset": "0.0"
+    },
+    "psi/s2": {
+        "label": "psi s^-2",
+        "factor": "6894.757",
+        "offset": "0.0"
+    },
+    "torr/s2": {
+        "label": "torr s^-2",
+        "factor": "133.3220",
+        "offset": "0.0"
+    },
+    "lbf/ft2-s2": {
+        "label": "lbf ft^-2 s^-2",
+        "factor": "47.880",
+        "offset": "0.0"
+    },
+    "inches-water/s2": {
+        "label": "inches water s^-2",
+        "factor": "249",
+        "offset": "0.0"
+    },
+    "dyn/cm2-s2": {
+        "label": "dyne cm^-2 s^-2",
+        "factor": "0.1",
+        "offset": "0.0"
+    },
+    "kgmol/m2": {
+        "label": "kgmol m^-2",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "kgmol/ft2": {
+        "label": "kgmol ft^-2",
+        "factor": "10.76391042",
+        "offset": "0.0"
+    },
+    "kgmol/cm2": {
+        "label": "kgmol cm^-2",
+        "factor": "1.0e+4",
+        "offset": "0.0"
+    },
+    "kg/N-m-s": {
+        "label": "kg N^-1 m^-1 s^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbm/lbf-ft-s": {
+        "label": "lbm lbf^-1 ft^-1 s^-1",
+        "factor": "0.33455",
+        "offset": "0.0"
+    },
+    "g/dyn-cm-s": {
+        "label": "g dyne^-1 cm^-1 s^-1",
+        "factor": "10000.",
+        "offset": "0.0"
+    },
+    "m3/particle-s": {
+        "label": "m^3 s^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "ft3/particle-s": {
+        "label": "ft^3 s^-1",
+        "factor": "0.0283168",
+        "offset": "0.0"
+    },
+    "cm3/particle-s": {
+        "label": "cm^3 s^-1",
+        "factor": "1.0e-06",
+        "offset": "0.0"
+    },
+    "kg-m/kgmol-K1/2-s": {
+        "label": "kg m kgmol^-1 K^-0.5 s^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbm-ft/kgmol-K1/2-s": {
+        "label": "lbm ft kgmol^-1 K^-0.5 s^-1",
+        "factor": "0.13825496352",
+        "offset": "0.0"
+    },
+    "g-cm/gmol-K1/2-s": {
+        "label": "g cm gmol^-1 K^-0.5 s^-1",
+        "factor": "0.01",
+        "offset": "0.0"
+    },
+    "1e+15-particles/kg-s": {
+        "label": "1.e15 kg^-1 s^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "1.e15-particles/lbm-s": {
+        "label": "1.e15 lbm^-1 s^-2",
+        "factor": "2.2046225",
+        "offset": "0.0"
+    },
+    "1.e15-particles/g-s": {
+        "label": "1.e15 g^-1 s^-1",
+        "factor": "1000.",
+        "offset": "0.0"
+    },
+    "kg-m/kgmol-s": {
+        "label": "kg m kgmol^-1 s^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbm-ft/kgmol-s": {
+        "label": "lbm ft kgmol^-1 s^-1",
+        "factor": "0.13825496352",
+        "offset": "0.0"
+    },
+    "g-cm/gmol-s": {
+        "label": "g cm gmol^-1 s^-1",
+        "factor": "0.01",
+        "offset": "0.0"
+    },
+    "kg/m3-s2": {
+        "label": "kg m^-3 s^-2",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbm/ft3-s2": {
+        "label": "lbm ft^-3 s^-2",
+        "factor": "16.01846",
+        "offset": "0.0"
+    },
+    "g/cm3-s2": {
+        "label": "g cm^-3 s^-2",
+        "factor": "1000",
+        "offset": "0.0"
+    },
+    "w/m3": {
+        "label": "W m^-3",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "kg/s3-m": {
+        "label": "kg m^-1 s^-3",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbm/s3-ft": {
+        "label": "lbm ft^-1 s^-3",
+        "factor": "1.488164",
+        "offset": "0.0"
+    },
+    "lb/s3-ft": {
+        "label": "lb ft^-1 s^-3",
+        "factor": "1.488164",
+        "offset": "0.0"
+    },
+    "g/s3-cm": {
+        "label": "g cm^-1 s^-3",
+        "factor": "0.1",
+        "offset": "0.0"
+    },
+    "n/m3": {
+        "label": "N m^-3",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "K2/m3-s": {
+        "label": "K^2 m^-3 s^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "R2/ft3-s": {
+        "label": "R^2 ft^-3 s^-1",
+        "factor": "10.8976",
+        "offset": "0.0"
+    },
+    "K2/cm3-s": {
+        "label": "K^2 cm^-3 s^-1",
+        "factor": "1000000",
+        "offset": "0.0"
+    },
+    "kg/s4-m": {
+        "label": "kg m^-1 s^-4",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbm/s4-ft": {
+        "label": "lbm ft^-1 s^-4",
+        "factor": "1.488164",
+        "offset": "0.0"
+    },
+    "lb/s4-ft": {
+        "label": "lb ft^-1 s^-4",
+        "factor": "1.488164",
+        "offset": "0.0"
+    },
+    "g/s4-cm": {
+        "label": "g cm^-1 s^-4",
+        "factor": "0.1",
+        "offset": "0.0"
+    },
+    "kg/s2-m": {
+        "label": "kg m^-1 s^-2",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbm/s2-ft": {
+        "label": "lbm ft^-1 s^-2",
+        "factor": "1.488164",
+        "offset": "0.0"
+    },
+    "lb/s2-ft": {
+        "label": "lb ft^-1 s^-2",
+        "factor": "1.488164",
+        "offset": "0.0"
+    },
+    "g/s2-cm": {
+        "label": "g cm^-1 s^-2",
+        "factor": "0.1",
+        "offset": "0.0"
+    },
+    "m2/kg": {
+        "label": "m^2 kg^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "ft2/lbm": {
+        "label": "ft^2 lbm^-1",
+        "factor": "0.20481",
+        "offset": "0.0"
+    },
+    "cm2/g": {
+        "label": "cm^2 g^-1",
+        "factor": "0.1",
+        "offset": "0.0"
+    },
+    "J/kg": {
+        "label": "J kg^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "BTU/lbm": {
+        "label": "BTU lbm^-1",
+        "factor": "2326.0",
+        "offset": "0.0"
+    },
+    "m2/s2": {
+        "label": "m^2 s^-2",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "ft2/s2": {
+        "label": "ft^2 s^-2",
+        "factor": "0.0929",
+        "offset": "0.0"
+    },
+    "erg/g": {
+        "label": "erg g^-1",
+        "factor": "1.0e-04",
+        "offset": "0.0"
+    },
+    "N/m": {
+        "label": "N m^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "N/cm": {
+        "label": "N cm^-1",
+        "factor": "0.01",
+        "offset": "0.0"
+    },
+    "mN/m": {
+        "label": "mN m^-1",
+        "factor": "0.001",
+        "offset": "0.0"
+    },
+    "lbf/ft": {
+        "label": "lbf ft^-1",
+        "factor": "14.593898",
+        "offset": "0.0"
+    },
+    "dyn/cm": {
+        "label": "dyne cm^-1",
+        "factor": "1.0e-03",
+        "offset": "0.0"
+    },
+    "N-m/rad": {
+        "label": "N m rad^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "N-m/deg": {
+        "label": "N m deg^-1",
+        "factor": "57.29578779",
+        "offset": "0.0"
+    },
+    "kgf-m/rad": {
+        "label": "kgf m rad^-1",
+        "factor": "9.8067",
+        "offset": "0.0"
+    },
+    "kgf-m/deg": {
+        "label": "kgf m deg^-1",
+        "factor": "561.88260212",
+        "offset": "0.0"
+    },
+    "lbf-ft/rad": {
+        "label": "lbf ft rad^-1",
+        "factor": "1.3558",
+        "offset": "0.0"
+    },
+    "lbf-ft/deg": {
+        "label": "lbf ft deg^-1",
+        "factor": "77.681629086",
+        "offset": "0.0"
+    },
+    "dyn-cm/rad": {
+        "label": "dyne cm rad^-1",
+        "factor": "1.0e-07",
+        "offset": "0.0"
+    },
+    "dyn-cm/deg": {
+        "label": "dyne cm deg^-1",
+        "factor": "0.00000573",
+        "offset": "0.0"
+    },
+    "W/m2-K4": {
+        "label": "W m^-2 K^-4",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "BTU/h-ft2-R4": {
+        "label": "BTU h^-1 ft^-2 R^-4",
+        "factor": "33.0823804",
+        "offset": "0.0"
+    },
+    "kg/m2": {
+        "label": "kg m^-2",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbm/ft2": {
+        "label": "lbm ft^-2",
+        "factor": "4.8824276270581",
+        "offset": "0.0"
+    },
+    "g/cm2": {
+        "label": "g cm^-2",
+        "factor": "10.",
+        "offset": "0.0"
+    },
+    "N/m-K": {
+        "label": "N m^-1 K^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "N/m-C": {
+        "label": "N m^-1 C^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbf/ft-R": {
+        "label": "lbf ft^-1 R^-1",
+        "factor": "26.2691964",
+        "offset": "0.0"
+    },
+    "lbf/ft-F": {
+        "label": "lbf ft^-1 F^-1",
+        "factor": "26.2691964",
+        "offset": "0.0"
+    },
+    "dyn/cm-K": {
+        "label": "dyne cm^-1 K^-1",
+        "factor": "1.0e-03",
+        "offset": "0.0"
+    },
+    "dyn/cm-C": {
+        "label": "dyne cm^-1 C^-1",
+        "factor": "1.0e-03",
+        "offset": "0.0"
+    },
+    "K": {
+        "label": "K",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "R": {
+        "label": "R",
+        "factor": ".55555555556",
+        "offset": "0.0"
+    },
+    "F": {
+        "label": "F",
+        "factor": ".55555555556",
+        "offset": "0.0"
+    },
+    "1/K": {
+        "label": "K^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "1/R": {
+        "label": "R^-1",
+        "factor": "1.8",
+        "offset": "0.0"
+    },
+    "K2": {
+        "label": "K^2",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "R2": {
+        "label": "R^2",
+        "factor": "0.30864197531",
+        "offset": "0.0"
+    },
+    "W/m-K": {
+        "label": "W m^-1 K^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "W/m-C": {
+        "label": "W m^-1 C^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "BTU/h-ft-R": {
+        "label": "BTU h^-1 ft^-1 R^-1",
+        "factor": "1.7303",
+        "offset": "0.0"
+    },
+    "BTU/h-ft-F": {
+        "label": "BTU h^-1 ft^-1 F^-1",
+        "factor": "1.7303",
+        "offset": "0.0"
+    },
+    "cal/s-m-C": {
+        "label": "cal s^-1 m^-1 C^-1",
+        "factor": "4.18585",
+        "offset": "0.0"
+    },
+    "cal/s-m-K": {
+        "label": "cal s^-1 m^-1 K^-1",
+        "factor": "4.18585",
+        "offset": "0.0"
+    },
+    "erg/cm-s-K": {
+        "label": "erg cm^-1 s^-1 K^-1",
+        "factor": "1.0e-05",
+        "offset": "0.0"
+    },
+    "m-K/W": {
+        "label": "m K W^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "m-C/W": {
+        "label": "m C W^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "h-ft-R/BTU": {
+        "label": "h ft R BTU^-1",
+        "factor": "0.57793",
+        "offset": "0.0"
+    },
+    "h-ft-F/BTU": {
+        "label": "h ft F BTU^-1",
+        "factor": "0.57793",
+        "offset": "0.0"
+    },
+    "s-m-C/cal": {
+        "label": "s m C cal^-1",
+        "factor": "0.23890",
+        "offset": "0.0"
+    },
+    "s-m-K/cal": {
+        "label": "s m K cal^-1",
+        "factor": "0.23890",
+        "offset": "0.0"
+    },
+    "cm-s-K/erg": {
+        "label": "cm s K erg^-1",
+        "factor": "1.0e+05",
+        "offset": "0.0"
+    },
+    "s-m2-C/cal": {
+        "label": "s m^2 C cal^-1",
+        "factor": "0.23890",
+        "offset": "0.0"
+    },
+    "s-m2-K/cal": {
+        "label": "s m^2 K cal^-1",
+        "factor": "0.23890",
+        "offset": "0.0"
+    },
+    "kg-m2/s2": {
+        "label": "kg m^2 s^-2",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "gm-cm2/s2": {
+        "label": "g cm^2 s^-2",
+        "factor": "1.0e-07",
+        "offset": "0.0"
+    },
+    "lbm-ft2/s2": {
+        "label": "lbm ft^2 s^-2",
+        "factor": ".042140113",
+        "offset": "0.0"
+    },
+    "s": {
+        "label": "s",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "min": {
+        "label": "min",
+        "factor": "60.0",
+        "offset": "0.0"
+    },
+    "1/s": {
+        "label": "s^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "1/min": {
+        "label": "min^-1",
+        "factor": "1.66666666666667e-2",
+        "offset": "0.0"
+    },
+    "1/s2": {
+        "label": "s^-2",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "1/min2": {
+        "label": "min^-2",
+        "factor": "2.7777777777778e-4",
+        "offset": "0.0"
+    },
+    "1/s3": {
+        "label": "s^-3",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "1/min3": {
+        "label": "min^-3",
+        "factor": "4.62962962962963e-6",
+        "offset": "0.0"
+    },
+    "kg/m-s3": {
+        "label": "kg m^-1 s^-3",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "lbm/ft-s3": {
+        "label": "lbm ft^-1 s^-3",
+        "factor": "1.488164",
+        "offset": "0.0"
+    },
+    "lb/ft-s3": {
+        "label": "lb ft^-1 s^-3",
+        "factor": "1.488164",
+        "offset": "0.0"
+    },
+    "g/cm-s3": {
+        "label": "g cm^-1 s^-3",
+        "factor": "0.1",
+        "offset": "0.0"
+    },
+    "m2/s3": {
+        "label": "m^2 s^-3",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "ft2/s3": {
+        "label": "ft^2 s^-3",
+        "factor": "0.0929",
+        "offset": "0.0"
+    },
+    "cm2/s3": {
+        "label": "cm^2 s^-3",
+        "factor": "0.0001",
+        "offset": "0.0"
+    },
+    "m/s3": {
+        "label": "m s^-3",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "cm2/s2": {
+        "label": "cm^2 s^-2",
+        "factor": "0.0001",
+        "offset": "0.0"
+    },
+    "J/K-kgmol": {
+        "label": "J K^-1 kgmol^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "J/K-gmol": {
+        "label": "J K^-1 gmol^-1",
+        "factor": "0.001",
+        "offset": "0.0"
+    },
+    "BTU/R-lbmol": {
+        "label": "BTU R^-1 lbmol^-1",
+        "factor": "0.0002389",
+        "offset": "0.0"
+    },
+    "psi-ft3/R-lbmol": {
+        "label": "psi ft^3 R^-1 lbmol^-1",
+        "factor": "0.001290",
+        "offset": "0.0"
+    },
+    "atm-ft3/R-lbmol": {
+        "label": "atm ft^3 R^-1 lbmol^-1",
+        "factor": "0.00008780",
+        "offset": "0.0"
+    },
+    "erg/K-gmol": {
+        "label": "erg K^-1 gmol^-1",
+        "factor": "0.0001",
+        "offset": "0.0"
+    },
+    "m/s": {
+        "label": "m s^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "ft/s": {
+        "label": "ft s^-1",
+        "factor": "0.3048000",
+        "offset": "0.0"
+    },
+    "ft/min": {
+        "label": "ft min^-1",
+        "factor": ".005080000",
+        "offset": "0.0"
+    },
+    "km/h": {
+        "label": "km h^-1",
+        "factor": "0.277778",
+        "offset": "0.0"
+    },
+    "mph": {
+        "label": "mph",
+        "factor": "0.4470400",
+        "offset": "0.0"
+    },
+    "cm/s": {
+        "label": "cm s^-1",
+        "factor": "0.01",
+        "offset": "0.0"
+    },
+    "kg/m-s": {
+        "label": "kg m^-1 s^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "poise": {
+        "label": "poise",
+        "factor": "0.1",
+        "offset": "0.0"
+    },
+    "lbm/ft-s": {
+        "label": "lb ft^-1 s^-1",
+        "factor": "1.488164",
+        "offset": "0.0"
+    },
+    "lb/ft-s": {
+        "label": "lb ft^-1 s^-1",
+        "factor": "1.488164",
+        "offset": "0.0"
+    },
+    "slugs/ft-s": {
+        "label": "slugs ft^-1 s^-1",
+        "factor": "47.880",
+        "offset": "0.0"
+    },
+    "kg-s^n-2/m": {
+        "label": "kg s^n-2 m^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "poise-s^n-1": {
+        "label": "poise s^n-1",
+        "factor": "0.1",
+        "offset": "0.0"
+    },
+    "lbm-s^n-2/ft": {
+        "label": "lbm s^n-2 ft^-1",
+        "factor": "1.488164",
+        "offset": "0.0"
+    },
+    "lb-s^n-2/ft": {
+        "label": "lb s^n-2 ft^-1",
+        "factor": "1.488164",
+        "offset": "0.0"
+    },
+    "slugs-S^n-2/ft": {
+        "label": "slugs S^n-2 ft^-1",
+        "factor": "47.880",
+        "offset": "0.0"
+    },
+    "m3": {
+        "label": "m^3",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "cm3": {
+        "label": "c^3",
+        "factor": "1.0e-6",
+        "offset": "0.0"
+    },
+    "mm3": {
+        "label": "mm^3",
+        "factor": "1.0e-9",
+        "offset": "0.0"
+    },
+    "ft3": {
+        "label": "ft^3",
+        "factor": "0.0283168",
+        "offset": "0.0"
+    },
+    "in3": {
+        "label": "in^3",
+        "factor": "1.6387e-05",
+        "offset": "0.0"
+    },
+    "gal": {
+        "label": "gal",
+        "factor": "0.0037854",
+        "offset": "0.0"
+    },
+    "m3/s": {
+        "label": "m^3 s^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "ft3/s": {
+        "label": "ft^3 s^-1",
+        "factor": "0.0283168",
+        "offset": "0.0"
+    },
+    "cm3/s": {
+        "label": "cm^3 s^-1",
+        "factor": "1.0e-06",
+        "offset": "0.0"
+    },
+    "m3/s-m": {
+        "label": "m^3 s^-1 m^-1",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "ft3/s-ft": {
+        "label": "ft^3 s^-1 ft^-1",
+        "factor": "0.0929",
+        "offset": "0.0"
+    },
+    "cm3/s-cm": {
+        "label": "cm^3 s^-1 cm^-1",
+        "factor": "1.0e-4",
+        "offset": "0.0"
+    },
+    "volts": {
+        "label": "V",
+        "factor": "1.0",
+        "offset": "0.0"
+    },
+    "Angstrom": {
+        "label": "Angstrom",
+        "factor": "1.0",
+        "offset": "0.0"
     }
 }
-
