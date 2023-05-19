@@ -464,7 +464,6 @@ jobs:
 
   release:
     name: Release
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     needs: [test, build_test_232_241]
     runs-on: ubuntu-latest
     steps:
@@ -478,28 +477,29 @@ jobs:
       - name: Display package file list
         run: ls -R
 
-      - name: Upload to Private PyPi
-        run: |
-          pip install twine
-          python -m twine upload --skip-existing ./**/*.whl
-          python -m twine upload --skip-existing ./**/*.tar.gz
-        env:
-          TWINE_USERNAME: PAT
-          TWINE_PASSWORD: ${{ secrets.PYANSYS_PYPI_PRIVATE_PAT }}
-          TWINE_REPOSITORY_URL: https://pkgs.dev.azure.com/pyansys/_packaging/ansys/pypi/upload
+#       - name: Upload to Private PyPi
+#         run: |
+#           pip install twine
+#           python -m twine upload --skip-existing ./**/*.whl
+#           python -m twine upload --skip-existing ./**/*.tar.gz
+#         env:
+#           TWINE_USERNAME: PAT
+#           TWINE_PASSWORD: ${{ secrets.PYANSYS_PYPI_PRIVATE_PAT }}
+#           TWINE_REPOSITORY_URL: https://pkgs.dev.azure.com/pyansys/_packaging/ansys/pypi/upload
 
-      - name: Upload to Public PyPi
-        run: |
-          pip install twine
-          twine upload --skip-existing ./**/*.whl
-          python -m twine upload --skip-existing ./**/*.tar.gz
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.ANSYS_FLUENT_CORE_PYPI_TOKEN }}
+#       - name: Upload to Public PyPi
+#         run: |
+#           pip install twine
+#           twine upload --skip-existing ./**/*.whl
+#           python -m twine upload --skip-existing ./**/*.tar.gz
+#         env:
+#           TWINE_USERNAME: __token__
+#           TWINE_PASSWORD: ${{ secrets.ANSYS_FLUENT_CORE_PYPI_TOKEN }}
 
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
+          draft: true
           files: |
             ./**/*.whl
             ./**/*.tar.gz
