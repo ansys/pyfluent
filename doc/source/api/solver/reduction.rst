@@ -43,9 +43,9 @@ an area-average of absolute pressure over the velocity inlet.
 Similarly one can use the other functions available currently with PyFluent.
 
 .. note::
-   For reduction functions like "volume", "mass_flow", "mass_average" and,
-   "mass_integrated_average" the fluxes are evaluated on boundaries and face zones,
-   so the chosen location cannot be a user-defined surface.
+   The fluxes are evaluated on boundaries and face zones. So, for 'volume', 'mass_flow',
+   'mass_average' and 'mass_integrated_average' the chosen location cannot be a
+   user-defined surface.
 
 Usage of context
 ----------------
