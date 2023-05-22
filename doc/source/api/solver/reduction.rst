@@ -110,7 +110,7 @@ Compute the total volume of the specified locations.
   >>> reduction.volume(locations)
 
 .. note::
-   Only boundaries and face zones are allowed locations. It cannot be an user-defined surface.
+   Only boundaries and face zones are allowed locations. It cannot be a user-defined surface.
 
 Volume average
 ~~~~~~~~~~~~~~
