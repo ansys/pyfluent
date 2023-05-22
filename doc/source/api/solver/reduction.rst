@@ -202,7 +202,7 @@ Compute the mass-weighted average value of the specified expression over the spe
   >>> reduction.mass_average(expression, locations)
 
 .. note::
-   Only boundaries and face zones are allowed locations. It cannot be an user-defined surface.
+   Only boundaries and face zones are allowed locations. It cannot be a user-defined surface.
 
 Mass integrated average
 ~~~~~~~~~~~~~~~~~~~~~~~
