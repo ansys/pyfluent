@@ -527,14 +527,20 @@ class PyLocalContainer(MutableMapping):
             o = self.__collection[name] = self.__object_class(
                 name, self, self.__api_helper
             )
+            on_create = getattr(self._PyLocalContainer__object_class, "_on_create", None)
+            if on_create:
+                on_create(self, name)            
         return o
 
     def __setitem__(self, name, value):
         o = self[name]
         o.update(value)
 
-    def __delitem__(self, name):
+    def __delitem__(self, name):    
         del self.__collection[name]
+        on_delete = getattr(self._PyLocalContainer__object_class, "_on_delete", None)
+        if on_delete:
+            on_delete(self, name)        
 
     def _get_unique_chid_name(self):
         children = list(self)
@@ -563,8 +569,7 @@ class PyLocalContainer(MutableMapping):
     def Create(self, name=None):
         if not name:
             name = self._get_unique_chid_name()
-
-        new_object = self.__getitem__(name)
+        new_object = self.__getitem__(name)                
         return new_object._name
 
     @CommandArgs(Create, "name")
