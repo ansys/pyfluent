@@ -194,7 +194,11 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
                 self._register_on_change_cb(on_change)
             if reset_on_change:
                 for obj in reset_on_change:
-                    obj._register_on_change_cb(lambda: setattr(self, "_value", None))
+                    def reset():
+                        setattr(self, "_value", None)
+                        for on_change_cb in self._on_change_cbs:
+                            on_change_cb()                                                                        
+                    obj._register_on_change_cb(reset)
 
         return wrapper
 
