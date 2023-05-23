@@ -16,6 +16,7 @@ import ansys.fluent.core as pyfluent
 
 
 @pytest.mark.nightly
+@pytest.mark.codegen_required
 def test_mixing_elbow_meshing_workflow(
     shared_watertight_workflow_session,
     mixing_elbow_geometry,
@@ -121,6 +122,7 @@ def test_mixing_elbow_meshing_workflow(
         meshing_session.tui.mesh.check_mesh()
 
 
+@pytest.mark.codegen_required
 def test_meshing_workflow_raises_exception_on_invalid_task_name(
     shared_watertight_workflow,
 ):
@@ -362,6 +364,7 @@ def test_sample_use_of_command_arguments(new_mesh_session):
     assert w.task("Import Geometry").CommandArguments.LengthUnit() == "in"
 
 
+@pytest.mark.codegen_required
 def test_dummy_journal_data_model_methods(new_mesh_session):
     session_new = new_mesh_session
 
