@@ -64,3 +64,6 @@ transcript
 UDFs
 Univa
 venv
+mass_flow
+mass_average
+mass_integrated_average
