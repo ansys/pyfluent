@@ -47,7 +47,7 @@ class Command:
                 if arg in kwargs:
                     arg_value = kwargs[arg]
                 else:
-                    index = list(cmd_args).index(arg)
+                    index = list(self.arguments_attrs.keys()).index(arg)
                     if len(args) > index:
                         arg_value = args[index]  
                 if arg_value is not None:                        
@@ -56,7 +56,10 @@ class Command:
                             if arg_value not in attr_value(_self.obj):
                                 raise RuntimeError(f"{arg} value {arg_value} is not within allowed values.")                        
                         elif attr == "range":
-                            min, max = attr_value(_self.obj)
+                            if type(arg_value) != int and type(arg_value) != float:
+                                raise RuntimeError(f"{arg} value {arg_value} is not number.")    
+                            
+                            min, max = attr_value(_self.obj)                             
                             if arg_value < min or arg_value > max:
                                 raise RuntimeError(f"{arg} value {arg_value} is not withing range.")                                                                         
             return method(_self.obj, *args, **kwargs)        
