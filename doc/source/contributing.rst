@@ -4,10 +4,10 @@
 Contribute
 ==========
 Overall guidance on contributing to a PyAnsys library appears in the
-`Contributing <https://dev.docs.pyansys.com/dev/how-to/contributing.html>`_ topic
+`Contributing <https://dev.docs.pyansys.com/how-to/contributing.html>`_ topic
 in the *PyAnsys Developer's Guide*. Ensure that you are thoroughly familiar with
 this guide, paying particular attention to the `Coding Style
-<https://dev.docs.pyansys.com/dev/coding-style/index.html#coding-style>`_ topic, before
+<https://dev.docs.pyansys.com/coding-style/index.html#coding-style>`_ topic, before
 attempting to contribute to PyFluent.
  
 The following contribution information is specific to PyFluent.
@@ -19,7 +19,7 @@ mode, run:
 
 .. code::
 
-    git clone https://github.com/pyansys/pyfluent.git
+    git clone https://github.com/ansys/pyfluent.git
     cd pyfluent
     pip install pip -U
     pip install -e .
@@ -47,7 +47,7 @@ You can clear all HTML files from the ``_builds/html`` directory with:
 
 Post issues
 -----------
-Use the `PyFluent Issues <https://github.com/pyansys/pyfluent/issues>`_ page to
+Use the `PyFluent Issues <https://github.com/ansys/pyfluent/issues>`_ page to
 submit questions, report bugs, and request new features.
 
 
