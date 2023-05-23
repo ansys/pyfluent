@@ -43,6 +43,7 @@ class Command:
 
         def _execute(_self, *args, **kwargs):            
             for arg, attr_data in self.arguments_attrs.items():
+                arg_value = None 
                 if arg in kwargs:
                     arg_value = kwargs[arg]
                 else:
