@@ -30,7 +30,7 @@ class Attribute:
     def __get__(self, obj, objtype=None):
         return self.function(obj)
 
-
+import pdb 
 class Command:
     def __init__(self, method):
         self.arguments_attrs = {}
@@ -42,14 +42,31 @@ class Command:
         def _init(_self, obj):
             _self.obj = obj
 
+        def _command(_self, *args, **kwargs):            
+            for arg, attr_data in self.arguments_attrs.items():
+                if arg in kwargs:
+                    arg_value = kwargs[arg]
+                else:
+                    index = list(cmd_args).index(arg)
+                    if len(args) > index:
+                        arg_value = args[index]  
+                if arg_value is not None:                        
+                    for attr,attr_value in attr_data.items():
+                        if attr == "allowed_values":
+                            if arg_value not in attr_value(_self.obj):
+                                raise RuntimeError(f"{arg} value {arg_value} is not within allowed values.")                        
+                        elif attr == "range":
+                            min, max = attr_value(_self.obj)
+                            if arg_value < min or arg_value > max:
+                                raise RuntimeError(f"{arg} value {arg_value} is not withing range.")                                                                         
+            return method(_self.obj, *args, **kwargs)        
+        
         self.command_cls = type(
             "command",
             (),
             {
                 "__init__": _init,
-                "__call__": lambda _self, *args, **kwargs: method(
-                    _self.obj, *args, **kwargs
-                ),
+                "__call__": _command,
                 "argument_attribute": lambda _self, argument_name, attr_name: self.arguments_attrs[
                     argument_name
                 ][
@@ -81,6 +98,7 @@ def CommandArgs(command_object, argument_name):
                 {attribute.__name__: attribute}
             )
         else:
+            raise RuntimeError(f"{argument_name} not a valid argument.")
             command_object.arguments_attrs[argument_name] = {
                 attribute.__name__: attribute
             }
