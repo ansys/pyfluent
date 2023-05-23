@@ -30,7 +30,6 @@ class Attribute:
     def __get__(self, obj, objtype=None):
         return self.function(obj)
 
-import pdb 
 class Command:
     def __init__(self, method):
         self.arguments_attrs = {}
@@ -42,7 +41,7 @@ class Command:
         def _init(_self, obj):
             _self.obj = obj
 
-        def _command(_self, *args, **kwargs):            
+        def _execute(_self, *args, **kwargs):            
             for arg, attr_data in self.arguments_attrs.items():
                 if arg in kwargs:
                     arg_value = kwargs[arg]
@@ -66,7 +65,7 @@ class Command:
             (),
             {
                 "__init__": _init,
-                "__call__": _command,
+                "__call__": _execute,
                 "argument_attribute": lambda _self, argument_name, attr_name: self.arguments_attrs[
                     argument_name
                 ][
@@ -99,9 +98,6 @@ def CommandArgs(command_object, argument_name):
             )
         else:
             raise RuntimeError(f"{argument_name} not a valid argument.")
-            command_object.arguments_attrs[argument_name] = {
-                attribute.__name__: attribute
-            }
         return attribute
 
     return wrapper
