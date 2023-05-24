@@ -16,6 +16,7 @@ from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelSt
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.codegen_required
 def test_event_subscription(new_mesh_session):
     session = new_mesh_session
     session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -75,6 +76,7 @@ def test_event_subscription(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.codegen_required
 def test_add_on_child_created(new_mesh_session):
     meshing = new_mesh_session
     child_paths = []
@@ -94,6 +96,7 @@ def test_add_on_child_created(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.codegen_required
 def test_add_on_deleted(new_mesh_session):
     meshing = new_mesh_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -109,6 +112,7 @@ def test_add_on_deleted(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.codegen_required
 def test_add_on_changed(new_mesh_session):
     meshing = new_mesh_session
     task_list = meshing.workflow.Workflow.TaskList
@@ -130,6 +134,7 @@ def test_add_on_changed(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.codegen_required
 def test_add_on_affected(new_mesh_session):
     meshing = new_mesh_session
     data = []
@@ -150,6 +155,7 @@ def test_add_on_affected(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.codegen_required
 def test_add_on_affected_at_type_path(new_mesh_session):
     meshing = new_mesh_session
     data = []
@@ -170,6 +176,7 @@ def test_add_on_affected_at_type_path(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.codegen_required
 def test_add_on_command_executed(new_mesh_session):
     meshing = new_mesh_session
     data = []
@@ -199,6 +206,7 @@ def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.codegen_required
 def test_datamodel_streaming_full_diff_state(disable_datamodel_cache, new_mesh_session):
     meshing = new_mesh_session
     datamodel_service_se = meshing.datamodel_service_se
@@ -232,6 +240,7 @@ def test_datamodel_streaming_full_diff_state(disable_datamodel_cache, new_mesh_s
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.codegen_required
 def test_datamodel_streaming_no_commands_diff_state(
     disable_datamodel_cache, new_mesh_session
 ):
@@ -268,6 +277,7 @@ def test_datamodel_streaming_no_commands_diff_state(
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.codegen_required
 def test_get_object_names_wtm(new_mesh_session):
     meshing = new_mesh_session
 

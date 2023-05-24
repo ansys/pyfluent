@@ -729,6 +729,7 @@ def test_accessor_methods_on_settings_object_types(load_static_mixer_case):
 
 @pytest.mark.dev
 @pytest.mark.fluent_231
+@pytest.mark.codegen_required
 def test_find_children_from_settings_root():
     from ansys.fluent.core.solver.settings_231.setup import setup
 
