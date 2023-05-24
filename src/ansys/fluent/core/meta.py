@@ -68,10 +68,19 @@ class Command:
                 if arg_value is not None:
                     for attr, attr_value in attr_data.items():
                         if attr == "allowed_values":
-                            if arg_value not in attr_value(_self.obj):
-                                raise RuntimeError(
-                                    f"{arg} value {arg_value} is not within allowed values."
-                                )
+                            allowed_values = attr_value(_self.obj)
+                            if isinstance(arg_value, list):
+                                if not all(
+                                    elem in allowed_values for elem in arg_value
+                                ):
+                                    raise RuntimeError(
+                                        f"All values of {arg} value {arg_value} is not within allowed values."
+                                    )
+                            else:
+                                if arg_value not in allowed_values:
+                                    raise RuntimeError(
+                                        f"{arg} value {arg_value} is not within allowed values."
+                                    )
                         elif attr == "range":
                             if type(arg_value) != int and type(arg_value) != float:
                                 raise RuntimeError(
