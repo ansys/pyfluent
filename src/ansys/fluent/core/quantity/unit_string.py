@@ -1,0 +1,2 @@
+class UnitString(object):
+    pass
