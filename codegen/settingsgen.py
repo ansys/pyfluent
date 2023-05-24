@@ -214,22 +214,30 @@ def _populate_classes(parent_dir):
             if children_hash:
                 for child in children_hash:
                     pchild_name = hash_dict.get(child)[0].__name__
-                    f.write(f"from .{files_dict.get(child)} import {pchild_name}\n")
+                    f.write(
+                        f"from .{files_dict.get(child)} import {pchild_name} as {pchild_name}_cls\n"
+                    )
 
             if commands_hash:
                 for child in commands_hash:
                     pchild_name = hash_dict.get(child)[0].__name__
-                    f.write(f"from .{files_dict.get(child)} import {pchild_name}\n")
+                    f.write(
+                        f"from .{files_dict.get(child)} import {pchild_name} as {pchild_name}_cls\n"
+                    )
 
             if queries_hash:
                 for child in queries_hash:
                     pchild_name = hash_dict.get(child)[0].__name__
-                    f.write(f"from .{files_dict.get(child)} import {pchild_name}\n")
+                    f.write(
+                        f"from .{files_dict.get(child)} import {pchild_name} as {pchild_name}_cls\n"
+                    )
 
             if arguments_hash:
                 for child in arguments_hash:
                     pchild_name = hash_dict.get(child)[0].__name__
-                    f.write(f"from .{files_dict.get(child)} import {pchild_name}\n")
+                    f.write(
+                        f"from .{files_dict.get(child)} import {pchild_name} as {pchild_name}_cls\n"
+                    )
 
             if object_hash:
                 pchild_name = hash_dict.get(object_hash)[0].__name__
@@ -262,7 +270,7 @@ def _populate_classes(parent_dir):
                 f.write(f"{istr2}{mn}\n\n")
 
                 for child in child_names:
-                    f.write(f"{istr1}{child}: {child} = {child}\n")
+                    f.write(f"{istr1}{child}: {child}_cls = {child}_cls\n")
                     f.write(f'{istr1}"""\n')
                     f.write(f"{istr1}{child} child of {cls_name}.")
                     f.write(f'\n{istr1}"""\n')
@@ -277,7 +285,7 @@ def _populate_classes(parent_dir):
                 f.write(f"{istr2}{mn}\n\n")
 
                 for command in command_names:
-                    f.write(f"{istr1}{command}: {command} = {command}\n")
+                    f.write(f"{istr1}{command}: {command}_cls = {command}_cls\n")
                     f.write(f'{istr1}"""\n')
                     f.write(f"{istr1}{command} command of {cls_name}.")
                     f.write(f'\n{istr1}"""\n')
@@ -292,7 +300,7 @@ def _populate_classes(parent_dir):
                 f.write(f"{istr2}{mn}\n\n")
 
                 for query in query_names:
-                    f.write(f"{istr1}{query}: {query} = {query}\n")
+                    f.write(f"{istr1}{query}: {query}_cls = {query}_cls\n")
                     f.write(f'{istr1}"""\n')
                     f.write(f"{istr1}{query} query of {cls_name}.")
                     f.write(f'\n{istr1}"""\n')
@@ -307,7 +315,7 @@ def _populate_classes(parent_dir):
                 f.write(f"{istr2}{mn}\n\n")
 
                 for argument in arguments:
-                    f.write(f"{istr1}{argument}: {argument} = {argument}\n")
+                    f.write(f"{istr1}{argument}: {argument}_cls = {argument}_cls\n")
                     f.write(f'{istr1}"""\n')
                     f.write(f"{istr1}{argument} argument of {cls_name}.")
                     f.write(f'\n{istr1}"""\n')
