@@ -1,4 +1,7 @@
-from ansys.fluent.core.quantity import Dimensions, QuantityMap, Units, UnitString
+from ansys.fluent.core.quantity.dimensions import Dimensions
+from ansys.fluent.core.quantity.quantity_map import QuantityMap
+from ansys.fluent.core.quantity.unit_string import UnitString
+from ansys.fluent.core.quantity.units_table import UnitsTable
 
 
 class Quantity(float):
@@ -44,8 +47,7 @@ class Quantity(float):
         return float.__new__(cls)
 
     def __init__(self, real_value, unit_str=None, quantity_map=None, dimensions=None):
-        """
-        initialize Quantity using a unit string, quantity map or dimensions.
+        """Initialize Quantity using a unit string, quantity map or dimensions.
 
         Parameters
         ----------
@@ -59,18 +61,23 @@ class Quantity(float):
             array of dimensions
 
         """
-        self._units = Units
+        self._units_table = UnitsTable
         self._real_value = float(real_value)
 
+        if unit_str:
+            self._unit_string = UnitString(unit_str)
+            self._quantity_map = QuantityMap(unit_str)
+            self._dimensions = Dimensions(unit_str)
+
         if quantity_map:
-            unit_str = self._units.map_to_unit_str(quantity_map)
+            self._quantity_map = QuantityMap(quantity_map)
+            self._unit_string = UnitString(self._quantity_map.unit_str)
+            self._dimensions = Dimensions(self._quantity_map.unit_str)
 
         if dimensions:
-            unit_str = self._units.dim_to_unit_str(dimensions)
-
-        self._unit_string = UnitString(unit_str)
-        self._quantity_map = QuantityMap(unit_str)
-        self._dimensions = Dimensions(unit_str)
+            self._dimensions = Dimensions(dimensions)
+            self._unit_string = UnitString(self._dimensions.unit_str)
+            self._quantity_map = QuantityMap(self._dimensions.unit_str)
 
     @property
     def real_value(self):
@@ -115,4 +122,4 @@ class QuantityError(ValueError):
         self.to_unit = to_unit
 
     def __str__(self):
-        return f"{self.unit} and {self.to_unit} have incompatible dimensions."
+        return f"{self.from_unit} and {self.to_unit} have incompatible dimensions."

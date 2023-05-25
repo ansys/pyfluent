@@ -1,2 +1,8 @@
+from ansys.fluent.core.quantity.units_table import UnitsTable
+
+
 class UnitString(object):
-    pass
+    """ """
+
+    def __init__(self):
+        self._units_table = UnitsTable()
