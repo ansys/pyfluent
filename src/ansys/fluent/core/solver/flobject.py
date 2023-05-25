@@ -165,7 +165,7 @@ class Base:
                 issubclass(x, bool) for x in attr_type_or_types
             ):  # cast to bool for boolean attributes
                 return bool(val)
-            return []
+            return None
         return val
 
     def is_active(self) -> bool:

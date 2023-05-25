@@ -665,7 +665,7 @@ def test_accessor_methods_on_settings_object(load_static_mixer_case):
     if solver.get_fluent_version() < "23.2.0":
         assert existing == modified
     else:
-        assert existing == [] and modified == False
+        assert existing == None and modified == False
 
     existing = solver.setup.boundary_conditions.velocity_inlet.get_attr(
         "user-creatable?", bool

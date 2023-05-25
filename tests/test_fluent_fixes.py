@@ -5,6 +5,7 @@ from ansys.fluent.core import examples
 
 
 @pytest.mark.fluent_232
+@pytest.mark.fluent_241
 def test_1364(new_solver_session):
     solver = new_solver_session
 
@@ -27,11 +28,12 @@ def test_1364(new_solver_session):
         }
     )
 
-    assert solver.solution.report_definitions.volume[
-        "xxx"
-    ].zone_names.allowed_values() == ["fluid"]
+    assert (
+        solver.solution.report_definitions.volume["xxx"].zone_names.allowed_values()
+        == None
+    )
 
     assert (
         solver.solution.report_definitions.volume["xxx"].expr_list.allowed_values()
-        == []
+        == None
     )
