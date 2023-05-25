@@ -161,7 +161,7 @@ class Base:
                 attr_type_or_types = (attr_type_or_types,)
             if isinstance(val, attr_type_or_types):
                 return val
-            if val != [] and any(
+            if val is not None and any(
                 issubclass(x, bool) for x in attr_type_or_types
             ):  # cast to bool for boolean attributes
                 return bool(val)
@@ -215,12 +215,31 @@ class Numerical(Property):
 class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
 
+    _items_with_string_and_allowed_values = set()
+
+    def _filter_items_with_string_and_allowed_values(self, data):
+        for key, value in data.items():
+            if isinstance(value, dict):
+                if (
+                    "type" in value
+                    and "has_allowed_values" in value
+                    and value["type"] == "string"
+                    and value["has_allowed_values"] is True
+                ):
+                    self._items_with_string_and_allowed_values.add(key)
+                self._filter_items_with_string_and_allowed_values(value)
+
     def allowed_values(self):
         """Get the allowed values of the object."""
-        try:
-            return self.get_attr("allowed-values", (list, str))
-        except BaseException as ex:
-            return []
+
+        static_info = self.flproxy.get_static_info()
+        self._filter_items_with_string_and_allowed_values(static_info)
+
+        if self.obj_name in self._items_with_string_and_allowed_values:
+            try:
+                return self.get_attr("allowed-values", (list, str))
+            except BaseException as ex:
+                return []
 
 
 class SettingsBase(Base, Generic[StateT]):

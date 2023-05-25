@@ -897,3 +897,18 @@ def get_child_nodes(node, nodes, type_list):
                 nodes[node_type] = node
                 if not type_list:
                     return
+
+
+@pytest.mark.fluent_241
+def test_strings_with_allowed_values(load_static_mixer_case):
+    solver = load_static_mixer_case
+
+    string_without_allowed_values = solver.file.auto_save.root_name.allowed_values()
+    assert string_without_allowed_values == None
+
+    string_with_allowed_values = solver.setup.general.solver.type.allowed_values()
+    assert string_with_allowed_values == [
+        "pressure-based",
+        "density-based-implicit",
+        "density-based-explicit",
+    ]
