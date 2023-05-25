@@ -1,6 +1,5 @@
 from ansys.fluent.core.quantity.dimensions import Dimensions
 from ansys.fluent.core.quantity.quantity_map import QuantityMap
-from ansys.fluent.core.quantity.unit_string import UnitString
 from ansys.fluent.core.quantity.units_table import UnitsTable
 
 
@@ -65,18 +64,18 @@ class Quantity(float):
         self._value = float(value)
 
         if unit_str:
-            self._unit_string = UnitString(unit_str)
+            self._unit_string = unit_str
             self._quantity_map = QuantityMap(unit_str)
             self._dimensions = Dimensions(unit_str)
 
         if quantity_map:
             self._quantity_map = QuantityMap(quantity_map)
-            self._unit_string = UnitString(self._quantity_map.unit_str)
+            self._unit_string = self._quantity_map.unit_str
             self._dimensions = Dimensions(self._quantity_map.unit_str)
 
         if dimensions:
             self._dimensions = Dimensions(dimensions)
-            self._unit_string = UnitString(self._dimensions.unit_str)
+            self._unit_string = self._dimensions.unit_str
             self._quantity_map = QuantityMap(self._dimensions.unit_str)
 
         self._type = None  # todo
