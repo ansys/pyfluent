@@ -96,10 +96,8 @@ variable to locate the latest Fluent installation. On Linux systems configure
 ``AWP_ROOT<ver>`` to point to the absolute path of an Ansys installation such as
 ``/apps/ansys_inc/v231``.
 
-To use a non-default installation location set ``AWP_ROOT<ver>`` or set the
-``PYFLUENT_FLUENT_ROOT`` environment variable to the ``<install location>/<version>/fluent`` directory,
-where ``<version>`` is the Fluent release that you would like to use.
-For example, ``v231`` uses release 2023 R1.
+To use a specific Fluent release, set ``AWP_ROOT<ver>`` where ``<ver>`` is the 
+Fluent release that you would like to use. For example, ``AWP_ROOT<231>`` uses release 2023 R1.
 
 For information on other ways of specifying the Fluent location for PyFluent,
 see `Frequently asked questions <https://fluent.docs.pyansys.com/release/0.12/getting_started/faqs.html>`_.
