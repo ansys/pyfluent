@@ -28,7 +28,7 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
     # Step 1: Setup logging
     import logging
 
-    logging.getLogger().setLevel("ERROR")
+    logging.root.setLevel("ERROR")
 
     # Step 2: Launch fluent session and read case file with and without data file
     solver_session = load_mixing_elbow_param_case_dat
@@ -116,7 +116,7 @@ def test_generate_read_mesh(with_launching_container, mixing_elbow_geometry):
     # Step 1: Setup logging
     import logging
 
-    logging.getLogger().setLevel("ERROR")
+    logging.root.setLevel("ERROR")
 
     # Step 2: Launch fluent session in meshing mode
     meshing = pyfluent.launch_fluent(
