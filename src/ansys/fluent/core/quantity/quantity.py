@@ -11,7 +11,7 @@ class Quantity(float):
 
     Properties
     ----------
-    real_value : float
+    value : float
         Real value of quantity.
 
     unit_str : str
@@ -33,7 +33,7 @@ class Quantity(float):
     Quantity instance.
     """
 
-    def __new__(cls, real_value, unit_str=None, quantity_map=None, dimensions=None):
+    def __new__(cls, value, unit_str=None, quantity_map=None, dimensions=None):
         """Parameter pre-check before Quantity initialization."""
         if (
             (unit_str and quantity_map)
@@ -46,12 +46,12 @@ class Quantity(float):
 
         return float.__new__(cls)
 
-    def __init__(self, real_value, unit_str=None, quantity_map=None, dimensions=None):
+    def __init__(self, value, unit_str=None, quantity_map=None, dimensions=None):
         """Initialize Quantity using a unit string, quantity map or dimensions.
 
         Parameters
         ----------
-        real_value: float
+        value: float
             Value of quantity
         unit_str: str
             Unit of quantity
@@ -62,7 +62,7 @@ class Quantity(float):
 
         """
         self._units_table = UnitsTable
-        self._real_value = float(real_value)
+        self._value = float(value)
 
         if unit_str:
             self._unit_string = UnitString(unit_str)
@@ -79,10 +79,22 @@ class Quantity(float):
             self._unit_string = UnitString(self._dimensions.unit_str)
             self._quantity_map = QuantityMap(self._dimensions.unit_str)
 
+        self._type = None  # todo
+        self._si_value = None  # todo
+        self._si_unit = None  # todo
+
+    def _update_all(self):
+        """Updates UnitString, QuantityMap, and Dimensions objects"""
+        pass
+
     @property
-    def real_value(self):
+    def value(self):
         """Real value of quantity"""
-        return self._real_value
+        return self._value
+
+    @value.setter
+    def value(self, new_value):
+        self._value = new_value
 
     @property
     def unit_str(self):
@@ -99,8 +111,71 @@ class Quantity(float):
         """Quantity map of quantity"""
         return self._quantity_map.quantity_map
 
+    @property
+    def type(self):
+        """Type of quantity"""
+        return self._type
+
+    @type.setter
+    def type(self, new_type):
+        self._type = new_type
+
     def to():
         """"""
+        pass
+
+    def __str__(self):
+        pass
+
+    def __repr__(self):
+        pass
+
+    def __pow__(self, __value):
+        pass
+
+    def __mul__(self, __value):
+        pass
+
+    def __rmul__(self, __value):
+        pass
+
+    def __truediv__(self, __value):
+        pass
+
+    def __rtruediv__(self, __value):
+        pass
+
+    def __add__(self, __value):
+        pass
+
+    def __radd__(self, __value):
+        pass
+
+    def __sub__(self, __value):
+        pass
+
+    def __rsub__(self, __value):
+        pass
+
+    def __neg__(self):
+        pass
+
+    def __gt__(self, __value):
+        pass
+
+    def __ge__(self, __value):
+        pass
+
+    def __lt__(self, __value):
+        pass
+
+    def __le__(self, __value):
+        pass
+
+    def __eq__(self, __value):
+        pass
+
+    def __neq__(self, __value):
         pass
 
 

@@ -30,3 +30,15 @@ class UnitsTable(object):
     def derived_units(self):
         """Derived units"""
         return self.derived_units
+
+    def filter_multiplier(self):
+        """ """
+        pass
+
+    def remove_multiplier(self):
+        """ """
+        pass
+
+    def compute_multiplier(self):
+        """ """
+        pass
