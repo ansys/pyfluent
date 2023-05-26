@@ -2,7 +2,7 @@
     "fundamental_units" : {
         "kg": {
             "type": "Mass",
-            "factor": 1,
+            "factor": 1.0,
             "offset": 0
         },
         "g": {
@@ -27,7 +27,7 @@
         },
         "m": {
             "type": "Length",
-            "factor": 1,
+            "factor": 1.0,
             "offset": 0
         },
         "cm": {
@@ -47,17 +47,17 @@
         },
         "s": {
             "type": "Time",
-            "factor": 1,
+            "factor": 1.0,
             "offset": 0
         },
         "A": {
             "type": "Current",
-            "factor": 1,
+            "factor": 1.0,
             "offset": 0
         },
         "mol": {
             "type": "Chemical Amount",
-            "factor": 1,
+            "factor": 1.0,
             "offset": 0
         },
         "slugmol": {
@@ -67,17 +67,17 @@
         },
         "cd": {
             "type": "Light",
-            "factor": 1,
+            "factor": 1.0,
             "offset": 0 
         },
         "sr": {
             "type": "Solid Angle",
-            "factor": 1,
+            "factor": 1.0,
             "offset": 0
         },
         "radian": {
             "type": "Angle",
-            "factor": 1,
+            "factor": 1.0,
             "offset": 0
         },
         "degree": {
@@ -106,22 +106,22 @@
             "offset": 0
         },
         "delta_K": {
-            "type": "Temperature",
+            "type": "Temperature Difference",
             "factor": 0,
             "offset": 0
         },
         "delta_C": {
-            "type": "Temperature",
+            "type": "Temperature Difference",
             "factor": 0,
             "offset": 0
         },
         "delta_F": {
-            "type": "Temperature",
+            "type": "Temperature Difference",
             "factor": 0,
             "offset": 0
         },
         "delta_R": {
-            "type": "Temperature",
+            "type": "Temperature Difference",
             "factor": 0,
             "offset": 0
         }

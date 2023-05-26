@@ -1,6 +1,6 @@
-from ansys.fluent.core.quantity.dimensions import Dimensions
-from ansys.fluent.core.quantity.quantity_map import QuantityMap
-from ansys.fluent.core.quantity.units_table import UnitsTable
+from dimensions import Dimensions
+from quantity_map import QuantityMap
+from units_table import UnitsTable
 
 
 class Quantity(float):
