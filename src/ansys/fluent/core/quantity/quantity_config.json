@@ -3,127 +3,129 @@
         "kg": {
             "type": "Mass",
             "factor": 1.0,
-            "offset": 0
+            "offset": 0,
+            "dimension_order": 1 
         },
         "g": {
             "type": "Mass",
             "factor": 0.001,
-            "offset": 0
+            "offset": 0,
+            "dimension_order": 1 
         },
         "lb": {
             "type": "Mass",
             "factor": 0.45359237,
-            "offset": 0
+            "offset": 0,
+            "dimension_order": 1 
         },
         "lbm": {
             "type": "Mass",
             "factor": 0.45359237,
-            "offset": 0
+            "offset": 0,
+            "dimension_order": 1 
         },
         "slug": {
             "type": "Mass",
             "factor": 14.59390293720637,
-            "offset": 0
+            "offset": 0,
+            "dimension_order": 1 
         },
         "m": {
             "type": "Length",
             "factor": 1.0,
-            "offset": 0
+            "offset": 0,
+            "dimension_order": 2 
+
         },
         "cm": {
             "type": "Length",
             "factor": 0.01,
-            "offset": 0 
+            "offset": 0,
+            "dimension_order": 2
         },
         "ft": {
             "type": "Length",
             "factor": 0.30479999999999996,
-            "offset": 0
+            "offset": 0,
+            "dimension_order": 2
         },
         "in": {
             "type": "Length",
             "factor": 0.0254,
-            "offset": 0
+            "offset": 0,
+            "dimension_order": 2
         },
         "s": {
             "type": "Time",
             "factor": 1.0,
-            "offset": 0
+            "offset": 0,
+            "dimension_order": 3
         },
         "A": {
             "type": "Current",
             "factor": 1.0,
-            "offset": 0
+            "offset": 0,
+            "dimension_order": 8
         },
         "mol": {
             "type": "Chemical Amount",
             "factor": 1.0,
-            "offset": 0
+            "offset": 0,
+            "dimension_order": 6
         },
         "slugmol": {
             "type": "Chemical Amount",
             "factor": 14593.9,
-            "offset": 0
+            "offset": 0,
+            "dimension_order": 6
         },
         "cd": {
             "type": "Light",
             "factor": 1.0,
-            "offset": 0 
+            "offset": 0,
+            "dimension_order": 7
         },
         "sr": {
             "type": "Solid Angle",
             "factor": 1.0,
-            "offset": 0
+            "offset": 0,
+            "dimension_order": 9
         },
         "radian": {
             "type": "Angle",
             "factor": 1.0,
-            "offset": 0
+            "offset": 0,
+            "dimension_order": 5
         },
         "degree": {
             "type": "Angle",
             "factor": 0.017453292519943295,
-            "offset": 0
+            "offset": 0,
+            "dimension_order": 5
         },
         "K": {
             "type": "Temperature",
             "factor": 0,
-            "offset": 0
+            "offset": 0,
+            "dimension_order": 4
         },
         "C": {
             "type": "Temperature",
             "factor": 0,
-            "offset": 0
+            "offset": 0,
+            "dimension_order": 4
         },
         "F": {
             "type": "Temperature",
             "factor": 0,
-            "offset": 0
+            "offset": 0,
+            "dimension_order": 4
         },
         "R": {
             "type": "Temperature",
             "factor": 0,
-            "offset": 0
-        },
-        "delta_K": {
-            "type": "Temperature Difference",
-            "factor": 0,
-            "offset": 0
-        },
-        "delta_C": {
-            "type": "Temperature Difference",
-            "factor": 0,
-            "offset": 0
-        },
-        "delta_F": {
-            "type": "Temperature Difference",
-            "factor": 0,
-            "offset": 0
-        },
-        "delta_R": {
-            "type": "Temperature Difference",
-            "factor": 0,
-            "offset": 0
+            "offset": 0,
+            "dimension_order": 4
         }
     },
     "derived_units" : {

@@ -12,7 +12,7 @@ class UnitsTable(object):
         self._multipliers: dict = self._data["multipliers"]
 
     def _get_data(self):
-        """Reads quantity data from json file
+        """Reads quantity data from json file.
 
         Returns
         -------
@@ -36,14 +36,25 @@ class UnitsTable(object):
         Returns
         -------
         : bool
-            Boolean of multiplier within unit_term
+            Boolean of multiplier within unit_term.
         """
         return not (
             (unit_term in self._fundamental_units) or (unit_term in self._derived_units)
         )
 
     def _si_map(self, unit_term: str):
-        """ """
+        """Maps unit to SI unit equivalent.
+
+        Parameters
+        ----------
+        unit_term : str
+            Unit term of a unit string.
+
+        Returns
+        -------
+        term : str
+            SI unit equivalent.
+        """
         unit_term_type = self._fundamental_units[unit_term]["type"]
 
         for term, term_info in self._fundamental_units.items():
@@ -102,27 +113,41 @@ class UnitsTable(object):
                         base = unit_term[len(mult) :]
                         break
 
-        return {
-            "multiplier": multiplier,
-            "base": base,
-            "exponent": exponent,
-        }
+        return multiplier, base, exponent
 
+    # TODO : FIX RECURSIVE LOOP
     def compute_multiplier(
-        self, unit_str: str, si_unit_str: str = "", power: float = 1.0
-    ):
-        """ """
+        self,
+        unit_str: str,
+        power: float = 1.0,
+        si_unit_str: str = "",
+        si_multiplier: float = 1.0,
+    ) -> tuple:
+        """Computes the SI unit string and si_multiplier of a unit string.
+
+        Parameters
+        ----------
+        unit_str : str
+            Unit string representation of quantity.
+        power : float
+            Power of unit string
+        si_unit_string : str
+            SI unit string representation of quantity.
+        si_multiplier : float
+            SI multiplier of unit string.
+
+        Returns
+        -------
+        : tuple
+            Tuple containing si_unit_string and si_multiplier.
+        """
         if not unit_str:
             return
 
-        si_multiplier = 1.0
-
         for term in unit_str.split(" "):
-            filtered_unit = self.filter_unit_term(term)
+            unit_multiplier, unit_term, unit_term_power = self.filter_unit_term(term)
 
-            unit_multiplier = filtered_unit["multiplier"]
-            unit_term = filtered_unit["base"]
-            unit_term_power = filtered_unit["exponent"] * power
+            unit_term_power *= power
 
             si_multiplier *= (
                 self._multipliers[unit_multiplier] ** unit_term_power
@@ -130,12 +155,24 @@ class UnitsTable(object):
                 else 1.0
             )
 
-            if unit_term in self.fundamental_units:
-                if unit_term_power == 1.0:
-                    si_unit_str + self._si_map(unit_term) + " "
+            if unit_term in self._fundamental_units:
+                si_unit_str += f"{self._si_map(unit_term)}^{int(unit_term_power)} "
 
-                if unit_term_power != 0.0:
-                    si_unit_str + self._si_map(unit_term) + "^" + unit_term_power + " "
+                si_multiplier *= (
+                    self._fundamental_units[unit_term]["factor"] ** unit_term_power
+                )
+
+            if unit_term in self._derived_units:
+                si_unit_str, si_multiplier = self.compute_multiplier(
+                    unit_str=self._derived_units[unit_term],
+                    power=unit_term_power,
+                    si_unit_str=si_unit_str,
+                    si_multiplier=si_multiplier,
+                )
+
+                si_unit_str += " "
+
+        return si_unit_str[:-1], si_multiplier
 
     def convert_to_si(self):
         """ """

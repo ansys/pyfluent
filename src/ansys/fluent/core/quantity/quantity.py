@@ -12,13 +12,10 @@ class Quantity(float):
     ----------
     value : float
         Real value of quantity.
-
     unit_str : str
         Unit string representation of quantity.
-
     quantity_map : dict
         Quantity map representation of quantity.
-
     dimensions : list
         Dimensions representation of quantity.
 
@@ -46,20 +43,6 @@ class Quantity(float):
         return float.__new__(cls)
 
     def __init__(self, value, unit_str=None, quantity_map=None, dimensions=None):
-        """Initialize Quantity using a unit string, quantity map or dimensions.
-
-        Parameters
-        ----------
-        value: float
-            Value of quantity
-        unit_str: str
-            Unit of quantity
-        quantity_map: dict
-            Map of quantity and it's unit
-        dimensions: list
-            array of dimensions
-
-        """
         self._units_table = UnitsTable
         self._value = float(value)
 
