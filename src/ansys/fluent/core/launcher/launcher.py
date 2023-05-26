@@ -653,7 +653,7 @@ def launch_fluent(
             if product_version:
                 fluent_product_version = "".join(product_version.split("."))[:-1]
             else:
-                fluent_product_version = "latest"
+                fluent_product_version = None
 
             return launch_remote_fluent(
                 session_cls=new_session,
