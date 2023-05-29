@@ -73,6 +73,11 @@ Meta
 
 :ref:`ref_meta` consists of some metaclasses used in the PyFluent codebase.
 
+Logging
+#######
+.. autofunction:: ansys.fluent.core.list_loggers
+.. autofunction:: ansys.fluent.core.set_global_log_level
+
 .. currentmodule:: ansys.fluent.core
 
 .. autosummary::

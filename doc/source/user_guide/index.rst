@@ -202,12 +202,24 @@ event types via the ``events_manager`` attribute of a solution mode session:
 
 For more information, see :ref:`ref_events`.
 
-Global logging
---------------
-You can control the global logging level at any time with:
+Logging controls
+----------------
+Loggers are by default set to show messages of level warning and above.
+See the possible logging level values in
+`<https://docs.python.org/3/library/logging.html#logging-levels>`_.
+The global logging level of PyFluent can be controlled with:
 
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    pyfluent.set_log_level("DEBUG") # by default, only errors are shown
+    pyfluent.set_global_log_level("DEBUG")
+
+the last command being equivalent to ``pyfluent.set_global_log_level(10)``.
+
+Global logging can also be controlled through the environment variable
+``PYFLUENT_LOGGING`` which can be set for example to values "DEBUG" or "10".
+
+See also :func:`list_loggers() <ansys.fluent.core.list_loggers>` and
+:func:`set_global_log_level() <ansys.fluent.core.set_global_log_level>`.
+
 
