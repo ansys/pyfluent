@@ -48,7 +48,7 @@ class Dimensions(object):
             if dim == 1.0:
                 unit_str += f"{si_order[idx]} "
             else:
-                unit_str += f"{si_order[idx]}^{int(dim)} "
+                unit_str += f"{si_order[idx]}^{dim} "
 
         return unit_str[:-1]
 

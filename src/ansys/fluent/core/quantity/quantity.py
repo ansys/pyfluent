@@ -61,9 +61,12 @@ class Quantity(float):
             self._unit_string = self._dimensions.unit_str
             self._quantity_map = QuantityMap(self._dimensions.unit_str)
 
-        self._type = None  # todo
-        self._si_value = None  # todo
-        self._si_unit = None  # todo
+        si_unit_str, si_multiplier, si_offset = self._units_table.si_conversion(
+            unit_str=self._unit_string
+        )
+
+        self._si_unit_str = si_unit_str
+        self._si_value = self.value * si_multiplier + si_offset
 
     def _update_all(self):
         """Updates UnitString, QuantityMap, and Dimensions objects"""
@@ -84,6 +87,16 @@ class Quantity(float):
         return self._unit_string.unit_str
 
     @property
+    def si_unit_str(self):
+        """SI conversion unit string of quantity."""
+        return self._si_unit_str
+
+    @property
+    def si_value(self):
+        """SI conversion value of quantity."""
+        return self._si_value
+
+    @property
     def dimensions(self):
         """Dimensions of quantity"""
         return self._dimensions.dimensions
@@ -92,15 +105,6 @@ class Quantity(float):
     def quantity_map(self):
         """Quantity map of quantity"""
         return self._quantity_map.quantity_map
-
-    @property
-    def type(self):
-        """Type of quantity"""
-        return self._type
-
-    @type.setter
-    def type(self, new_type):
-        self._type = new_type
 
     def to():
         """"""

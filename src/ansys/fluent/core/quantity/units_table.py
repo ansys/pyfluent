@@ -61,39 +61,6 @@ class UnitsTable(object):
             if term_info["type"] == unit_term_type and term_info["factor"] == 1.0:
                 return term
 
-    def _condense(self, unit_str: str) -> str:
-        """Condenses a unit string by condensing like-terms.
-
-        Parameters
-        ----------
-        unit_string : str
-            Unit string to be simplified.
-
-        Returns
-        -------
-        unit_string : str
-            Simplified unit string.
-        """
-        terms_and_powers = {}
-
-        for term in unit_str[:-1].split(" "):
-            _, unit_term, unit_term_power = self.filter_unit_term(term)
-
-            if unit_term in terms_and_powers:
-                terms_and_powers[unit_term] += unit_term_power
-            else:
-                terms_and_powers[unit_term] = unit_term_power
-
-        unit_str = ""
-
-        for term, power in terms_and_powers.items():
-            if power == 1.0:
-                unit_str += f"{term} "
-            else:
-                unit_str += f"{term}^{int(power)} "
-
-        return unit_str
-
     @property
     def api_quantity_map(self):
         """Settings API quantity map values"""
@@ -148,14 +115,15 @@ class UnitsTable(object):
 
         return multiplier, base, power
 
-    def compute_multiplier(
+    def si_conversion(
         self,
         unit_str: str,
         power: float = 1.0,
         si_unit_str: str = "",
         si_multiplier: float = 1.0,
+        si_offset: float = 0.0,
     ) -> tuple:
-        """Compute the SI unit string and SI multiplier of a unit string.
+        """Compute the SI unit string, SI multiplier, SI offset and SI offset power of a unit string.
 
         Parameters
         ----------
@@ -167,6 +135,8 @@ class UnitsTable(object):
             SI unit string representation of quantity.
         si_multiplier : float
             SI multiplier of unit string.
+        si_offset : float
+            SI offset of a unit string.
 
         Returns
         -------
@@ -188,25 +158,57 @@ class UnitsTable(object):
             )
 
             if unit_term in self._fundamental_units:
+                si_offset = self._fundamental_units[unit_term]["offset"]
+
                 if unit_term_power == 1.0:
                     si_unit_str += f"{self._si_map(unit_term)} "
                 else:
-                    si_unit_str += f"{self._si_map(unit_term)}^{int(unit_term_power)} "
+                    si_unit_str += f"{self._si_map(unit_term)}^{unit_term_power} "
 
                 si_multiplier *= (
                     self._fundamental_units[unit_term]["factor"] ** unit_term_power
                 )
 
             if unit_term in self._derived_units:
-                si_unit_str, si_multiplier = self.compute_multiplier(
+                si_unit_str, si_multiplier, si_offset = self.si_conversion(
                     unit_str=self._derived_units[unit_term],
                     power=unit_term_power,
                     si_unit_str=si_unit_str,
                     si_multiplier=si_multiplier,
+                    si_offset=si_offset,
                 )
 
-        return self._condense(si_unit_str), si_multiplier
+        return self.condense(si_unit_str), si_multiplier, si_offset
 
-    def convert_to_si(self):
-        """ """
-        pass
+    def condense(self, unit_str: str) -> str:
+        """Condenses a unit string by collecting like-terms.
+
+        Parameters
+        ----------
+        unit_string : str
+            Unit string to be simplified.
+
+        Returns
+        -------
+        unit_string : str
+            Simplified unit string.
+        """
+        terms_and_powers = {}
+
+        for term in unit_str[:-1].split(" "):
+            _, unit_term, unit_term_power = self.filter_unit_term(term)
+
+            if unit_term in terms_and_powers:
+                terms_and_powers[unit_term] += unit_term_power
+            else:
+                terms_and_powers[unit_term] = unit_term_power
+
+        unit_str = ""
+
+        for term, power in terms_and_powers.items():
+            if power == 1.0:
+                unit_str += f"{term} "
+            else:
+                unit_str += f"{term}^{power} "
+
+        return unit_str
