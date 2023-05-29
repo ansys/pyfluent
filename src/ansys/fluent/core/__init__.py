@@ -3,6 +3,7 @@
 import logging.config
 import os
 import pydoc
+from typing import Union
 
 import appdirs
 import yaml
@@ -44,7 +45,7 @@ def version_info() -> str:
     return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
 
-def set_global_log_level(level: str | int) -> None:
+def set_global_log_level(level: Union[str, int]) -> None:
     """Method changing the levels of all PyFluent loggers.
 
     Parameters

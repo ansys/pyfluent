@@ -217,7 +217,7 @@ The global logging level of PyFluent can be controlled with:
 the last command being equivalent to ``pyfluent.set_global_log_level(10)``.
 
 Global logging can also be controlled through the environment variable
-``PYFLUENT_LOGGING`` which can be set for example to values "DEBUG" or "10".
+``PYFLUENT_LOGGING`` which can be set for example to values ``"DEBUG"`` or ``10``.
 
 See also :func:`list_loggers() <ansys.fluent.core.list_loggers>` and
 :func:`set_global_log_level() <ansys.fluent.core.set_global_log_level>`.
