@@ -105,7 +105,7 @@
         },
         "K": {
             "type": "Temperature",
-            "factor": 0,
+            "factor": 1.0,
             "offset": 0,
             "dimension_order": 4
         },

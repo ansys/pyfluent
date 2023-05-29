@@ -42,7 +42,7 @@ class UnitsTable(object):
             (unit_term in self._fundamental_units) or (unit_term in self._derived_units)
         )
 
-    def _si_map(self, unit_term: str):
+    def _si_map(self, unit_term: str) -> str:
         """Maps unit to SI unit equivalent.
 
         Parameters
@@ -60,6 +60,39 @@ class UnitsTable(object):
         for term, term_info in self._fundamental_units.items():
             if term_info["type"] == unit_term_type and term_info["factor"] == 1.0:
                 return term
+
+    def _condense(self, unit_str: str) -> str:
+        """Condenses a unit string by condensing like-terms.
+
+        Parameters
+        ----------
+        unit_string : str
+            Unit string to be simplified.
+
+        Returns
+        -------
+        unit_string : str
+            Simplified unit string.
+        """
+        terms_and_powers = {}
+
+        for term in unit_str[:-1].split(" "):
+            _, unit_term, unit_term_power = self.filter_unit_term(term)
+
+            if unit_term in terms_and_powers:
+                terms_and_powers[unit_term] += unit_term_power
+            else:
+                terms_and_powers[unit_term] = unit_term_power
+
+        unit_str = ""
+
+        for term, power in terms_and_powers.items():
+            if power == 1.0:
+                unit_str += f"{term} "
+            else:
+                unit_str += f"{term}^{int(power)} "
+
+        return unit_str
 
     @property
     def api_quantity_map(self):
@@ -82,7 +115,7 @@ class UnitsTable(object):
         return self._multipliers
 
     def filter_unit_term(self, unit_term: str) -> str:
-        """Separate multiplier, base, and exponent from unit term.
+        """Separate multiplier, base, and power from a unit term.
 
         Parameters
         ----------
@@ -95,11 +128,11 @@ class UnitsTable(object):
             Dictionary containing all components of the unit term.
         """
         multiplier = ""
-        exponent = 1.0
+        power = 1.0
 
-        # strip exponent from unit term
+        # strip power from unit term
         if "^" in unit_term:
-            exponent = float(unit_term[unit_term.index("^") + 1 :])
+            power = float(unit_term[unit_term.index("^") + 1 :])
             unit_term = unit_term[: unit_term.index("^")]
 
         base = unit_term
@@ -113,9 +146,8 @@ class UnitsTable(object):
                         base = unit_term[len(mult) :]
                         break
 
-        return multiplier, base, exponent
+        return multiplier, base, power
 
-    # TODO : FIX RECURSIVE LOOP
     def compute_multiplier(
         self,
         unit_str: str,
@@ -123,7 +155,7 @@ class UnitsTable(object):
         si_unit_str: str = "",
         si_multiplier: float = 1.0,
     ) -> tuple:
-        """Computes the SI unit string and si_multiplier of a unit string.
+        """Compute the SI unit string and SI multiplier of a unit string.
 
         Parameters
         ----------
@@ -156,7 +188,10 @@ class UnitsTable(object):
             )
 
             if unit_term in self._fundamental_units:
-                si_unit_str += f"{self._si_map(unit_term)}^{int(unit_term_power)} "
+                if unit_term_power == 1.0:
+                    si_unit_str += f"{self._si_map(unit_term)} "
+                else:
+                    si_unit_str += f"{self._si_map(unit_term)}^{int(unit_term_power)} "
 
                 si_multiplier *= (
                     self._fundamental_units[unit_term]["factor"] ** unit_term_power
@@ -170,9 +205,7 @@ class UnitsTable(object):
                     si_multiplier=si_multiplier,
                 )
 
-                si_unit_str += " "
-
-        return si_unit_str[:-1], si_multiplier
+        return self._condense(si_unit_str), si_multiplier
 
     def convert_to_si(self):
         """ """

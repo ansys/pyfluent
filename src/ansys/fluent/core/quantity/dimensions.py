@@ -47,7 +47,7 @@ class Dimensions(object):
         for idx, dim in enumerate(dimensions):
             if dim == 1.0:
                 unit_str += f"{si_order[idx]} "
-            elif dim != 0.0:
+            else:
                 unit_str += f"{si_order[idx]}^{int(dim)} "
 
         return unit_str[:-1]
