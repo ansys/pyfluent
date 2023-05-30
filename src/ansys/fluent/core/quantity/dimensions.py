@@ -16,7 +16,7 @@ class Dimensions(object):
     Dimensions instance.
     """
 
-    def __init__(self, unit_str=None, dimensions=None):
+    def __init__(self, unit_str=None, dimensions=None, unit_sys="SI"):
         self._units_table = UnitsTable()
 
         if unit_str:
@@ -25,9 +25,11 @@ class Dimensions(object):
 
         if dimensions:
             self._dimensions = dimensions
-            self._unit_str = self._dim_to_unit_str(dimensions)
+            self._unit_str = self._dim_to_unit_str(
+                dimensions=dimensions, unit_sys=unit_sys
+            )
 
-    def _dim_to_unit_str(self, dimensions: list) -> str:
+    def _dim_to_unit_str(self, dimensions: list, unit_sys: str) -> str:
         """Convert a dimensions list into a unit string.
 
         Parameters
@@ -35,20 +37,27 @@ class Dimensions(object):
         dimensions : list
             List of unit dimensions.
 
+        unit_sys : str
+            Unit system of dimensions.
+
         Returns
         -------
         unit_str : str
             Unit string representation of dimensions.
         """
         dimensions = [float(dim) for dim in dimensions + ((9 - len(dimensions)) * [0])]
-        si_order = ["kg", "m", "s", "K", "radian", "mol", "cd", "A", "sr"]
+        system_order = {
+            "SI": ["kg", "m", "s", "K", "radian", "mol", "cd", "A", "sr"],
+            "CGS": ["g", "cm", "s", "K", "radian", "mol", "cd", "A", "sr"],
+            "BT": ["slug", "ft", "s", "R", "radian", "slugmol", "cd", "A", "sr"],
+        }
         unit_str = ""
 
         for idx, dim in enumerate(dimensions):
             if dim == 1.0:
-                unit_str += f"{si_order[idx]} "
-            else:
-                unit_str += f"{si_order[idx]}^{dim} "
+                unit_str += f"{system_order[unit_sys][idx]} "
+            elif dim != 0.0:
+                unit_str += f"{system_order[unit_sys][idx]}^{dim} "
 
         return unit_str[:-1]
 

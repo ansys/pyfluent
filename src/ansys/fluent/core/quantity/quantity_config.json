@@ -112,17 +112,41 @@
         "C": {
             "type": "Temperature",
             "factor": 0,
-            "offset": 0,
+            "offset": -273.15,
             "dimension_order": 4
         },
         "F": {
             "type": "Temperature",
-            "factor": 0,
-            "offset": 0,
+            "factor": 1.8,
+            "offset": -459.67,
             "dimension_order": 4
         },
         "R": {
             "type": "Temperature",
+            "factor": 1.8,
+            "offset": 0,
+            "dimension_order": 4
+        },
+        "delta_K": {
+            "type": "Temperature Difference",
+            "factor": 1.0,
+            "offset": 0,
+            "dimension_order": 4
+        },
+        "delta_C": {
+            "type": "Temperature Difference",
+            "factor": 0,
+            "offset": 0,
+            "dimension_order": 4
+        },
+        "delta_F": {
+            "type": "Temperature Difference",
+            "factor": 0,
+            "offset": 0,
+            "dimension_order": 4
+        },
+        "delta_R": {
+            "type": "Temperature Difference",
             "factor": 0,
             "offset": 0,
             "dimension_order": 4

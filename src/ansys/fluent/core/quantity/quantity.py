@@ -43,23 +43,21 @@ class Quantity(float):
         return float.__new__(cls)
 
     def __init__(self, value, unit_str=None, quantity_map=None, dimensions=None):
-        self._units_table = UnitsTable
+        self._units_table = UnitsTable()
         self._value = float(value)
 
         if unit_str:
             self._unit_string = unit_str
-            self._quantity_map = QuantityMap(unit_str)
-            self._dimensions = Dimensions(unit_str)
+            self._dimensions = Dimensions(unit_str=unit_str)
 
         if quantity_map:
-            self._quantity_map = QuantityMap(quantity_map)
-            self._unit_string = self._quantity_map.unit_str
-            self._dimensions = Dimensions(self._quantity_map.unit_str)
+            unit_str = QuantityMap(quantity_map).unit_str
+            self._unit_string = unit_str
+            self._dimensions = Dimensions(unit_str=unit_str)
 
         if dimensions:
-            self._dimensions = Dimensions(dimensions)
+            self._dimensions = Dimensions(dimensions=dimensions)
             self._unit_string = self._dimensions.unit_str
-            self._quantity_map = QuantityMap(self._dimensions.unit_str)
 
         si_unit_str, si_multiplier, si_offset = self._units_table.si_conversion(
             unit_str=self._unit_string
@@ -67,6 +65,7 @@ class Quantity(float):
 
         self._si_unit_str = si_unit_str
         self._si_value = self.value * si_multiplier + si_offset
+        self._type = None
 
     def _update_all(self):
         """Updates UnitString, QuantityMap, and Dimensions objects"""
@@ -84,7 +83,7 @@ class Quantity(float):
     @property
     def unit_str(self):
         """Unit string of quantity"""
-        return self._unit_string.unit_str
+        return self._unit_string
 
     @property
     def si_unit_str(self):
@@ -106,9 +105,51 @@ class Quantity(float):
         """Quantity map of quantity"""
         return self._quantity_map.quantity_map
 
-    def to():
-        """"""
-        pass
+    @property
+    def type(self):
+        """Type of quantity."""
+        return self._type
+
+    @type.setter
+    def type(self, new_type):
+        self._type = new_type
+
+    def to(self, to_unit_str: str) -> "Quantity":
+        """Perform quantity conversions.
+
+        Parameters
+        ----------
+        to_unit_str : str
+            Desired unit to be converted to.
+
+        Returns
+        -------
+        : Quantity
+            Quantity object containing desired quantity conversion.
+        """
+
+    def convert(self, to_sys: str) -> "Quantity":
+        """Perform unit system conversions.
+
+        Parameters
+        ----------
+        to_sys : str
+            Desired unit system to convert to.
+
+        Returns
+        -------
+        : Quantity
+            Quantity object containing desired unit system conversion.
+        """
+
+        if to_sys not in ["SI", "CGS", "BT"]:
+            raise ValueError(
+                f"'{to_sys}' is not a supported unit system. Only 'SI', 'CGS', 'BT' are supported."
+            )
+
+        new = Dimensions(dimensions=self.dimensions, unit_sys=to_sys)
+
+        return Quantity(value=self.value, unit_str=new.unit_str)
 
     def __str__(self):
         pass

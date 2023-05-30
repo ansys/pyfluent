@@ -11,7 +11,7 @@ class UnitsTable(object):
         self._derived_units: dict = self._data["derived_units"]
         self._multipliers: dict = self._data["multipliers"]
 
-    def _get_data(self):
+    def _get_data(self) -> dict:
         """Reads quantity data from json file.
 
         Returns
@@ -123,7 +123,7 @@ class UnitsTable(object):
         si_multiplier: float = 1.0,
         si_offset: float = 0.0,
     ) -> tuple:
-        """Compute the SI unit string, SI multiplier, SI offset and SI offset power of a unit string.
+        """Compute the SI unit string, SI multiplier, and SI offset.
 
         Parameters
         ----------
@@ -162,7 +162,7 @@ class UnitsTable(object):
 
                 if unit_term_power == 1.0:
                     si_unit_str += f"{self._si_map(unit_term)} "
-                else:
+                elif unit_term_power != 0.0:
                     si_unit_str += f"{self._si_map(unit_term)}^{unit_term_power} "
 
                 si_multiplier *= (
