@@ -65,9 +65,9 @@ class Quantity(float):
 
         self._si_unit_str = si_unit_str
         self._si_value = self.value * si_multiplier + si_offset
-        self._type = None
+        self._type = self._units_table.get_type(unit_str)
 
-    def _validate_matching_dimensions(self, __value: "Quantity" | float | int) -> bool:
+    def _validate_matching_dimensions(self, __value):
         """Validate dimensions of quantities.
 
         Parameters
@@ -282,3 +282,12 @@ class QuantityError(ValueError):
 
     def __str__(self):
         return f"'{self.from_unit}' and '{self.to_unit}' have incompatible dimensions."
+
+
+test = Quantity(1, "l")
+print(test.value, test.dimensions)
+
+import ansys.fluent.core.quantity as q
+
+t2 = q.Quantity(1, "l")
+print(t2.value, t2.get_dimensions_list())

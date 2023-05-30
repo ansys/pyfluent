@@ -101,8 +101,10 @@ class Dimensions(object):
                 dimensions[idx] += unit_term_power
 
             if unit_term in self._units_table.derived_units:
+                unit_term_power *= self._units_table.derived_units[unit_term]["factor"]
+
                 dimensions = self._unit_str_to_dim(
-                    unit_str=self._units_table.derived_units[unit_term],
+                    unit_str=self._units_table.derived_units[unit_term]["composition"],
                     power=unit_term_power,
                     dimensions=dimensions,
                 )

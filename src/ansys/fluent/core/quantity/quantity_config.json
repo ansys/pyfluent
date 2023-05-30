@@ -3,115 +3,115 @@
         "kg": {
             "type": "Mass",
             "factor": 1.0,
-            "offset": 0,
+            "offset": 0.0,
             "dimension_order": 1 
         },
         "g": {
             "type": "Mass",
             "factor": 0.001,
-            "offset": 0,
+            "offset": 0.0,
             "dimension_order": 1 
         },
         "lb": {
             "type": "Mass",
             "factor": 0.45359237,
-            "offset": 0,
+            "offset": 0.0,
             "dimension_order": 1 
         },
         "lbm": {
             "type": "Mass",
             "factor": 0.45359237,
-            "offset": 0,
+            "offset": 0.0,
             "dimension_order": 1 
         },
         "slug": {
             "type": "Mass",
             "factor": 14.59390293720637,
-            "offset": 0,
+            "offset": 0.0,
             "dimension_order": 1 
         },
         "m": {
             "type": "Length",
             "factor": 1.0,
-            "offset": 0,
+            "offset": 0.0,
             "dimension_order": 2 
 
         },
         "cm": {
             "type": "Length",
             "factor": 0.01,
-            "offset": 0,
+            "offset": 0.0,
             "dimension_order": 2
         },
         "ft": {
             "type": "Length",
             "factor": 0.30479999999999996,
-            "offset": 0,
+            "offset": 0.0,
             "dimension_order": 2
         },
         "in": {
             "type": "Length",
             "factor": 0.0254,
-            "offset": 0,
+            "offset": 0.0,
             "dimension_order": 2
         },
         "s": {
             "type": "Time",
             "factor": 1.0,
-            "offset": 0,
+            "offset": 0.0,
             "dimension_order": 3
         },
         "A": {
             "type": "Current",
             "factor": 1.0,
-            "offset": 0,
+            "offset": 0.0,
             "dimension_order": 8
         },
         "mol": {
             "type": "Chemical Amount",
             "factor": 1.0,
-            "offset": 0,
+            "offset": 0.0,
             "dimension_order": 6
         },
         "slugmol": {
             "type": "Chemical Amount",
             "factor": 14593.9,
-            "offset": 0,
+            "offset": 0.0,
             "dimension_order": 6
         },
         "cd": {
             "type": "Light",
             "factor": 1.0,
-            "offset": 0,
+            "offset": 0.0,
             "dimension_order": 7
         },
         "sr": {
             "type": "Solid Angle",
             "factor": 1.0,
-            "offset": 0,
+            "offset": 0.0,
             "dimension_order": 9
         },
         "radian": {
             "type": "Angle",
             "factor": 1.0,
-            "offset": 0,
+            "offset": 0.0,
             "dimension_order": 5
         },
         "degree": {
             "type": "Angle",
             "factor": 0.017453292519943295,
-            "offset": 0,
+            "offset": 0.0,
             "dimension_order": 5
         },
         "K": {
             "type": "Temperature",
             "factor": 1.0,
-            "offset": 0,
+            "offset": 0.0,
             "dimension_order": 4
         },
         "C": {
             "type": "Temperature",
-            "factor": 0,
+            "factor": 0.0,
             "offset": -273.15,
             "dimension_order": 4
         },
@@ -124,60 +124,127 @@
         "R": {
             "type": "Temperature",
             "factor": 1.8,
-            "offset": 0,
+            "offset": 0.0,
             "dimension_order": 4
         },
         "delta_K": {
             "type": "Temperature Difference",
             "factor": 1.0,
-            "offset": 0,
+            "offset": 0.0,
             "dimension_order": 4
         },
         "delta_C": {
             "type": "Temperature Difference",
-            "factor": 0,
-            "offset": 0,
+            "factor": 0.0,
+            "offset": 0.0,
             "dimension_order": 4
         },
         "delta_F": {
             "type": "Temperature Difference",
-            "factor": 0,
-            "offset": 0,
+            "factor": 0.0,
+            "offset": 0.0,
             "dimension_order": 4
         },
         "delta_R": {
             "type": "Temperature Difference",
-            "factor": 0,
-            "offset": 0,
+            "factor": 0.0,
+            "offset": 0.0,
             "dimension_order": 4
         }
     },
     "derived_units" : {
-        "N": "kg m s^-2",
-        "Pa": "N m^-2",
-        "W": "N m s^-1",
-        "J": "N m",
-        "V": "A ohm",
-        "farad": "N m V^-2",
-        "H": "N m A^-2",
-        "S": "ohm^-1",
-        "Wb": "N m A^-1",
-        "T": "Wb m^-2",
-        "dyne": "g cm s^-2",
-        "erg": "dyne cm",
-        "pdl": "lbm ft s^-2",
-        "BTU": "J",
-        "psi": "lbf in^-2",
-        "lbf": "slug ft s^-2",
-        "psf": "lbf ft^-2",
-        "ohm": "kg m^2 s^-3 A^-2",
-        "Hz": "s^-1",
-        "cal": "J",
-        "delta_K": "K",
-        "delta_C": "C",
-        "delta_F": "F",
-        "delta_R": "R",
-        "coulomb": "A s"
+        "N": {
+            "composition": "kg m s^-2",
+            "factor": 1.0
+        },
+        "Pa": {
+            "composition": "N m^-2",
+            "factor": 1.0
+        },
+        "W": {
+            "composition": "N m s^-1",
+            "factor": 1.0
+        },
+        "J": {
+            "composition": "N m",
+            "factor": 1.0
+        },
+        "V": {
+            "composition": "A ohm",
+            "factor": 1.0
+        },
+        "farad": {
+            "composition": "N m V^-2",
+            "factor": 1.0
+        },
+        "H": {
+            "composition": "N m A^-2",
+            "factor": 1.0
+        },
+        "S": {
+            "composition": "ohm^-1",
+            "factor": 1.0
+        },
+        "Wb": {
+            "composition": "N m A^-1",
+            "factor": 1.0
+        },
+        "T": {
+            "composition": "Wb m^-2",
+            "factor": 1.0
+        },
+        "dyne": {
+            "composition": "g cm s^-2",
+            "factor": 1.0
+        },
+        "erg": {
+            "composition": "dyne cm",
+            "factor": 1.0
+        },
+        "pdl": {
+            "composition": "lbm ft s^-2",
+            "factor": 1.0
+        },
+        "psi": {
+            "composition": "lbf in^-2",
+            "factor": 1.0
+        },
+        "lbf": {
+            "composition": "slug ft s^-2",
+            "factor": 1.0
+        },
+        "psf": {
+            "composition": "lbf ft^-2",
+            "factor": 1.0
+        },
+        "ohm": {
+            "composition": "kg m^2 s^-3 A^-2",
+            "factor": 1.0
+        },
+        "Hz": {
+            "composition": "s^-1",
+            "factor": 1.0
+        },
+        "l": {
+            "composition": "m^3",
+            "factor": 0.001
+        },
+        "gal": {
+            "composition": "m^3",
+            "factor": 0.0037854117839999993
+        },
+        "BTU": {
+            "composition": "J",
+            "factor": 1055.056
+        },
+        "cal": {
+            "composition": "J",
+            "factor": 4.184
+        },
+        "coulomb": {
+            "composition": "A s",
+            "factor": 1.0
+        }
     },
     "multipliers" :{
         "d": 0.1,

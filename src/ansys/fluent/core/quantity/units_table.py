@@ -175,8 +175,10 @@ class UnitsTable(object):
                 )
 
             if unit_term in self._derived_units:
+                si_multiplier *= self._derived_units[unit_term]["factor"]
+
                 si_unit_str, si_multiplier, si_offset = self.si_conversion(
-                    unit_str=self._derived_units[unit_term],
+                    unit_str=self._derived_units[unit_term]["composition"],
                     power=unit_term_power,
                     si_unit_str=si_unit_str,
                     si_multiplier=si_multiplier,
@@ -217,3 +219,25 @@ class UnitsTable(object):
                 unit_str += f"{term}^{power} "
 
         return unit_str
+
+    def get_type(self, unit_str: str) -> str:
+        """Returns unit string type.
+
+        Parameters
+        ----------
+        unit_str : str
+            Unit string of quantity.
+
+        Returns
+        -------
+        : str
+            Type of quantity.
+        """
+
+        if unit_str in self.fundamental_units:
+            return self.fundamental_units[unit_str]["type"]
+
+        if unit_str in self.derived_units:
+            return "Derived"
+
+        return "Composite"
