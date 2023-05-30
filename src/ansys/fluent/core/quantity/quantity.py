@@ -67,9 +67,24 @@ class Quantity(float):
         self._si_value = self.value * si_multiplier + si_offset
         self._type = None
 
-    def _update_all(self):
-        """Updates UnitString, QuantityMap, and Dimensions objects"""
-        pass
+    def _validate_matching_dimensions(self, __value: "Quantity" | float | int) -> bool:
+        """Validate dimensions of quantities.
+
+        Parameters
+        ----------
+        __value : Quantity | int | float
+            Value modifying current quantity object.
+        """
+        if isinstance(__value, Quantity) and (self.dimensions != __value.dimensions):
+            raise QuantityError(from_unit=self.unit_str, to_unit=__value.unit_str)
+        elif (
+            (all([dim == 0.0 for dim in self.dimensions]))
+            and (not isinstance(__value, Quantity))
+            and isinstance(__value, (float, int))
+        ):
+            raise TypeError(
+                f"Error: '{__value}' is incompatible with the current quantity object."
+            )
 
     @property
     def value(self):
@@ -126,10 +141,9 @@ class Quantity(float):
         if not isinstance(to_unit_str, str):
             raise TypeError("'to_unit_str' should be of 'str' type.")
 
-        new = Quantity(value=1, unit_str=to_unit_str)
+        new = Quantity(value=1.0, unit_str=to_unit_str)
 
-        if self.dimensions != new.dimensions:
-            raise QuantityError(from_unit=self.unit_str, to_unit=to_unit_str)
+        self._validate_matching_dimensions(new)
 
         new.value = (self.si_value / new.si_value) * self.value
 
@@ -159,58 +173,94 @@ class Quantity(float):
         return Quantity(value=self.value, unit_str=new.unit_str)
 
     def __str__(self):
-        pass
+        return f'({self.value}"{self.unit_str}")'
 
     def __repr__(self):
-        pass
+        return f'Quantity ({self.value}, "{self.unit_str}")'
 
     def __pow__(self, __value):
-        pass
+        temp_dimensions = [dim * __value for dim in self.dimensions]
+        new_si_value = self.si_value**__value
+
+        new_dimensions = Dimensions(dimensions=temp_dimensions)
+        return Quantity(value=new_si_value, unit_str=new_dimensions.unit_str)
 
     def __mul__(self, __value):
-        pass
+        if isinstance(__value, Quantity):
+            temp_dimensions = [
+                dim + __value.dimensions[idx] for idx, dim in enumerate(self.dimensions)
+            ]
+            new_si_value = self.si_value * __value.si_value
+
+            new_dimensions = Dimensions(dimensions=temp_dimensions)
+            return Quantity(value=new_si_value, unit_str=new_dimensions.unit_str)
+
+        if isinstance(__value, (float, int)):
+            return Quantity(value=self.si_value * __value, unit_str=self.si_unit_str)
 
     def __rmul__(self, __value):
-        pass
+        return self.__mul__(__value)
 
     def __truediv__(self, __value):
-        pass
+        if isinstance(__value, Quantity):
+            temp_dimensions = [
+                dim - __value.dimensions[idx] for idx, dim in enumerate(self.dimensions)
+            ]
+            new_si_value = self.si_value / __value.si_value
+
+            new_dimensions = Dimensions(dimensions=temp_dimensions)
+            return Quantity(value=new_si_value, unit_str=new_dimensions.unit_str)
+
+        if isinstance(__value, (float, int)):
+            return Quantity(value=self.si_value / __value, unit_str=self.si_unit_str)
 
     def __rtruediv__(self, __value):
-        pass
+        if not isinstance(__value, Quantity) and isinstance(__value, float):
+            return Quantity(__value / self._si_value, self._si_unit_str)
+        return __value / self
 
     def __add__(self, __value):
-        pass
+        self._validate_matching_dimensions(__value)
+        new_value = float(self) + float(__value)
+        return Quantity(value=new_value, unit_str=self.si_unit_str)
 
     def __radd__(self, __value):
-        pass
+        return Quantity(__value, "") + self
 
     def __sub__(self, __value):
-        pass
+        self._validate_matching_dimensions(__value)
+        new_value = float(self) - float(__value)
+        return Quantity(value=new_value, unit_str=self.si_unit_str)
 
     def __rsub__(self, __value):
-        pass
+        return Quantity(__value, "") - self
 
     def __neg__(self):
-        pass
+        return Quantity(-self.value, self.unit_str)
 
     def __gt__(self, __value):
-        pass
+        self._validate_matching_dimensions(__value)
+        return float(self) > float(__value)
 
     def __ge__(self, __value):
-        pass
+        self._validate_matching_dimensions(__value)
+        return float(self) >= float(__value)
 
     def __lt__(self, __value):
-        pass
+        self._validate_matching_dimensions(__value)
+        return float(self) < float(__value)
 
     def __le__(self, __value):
-        pass
+        self._validate_matching_dimensions(__value)
+        return float(self) <= float(__value)
 
     def __eq__(self, __value):
-        pass
+        self._validate_matching_dimensions(__value)
+        return float(self) == float(__value)
 
     def __neq__(self, __value):
-        pass
+        self._validate_matching_dimensions(__value)
+        return float(self) != float(__value)
 
 
 class QuantityError(ValueError):
