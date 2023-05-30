@@ -101,11 +101,6 @@ class Quantity(float):
         return self._dimensions.dimensions
 
     @property
-    def quantity_map(self):
-        """Quantity map of quantity"""
-        return self._quantity_map.quantity_map
-
-    @property
     def type(self):
         """Type of quantity."""
         return self._type
@@ -127,6 +122,18 @@ class Quantity(float):
         : Quantity
             Quantity object containing desired quantity conversion.
         """
+
+        if not isinstance(to_unit_str, str):
+            raise TypeError("'to_unit_str' should be of 'str' type.")
+
+        new = Quantity(value=1, unit_str=to_unit_str)
+
+        if self.dimensions != new.dimensions:
+            raise QuantityError(from_unit=self.unit_str, to_unit=to_unit_str)
+
+        new.value = (self.si_value / new.si_value) * self.value
+
+        return new
 
     def convert(self, to_sys: str) -> "Quantity":
         """Perform unit system conversions.
@@ -224,4 +231,4 @@ class QuantityError(ValueError):
         self.to_unit = to_unit
 
     def __str__(self):
-        return f"{self.from_unit} and {self.to_unit} have incompatible dimensions."
+        return f"'{self.from_unit}' and '{self.to_unit}' have incompatible dimensions."

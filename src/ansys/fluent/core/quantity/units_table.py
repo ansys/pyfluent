@@ -118,10 +118,10 @@ class UnitsTable(object):
     def si_conversion(
         self,
         unit_str: str,
-        power: float = 1.0,
-        si_unit_str: str = "",
-        si_multiplier: float = 1.0,
-        si_offset: float = 0.0,
+        power: float = None,
+        si_unit_str: str = None,
+        si_multiplier: float = None,
+        si_offset: float = None,
     ) -> tuple:
         """Compute the SI unit string, SI multiplier, and SI offset.
 
@@ -145,6 +145,11 @@ class UnitsTable(object):
         """
         if not unit_str:
             return
+
+        power = power or 1.0
+        si_unit_str = si_unit_str or ""
+        si_multiplier = si_multiplier or 1.0
+        si_offset = si_offset or 0.0
 
         for term in unit_str.split(" "):
             unit_multiplier, unit_term, unit_term_power = self.filter_unit_term(term)
