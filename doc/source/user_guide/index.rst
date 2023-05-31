@@ -208,6 +208,18 @@ You can control the global logging level at any time with:
 
 .. code:: python
 
-    import ansys.fluent.core as pyfluent
-    pyfluent.set_log_level("DEBUG") # by default, only errors are shown
+    from ansys.fluent.core import logging
 
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+
+    logger.debug("DEBUG STATEMENT")
+
+Logging levels:
+- CRITICAL
+- FATAL
+- ERROR
+- WARNING
+- INFO
+- DEBUG
+- NOTSET
