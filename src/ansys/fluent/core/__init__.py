@@ -77,3 +77,15 @@ DATAMODEL_USE_ATTR_CACHE = True
 
 # Whether stream and cache commands state
 DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
+
+# Whether to use datamodel events service
+USE_DATAMODEL_EVENTS_SERVICE = True
+
+# Whether to use transcript service
+USE_TRANSCRIPT_SERVICE = True
+
+# Whether to use events service
+USE_EVENTS_SERVICE = True
+
+# Whether to use monitors service
+USE_MONITORS_SERVICE = True

@@ -153,6 +153,13 @@ class FluentConnection:
             PyPIM. This instance will be deleted when calling
             ``Session.exit()``.
         """
+        from ansys.fluent.core import (
+            USE_DATAMODEL_EVENTS_SERVICE,
+            USE_EVENTS_SERVICE,
+            USE_MONITORS_SERVICE,
+            USE_TRANSCRIPT_SERVICE,
+        )
+
         self._data_valid = False
         self._channel_str = None
         if channel is not None:
@@ -199,22 +206,34 @@ class FluentConnection:
 
         self._batch_ops_service = BatchOpsService(self._channel, self._metadata)
 
-        self.transcript = Transcript(self._channel, self._metadata)
-
-        self._events_service = EventsService(self._channel, self._metadata)
-        self.events_manager = EventsManager(self._id, self._events_service)
-
-        self._monitors_service = MonitorsService(self._channel, self._metadata)
-        self.monitors_manager = MonitorsManager(self._id, self._monitors_service)
-
-        self.events_manager.register_callback(
-            "InitializedEvent", self.monitors_manager.refresh
-        )
-        self.events_manager.register_callback(
-            "DataReadEvent", self.monitors_manager.refresh
+        self.transcript = (
+            Transcript(self._channel, self._metadata)
+            if USE_TRANSCRIPT_SERVICE
+            else None
         )
 
-        self.events_manager.start()
+        if USE_EVENTS_SERVICE:
+            self._events_service = EventsService(self._channel, self._metadata)
+            self.events_manager = EventsManager(self._id, self._events_service)
+        else:
+            self.events_manager = None
+
+        if USE_MONITORS_SERVICE:
+            self._monitors_service = MonitorsService(self._channel, self._metadata)
+            self.monitors_manager = MonitorsManager(self._id, self._monitors_service)
+        else:
+            self.monitors_manager = None
+
+        if self.events_manager and self.monitors_manager:
+            self.events_manager.register_callback(
+                "InitializedEvent", self.monitors_manager.refresh
+            )
+            self.events_manager.register_callback(
+                "DataReadEvent", self.monitors_manager.refresh
+            )
+
+        if self.events_manager:
+            self.events_manager.start()
         self.datamodel_service_tui = DatamodelService_TUI(self._channel, self._metadata)
 
         self.meshing_queries_service = MeshingQueriesService(
@@ -223,8 +242,13 @@ class FluentConnection:
         self.meshing_queries = MeshingQueries(self.meshing_queries_service)
 
         self.datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
-        self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
-        self.datamodel_events.start()
+        self.datamodel_events = (
+            DatamodelEvents(self.datamodel_service_se)
+            if USE_DATAMODEL_EVENTS_SERVICE
+            else None
+        )
+        if self.datamodel_events:
+            self.datamodel_events.start()
         # self.datamodel_stream = DatamodelStream(self.datamodel_service_se)
         # self.datamodel_stream.start()
 
@@ -252,7 +276,7 @@ class FluentConnection:
 
         self._cleanup_on_exit = cleanup_on_exit
 
-        if start_transcript:
+        if start_transcript and self.transcript:
             self.transcript.start()
 
         self._remote_instance = remote_instance
@@ -298,12 +322,14 @@ class FluentConnection:
     ) -> None:
         """Start streaming of Fluent transcript."""
         warnings.warn("Use -> transcript.start()", DeprecationWarning)
-        self.transcript.start(file_path, write_to_stdout)
+        if self.transcript:
+            self.transcript.start(file_path, write_to_stdout)
 
     def stop_transcript(self) -> None:
         """Stop streaming of Fluent transcript."""
         warnings.warn("Use -> transcript.stop()", DeprecationWarning)
-        self.transcript.stop()
+        if self.transcript:
+            self.transcript.stop()
 
     def start_journal(self, file_path: str):
         """Executes tui command to start journal."""
@@ -342,10 +368,14 @@ class FluentConnection:
     ) -> None:
         if channel:
             datamodel_service_se.unsubscribe_all_events()
-            datamodel_events.stop()
-            transcript.stop()
-            events_manager.stop()
-            monitors_manager.stop()
+            if datamodel_events:
+                datamodel_events.stop()
+            if transcript:
+                transcript.stop()
+            if events_manager:
+                events_manager.stop()
+            if monitors_manager:
+                monitors_manager.stop()
             if cleanup_on_exit:
                 try:
                     scheme_eval.exec(("(exit-server)",))
