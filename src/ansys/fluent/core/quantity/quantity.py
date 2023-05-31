@@ -46,7 +46,6 @@ class Quantity(float):
     """
 
     def __new__(cls, value, unit_str=None, quantity_map=None, dimensions=None):
-        """Parameter pre-check before Quantity initialization."""
         if (
             (unit_str and quantity_map)
             or (unit_str and dimensions)
@@ -56,7 +55,25 @@ class Quantity(float):
                 "Quantity only accepts 1 of the following: unit_str, quantity_map, dimensions"
             )
 
-        return float.__new__(cls)
+        _units_table = UnitsTable()
+        _value = float(value)
+
+        if unit_str:
+            _unit_string = unit_str
+            _dimensions = Dimensions(unit_str=unit_str)
+
+        if quantity_map:
+            unit_str = QuantityMap(quantity_map).unit_str
+            _unit_string = unit_str
+            _dimensions = Dimensions(unit_str=unit_str)
+
+        if dimensions:
+            _dimensions = Dimensions(dimensions=dimensions)
+            _unit_string = _dimensions.unit_str
+
+        _, si_multiplier, si_offset = _units_table.si_conversion(unit_str=_unit_string)
+
+        return float.__new__(cls, ((_value + si_offset) * si_multiplier))
 
     def __init__(self, value, unit_str=None, quantity_map=None, dimensions=None):
         self._units_table = UnitsTable()
@@ -80,7 +97,7 @@ class Quantity(float):
         )
 
         self._si_unit_str = si_unit_str[:-1]
-        self._si_value = self.value * si_multiplier + si_offset
+        self._si_value = (self.value + si_offset) * si_multiplier
         self._type = self._units_table.get_type(unit_str)
 
     def _validate_matching_dimensions(self, __value):
@@ -157,11 +174,18 @@ class Quantity(float):
         if not isinstance(to_unit_str, str):
             raise TypeError("'to_unit_str' should be of 'str' type.")
 
-        new = Quantity(value=1.0, unit_str=to_unit_str)
+        _, si_multiplier, si_offset = self._units_table.si_conversion(to_unit_str)
+
+        if any([temp in to_unit_str for temp in ["C", "F", "R"]]):
+            new_value = (self.si_value * si_multiplier**-1) - si_offset
+        else:
+            new_value = (self.si_value * self.value) / (
+                (self.value + si_offset) * si_multiplier
+            )
+
+        new = Quantity(value=new_value, unit_str=to_unit_str)
 
         self._validate_matching_dimensions(new)
-
-        new.value = (self.si_value / new.si_value) * self.value
 
         return new
 
@@ -467,7 +491,7 @@ class UnitsTable(object):
         Returns
         -------
         : tuple
-            Tuple containing si_unit_string and si_multiplier.
+            Tuple containing si_unit_string, si_multiplier and si_offset.
         """
         if not unit_str:
             return
@@ -603,8 +627,7 @@ class Dimensions(object):
             self._dimensions = self._unit_str_to_dim(unit_str=unit_str)
 
         if dimensions:
-            self._dimensions = dimensions
-            self._unit_str = self._dim_to_unit_str(
+            self._dimensions, self._unit_str = self._dim_to_unit_str(
                 dimensions=dimensions, unit_sys=unit_sys
             )
 
@@ -638,7 +661,7 @@ class Dimensions(object):
             elif dim != 0.0:
                 unit_str += f"{sys_order[unit_sys][idx]}^{dim} "
 
-        return unit_str[:-1]
+        return dimensions, unit_str[:-1]
 
     def _unit_str_to_dim(
         self, unit_str: str, power: float = None, dimensions: list = None
@@ -747,7 +770,7 @@ class QuantityMap(object):
                 elif unit_term_power != 0.0:
                     unit_str += f"{unit_term}^{unit_term_power} "
 
-        return self._units_table.condense(unit_str=unit_str)
+        return self._units_table.condense(unit_str=unit_str)[:-1]
 
     @property
     def unit_str(self):
