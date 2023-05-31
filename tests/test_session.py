@@ -245,15 +245,17 @@ def test_journal_creation(new_mesh_session):
     prev_stat = Path(file_path).stat()
     prev_mtime = prev_stat.st_mtime
     prev_size = prev_stat.st_size
+    print(f"prev_stat: {prev_stat}")
+
+    print("Waiting")
+    time.sleep(1)
 
     session = new_mesh_session
     session.journal.start(file_path)
-    time.sleep(1)
     session = session.switch_to_solver()
-    time.sleep(1)
     session.journal.stop()
-    time.sleep(1)
     new_stat = Path(file_path).stat()
+    print(f"new_stat: {new_stat}")
     assert new_stat.st_mtime > prev_mtime
     assert new_stat.st_size > prev_size
 
