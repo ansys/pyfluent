@@ -10,7 +10,7 @@ from ansys.fluent.core.meta import (
     PyLocalPropertyMeta,
 )
 
-logger = logging.getLogger("pyfluent_post_objects")
+logger = logging.getLogger("pyfluent.post_objects")
 
 
 class BasePostObjectDefn:

@@ -20,8 +20,8 @@ from ansys.fluent.core.utils.async_execution import asynchronous
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 from ansys.fluent.core.workflow import WorkflowWrapper
 
-tui_logger = logging.getLogger("pyfluent_tui")
-datamodel_logger = logging.getLogger("pyfluent_datamodel")
+tui_logger = logging.getLogger("pyfluent.tui")
+datamodel_logger = logging.getLogger("pyfluent.datamodel")
 
 
 class Solver(BaseSession):

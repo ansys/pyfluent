@@ -75,8 +75,8 @@ Meta
 
 Logging
 #######
-.. autofunction:: ansys.fluent.core.list_loggers
-.. autofunction:: ansys.fluent.core.set_global_log_level
+.. automodule:: ansys.fluent.core.logging
+    :members:
 
 .. currentmodule:: ansys.fluent.core
 

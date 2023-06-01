@@ -1,12 +1,28 @@
 """A package providing Fluent's Solver and Meshing capabilities in Python."""
 
-import logging.config
 import os
 import pydoc
-from typing import Union
 
 import appdirs
-import yaml
+
+# Logging has to be set up before importing other PyFluent modules
+import ansys.fluent.core.logging as pyfluent_logging
+
+pyfluent_logging.root_config()
+
+env_logging_level = os.getenv("PYFLUENT_LOGGING")
+if env_logging_level:
+    if isinstance(env_logging_level, str):
+        if env_logging_level.isdigit():
+            env_logging_level = int(env_logging_level)
+        else:
+            env_logging_level = env_logging_level.upper()
+    if env_logging_level in [0, "OFF"] or pyfluent_logging.is_active():
+        pass
+    else:
+        print("PYFLUENT_LOGGING environment variable found, enabling logging...")
+        pyfluent_logging.enable(env_logging_level)
+
 
 from ansys.fluent.core._version import __version__  # noqa: F401
 from ansys.fluent.core.launcher.launcher import (  # noqa: F401
@@ -45,87 +61,11 @@ def version_info() -> str:
     return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
 
-def set_global_log_level(level: Union[str, int]) -> None:
-    """Method changing the levels of all PyFluent loggers.
-
-    Parameters
-    ----------
-    level : str or int
-        Specified logging level to set PyFluent loggers to. See logging levels in
-        https://docs.python.org/3/library/logging.html#logging-levels
-
-    Examples
-    --------
-    >>> import ansys.fluent.core as pyfluent
-    >>> pyfluent.set_global_log_level(10)
-
-    or
-
-    >>> pyfluent.set_global_log_level("DEBUG")
-
-    Notes
-    -------
-    By default loggers are set to WARNING.
-    """
-    if isinstance(level, str):
-        if level.isdigit():
-            level = int(level)
-    print(f"Setting PyFluent global logging level to {level}.")
-    pyfluent_loggers = list_loggers()
-    for name in pyfluent_loggers:
-        logging.getLogger(name).setLevel(level)
-
-
-def list_loggers():
-    """List with all PyFluent loggers.
-
-    Returns
-    -------
-    list of str
-        Each list element is a PyFluent logger name that can be controlled with logging.getLogger().
-
-    Examples
-    --------
-    >>> import ansys.fluent.core as pyfluent
-    >>> import logging
-    >>> pyfluent.list_loggers()
-    ['pyfluent_general', 'pyfluent_launcher', 'pyfluent_networking', ...]
-    >>> logger = logging.getLogger('pyfluent_networking')
-    >>> logger.setLevel("DEBUG")
-
-    Notes
-    -------
-    By default loggers are set to WARNING.
-    """
-    logger_dict = logging.root.manager.loggerDict
-    pyfluent_loggers = []
-    for name in logger_dict:
-        if name.startswith("pyfluent"):
-            pyfluent_loggers.append(name)
-    return pyfluent_loggers
-
-
-# Configure the logging system
-file_path = os.path.abspath(__file__)
-file_dir = os.path.dirname(file_path)
-yaml_path = os.path.join(file_dir, "logging_config.yaml")
-
-with open(yaml_path, "rt") as f:
-    config = yaml.safe_load(f)
-
-logging.config.dictConfig(config)
-print(f"PyFluent logging file in {os.path.join(os.getcwd(),'pyfluent.log')}")
-env_logging_level = os.getenv("PYFLUENT_LOGGING")
-if env_logging_level:
-    print(
-        "PYFLUENT_LOGGING environment variable found, setting global logging level..."
-    )
-    set_global_log_level(env_logging_level)
-
 # Setup data directory
 USER_DATA_PATH = appdirs.user_data_dir(appname="ansys_fluent_core", appauthor="Ansys")
 EXAMPLES_PATH = os.path.join(USER_DATA_PATH, "examples")
 
+# For Sphinx documentation build
 BUILDING_GALLERY = False
 
 # Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS

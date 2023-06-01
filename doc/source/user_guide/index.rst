@@ -202,24 +202,43 @@ event types via the ``events_manager`` attribute of a solution mode session:
 
 For more information, see :ref:`ref_events`.
 
-Logging controls
-----------------
-Loggers are by default set to show messages of level warning and above.
-See the possible logging level values in
-`<https://docs.python.org/3/library/logging.html#logging-levels>`_.
-The global logging level of PyFluent can be controlled with:
+Logging to file and debugging
+-----------------------------
+PyFluent logging to file is by default disabled. Logging can be enabled with:
 
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    pyfluent.set_global_log_level("DEBUG")
+    pyfluent.logging.enable()
 
-the last command being equivalent to ``pyfluent.set_global_log_level(10)``.
+the last command being equivalent to ``pyfluent.logging.enable('DEBUG')``,
+using the default PyFluent logging level. See the possible logging level values in
+`<https://docs.python.org/3/library/logging.html#logging-levels>`_.
 
-Global logging can also be controlled through the environment variable
-``PYFLUENT_LOGGING`` which can be set for example to values ``"DEBUG"`` or ``10``.
+The global logging level of PyFluent, after logging has been enabled,
+can also be controlled with:
 
-See also :func:`list_loggers() <ansys.fluent.core.list_loggers>` and
-:func:`set_global_log_level() <ansys.fluent.core.set_global_log_level>`.
+.. code:: python
+
+    pyfluent.logging.set_global_level('DEBUG')
+
+which is equivalent to ``pyfluent.logging.set_global_level(10)``.
+
+See also :func:`ansys.fluent.core.logging.enable`,
+:func:`ansys.fluent.core.logging.list_loggers` and
+:func:`ansys.fluent.core.logging.set_global_level`.
+
+PyFluent loggers use the standard Python logging library, for more details see
+`<https://docs.python.org/3/library/logging.html>`_.
+
+Environment variable
+~~~~~~~~~~~~~~~~~~~~
+Global logging can also be enabled automatically on PyFluent startup through the
+environment variable ``PYFLUENT_LOGGING``, which can be set for example
+to values ``DEBUG`` or ``10``. Setting ``PYFLUENT_LOGGING`` to ``0`` or ``OFF`` does
+not initialize logging to file on startup, the same behavior as if this variable was
+not set.
+
+
 
 

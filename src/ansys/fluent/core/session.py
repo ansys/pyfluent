@@ -19,7 +19,7 @@ try:
 except Exception:
     root = Any
 
-datamodel_logger = logging.getLogger("pyfluent_datamodel")
+datamodel_logger = logging.getLogger("pyfluent.datamodel")
 
 
 def _parse_server_info_file(filename: str):

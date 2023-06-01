@@ -9,9 +9,9 @@ from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL, _CODEGEN_MS
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 from ansys.fluent.core.workflow import WorkflowWrapper
 
-pyfluent_logger = logging.getLogger("pyfluent_general")
-datamodel_logger = logging.getLogger("pyfluent_datamodel")
-tui_logger = logging.getLogger("pyfluent_tui")
+pyfluent_logger = logging.getLogger("pyfluent.general")
+datamodel_logger = logging.getLogger("pyfluent.datamodel")
+tui_logger = logging.getLogger("pyfluent.tui")
 
 
 class BaseMeshing:

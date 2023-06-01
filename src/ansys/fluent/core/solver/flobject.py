@@ -29,7 +29,7 @@ import weakref
 
 from .error_message import allowed_name_error_message, allowed_values_error
 
-settings_logger = logging.getLogger("pyfluent_settings_api")
+settings_logger = logging.getLogger("pyfluent.settings_api")
 
 # Type hints
 RealType = NewType("real", Union[float, str])  # constant or expression

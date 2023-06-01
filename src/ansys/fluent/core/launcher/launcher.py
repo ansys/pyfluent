@@ -27,7 +27,7 @@ import ansys.platform.instancemanagement as pypim
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
-logger = logging.getLogger("pyfluent_launcher")
+logger = logging.getLogger("pyfluent.launcher")
 
 
 def _is_windows():

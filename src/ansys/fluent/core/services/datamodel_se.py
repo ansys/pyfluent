@@ -18,7 +18,7 @@ from ansys.fluent.core.services.streaming import StreamingService
 
 Path = List[Tuple[str, str]]
 
-logger = logging.getLogger("pyfluent_datamodel")
+logger = logging.getLogger("pyfluent.datamodel")
 
 
 class Attribute(Enum):
