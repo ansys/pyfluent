@@ -128,7 +128,7 @@ def list_loggers():
     <Logger pyfluent.networking (ERROR)>
 
     Notes
-    _____
+    -----
     PyFluent loggers use the standard Python logging library, for more details
     see https://docs.python.org/3/library/logging.html#logger-objects
     """

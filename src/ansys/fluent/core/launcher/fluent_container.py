@@ -59,8 +59,8 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
                 f"test_name={test_name}",
                 "--workdir",
                 f"{mounted_to}",
-                "--shm-size",  # controls the amount of memory allocated, useful for debugging
-                "512MiB",
+                # "--shm-size",  # controls the amount of memory allocated, useful for debugging
+                # "512MiB",
                 f"ghcr.io/ansys/pyfluent:{image_tag}",
                 "-gu",
                 f"-sifile={container_sifile}",
