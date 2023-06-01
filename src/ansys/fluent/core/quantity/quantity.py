@@ -58,14 +58,12 @@ class Quantity(float):
         _units_table = UnitsTable()
         _value = float(value)
 
-        if unit_str:
+        if unit_str or unit_str == "":
             _unit_string = unit_str
-            _dimensions = Dimensions(unit_str=unit_str)
 
         if quantity_map:
             unit_str = QuantityMap(quantity_map).unit_str
             _unit_string = unit_str
-            _dimensions = Dimensions(unit_str=unit_str)
 
         if dimensions:
             _dimensions = Dimensions(dimensions=dimensions)
@@ -79,7 +77,7 @@ class Quantity(float):
         self._units_table = UnitsTable()
         self._value = float(value)
 
-        if unit_str:
+        if unit_str or unit_str == "":
             self._unit_string = unit_str
             self._dimensions = Dimensions(unit_str=unit_str)
 
@@ -98,9 +96,9 @@ class Quantity(float):
 
         self._si_unit_str = si_unit_str[:-1]
         self._si_value = (self.value + si_offset) * si_multiplier
-        self._type = self._units_table.get_type(unit_str)
+        self._type = self._units_table.get_type(self._unit_string)
 
-    def _validate_matching_dimensions(self, __value):
+    def _validate_compatibility(self, __value):
         """Validate dimensions of quantities.
 
         Parameters
@@ -108,10 +106,11 @@ class Quantity(float):
         __value : Quantity | int | float
             Value modifying current quantity object.
         """
+
         if isinstance(__value, Quantity) and (self.dimensions != __value.dimensions):
             raise QuantityError(from_unit=self.unit_str, to_unit=__value.unit_str)
         elif (
-            (all([dim == 0.0 for dim in self.dimensions]))
+            (any([dim != 0.0 for dim in self.dimensions]))
             and (not isinstance(__value, Quantity))
             and isinstance(__value, (float, int))
         ):
@@ -176,16 +175,17 @@ class Quantity(float):
 
         _, si_multiplier, si_offset = self._units_table.si_conversion(to_unit_str)
 
-        if any([temp in to_unit_str for temp in ["C", "F", "R"]]):
-            new_value = (self.si_value * si_multiplier**-1) - si_offset
+        new_type = self._units_table.get_type(to_unit_str)
+
+        if new_type in ["Temperature", "Temperature Difference"]:
+            new_value = (self.si_value / si_multiplier) - si_offset
+
         else:
-            new_value = (self.si_value * self.value) / (
-                (self.value + si_offset) * si_multiplier
-            )
+            new_value = self.si_value / si_multiplier
 
         new = Quantity(value=new_value, unit_str=to_unit_str)
 
-        self._validate_matching_dimensions(new)
+        self._validate_compatibility(new)
 
         return new
 
@@ -260,7 +260,7 @@ class Quantity(float):
         return __value / self
 
     def __add__(self, __value):
-        self._validate_matching_dimensions(__value)
+        self._validate_compatibility(__value)
         new_value = float(self) + float(__value)
         return Quantity(value=new_value, unit_str=self.si_unit_str)
 
@@ -268,7 +268,7 @@ class Quantity(float):
         return Quantity(__value, "") + self
 
     def __sub__(self, __value):
-        self._validate_matching_dimensions(__value)
+        self._validate_compatibility(__value)
         new_value = float(self) - float(__value)
         return Quantity(value=new_value, unit_str=self.si_unit_str)
 
@@ -279,27 +279,27 @@ class Quantity(float):
         return Quantity(-self.value, self.unit_str)
 
     def __gt__(self, __value):
-        self._validate_matching_dimensions(__value)
+        self._validate_compatibility(__value)
         return float(self) > float(__value)
 
     def __ge__(self, __value):
-        self._validate_matching_dimensions(__value)
+        self._validate_compatibility(__value)
         return float(self) >= float(__value)
 
     def __lt__(self, __value):
-        self._validate_matching_dimensions(__value)
+        self._validate_compatibility(__value)
         return float(self) < float(__value)
 
     def __le__(self, __value):
-        self._validate_matching_dimensions(__value)
+        self._validate_compatibility(__value)
         return float(self) <= float(__value)
 
     def __eq__(self, __value):
-        self._validate_matching_dimensions(__value)
+        self._validate_compatibility(__value)
         return float(self) == float(__value)
 
     def __neq__(self, __value):
-        self._validate_matching_dimensions(__value)
+        self._validate_compatibility(__value)
         return float(self) != float(__value)
 
 
@@ -493,9 +493,8 @@ class UnitsTable(object):
         : tuple
             Tuple containing si_unit_string, si_multiplier and si_offset.
         """
-        if not unit_str:
-            return
 
+        unit_str = unit_str if unit_str else " "
         power = power or 1.0
         si_unit_str = si_unit_str or ""
         si_multiplier = si_multiplier or 1.0
@@ -590,6 +589,9 @@ class UnitsTable(object):
         if unit_str in self.derived_units:
             return "Derived"
 
+        if any([temp in unit_str for temp in ["K", "C", "F", "R"]]):
+            return "Temperature Difference"
+
         return "Composite"
 
 
@@ -619,8 +621,8 @@ class Dimensions(object):
         self, unit_str: str = None, dimensions: list = None, unit_sys: str = None
     ):
         self._units_table = UnitsTable()
-
         unit_sys = unit_sys or "SI"
+        unit_str = unit_str if unit_str else " "
 
         if unit_str:
             self._unit_str = unit_str

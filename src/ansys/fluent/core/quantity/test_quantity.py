@@ -1,3 +1,5 @@
+import math
+
 import pytest
 import quantity as q
 
@@ -60,11 +62,11 @@ def test_to_8():
     assert to.unit_str == "mm"
 
 
-# def test_to_10():
-#     v = q.Quantity(100000.0, "Pa")
-#     to = v.to("kPa")
-#     assert to.value == 100.0
-#     assert to.unit_str == "kPa"
+def test_to_10():
+    v = q.Quantity(100000.0, "Pa")
+    to = v.to("kPa")
+    assert to.value == 100.0
+    assert to.unit_str == "kPa"
 
 
 def test_to_11():
@@ -244,11 +246,11 @@ def test_to_35():
     assert to.unit_str == "m^3"
 
 
-# def test_to_36():
-#     v = q.Quantity(1.0, "BTU lb^-1 R^-1")
-#     to = v.to("J kg^-1 K^-1")
-#     assert to.value == pytest.approx(4186.8161854, DELTA)
-#     assert to.unit_str == "J kg^-1 K^-1"
+def test_to_36():
+    v = q.Quantity(1.0, "BTU lb^-1 R^-1")
+    to = v.to("J kg^-1 K^-1")
+    assert to.value == pytest.approx(4186.8161854, DELTA)
+    assert to.unit_str == "J kg^-1 K^-1"
 
 
 # def test_to_37():
@@ -293,15 +295,15 @@ def test_convert_42():
     assert convert.unit_str == "R slugmol"
 
 
-# def test_math_43():
-#     deg = q.Quantity(90, "degree")
-#     assert math.sin(deg) == 1.0
+def test_math_43():
+    deg = q.Quantity(90, "degree")
+    assert math.sin(deg) == 1.0
 
-#     rad = q.Quantity(math.pi / 2, "radian")
-#     assert math.sin(rad) == 1.0
+    rad = q.Quantity(math.pi / 2, "radian")
+    assert math.sin(rad) == 1.0
 
-#     root = q.Quantity(100.0, "")
-#     assert math.sqrt(root) == 10.0
+    root = q.Quantity(100.0, "")
+    assert math.sqrt(root) == 10.0
 
 
 def test_subtraction_44():
@@ -327,16 +329,16 @@ def test_pow_45():
     assert float(q2) ** 2 == 25.0
 
 
-# def test_eq_46():
-#     q1 = q.Quantity(10.0, "m s^-1")
-#     q2 = q.Quantity(5.0, "m s^-1")
-#     q3 = q.Quantity(10.0, "m s^-1")
-#     q4 = q.Quantity(10.0, "")
+def test_eq_46():
+    q1 = q.Quantity(10.0, "m s^-1")
+    q2 = q.Quantity(5.0, "m s^-1")
+    q3 = q.Quantity(10.0, "m s^-1")
+    q4 = q.Quantity(10.0, "")
 
-#     assert q1 != q2
-#     assert q1 == q3
-#     assert float(q1) == 10.0
-#     assert q4 == 10.0
+    assert q1 != q2
+    assert q1 == q3
+    assert float(q1) == 10.0
+    assert q4 == 10.0
 
 
 def test_rdiv_47():
@@ -349,124 +351,124 @@ def test_rdiv_47():
     assert 2.0 / float(q1) == 0.2
 
 
-# def test_power_56():
-#     qt = q.Quantity(5.0, "m^0")
-#     qtm = qt * 2
+def test_power_56():
+    qt = q.Quantity(5.0, "m^0")
+    qtm = qt * 2
 
-#     assert qtm.value == 10.0
-#     assert qtm.unit_str == ""
-
-
-# def test_ge_57():
-#     x = q.Quantity(10.5, "cm")
-#     y = q.Quantity(10.5, "m")
-#     z = q.Quantity(10.5, "g")
-#     r = q.Quantity(10.5, "")
-
-#     assert y >= x
-#     assert 15.7 >= r
-#     assert r >= 7.8
-
-#     with pytest.raises(ValueError) as e_info:
-#         assert x >= z
-#         assert x >= y
-#         assert 5.0 >= r
-
-#     with pytest.raises(TypeError) as e_info:
-#         assert x >= 5.0
+    assert qtm.value == 10.0
+    assert qtm.unit_str == ""
 
 
-# def test_gt_59():
-#     x = q.Quantity(10.5, "cm")
-#     y = q.Quantity(10.5, "m")
-#     z = q.Quantity(10.5, "g")
-#     r = q.Quantity(10.5, "")
+def test_ge_57():
+    x = q.Quantity(10.5, "cm")
+    y = q.Quantity(10.5, "m")
+    z = q.Quantity(10.5, "g")
+    r = q.Quantity(10.5, "")
 
-#     assert y > x
-#     assert 15.7 > r
-#     assert r > 7.8
+    assert y >= x
+    assert 15.7 >= r
+    assert r >= 7.8
 
-#     with pytest.raises(ValueError) as e_info:
-#         assert x > z
-#         assert x > y
-#         assert 5.0 > r
+    with pytest.raises(ValueError) as e_info:
+        assert x >= z
+        assert x >= y
+        assert 5.0 >= r
 
-#     with pytest.raises(TypeError) as e_info:
-#         assert x > 5.0
-
-
-# def test_lt_60():
-#     x = q.Quantity(10.5, "cm")
-#     y = q.Quantity(10.5, "m")
-#     z = q.Quantity(10.5, "g")
-#     r = q.Quantity(10.5, "")
-
-#     assert x < y
-#     assert r < 15.7
-#     assert 7.8 < r
-
-#     with pytest.raises(ValueError) as e_info:
-#         assert z < x
-#         assert y < x
-#         assert r < 0.5
-
-#     with pytest.raises(TypeError) as e_info:
-#         assert 5.0 < x
+    with pytest.raises(TypeError) as e_info:
+        assert x >= 5.0
 
 
-# def test_le_61():
-#     x = q.Quantity(10.5, "cm")
-#     y = q.Quantity(10.5, "m")
-#     z = q.Quantity(10.5, "g")
-#     r = q.Quantity(10.5, "")
+def test_gt_59():
+    x = q.Quantity(10.5, "cm")
+    y = q.Quantity(10.5, "m")
+    z = q.Quantity(10.5, "g")
+    r = q.Quantity(10.5, "")
 
-#     assert x <= y
-#     assert r <= 15.7
-#     assert 7.8 <= r
+    assert y > x
+    assert 15.7 > r
+    assert r > 7.8
 
-#     with pytest.raises(ValueError) as e_info:
-#         assert z <= x
-#         assert y <= x
-#         assert r <= 0.5
+    with pytest.raises(ValueError) as e_info:
+        assert x > z
+        assert x > y
+        assert 5.0 > r
 
-#     with pytest.raises(TypeError) as e_info:
-#         assert 5.0 <= x
-
-
-# def test_eq_62():
-#     x = q.Quantity(10.5, "cm")
-#     y = q.Quantity(10.5, "m")
-#     z = q.Quantity(10.5, "g")
-#     r = q.Quantity(10.5, "")
-
-#     l = q.Quantity(10.5, "cm")
-#     m = q.Quantity(10.5, "m")
-#     n = q.Quantity(10.5, "")
-
-#     assert x == l
-#     assert y == m
-#     assert r == n
-
-#     with pytest.raises(ValueError) as e_info:
-#         assert z == x
-#         assert y == x
-#         assert r == 0.5
-
-#     with pytest.raises(TypeError) as e_info:
-#         assert 5.0 == x
+    with pytest.raises(TypeError) as e_info:
+        assert x > 5.0
 
 
-# def test_neq_63():
-#     x = q.Quantity(10.5, "cm")
-#     y = q.Quantity(10.5, "m")
-#     z = q.Quantity(10.5, "g")
-#     r = q.Quantity(10.5, "")
+def test_lt_60():
+    x = q.Quantity(10.5, "cm")
+    y = q.Quantity(10.5, "m")
+    z = q.Quantity(10.5, "g")
+    r = q.Quantity(10.5, "")
 
-#     assert y != x
-#     assert x != y
+    assert x < y
+    assert r < 15.7
+    assert 7.8 < r
 
-#     assert r != 0.5
-#     assert 0.5 != r
+    with pytest.raises(ValueError) as e_info:
+        assert z < x
+        assert y < x
+        assert r < 0.5
+
+    with pytest.raises(TypeError) as e_info:
+        assert 5.0 < x
+
+
+def test_le_61():
+    x = q.Quantity(10.5, "cm")
+    y = q.Quantity(10.5, "m")
+    z = q.Quantity(10.5, "g")
+    r = q.Quantity(10.5, "")
+
+    assert x <= y
+    assert r <= 15.7
+    assert 7.8 <= r
+
+    with pytest.raises(ValueError) as e_info:
+        assert z <= x
+        assert y <= x
+        assert r <= 0.5
+
+    with pytest.raises(TypeError) as e_info:
+        assert 5.0 <= x
+
+
+def test_eq_62():
+    x = q.Quantity(10.5, "cm")
+    y = q.Quantity(10.5, "m")
+    z = q.Quantity(10.5, "g")
+    r = q.Quantity(10.5, "")
+
+    l = q.Quantity(10.5, "cm")
+    m = q.Quantity(10.5, "m")
+    n = q.Quantity(10.5, "")
+
+    assert x == l
+    assert y == m
+    assert r == n
+
+    with pytest.raises(ValueError) as e_info:
+        assert z == x
+        assert y == x
+        assert r == 0.5
+
+    with pytest.raises(TypeError) as e_info:
+        assert 5.0 == x
+
+
+def test_neq_63():
+    x = q.Quantity(10.5, "cm")
+    y = q.Quantity(10.5, "m")
+    z = q.Quantity(10.5, "g")
+    r = q.Quantity(10.5, "")
+
+    assert y != x
+    assert x != y
+
+    assert r != 0.5
+    assert 0.5 != r
 
 
 def test_tempK_48():
@@ -486,7 +488,7 @@ def test_tempK_48():
 
 
 # def test_temp_49():
-#     mk = q.Quantity(-40_000, "mK")
+#     mk = q.Quantity(-40000, "mK")
 #     uc = mk.to("uC^1")
 #     assert uc.value == -3.13150000e08
 
@@ -539,77 +541,77 @@ def test_temp_53():
     assert k.value == pytest.approx(255.927, DELTA)
 
 
-# def test_temp_54():
-#     hc = q.Quantity(1.0, "J g^-1 K^-1")
+def test_temp_54():
+    hc = q.Quantity(1.0, "J g^-1 K^-1")
 
-#     hcto1 = hc.to("kJ kg^-1 K^-1")
+    hcto1 = hc.to("kJ kg^-1 K^-1")
 
-#     assert hcto1.value == pytest.approx(1.0, DELTA)
-#     assert hcto1.unit == "kJ kg^-1 K^-1"
+    assert hcto1.value == pytest.approx(1.0, DELTA)
+    assert hcto1.unit_str == "kJ kg^-1 K^-1"
 
-#     hcto2 = hc.to("J kg^-1 C^-1")
+    hcto2 = hc.to("J kg^-1 C^-1")
 
-#     assert hcto2.value == pytest.approx(1000.0, DELTA)
-#     assert hcto2.unit == "J kg^-1 C^-1"
+    assert hcto2.value == pytest.approx(1000.0, DELTA)
+    assert hcto2.unit_str == "J kg^-1 C^-1"
 
-#     hcto3 = hc.to("kJ kg^-1 C^-1")
+    hcto3 = hc.to("kJ kg^-1 C^-1")
 
-#     assert hcto3.value == pytest.approx(1.0, DELTA)
-#     assert hcto3.unit == "kJ kg^-1 C^-1"
+    assert hcto3.value == pytest.approx(1.0, DELTA)
+    assert hcto3.unit_str == "kJ kg^-1 C^-1"
 
-#     hcto4 = hc.to("cal g^-1 C^-1")
+    hcto4 = hc.to("cal g^-1 C^-1")
 
-#     assert hcto4.value == pytest.approx(0.2390057, DELTA)
-#     assert hcto4.unit == "cal g^-1 C^-1"
+    assert hcto4.value == pytest.approx(0.2390057, DELTA)
+    assert hcto4.unit_str == "cal g^-1 C^-1"
 
-#     hcto5 = hc.to("cal kg^-1 C^-1")
+    hcto5 = hc.to("cal kg^-1 C^-1")
 
-#     assert hcto5.value == pytest.approx(239.0057, DELTA)
-#     assert hcto5.unit == "cal kg^-1 C^-1"
+    assert hcto5.value == pytest.approx(239.0057, DELTA)
+    assert hcto5.unit_str == "cal kg^-1 C^-1"
 
-#     hcto6 = hc.to("kcal kg^-1 C^-1")
+    hcto6 = hc.to("kcal kg^-1 C^-1")
 
-#     assert hcto6.value == pytest.approx(0.2390057, DELTA)
-#     assert hcto6.unit == "kcal kg^-1 C^-1"
+    assert hcto6.value == pytest.approx(0.2390057, DELTA)
+    assert hcto6.unit_str == "kcal kg^-1 C^-1"
 
-#     hcto7 = hc.to("BTU lb^-1 F^-1")
+    hcto7 = hc.to("BTU lb^-1 F^-1")
 
-#     assert hcto7.value == pytest.approx(0.238845, DELTA)
-#     assert hcto7.unit == "BTU lb^-1 F^-1"
+    assert hcto7.value == pytest.approx(0.238845, DELTA)
+    assert hcto7.unit_str == "BTU lb^-1 F^-1"
 
 
-# def test_temp_54():
-#     temp_var = q.Quantity(1.0, "kg m^-3 s^-1 K^2")
+def test_temp_54():
+    temp_var = q.Quantity(1.0, "kg m^-3 s^-1 K^2")
 
-#     temp_varto1 = temp_var.to("g cm^-3 s^-1 K^2")
+    temp_varto1 = temp_var.to("g cm^-3 s^-1 K^2")
 
-#     assert temp_varto1.value == pytest.approx(0.001, DELTA)
-#     assert temp_varto1.unit == "g cm^-3 s^-1 K^2"
+    assert temp_varto1.value == pytest.approx(0.001, DELTA)
+    assert temp_varto1.unit_str == "g cm^-3 s^-1 K^2"
 
-#     temp_varto2 = temp_var.to("kg mm^-3 s^-1 K^2")
+    temp_varto2 = temp_var.to("kg mm^-3 s^-1 K^2")
 
-#     assert temp_varto2.value == pytest.approx(1e-09, DELTA)
-#     assert temp_varto2.unit == "kg mm^-3 s^-1 K^2"
+    assert temp_varto2.value == pytest.approx(1e-09, DELTA)
+    assert temp_varto2.unit_str == "kg mm^-3 s^-1 K^2"
 
-#     temp_varto3 = temp_var.to("kg um^-3 s^-1 K^2")
+    temp_varto3 = temp_var.to("kg um^-3 s^-1 K^2")
 
-#     assert temp_varto3.value == pytest.approx(9.999999999999999e-19, DELTA)
-#     assert temp_varto3.unit == "kg um^-3 s^-1 K^2"
+    assert temp_varto3.value == pytest.approx(9.999999999999999e-19, DELTA)
+    assert temp_varto3.unit_str == "kg um^-3 s^-1 K^2"
 
-#     temp_varto4 = temp_var.to("mg mm^-3 ms^-1 K^2")
+    temp_varto4 = temp_var.to("mg mm^-3 ms^-1 K^2")
 
-#     assert temp_varto4.value == pytest.approx(1.0000000000000002e-06, DELTA)
-#     assert temp_varto4.unit == "mg mm^-3 ms^-1 K^2"
+    assert temp_varto4.value == pytest.approx(1.0000000000000002e-06, DELTA)
+    assert temp_varto4.unit_str == "mg mm^-3 ms^-1 K^2"
 
-#     temp_varto5 = temp_var.to("g cm^-3 us^-1 K^2")
+    temp_varto5 = temp_var.to("g cm^-3 us^-1 K^2")
 
-#     assert temp_varto5.value == pytest.approx(1e-09, DELTA)
-#     assert temp_varto5.unit == "g cm^-3 us^-1 K^2"
+    assert temp_varto5.value == pytest.approx(1e-09, DELTA)
+    assert temp_varto5.unit_str == "g cm^-3 us^-1 K^2"
 
-#     temp_varto6 = temp_var.to("pg um^-3 ms^-1 K^2")
+    temp_varto6 = temp_var.to("pg um^-3 ms^-1 K^2")
 
-#     assert temp_varto6.value == pytest.approx(9.999999999999997e-07, DELTA)
-#     assert temp_varto6.unit == "pg um^-3 ms^-1 K^2"
+    assert temp_varto6.value == pytest.approx(9.999999999999997e-07, DELTA)
+    assert temp_varto6.unit_str == "pg um^-3 ms^-1 K^2"
 
 
 # def test_temp_inverse_64():
@@ -628,27 +630,27 @@ def test_temp_53():
 #     assert float(f_inverse) == pytest.approx(3.5999999999999996, DELTA)
 
 
-# def test_temp_type_66():
-#     c0 = q.Quantity(1.0, "C")
-#     assert c0.type == "Temperature"
+def test_temp_type_66():
+    c0 = q.Quantity(1.0, "C")
+    assert c0.type == "Temperature"
 
-#     c1 = q.Quantity(1.0, "J kg^-1 C^-1")
-#     assert c1.type == "Temperature Difference"
+    c1 = q.Quantity(1.0, "J kg^-1 C^-1")
+    assert c1.type == "Temperature Difference"
 
-#     c2 = q.Quantity(1.0, "kg m^-3 s^-1 K^2")
-#     assert c2.type == "Temperature Difference"
+    c2 = q.Quantity(1.0, "kg m^-3 s^-1 K^2")
+    assert c2.type == "Temperature Difference"
 
-#     c4 = q.Quantity(1.0, "F")
-#     assert c4.type == "Temperature"
+    c4 = q.Quantity(1.0, "F")
+    assert c4.type == "Temperature"
 
-#     c6 = q.Quantity(1.0, "F^1")
-#     assert c6.type == "Temperature Difference"
+    c6 = q.Quantity(1.0, "F^1")
+    assert c6.type == "Temperature Difference"
 
-#     c7 = q.Quantity(1.0, "F^-1")
-#     assert c7.type == "Temperature Difference"
+    c7 = q.Quantity(1.0, "F^-1")
+    assert c7.type == "Temperature Difference"
 
-#     c8 = q.Quantity(1.0, "F^2")
-#     assert c8.type == "Temperature Difference"
+    c8 = q.Quantity(1.0, "F^2")
+    assert c8.type == "Temperature Difference"
 
 
 # def test_temp_difference_67():
@@ -662,7 +664,7 @@ def test_temp_53():
 #     assert td.type == "Temperature Difference"
 
 #     td_m = td * 2
-#     assert td_m.unit == "delta_K"
+#     assert td_m.unit_str == "delta_K"
 #     assert td_m.type == "Temperature Difference"
 
 #     t1 = q.Quantity(150.0, "C")
@@ -794,9 +796,9 @@ def test_unit_from_dimensions_74():
     assert l.unit_str == "m"
 
 
-# def test_unit_from_dimensions_75():
-#     x = q.Quantity(10.5, dimensions=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
-#     assert x.unit_str == ""
+def test_unit_from_dimensions_75():
+    x = q.Quantity(10.5, dimensions=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    assert x.unit_str == ""
 
 
 def test_unit_from_dimensions_76():
@@ -854,13 +856,13 @@ def testing_multipliers():
     from_to("Pa", "lb m s^-2 ft^-2")
     from_to("lb m s^-2 ft^-2", "Pa")
 
-    # from_to("J kg^-1 K^-1", "J kg^-1 C^-1")
-    # from_to("J kg^-1 K^-1", "J kg^-1 R^-1")
-    # from_to("J kg^-1 K^-1", "J kg^-1 F^-1")
+    from_to("J kg^-1 K^-1", "J kg^-1 C^-1")
+    from_to("J kg^-1 K^-1", "J kg^-1 R^-1")
+    from_to("J kg^-1 K^-1", "J kg^-1 F^-1")
 
-    # from_to("K", "C")
-    # from_to("K", "R")
-    # from_to("K", "F")
+    from_to("K", "C")
+    from_to("K", "R")
+    from_to("K", "F")
 
     print("-" * 75)
 
@@ -887,11 +889,11 @@ def testing_arithmetic_operators():
     assert result1.value == 20
     assert result1.unit_str == "m s^-1.0"
 
-    # q3 = qt1 / qt2
+    q3 = qt1 / qt2
 
-    # print(f"{qt1} / {qt2} =  {q3}")
-    # assert q3.value == 2
-    # assert q3.unit_str == ""
+    print(f"{qt1} / {qt2} =  {q3}")
+    assert q3.value == 2
+    assert q3.unit_str == ""
 
     result3 = qt1 / 2
     print(f"{qt1} / {2} =  {qt1 / 2}")
@@ -904,13 +906,13 @@ def testing_arithmetic_operators():
     assert qa3.value == 15
     assert qa3.unit_str == "m s^-1.0"
 
-    # with pytest.raises(TypeError) as e:
-    #     result5 = qt1 + 2
-    #     print(f"{qt1} + {2} =  {result5}")
+    with pytest.raises(TypeError) as e:
+        result5 = qt1 + 2
+        print(f"{qt1} + {2} =  {result5}")
 
-    # with pytest.raises(ValueError) as e:
-    #     result6 = 2 + qt1
-    #     print(f"{2} + {qt1} =  {result6}")
+    with pytest.raises(ValueError) as e:
+        result6 = 2 + qt1
+        print(f"{2} + {qt1} =  {result6}")
 
     qs3 = qt1 - qt2
 
@@ -918,14 +920,10 @@ def testing_arithmetic_operators():
     assert qs3.value == 5
     assert qs3.unit_str == "m s^-1.0"
 
-    # with pytest.raises(TypeError) as e:
-    #     result7 = qt1 - 2
-    #     print(f"{qt1} - {2} =  {result7}")
+    with pytest.raises(TypeError) as e:
+        result7 = qt1 - 2
+        print(f"{qt1} - {2} =  {result7}")
 
-    # with pytest.raises(ValueError) as e:
-    #     result8 = 2 - qt1
-    #     print(f"{2} - {qt1} =  {result8}")
-
-
-# def test_units_table_x():
-#     pass
+    with pytest.raises(ValueError) as e:
+        result8 = 2 - qt1
+        print(f"{2} - {qt1} =  {result8}")
