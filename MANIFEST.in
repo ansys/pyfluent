@@ -1,6 +1,4 @@
 include src/ansys/fluent/core/launcher/fluent_launcher_options.json
 include src/ansys/fluent/core/docs/README.rst
 include src/ansys/fluent/core/logging_config.yaml
-include src/ansys/fluent/core/session_meshing.pyi
-include src/ansys/fluent/core/session_pure_meshing.pyi
-include src/ansys/fluent/core/session_solver.pyi
+recursive-include src *pyi
