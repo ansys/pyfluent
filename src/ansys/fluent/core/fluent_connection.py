@@ -37,6 +37,9 @@ from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
 from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
+from ansys.fluent.core.streaming_services.otel_outputs_streaming import (
+    OTelOutputsStreaming,
+)
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
 
 
@@ -248,6 +251,12 @@ class FluentConnection:
         self.field_data_streaming = FieldDataStreaming(
             self._id, self._field_data_service
         )
+
+        self._otel_output_streaming = OTelOutputsStreaming(
+            self._channel, self._metadata
+        )
+        self._otel_output_streaming.start()
+
         self.journal = Journal(self.scheme_eval)
 
         self._cleanup_on_exit = cleanup_on_exit
