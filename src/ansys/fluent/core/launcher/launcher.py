@@ -672,15 +672,21 @@ def launch_fluent(
             if meshing_mode:
                 args.append(" -meshing")
 
-            save_path = pyfluent.EXAMPLES_PATH
+            host_mount_path = pyfluent.EXAMPLES_PATH
             # Check if save path exists
-            if not os.path.exists(save_path):
-                os.makedirs(save_path)
+            if not os.path.exists(host_mount_path):
+                os.makedirs(host_mount_path)
+
+            container_mount_path = os.getenv(
+                "PYFLUENT_CONTAINER_MOUNT_PATH", host_mount_path
+            )
 
             # Assumes the container OS will be able to create the
             # EXAMPLES_PATH of host OS. With the Fluent docker
             # container, the following currently works only in linux.
-            port, password = start_fluent_container(save_path, "/testing", args)
+            port, password = start_fluent_container(
+                host_mount_path, container_mount_path, args
+            )
             return new_session(
                 fluent_connection=FluentConnection(
                     start_timeout=start_timeout,
