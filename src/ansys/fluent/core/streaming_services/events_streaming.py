@@ -27,6 +27,7 @@ class EventsManager(StreamingService):
     def __init__(self, session_id: str, service):
         """__init__ method of EventsManager class."""
         super().__init__(
+            stream_begin_method="BeginStreaming",
             target=EventsManager._process_streaming,
             streaming_service=service,
         )
@@ -35,8 +36,11 @@ class EventsManager(StreamingService):
             attr for attr in dir(EventsProtoModule) if attr.endswith("Event")
         ]
 
-    def _process_streaming(self, started_evt):
-        responses = self._streaming_service.begin_streaming(started_evt)
+    def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
+        request = EventsProtoModule.BeginStreamingRequest(*args, **kwargs)
+        responses = self._streaming_service.begin_streaming(
+            request, started_evt, id=id, stream_begin_method=stream_begin_method
+        )
         while True:
             try:
                 response = next(responses)
