@@ -909,7 +909,7 @@ def test_strings_with_allowed_values(load_static_mixer_case):
 
     with pytest.raises(AttributeError) as e:
         string_without_allowed_values = solver.file.auto_save.root_name.allowed_values()
-    assert e.value.args == ("'root_name' object has no attribute 'allowed_values'",)
+    assert e.value.args[0] == "'root_name' object has no attribute 'allowed_values'"
 
     string_with_allowed_values = solver.setup.general.solver.type.allowed_values()
     assert string_with_allowed_values == [
