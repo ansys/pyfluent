@@ -1081,7 +1081,7 @@ def _filter_items_with_string_and_allowed_values(static_info):
             _filter_items_with_string_and_allowed_values(value)
 
 
-class _StringWithAllowedValuesMixin(Property):
+class _HasAllowedValuesMixin(Property):
     def allowed_values(self):
         """Get the allowed values of the object."""
         try:
@@ -1139,7 +1139,7 @@ def get_cls(name, info, parent=None, version=None):
         elif obj_type == "named-object":
             bases = bases + (_NonCreatableNamedObjectMixin,)
         elif name in _items_with_string_and_allowed_values:
-            bases = bases + (_StringWithAllowedValuesMixin,)
+            bases += (_HasAllowedValuesMixin,)
 
         cls = type(pname, bases, dct)
 
