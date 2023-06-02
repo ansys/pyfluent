@@ -1064,23 +1064,6 @@ class _NonCreatableNamedObjectMixin(
         child.set_state(value)
 
 
-_items_with_string_and_allowed_values = set()
-
-
-def _filter_items_with_string_and_allowed_values(static_info):
-    """Get strings with flag has_allowed_values=True"""
-    for key, value in static_info.items():
-        if isinstance(value, dict):
-            if (
-                "type" in value
-                and "has_allowed_values" in value
-                and value["type"] == "string"
-                and value["has_allowed_values"] is True
-            ):
-                _items_with_string_and_allowed_values.add(key)
-            _filter_items_with_string_and_allowed_values(value)
-
-
 class _HasAllowedValuesMixin:
     def allowed_values(self):
         """Get the allowed values of the object."""
@@ -1092,7 +1075,6 @@ class _HasAllowedValuesMixin:
 
 def get_cls(name, info, parent=None, version=None):
     """Create a class for the object identified by "path"."""
-    _filter_items_with_string_and_allowed_values(info)
     try:
         if name == "":
             pname = "root"
@@ -1138,7 +1120,7 @@ def get_cls(name, info, parent=None, version=None):
             bases = bases + (_CreatableNamedObjectMixin,)
         elif obj_type == "named-object":
             bases = bases + (_NonCreatableNamedObjectMixin,)
-        elif name in _items_with_string_and_allowed_values:
+        elif info.get("has-allowed-values", False):
             bases += (_HasAllowedValuesMixin,)
 
         cls = type(pname, bases, dct)
