@@ -1110,6 +1110,7 @@ def get_cls(name, info, parent=None, version=None):
         user_creatable = info.get("user-creatable?", False) or info.get(
             "user_creatable", False
         )
+
         if version == "222":
             user_creatable = True
 
@@ -1120,7 +1121,7 @@ def get_cls(name, info, parent=None, version=None):
             bases = bases + (_CreatableNamedObjectMixin,)
         elif obj_type == "named-object":
             bases = bases + (_NonCreatableNamedObjectMixin,)
-        elif info.get("has-allowed-values", False):
+        elif info.get("has-allowed-values") and version == "222":
             bases += (_HasAllowedValuesMixin,)
 
         cls = type(pname, bases, dct)
