@@ -98,7 +98,7 @@ class Quantity(float):
         self._si_value = (self.value + si_offset) * si_multiplier
         self._type = self._units_table.get_type(self._unit_string)
 
-    def _validate_compatibility(self, __value):
+    def _arithmetic_precheck(self, __value, caller=None) -> str:
         """Validate dimensions of quantities.
 
         Parameters
@@ -109,14 +109,21 @@ class Quantity(float):
 
         if isinstance(__value, Quantity) and (self.dimensions != __value.dimensions):
             raise QuantityError(from_unit=self.unit_str, to_unit=__value.unit_str)
-        elif (
-            (any([dim != 0.0 for dim in self.dimensions]))
+        if (
+            caller not in ["__mul__", "__truediv__"]
+            and (any([dim != 0.0 for dim in self.dimensions]))
             and (not isinstance(__value, Quantity))
             and isinstance(__value, (float, int))
         ):
             raise TypeError(
-                f"Error: '{__value}' is incompatible with the current quantity object."
+                f"Error: '{__value}' is incompatible with the current quantity object. {self.dimensions}"
             )
+
+        return (
+            "delta_K"
+            if self.type in ["Temperature", "Temperature Difference"]
+            else self.si_unit_str
+        )
 
     @property
     def value(self):
@@ -154,7 +161,7 @@ class Quantity(float):
 
     @type.setter
     def type(self, new_type):
-        self._type = new_type
+        self.type = new_type
 
     def to(self, to_unit_str: str) -> "Quantity":
         """Perform quantity conversions.
@@ -174,18 +181,15 @@ class Quantity(float):
             raise TypeError("'to_unit_str' should be of 'str' type.")
 
         _, si_multiplier, si_offset = self._units_table.si_conversion(to_unit_str)
-
         new_type = self._units_table.get_type(to_unit_str)
 
         if new_type in ["Temperature", "Temperature Difference"]:
             new_value = (self.si_value / si_multiplier) - si_offset
-
         else:
             new_value = self.si_value / si_multiplier
 
         new = Quantity(value=new_value, unit_str=to_unit_str)
-
-        self._validate_compatibility(new)
+        self._arithmetic_precheck(new)
 
         return new
 
@@ -221,85 +225,88 @@ class Quantity(float):
     def __pow__(self, __value):
         temp_dimensions = [dim * __value for dim in self.dimensions]
         new_si_value = self.si_value**__value
-
         new_dimensions = Dimensions(dimensions=temp_dimensions)
         return Quantity(value=new_si_value, unit_str=new_dimensions.unit_str)
 
     def __mul__(self, __value):
+        new_unit_str = self._arithmetic_precheck(__value, "__mul__")
         if isinstance(__value, Quantity):
             temp_dimensions = [
                 dim + __value.dimensions[idx] for idx, dim in enumerate(self.dimensions)
             ]
             new_si_value = self.si_value * __value.si_value
-
             new_dimensions = Dimensions(dimensions=temp_dimensions)
-            return Quantity(value=new_si_value, unit_str=new_dimensions.unit_str)
+            new_unit_str = (
+                new_unit_str if new_unit_str == "delta_K" else new_dimensions.unit_str
+            )
+            return Quantity(value=new_si_value, unit_str=new_unit_str)
 
         if isinstance(__value, (float, int)):
-            return Quantity(value=self.si_value * __value, unit_str=self.si_unit_str)
+            return Quantity(value=self.si_value * __value, unit_str=new_unit_str)
 
     def __rmul__(self, __value):
         return self.__mul__(__value)
 
     def __truediv__(self, __value):
+        new_unit_str = self._arithmetic_precheck(__value, "__truediv__")
         if isinstance(__value, Quantity):
             temp_dimensions = [
                 dim - __value.dimensions[idx] for idx, dim in enumerate(self.dimensions)
             ]
             new_si_value = self.si_value / __value.si_value
-
             new_dimensions = Dimensions(dimensions=temp_dimensions)
-            return Quantity(value=new_si_value, unit_str=new_dimensions.unit_str)
+            new_unit_str = (
+                new_unit_str if new_unit_str == "delta_K" else new_dimensions.unit_str
+            )
+            return Quantity(value=new_si_value, unit_str=new_unit_str)
 
         if isinstance(__value, (float, int)):
-            return Quantity(value=self.si_value / __value, unit_str=self.si_unit_str)
+            return Quantity(value=self.si_value / __value, unit_str=new_unit_str)
 
     def __rtruediv__(self, __value):
-        if not isinstance(__value, Quantity) and isinstance(__value, float):
-            return Quantity(__value / self._si_value, self._si_unit_str)
-        return __value / self
+        return self.__truediv__(__value)
 
     def __add__(self, __value):
-        self._validate_compatibility(__value)
+        new_unit_str = self._arithmetic_precheck(__value)
         new_value = float(self) + float(__value)
-        return Quantity(value=new_value, unit_str=self.si_unit_str)
+        return Quantity(value=new_value, unit_str=new_unit_str)
 
     def __radd__(self, __value):
-        return Quantity(__value, "") + self
+        return self.__add__(__value)
 
     def __sub__(self, __value):
-        self._validate_compatibility(__value)
+        new_unit_str = self._arithmetic_precheck(__value)
         new_value = float(self) - float(__value)
-        return Quantity(value=new_value, unit_str=self.si_unit_str)
+        return Quantity(value=new_value, unit_str=new_unit_str)
 
     def __rsub__(self, __value):
-        return Quantity(__value, "") - self
+        return self.__sub__(__value)
 
     def __neg__(self):
         return Quantity(-self.value, self.unit_str)
 
     def __gt__(self, __value):
-        self._validate_compatibility(__value)
+        self._arithmetic_precheck(__value)
         return float(self) > float(__value)
 
     def __ge__(self, __value):
-        self._validate_compatibility(__value)
+        self._arithmetic_precheck(__value)
         return float(self) >= float(__value)
 
     def __lt__(self, __value):
-        self._validate_compatibility(__value)
+        self._arithmetic_precheck(__value)
         return float(self) < float(__value)
 
     def __le__(self, __value):
-        self._validate_compatibility(__value)
+        self._arithmetic_precheck(__value)
         return float(self) <= float(__value)
 
     def __eq__(self, __value):
-        self._validate_compatibility(__value)
+        self._arithmetic_precheck(__value)
         return float(self) == float(__value)
 
     def __neq__(self, __value):
-        self._validate_compatibility(__value)
+        self._arithmetic_precheck(__value)
         return float(self) != float(__value)
 
 
@@ -494,7 +501,7 @@ class UnitsTable(object):
             Tuple containing si_unit_string, si_multiplier and si_offset.
         """
 
-        unit_str = unit_str if unit_str else " "
+        unit_str = unit_str or " "
         power = power or 1.0
         si_unit_str = si_unit_str or ""
         si_multiplier = si_multiplier or 1.0
@@ -524,7 +531,9 @@ class UnitsTable(object):
                 )
 
             if unit_term in self._derived_units:
-                si_multiplier *= self._derived_units[unit_term]["factor"]
+                si_multiplier *= (
+                    self._derived_units[unit_term]["factor"] ** unit_term_power
+                )
 
                 si_unit_str, si_multiplier, si_offset = self.si_conversion(
                     unit_str=self._derived_units[unit_term]["composition"],
@@ -582,6 +591,8 @@ class UnitsTable(object):
         : str
             Type of quantity.
         """
+        if unit_str == "":
+            return "No Type"
 
         if unit_str in self.fundamental_units:
             return self.fundamental_units[unit_str]["type"]
@@ -622,7 +633,7 @@ class Dimensions(object):
     ):
         self._units_table = UnitsTable()
         unit_sys = unit_sys or "SI"
-        unit_str = unit_str if unit_str else " "
+        unit_str = unit_str or " "
 
         if unit_str:
             self._unit_str = unit_str
@@ -682,8 +693,6 @@ class Dimensions(object):
         dimensions : list
             Dimensions representation of unit string.
         """
-        if not unit_str:
-            return
 
         power = power or 1.0
         dimensions = dimensions or [0.0] * 9
@@ -736,7 +745,7 @@ class QuantityMap(object):
     QuantityMap instance.
     """
 
-    def __init__(self, quantity_map=None):
+    def __init__(self, quantity_map):
         self._units_table = UnitsTable()
         self._quantity_map = quantity_map
         self._unit_str = self._map_to_unit_str(quantity_map)

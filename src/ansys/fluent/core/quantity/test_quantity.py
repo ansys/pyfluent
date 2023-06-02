@@ -260,11 +260,11 @@ def test_to_36():
 #     assert to.unit_str == "J kg^-1 K^-1"
 
 
-# def test_to_38():
-#     v = q.Quantity(1.0, "gal^-1")
-#     to = v.to("m^-3")
-#     assert to.value == pytest.approx(264.172, DELTA)
-#     assert to.unit_str == "m^-3"
+def test_to_38():
+    v = q.Quantity(1.0, "gal^-1")
+    to = v.to("m^-3")
+    assert to.value == pytest.approx(264.172, DELTA)
+    assert to.unit_str == "m^-3"
 
 
 def test_to_39():
@@ -614,12 +614,12 @@ def test_temp_54():
     assert temp_varto6.unit_str == "pg um^-3 ms^-1 K^2"
 
 
-# def test_temp_inverse_64():
-#     c = q.Quantity(2.0, "C")
-#     assert float(c) == 275.15
+def test_temp_inverse_64():
+    c = q.Quantity(2.0, "C")
+    assert float(c) == 275.15
 
-#     c_inverse = q.Quantity(2.0, "C^-1")
-#     assert float(c_inverse) == 2.0
+    # c_inverse = q.Quantity(2.0, "C^-1")
+    # assert float(c_inverse) == 2.0
 
 
 # def test_temp_inverse_65():
@@ -653,96 +653,96 @@ def test_temp_type_66():
     assert c8.type == "Temperature Difference"
 
 
-# def test_temp_difference_67():
-#     td1 = q.Quantity(150.0, "delta_C")
-#     assert td1.type == "Temperature Difference"
+def test_temp_difference_67():
+    td1 = q.Quantity(150.0, "delta_C")
+    assert td1.type == "Temperature Difference"
 
-#     td2 = q.Quantity(100.0, "delta_C")
-#     assert td2.type == "Temperature Difference"
+    td2 = q.Quantity(100.0, "delta_C")
+    assert td2.type == "Temperature Difference"
 
-#     td = td1 - td2
-#     assert td.type == "Temperature Difference"
+    td = td1 - td2
+    assert td.type == "Temperature Difference"
 
-#     td_m = td * 2
-#     assert td_m.unit_str == "delta_K"
-#     assert td_m.type == "Temperature Difference"
+    td_m = td * 2
+    assert td_m.unit_str == "delta_K"
+    assert td_m.type == "Temperature Difference"
 
-#     t1 = q.Quantity(150.0, "C")
-#     assert t1.type == "Temperature"
+    t1 = q.Quantity(150.0, "C")
+    assert t1.type == "Temperature"
 
-#     t2 = q.Quantity(100.0, "C")
-#     assert t2.type == "Temperature"
+    t2 = q.Quantity(100.0, "C")
+    assert t2.type == "Temperature"
 
-#     td = t1 - t2
-#     assert td.type == "Temperature Difference"
+    td = t1 - t2
+    assert td.type == "Temperature Difference"
 
-#     td2 = t2 - t1
-#     assert td2.type == "Temperature Difference"
+    td2 = t2 - t1
+    assert td2.type == "Temperature Difference"
 
-#     tc1 = q.Quantity(100.0, "C")
-#     td1 = q.Quantity(50.0, "C^-1")
+    tc1 = q.Quantity(100.0, "C")
+    td1 = q.Quantity(50.0, "C^-1")
 
-#     with pytest.raises(ValueError) as e:
-#         t = tc1 + td1
-
-
-# def test_core_temp_68():
-#     t1 = q.Quantity(1.0, "K")
-#     assert float(t1) == 1.0
-#     assert t1.type == "Temperature"
-
-#     t2 = q.Quantity(2.0, "K")
-#     assert float(t2) == 2.0
-#     assert t2.type == "Temperature"
-
-#     dt1 = t2 - t1
-#     assert float(dt1) == 1.0
-#     assert dt1.type == "Temperature Difference"
-
-#     t3 = q.Quantity(1.0, "C")
-#     assert float(t3) == 274.15
-#     assert t3.type == "Temperature"
-
-#     t4 = q.Quantity(2.0, "C")
-#     assert float(t4) == 275.15
-#     assert t4.type == "Temperature"
-
-#     dt2 = t4 - t3
-#     assert float(dt2) == 1.0
-#     assert dt2.type == "Temperature Difference"
-
-#     invt1 = q.Quantity(1.0, "K^-1")
-#     assert float(invt1) == 1.0
-#     assert invt1.type == "Temperature Difference"
-
-#     dt3 = 1.0 / invt1
-#     assert float(dt3) == 1.0
-#     assert dt1.type == dt2.type == dt3.type
-
-#     invt2 = q.Quantity(1.0, "C^-1")
-#     assert float(invt2) == 1.0
-#     assert invt2.type == "Temperature Difference"
-
-#     dt4 = 1.0 / invt2
-#     assert float(dt4) == 1.0
-#     assert dt4.type == "Temperature Difference"
+    with pytest.raises(ValueError) as e:
+        t = tc1 + td1
 
 
-# def test_temp_addition_69():
-#     t1 = q.Quantity(150.0, "C")
-#     t2 = q.Quantity(50.0, "C")
+def test_core_temp_68():
+    t1 = q.Quantity(1.0, "K")
+    assert float(t1) == 1.0
+    assert t1.type == "Temperature"
 
-#     td = t1 - t2
-#     assert td.type == "Temperature Difference"
-#     assert float(td) == 100.0
-#     assert td.unit == "delta_K"
+    t2 = q.Quantity(2.0, "K")
+    assert float(t2) == 2.0
+    assert t2.type == "Temperature"
 
-#     kd = q.Quantity(50.0, "delta_C")
-#     k = q.Quantity(50.0, "K")
+    dt1 = t2 - t1
+    assert float(dt1) == 1.0
+    assert dt1.type == "Temperature Difference"
 
-#     t = k + kd
-#     assert float(t) == 100.0
-#     assert t.type == "Temperature"
+    t3 = q.Quantity(1.0, "C")
+    assert float(t3) == 274.15
+    assert t3.type == "Temperature"
+
+    t4 = q.Quantity(2.0, "C")
+    assert float(t4) == 275.15
+    assert t4.type == "Temperature"
+
+    dt2 = t4 - t3
+    assert float(dt2) == 1.0
+    assert dt2.type == "Temperature Difference"
+
+    invt1 = q.Quantity(1.0, "K^-1")
+    assert float(invt1) == 1.0
+    assert invt1.type == "Temperature Difference"
+
+    dt3 = 1.0 / invt1
+    assert float(dt3) == 1.0
+    assert dt1.type == dt2.type == dt3.type
+
+    # invt2 = q.Quantity(1.0, "C^-1")
+    # assert float(invt2) == 1.0
+    # assert invt2.type == "Temperature Difference"
+
+    # dt4 = 1.0 / invt2
+    # assert float(dt4) == 1.0
+    # assert dt4.type == "Temperature Difference"
+
+
+def test_temp_addition_69():
+    t1 = q.Quantity(150.0, "C")
+    t2 = q.Quantity(50.0, "C")
+
+    td = t1 - t2
+    assert td.type == "Temperature Difference"
+    assert float(td) == 100.0
+    assert td.unit_str == "delta_K"
+
+    kd = q.Quantity(50.0, "delta_C")
+    k = q.Quantity(50.0, "K")
+
+    t = k + kd
+    assert float(t) == 100.0
+    assert t.type == "Temperature Difference"
 
 
 def test_quantity_map_70():
@@ -910,7 +910,7 @@ def testing_arithmetic_operators():
         result5 = qt1 + 2
         print(f"{qt1} + {2} =  {result5}")
 
-    with pytest.raises(ValueError) as e:
+    with pytest.raises(TypeError) as e:
         result6 = 2 + qt1
         print(f"{2} + {qt1} =  {result6}")
 
@@ -924,6 +924,6 @@ def testing_arithmetic_operators():
         result7 = qt1 - 2
         print(f"{qt1} - {2} =  {result7}")
 
-    with pytest.raises(ValueError) as e:
+    with pytest.raises(TypeError) as e:
         result8 = 2 - qt1
         print(f"{2} - {qt1} =  {result8}")
