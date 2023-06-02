@@ -86,32 +86,39 @@ class FieldInfo:
         self._service = service
 
     def get_scalar_fields_range(
-        self, field: str, node_value: bool = False, surface_ids: List[int] = None
-    ) -> List[float]:
+        self, fields: List[str], node_value: bool = False, surface_ids: List[int] = None
+    ) -> Union[List[float], Dict[str, List[float]]]:
         """Get the range (minimum and maximum values) of the field.
 
         Parameters
         ----------
-        field: str
-            Name of the field
+        fields: List[str]
+            List containing names of the field
         node_value: bool
         surface_ids : List[int], optional
             List of surface IDS for the surface data.
 
         Returns
         -------
-        List[float]
+        Union[List[float], Dict[str, List[float]]]
         """
-        if not surface_ids:
-            surface_ids = []
-        request = FieldDataProtoModule.GetRangeRequest()
-        request.fieldName = field
-        request.nodeValue = node_value
-        request.surfaceid.extend(
-            [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]
-        )
-        response = self._service.get_scalar_fields_range(request)
-        return [response.minimum, response.maximum]
+        range_data = {}
+        for field in fields:
+            if not surface_ids:
+                surface_ids = []
+            request = FieldDataProtoModule.GetRangeRequest()
+            request.fieldName = field
+            request.nodeValue = node_value
+            request.surfaceid.extend(
+                [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]
+            )
+            response = self._service.get_scalar_fields_range(request)
+            range_data[field] = [response.minimum, response.maximum]
+
+        if len(fields) == 1:
+            return range_data[fields[0]]
+        else:
+            return range_data
 
     def get_scalar_fields_info(self) -> dict:
         """Get fields information (field name, domain, and section).
