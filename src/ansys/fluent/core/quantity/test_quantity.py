@@ -48,14 +48,22 @@ def test_dimensions_6():
     assert v.dimensions == [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
 
 
-def test_to_7():
+def test_setters_7():
+    v = q.Quantity(7.0, "kg")
+    v.value = 1.0
+    v.type = "Mass"
+    assert v.value == 1.0
+    assert v.type == "Mass"
+
+
+def test_to_8():
     v = q.Quantity(1.0, "m")
     to = v.to("ft")
     assert to.value == pytest.approx(3.2808398, DELTA)
     assert to.unit_str == "ft"
 
 
-def test_to_8():
+def test_to_9():
     v = q.Quantity(1.0, "m")
     to = v.to("mm")
     assert to.value == 1000
@@ -253,11 +261,11 @@ def test_to_36():
     assert to.unit_str == "J kg^-1 K^-1"
 
 
-# def test_to_37():
-#     v = q.Quantity(1.0, "BTU lb^-1 F^-1")
-#     to = v.to("J kg^-1 K^-1")
-#     assert to.value == pytest.approx(4186.8161854, DELTA)
-#     assert to.unit_str == "J kg^-1 K^-1"
+def test_to_37():
+    v = q.Quantity(1.0, "BTU lb^-1 F^-1")
+    to = v.to("J kg^-1 K^-1")
+    assert to.value == pytest.approx(4186.8161854, DELTA)
+    assert to.unit_str == "J kg^-1 K^-1"
 
 
 def test_to_38():
@@ -272,6 +280,12 @@ def test_to_39():
     to = v.to("J m^-2")
     assert to.value == pytest.approx(11356.5713242, DELTA)
     assert to.unit_str == "J m^-2"
+
+
+def test_to_40():
+    v = q.Quantity(2.0, "radian")
+    with pytest.raises(TypeError) as e:
+        convert = v.to(0)
 
 
 def test_convert_40():
@@ -293,6 +307,17 @@ def test_convert_42():
     convert = v.convert("BT")
     assert convert.value == 7.0
     assert convert.unit_str == "R slugmol"
+
+
+def test_convert_42():
+    v = q.Quantity(7.0, "K mol")
+    with pytest.raises(ValueError) as e:
+        convert = v.convert("")
+
+
+def test_repr_42():
+    v = q.Quantity(1.0, "m")
+    assert v.__repr__() == 'Quantity (1.0, "m")'
 
 
 def test_math_43():
@@ -327,6 +352,12 @@ def test_pow_45():
 
     assert float(q1) ** 2 == 100.0
     assert float(q2) ** 2 == 25.0
+
+
+def test_neg_46():
+    q0 = q.Quantity(10.0, "m s^-1")
+    q1 = -q0
+    assert q1.value == -10.0
 
 
 def test_eq_46():
@@ -471,6 +502,11 @@ def test_neq_63():
     assert 0.5 != r
 
 
+def test_error_64():
+    err = q.QuantityError("mm", "K")
+    assert err.__str__() == f"'mm' and 'K' have incompatible dimensions."
+
+
 def test_tempK_48():
     k = q.Quantity(-40, "K")
 
@@ -487,10 +523,10 @@ def test_tempK_48():
     assert kc.unit_str == "F"
 
 
-# def test_temp_49():
-#     mk = q.Quantity(-40000, "mK")
-#     uc = mk.to("uC^1")
-#     assert uc.value == -3.13150000e08
+def test_temp_49():
+    mk = q.Quantity(-40000.0, "mK")
+    uc = mk.to("uC^1")
+    assert uc.value == -40000273.15
 
 
 def test_temp_50():
@@ -618,16 +654,16 @@ def test_temp_inverse_64():
     c = q.Quantity(2.0, "C")
     assert float(c) == 275.15
 
-    # c_inverse = q.Quantity(2.0, "C^-1")
-    # assert float(c_inverse) == 2.0
+    c_inverse = q.Quantity(2.0, "C^-1")
+    assert float(c_inverse) == 2.0
 
 
-# def test_temp_inverse_65():
-#     f = q.Quantity(2.0, "F")
-#     assert float(f) == pytest.approx(256.483311, DELTA)
+def test_temp_inverse_65():
+    f = q.Quantity(2.0, "F")
+    assert float(f) == pytest.approx(256.483311, DELTA)
 
-#     f_inverse = q.Quantity(2.0, "F^-1")
-#     assert float(f_inverse) == pytest.approx(3.5999999999999996, DELTA)
+    f_inverse = q.Quantity(2.0, "F^-1")
+    assert float(f_inverse) == pytest.approx(3.5999999999999996, DELTA)
 
 
 def test_temp_type_66():
@@ -719,13 +755,13 @@ def test_core_temp_68():
     assert float(dt3) == 1.0
     assert dt1.type == dt2.type == dt3.type
 
-    # invt2 = q.Quantity(1.0, "C^-1")
-    # assert float(invt2) == 1.0
-    # assert invt2.type == "Temperature Difference"
+    invt2 = q.Quantity(1.0, "C^-1")
+    assert float(invt2) == 1.0
+    assert invt2.type == "Temperature Difference"
 
-    # dt4 = 1.0 / invt2
-    # assert float(dt4) == 1.0
-    # assert dt4.type == "Temperature Difference"
+    dt4 = 1.0 / invt2
+    assert float(dt4) == 1.0
+    assert dt4.type == "Temperature Difference"
 
 
 def test_temp_addition_69():

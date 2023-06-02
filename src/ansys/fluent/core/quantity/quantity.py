@@ -69,9 +69,11 @@ class Quantity(float):
             _dimensions = Dimensions(dimensions=dimensions)
             _unit_string = _dimensions.unit_str
 
-        _, si_multiplier, si_offset = _units_table.si_conversion(unit_str=_unit_string)
+        _type = _units_table.get_type(_unit_string)
+        _, si_multiplier, si_offset = _units_table.si_data(unit_str=_unit_string)
+        _si_value = _units_table.si_conversion(_value, _type, si_multiplier, si_offset)
 
-        return float.__new__(cls, ((_value + si_offset) * si_multiplier))
+        return float.__new__(cls, _si_value)
 
     def __init__(self, value, unit_str=None, quantity_map=None, dimensions=None):
         self._units_table = UnitsTable()
@@ -90,13 +92,16 @@ class Quantity(float):
             self._dimensions = Dimensions(dimensions=dimensions)
             self._unit_string = self._dimensions.unit_str
 
-        si_unit_str, si_multiplier, si_offset = self._units_table.si_conversion(
+        self._type = self._units_table.get_type(self._unit_string)
+
+        si_unit_str, si_multiplier, si_offset = self._units_table.si_data(
             unit_str=self._unit_string
         )
 
         self._si_unit_str = si_unit_str[:-1]
-        self._si_value = (self.value + si_offset) * si_multiplier
-        self._type = self._units_table.get_type(self._unit_string)
+        self._si_value = self._units_table.si_conversion(
+            self._value, self._type, si_multiplier, si_offset
+        )
 
     def _arithmetic_precheck(self, __value, caller=None) -> str:
         """Validate dimensions of quantities.
@@ -105,6 +110,10 @@ class Quantity(float):
         ----------
         __value : Quantity | int | float
             Value modifying current quantity object.
+        Returns
+        -------
+        : str
+            SI unit string of new quantity.
         """
 
         if isinstance(__value, Quantity) and (self.dimensions != __value.dimensions):
@@ -161,7 +170,7 @@ class Quantity(float):
 
     @type.setter
     def type(self, new_type):
-        self.type = new_type
+        self._type = new_type
 
     def to(self, to_unit_str: str) -> "Quantity":
         """Perform quantity conversions.
@@ -180,13 +189,8 @@ class Quantity(float):
         if not isinstance(to_unit_str, str):
             raise TypeError("'to_unit_str' should be of 'str' type.")
 
-        _, si_multiplier, si_offset = self._units_table.si_conversion(to_unit_str)
-        new_type = self._units_table.get_type(to_unit_str)
-
-        if new_type in ["Temperature", "Temperature Difference"]:
-            new_value = (self.si_value / si_multiplier) - si_offset
-        else:
-            new_value = self.si_value / si_multiplier
+        _, si_multiplier, si_offset = self._units_table.si_data(to_unit_str)
+        new_value = (self.si_value / si_multiplier) - si_offset
 
         new = Quantity(value=new_value, unit_str=to_unit_str)
         self._arithmetic_precheck(new)
@@ -472,7 +476,7 @@ class UnitsTable(object):
 
         return multiplier, base, power
 
-    def si_conversion(
+    def si_data(
         self,
         unit_str: str,
         power: float = None,
@@ -535,7 +539,7 @@ class UnitsTable(object):
                     self._derived_units[unit_term]["factor"] ** unit_term_power
                 )
 
-                si_unit_str, si_multiplier, si_offset = self.si_conversion(
+                si_unit_str, si_multiplier, si_offset = self.si_data(
                     unit_str=self._derived_units[unit_term]["composition"],
                     power=unit_term_power,
                     si_unit_str=si_unit_str,
@@ -544,6 +548,38 @@ class UnitsTable(object):
                 )
 
         return self.condense(si_unit_str), si_multiplier, si_offset
+
+    def si_conversion(
+        self,
+        value: float,
+        type: str,
+        si_multiplier: int | float,
+        si_offset: int | float,
+    ) -> float:
+        """Performs SI conversion based on quantity type.
+
+        Parameters
+        ----------
+        value : float
+            Real value of quantity.
+        type : str
+            Quantity type.
+        si_multiplier : int | float
+            SI factor of quantity object.
+        si_offset : int | float
+            SI offset of quantity object.
+
+        Returns
+        -------
+        : float
+            SI value of quantity.
+
+        """
+        return (
+            ((value + si_offset) * si_multiplier)
+            if type == "Temperature"
+            else (value * si_multiplier)
+        )
 
     def condense(self, unit_str: str) -> str:
         """Condenses a unit string by collecting like-terms.
@@ -747,7 +783,6 @@ class QuantityMap(object):
 
     def __init__(self, quantity_map):
         self._units_table = UnitsTable()
-        self._quantity_map = quantity_map
         self._unit_str = self._map_to_unit_str(quantity_map)
 
     def _map_to_unit_str(self, quantity_map: dict) -> str:
@@ -787,8 +822,3 @@ class QuantityMap(object):
     def unit_str(self):
         """Unit string representation of quantity map"""
         return self._unit_str
-
-    @property
-    def quantity_map(self):
-        """Quantity map representation of unit string"""
-        return self._quantity_map
