@@ -10,6 +10,7 @@ def run():
         os.environ[
             "ANSYSLMD_LICENSE_FILE"
         ] = "1055@host.docker.internal"  # license server from the host machine
+        os.environ["PYFLUENT_CONTAINER_MOUNT_PATH"] = "/test"
         solver = pyfluent.launch_fluent(start_instance=False)
     else:
         solver = pyfluent.launch_fluent(show_gui=True, cleanup_on_exit=False)
