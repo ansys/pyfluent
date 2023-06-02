@@ -1081,7 +1081,7 @@ def _filter_items_with_string_and_allowed_values(static_info):
             _filter_items_with_string_and_allowed_values(value)
 
 
-class _HasAllowedValuesMixin(Property):
+class _HasAllowedValuesMixin:
     def allowed_values(self):
         """Get the allowed values of the object."""
         try:
