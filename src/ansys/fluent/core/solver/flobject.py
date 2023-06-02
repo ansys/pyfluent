@@ -215,32 +215,6 @@ class Numerical(Property):
 class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
 
-    _items_with_string_and_allowed_values = set()
-
-    def _filter_items_with_string_and_allowed_values(self, data):
-        for key, value in data.items():
-            if isinstance(value, dict):
-                if (
-                    "type" in value
-                    and "has_allowed_values" in value
-                    and value["type"] == "string"
-                    and value["has_allowed_values"] is True
-                ):
-                    self._items_with_string_and_allowed_values.add(key)
-                self._filter_items_with_string_and_allowed_values(value)
-
-    def allowed_values(self):
-        """Get the allowed values of the object."""
-
-        static_info = self.flproxy.get_static_info()
-        self._filter_items_with_string_and_allowed_values(static_info)
-
-        if self.obj_name in self._items_with_string_and_allowed_values:
-            try:
-                return self.get_attr("allowed-values", (list, str))
-            except BaseException as ex:
-                return []
-
 
 class SettingsBase(Base, Generic[StateT]):
     """Base class for settings objects.
@@ -1090,8 +1064,35 @@ class _NonCreatableNamedObjectMixin(
         child.set_state(value)
 
 
+_items_with_string_and_allowed_values = set()
+
+
+def _filter_items_with_string_and_allowed_values(static_info):
+    """Get strings with flag has_allowed_values=True"""
+    for key, value in static_info.items():
+        if isinstance(value, dict):
+            if (
+                "type" in value
+                and "has_allowed_values" in value
+                and value["type"] == "string"
+                and value["has_allowed_values"] is True
+            ):
+                _items_with_string_and_allowed_values.add(key)
+            _filter_items_with_string_and_allowed_values(value)
+
+
+class _StringWithAllowedValuesMixin(Property):
+    def allowed_values(self):
+        """Get the allowed values of the object."""
+        try:
+            return self.get_attr("allowed-values", (list, str))
+        except BaseException as ex:
+            return []
+
+
 def get_cls(name, info, parent=None, version=None):
     """Create a class for the object identified by "path"."""
+    _filter_items_with_string_and_allowed_values(info)
     try:
         if name == "":
             pname = "root"
@@ -1137,6 +1138,8 @@ def get_cls(name, info, parent=None, version=None):
             bases = bases + (_CreatableNamedObjectMixin,)
         elif obj_type == "named-object":
             bases = bases + (_NonCreatableNamedObjectMixin,)
+        elif name in _items_with_string_and_allowed_values:
+            bases = bases + (_StringWithAllowedValuesMixin,)
 
         cls = type(pname, bases, dct)
 
