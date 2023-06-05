@@ -67,7 +67,7 @@ class FieldInfo:
 
     Methods
     -------
-    get_scalar_fields_range(field: str, node_value: bool, surface_ids: List[int])
+    get_scalar_fields_range(fields: List[str], node_value: bool, surface_ids: List[int])
     -> List[float]
         Get the range (minimum and maximum values) of the field.
 
@@ -87,13 +87,13 @@ class FieldInfo:
 
     def get_scalar_fields_range(
         self, fields: List[str], node_value: bool = False, surface_ids: List[int] = None
-    ) -> Union[List[float], Dict[str, List[float]]]:
+    ) -> Dict[str, List[float]]:
         """Get the range (minimum and maximum values) of the field.
 
         Parameters
         ----------
         fields: List[str]
-            List containing names of the field
+            List containing field names
         node_value: bool
         surface_ids : List[int], optional
             List of surface IDS for the surface data.
@@ -115,10 +115,7 @@ class FieldInfo:
             response = self._service.get_scalar_fields_range(request)
             range_data[field] = [response.minimum, response.maximum]
 
-        if len(fields) == 1:
-            return range_data[fields[0]]
-        else:
-            return range_data
+        return range_data
 
     def get_scalar_fields_info(self) -> dict:
         """Get fields information (field name, domain, and section).
