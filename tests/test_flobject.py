@@ -903,6 +903,8 @@ def get_child_nodes(node, nodes, type_list):
                     return
 
 
+@pytest.mark.fluent_231
+@pytest.mark.fluent_232
 @pytest.mark.fluent_241
 def test_strings_with_allowed_values(load_static_mixer_case):
     solver = load_static_mixer_case
