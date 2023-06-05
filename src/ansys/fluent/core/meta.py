@@ -68,7 +68,6 @@ class Command:
                 if arg_value is not None:
                     for attr, attr_value in attr_data.items():
                         if attr == "allowed_values":
-
                             allowed_values = attr_value(_self.obj)
                             if isinstance(arg_value, list):
                                 if not all(
