@@ -152,7 +152,10 @@ class DumpDataReader:
         tag_id = (("type", "vector-field"),)
 
         vector_field_data = [
-            self._session_data["fields"][tag_id][surface_id][field_name]
+            (
+                self._session_data["fields"][tag_id][surface_id][field_name],
+                self._session_data["fields"][tag_id][surface_id]["vector-scale"],
+            )
             for field_name in field_names
             for surface_id in surface_ids
         ]
