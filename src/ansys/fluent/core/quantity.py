@@ -20,7 +20,7 @@ class Quantity(float):
 
     Properties
     ----------
-    value : int | float
+    value : float
         Real value of quantity.
     unit_str : str
         Unit string representation of quantity.
@@ -551,8 +551,8 @@ class UnitsTable(object):
         self,
         value: float,
         type: str,
-        si_multiplier: int | float,
-        si_offset: int | float,
+        si_multiplier: float,
+        si_offset: float,
         reverse: bool = False,
     ) -> float:
         """Performs SI conversion based on quantity type.
@@ -563,9 +563,9 @@ class UnitsTable(object):
             Real value of quantity.
         type : str
             Quantity type.
-        si_multiplier : int | float
+        si_multiplier : float
             SI factor of quantity object.
-        si_offset : int | float
+        si_offset : float
             SI offset of quantity object.
 
         Returns
