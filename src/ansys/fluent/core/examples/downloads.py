@@ -8,19 +8,15 @@ Examples
 >>> filename
 '/home/user/.local/share/ansys_fluent_core/examples/bracket.iges'
 """
+import logging
 import os
+import re
 import shutil
 from typing import Optional
 import urllib.request
 import zipfile
 
 import ansys.fluent.core as pyfluent
-
-
-def get_ext(filename: str) -> str:
-    """Extract the extension of a file."""
-    ext = os.path.splitext(filename)[1].lower()
-    return ext
 
 
 def delete_downloads() -> bool:
@@ -45,25 +41,41 @@ def _get_file_url(filename: str, directory: Optional[str] = None) -> str:
     return f"https://github.com/pyansys/example-data/raw/master/{filename}"
 
 
-def _retrieve_file(url: str, filename: str):
+def _retrieve_file(url: str, filename: str, save_path: Optional[str] = None) -> str:
+    if save_path is None:
+        save_path = pyfluent.EXAMPLES_PATH
+    else:
+        save_path = os.path.abspath(save_path)
+    local_path = os.path.join(save_path, os.path.basename(filename))
+    local_path_no_zip = re.sub(".zip$", "", local_path)
     # First check if file has already been downloaded
-    local_path = os.path.join(pyfluent.EXAMPLES_PATH, os.path.basename(filename))
-    local_path_no_zip = local_path.replace(".zip", "")
     if os.path.isfile(local_path_no_zip) or os.path.isdir(local_path_no_zip):
-        return local_path_no_zip, None
+        logging.info("File already exists.")
+        logging.info(f"File path: {local_path_no_zip}")
+        return local_path_no_zip
+
+    logging.info("Downloading specified file...")
+
+    # Check if save path exists
+    if not os.path.exists(save_path):
+        os.makedirs(save_path)
 
     # grab the correct url retriever
     urlretrieve = urllib.request.urlretrieve
 
     # Perform download
-    saved_file, resp = urlretrieve(url)
+    saved_file, _ = urlretrieve(url)
     shutil.move(saved_file, local_path)
-    if get_ext(local_path) in [".zip"]:
+    if local_path.endswith(".zip"):
         _decompress(local_path)
-        local_path = local_path[:-4]
-    return local_path, resp
+        local_path = local_path_no_zip
+    logging.info("Download successful.")
+    logging.info(f"File path: {local_path}")
+    return local_path
 
 
-def download_file(filename: str, directory: Optional[str] = None):
+def download_file(
+    filename: str, directory: Optional[str] = None, save_path: Optional[str] = None
+):
     url = _get_file_url(filename, directory)
-    return _retrieve_file(url, filename)[0]
+    return _retrieve_file(url, filename, save_path)

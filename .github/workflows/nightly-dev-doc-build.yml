@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image-tag: [v22.2.0, v23.1.0, v23.2.0]
+        image-tag: [v22.2.0, v23.1.0, v23.2.0, v24.1.0]
 
     steps:
       - uses: actions/checkout@v3
@@ -76,9 +76,9 @@ jobs:
 
       - name: "Deploy development documentation"
         if: matrix.image-tag == env.DOC_DEPLOYMENT_IMAGE_TAG
-        uses: pyansys/actions/doc-deploy-dev@v3
+        uses: ansys/actions/doc-deploy-dev@v4
         with:
             doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
-            decompress_artifact: true
+            decompress-artifact: true
             cname: ${{ env.DOCUMENTATION_CNAME }}
             token: ${{ secrets.GITHUB_TOKEN }}

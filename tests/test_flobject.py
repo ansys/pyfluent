@@ -2,7 +2,6 @@
 # import codegen.settingsgen
 from collections.abc import MutableMapping
 import io
-import os
 import weakref
 
 import pytest
@@ -11,8 +10,6 @@ from util.solver_workflow import new_solver_session_no_transcript  # noqa: F401
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import find_children
-
-os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
 
 
 class Setting:
@@ -732,6 +729,7 @@ def test_accessor_methods_on_settings_object_types(load_static_mixer_case):
 
 @pytest.mark.dev
 @pytest.mark.fluent_231
+@pytest.mark.codegen_required
 def test_find_children_from_settings_root():
     from ansys.fluent.core.solver.settings_231.setup import setup
 

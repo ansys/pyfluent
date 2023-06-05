@@ -535,7 +535,7 @@ class WildcardPath(Group):
     """Class wrapping a wildcard path to perform get_var and set_var on
     flproxy."""
 
-    def __init__(self, flproxy, path: str, state_cls, settings_cls):
+    def __init__(self, flproxy, path: str, state_cls, settings_cls, parent):
         """__init__ of WildcardPath class."""
         self._setattr("_flproxy", flproxy)
         self._setattr("_path", path)
@@ -547,6 +547,7 @@ class WildcardPath(Group):
         # _settings_cls is the settings cls at the wildcard path level. It is used to
         # construct the scheme path for children.
         self._setattr("_settings_cls", settings_cls)
+        self._setattr("_parent", parent)
 
     @property
     def flproxy(self):
@@ -572,12 +573,24 @@ class WildcardPath(Group):
                 self.path + "/" + scheme_name,
                 self._state_cls,
                 child_settings_cls,
+                self,
             )
         raise KeyError(
             allowed_name_error_message(
                 "Settings objects", name, self.get_object_names()
             )
         )
+
+    def items(self):
+        """Items."""
+        for key, value in self._parent.items():
+            if fnmatch.fnmatch(key, self._path.rsplit(sep="/", maxsplit=1)[-1]):
+                yield key, value
+
+    def __iter__(self):
+        for item in self._parent:
+            if fnmatch.fnmatch(item, self._path.rsplit(sep="/", maxsplit=1)[-1]):
+                yield item
 
     def to_scheme_keys(self, value):
         """Convert value to have keys with scheme names."""
@@ -598,6 +611,7 @@ class NamedObjectWildcardPath(WildcardPath):
             self.path + "/" + name,
             self._state_cls,
             self._settings_cls.child_object_type,
+            self,
         )
 
     def __setitem__(self, name, value):
@@ -732,7 +746,11 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             if self.flproxy.has_wildcard(name):
                 child_cls = self.__class__.child_object_type
                 return WildcardPath(
-                    self.flproxy, self.path + "/" + name, self.__class__, child_cls
+                    self.flproxy,
+                    self.path + "/" + name,
+                    self.__class__,
+                    child_cls,
+                    self,
                 )
             raise KeyError(
                 allowed_name_error_message(

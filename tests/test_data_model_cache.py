@@ -196,3 +196,27 @@ def test_update_cache_internal_names_as_keys(
     _convert_value_to_variant(state, var)
     DataModelCache.update_cache(rules, var, deleted_paths)
     assert DataModelCache.rules_str_to_cache == final_cache
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_231
+@pytest.mark.fluent_232
+@pytest.mark.codegen_required
+def test_get_cached_values_in_command_arguments(new_mesh_session):
+    new_mesh_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    new_mesh_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
+        FileName="Bob"
+    )
+    new_mesh_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
+        FileName=None
+    )
+    assert (
+        "FileName"
+        in new_mesh_session.workflow.TaskObject["Import Geometry"].CommandArguments()
+    )
+    assert (
+        new_mesh_session.workflow.TaskObject["Import Geometry"].CommandArguments()[
+            "FileName"
+        ]
+        is None
+    )

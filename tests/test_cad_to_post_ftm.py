@@ -27,6 +27,7 @@ from util.solver import check_report_definition_result
 
 
 @pytest.mark.nightly
+@pytest.mark.codegen_required
 def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geometry):
     meshing_session = new_fault_tolerant_workflow_session
     workflow = meshing_session.workflow

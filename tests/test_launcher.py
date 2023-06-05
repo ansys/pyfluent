@@ -5,7 +5,11 @@ import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher import launcher
-from ansys.fluent.core.launcher.launcher import get_ansys_version, get_fluent_exe_path
+from ansys.fluent.core.launcher.launcher import (
+    LaunchFluentError,
+    get_ansys_version,
+    get_fluent_exe_path,
+)
 
 
 @pytest.mark.skip(reason="Can be used only locally.")
@@ -29,6 +33,34 @@ def test_additional_argument_g_gu(with_launching_container):
     assert msg.value.args[0] == "'-g' and '-gu' is not supported on windows platform."
 
     launcher._is_windows = lambda: default_windows_flag
+
+
+def test_gpu_launch_arg(monkeypatch):
+    # The launch process is terminated intentionally to verify whether the fluent launch string
+    # (which is available in the error message) is generated correctly.
+    monkeypatch.setenv("AWP_ROOT232", "ansys_inc/v232")
+    monkeypatch.setenv("AWP_ROOT231", "ansys_inc/v231")
+    monkeypatch.setenv("AWP_ROOT222", "ansys_inc/v222")
+    with pytest.raises(LaunchFluentError) as error:
+        pyfluent.launch_fluent(gpu=True, start_timeout=0, start_instance=True)
+
+    assert "-gpu" in str(error.value).split()
+
+
+def test_gpu_launch_arg_additional_arg(monkeypatch):
+    # The launch process is terminated intentionally to verify whether the fluent launch string
+    # (which is available in the error message) is generated correctly.
+    monkeypatch.setenv("AWP_ROOT232", "ansys_inc/v232")
+    monkeypatch.setenv("AWP_ROOT231", "ansys_inc/v231")
+    monkeypatch.setenv("AWP_ROOT222", "ansys_inc/v222")
+    with pytest.raises(LaunchFluentError) as error:
+        pyfluent.launch_fluent(
+            additional_arguments="-gpu",
+            start_timeout=0,
+            start_instance=True,
+        )
+
+    assert "-gpu" in str(error.value).split()
 
 
 def test_kwargs():

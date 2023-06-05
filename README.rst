@@ -10,12 +10,12 @@ PyFluent
    :target: https://pypi.org/project/ansys-fluent-core
    :alt: PyPI
 
-.. |GH-CI| image:: https://github.com/pyansys/pyfluent/actions/workflows/ci.yml/badge.svg
-   :target: https://github.com/pyansys/pyfluent/actions/workflows/ci.yml
+.. |GH-CI| image:: https://github.com/ansys/pyfluent/actions/workflows/ci.yml/badge.svg
+   :target: https://github.com/ansys/pyfluent/actions/workflows/ci.yml
    :alt: GH-CI
 
-.. |codecov| image:: https://codecov.io/gh/pyansys/pyfluent/branch/main/graph/badge.svg
-   :target: https://codecov.io/gh/pyansys/pyfluent
+.. |codecov| image:: https://codecov.io/gh/ansys/pyfluent/branch/main/graph/badge.svg
+   :target: https://codecov.io/gh/ansys/pyfluent
 
 .. |MIT| image:: https://img.shields.io/badge/License-MIT-yellow.svg
    :target: https://opensource.org/licenses/MIT
@@ -25,8 +25,8 @@ PyFluent
    :target: https://github.com/psf/black
    :alt: Black
 
-.. |pre-commit| image:: https://results.pre-commit.ci/badge/github/pyansys/pyfluent/main.svg
-   :target: https://results.pre-commit.ci/latest/github/pyansys/pyfluent/main
+.. |pre-commit| image:: https://results.pre-commit.ci/badge/github/ansys/pyfluent/main.svg
+   :target: https://results.pre-commit.ci/latest/github/ansys/pyfluent/main
    :alt: pre-commit.ci status
 
 Overview
@@ -44,14 +44,14 @@ Documentation and issues
 For comprehensive information on PyFluent, see the latest release
 `documentation <https://fluent.docs.pyansys.com>`_.
 
-On the `PyFluent Issues <https://github.com/pyansys/pyfluent/issues>`_ page, you can create
+On the `PyFluent Issues <https://github.com/ansys/pyfluent/issues>`_ page, you can create
 issues to submit questions, report bugs, and request new features. To reach
 the project support team, email `pyansys.core@ansys.com <pyansys.core@ansys.com>`_.
 
 Installation
 ------------
-The ``ansys-fluent-core`` package supports Python 3.7 through Python
-3.10 on Windows and Linux.
+The ``ansys-fluent-core`` package supports Python 3.8 through Python
+3.11 on Windows and Linux.
 
 Install the latest release from `PyPI
 <https://pypi.org/project/ansys-fluent-core/>`_ with:
@@ -65,7 +65,7 @@ the latest release with:
 
 .. code:: console
 
-   git clone https://github.com/pyansys/pyfluent.git
+   git clone https://github.com/ansys/pyfluent.git
    cd pyfluent
    pip install pip -U
    pip install -e .
@@ -74,7 +74,22 @@ the latest release with:
 Dependencies
 ------------
 You must have a licensed copy of Ansys Fluent installed locally. PyFluent
-supports Fluent 2022 R2 and later.
+supports Fluent 2022 R2 and later. The Windows installation of Ansys Fluent automatically
+sets the required environment variables so that PyFluent can find the Ansys Fluent
+installation. Using Fluent 2023 R1 (or 23.1) installed in the default directory as an
+example, the installer automatically sets the ``AWP_ROOT231`` environment variable to point
+to ``C:\Program Files\ANSYS Inc\v231``.
+
+On Linux, the required environment variable is not set automatically, and can be set for the
+current user in the current shell session, using Fluent 2023 R1 in the default installation
+directory as an example, before running PyFluent, with:
+
+.. code:: console
+
+    export AWP_ROOT231=/usr/ansys_inc/v231
+
+For this setting to persist between different shell sessions for the current user, the same
+export command can instead be added to the user's ``~/.profile`` file.
 
 Getting started
 ---------------
@@ -88,21 +103,6 @@ To launch Fluent from Python, use the ``launch_fluent`` method:
   import ansys.fluent.core as pyfluent
   solver_session = pyfluent.launch_fluent(mode="solver")
   solver_session.health_check_service.is_serving
-
-On Windows systems the environment variable ``AWP_ROOT<ver>`` is configured
-when Fluent is installed, where ``<ver>`` is the Fluent release number such as
-``231`` for release 2023 R1. PyFluent automatically uses this environment
-variable to locate the latest Fluent installation. On Linux systems configure
-``AWP_ROOT<ver>`` to point to the absolute path of an Ansys installation such as
-``/apps/ansys_inc/v231``.
-
-To use a non-default installation location set ``AWP_ROOT<ver>`` or set the
-``PYFLUENT_FLUENT_ROOT`` environment variable to the ``<install location>/<version>/fluent`` directory,
-where ``<version>`` is the Fluent release that you would like to use.
-For example, ``v231`` uses release 2023 R1.
-
-For information on other ways of specifying the Fluent location for PyFluent,
-see `Frequently asked questions <https://fluent.docs.pyansys.com/release/0.12/getting_started/faqs.html>`_.
 
 Basic usage
 ~~~~~~~~~~~
