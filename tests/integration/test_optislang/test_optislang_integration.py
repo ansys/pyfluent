@@ -10,6 +10,7 @@ import ansys.fluent.core as pyfluent
 
 @pytest.mark.optislang
 @pytest.mark.integration
+@pytest.mark.codegen_required
 def test_simple_solve(load_mixing_elbow_param_case_dat):
     """Use case 1: This optiSLang integration test performs these steps.
 
@@ -25,8 +26,9 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
     - Output parameters
     """
     # Step 1: Setup logging
-    pyfluent.set_log_level("ERROR")
-    pyfluent.enable_logging_to_stdout()
+    import logging
+
+    logging.root.setLevel("ERROR")
 
     # Step 2: Launch fluent session and read case file with and without data file
     solver_session = load_mixing_elbow_param_case_dat
@@ -99,6 +101,7 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
 
 @pytest.mark.optislang
 @pytest.mark.integration
+@pytest.mark.codegen_required
 def test_generate_read_mesh(with_launching_container, mixing_elbow_geometry):
     """Use case 2: This optiSLang integration test performs these steps.
 
@@ -111,8 +114,9 @@ def test_generate_read_mesh(with_launching_container, mixing_elbow_geometry):
     - Session health
     """
     # Step 1: Setup logging
-    pyfluent.set_log_level("ERROR")
-    pyfluent.enable_logging_to_stdout()
+    import logging
+
+    logging.root.setLevel("ERROR")
 
     # Step 2: Launch fluent session in meshing mode
     meshing = pyfluent.launch_fluent(

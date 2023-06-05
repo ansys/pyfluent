@@ -123,8 +123,9 @@ def _populate_rst_from_settings(rst_dir, cls, version):
         r.write(f"{cls_name}\n")
         r.write(f'{"="*(len(cls_name))}\n\n')
         r.write(
-            f".. autoclass:: ansys.fluent.core.solver.settings_{version}.{file_name}.{cls_name}\n\n"
+            f".. autoclass:: ansys.fluent.core.solver.settings_{version}.{file_name}.{cls_name}\n"
         )
+        r.write(f"{istr1}:show-inheritance:\n\n")
 
         if has_children:
             r.write(f".. rubric:: Attributes\n\n")
@@ -212,7 +213,7 @@ if __name__ == "__main__":
     if not os.path.exists(rst_dir):
         os.makedirs(rst_dir)
 
-    image_tag = os.getenv("FLUENT_IMAGE_TAG", "v23.2.0")
+    image_tag = os.getenv("FLUENT_IMAGE_TAG", "v24.1.0")
     version = get_version_for_filepath(image_tag.lstrip("v"))
     settings = importlib.import_module(f"ansys.fluent.core.solver.settings_{version}")
     _populate_parents_list(settings.root)

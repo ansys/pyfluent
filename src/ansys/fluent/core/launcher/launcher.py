@@ -39,6 +39,7 @@ def _is_windows():
 class FluentVersion(Enum):
     """An enumeration over supported Fluent versions."""
 
+    version_24R1 = "24.1.0"
     version_23R2 = "23.2.0"
     version_23R1 = "23.1.0"
     version_22R2 = "22.2.0"
@@ -52,9 +53,9 @@ class FluentVersion(Enum):
                     return FluentVersion(version)
             else:
                 raise RuntimeError(
-                    f"The passed version '{version[:-2]}' does not exist."
-                    f" Available version strings are: "
-                    f"{[ver.value for ver in FluentVersion]} "
+                    f"The specified version '{version[:-2]}' is not supported."
+                    + f" Supported versions are: "
+                    + ", ".join([ver.value for ver in FluentVersion][::-1])
                 )
 
     def __str__(self):
@@ -76,9 +77,8 @@ def get_ansys_version() -> str:
 def get_fluent_exe_path(**launch_argvals) -> Path:
     """Get Fluent executable path. The path is searched in the following order.
 
-    1. ``PYFLUENT_FLUENT_ROOT`` environment variable.
-    2. ``product_version`` parameter passed with ``launch_fluent``.
-    3. The latest ANSYS version from ``AWP_ROOTnnn``` environment variables.
+    1. ``product_version`` parameter passed with ``launch_fluent``.
+    2. The latest ANSYS version from ``AWP_ROOTnnn``` environment variables.
 
     Returns
     -------
@@ -96,18 +96,18 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
         else:
             return fluent_root / "bin" / "fluent"
 
-    # Look for Fluent exe path in the following order:
-    # 1. "PYFLUENT_FLUENT_ROOT" environment variable
+    # (DEV) "PYFLUENT_FLUENT_ROOT" environment variable
     fluent_root = os.getenv("PYFLUENT_FLUENT_ROOT")
     if fluent_root:
         return get_exe_path(Path(fluent_root))
 
-    # 2. product_version parameter passed with launch_fluent
+    # Look for Fluent exe path in the following order:
+    # 1. product_version parameter passed with launch_fluent
     product_version = launch_argvals.get("product_version")
     if product_version:
         return get_exe_path(get_fluent_root(FluentVersion(product_version)))
 
-    # 3. the latest ANSYS version from AWP_ROOT environment variables
+    # 2. the latest ANSYS version from AWP_ROOT environment variables
     ansys_version = get_ansys_version()
     return get_exe_path(get_fluent_root(FluentVersion(ansys_version)))
 
@@ -304,8 +304,9 @@ def _get_session_info(argvals, mode: Union[LaunchMode, str, None] = None):
 
 def _raise_exception_g_gu_in_windows_os(additional_arguments: str) -> None:
     """If -g or -gu is passed in Windows OS, the exception should be raised."""
+    additional_arg_list = additional_arguments.split()
     if _is_windows() and (
-        ("-g" in additional_arguments) or ("-gu" in additional_arguments)
+        ("-g" in additional_arg_list) or ("-gu" in additional_arg_list)
     ):
         raise ValueError("'-g' and '-gu' is not supported on windows platform.")
 
@@ -459,6 +460,7 @@ def launch_fluent(
     server_info_filepath: str = None,
     password: str = None,
     py: bool = None,
+    gpu: bool = None,
     cwd: str = None,
     topy: Union[str, list] = None,
     **kwargs,
@@ -550,6 +552,8 @@ def launch_fluent(
         Password to connect to existing Fluent instance.
     py : bool, optional
         If True, Fluent will run in Python mode. Default is None.
+    gpu : bool, optional
+        If True, Fluent will start with GPU Solver.
     cwd: str, Optional
         Path to specify current working directory to launch fluent from the defined directory as
         current working directory.
@@ -645,11 +649,17 @@ def launch_fluent(
             logger.info(
                 "Starting Fluent remotely. The startup configuration will be ignored."
             )
+
+            if product_version:
+                fluent_product_version = "".join(product_version.split("."))[:-1]
+            else:
+                fluent_product_version = None
+
             return launch_remote_fluent(
                 session_cls=new_session,
                 start_timeout=start_timeout,
                 start_transcript=start_transcript,
-                product_version="".join(get_ansys_version().split("."))[:-1],
+                product_version=fluent_product_version,
                 cleanup_on_exit=cleanup_on_exit,
                 meshing_mode=meshing_mode,
                 dimensionality=version,
@@ -661,11 +671,17 @@ def launch_fluent(
             args = _build_fluent_launch_args_string(**argvals).split()
             if meshing_mode:
                 args.append(" -meshing")
-            # Assumes the container OS will be able to create the
-            # EXAMPLES_PATH of host OS. With the Fluent docker
-            # container, the following currently works only in linux.
+
+            host_mount_path = pyfluent.EXAMPLES_PATH
+            if not os.path.exists(host_mount_path):
+                os.makedirs(host_mount_path)
+
+            container_mount_path = os.getenv(
+                "PYFLUENT_CONTAINER_MOUNT_PATH", host_mount_path
+            )
+
             port, password = start_fluent_container(
-                pyfluent.EXAMPLES_PATH, pyfluent.EXAMPLES_PATH, args
+                host_mount_path, container_mount_path, args
             )
             return new_session(
                 fluent_connection=FluentConnection(

@@ -4,4 +4,4 @@
 # These owners will be the default owners for everything in
 # the repo. Unless a later match takes precedence,
 # they will be requested for review when someone opens a pull request.
-*       @mkundu1 @seanpearsonuk @ajain-work @dnwillia-work @prmukherj @hpohekar @alikasim72 @h-krishnan
+*       @mkundu1 @seanpearsonuk @ajain-work @dnwillia-work @prmukherj @hpohekar @h-krishnan @raph-luc

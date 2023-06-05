@@ -81,6 +81,7 @@ class Command:
                                     raise RuntimeError(
                                         f"{arg} value {arg_value} is not within allowed values."
                                     )
+
                         elif attr == "range":
                             if type(arg_value) != int and type(arg_value) != float:
                                 raise RuntimeError(
