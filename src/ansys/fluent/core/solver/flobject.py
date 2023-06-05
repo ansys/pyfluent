@@ -1121,7 +1121,7 @@ def get_cls(name, info, parent=None, version=None):
             bases = bases + (_CreatableNamedObjectMixin,)
         elif obj_type == "named-object":
             bases = bases + (_NonCreatableNamedObjectMixin,)
-        elif info.get("has-allowed-values") or version == "222":
+        elif info.get("has_allowed_values") or version == "222":
             bases += (_HasAllowedValuesMixin,)
 
         cls = type(pname, bases, dct)
