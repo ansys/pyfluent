@@ -119,19 +119,13 @@ class DumpDataReader:
             SurfaceDataType.FacesNormal: "face-normal",
         }
 
-        surfaces_data = []
-        surfaces_data_int = []
-
-        for data_type in data_types:
-            for surface_id in surface_ids:
-                surfaces_data_int.append(
-                    self._session_data["fields"][tag_id][surface_id][
-                        enum_to_field_name[data_type]
-                    ]
-                )
-
-            surfaces_data.append(surfaces_data_int[:])
-            surfaces_data_int = []
+        surfaces_data = [
+            self._session_data["fields"][tag_id][surface_id][
+                enum_to_field_name[data_type]
+            ]
+            for data_type in data_types
+            for surface_id in surface_ids
+        ]
 
         return surfaces_data
 
