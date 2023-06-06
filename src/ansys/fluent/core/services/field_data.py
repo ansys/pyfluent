@@ -124,7 +124,7 @@ class FieldInfo:
 
         return range_data
 
-    def get_scalar_fields_info(self) -> dict:
+    def get_scalar_fields_info(self) -> Dict[str, Dict]:
         """Get fields information (field name, domain, and section).
 
         Returns
@@ -142,7 +142,7 @@ class FieldInfo:
             for field_info in response.fieldInfo
         }
 
-    def get_vector_fields_info(self) -> dict:
+    def get_vector_fields_info(self) -> Dict[str, Dict]:
         """Get vector fields information (vector components).
 
         Returns
@@ -160,7 +160,7 @@ class FieldInfo:
             for vector_field_info in response.vectorFieldInfo
         }
 
-    def get_surfaces_info(self) -> dict:
+    def get_surfaces_info(self) -> Dict[str, Dict]:
         """Get surfaces information (surface name, ID, and type).
 
         Returns
