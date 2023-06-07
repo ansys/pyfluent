@@ -11,7 +11,7 @@ import ansys.api.fluent.v0 as api
 from ansys.api.fluent.v0 import batch_ops_pb2, batch_ops_pb2_grpc
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 
-network_logger = logging.getLogger("ansys.fluent.networking")
+network_logger = logging.getLogger("pyfluent.networking")
 
 
 class BatchOpsService:

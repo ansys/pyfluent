@@ -20,8 +20,8 @@ from ansys.fluent.core.utils.async_execution import asynchronous
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 from ansys.fluent.core.workflow import WorkflowWrapper
 
-tui_logger = logging.getLogger("ansys.fluent.services.tui")
-data_model_logger = logging.getLogger("ansys.fluent.services.datamodel")
+tui_logger = logging.getLogger("pyfluent.tui")
+datamodel_logger = logging.getLogger("pyfluent.datamodel")
 
 
 class Solver(BaseSession):
@@ -86,7 +86,7 @@ class Solver(BaseSession):
             )
             workflow_se = workflow_module.Root(self._se_service, "workflow", [])
         except (ImportError, ModuleNotFoundError):
-            data_model_logger.warning(_CODEGEN_MSG_DATAMODEL)
+            datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
             workflow_se = PyMenuGeneric(self._se_service, "workflow")
         return workflow_se
 

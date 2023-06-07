@@ -29,7 +29,7 @@ import weakref
 
 from .error_message import allowed_name_error_message, allowed_values_error
 
-settings_logger = logging.getLogger("ansys.fluent.services.settings_api")
+settings_logger = logging.getLogger("pyfluent.settings_api")
 
 # Type hints
 RealType = NewType("real", Union[float, str])  # constant or expression
@@ -1078,7 +1078,7 @@ def get_cls(name, info, parent=None, version=None):
         obj_type = info["type"]
         base = _baseTypes.get(obj_type)
         if base is None:
-            settings_logger.error(
+            settings_logger.warning(
                 f"Unable to find base class for '{name}' "
                 f"(type = '{obj_type}'). "
                 f"Falling back to String."

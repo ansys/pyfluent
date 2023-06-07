@@ -8,7 +8,7 @@ import grpc
 
 from ansys.fluent.core.services.batch_ops import BatchOps
 
-network_logger = logging.getLogger("ansys.fluent.networking")
+network_logger = logging.getLogger("pyfluent.networking")
 
 
 class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
