@@ -1,4 +1,4 @@
-""".. _xxx:
+""".. _ref_turbo_machinery_tui_api:
 
 Turbomachinery Setup and Analysis Using the Turbo Workflow
 ----------------------------------------------------------
@@ -139,6 +139,7 @@ solver_session.workflow.TaskObject["Describe Component"].Arguments.set_state(
         "RowNumList": ["row 3", "row 2", "row 1"],
     }
 )
+
 solver_session.workflow.TaskObject["Describe Component"].Execute()
 
 
@@ -653,8 +654,6 @@ solver_session.workflow.TaskObject["Create CFD Model"].Execute()
 # ~~~~~~~~~~~~~~~~~~
 # Define the turbo-related physics conditions.
 
-# solver_session.solverworkflow.TWF_TurboPhysics()
-
 solver_session.workflow.TaskObject["Define Turbo Physics"].Arguments.set_state(
     {
         "States": {
@@ -669,8 +668,6 @@ solver_session.workflow.TaskObject["Define Turbo Physics"].Execute()
 # Turbo regions and zones
 # ~~~~~~~~~~~~~~~~~~~~~~~
 # Define the turbo-related region and zone boundary conditions.
-
-# solver_session.solverworkflow.TWF_TurboRegionsZones()
 
 solver_session.workflow.TaskObject[
     "Define Turbo Regions and Zones"
