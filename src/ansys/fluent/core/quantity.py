@@ -392,7 +392,7 @@ class UnitsTable(object):
         """
 
         # Retrieve config yaml file within module
-        file_path = os.path.abspath(__file__)
+        file_path = os.path.relpath(__file__)
         file_dir = os.path.dirname(file_path)
         qc_path = os.path.join(file_dir, "utils/quantity_config.yaml")
 
