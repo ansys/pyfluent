@@ -60,25 +60,35 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: v23.2.0
 
-      - name: 22.2 Unit Testing
-        run: make unittest-all-222
-        continue-on-error: true
+      - name: Pull 24.1 Fluent docker image
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: v24.1.0
+
+      - name: 24.1 Unit Testing
+        run: make unittest-all-241-no-codegen
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
-          FLUENT_IMAGE_TAG: v22.2.0
+          FLUENT_IMAGE_TAG: v24.1.0
+
+      - name: 23.2 Unit Testing
+        run: make unittest-all-232-no-codegen
+        env:
+          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+          PYFLUENT_START_INSTANCE: 0
+          FLUENT_IMAGE_TAG: v23.2.0
 
       - name: 23.1 Unit Testing
-        run: make unittest-all-231
-        continue-on-error: true
+        run: make unittest-all-231-no-codegen
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
           FLUENT_IMAGE_TAG: v23.1.0
 
-      - name: 23.2 Unit Testing
-        run: make unittest-all-232
+      - name: 22.2 Unit Testing
+        run: make unittest-all-222-no-codegen
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
-          FLUENT_IMAGE_TAG: v23.2.0
+          FLUENT_IMAGE_TAG: v22.2.0
