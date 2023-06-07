@@ -388,7 +388,7 @@ jobs:
   build_test_232_241:
     name: Build and Test
     needs: test-import
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, pyfluent]
     strategy:
       fail-fast: false
       matrix:
@@ -486,7 +486,7 @@ jobs:
         env:
           TWINE_USERNAME: PAT
           TWINE_PASSWORD: ${{ secrets.PYANSYS_PYPI_PRIVATE_PAT }}
-          TWINE_REPOSITORY_URL: https://pkgs.dev.azure.com/pyansys/_packaging/ansys/pypi/upload
+          TWINE_REPOSITORY_URL: https://pkgs.dev.azure.com/pyansys/_packaging/pyansys/pypi/upload
 
       - name: Upload to Public PyPi
         run: |

@@ -649,11 +649,17 @@ def launch_fluent(
             logger.info(
                 "Starting Fluent remotely. The startup configuration will be ignored."
             )
+
+            if product_version:
+                fluent_product_version = "".join(product_version.split("."))[:-1]
+            else:
+                fluent_product_version = None
+
             return launch_remote_fluent(
                 session_cls=new_session,
                 start_timeout=start_timeout,
                 start_transcript=start_transcript,
-                product_version="".join(get_ansys_version().split("."))[:-1],
+                product_version=fluent_product_version,
                 cleanup_on_exit=cleanup_on_exit,
                 meshing_mode=meshing_mode,
                 dimensionality=version,
@@ -665,11 +671,17 @@ def launch_fluent(
             args = _build_fluent_launch_args_string(**argvals).split()
             if meshing_mode:
                 args.append(" -meshing")
-            # Assumes the container OS will be able to create the
-            # EXAMPLES_PATH of host OS. With the Fluent docker
-            # container, the following currently works only in linux.
+
+            host_mount_path = pyfluent.EXAMPLES_PATH
+            if not os.path.exists(host_mount_path):
+                os.makedirs(host_mount_path)
+
+            container_mount_path = os.getenv(
+                "PYFLUENT_CONTAINER_MOUNT_PATH", host_mount_path
+            )
+
             port, password = start_fluent_container(
-                pyfluent.EXAMPLES_PATH, pyfluent.EXAMPLES_PATH, args
+                host_mount_path, container_mount_path, args
             )
             return new_session(
                 fluent_connection=FluentConnection(

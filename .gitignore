@@ -148,3 +148,4 @@ src/ansys/fluent/core/solver/settings_*/
 
 # Fluent generated files
 *.trn
+cleanup-fluent-*-*.*

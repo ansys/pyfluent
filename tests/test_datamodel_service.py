@@ -10,12 +10,12 @@ from ansys.fluent.core.services.datamodel_se import (
     _convert_variant_to_value,
     convert_path_to_se_path,
 )
-from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.codegen_required
 def test_event_subscription(new_mesh_session):
     session = new_mesh_session
     session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -75,6 +75,7 @@ def test_event_subscription(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.codegen_required
 def test_add_on_child_created(new_mesh_session):
     meshing = new_mesh_session
     child_paths = []
@@ -94,6 +95,7 @@ def test_add_on_child_created(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.codegen_required
 def test_add_on_deleted(new_mesh_session):
     meshing = new_mesh_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -109,6 +111,7 @@ def test_add_on_deleted(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.codegen_required
 def test_add_on_changed(new_mesh_session):
     meshing = new_mesh_session
     task_list = meshing.workflow.Workflow.TaskList
@@ -130,6 +133,7 @@ def test_add_on_changed(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.codegen_required
 def test_add_on_affected(new_mesh_session):
     meshing = new_mesh_session
     data = []
@@ -150,6 +154,7 @@ def test_add_on_affected(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.codegen_required
 def test_add_on_affected_at_type_path(new_mesh_session):
     meshing = new_mesh_session
     data = []
@@ -170,6 +175,7 @@ def test_add_on_affected_at_type_path(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.codegen_required
 def test_add_on_command_executed(new_mesh_session):
     meshing = new_mesh_session
     data = []
@@ -199,18 +205,12 @@ def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.codegen_required
 def test_datamodel_streaming_full_diff_state(disable_datamodel_cache, new_mesh_session):
     meshing = new_mesh_session
     datamodel_service_se = meshing.datamodel_service_se
-    data_model_request = datamodel_se_pb2.DataModelRequest()
-    data_model_request.rules = "meshing"
-    datamodel_streaming = StreamingService(
-        stub=datamodel_service_se._stub,
-        request=data_model_request,
-        metadata=datamodel_service_se._metadata,
-    )
-    stream = DatamodelStream(datamodel_streaming)
-    stream.start()
+    stream = DatamodelStream(datamodel_service_se)
+    stream.start(rules="meshing", no_commands_diff_state=False)
 
     def cb(state, deleted_paths):
         if state:
@@ -232,21 +232,14 @@ def test_datamodel_streaming_full_diff_state(disable_datamodel_cache, new_mesh_s
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.codegen_required
 def test_datamodel_streaming_no_commands_diff_state(
     disable_datamodel_cache, new_mesh_session
 ):
     meshing = new_mesh_session
     datamodel_service_se = meshing.datamodel_service_se
-    data_model_request = datamodel_se_pb2.DataModelRequest()
-    data_model_request.rules = "meshing"
-    data_model_request.diffstate = datamodel_se_pb2.DIFFSTATE_NOCOMMANDS
-    datamodel_streaming = StreamingService(
-        stub=datamodel_service_se._stub,
-        request=data_model_request,
-        metadata=datamodel_service_se._metadata,
-    )
-    stream = DatamodelStream(datamodel_streaming)
-    stream.start()
+    stream = DatamodelStream(datamodel_service_se)
+    stream.start(rules="meshing", no_commands_diff_state=True)
 
     def cb(state, deleted_paths):
         if state:
@@ -268,6 +261,7 @@ def test_datamodel_streaming_no_commands_diff_state(
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.codegen_required
 def test_get_object_names_wtm(new_mesh_session):
     meshing = new_mesh_session
 
