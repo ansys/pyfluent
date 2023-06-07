@@ -1,4 +1,6 @@
-import json
+import os
+
+import yaml
 
 
 class Quantity(float):
@@ -110,14 +112,17 @@ class Quantity(float):
         ----------
         __value : Quantity | int | float
             Value modifying current quantity object.
+        caller : str
+            Name of caller function.
         Returns
         -------
         : str
             SI unit string of new quantity.
         """
-
+        # Cannot perform operations between quantities with opposing dimensions
         if isinstance(__value, Quantity) and (self.dimensions != __value.dimensions):
             raise QuantityError(from_unit=self.unit_str, to_unit=__value.unit_str)
+        # Cannot perform operations on a non-dimensionless quantity
         if (
             caller not in ["__mul__", "__truediv__"]
             and (any([dim != 0.0 for dim in self.dimensions]))
@@ -125,7 +130,7 @@ class Quantity(float):
             and isinstance(__value, (float, int))
         ):
             raise TypeError(
-                f"Error: '{__value}' is incompatible with the current quantity object. {self.dimensions}"
+                f"Error: '{__value}' is incompatible with the current quantity object."
             )
 
         return (
@@ -185,15 +190,18 @@ class Quantity(float):
         if not isinstance(to_unit_str, str):
             raise TypeError("'to_unit_str' should be of 'str' type.")
 
+        # Retrieve all SI required SI data and perform conversion
         _, si_multiplier, si_offset = self._units_table.si_data(to_unit_str)
         new_value = self._units_table.si_conversion(
             self.si_value, self.type, si_multiplier, si_offset, reverse=True
         )
 
-        new = Quantity(value=new_value, unit_str=to_unit_str)
-        self._arithmetic_precheck(new)
+        new_obj = Quantity(value=new_value, unit_str=to_unit_str)
 
-        return new
+        # Confirm conversion compatibility
+        self._arithmetic_precheck(new_obj)
+
+        return new_obj
 
     def convert(self, to_sys: str) -> "Quantity":
         """Perform unit system conversions.
@@ -209,14 +217,16 @@ class Quantity(float):
             Quantity object containing desired unit system conversion.
         """
 
+        # Verify specified system is supported
         if to_sys not in ["SI", "CGS", "BT"]:
             raise ValueError(
                 f"'{to_sys}' is not a supported unit system. Only 'SI', 'CGS', 'BT' are supported."
             )
 
-        new = Dimensions(dimensions=self.dimensions, unit_sys=to_sys)
+        # Create new dimensions with desired unit system
+        new_dim = Dimensions(dimensions=self.dimensions, unit_sys=to_sys)
 
-        return Quantity(value=self.value, unit_str=new.unit_str)
+        return Quantity(value=self.value, unit_str=new_dim.unit_str)
 
     def __str__(self):
         return f'({self.value}, "{self.unit_str}")'
@@ -341,9 +351,9 @@ class UnitsTable(object):
     api_quantity_map : dict
         Quantity map values from settings API.
     fundamental_units : dict
-        Fundamental units and properties.
+        Fundamental units and properties representing Mass, Length, Time, Current, Chemical Amount, Light, Solid Angle, Angle, Temperature and Temperature Difference.
     derived_units : dict
-        Derived units and properties.
+        Derived units and properties composed of fundamental units.
     multipliers : dict
         Multiplier prefixes and respective factors.
 
@@ -351,8 +361,10 @@ class UnitsTable(object):
     -------
     filter_unit_term()
         Separate multiplier, base, and power from a unit term.
+    si_data()
+        Compute the SI unit string, SI multiplier, and SI offset from a unit string of any type.
     si_converion()
-        Compute the SI unit string, SI multiplier, and SI offset.
+        Perform SI conversion based on quantity type.
     condense()
         Condenses a unit string by collecting like-terms.
     get_type()
@@ -379,10 +391,14 @@ class UnitsTable(object):
             Quantity data loaded in from JSON file.
         """
 
-        path = "src/ansys/fluent/core/utils/"
+        # Retrieve config yaml file within module
+        file_path = os.path.abspath(__file__)
+        file_dir = os.path.dirname(file_path)
+        qc_path = os.path.join(file_dir, "utils/quantity_config.yaml")
 
-        with open(path + "quantity_config.json", "r") as data_json:
-            return json.load(data_json)
+        # Load config data
+        with open(qc_path, "r") as qc_yaml:
+            return yaml.safe_load(qc_yaml)
 
     def _has_multiplier(self, unit_term: str) -> bool:
         """Check if a unit term contains a multiplier.
@@ -397,6 +413,7 @@ class UnitsTable(object):
         : bool
             Boolean of multiplier within unit_term.
         """
+        # Check if the unit term is not an existing fundamental or derived unit.
         return not (
             (unit_term in self._fundamental_units) or (unit_term in self._derived_units)
         )
@@ -414,8 +431,10 @@ class UnitsTable(object):
         term : str
             SI unit equivalent.
         """
+        # Retrieve type associated with unit term
         unit_term_type = self._fundamental_units[unit_term]["type"]
 
+        # Find SI unit with same type as unit term
         for term, term_info in self._fundamental_units.items():
             if term_info["type"] == unit_term_type and term_info["factor"] == 1.0:
                 return term
@@ -440,7 +459,7 @@ class UnitsTable(object):
         """Multipliers"""
         return self._multipliers
 
-    def filter_unit_term(self, unit_term: str) -> str:
+    def filter_unit_term(self, unit_term: str) -> tuple:
         """Separate multiplier, base, and power from a unit term.
 
         Parameters
@@ -450,8 +469,8 @@ class UnitsTable(object):
 
         Returns
         -------
-        : dict
-            Dictionary containing all components of the unit term.
+        : tuple
+            Tuple containing multiplier, base, and power of the unit term.
         """
         multiplier = ""
         power = 1.0
@@ -503,12 +522,14 @@ class UnitsTable(object):
             Tuple containing si_unit_string, si_multiplier and si_offset.
         """
 
+        # Initialize default values
         unit_str = unit_str or " "
         power = power or 1.0
         si_unit_str = si_unit_str or ""
         si_multiplier = si_multiplier or 1.0
         si_offset = si_offset or 0.0
 
+        # Split unit string into terms and parse data associated with individual terms
         for term in unit_str.split(" "):
             unit_multiplier, unit_term, unit_term_power = self.filter_unit_term(term)
 
@@ -520,6 +541,7 @@ class UnitsTable(object):
                 else 1.0
             )
 
+            # Retrieve data associated with fundamental unit
             if unit_term in self._fundamental_units:
                 si_offset = self._fundamental_units[unit_term]["offset"]
 
@@ -532,11 +554,13 @@ class UnitsTable(object):
                     self._fundamental_units[unit_term]["factor"] ** unit_term_power
                 )
 
+            # Retrieve derived unit composition unit string and factor.
             if unit_term in self._derived_units:
                 si_multiplier *= (
                     self._derived_units[unit_term]["factor"] ** unit_term_power
                 )
 
+                # Recursively parse composition unit string
                 si_unit_str, si_multiplier, si_offset = self.si_data(
                     unit_str=self._derived_units[unit_term]["composition"],
                     power=unit_term_power,
@@ -567,13 +591,15 @@ class UnitsTable(object):
             SI factor of quantity object.
         si_offset : float
             SI offset of quantity object.
+        reverse : bool
+            SI conversion direction. Setting reverse to `True` performs the inverse of a conversion.
 
         Returns
         -------
         : float
             SI value of quantity.
-
         """
+        # Perform conversion from SI value
         if reverse:
             return (
                 ((value / si_multiplier) - si_offset)
@@ -581,6 +607,7 @@ class UnitsTable(object):
                 else (value / si_multiplier)
             )
 
+        # Perform conversion to SI value
         return (
             ((value + si_offset) * si_multiplier)
             if type == "Temperature"
@@ -602,6 +629,7 @@ class UnitsTable(object):
         """
         terms_and_powers = {}
 
+        # Split unit string into terms and parse data associated with individual terms
         for term in unit_str[:-1].split(" "):
             _, unit_term, unit_term_power = self.filter_unit_term(term)
 
@@ -612,6 +640,7 @@ class UnitsTable(object):
 
         unit_str = ""
 
+        # Concatenate unit string based on terms and powers (Removed duplications)
         for term, power in terms_and_powers.items():
             if power == 1.0:
                 unit_str += f"{term} "
@@ -633,6 +662,7 @@ class UnitsTable(object):
         : str
             Type of quantity.
         """
+
         if unit_str == "":
             return "No Type"
 
@@ -702,6 +732,7 @@ class Dimensions(object):
         unit_str : str
             Unit string representation of dimensions.
         """
+        # Ensure dimensions list contains 9 terms
         dimensions = [float(dim) for dim in dimensions + ((9 - len(dimensions)) * [0])]
         sys_order = {
             "SI": ["kg", "m", "s", "K", "radian", "mol", "cd", "A", "sr"],
@@ -710,6 +741,7 @@ class Dimensions(object):
         }
         unit_str = ""
 
+        # Define unit term and associated value from dimension with dimensions list
         for idx, dim in enumerate(dimensions):
             if dim == 1.0:
                 unit_str += f"{sys_order[unit_sys][idx]} "
@@ -739,11 +771,13 @@ class Dimensions(object):
         power = power or 1.0
         dimensions = dimensions or [0.0] * 9
 
+        # Split unit string into terms and parse data associated with individual terms
         for term in unit_str.split(" "):
             _, unit_term, unit_term_power = self._units_table.filter_unit_term(term)
 
             unit_term_power *= power
 
+            # retrieve data associated with fundamental unit
             if unit_term in self._units_table.fundamental_units:
                 idx = (
                     self._units_table.fundamental_units[unit_term]["dimension_order"]
@@ -751,7 +785,9 @@ class Dimensions(object):
                 )
                 dimensions[idx] += unit_term_power
 
+            # Retrieve derived unit composition unit string and factor.
             if unit_term in self._units_table.derived_units:
+                # Recursively parse composition unit string
                 dimensions = self._unit_str_to_dim(
                     unit_str=self._units_table.derived_units[unit_term]["composition"],
                     power=unit_term_power,
@@ -774,13 +810,15 @@ class Dimensions(object):
 class QuantityMap(object):
     """Creates a Quantity Map object based on a given quantity map.
 
-    Attributes
+    Parameters
+    ----------
+    quantity_map : dict
+        Dictionary containing quantity map units and values.
+
+    Properties
     ----------
     unit_str : str
         Unit string representation of quantity map.
-
-    quantity_map : dict
-        Quantity map.
 
     Returns
     -------
@@ -811,6 +849,7 @@ class QuantityMap(object):
 
         unit_str = ""
 
+        # Split unit string into terms and parse data associated with individual terms
         for terms in unit_dict:
             for term in terms.split(" "):
                 _, unit_term, unit_term_power = self._units_table.filter_unit_term(term)
