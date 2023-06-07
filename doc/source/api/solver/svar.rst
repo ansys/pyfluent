@@ -7,13 +7,13 @@ An SVAR is an array variable that holds the data for a particular
 solved field (such as pressure or velocity). This data can exist
 at different zones for a given domain. 
 
-In Fluent, domain represnets protion of space where solution of CFD
+In Fluent, domain represents protion of space where solution of CFD
 simulation is calculated. Depending upon the problem there can be 
-one or multiple domains. For exmaple in multiphase problem, number
+one or multiple domains. For example in multiphase problem, number
 of domains will be same as number of phases.  
 
 Zones are the regions within domain to which specific properties can 
-be assigned. For exmaple boundary zones. It can be of type ``cell`` or ``face``.
+be assigned (for example boundary zones). It can be of type ``cell`` or ``face``.
   
 So to access SVAR data, first SVAR info is needed which includes information 
 about domains, zones and name of available SVARs.
