@@ -35,6 +35,9 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
     port = get_free_port()
     password = ""
     container_sifile = mounted_to + "/" + Path(sifile).name
+    image_name = os.getenv(
+        "FLUENT_IMAGE_NAME", "azwepsifujiaksacr.azurecr.io/ansys/fluent"
+    )
     image_tag = os.getenv("FLUENT_IMAGE_TAG", "v23.1.0")
     test_name = os.getenv("PYFLUENT_TEST_NAME", "none")
 
@@ -55,7 +58,7 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
                 f"REMOTING_PORTS={port}/portspan=2",
                 "-l",
                 f"test_name={test_name}",
-                f"ghcr.io/ansys/pyfluent:{image_tag}",
+                f"{image_name}:{image_tag}",
                 "-gu",
                 f"-sifile={container_sifile}",
             ]
