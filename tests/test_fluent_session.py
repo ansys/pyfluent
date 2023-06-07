@@ -1,5 +1,6 @@
 import os
 import subprocess
+import threading
 import time
 
 import psutil
@@ -101,3 +102,39 @@ def test_server_does_not_exit_when_session_goes_out_of_scope(
         time.sleep(10)
         assert psutil.pid_exists(f.server_pid)
         psutil.Process(f.server_pid).kill()
+
+
+def test_fluent_connection_properties(
+    new_solver_session,
+) -> None:
+    session = new_solver_session
+    assert isinstance(session.connection_properties.ip, str)
+    assert isinstance(session.connection_properties.port, int)
+    assert isinstance(session.connection_properties.password, str)
+    assert isinstance(session.connection_properties.cortex_pwd, str)
+    assert isinstance(session.connection_properties.cortex_pid, int)
+    assert isinstance(session.connection_properties.cortex_host, str)
+    assert isinstance(session.connection_properties.inside_container, bool)
+
+
+def test_fluent_freeze_kill(
+    new_solver_session,
+) -> None:
+    session = new_solver_session
+    _read_case(session=session)
+
+    def _freeze_fluent(s):
+        return s.tui.mesh.modify_zones.sep_face_zone_face("interior--fluid", "yes")
+
+    tmp_thread = threading.Thread(target=_freeze_fluent, args=(session,), daemon=True)
+    tmp_thread.start()
+    tmp_thread.join(5)
+    if tmp_thread.is_alive():
+        session.exit(force=True)
+        tmp_thread.join()
+    else:
+        raise Exception("Test should have temporarily frozen Fluent, but did not.")
+
+    time.sleep(1)
+
+    assert session.connection_properties.cortex_host not in get_container_ids_set()

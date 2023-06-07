@@ -70,6 +70,7 @@ jobs:
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
+          PYFLUENT_FORCE_EXIT: 1
           FLUENT_IMAGE_TAG: v24.1.0
 
       - name: 23.2 Unit Testing
@@ -77,6 +78,7 @@ jobs:
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
+          PYFLUENT_FORCE_EXIT: 1
           FLUENT_IMAGE_TAG: v23.2.0
 
       - name: 23.1 Unit Testing
@@ -84,6 +86,7 @@ jobs:
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
+          PYFLUENT_FORCE_EXIT: 1
           FLUENT_IMAGE_TAG: v23.1.0
 
       - name: 22.2 Unit Testing
@@ -91,4 +94,5 @@ jobs:
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
+          PYFLUENT_FORCE_EXIT: 1
           FLUENT_IMAGE_TAG: v22.2.0

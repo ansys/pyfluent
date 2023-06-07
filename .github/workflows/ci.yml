@@ -143,6 +143,7 @@ jobs:
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
+          PYFLUENT_FORCE_EXIT: 1
           PYFLUENT_LAUNCH_CONTAINER: 1
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
@@ -164,6 +165,7 @@ jobs:
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
+          PYFLUENT_FORCE_EXIT: 1
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
       - name: Zip HTML Documentation before upload
@@ -249,6 +251,7 @@ jobs:
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
+          PYFLUENT_FORCE_EXIT: 1
           PYFLUENT_LAUNCH_CONTAINER: 1
           FLUENT_IMAGE_TAG: v22.2.0
 
@@ -286,6 +289,7 @@ jobs:
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
+          PYFLUENT_FORCE_EXIT: 1
           PYFLUENT_LAUNCH_CONTAINER: 1
           FLUENT_IMAGE_TAG: v23.1.0
 
@@ -367,6 +371,7 @@ jobs:
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
+          PYFLUENT_FORCE_EXIT: 1
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Upload 23.1 Coverage Results to Codecov
@@ -443,6 +448,7 @@ jobs:
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
+          PYFLUENT_FORCE_EXIT: 1
           PYFLUENT_LAUNCH_CONTAINER: 1
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
@@ -460,6 +466,7 @@ jobs:
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
+          PYFLUENT_FORCE_EXIT: 1
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
   release:

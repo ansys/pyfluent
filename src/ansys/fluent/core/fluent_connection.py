@@ -1,6 +1,9 @@
 from ctypes import c_int, sizeof
 import itertools
+import logging
 import os
+from pathlib import Path
+import subprocess
 import threading
 import time
 from typing import Any, Callable, Dict, List, Optional, Tuple
@@ -9,6 +12,7 @@ import weakref
 
 import grpc
 
+from ansys.fluent.core import TIMEOUT_TO_FLUENT_KILL
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services.batch_ops import BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
@@ -38,6 +42,9 @@ from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
+from ansys.platform.instancemanagement import Instance
+
+logger = logging.getLogger("pyfluent.general")
 
 
 def _get_max_c_int_limit() -> int:
@@ -85,6 +92,49 @@ class _IsDataValid:
         return self._scheme_eval.scheme_eval("(data-valid?)")
 
 
+class FluentConnectionProperties:
+    """Stores Fluent connection properties, including connection IP, port and password, and
+    Cortex working directory, process ID and hostname, and whether Fluent was launched inside a docker container.
+
+    Examples
+    --------
+    These properties are also available through the session object and can be accessed as:
+
+    >>> import ansys.fluent.core as pyfluent
+    >>> session = pyfluent.launch_fluent()
+    >>> session.connection_properties.list_properties()
+    ['ip', 'port', 'password', 'cortex_pwd', 'cortex_pid', 'cortex_host', 'inside_container']
+    >>> session.connection_properties.ip
+    '127.0.0.1'
+    """
+
+    def __init__(
+        self,
+        ip: str = None,
+        port: int = None,
+        password: str = None,
+        cortex_pwd: str = None,
+        cortex_pid: int = None,
+        cortex_host: str = None,
+        inside_container: bool = None,
+    ):
+        self.ip = ip
+        self.port = port
+        self.password = password
+        self.cortex_pwd = cortex_pwd
+        self.cortex_pid = cortex_pid
+        self.cortex_host = cortex_host
+        self.inside_container = inside_container
+
+    def list_properties(self) -> list:
+        """List all property names."""
+        return [k for k, _ in vars(self).items()]
+
+    def list_properties_values(self) -> dict:
+        """Dict with all property names and values."""
+        return vars(self)
+
+
 class FluentConnection:
     """Encapsulates a Fluent connection.
 
@@ -115,8 +165,9 @@ class FluentConnection:
         channel: grpc.Channel = None,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
-        remote_instance: bool = None,
+        remote_instance: Instance = None,
         launcher_args: Dict[str, Any] = None,
+        inside_container: bool = False,
     ):
         """Instantiate a Session.
 
@@ -152,6 +203,9 @@ class FluentConnection:
             The corresponding remote instance when Fluent is launched through
             PyPIM. This instance will be deleted when calling
             ``Session.exit()``.
+        inside_container: bool, optional
+            Whether the Fluent session that is being connected to
+            is running inside a docker container.
         """
         self._data_valid = False
         self._channel_str = None
@@ -255,6 +309,14 @@ class FluentConnection:
         if start_transcript:
             self.transcript.start()
 
+        cortex_host = self.scheme_eval.scheme_eval("(cx-cortex-host)")
+        cortex_pid = self.scheme_eval.scheme_eval("(cx-cortex-id)")
+        cortex_pwd = self.scheme_eval.scheme_eval("(cortex-pwd)")
+
+        self.connection_properties = FluentConnectionProperties(
+            ip, port, password, cortex_pwd, cortex_pid, cortex_host, inside_container
+        )
+
         self._remote_instance = remote_instance
         self.launcher_args = launcher_args
         self._finalizer = weakref.finalize(
@@ -284,6 +346,95 @@ class FluentConnection:
     def id(self) -> str:
         """Return the session id."""
         return self._id
+
+    def kill_fluent(self):
+        """
+        Immediately kills the Fluent client,
+        losing unsaved progress and data.
+
+        Examples
+        --------
+
+        >>> import ansys.fluent.core as pyfluent
+        >>> session = pyfluent.launch_fluent()
+        >>> session.kill_fluent()
+
+        Notes
+        -----
+        If the Fluent session is responsive, prefer using :func:`exit()` instead.
+
+        """
+        if self.connection_properties.inside_container:
+            logger.error(
+                f"Cannot execute cleanup script, Fluent running inside container. "
+                f"Use kill_fluent_container() instead."
+            )
+            return
+        if self._remote_instance is not None:
+            logger.error(f"Cannot execute cleanup script, Fluent running remotely.")
+            return
+
+        pwd = self.connection_properties.cortex_pwd
+        pid = self.connection_properties.cortex_pid
+        host = self.connection_properties.cortex_host
+        cleanup_line_start = "Cleanup script file is "
+        if os.name == "nt":
+            cleanup_line_end = ".bat\n"
+            cmd_list = []
+        elif os.name == "posix":
+            cleanup_line_end = ".sh\n"
+            cmd_list = ["bash"]
+        else:
+            logger.error(
+                f"Unrecognized or unsupported operating system, cancelling Fluent cleanup script execution."
+            )
+            return
+        list_dir = os.listdir(Path(pwd))
+        for name in list_dir:
+            if name.startswith("fluent-") and name.endswith(f"{pid}.trn"):
+                with open(name, "r") as file:
+                    trn_lines = file.readlines()
+                for line in trn_lines:
+                    if (
+                        line.startswith(cleanup_line_start)
+                        and line.endswith(cleanup_line_end)
+                        and host in line
+                    ):
+                        cleanup_filename = line.lstrip(cleanup_line_start).rstrip()
+                        cleanup_filepath = Path(pwd, cleanup_filename)
+                        logger.info(
+                            f"Executing Fluent cleanup script, filepath: {cleanup_filepath}"
+                        )
+                        cmd_list.append(cleanup_filepath)
+                        logger.debug(f"Cleanup command list = {cmd_list}")
+                        subprocess.Popen(
+                            cmd_list,
+                            stdout=subprocess.DEVNULL,
+                            stderr=subprocess.DEVNULL,
+                        )
+
+    def kill_fluent_container(self):
+        """
+        Immediately kills the docker container running the Fluent client,
+        losing unsaved progress and data.
+
+        Notes
+        -----
+        By default, Fluent does not run in a container,
+        in that case use :func:`kill_fluent()`.
+        If the Fluent session is responsive, prefer using :func:`exit()` instead.
+        """
+        if not self.connection_properties.inside_container:
+            logger.error(
+                f"Session is not inside a container, cannot kill Fluent container. "
+                f"Use kill_fluent() instead."
+            )
+            return
+        if self._remote_instance is not None:
+            logger.error(f"Cannot kill local container, Fluent running remotely.")
+            return
+        container_id = self.connection_properties.cortex_host
+        subprocess.run(["docker", "kill", container_id])
 
     def get_current_fluent_mode(self):
         """Gets the mode of the current instance of Fluent (meshing or
@@ -324,9 +475,55 @@ class FluentConnection:
         """Gets and returns the fluent version."""
         return self.scheme_eval.version
 
-    def exit(self) -> None:
-        """Close the Fluent connection and exit Fluent."""
-        self._finalizer()
+    def exit(self, force: bool = False) -> None:
+        """Close the Fluent connection and exit Fluent.
+
+        Parameters
+        ----------
+        force : bool, optional
+            By default False. If True, attempts to kill the Fluent session if it does not exit properly.
+            Executes :func:`kill_fluent()` or :func:`kill_fluent_container()`, depending on how Fluent was run.
+
+        Examples
+        --------
+
+        >>> import ansys.fluent.core as pyfluent
+        >>> session = pyfluent.launch_fluent()
+        >>> session.exit()
+
+        Notes
+        -----
+        Can also set the ``PYFLUENT_FORCE_EXIT`` environment variable to ``1`` so that force is by default treated as True instead.
+        """
+        env_force = os.getenv("PYFLUENT_FORCE_EXIT")
+        if env_force and env_force.lower() in ["on", "true", "1"]:
+            logger.warning(
+                "PYFLUENT_FORCE_EXIT environment variable specified, forcing exit..."
+            )
+            force = True
+        if not force:
+            self._finalizer()
+        else:
+            if self._remote_instance:
+                logger.debug("Cannot force exit from Fluent remote instance.")
+                return self._finalizer()
+
+            def _connection_finalizer(connection):
+                return connection._finalizer()
+
+            tmp_thread = threading.Thread(
+                target=_connection_finalizer, args=(self,), daemon=True
+            )
+            tmp_thread.start()
+            tmp_thread.join(TIMEOUT_TO_FLUENT_KILL)
+            if tmp_thread.is_alive():
+                logger.debug("session.exit() timeout")
+                if self.connection_properties.inside_container:
+                    logger.debug("Fluent running inside container, killing it...")
+                    self.kill_fluent_container()
+                else:
+                    logger.debug("Fluent running locally, killing it...")
+                    self.kill_fluent()
 
     @staticmethod
     def _exit(
