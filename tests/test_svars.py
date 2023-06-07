@@ -66,18 +66,20 @@ def test_svars(new_solver_session):
 
     assert sv_t_wall_fluid.zones == ["wall-elbow", "elbow-fluid"]
 
-    fluid_temp = sv_t_wall_fluid["fluid"]
-    assert fluid_temp.size == 13852
-    assert fluid_temp.dtype == "float64"
-    # assert fluid_temp == array([600., 600., 600., ..., 600., 600., 600.])
+    fluid_temp = sv_t_wall_fluid["elbow-fluid"]
+    assert fluid_temp.size == 53466
+    assert fluid_temp.dtype == float
 
-    wall_temp_array = svar_data.get_array("SV_T", "wall", "mixture")
-    fluid_temp_array = svar_data.get_array("SV_T", "fluid", "mixture")
+    wall_temp_array = svar_data.get_array("SV_CENTROID", "wall-elbow", "mixture")
+    fluid_temp_array = svar_data.get_array("SV_CENTROID", "elbow-fluid", "mixture")
     wall_temp_array[:] = 500
     fluid_temp_array[:] = 600
-    zone_names_to_svar_data = {"wall": wall_temp_array, "fluid": fluid_temp_array}
+    zone_names_to_svar_data = {
+        "wall-elbow": wall_temp_array,
+        "elbow-fluid": fluid_temp_array,
+    }
     svar_data.set_svar_data(
-        svar_name="SV_T",
+        svar_name="SV_CENTROID",
         zone_names_to_svar_data=zone_names_to_svar_data,
         domain_name="mixture",
     )
