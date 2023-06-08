@@ -116,7 +116,6 @@ def test_svars(new_solver_session):
     assert updated_sv_p_data["elbow-fluid"][-1] == 600.0
 
 
-@pytest.mark.dev
 @pytest.mark.fluent_232
 @pytest.mark.fluent_241
 def test_svars_single_precision(new_solver_session_single_precision):
