@@ -28,12 +28,10 @@ from ansys.fluent.core.services.monitor import MonitorsService
 from ansys.fluent.core.services.reduction import Reduction, ReductionService
 from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
 from ansys.fluent.core.services.settings import SettingsService
-from ansys.fluent.core.services.svar import SVARData, SVARInfo, SVARService
+from ansys.fluent.core.services.svar import SVARService
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents,
 )
-
-# from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
@@ -243,8 +241,8 @@ class FluentConnection:
             self._field_data_service, self.field_info, _IsDataValid(self.scheme_eval)
         )
 
-        self._svar_service = SVARService(self._channel, self._metadata)
-        self.svar_info = SVARInfo(self._svar_service)
+        self.svar_service = SVARService(self._channel, self._metadata)
+
         self.field_data_streaming = FieldDataStreaming(
             self._id, self._field_data_service
         )
@@ -272,19 +270,6 @@ class FluentConnection:
         )
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
-    @property
-    def svar_data(self) -> SVARData:
-        """Return the SVARData handle."""
-        try:
-            return SVARData(self._svar_service, self.svar_info)
-        except RuntimeError:
-            return None
-
-    @property
-    def id(self) -> str:
-        """Return the session id."""
-        return self._id
-
     def get_current_fluent_mode(self):
         """Gets the mode of the current instance of Fluent (meshing or
         solver)."""
@@ -305,24 +290,10 @@ class FluentConnection:
         warnings.warn("Use -> transcript.stop()", DeprecationWarning)
         self.transcript.stop()
 
-    def start_journal(self, file_path: str):
-        """Executes tui command to start journal."""
-        warnings.warn("Use -> journal.start()", DeprecationWarning)
-        self.journal.start(file_path)
-
-    def stop_journal(self):
-        """Executes tui command to stop journal."""
-        warnings.warn("Use -> journal.stop()", DeprecationWarning)
-        self.journal.stop()
-
     def check_health(self) -> str:
         """Check health of Fluent connection."""
         warnings.warn("Use -> health_check_service.status()", DeprecationWarning)
         return self.health_check_service.status()
-
-    def get_fluent_version(self):
-        """Gets and returns the fluent version."""
-        return self.scheme_eval.version
 
     def exit(self) -> None:
         """Close the Fluent connection and exit Fluent."""

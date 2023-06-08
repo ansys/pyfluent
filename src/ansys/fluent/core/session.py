@@ -5,6 +5,7 @@ import json
 import logging
 import os
 from typing import Any, Dict
+import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.session_shared import (  # noqa: F401
@@ -85,6 +86,25 @@ class BaseSession:
         self._uploader = None
         self._preferences = None
         self._solverworkflow = None
+
+    @property
+    def id(self) -> str:
+        """Return the session id."""
+        return self.fluent_connection._id
+
+    def get_fluent_version(self):
+        """Gets and returns the fluent version."""
+        return self.scheme_eval.version
+
+    def start_journal(self, file_path: str):
+        """Executes tui command to start journal."""
+        warnings.warn("Use -> journal.start()", DeprecationWarning)
+        self.fluent_connection.journal.start(file_path)
+
+    def stop_journal(self):
+        """Executes tui command to stop journal."""
+        warnings.warn("Use -> journal.stop()", DeprecationWarning)
+        self.fluent_connection.journal.stop()
 
     @classmethod
     def create_from_server_info_file(
