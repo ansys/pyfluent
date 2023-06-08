@@ -93,8 +93,9 @@ class _IsDataValid:
 
 
 class FluentConnectionProperties:
-    """Stores Fluent connection properties, including connection IP, port and password, and
-    Cortex working directory, process ID and hostname, and whether Fluent was launched inside a docker container.
+    """Stores Fluent connection properties, including connection IP, port and password;
+    Fluent Cortex working directory, process ID and hostname;
+    and whether Fluent was launched in a docker container.
 
     Examples
     --------
@@ -506,7 +507,8 @@ class FluentConnection:
 
         Notes
         -----
-        Can also set the ``PYFLUENT_FORCE_EXIT`` environment variable to ``1`` so that force is by default treated as True instead.
+        Can also set the ``PYFLUENT_FORCE_EXIT`` environment variable to ``1`` so that
+        ``force`` is by default treated as ``True`` instead.
         """
         env_force = os.getenv("PYFLUENT_FORCE_EXIT")
         if env_force and env_force.lower() in ["on", "true", "1"]:
