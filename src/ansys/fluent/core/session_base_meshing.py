@@ -9,9 +9,9 @@ from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL, _CODEGEN_MS
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 from ansys.fluent.core.workflow import WorkflowWrapper
 
-fluent_logger = logging.getLogger("ansys.fluent")
-data_model_logger = logging.getLogger("ansys.fluent.services.datamodel")
-tui_logger = logging.getLogger("ansys.fluent.services.tui")
+pyfluent_logger = logging.getLogger("pyfluent.general")
+datamodel_logger = logging.getLogger("pyfluent.datamodel")
+tui_logger = logging.getLogger("pyfluent.tui")
 
 
 class BaseMeshing:
@@ -37,7 +37,9 @@ class BaseMeshing:
 
     def get_fluent_version(self):
         """Gets and returns the fluent version."""
-        fluent_logger.info(self._fluent_connection.get_fluent_version())
+        pyfluent_logger.debug(
+            "Fluent version = " + str(self._fluent_connection.get_fluent_version())
+        )
         return self._fluent_connection.get_fluent_version()
 
     @property
@@ -70,7 +72,7 @@ class BaseMeshing:
             )
             meshing_root = meshing_module.Root(self._se_service, "meshing", [])
         except (ImportError, ModuleNotFoundError):
-            data_model_logger.warning(_CODEGEN_MSG_DATAMODEL)
+            datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
             meshing_root = PyMenuGeneric(self._se_service, "meshing")
         return meshing_root
 
@@ -94,7 +96,7 @@ class BaseMeshing:
             )
             workflow_se = workflow_module.Root(self._se_service, "workflow", [])
         except (ImportError, ModuleNotFoundError):
-            data_model_logger.warning(_CODEGEN_MSG_DATAMODEL)
+            datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
             workflow_se = PyMenuGeneric(self._se_service, "workflow")
         return workflow_se
 
@@ -116,7 +118,7 @@ class BaseMeshing:
                     self._se_service, "PartManagement", []
                 )
             except (ImportError, ModuleNotFoundError):
-                data_model_logger.warning(_CODEGEN_MSG_DATAMODEL)
+                datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
                 self._part_management = PyMenuGeneric(
                     self._se_service, "PartManagement"
                 )
@@ -134,7 +136,7 @@ class BaseMeshing:
                     self._se_service, "PMFileManagement", []
                 )
             except (ImportError, ModuleNotFoundError):
-                data_model_logger.warning(_CODEGEN_MSG_DATAMODEL)
+                datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
                 self._pm_file_management = PyMenuGeneric(
                     self._se_service, "PMFileManagement"
                 )

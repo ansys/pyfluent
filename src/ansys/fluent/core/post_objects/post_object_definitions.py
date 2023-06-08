@@ -1,7 +1,7 @@
 """Module providing visualization objects definition."""
 from abc import abstractmethod
+import logging
 from typing import List, NamedTuple, Optional
-import warnings
 
 from ansys.fluent.core.meta import (
     Attribute,
@@ -9,6 +9,8 @@ from ansys.fluent.core.meta import (
     PyLocalObjectMeta,
     PyLocalPropertyMeta,
 )
+
+logger = logging.getLogger("pyfluent.post_objects")
 
 
 class BasePostObjectDefn:
@@ -392,8 +394,8 @@ class ContourDefn(GraphicsDefn):
             filled = self._get_parent_by_type(ContourDefn).filled()
             auto_range_off = self._get_parent_by_type(ContourDefn).range.auto_range_off
             if not filled or (auto_range_off and auto_range_off.clip_to_range()):
-                warnings.warn(
-                    "For unfilled and clipped contours node values are diaplyed."
+                logger.warning(
+                    "For unfilled and clipped contours node values are displayed."
                 )
                 self._value = True
             return self._value

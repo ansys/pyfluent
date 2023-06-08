@@ -1,84 +1,45 @@
+# Used to configure PyFluent logging to file
+# More logging examples and references:
+# https://docs.python.org/3/howto/logging.html
+# https://docs.python.org/3/howto/logging-cookbook.html
+# https://docs.python.org/3/library/logging.html#logging-levels
+# https://gist.github.com/kingspp/9451566a5555fb022215ca2b7b802f19
+
 version: 1
-disable_existing_loggers: False
+disable_existing_loggers: no
+
 formatters:
-  simple:
-    format: "%(asctime)s %(name)-12s %(levelname)-8s %(message)s"
+  logfile_fmt:
+    format: "%(asctime)s %(name)-21s %(levelname)-8s %(message)s"
+
 handlers:
-  console:
-    class: logging.StreamHandler
-    level: INFO
-    formatter: simple
-    stream: ext://sys.stdout
-  fluent.file:
+  pyfluent_file:
     class: logging.handlers.RotatingFileHandler
-    level: DEBUG
-    formatter: simple
-    filename: pyfluent.log
-    maxBytes: 10485760
-    backupCount: 5
-  tui.file:
-    class: logging.handlers.RotatingFileHandler
-    level: DEBUG
-    formatter: simple
-    filename: tui.log
-    maxBytes: 10485760
-    backupCount: 5
-  datamodel.file:
-    class: logging.handlers.RotatingFileHandler
-    level: DEBUG
-    formatter: simple
-    filename: datamodel.log
-    maxBytes: 10485760
-    backupCount: 5
-  settings.file:
-    class: logging.handlers.RotatingFileHandler
-    level: DEBUG
-    formatter: simple
-    filename: settings_api.log
-    maxBytes: 10485760
-    backupCount: 5
-  launcher.file:
-    class: logging.handlers.RotatingFileHandler
-    level: INFO
-    formatter: simple
-    filename: launcher.log
-    maxBytes: 10485760
-    backupCount: 5
-  networking.file:
-    class: logging.handlers.RotatingFileHandler
-    level: DEBUG
-    formatter: simple
-    filename: networking.log
-    maxBytes: 10485760
-    backupCount: 5
+    level: NOTSET #  no log level filtering on this handler, message log levels are managed by the loggers instead
+    formatter: logfile_fmt
+    filename: 'pyfluent.log'
+    maxBytes: 10485760 # 10 Megabytes
+    backupCount: 9 # if .log file size > maxBytes, roll over to another file .log.1, then .log.2, and so on
 
-root:
-  level: INFO
-  handlers: [console]
 loggers:
-  ansys.fluent:
+  pyfluent.general:
     level: DEBUG
-    handlers: [fluent.file]
-    propagate: no
-  ansys.fluent.services.datamodel:
+    handlers: [pyfluent_file]
+  pyfluent.datamodel:
     level: DEBUG
-    handlers: [datamodel.file]
-    propagate: no
-  ansys.fluent.services.tui:
+    handlers: [pyfluent_file]
+  pyfluent.tui:
     level: DEBUG
-    handlers: [tui.file]
-    propagate: no
-  ansys.fluent.services.settings_api:
+    handlers: [pyfluent_file]
+  pyfluent.settings_api:
     level: DEBUG
-    handlers: [settings.file]
-    propagate: no
-  ansys.fluent.launcher:
+    handlers: [pyfluent_file]
+  pyfluent.launcher:
     level: DEBUG
-    handlers: [launcher.file]
-    propagate: no
-  ansys.fluent.networking:
+    handlers: [pyfluent_file]
+  pyfluent.networking:
     level: DEBUG
-    handlers: [networking.file]
-    propagate: no
-  
-
+    handlers: [pyfluent_file]
+  pyfluent.post_objects:
+    level: DEBUG
+    handlers: [pyfluent_file]

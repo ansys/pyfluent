@@ -16,7 +16,7 @@ from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInt
 
 Path = List[str]
 
-logger = logging.getLogger("ansys.fluent.services.tui")
+logger = logging.getLogger("pyfluent.tui")
 
 
 class DatamodelService:
