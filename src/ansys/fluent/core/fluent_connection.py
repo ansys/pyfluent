@@ -309,9 +309,22 @@ class FluentConnection:
         if start_transcript:
             self.transcript.start()
 
-        cortex_host = self.scheme_eval.scheme_eval("(cx-cortex-host)")
-        cortex_pid = self.scheme_eval.scheme_eval("(cx-cortex-id)")
-        cortex_pwd = self.scheme_eval.scheme_eval("(cortex-pwd)")
+        from grpc._channel import _InactiveRpcError
+
+        try:
+            logger.debug("Obtaining Cortex connection properties...")
+            cortex_host = self.scheme_eval.scheme_eval("(cx-cortex-host)")
+            cortex_pid = self.scheme_eval.scheme_eval("(cx-cortex-id)")
+            cortex_pwd = self.scheme_eval.scheme_eval("(cortex-pwd)")
+            logger.debug("Cortex connection properties successfully obtained.")
+        except _InactiveRpcError:
+            logger.warning(
+                "Cortex properties unobtainable, session.exit(force=True) "
+                "and kill methods are not going to work, proceeding..."
+            )
+            cortex_host = None
+            cortex_pid = None
+            cortex_pwd = None
 
         self.connection_properties = FluentConnectionProperties(
             ip, port, password, cortex_pwd, cortex_pid, cortex_host, inside_container
