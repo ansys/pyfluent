@@ -36,7 +36,7 @@ from ansys.fluent.core.services.datamodel_tui import (
 )
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 
-logger = logging.getLogger("ansys.fluent.tui")
+logger = logging.getLogger("pyfluent.tui")
 
 _THIS_DIRNAME = os.path.dirname(__file__)
 

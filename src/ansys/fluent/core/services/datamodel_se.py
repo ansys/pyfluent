@@ -4,7 +4,6 @@ import functools
 import itertools
 import logging
 from typing import Any, Callable, Dict, Iterator, List, Tuple, Type
-import warnings
 
 import grpc
 
@@ -19,7 +18,7 @@ from ansys.fluent.core.services.streaming import StreamingService
 
 Path = List[Tuple[str, str]]
 
-logger = logging.getLogger("ansys.fluent.services.datamodel")
+logger = logging.getLogger("pyfluent.datamodel")
 
 
 class Attribute(Enum):
@@ -72,7 +71,6 @@ class DatamodelService(StreamingService):
         self._metadata = metadata
         super().__init__(
             stub=self._stub,
-            request=DataModelProtoModule.EventRequest(),
             metadata=metadata,
         )
         self.event_streaming = None
@@ -169,18 +167,6 @@ class DatamodelService(StreamingService):
     ) -> DataModelProtoModule.UnsubscribeEventsResponse:
         """unsubscribeEvents rpc of DataModel service."""
         return self._stub.unsubscribeEvents(request, metadata=self._metadata)
-
-    def begin_event_streaming(self, started_evt):
-        """Begin datamodel event streaming."""
-        self._streams = self._stub.BeginEventStreaming(
-            self.request, metadata=self._metadata
-        )
-        started_evt.set()
-        while True:
-            try:
-                yield next(self._streams)
-            except Exception:
-                break
 
     def unsubscribe_all_events(self):
         """Unsubscribe all subscribed events."""
@@ -1065,7 +1051,7 @@ class PyCommand:
                 static_info,
             )
         except RuntimeError:
-            warnings.warn(
+            logger.warning(
                 "Create command arguments object is available from 23.1 onwards"
             )
             pass

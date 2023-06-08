@@ -1,11 +1,28 @@
 """A package providing Fluent's Solver and Meshing capabilities in Python."""
 
-import logging.config
 import os
 import pydoc
 
 import appdirs
-import yaml
+
+# Logging has to be set up before importing other PyFluent modules
+import ansys.fluent.core.logging as pyfluent_logging
+
+pyfluent_logging.root_config()
+
+env_logging_level = os.getenv("PYFLUENT_LOGGING")
+if env_logging_level:
+    if isinstance(env_logging_level, str):
+        if env_logging_level.isdigit():
+            env_logging_level = int(env_logging_level)
+        else:
+            env_logging_level = env_logging_level.upper()
+    if env_logging_level in [0, "OFF"] or pyfluent_logging.is_active():
+        pass
+    else:
+        print("PYFLUENT_LOGGING environment variable found, enabling logging...")
+        pyfluent_logging.enable(env_logging_level)
+
 
 from ansys.fluent.core._version import __version__  # noqa: F401
 from ansys.fluent.core.launcher.launcher import (  # noqa: F401
@@ -44,21 +61,11 @@ def version_info() -> str:
     return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
 
-file_path = os.path.abspath(__file__)
-file_dir = os.path.dirname(file_path)
-yaml_path = os.path.join(file_dir, "logging_config.yaml")
-
-# Load the logging configuration from a YAML file
-with open(yaml_path, "rt") as f:
-    config = yaml.safe_load(f)
-
-# Configure the logging system
-logging.config.dictConfig(config)
-
 # Setup data directory
 USER_DATA_PATH = appdirs.user_data_dir(appname="ansys_fluent_core", appauthor="Ansys")
 EXAMPLES_PATH = os.path.join(USER_DATA_PATH, "examples")
 
+# For Sphinx documentation build
 BUILDING_GALLERY = False
 
 # Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS

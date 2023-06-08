@@ -10,6 +10,7 @@ from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
+from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 
@@ -25,7 +26,7 @@ def override_help_text(func, func_to_be_wrapped):
 validate_inputs = True
 
 
-class FieldDataService:
+class FieldDataService(StreamingService):
     """FieldData service of Fluent."""
 
     def __init__(self, channel: grpc.Channel, metadata):
@@ -33,33 +34,39 @@ class FieldDataService:
         intercept_channel = grpc.intercept_channel(
             channel, TracingInterceptor(), BatchInterceptor()
         )
-        self.__stub = FieldGrpcModule.FieldDataStub(intercept_channel)
-        self.__metadata = metadata
+        super().__init__(
+            stub=FieldGrpcModule.FieldDataStub(intercept_channel), metadata=metadata
+        )
 
     @catch_grpc_error
     def get_scalar_fields_range(self, request):
         """GetRange rpc of FieldData service."""
-        return self.__stub.GetRange(request, metadata=self.__metadata)
+        return self._stub.GetRange(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_scalar_fields_info(self, request):
         """GetFieldsInfo rpc of FieldData service."""
-        return self.__stub.GetFieldsInfo(request, metadata=self.__metadata)
+        return self._stub.GetFieldsInfo(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_vector_fields_info(self, request):
         """GetVectorFieldsInfo rpc of FieldData service."""
-        return self.__stub.GetVectorFieldsInfo(request, metadata=self.__metadata)
+        return self._stub.GetVectorFieldsInfo(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_surfaces_info(self, request):
         """GetSurfacesInfo rpc of FieldData service."""
-        return self.__stub.GetSurfacesInfo(request, metadata=self.__metadata)
+        return self._stub.GetSurfacesInfo(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_fields(self, request):
         """GetFields rpc of FieldData service."""
-        return self.__stub.GetFields(request, metadata=self.__metadata)
+        chunk_iterator = self._stub.GetFields(request, metadata=self._metadata)
+        if not chunk_iterator.is_active():
+            raise RuntimeError(
+                "Unexpectedly encountered empty chunk during field extraction."
+            )
+        return chunk_iterator
 
 
 class FieldInfo:
@@ -67,7 +74,7 @@ class FieldInfo:
 
     Methods
     -------
-    get_scalar_fields_range(field: str, node_value: bool, surface_ids: List[int])
+    get_scalar_fields_range(fields: List[str], node_value: bool, surface_ids: List[int])
     -> List[float]
         Get the range (minimum and maximum values) of the field.
 
@@ -86,34 +93,38 @@ class FieldInfo:
         self._service = service
 
     def get_scalar_fields_range(
-        self, field: str, node_value: bool = False, surface_ids: List[int] = None
-    ) -> List[float]:
+        self, fields: List[str], node_value: bool = False, surface_ids: List[int] = None
+    ) -> Dict[str, List[float]]:
         """Get the range (minimum and maximum values) of the field.
 
         Parameters
         ----------
-        field: str
-            Name of the field
+        fields: List[str]
+            List containing field names
         node_value: bool
         surface_ids : List[int], optional
             List of surface IDS for the surface data.
 
         Returns
         -------
-        List[float]
+        Union[List[float], Dict[str, List[float]]]
         """
-        if not surface_ids:
-            surface_ids = []
-        request = FieldDataProtoModule.GetRangeRequest()
-        request.fieldName = field
-        request.nodeValue = node_value
-        request.surfaceid.extend(
-            [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]
-        )
-        response = self._service.get_scalar_fields_range(request)
-        return [response.minimum, response.maximum]
+        range_data = {}
+        for field in fields:
+            if not surface_ids:
+                surface_ids = []
+            request = FieldDataProtoModule.GetRangeRequest()
+            request.fieldName = field
+            request.nodeValue = node_value
+            request.surfaceid.extend(
+                [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]
+            )
+            response = self._service.get_scalar_fields_range(request)
+            range_data[field] = [response.minimum, response.maximum]
 
-    def get_scalar_fields_info(self) -> dict:
+        return range_data
+
+    def get_scalar_fields_info(self) -> Dict[str, Dict]:
         """Get fields information (field name, domain, and section).
 
         Returns
@@ -131,7 +142,7 @@ class FieldInfo:
             for field_info in response.fieldInfo
         }
 
-    def get_vector_fields_info(self) -> dict:
+    def get_vector_fields_info(self) -> Dict[str, Dict]:
         """Get vector fields information (vector components).
 
         Returns
@@ -149,7 +160,7 @@ class FieldInfo:
             for vector_field_info in response.vectorFieldInfo
         }
 
-    def get_surfaces_info(self) -> dict:
+    def get_surfaces_info(self) -> Dict[str, Dict]:
         """Get surfaces information (surface name, ID, and type).
 
         Returns
@@ -648,7 +659,9 @@ class FieldTransaction:
 
             The tag is a tuple for Fluent 2023 R1 or later.
         """
-        return extract_fields(self._service.get_fields(self._fields_request))
+        return ChunkParser().extract_fields(
+            self._service.get_fields(self._fields_request)
+        )
 
     def __call__(self):
         self.get_fields()
@@ -728,120 +741,148 @@ def get_fields_request():
     )
 
 
-def extract_fields(chunk_iterator):
-    """Extracts field data via a server call."""
+class ChunkParser:
+    """Class for parsing field data stream received from Fluent.
 
-    def _get_tag_for_surface_request(surface_request):
-        return (("type", "surface-data"),)
+    Parameters
+    ----------
+    callbacks_provider : object
+        The object which can register and unregister callbacks.
+        It provides callbacks, which are triggered with following arguments:
+            zone_id : int
+            field_name : str
+            field : numpy array
 
-    def _get_tag_for_vector_field_request(vector_field_request):
-        return (("type", "vector-field"),)
+    """
 
-    def _get_tag_for_scalar_field_request(scalar_field_request):
-        return (
-            ("type", "scalar-field"),
-            ("dataLocation", scalar_field_request.dataLocation),
-            ("boundaryValues", scalar_field_request.provideBoundaryValues),
-        )
+    def __init__(self, callbacks_provider: object = None):
+        self._callbacks_provider = callbacks_provider
 
-    def _get_tag_for_pathlines_field_request(pathlines_field_request):
-        return (("type", "pathlines-field"), ("field", pathlines_field_request.field))
+    def extract_fields(self, chunk_iterator) -> Dict[int, Dict[str, np.array]]:
+        """Extracts field data received from Fluent. if callbacks_provider is set
+        then callbacks are triggered with extracted data.
+        """
 
-    def _extract_field(field_datatype, field_size, chunk_iterator):
-        if not chunk_iterator.is_active():
-            raise RuntimeError(
-                "Unexpectedly encountered empty chunk during field extraction."
+        def _get_tag_for_surface_request(surface_request):
+            return (("type", "surface-data"),)
+
+        def _get_tag_for_vector_field_request(vector_field_request):
+            return (("type", "vector-field"),)
+
+        def _get_tag_for_scalar_field_request(scalar_field_request):
+            return (
+                ("type", "scalar-field"),
+                ("dataLocation", scalar_field_request.dataLocation),
+                ("boundaryValues", scalar_field_request.provideBoundaryValues),
             )
-        field_arr = np.empty(field_size, dtype=field_datatype)
-        field_datatype_item_size = np.dtype(field_datatype).itemsize
-        index = 0
+
+        def _get_tag_for_pathlines_field_request(pathlines_field_request):
+            return (
+                ("type", "pathlines-field"),
+                ("field", pathlines_field_request.field),
+            )
+
+        def _extract_field(field_datatype, field_size, chunk_iterator):
+            field_arr = np.empty(field_size, dtype=field_datatype)
+            field_datatype_item_size = np.dtype(field_datatype).itemsize
+            index = 0
+            for chunk in chunk_iterator:
+                if chunk.bytePayload:
+                    count = min(
+                        len(chunk.bytePayload) // field_datatype_item_size,
+                        field_size - index,
+                    )
+                    field_arr[index : index + count] = np.frombuffer(
+                        chunk.bytePayload, field_datatype, count=count
+                    )
+                    index += count
+                    if index == field_size:
+                        return field_arr
+                else:
+                    payload = (
+                        chunk.floatPayload.payload
+                        or chunk.intPayload.payload
+                        or chunk.doublePayload.payload
+                        or chunk.longPayload.payload
+                    )
+                    count = len(payload)
+                    field_arr[index : index + count] = np.fromiter(
+                        payload, dtype=field_datatype
+                    )
+                    index += count
+                    if index == field_size:
+                        return field_arr
+
+        fields_data = {}
         for chunk in chunk_iterator:
-            if chunk.bytePayload:
-                count = min(
-                    len(chunk.bytePayload) // field_datatype_item_size,
-                    field_size - index,
+            payload_info = chunk.payloadInfo
+            surface_id = payload_info.surfaceId
+            field_request_info = payload_info.fieldRequestInfo
+            request_type = field_request_info.WhichOneof("request")
+            if request_type is not None:
+                payload_tag_id = (
+                    _get_tag_for_surface_request(field_request_info.surfaceRequest)
+                    if request_type == "surfaceRequest"
+                    else _get_tag_for_scalar_field_request(
+                        field_request_info.scalarFieldRequest
+                    )
+                    if request_type == "scalarFieldRequest"
+                    else _get_tag_for_vector_field_request(
+                        field_request_info.vectorFieldRequest
+                    )
+                    if request_type == "vectorFieldRequest"
+                    else _get_tag_for_pathlines_field_request(
+                        field_request_info.pathlinesFieldRequest
+                    )
+                    if request_type == "pathlinesFieldRequest"
+                    else None
                 )
-                field_arr[index : index + count] = np.frombuffer(
-                    chunk.bytePayload, field_datatype, count=count
-                )
-                index += count
-                if index == field_size:
-                    return field_arr
             else:
-                payload = (
-                    chunk.floatPayload.payload
-                    or chunk.intPayload.payload
-                    or chunk.doublePayload.payload
-                    or chunk.longPayload.payload
+                if self._callbacks_provider is None:
+                    payload_tag_id = reduce(
+                        lambda x, y: x | y,
+                        [
+                            _FieldDataConstants.payloadTags[tag]
+                            for tag in payload_info.payloadTag
+                        ]
+                        or [0],
+                    )
+                else:
+                    payload_tag_id = None
+            field = None
+            if payload_tag_id is not None:
+                field = _extract_field(
+                    _FieldDataConstants.proto_field_type_to_np_data_type[
+                        payload_info.fieldType
+                    ],
+                    payload_info.fieldSize,
+                    chunk_iterator,
                 )
-                count = len(payload)
-                field_arr[index : index + count] = np.fromiter(
-                    payload, dtype=field_datatype
-                )
-                index += count
-                if index == field_size:
-                    return field_arr
 
-    fields_data = {}
-    for chunk in chunk_iterator:
-        payload_info = chunk.payloadInfo
-        field = _extract_field(
-            _FieldDataConstants.proto_field_type_to_np_data_type[
-                payload_info.fieldType
-            ],
-            payload_info.fieldSize,
-            chunk_iterator,
-        )
-
-        surface_id = payload_info.surfaceId
-
-        field_request_info = payload_info.fieldRequestInfo
-        request_type = field_request_info.WhichOneof("request")
-        if request_type is not None:
-            payload_tag_id = (
-                _get_tag_for_surface_request(field_request_info.surfaceRequest)
-                if request_type == "surfaceRequest"
-                else _get_tag_for_scalar_field_request(
-                    field_request_info.scalarFieldRequest
-                )
-                if request_type == "scalarFieldRequest"
-                else _get_tag_for_vector_field_request(
-                    field_request_info.vectorFieldRequest
-                )
-                if request_type == "vectorFieldRequest"
-                else _get_tag_for_pathlines_field_request(
-                    field_request_info.pathlinesFieldRequest
-                )
-                if request_type == "pathlinesFieldRequest"
-                else None
-            )
-        else:
-            payload_tag_id = reduce(
-                lambda x, y: x | y,
-                [
-                    _FieldDataConstants.payloadTags[tag]
-                    for tag in payload_info.payloadTag
-                ]
-                or [0],
-            )
-        payload_data = fields_data.get(payload_tag_id)
-        if not payload_data:
-            payload_data = fields_data[payload_tag_id] = {}
-        surface_data = payload_data.get(surface_id)
-        if surface_data:
-            if payload_info.fieldName in surface_data:
-                surface_data.update(
-                    {
-                        payload_info.fieldName: np.concatenate(
-                            (surface_data[payload_info.fieldName], field)
+            if self._callbacks_provider is not None:
+                for callback_data in self._callbacks_provider.callbacks():
+                    callback, args, kwargs = callback_data
+                    # print('cb', surface_id, payload_info.fieldName)
+                    callback(surface_id, payload_info.fieldName, field, *args, **kwargs)
+            else:
+                payload_data = fields_data.get(payload_tag_id)
+                if not payload_data:
+                    payload_data = fields_data[payload_tag_id] = {}
+                surface_data = payload_data.get(surface_id)
+                if surface_data:
+                    if payload_info.fieldName in surface_data:
+                        surface_data.update(
+                            {
+                                payload_info.fieldName: np.concatenate(
+                                    (surface_data[payload_info.fieldName], field)
+                                )
+                            }
                         )
-                    }
-                )
-            else:
-                surface_data.update({payload_info.fieldName: field})
-        else:
-            payload_data[surface_id] = {payload_info.fieldName: field}
-    return fields_data
+                    else:
+                        surface_data.update({payload_info.fieldName: field})
+                else:
+                    payload_data[surface_id] = {payload_info.fieldName: field}
+        return fields_data
 
 
 class BaseFieldData:
@@ -1125,7 +1166,7 @@ class FieldData:
             ]
         )
 
-        fields = extract_fields(self._service.get_fields(fields_request))
+        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         scalar_field_data = next(iter(fields.values()))
 
         if surface_name:
@@ -1198,7 +1239,7 @@ class FieldData:
             SurfaceDataType.FacesCentroid: "centroid",
             SurfaceDataType.FacesNormal: "face-normal",
         }
-        fields = extract_fields(self._service.get_fields(fields_request))
+        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         surface_data = next(iter(fields.values()))
 
         def _get_surfaces_data(parent_class, surf_id, _data_type):
@@ -1287,7 +1328,7 @@ class FieldData:
                 for surface_id in surface_ids
             ]
         )
-        fields = extract_fields(self._service.get_fields(fields_request))
+        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         vector_field_data = next(iter(fields.values()))
 
         if surface_name:
@@ -1394,7 +1435,7 @@ class FieldData:
                 for surface_id in surface_ids
             ]
         )
-        fields = extract_fields(self._service.get_fields(fields_request))
+        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         pathlines_data = next(iter(fields.values()))
 
         def _get_surfaces_data(parent_class, surf_id, _data_type):

@@ -19,7 +19,7 @@ try:
 except Exception:
     root = Any
 
-data_model_logger = logging.getLogger("ansys.fluent.services.datamodel")
+datamodel_logger = logging.getLogger("pyfluent.datamodel")
 
 
 def _parse_server_info_file(filename: str):
@@ -39,7 +39,7 @@ def _get_datamodel_attributes(session, attribute: str):
         )
         return preferences_module.Root(session._se_service, attribute, [])
     except (ImportError, ModuleNotFoundError):
-        data_model_logger.warning(_CODEGEN_MSG_DATAMODEL)
+        datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
 
 
 def _get_preferences(session):
