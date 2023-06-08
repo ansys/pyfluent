@@ -8,9 +8,9 @@ updates:
     labels:
       - "Maintenance"
       - "Dependencies"
-    ignore:
-      - dependency-name: "vtk"
-      - dependency-name: "grpcio"
+    # ignore:
+      # - dependency-name: "vtk"
+      # - dependency-name: "grpcio"
 
   - package-ecosystem: "github-actions"
     directory: "/"
