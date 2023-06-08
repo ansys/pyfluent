@@ -445,7 +445,7 @@ class FluentConnection:
             )
             return
         if self._remote_instance is not None:
-            logger.error(f"Cannot kill local container, Fluent running remotely.")
+            logger.error(f"Fluent is running remotely, cannot kill Fluent container.")
             return
         container_id = self.connection_properties.cortex_host
         subprocess.run(["docker", "kill", container_id])
@@ -489,14 +489,15 @@ class FluentConnection:
         """Gets and returns the fluent version."""
         return self.scheme_eval.version
 
-    def exit(self, force: bool = False) -> None:
+    def exit(self, force: bool = None) -> None:
         """Close the Fluent connection and exit Fluent.
 
         Parameters
         ----------
         force : bool, optional
-            By default False. If True, attempts to kill the Fluent session if it does not exit properly.
-            Executes :func:`kill_fluent()` or :func:`kill_fluent_container()`, depending on how Fluent was run.
+            If not specified, defaults to False. If True, attempts to kill the Fluent session if it does not exit
+            properly. Executes :func:`kill_fluent()` or :func:`kill_fluent_container()`,
+            depending on how Fluent was launched.
 
         Examples
         --------
@@ -508,10 +509,10 @@ class FluentConnection:
         Notes
         -----
         Can also set the ``PYFLUENT_FORCE_EXIT`` environment variable to ``1`` so that
-        ``force`` is by default treated as ``True`` instead.
+        unspecified ``force`` is by default treated as ``True`` instead.
         """
         env_force = os.getenv("PYFLUENT_FORCE_EXIT")
-        if env_force and env_force.lower() in ["on", "true", "1"]:
+        if force is None and env_force and env_force.lower() in ["on", "true", "1"]:
             logger.warning(
                 "PYFLUENT_FORCE_EXIT environment variable specified, forcing exit..."
             )
