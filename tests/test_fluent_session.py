@@ -130,7 +130,7 @@ def test_fluent_freeze_kill(
     tmp_thread.start()
     tmp_thread.join(5)
     if tmp_thread.is_alive():
-        session.exit(force=True)
+        session.exit(0)
         tmp_thread.join()
     else:
         raise Exception("Test should have temporarily frozen Fluent, but did not.")

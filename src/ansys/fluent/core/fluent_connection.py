@@ -1,4 +1,5 @@
 from ctypes import c_int, sizeof
+from dataclasses import dataclass
 import itertools
 import logging
 import os
@@ -12,7 +13,7 @@ import weakref
 
 import grpc
 
-from ansys.fluent.core import TIMEOUT_TO_FLUENT_KILL
+from ansys.fluent.core import TIMEOUT_FORCE_EXIT
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services.batch_ops import BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
@@ -92,6 +93,7 @@ class _IsDataValid:
         return self._scheme_eval.scheme_eval("(data-valid?)")
 
 
+@dataclass(frozen=True)
 class FluentConnectionProperties:
     """Stores Fluent connection properties, including connection IP, port and password;
     Fluent Cortex working directory, process ID and hostname;
@@ -103,35 +105,26 @@ class FluentConnectionProperties:
 
     >>> import ansys.fluent.core as pyfluent
     >>> session = pyfluent.launch_fluent()
-    >>> session.connection_properties.list_properties()
+    >>> session.connection_properties.list()
     ['ip', 'port', 'password', 'cortex_pwd', 'cortex_pid', 'cortex_host', 'inside_container']
     >>> session.connection_properties.ip
     '127.0.0.1'
     """
 
-    def __init__(
-        self,
-        ip: str = None,
-        port: int = None,
-        password: str = None,
-        cortex_pwd: str = None,
-        cortex_pid: int = None,
-        cortex_host: str = None,
-        inside_container: bool = None,
-    ):
-        self.ip = ip
-        self.port = port
-        self.password = password
-        self.cortex_pwd = cortex_pwd
-        self.cortex_pid = cortex_pid
-        self.cortex_host = cortex_host
-        self.inside_container = inside_container
+    ip: str
+    port: int
+    password: str
+    cortex_pwd: str
+    cortex_pid: int
+    cortex_host: str
+    fluent_host_pid: int
+    inside_container: bool
 
-    def list_properties(self) -> list:
+    def list_names(self) -> list:
         """List all property names."""
         return [k for k, _ in vars(self).items()]
 
-    def list_properties_values(self) -> dict:
+    def list_values(self) -> dict:
         """Dict with all property names and values."""
         return vars(self)
 
@@ -314,21 +307,30 @@ class FluentConnection:
 
         try:
             logger.debug("Obtaining Cortex connection properties...")
+            fluent_host_pid = self.scheme_eval.scheme_eval("(cx-client-id)")
             cortex_host = self.scheme_eval.scheme_eval("(cx-cortex-host)")
             cortex_pid = self.scheme_eval.scheme_eval("(cx-cortex-id)")
             cortex_pwd = self.scheme_eval.scheme_eval("(cortex-pwd)")
             logger.debug("Cortex connection properties successfully obtained.")
         except _InactiveRpcError:
             logger.warning(
-                "Cortex properties unobtainable, session.exit(force=True) "
-                "and kill methods are not going to work, proceeding..."
+                "Cortex properties unobtainable, force exit "
+                " methods are not going to work, proceeding..."
             )
             cortex_host = None
             cortex_pid = None
             cortex_pwd = None
+            fluent_host_pid = None
 
         self.connection_properties = FluentConnectionProperties(
-            ip, port, password, cortex_pwd, cortex_pid, cortex_host, inside_container
+            ip,
+            port,
+            password,
+            cortex_pwd,
+            cortex_pid,
+            cortex_host,
+            fluent_host_pid,
+            inside_container,
         )
 
         self._remote_instance = remote_instance
@@ -361,9 +363,9 @@ class FluentConnection:
         """Return the session id."""
         return self._id
 
-    def kill_fluent(self):
+    def force_exit(self):
         """
-        Immediately kills the Fluent client,
+        Immediately terminates the Fluent client,
         losing unsaved progress and data.
 
         Examples
@@ -371,7 +373,7 @@ class FluentConnection:
 
         >>> import ansys.fluent.core as pyfluent
         >>> session = pyfluent.launch_fluent()
-        >>> session.kill_fluent()
+        >>> session.force_exit()
 
         Notes
         -----
@@ -381,7 +383,7 @@ class FluentConnection:
         if self.connection_properties.inside_container:
             logger.error(
                 f"Cannot execute cleanup script, Fluent running inside container. "
-                f"Use kill_fluent_container() instead."
+                f"Use force_exit_container() instead."
             )
             return
         if self._remote_instance is not None:
@@ -389,59 +391,51 @@ class FluentConnection:
             return
 
         pwd = self.connection_properties.cortex_pwd
-        pid = self.connection_properties.cortex_pid
+        pid = self.connection_properties.fluent_host_pid
         host = self.connection_properties.cortex_host
-        cleanup_line_start = "Cleanup script file is "
         if os.name == "nt":
-            cleanup_line_end = ".bat\n"
+            cleanup_file_ext = "bat"
             cmd_list = []
         elif os.name == "posix":
-            cleanup_line_end = ".sh\n"
+            cleanup_file_ext = "sh"
             cmd_list = ["bash"]
         else:
             logger.error(
                 f"Unrecognized or unsupported operating system, cancelling Fluent cleanup script execution."
             )
             return
-        list_dir = os.listdir(Path(pwd))
-        for name in list_dir:
-            if name.startswith("fluent-") and name.endswith(f"{pid}.trn"):
-                with open(name, "r") as file:
-                    trn_lines = file.readlines()
-                for line in trn_lines:
-                    if (
-                        line.startswith(cleanup_line_start)
-                        and line.endswith(cleanup_line_end)
-                        and host in line
-                    ):
-                        cleanup_filename = line.lstrip(cleanup_line_start).rstrip()
-                        cleanup_filepath = Path(pwd, cleanup_filename)
-                        logger.info(
-                            f"Executing Fluent cleanup script, filepath: {cleanup_filepath}"
-                        )
-                        cmd_list.append(cleanup_filepath)
-                        logger.debug(f"Cleanup command list = {cmd_list}")
-                        subprocess.Popen(
-                            cmd_list,
-                            stdout=subprocess.DEVNULL,
-                            stderr=subprocess.DEVNULL,
-                        )
+        cleanup_filename = f"cleanup-fluent-{host}-{pid}.{cleanup_file_ext}"
+        logger.debug(f"Looking for {cleanup_filename}...")
+        cleanup_filepath = Path(pwd, cleanup_filename)
+        if cleanup_filepath.is_file():
+            logger.info(
+                f"Executing Fluent cleanup script, filepath: {cleanup_filepath}"
+            )
+            cmd_list.append(cleanup_filepath)
+            logger.debug(f"Cleanup command list = {cmd_list}")
+            subprocess.Popen(
+                cmd_list,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+        else:
+            logger.error(f"Could not find cleanup file.")
 
-    def kill_fluent_container(self):
+    def force_exit_container(self):
         """
-        Immediately kills the docker container running the Fluent client,
+        Immediately terminates the docker container running the Fluent client,
         losing unsaved progress and data.
 
         Notes
         -----
         By default, Fluent does not run in a container,
-        in that case use :func:`kill_fluent()`.
+        in that case use :func:`force_exit()`.
         If the Fluent session is responsive, prefer using :func:`exit()` instead.
         """
         if not self.connection_properties.inside_container:
             logger.error(
                 f"Session is not inside a container, cannot kill Fluent container. "
-                f"Use kill_fluent() instead."
+                f"Use force_exit() instead."
             )
             return
         if self._remote_instance is not None:
@@ -489,14 +483,18 @@ class FluentConnection:
         """Gets and returns the fluent version."""
         return self.scheme_eval.version
 
-    def exit(self, force: bool = None) -> None:
+    def exit(self, timeout: float = None, timeout_force: bool = True) -> None:
         """Close the Fluent connection and exit Fluent.
 
         Parameters
         ----------
-        force : bool, optional
-            If not specified, defaults to False. If True, attempts to kill the Fluent session if it does not exit
-            properly. Executes :func:`kill_fluent()` or :func:`kill_fluent_container()`,
+        timeout : float, optional
+            Time in seconds before considering that the exit request has timed out.
+            If omitted or specified as None, then request will not time out and will lock up the interpreter
+            while waiting for a response.
+        timeout_force : bool, optional
+            If not specified, defaults to True. If True, attempts to terminate the Fluent process if
+            exit request reached timeout. Executes :func:`force_exit()` or :func:`force_exit_container()`,
             depending on how Fluent was launched.
 
         Examples
@@ -508,21 +506,19 @@ class FluentConnection:
 
         Notes
         -----
-        Can also set the ``PYFLUENT_FORCE_EXIT`` environment variable to ``1`` so that
-        unspecified ``force`` is by default treated as ``True`` instead.
+        Can also set the ``PYFLUENT_TIMEOUT_FORCE_EXIT`` environment variable to specify the number of seconds and
+        alter the default ``timeout`` value. Setting this env var to a non-number value, such as ``OFF``,
+        will return this function to default behavior. Note that the environment variable will be ignored if
+        timeout is specified when calling this function.
         """
-        env_force = os.getenv("PYFLUENT_FORCE_EXIT")
-        if force is None and env_force and env_force.lower() in ["on", "true", "1"]:
-            logger.warning(
-                "PYFLUENT_FORCE_EXIT environment variable specified, forcing exit..."
-            )
-            force = True
-        if not force:
+        if timeout is None:
+            timeout = TIMEOUT_FORCE_EXIT
+
+        if timeout is None:
             self._finalizer()
+        # elif timeout == 0:
+        #     pass
         else:
-            if self._remote_instance:
-                logger.debug("Cannot force exit from Fluent remote instance.")
-                return self._finalizer()
 
             def _connection_finalizer(connection):
                 return connection._finalizer()
@@ -531,15 +527,30 @@ class FluentConnection:
                 target=_connection_finalizer, args=(self,), daemon=True
             )
             tmp_thread.start()
-            tmp_thread.join(TIMEOUT_TO_FLUENT_KILL)
+
+            tmp_thread.join(timeout)
+
             if tmp_thread.is_alive():
-                logger.debug("session.exit() timeout")
-                if self.connection_properties.inside_container:
-                    logger.debug("Fluent running inside container, killing it...")
-                    self.kill_fluent_container()
-                else:
-                    logger.debug("Fluent running locally, killing it...")
-                    self.kill_fluent()
+                pass
+            else:
+                logger.debug("session.exit() successful")
+                return
+
+        logger.debug("session.exit() timeout")
+        if timeout_force:
+            if self._remote_instance:
+                logger.warning(
+                    "Cannot force exit from Fluent remote instance, and exit command has timed out."
+                )
+                return
+            elif self.connection_properties.inside_container:
+                logger.debug("Fluent running inside container, killing it...")
+                self.force_exit_container()
+            else:
+                logger.debug("Fluent running locally, killing it...")
+                self.force_exit()
+        else:
+            logger.debug("Timeout force exit disabled, returning...")
 
     @staticmethod
     def _exit(
