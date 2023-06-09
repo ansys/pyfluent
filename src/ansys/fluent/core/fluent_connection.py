@@ -105,27 +105,27 @@ class FluentConnectionProperties:
 
     >>> import ansys.fluent.core as pyfluent
     >>> session = pyfluent.launch_fluent()
-    >>> session.connection_properties.list()
+    >>> session.connection_properties.list_names()
     ['ip', 'port', 'password', 'cortex_pwd', 'cortex_pid', 'cortex_host', 'inside_container']
     >>> session.connection_properties.ip
     '127.0.0.1'
     """
 
-    ip: str
-    port: int
-    password: str
-    cortex_pwd: str
-    cortex_pid: int
-    cortex_host: str
-    fluent_host_pid: int
-    inside_container: bool
+    ip: str = None
+    port: int = None
+    password: str = None
+    cortex_pwd: str = None
+    cortex_pid: int = None
+    cortex_host: str = None
+    fluent_host_pid: int = None
+    inside_container: bool = None
 
     def list_names(self) -> list:
         """List all property names."""
         return [k for k, _ in vars(self).items()]
 
     def list_values(self) -> dict:
-        """Dict with all property names and values."""
+        """Dictionary with all property names and values."""
         return vars(self)
 
 

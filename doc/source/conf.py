@@ -39,7 +39,7 @@ extensions = [
     "sphinxemoji.sphinxemoji",
 ]
 
-skip_examples = int(os.getenv("PYFLUENT_SKIP_EXAMPLES_DOC"))
+skip_examples = int(os.getenv("PYFLUENT_SKIP_EXAMPLES_DOC", 0))
 if skip_examples:
     pass
 else:
