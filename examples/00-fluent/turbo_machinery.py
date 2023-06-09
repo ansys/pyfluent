@@ -129,7 +129,7 @@ solver_session.workflow.TaskObject["Describe Component"].Arguments.set_state(
         "ComponentName": "hannover",
         "ComponentType": "Axial Compressor",
         "NewEnableTipGapList": ["no", "yes", "no"],
-        "NewNumOfBladesList": ["30", "23", "26"],
+        "NewNumOfBladesList": ["26", "23", "30"],
         "NewRowNameList": ["s1", "r1", "igv"],
         "NewRowTypeList": ["stationary", "rotating", "stationary"],
         "OldEnableTipGapList": ["no", "yes", "no"],
@@ -142,6 +142,11 @@ solver_session.workflow.TaskObject["Describe Component"].Arguments.set_state(
 
 solver_session.workflow.TaskObject["Describe Component"].Execute()
 
+
+###############################################################################
+# .. image:: /_static/turbo_machinery_011.png
+#   :width: 500pt
+#   :align: center
 
 ###############################################################################
 # Define blade row scope
@@ -160,7 +165,7 @@ solver_session.workflow.TaskObject["Define Blade Row Scope"].Execute()
 ###############################################################################
 # Import Mesh
 # ~~~~~~~~~~~
-# Import mesh files.
+# Import mesh files (IGV.gtm, R1.gtm, S1.gtm).
 
 solver_session.workflow.TaskObject["Import Mesh"].Arguments.set_state(
     {
@@ -249,9 +254,9 @@ solver_session.workflow.TaskObject["Import Mesh"].Arguments.set_state(
 
 
 ###############################################################################
-# Association mesh
-# ~~~~~~~~~~~~~~~~
-# Associate the mesh.
+# Associate mesh
+# ~~~~~~~~~~~~~~
+# Configure mesh associations between the cell zones and rows for each turbo component.
 
 solver_session.workflow.TaskObject["Associate Mesh"].Arguments.set_state(
     {
@@ -307,9 +312,14 @@ solver_session.workflow.TaskObject["Associate Mesh"].Arguments.set_state(
 
 
 ###############################################################################
+# .. image:: /_static/turbo_machinery_012.png
+#   :width: 500pt
+#   :align: center
+
+###############################################################################
 # Define map regions
 # ~~~~~~~~~~~~~~~~~~
-# Define map regions.
+# Define the face zones mapping to corresponding cell zones.
 
 solver_session.workflow.TaskObject["Map Regions"].Arguments.set_state(
     {
@@ -639,7 +649,7 @@ solver_session.workflow.TaskObject["Map Regions"].State.set_state("Up-to-date")
 ###############################################################################
 # Create CFD model
 # ~~~~~~~~~~~~~~~~
-# Create the CFD model.
+# Create a formal CFD model based on the geometry.
 
 solver_session.workflow.TaskObject["Create CFD Model"].Arguments.set_state(
     {
@@ -648,6 +658,7 @@ solver_session.workflow.TaskObject["Create CFD Model"].Arguments.set_state(
 )
 
 solver_session.workflow.TaskObject["Create CFD Model"].Execute()
+
 
 ###############################################################################
 # Define turbo physics
@@ -663,6 +674,7 @@ solver_session.workflow.TaskObject["Define Turbo Physics"].Arguments.set_state(
 )
 
 solver_session.workflow.TaskObject["Define Turbo Physics"].Execute()
+
 
 ###############################################################################
 # Turbo regions and zones
@@ -692,10 +704,11 @@ solver_session.workflow.TaskObject[
 
 solver_session.workflow.TaskObject["Define Turbo Regions and Zones"].Execute()
 
+
 ###############################################################################
 # Define turbo-related topology
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Define the turbo-related topology.
+# Define the turbo-related topology and review the region definitions for the hub, shroud, and casing.
 
 solver_session.workflow.TaskObject["Define Turbo Topology"].Arguments.set_state(
     {
@@ -724,6 +737,7 @@ solver_session.workflow.TaskObject["Define Turbo Topology"].Arguments.set_state(
 
 solver_session.workflow.TaskObject["Define Turbo Topology"].AddChildAndUpdate()
 
+
 ###############################################################################
 # Describe turbo surfaces
 # ~~~~~~~~~~~~~~~~~~~~~~~
@@ -744,7 +758,7 @@ solver_session.workflow.TaskObject["Define Turbo Surfaces"].Execute()
 ###############################################################################
 # Create report definitions and monitors
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Create report definitions and monitors.
+# Finalize the workflow and to create postprocessing objects such as contour plots on the specified turbo-surfaces, as well as turbo-specific report definitions and monitors
 
 solver_session.workflow.TaskObject["Create Report Definitions & Monitors"].Execute()
 
