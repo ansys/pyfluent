@@ -39,7 +39,10 @@ extensions = [
     "sphinxemoji.sphinxemoji",
 ]
 
-if not os.getenv("PYFLUENT_SKIP_EXAMPLES_DOC"):
+skip_examples = int(os.getenv("PYFLUENT_SKIP_EXAMPLES_DOC"))
+if skip_examples:
+    pass
+else:
     extensions.append("sphinx_gallery.gen_gallery")
 
 # Intersphinx mapping
