@@ -215,10 +215,6 @@ class Numerical(Property):
 class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
 
-    def allowed_values(self):
-        """Get the allowed values of the object."""
-        return self.get_attr("allowed-values", (list, str))
-
 
 class SettingsBase(Base, Generic[StateT]):
     """Base class for settings objects.
@@ -1068,6 +1064,15 @@ class _NonCreatableNamedObjectMixin(
         child.set_state(value)
 
 
+class _HasAllowedValuesMixin:
+    def allowed_values(self):
+        """Get the allowed values of the object."""
+        try:
+            return self.get_attr("allowed-values", (list, str))
+        except BaseException as ex:
+            return []
+
+
 def get_cls(name, info, parent=None, version=None):
     """Create a class for the object identified by "path"."""
     try:
@@ -1105,6 +1110,7 @@ def get_cls(name, info, parent=None, version=None):
         user_creatable = info.get("user-creatable?", False) or info.get(
             "user_creatable", False
         )
+
         if version == "222":
             user_creatable = True
 
@@ -1115,6 +1121,8 @@ def get_cls(name, info, parent=None, version=None):
             bases = bases + (_CreatableNamedObjectMixin,)
         elif obj_type == "named-object":
             bases = bases + (_NonCreatableNamedObjectMixin,)
+        elif info.get("has_allowed_values"):
+            bases += (_HasAllowedValuesMixin,)
 
         cls = type(pname, bases, dct)
 
