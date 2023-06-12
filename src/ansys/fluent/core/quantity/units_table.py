@@ -208,49 +208,6 @@ class UnitsTable(object):
 
         return self.condense(si_units), si_multiplier, si_offset
 
-    def si_conversion(
-        self,
-        value: float,
-        type: str,
-        si_multiplier: float,
-        si_offset: float,
-        reverse: bool = False,
-    ) -> float:
-        """Performs SI conversion based on quantity type.
-
-        Parameters
-        ----------
-        value : float
-            Real value of quantity.
-        type : str
-            Quantity type.
-        si_multiplier : float
-            SI factor of quantity object.
-        si_offset : float
-            SI offset of quantity object.
-        reverse : bool
-            SI conversion direction. Setting reverse to `True` performs the inverse of a conversion.
-
-        Returns
-        -------
-        : float
-            SI value of quantity.
-        """
-        # Perform conversion from SI value
-        if reverse:
-            return (
-                ((value / si_multiplier) - si_offset)
-                if type == "Temperature"
-                else (value / si_multiplier)
-            )
-
-        # Perform conversion to SI value
-        return (
-            ((value + si_offset) * si_multiplier)
-            if type == "Temperature"
-            else (value * si_multiplier)
-        )
-
     def condense(self, units: str) -> str:
         """Condenses a unit string by collecting like-terms.
 
