@@ -1,4 +1,4 @@
-from ansys.fluent.core.quantity.units_table import UnitsTable
+import ansys.fluent.core.quantity as q
 
 
 class Dimensions(object):
@@ -19,7 +19,7 @@ class Dimensions(object):
     def __init__(
         self, units: str = None, dimensions: list = None, unit_sys: str = None
     ):
-        self._units_table = UnitsTable()
+        self._units_table = q.UnitsTable()
         unit_sys = unit_sys or "SI"
         units = units or " "
 

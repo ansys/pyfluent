@@ -2,7 +2,7 @@ import math
 
 import pytest
 
-import ansys.fluent.core.quantity.quantity as q
+import ansys.fluent.core.quantity as q
 
 DELTA = 1.0e-5
 

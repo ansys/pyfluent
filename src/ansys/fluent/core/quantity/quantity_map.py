@@ -1,4 +1,4 @@
-from ansys.fluent.core.quantity.units_table import UnitsTable
+import ansys.fluent.core.quantity as q
 
 
 class QuantityMap(object):
@@ -15,7 +15,7 @@ class QuantityMap(object):
     """
 
     def __init__(self, quantity_map):
-        self._units_table = UnitsTable()
+        self._units_table = q.UnitsTable()
         self._unit = self._map_to_units(quantity_map)
 
     def _map_to_units(self, quantity_map: dict) -> str:

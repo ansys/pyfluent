@@ -1,6 +1,4 @@
-from ansys.fluent.core.quantity.dimensions import Dimensions
-from ansys.fluent.core.quantity.quantity_map import QuantityMap
-from ansys.fluent.core.quantity.units_table import UnitsTable
+import ansys.fluent.core.quantity as q
 
 
 class Quantity(float):
@@ -41,18 +39,18 @@ class Quantity(float):
                 "Quantity only accepts 1 of the following: units, quantity_map, dimensions"
             )
 
-        _units_table = UnitsTable()
+        _units_table = q.UnitsTable()
         _value = float(value)
 
         if units or units == "":
             _unit = units
 
         if quantity_map:
-            units = QuantityMap(quantity_map).units
+            units = q.QuantityMap(quantity_map).units
             _unit = units
 
         if dimensions:
-            _dimensions = Dimensions(dimensions=dimensions)
+            _dimensions = q.Dimensions(dimensions=dimensions)
             _unit = _dimensions.units
 
         _type = _units_table.get_type(_unit)
@@ -66,20 +64,20 @@ class Quantity(float):
         return float.__new__(cls, _si_value)
 
     def __init__(self, value, units=None, quantity_map=None, dimensions=None):
-        self._units_table = UnitsTable()
+        self._units_table = q.UnitsTable()
         self._value = float(value)
 
         if units or units == "":
             self._unit = units
-            self._dimensions = Dimensions(units=units)
+            self._dimensions = q.Dimensions(units=units)
 
         if quantity_map:
-            units = QuantityMap(quantity_map).units
+            units = q.QuantityMap(quantity_map).units
             self._unit = units
-            self._dimensions = Dimensions(units=units)
+            self._dimensions = q.Dimensions(units=units)
 
         if dimensions:
-            self._dimensions = Dimensions(dimensions=dimensions)
+            self._dimensions = q.Dimensions(dimensions=dimensions)
             self._unit = self._dimensions.units
 
         self._type = self._units_table.get_type(self._unit)
@@ -219,7 +217,7 @@ class Quantity(float):
             )
 
         # Create new dimensions with desired unit system
-        new_dim = Dimensions(dimensions=self.dimensions, unit_sys=to_sys)
+        new_dim = q.Dimensions(dimensions=self.dimensions, unit_sys=to_sys)
 
         return Quantity(value=self.value, units=new_dim.units)
 
@@ -232,7 +230,7 @@ class Quantity(float):
     def __pow__(self, __value):
         temp_dimensions = [dim * __value for dim in self.dimensions]
         new_si_value = self.si_value**__value
-        new_dimensions = Dimensions(dimensions=temp_dimensions)
+        new_dimensions = q.Dimensions(dimensions=temp_dimensions)
         return Quantity(value=new_si_value, units=new_dimensions.units)
 
     def __mul__(self, __value):
@@ -242,7 +240,7 @@ class Quantity(float):
                 dim + __value.dimensions[idx] for idx, dim in enumerate(self.dimensions)
             ]
             new_si_value = self.si_value * __value.si_value
-            new_dimensions = Dimensions(dimensions=temp_dimensions)
+            new_dimensions = q.Dimensions(dimensions=temp_dimensions)
             new_units = new_units if new_units == "delta_K" else new_dimensions.units
             return Quantity(value=new_si_value, units=new_units)
 
@@ -259,7 +257,7 @@ class Quantity(float):
                 dim - __value.dimensions[idx] for idx, dim in enumerate(self.dimensions)
             ]
             new_si_value = self.si_value / __value.si_value
-            new_dimensions = Dimensions(dimensions=temp_dimensions)
+            new_dimensions = q.Dimensions(dimensions=temp_dimensions)
             new_units = new_units if new_units == "delta_K" else new_dimensions.units
             return Quantity(value=new_si_value, units=new_units)
 
