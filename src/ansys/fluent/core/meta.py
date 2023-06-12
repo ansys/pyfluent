@@ -9,7 +9,21 @@ from pprint import pformat
 
 
 class Attribute:
-    VALID_NAMES = ["range", "allowed_values"]
+    VALID_NAMES = [
+        "range",
+        "allowed_values",
+        "help_str",
+        "is_valid",
+        "help_context",
+        "show_as_separate_object",
+        "display_text",
+        "layout",
+        "previous",
+        "next",
+        "include",
+        "exclude",
+        "sort_by",
+    ]
 
     def __init__(self, function):
         self.function = function
@@ -42,14 +56,51 @@ class Command:
         def _init(_self, obj):
             _self.obj = obj
 
+        def _execute(_self, *args, **kwargs):
+            for arg, attr_data in self.arguments_attrs.items():
+                arg_value = None
+                if arg in kwargs:
+                    arg_value = kwargs[arg]
+                else:
+                    index = list(self.arguments_attrs.keys()).index(arg)
+                    if len(args) > index:
+                        arg_value = args[index]
+                if arg_value is not None:
+                    for attr, attr_value in attr_data.items():
+                        if attr == "allowed_values":
+                            allowed_values = attr_value(_self.obj)
+                            if isinstance(arg_value, list):
+                                if not all(
+                                    elem in allowed_values for elem in arg_value
+                                ):
+                                    raise RuntimeError(
+                                        f"All values of {arg} value {arg_value} is not within allowed values."
+                                    )
+                            else:
+                                if arg_value not in allowed_values:
+                                    raise RuntimeError(
+                                        f"{arg} value {arg_value} is not within allowed values."
+                                    )
+
+                        elif attr == "range":
+                            if type(arg_value) != int and type(arg_value) != float:
+                                raise RuntimeError(
+                                    f"{arg} value {arg_value} is not number."
+                                )
+
+                            min, max = attr_value(_self.obj)
+                            if arg_value < min or arg_value > max:
+                                raise RuntimeError(
+                                    f"{arg} value {arg_value} is not within range."
+                                )
+            return method(_self.obj, *args, **kwargs)
+
         self.command_cls = type(
             "command",
             (),
             {
                 "__init__": _init,
-                "__call__": lambda _self, *args, **kwargs: method(
-                    _self.obj, *args, **kwargs
-                ),
+                "__call__": _execute,
                 "argument_attribute": lambda _self, argument_name, attr_name: self.arguments_attrs[
                     argument_name
                 ][
@@ -81,9 +132,7 @@ def CommandArgs(command_object, argument_name):
                 {attribute.__name__: attribute}
             )
         else:
-            command_object.arguments_attrs[argument_name] = {
-                attribute.__name__: attribute
-            }
+            raise RuntimeError(f"{argument_name} not a valid argument.")
         return attribute
 
     return wrapper
@@ -104,6 +153,19 @@ class PyLocalBaseMeta(type):
         return wrapper
 
     @classmethod
+    def __create_get_parent_by_name(cls):
+        def wrapper(self, obj_type, obj=None):
+            obj = self if obj is None else obj
+            parent = None
+            if getattr(obj, "_parent", None):
+                if obj._parent.__class__.__name__ == obj_type:
+                    return obj._parent
+                parent = self._get_parent_by_name(obj_type, obj._parent)
+            return parent
+
+        return wrapper
+
+    @classmethod
     def __create_get_top_most_parent(cls):
         def wrapper(self, obj=None):
             obj = self if obj is None else obj
@@ -116,6 +178,7 @@ class PyLocalBaseMeta(type):
 
     def __new__(cls, name, bases, attrs):
         attrs["_get_parent_by_type"] = cls.__create_get_parent_by_type()
+        attrs["_get_parent_by_name"] = cls.__create_get_parent_by_name()
         attrs["_get_top_most_parent"] = cls.__create_get_top_most_parent()
         return super(PyLocalBaseMeta, cls).__new__(cls, name, bases, attrs)
 
@@ -173,9 +236,19 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
                 hasattr(self, "_reset_on_change")
                 and getattr(self, "_reset_on_change")()
             )
+
+            on_change = getattr(self, "_on_change", None)
+            if on_change is not None:
+                self._register_on_change_cb(on_change)
             if reset_on_change:
                 for obj in reset_on_change:
-                    obj._register_on_change_cb(lambda: setattr(self, "_value", None))
+
+                    def reset():
+                        setattr(self, "_value", None)
+                        for on_change_cb in self._on_change_cbs:
+                            on_change_cb()
+
+                    obj._register_on_change_cb(reset)
 
         return wrapper
 
@@ -183,7 +256,18 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
     def __create_get_state(cls, show_attributes=False):
         def wrapper(self):
             try:
-                return self.value
+                rv = self.value
+
+                if hasattr(self, "allowed_values"):
+                    allowed_values = self.allowed_values
+                    if len(allowed_values) > 0 and (
+                        rv is None
+                        or (not isinstance(rv, list) and rv not in allowed_values)
+                    ):
+                        self.set_state(allowed_values[0])
+                        rv = self.value
+
+                return rv
             except AttributeError:
                 return None
 
@@ -223,6 +307,63 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
         return super(PyLocalPropertyMeta, cls).__new__(cls, name, bases, attrs)
 
 
+class PyReferenceObjectMeta(PyLocalBaseMeta):
+    """Metaclass for local object classes."""
+
+    @classmethod
+    def __create_init(cls):
+        def wrapper(self, parent, path, location, session_id):
+            self._parent = parent
+            self.type = "object"
+            self.parent = parent
+            self.path = path
+            self.location = location
+            self.session_id = session_id
+
+        return wrapper
+
+    @classmethod
+    def __create_reset(cls):
+        def wrapper(self, path, location, session_id):
+            self.path = path
+            self.location = location
+            self.session_id = session_id
+            if hasattr(self, "_object"):
+                delattr(self, "_object")
+
+        return wrapper
+
+    @classmethod
+    def __create_getattr(cls):
+        def wrapper(self, item):
+            if item == "_object":
+                # import pdb; pdb.set_trace()
+                top_most_parent = self._get_top_most_parent(self)
+
+                if self.session_id is None:
+                    self.session_id = top_most_parent.session.id
+                property_editor_data = top_most_parent.accessor(
+                    "AnsysUser", self.session_id
+                )
+                (
+                    obj,
+                    cmd_data,
+                ) = property_editor_data.get_object_and_command_data_from_properties_info(
+                    {"path": self.path, "properties": {}, "type": self.location}
+                )
+                if obj is not None:
+                    self._object = obj
+                return obj
+
+        return wrapper
+
+    def __new__(cls, name, bases, attrs):
+        attrs["__init__"] = attrs.get("__init__", cls.__create_init())
+        attrs["__getattr__"] = attrs.get("__getattr__", cls.__create_getattr())
+        attrs["reset"] = cls.__create_reset()
+        return super(PyReferenceObjectMeta, cls).__new__(cls, name, bases, attrs)
+
+
 class PyLocalObjectMeta(PyLocalBaseMeta):
     """Metaclass for local object classes."""
 
@@ -257,6 +398,10 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
                             self,
                             cls.PLURAL,
                             PyLocalContainer(self, cls, api_helper),
+                        )
+                    if cls.__class__.__name__ == "PyReferenceObjectMeta":
+                        setattr(
+                            self, name, cls(self, cls.PATH, cls.LOCATION, cls.SESSION)
                         )
                 for base_class in clss.__bases__:
                     update(base_class)
@@ -392,6 +537,10 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
                             cls.PLURAL,
                             PyLocalContainer(self, cls, api_helper),
                         )
+                    elif cls.__class__.__name__ == "PyReferenceObjectMeta":
+                        setattr(
+                            self, name, cls(self, cls.PATH, cls.LOCATION, cls.SESSION)
+                        )
                 for base_class in clss.__bases__:
                     update(base_class)
 
@@ -418,6 +567,15 @@ class PyLocalContainer(MutableMapping):
         self.__api_helper = api_helper
         self.type = "named-object"
 
+        if hasattr(object_class, "SHOW_AS_SEPARATE_OBJECT"):
+            self.show_as_separate_object = object_class.SHOW_AS_SEPARATE_OBJECT
+        if hasattr(object_class, "EXCLUDE"):
+            self.exclude = object_class.EXCLUDE
+        if hasattr(object_class, "INCLUDE"):
+            self.include = object_class.INCLUDE
+        if hasattr(object_class, "LAYOUT"):
+            self.layout = object_class.LAYOUT
+
     def __iter__(self):
         return iter(self.__collection)
 
@@ -430,6 +588,11 @@ class PyLocalContainer(MutableMapping):
             o = self.__collection[name] = self.__object_class(
                 name, self, self.__api_helper
             )
+            on_create = getattr(
+                self._PyLocalContainer__object_class, "_on_create", None
+            )
+            if on_create:
+                on_create(self, name)
         return o
 
     def __setitem__(self, name, value):
@@ -438,6 +601,9 @@ class PyLocalContainer(MutableMapping):
 
     def __delitem__(self, name):
         del self.__collection[name]
+        on_delete = getattr(self._PyLocalContainer__object_class, "_on_delete", None)
+        if on_delete:
+            on_delete(self, name)
 
     def _get_unique_chid_name(self):
         children = list(self)
@@ -466,7 +632,6 @@ class PyLocalContainer(MutableMapping):
     def Create(self, name=None):
         if not name:
             name = self._get_unique_chid_name()
-
         new_object = self.__getitem__(name)
         return new_object._name
 
