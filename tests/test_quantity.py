@@ -2,7 +2,7 @@ import math
 
 import pytest
 
-import ansys.fluent.core.quantity as q
+import ansys.fluent.core.quantity.quantity as q
 
 DELTA = 1.0e-5
 
@@ -10,27 +10,27 @@ DELTA = 1.0e-5
 def test_properties_1():
     v = q.Quantity(10.6, "m")
     assert v.value == 10.6
-    assert v.unit_str == "m"
+    assert v.units == "m"
     assert v.si_value == 10.6
-    assert v.si_unit_str == "m"
+    assert v.si_units == "m"
     assert v.type == "Length"
 
 
 def test_properties_2():
     v = q.Quantity(1, "ft s^-1")
     assert v.value == 1
-    assert v.unit_str == "ft s^-1"
+    assert v.units == "ft s^-1"
     assert v.si_value == pytest.approx(0.30479999, DELTA)
-    assert v.si_unit_str == "m s^-1.0"
+    assert v.si_units == "m s^-1.0"
     assert v.type == "Composite"
 
 
 def test_properties_3():
     v = q.Quantity(1.0, "farad")
     assert v.value == 1.0
-    assert v.unit_str == "farad"
+    assert v.units == "farad"
     assert v.si_value == 1.0
-    assert v.si_unit_str == "kg^-1.0 m^-2.0 s^4.0 A^2.0"
+    assert v.si_units == "kg^-1.0 m^-2.0 s^4.0 A^2.0"
     assert v.type == "Derived"
 
 
@@ -53,84 +53,84 @@ def test_to_7():
     v = q.Quantity(1.0, "m")
     to = v.to("ft")
     assert to.value == pytest.approx(3.2808398, DELTA)
-    assert to.unit_str == "ft"
+    assert to.units == "ft"
 
 
 def test_to_8():
     v = q.Quantity(1.0, "m")
     to = v.to("mm")
     assert to.value == 1000
-    assert to.unit_str == "mm"
+    assert to.units == "mm"
 
 
 def test_to_9():
     v = q.Quantity(100000.0, "Pa")
     to = v.to("kPa")
     assert to.value == 100.0
-    assert to.unit_str == "kPa"
+    assert to.units == "kPa"
 
 
 def test_to_10():
     v = q.Quantity(1.0, "dm^3")
     to = v.to("m^3")
     assert to.value == pytest.approx(0.001, DELTA)
-    assert to.unit_str == "m^3"
+    assert to.units == "m^3"
 
 
 def test_to_11():
     v = q.Quantity(1.0, "radian")
     to = v.to("degree")
     assert to.value == pytest.approx(57.295779, DELTA)
-    assert to.unit_str == "degree"
+    assert to.units == "degree"
 
 
 def test_to_12():
     v = q.Quantity(1.0, "degree")
     to = v.to("radian")
     assert to.value == pytest.approx(0.01745329251, DELTA)
-    assert to.unit_str == "radian"
+    assert to.units == "radian"
 
 
 def test_to_13():
     v = q.Quantity(1.0, "Pa s")
     to = v.to("dyne cm^-2 s")
     assert to.value == pytest.approx(10.0, DELTA)
-    assert to.unit_str == "dyne cm^-2 s"
+    assert to.units == "dyne cm^-2 s"
 
 
 def test_to_14():
     v = q.Quantity(1.0, "kg m^-1 s^-1")
     to = v.to("dyne cm^-2 s")
     assert to.value == pytest.approx(10.0, DELTA)
-    assert to.unit_str == "dyne cm^-2 s"
+    assert to.units == "dyne cm^-2 s"
 
 
 def test_to_15():
     v = q.Quantity(1.0, "Pa s")
     to = v.to("slug in^-1 s^-1")
     assert to.value == pytest.approx(0.00174045320, DELTA)
-    assert to.unit_str == "slug in^-1 s^-1"
+    assert to.units == "slug in^-1 s^-1"
 
 
 def test_to_16():
     v = q.Quantity(1.0, "kg m^-1 s^-1")
     to = v.to("slug in^-1 s^-1")
     assert to.value == pytest.approx(0.00174045320, DELTA)
-    assert to.unit_str == "slug in^-1 s^-1"
+    assert to.units == "slug in^-1 s^-1"
 
 
 def test_to_17():
     v = q.Quantity(1.0, "lb ft^-1 s^-1")
     to = v.to("Pa s")
     assert to.value == pytest.approx(1.488164, DELTA)
-    assert to.unit_str == "Pa s"
+    assert to.units == "Pa s"
 
 
 def test_to_18():
     v = q.Quantity(1.0, "lb ft^-1 s^-1")
     to = v.to("kg m^-1 s^-1")
     assert to.value == pytest.approx(1.488164, DELTA)
-    assert to.unit_str == "kg m^-1 s^-1"
+    assert to.units == "kg m^-1 s^-1"
 
 
 def test_to_19():
@@ -153,126 +153,126 @@ def test_to_21():
     v = q.Quantity(1.0, "lbf ft^-2")
     to = v.to("N m^-2")
     assert to.value == pytest.approx(47.88024159, DELTA)
-    assert to.unit_str == "N m^-2"
+    assert to.units == "N m^-2"
 
 
 def test_to_22():
     v = q.Quantity(1.0, "ft^-3 s^-1")
     to = v.to("m^-3 s^-1")
     assert to.value == pytest.approx(35.3146667, DELTA)
-    assert to.unit_str == "m^-3 s^-1"
+    assert to.units == "m^-3 s^-1"
 
 
 def test_to_23():
     v = q.Quantity(1.0, "m^-2")
     to = v.to("cm^-2")
     assert to.value == pytest.approx(0.0001, DELTA)
-    assert to.unit_str == "cm^-2"
+    assert to.units == "cm^-2"
 
 
 def test_to_24():
     v = q.Quantity(1.0, "m^2")
     to = v.to("in^2")
     assert to.value == pytest.approx(1550.0031, DELTA)
-    assert to.unit_str == "in^2"
+    assert to.units == "in^2"
 
 
 def test_to_25():
     v = q.Quantity(1.0, "radian s^-1")
     to = v.to("degree s^-1")
     assert to.value == pytest.approx(57.295779, DELTA)
-    assert to.unit_str == "degree s^-1"
+    assert to.units == "degree s^-1"
 
 
 def test_to_26():
     v = q.Quantity(1.0, "degree s^-1")
     to = v.to("radian s^-1")
     assert to.value == pytest.approx(0.01745329251, DELTA)
-    assert to.unit_str == "radian s^-1"
+    assert to.units == "radian s^-1"
 
 
 def test_to_27():
     v = q.Quantity(1.0, "dyne cm^-2")
     to = v.to("N m^-2")
     assert to.value == pytest.approx(0.1, DELTA)
-    assert to.unit_str == "N m^-2"
+    assert to.units == "N m^-2"
 
 
 def test_to_28():
     v = q.Quantity(1.0, "psi")
     to = v.to("Pa")
     assert to.value == pytest.approx(6894.76, DELTA)
-    assert to.unit_str == "Pa"
+    assert to.units == "Pa"
 
 
 def test_to_29():
     v = q.Quantity(1.0, "pdl")
     to = v.to("N")
     assert to.value == pytest.approx(0.138254999, DELTA)
-    assert to.unit_str == "N"
+    assert to.units == "N"
 
 
 def test_to_30():
     v = q.Quantity(1.0, "ohm cm")
     to = v.to("ohm m")
     assert to.value == pytest.approx(0.01, DELTA)
-    assert to.unit_str == "ohm m"
+    assert to.units == "ohm m"
 
 
 def test_to_31():
     v = q.Quantity(1.0, "erg")
     to = v.to("J")
     assert to.value == pytest.approx(1.0e-7, DELTA)
-    assert to.unit_str == "J"
+    assert to.units == "J"
 
 
 def test_to_32():
     v = q.Quantity(1.0, "BTU")
     to = v.to("J")
     assert to.value == pytest.approx(1055.056, DELTA)
-    assert to.unit_str == "J"
+    assert to.units == "J"
 
 
 def test_to_33():
     v = q.Quantity(1.0, "gal")
     to = v.to("m^3")
     assert to.value == pytest.approx(0.00378541, DELTA)
-    assert to.unit_str == "m^3"
+    assert to.units == "m^3"
 
 
 def test_to_34():
     v = q.Quantity(1.0, "l")
     to = v.to("m^3")
     assert to.value == pytest.approx(0.001, DELTA)
-    assert to.unit_str == "m^3"
+    assert to.units == "m^3"
 
 
 def test_to_35():
     v = q.Quantity(1.0, "BTU lb^-1 R^-1")
     to = v.to("J kg^-1 K^-1")
     assert to.value == pytest.approx(4186.8161854, DELTA)
-    assert to.unit_str == "J kg^-1 K^-1"
+    assert to.units == "J kg^-1 K^-1"
 
 
 def test_to_36():
     v = q.Quantity(1.0, "BTU lb^-1 F^-1")
     to = v.to("J kg^-1 K^-1")
     assert to.value == pytest.approx(4186.8161854, DELTA)
-    assert to.unit_str == "J kg^-1 K^-1"
+    assert to.units == "J kg^-1 K^-1"
 
 
 def test_to_37():
     v = q.Quantity(1.0, "gal^-1")
     to = v.to("m^-3")
     assert to.value == pytest.approx(264.172, DELTA)
-    assert to.unit_str == "m^-3"
+    assert to.units == "m^-3"
 
 
 def test_to_38():
     v = q.Quantity(1.0, "BTU ft^-2")
     to = v.to("J m^-2")
     assert to.value == pytest.approx(11356.5713242, DELTA)
-    assert to.unit_str == "J m^-2"
+    assert to.units == "J m^-2"
 
 
 def test_to_39():
@@ -285,21 +285,21 @@ def test_convert_40():
     v = q.Quantity(2.0, "ft^-2")
     convert = v.convert("SI")
     assert convert.value == 2.0
-    assert convert.unit_str == "m^-2.0"
+    assert convert.units == "m^-2.0"
 
 
 def test_convert_41():
     v = q.Quantity(1.0, "mm^3")
     convert = v.convert("CGS")
     assert convert.value == 1.0
-    assert convert.unit_str == "cm^3.0"
+    assert convert.units == "cm^3.0"
 
 
 def test_convert_42():
     v = q.Quantity(7.0, "K mol")
     convert = v.convert("BT")
     assert convert.value == 7.0
-    assert convert.unit_str == "R slugmol"
+    assert convert.units == "R slugmol"
 
 
 def test_convert_43():
@@ -341,7 +341,7 @@ def test_pow_47():
     q2 = q.Quantity(5.0, "m s^-1")
 
     q1_sq = q1**2
-    assert q1_sq.unit_str == "m^2.0 s^-2.0"
+    assert q1_sq.units == "m^2.0 s^-2.0"
 
     assert float(q1) ** 2 == 100.0
     assert float(q2) ** 2 == 25.0
@@ -380,7 +380,7 @@ def test_power_51():
     qtm = qt * 2
 
     assert qtm.value == 10.0
-    assert qtm.unit_str == ""
+    assert qtm.units == ""
 
 
 def test_ge_52():
@@ -505,15 +505,15 @@ def test_tempK_59():
 
     kc = k.to("C")
     assert kc.value == -313.15
-    assert kc.unit_str == "C"
+    assert kc.units == "C"
 
     kc = k.to("R")
     assert kc.value == pytest.approx(-72.0, DELTA)
-    assert kc.unit_str == "R"
+    assert kc.units == "R"
 
     kc = k.to("F")
     assert kc.value == pytest.approx(-531.67, DELTA)
-    assert kc.unit_str == "F"
+    assert kc.units == "F"
 
 
 def test_temp_60():
@@ -576,37 +576,37 @@ def test_temp_65():
     hcto1 = hc.to("kJ kg^-1 K^-1")
 
     assert hcto1.value == pytest.approx(1.0, DELTA)
-    assert hcto1.unit_str == "kJ kg^-1 K^-1"
+    assert hcto1.units == "kJ kg^-1 K^-1"
 
     hcto2 = hc.to("J kg^-1 C^-1")
 
     assert hcto2.value == pytest.approx(1000.0, DELTA)
-    assert hcto2.unit_str == "J kg^-1 C^-1"
+    assert hcto2.units == "J kg^-1 C^-1"
 
     hcto3 = hc.to("kJ kg^-1 C^-1")
 
     assert hcto3.value == pytest.approx(1.0, DELTA)
-    assert hcto3.unit_str == "kJ kg^-1 C^-1"
+    assert hcto3.units == "kJ kg^-1 C^-1"
 
     hcto4 = hc.to("cal g^-1 C^-1")
 
     assert hcto4.value == pytest.approx(0.2390057, DELTA)
-    assert hcto4.unit_str == "cal g^-1 C^-1"
+    assert hcto4.units == "cal g^-1 C^-1"
 
     hcto5 = hc.to("cal kg^-1 C^-1")
 
     assert hcto5.value == pytest.approx(239.0057, DELTA)
-    assert hcto5.unit_str == "cal kg^-1 C^-1"
+    assert hcto5.units == "cal kg^-1 C^-1"
 
     hcto6 = hc.to("kcal kg^-1 C^-1")
 
     assert hcto6.value == pytest.approx(0.2390057, DELTA)
-    assert hcto6.unit_str == "kcal kg^-1 C^-1"
+    assert hcto6.units == "kcal kg^-1 C^-1"
 
     hcto7 = hc.to("BTU lb^-1 F^-1")
 
     assert hcto7.value == pytest.approx(0.238845, DELTA)
-    assert hcto7.unit_str == "BTU lb^-1 F^-1"
+    assert hcto7.units == "BTU lb^-1 F^-1"
 
 
 def test_temp_66():
@@ -615,32 +615,32 @@ def test_temp_66():
     temp_varto1 = temp_var.to("g cm^-3 s^-1 K^2")
 
     assert temp_varto1.value == pytest.approx(0.001, DELTA)
-    assert temp_varto1.unit_str == "g cm^-3 s^-1 K^2"
+    assert temp_varto1.units == "g cm^-3 s^-1 K^2"
 
     temp_varto2 = temp_var.to("kg mm^-3 s^-1 K^2")
 
     assert temp_varto2.value == pytest.approx(1e-09, DELTA)
-    assert temp_varto2.unit_str == "kg mm^-3 s^-1 K^2"
+    assert temp_varto2.units == "kg mm^-3 s^-1 K^2"
 
     temp_varto3 = temp_var.to("kg um^-3 s^-1 K^2")
 
     assert temp_varto3.value == pytest.approx(9.999999999999999e-19, DELTA)
-    assert temp_varto3.unit_str == "kg um^-3 s^-1 K^2"
+    assert temp_varto3.units == "kg um^-3 s^-1 K^2"
 
     temp_varto4 = temp_var.to("mg mm^-3 ms^-1 K^2")
 
     assert temp_varto4.value == pytest.approx(1.0000000000000002e-06, DELTA)
-    assert temp_varto4.unit_str == "mg mm^-3 ms^-1 K^2"
+    assert temp_varto4.units == "mg mm^-3 ms^-1 K^2"
 
     temp_varto5 = temp_var.to("g cm^-3 us^-1 K^2")
 
     assert temp_varto5.value == pytest.approx(1e-09, DELTA)
-    assert temp_varto5.unit_str == "g cm^-3 us^-1 K^2"
+    assert temp_varto5.units == "g cm^-3 us^-1 K^2"
 
     temp_varto6 = temp_var.to("pg um^-3 ms^-1 K^2")
 
     assert temp_varto6.value == pytest.approx(9.999999999999997e-07, DELTA)
-    assert temp_varto6.unit_str == "pg um^-3 ms^-1 K^2"
+    assert temp_varto6.units == "pg um^-3 ms^-1 K^2"
 
 
 def test_temp_inverse_67():
@@ -693,7 +693,7 @@ def test_temp_difference_70():
     assert td.type == "Temperature Difference"
 
     td_m = td * 2
-    assert td_m.unit_str == "delta_K"
+    assert td_m.units == "delta_K"
     assert td_m.type == "Temperature Difference"
 
     t1 = q.Quantity(150.0, "C")
@@ -764,7 +764,7 @@ def test_temp_addition_72():
     td = t1 - t2
     assert td.type == "Temperature Difference"
     assert float(td) == 100.0
-    assert td.unit_str == "delta_K"
+    assert td.units == "delta_K"
 
     kd = q.Quantity(50.0, "delta_C")
     k = q.Quantity(50.0, "K")
@@ -785,7 +785,7 @@ def test_quantity_map_73():
 
     api_test = q.Quantity(10.5, quantity_map=quantity_map_from_settings_API)
     assert api_test.value == 10.5
-    assert api_test.unit_str == "kg^3.0 m^-1.5 s^-6.5 A^3.0 cd"
+    assert api_test.units == "kg^3.0 m^-1.5 s^-6.5 A^3.0 cd"
 
 
 def test_quantity_map_74():
@@ -799,7 +799,7 @@ def test_quantity_map_74():
 
     with pytest.raises(ValueError):
         api_test = q.Quantity(
-            10.5, unit_str="kg m s^-1", quantity_map=quantity_map_from_settings_API
+            10.5, units="kg m s^-1", quantity_map=quantity_map_from_settings_API
         )
 
 
@@ -812,42 +812,42 @@ def test_quantity_map_75():
 
     api_test = q.Quantity(10.5, quantity_map=quantity_map_from_settings_API)
     assert api_test.value == 10.5
-    assert api_test.unit_str == "K Pa m^3.0"
+    assert api_test.units == "K Pa m^3.0"
 
 
 def test_unit_from_dimensions_76():
     p = q.Quantity(10.5, dimensions=[1.0, -1.0, -2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
-    assert p.unit_str == "kg m^-1.0 s^-2.0"
+    assert p.units == "kg m^-1.0 s^-2.0"
 
 
 def test_unit_from_dimensions_77():
     l = q.Quantity(10.5, dimensions=[0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
-    assert l.unit_str == "m"
+    assert l.units == "m"
 
 
 def test_unit_from_dimensions_78():
     x = q.Quantity(10.5, dimensions=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
-    assert x.unit_str == ""
+    assert x.units == ""
 
 
 def test_unit_from_dimensions_79():
     test = q.Quantity(10.5, dimensions=[0, 1, -1])
-    assert test.unit_str == "m s^-1.0"
+    assert test.units == "m s^-1.0"
     assert test.dimensions == [0.0, 1.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 
 def test_unit_from_dimensions_80():
     test = q.Quantity(10.5, dimensions=[0, 1.0, -2.0])
-    assert test.unit_str == "m s^-2.0"
+    assert test.units == "m s^-2.0"
     assert test.dimensions == [0.0, 1.0, -2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 
 def testing_dimensions():
     print(f"{'*' * 25} {testing_dimensions.__name__} {'*' * 25}")
 
-    def dim_test(unit_str, dim_list):
-        qt = q.Quantity(10, unit_str)
-        print(f"{unit_str} : {qt.dimensions}")
+    def dim_test(units, dim_list):
+        qt = q.Quantity(10, units)
+        print(f"{units} : {qt.dimensions}")
         assert qt.dimensions == dim_list
 
     dim_test("m", [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
@@ -906,34 +906,34 @@ def testing_arithmetic_operators():
 
     print(f"{qt1} * {qt2} =  {qt3}")
     assert qt3.value == 50
-    assert qt3.unit_str == "m^2.0 s^-2.0"
+    assert qt3.units == "m^2.0 s^-2.0"
 
     result = qt1 * 2
     print(f"{qt1} * {2} =  {result}")
     assert result.value == 20
-    assert result.unit_str == "m s^-1.0"
+    assert result.units == "m s^-1.0"
 
     result1 = 2 * qt1
     print(f"{2} * {qt1} =  {result1}")
     assert result1.value == 20
-    assert result1.unit_str == "m s^-1.0"
+    assert result1.units == "m s^-1.0"
 
     q3 = qt1 / qt2
 
     print(f"{qt1} / {qt2} =  {q3}")
     assert q3.value == 2
-    assert q3.unit_str == ""
+    assert q3.units == ""
 
     result3 = qt1 / 2
     print(f"{qt1} / {2} =  {qt1 / 2}")
     assert result3.value == 5
-    assert result3.unit_str == "m s^-1.0"
+    assert result3.units == "m s^-1.0"
 
     qa3 = qt1 + qt2
 
     print(f"{qt1} + {qt2} =  {qa3}")
     assert qa3.value == 15
-    assert qa3.unit_str == "m s^-1.0"
+    assert qa3.units == "m s^-1.0"
 
     with pytest.raises(TypeError) as e:
         result5 = qt1 + 2
@@ -947,7 +947,7 @@ def testing_arithmetic_operators():
 
     print(f"{qt1} - {qt2} =  {qs3}")
     assert qs3.value == 5
-    assert qs3.unit_str == "m s^-1.0"
+    assert qs3.units == "m s^-1.0"
 
     with pytest.raises(TypeError) as e:
         result7 = qt1 - 2
