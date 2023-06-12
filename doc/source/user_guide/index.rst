@@ -231,6 +231,8 @@ See also :func:`ansys.fluent.core.logging.enable`,
 PyFluent loggers use the standard Python logging library, for more details see
 `<https://docs.python.org/3/library/logging.html>`_.
 
+.. _ref_logging_env_var:
+
 Environment variable
 ~~~~~~~~~~~~~~~~~~~~
 Global logging can also be enabled automatically on PyFluent startup through the

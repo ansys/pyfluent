@@ -6,23 +6,10 @@ import pydoc
 import appdirs
 
 # Logging has to be set up before importing other PyFluent modules
-import ansys.fluent.core.logging as pyfluent_logging
+import ansys.fluent.core.logging as logging
 
-pyfluent_logging.root_config()
-
-env_logging_level = os.getenv("PYFLUENT_LOGGING")
-if env_logging_level:
-    if isinstance(env_logging_level, str):
-        if env_logging_level.isdigit():
-            env_logging_level = int(env_logging_level)
-        else:
-            env_logging_level = env_logging_level.upper()
-    if env_logging_level in [0, "OFF"] or pyfluent_logging.is_active():
-        pass
-    else:
-        print("PYFLUENT_LOGGING environment variable found, enabling logging...")
-        pyfluent_logging.enable(env_logging_level)
-
+logging.root_config()
+logging.configure_env_var()
 
 from ansys.fluent.core._version import __version__  # noqa: F401
 from ansys.fluent.core.launcher.launcher import (  # noqa: F401
