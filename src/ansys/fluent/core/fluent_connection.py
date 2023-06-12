@@ -516,8 +516,6 @@ class FluentConnection:
 
         if timeout is None:
             self._finalizer()
-        # elif timeout == 0:
-        #     pass
         else:
 
             def _connection_finalizer(connection):
@@ -536,21 +534,21 @@ class FluentConnection:
                 logger.debug("session.exit() successful")
                 return
 
-        logger.debug("session.exit() timeout")
-        if timeout_force:
-            if self._remote_instance:
-                logger.warning(
-                    "Cannot force exit from Fluent remote instance, and exit command has timed out."
-                )
-                return
-            elif self.connection_properties.inside_container:
-                logger.debug("Fluent running inside container, killing it...")
-                self.force_exit_container()
+            logger.debug("session.exit() timeout")
+            if timeout_force:
+                if self._remote_instance:
+                    logger.warning(
+                        "Cannot force exit from Fluent remote instance, and exit command has timed out."
+                    )
+                    return
+                elif self.connection_properties.inside_container:
+                    logger.debug("Fluent running inside container, killing it...")
+                    self.force_exit_container()
+                else:
+                    logger.debug("Fluent running locally, killing it...")
+                    self.force_exit()
             else:
-                logger.debug("Fluent running locally, killing it...")
-                self.force_exit()
-        else:
-            logger.debug("Timeout force exit disabled, returning...")
+                logger.debug("Timeout force exit disabled, returning...")
 
     @staticmethod
     def _exit(
