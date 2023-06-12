@@ -13,7 +13,6 @@ import weakref
 
 import grpc
 
-from ansys.fluent.core import TIMEOUT_FORCE_EXIT
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services.batch_ops import BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
@@ -511,8 +510,19 @@ class FluentConnection:
         will return this function to default behavior. Note that the environment variable will be ignored if
         timeout is specified when calling this function.
         """
+
         if timeout is None:
-            timeout = TIMEOUT_FORCE_EXIT
+            env_timeout = os.getenv("PYFLUENT_TIMEOUT_FORCE_EXIT")
+
+            if env_timeout:
+                logger.debug("Found PYFLUENT_TIMEOUT_FORCE_EXIT env var")
+                try:
+                    timeout = float(env_timeout)
+                    logger.debug(f"Setting TIMEOUT_FORCE_EXIT to {timeout}")
+                except ValueError:
+                    logger.debug(
+                        "Off or unrecognized PYFLUENT_TIMEOUT_FORCE_EXIT value, not enabling timeout force exit"
+                    )
 
         if timeout is None:
             self._finalizer()

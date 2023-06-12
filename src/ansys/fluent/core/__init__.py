@@ -22,26 +22,6 @@ if env_logging_level:
         print("PYFLUENT_LOGGING environment variable specified, enabling logging...")
         pyfluent_logging.enable(env_logging_level)
 
-logger = pyfluent_logging.get_logger("pyfluent.general")
-
-# Time to wait on exit before considering the Fluent session is unresponsive and automatically cleaning it
-# Needs to be set before importing other PyFluent modules
-env_timeout = os.getenv("PYFLUENT_TIMEOUT_FORCE_EXIT")
-
-if env_timeout:
-    logger.info("Found PYFLUENT_TIMEOUT_FORCE_EXIT env var")
-    try:
-        env_timeout = float(env_timeout)
-        logger.info(f"Setting TIMEOUT_FORCE_EXIT to {env_timeout}")
-    except ValueError:
-        logger.info(
-            "Off or unrecognized PYFLUENT_TIMEOUT_FORCE_EXIT value, not enabling timeout force exit"
-        )
-        env_timeout = None
-
-TIMEOUT_FORCE_EXIT = env_timeout
-
-
 from ansys.fluent.core._version import __version__  # noqa: F401
 from ansys.fluent.core.launcher.launcher import (  # noqa: F401
     FluentVersion,
