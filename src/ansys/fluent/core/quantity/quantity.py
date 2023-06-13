@@ -326,9 +326,3 @@ class QuantityError(ValueError):
 
     def __str__(self):
         return f"'{self.from_unit}' and '{self.to_unit}' have incompatible dimensions."
-
-
-if __name__ == "__main__":
-    v = Quantity(1, "m farad^-2")
-
-    print(v.si_units)

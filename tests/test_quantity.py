@@ -956,3 +956,13 @@ def testing_arithmetic_operators():
     with pytest.raises(TypeError) as e:
         result8 = 2 - qt1
         print(f"{2} - {qt1} =  {result8}")
+
+
+def test_filtered_units():
+    u = q.UnitsTable()
+
+    assert u.filter_unit_term("cm^-2") == ("", "cm", -2)
+    assert u.filter_unit_term("m") == ("", "m", 1)
+    assert u.filter_unit_term("K^4") == ("", "K", 4)
+    assert u.filter_unit_term("dam") == ("da", "m", 1)
+    assert u.filter_unit_term("mm") == ("m", "m", 1)
