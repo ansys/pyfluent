@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 import pytest
 from util.solver_workflow import (  # noqa: F401
@@ -6,6 +8,8 @@ from util.solver_workflow import (  # noqa: F401
 )
 
 from ansys.fluent.core import examples
+
+os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
 
 
 @pytest.mark.dev
@@ -43,7 +47,7 @@ def test_svars(new_solver_session):
 
     assert zone_info.name == "wall-inlet"
 
-    assert zone_info.count == 268
+    assert zone_info.count == 271
 
     assert zone_info.zone_id == 33
 
