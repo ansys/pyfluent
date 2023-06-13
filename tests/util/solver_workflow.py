@@ -18,7 +18,7 @@ def new_solver_session(with_launching_container):
 def new_solver_session_single_precision(with_launching_container):
     solver = create_solver_session(precision="single")
     yield solver
-    solver.exit()
+    solver.exit(timeout=5, timeout_force=True)
 
 
 @pytest.fixture
