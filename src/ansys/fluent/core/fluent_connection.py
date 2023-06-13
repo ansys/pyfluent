@@ -560,11 +560,13 @@ class FluentConnection:
                 elif self.connection_properties.inside_container:
                     logger.debug("Fluent running inside container, killing it...")
                     self.force_exit_container()
-                    logger.debug("Done.")
                 else:
                     logger.debug("Fluent running locally, killing it...")
                     self.force_exit()
-                    logger.debug("Done.")
+                if tmp_thread.is_alive():
+                    logger.debug("Closing existing thread...")
+                    tmp_thread.join()
+                logger.debug("Done.")
             else:
                 logger.debug("Timeout force exit disabled, returning...")
 
