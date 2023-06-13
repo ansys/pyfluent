@@ -4,7 +4,7 @@ from util.solver_workflow import new_solver_session  # noqa: F401
 from ansys.fluent.core import examples
 
 
-@pytest.mark.fluent_232
+@pytest.mark.fluent_241
 def test_1364(new_solver_session):
     solver = new_solver_session
 
@@ -27,11 +27,10 @@ def test_1364(new_solver_session):
         }
     )
 
-    assert solver.solution.report_definitions.volume[
-        "xxx"
-    ].zone_names.allowed_values() == ["fluid"]
+    with pytest.raises(AttributeError) as e:
+        solver.solution.report_definitions.volume["xxx"].zone_names.allowed_values()
+    assert e.value.args[0] == "'zone_names' object has no attribute 'allowed_values'"
 
-    assert (
+    with pytest.raises(AttributeError) as e:
         solver.solution.report_definitions.volume["xxx"].expr_list.allowed_values()
-        == None
-    )
+    assert e.value.args[0] == "'expr_list' object has no attribute 'allowed_values'"
