@@ -92,10 +92,6 @@ class BaseSession:
         """Return the session id."""
         return self.fluent_connection._id
 
-    def get_fluent_version(self):
-        """Gets and returns the fluent version."""
-        return self.scheme_eval.version
-
     def start_journal(self, file_path: str):
         """Executes tui command to start journal."""
         warnings.warn("Use -> journal.start()", DeprecationWarning)
