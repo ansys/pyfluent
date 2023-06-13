@@ -4,6 +4,7 @@ import itertools
 import logging
 import os
 from pathlib import Path
+import socket
 import subprocess
 import threading
 import time
@@ -392,6 +393,11 @@ class FluentConnection:
         pwd = self.connection_properties.cortex_pwd
         pid = self.connection_properties.fluent_host_pid
         host = self.connection_properties.cortex_host
+        if not host == socket.gethostname():
+            logger.error(
+                "Fluent host is not the current host, cancelling forced exit..."
+            )
+            return
         if os.name == "nt":
             cleanup_file_ext = "bat"
             cmd_list = []
@@ -554,9 +560,11 @@ class FluentConnection:
                 elif self.connection_properties.inside_container:
                     logger.debug("Fluent running inside container, killing it...")
                     self.force_exit_container()
+                    logger.debug("Done.")
                 else:
                     logger.debug("Fluent running locally, killing it...")
                     self.force_exit()
+                    logger.debug("Done.")
             else:
                 logger.debug("Timeout force exit disabled, returning...")
 
