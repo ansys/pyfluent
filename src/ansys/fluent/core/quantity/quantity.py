@@ -42,7 +42,7 @@ class Quantity(float):
         _units_table = q.UnitsTable()
         _value = float(value)
 
-        if units or units == "":
+        if units is not None:
             _unit = units
 
         if quantity_map:
@@ -64,10 +64,19 @@ class Quantity(float):
         return float.__new__(cls, _si_value)
 
     def __init__(self, value, units=None, quantity_map=None, dimensions=None):
+        if (
+            (units and quantity_map)
+            or (units and dimensions)
+            or (quantity_map and dimensions)
+        ):
+            raise ValueError(
+                "Quantity only accepts 1 of the following: units, quantity_map, dimensions"
+            )
+
         self._units_table = q.UnitsTable()
         self._value = float(value)
 
-        if units or units == "":
+        if units is not None:
             self._unit = units
             self._dimensions = q.Dimensions(units=units)
 
@@ -211,9 +220,9 @@ class Quantity(float):
         """
 
         # Verify specified system is supported
-        if to_sys not in ["SI", "CGS", "BT"]:
+        if to_sys not in self._units_table.unit_systems:
             raise ValueError(
-                f"'{to_sys}' is not a supported unit system. Only 'SI', 'CGS', 'BT' are supported."
+                f"'{to_sys}' is not a supported unit system. Only {', '.join(self._units_table.unit_systems.keys())} are supported."
             )
 
         # Create new dimensions with desired unit system
@@ -330,3 +339,8 @@ class QuantityError(ValueError):
 
     def __str__(self):
         return f"'{self.from_unit}' and '{self.to_unit}' have incompatible dimensions."
+
+
+if __name__ == "__main__":
+    m = Quantity(1, "m")
+    v = m.convert("rff")

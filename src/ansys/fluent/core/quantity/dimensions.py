@@ -19,11 +19,15 @@ class Dimensions(object):
     def __init__(
         self, units: str = None, dimensions: list = None, unit_sys: str = None
     ):
+        if units and dimensions:
+            raise ValueError(
+                "Dimensions only accepts 1 of the following: units, dimensions."
+            )
+
         self._units_table = q.UnitsTable()
         unit_sys = unit_sys or "SI"
-        units = units or " "
 
-        if units:
+        if units is not None:
             self._unit = units
             self._dimensions = self._units_to_dim(units=units)
 
@@ -50,19 +54,14 @@ class Dimensions(object):
         """
         # Ensure dimensions list contains 9 terms
         dimensions = [float(dim) for dim in dimensions + ((9 - len(dimensions)) * [0])]
-        sys_order = {
-            "SI": ["kg", "m", "s", "K", "radian", "mol", "cd", "A", "sr"],
-            "CGS": ["g", "cm", "s", "K", "radian", "mol", "cd", "A", "sr"],
-            "BT": ["slug", "ft", "s", "R", "radian", "slugmol", "cd", "A", "sr"],
-        }
         units = ""
 
         # Define unit term and associated value from dimension with dimensions list
         for idx, dim in enumerate(dimensions):
             if dim == 1.0:
-                units += f"{sys_order[unit_sys][idx]} "
+                units += f"{self._units_table.unit_systems[unit_sys][idx]} "
             elif dim != 0.0:
-                units += f"{sys_order[unit_sys][idx]}^{dim} "
+                units += f"{self._units_table.unit_systems[unit_sys][idx]}^{dim} "
 
         return dimensions, units[:-1]
 

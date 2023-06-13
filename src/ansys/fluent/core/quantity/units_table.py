@@ -36,6 +36,7 @@ class UnitsTable(object):
         self._fundamental_units: dict = qc_data["fundamental_units"]
         self._derived_units: dict = qc_data["derived_units"]
         self._multipliers: dict = qc_data["multipliers"]
+        self._unit_systems: dict = qc_data["unit_systems"]
 
     def _has_multiplier(self, unit_term: str) -> bool:
         """Check if a unit term contains a multiplier.
@@ -95,6 +96,11 @@ class UnitsTable(object):
     def multipliers(self):
         """Multiplier prefixes and respective factors."""
         return self._multipliers
+
+    @property
+    def unit_systems(self):
+        """Predefined unit systems and units."""
+        return self._unit_systems
 
     def filter_unit_term(self, unit_term: str) -> tuple:
         """Separate multiplier, base, and power from a unit term.

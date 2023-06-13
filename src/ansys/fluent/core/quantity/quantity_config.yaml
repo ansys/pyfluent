@@ -240,6 +240,43 @@ multipliers:
   Z: 1.0e+21
   Y: 1.0e+24
 
+# Unit Systems
+# ------------
+#
+# Predefined unit system refix : Unit system units
+
+unit_systems:
+  SI: 
+    - kg 
+    - m
+    - s
+    - K
+    - radian
+    - mol
+    - cd
+    - A
+    - sr
+  CGS:
+    - g
+    - cm
+    - s
+    - K
+    - radian
+    - mol
+    - cd
+    - A
+    - sr
+  BT:
+    - slug
+    - ft
+    - s
+    - R
+    - radian
+    - slugmol
+    - cd
+    - A
+    - sr
+
 # Quantity Map
 # ------------
 #
