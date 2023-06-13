@@ -53,13 +53,8 @@ class Quantity(float):
             _dimensions = q.Dimensions(dimensions=dimensions)
             _unit = _dimensions.units
 
-        _type = _units_table.get_type(_unit)
         _, si_multiplier, si_offset = _units_table.si_data(units=_unit)
-        _si_value = (
-            ((_value + si_offset) * si_multiplier)
-            if _type == "Temperature"
-            else (_value * si_multiplier)
-        )
+        _si_value = (_value + si_offset) * si_multiplier
 
         return float.__new__(cls, _si_value)
 
@@ -94,11 +89,7 @@ class Quantity(float):
         si_units, si_multiplier, si_offset = self._units_table.si_data(units=self._unit)
 
         self._si_units = si_units[:-1]
-        self._si_value = (
-            ((self.value + si_offset) * si_multiplier)
-            if self.type == "Temperature"
-            else (self.value * si_multiplier)
-        )
+        self._si_value = (self.value + si_offset) * si_multiplier
 
     def _arithmetic_precheck(self, __value, caller=None) -> str:
         """Validate dimensions of quantities.
@@ -192,11 +183,7 @@ class Quantity(float):
 
         # Retrieve all SI required SI data and perform conversion
         _, si_multiplier, si_offset = self._units_table.si_data(to_units)
-        new_value = (
-            ((self.si_value / si_multiplier) - si_offset)
-            if self.type == "Temperature"
-            else (self.si_value / si_multiplier)
-        )
+        new_value = (self.si_value / si_multiplier) - si_offset
 
         new_obj = Quantity(value=new_value, units=to_units)
 
@@ -342,5 +329,6 @@ class QuantityError(ValueError):
 
 
 if __name__ == "__main__":
-    m = Quantity(1, "m")
-    v = m.convert("rff")
+    v = Quantity(1, "m farad^-2")
+
+    print(v.si_units)

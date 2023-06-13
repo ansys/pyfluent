@@ -118,5 +118,5 @@ class Dimensions(object):
 
     @property
     def dimensions(self):
-        """Dimensions representation of unit string"""
+        """Dimensions list"""
         return self._dimensions

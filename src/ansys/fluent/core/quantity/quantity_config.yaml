@@ -122,12 +122,12 @@ fundamental_units:
   delta_C:
     type: Temperature Difference
     factor: 1
-    offset: 273.15
+    offset: 0
     dimension_order: 4
   delta_F:
     type: Temperature Difference
     factor: 0.55555555555
-    offset: 459.67
+    offset: 0
     dimension_order: 4
   delta_R:
     type: Temperature Difference

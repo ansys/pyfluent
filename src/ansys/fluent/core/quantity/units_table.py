@@ -170,7 +170,11 @@ class UnitsTable(object):
         power = power or 1.0
         si_units = si_units or ""
         si_multiplier = si_multiplier or 1.0
-        si_offset = si_offset or 0.0
+        si_offset = (
+            self._fundamental_units[units]["offset"]
+            if units in self._fundamental_units
+            else 0.0
+        )
 
         # Split unit string into terms and parse data associated with individual terms
         for term in units.split(" "):
@@ -186,8 +190,6 @@ class UnitsTable(object):
 
             # Retrieve data associated with fundamental unit
             if unit_term in self._fundamental_units:
-                si_offset = self._fundamental_units[unit_term]["offset"]
-
                 if unit_term_power == 1.0:
                     si_units += f"{self._si_map(unit_term)} "
                 elif unit_term_power != 0.0:
