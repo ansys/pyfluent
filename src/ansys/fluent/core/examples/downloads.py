@@ -34,10 +34,10 @@ def _decompress(filename: str) -> None:
 def _get_file_url(filename: str, directory: Optional[str] = None) -> str:
     if directory:
         return (
-            "https://github.com/pyansys/example-data/raw/master/"
+            "https://github.com/ansys/example-data/raw/master/"
             f"{directory}/{filename}"
         )
-    return f"https://github.com/pyansys/example-data/raw/master/{filename}"
+    return f"https://github.com/ansys/example-data/raw/master/{filename}"
 
 
 def _retrieve_file(url: str, filename: str, save_path: Optional[str] = None) -> str:
