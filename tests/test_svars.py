@@ -1,15 +1,9 @@
-import os
-
 import numpy as np
 import pytest
 from util.solver_workflow import (  # noqa: F401
     new_solver_session,
     new_solver_session_single_precision,
 )
-
-from ansys.fluent.core import examples
-
-os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
 
 
 @pytest.mark.dev
