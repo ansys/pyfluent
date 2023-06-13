@@ -160,7 +160,7 @@ class FluentConnection:
         start_transcript: bool = True,
         remote_instance: Instance = None,
         launcher_args: Dict[str, Any] = None,
-        inside_container: bool = False,
+        inside_container: bool = None,
     ):
         """Instantiate a Session.
 
