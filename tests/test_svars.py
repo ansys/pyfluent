@@ -5,6 +5,8 @@ from util.solver_workflow import (  # noqa: F401
     new_solver_session_single_precision,
 )
 
+from ansys.fluent.core import examples
+
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
