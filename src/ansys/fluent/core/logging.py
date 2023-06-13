@@ -148,7 +148,8 @@ def configure_env_var() -> None:
     -----
     The usual way to enable PyFluent logging to file is through :func:`enable()`.
     ``PYFLUENT_LOGGING`` set to ``0`` or ``OFF`` is the same as if no environment variable was set.
-    If logging debug output to file is desired, it is recommended to set ``PYFLUENT_LOGGING`` to ``DEBUG``.
+    If logging debug output to file is desired, without having to use :func:`enable()`,
+    set ``PYFLUENT_LOGGING`` to ``DEBUG`` instead.
     See also the :ref:`logging user guide <ref_logging_env_var>`.
     """
     env_logging_level = os.getenv("PYFLUENT_LOGGING")
