@@ -11,7 +11,6 @@ import grpc
 from ansys.fluent.core.services.field_data import FieldData, FieldDataService, FieldInfo
 from ansys.fluent.core.services.health_check import HealthCheckService
 from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
-from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
 
@@ -172,10 +171,6 @@ class FluentConnection:
 
         self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
         self.scheme_eval = SchemeEval(self._scheme_eval_service)
-
-        self.settings_service = SettingsService(
-            self._channel, self._metadata, self.scheme_eval
-        )
 
         self._field_data_service = FieldDataService(self._channel, self._metadata)
         self.field_info = FieldInfo(self._field_data_service)

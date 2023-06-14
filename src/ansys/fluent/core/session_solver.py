@@ -9,6 +9,7 @@ import threading
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.services.reduction import Reduction, ReductionService
+from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.services.svar import SVARData, SVARInfo, SVARService
 from ansys.fluent.core.session import (
     _CODEGEN_MSG_TUI,
@@ -46,7 +47,7 @@ class Solver(BaseSession):
         super(Solver, self).build_from_fluent_connection(fluent_connection)
         self._tui_service = self.datamodel_service_tui
         self._se_service = self.datamodel_service_se
-        self._settings_service = self.fluent_connection.settings_service
+        self._settings_service = self.settings_service
         self._tui = None
         self._workflow = None
         self._settings_root = None
@@ -59,6 +60,9 @@ class Solver(BaseSession):
             ReductionService
         )
         self.reduction = Reduction(self._reduction_service)
+        self.settings_service = self.fluent_connection.create_service(
+            SettingsService, add_arg=self.scheme_eval
+        )
 
     def build_from_fluent_connection(self, fluent_connection):
         super(Solver, self).build_from_fluent_connection(fluent_connection)
