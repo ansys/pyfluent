@@ -18,6 +18,7 @@ from ansys.fluent.core.services.datamodel_tui import (
     DatamodelService as DatamodelService_TUI,
 )
 from ansys.fluent.core.services.events import EventsService
+from ansys.fluent.core.services.field_data import FieldData, FieldDataService, FieldInfo
 from ansys.fluent.core.services.monitor import MonitorsService
 from ansys.fluent.core.session_shared import (  # noqa: F401
     _CODEGEN_MSG_DATAMODEL,
@@ -27,6 +28,7 @@ from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents,
 )
 from ansys.fluent.core.streaming_services.events_streaming import EventsManager
+from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 
 from .rpvars import RPVars
@@ -65,6 +67,17 @@ def _get_preferences(session):
 
 def _get_solverworkflow(session):
     return _get_datamodel_attributes(session, "solverworkflow")
+
+
+class _IsDataValid:
+    def __init__(self, scheme_eval):
+        self._scheme_eval = scheme_eval
+
+    def __bool__(self):
+        return self()
+
+    def __call__(self):
+        return self._scheme_eval.scheme_eval("(data-valid?)")
 
 
 class BaseSession:
@@ -133,6 +146,17 @@ class BaseSession:
         )
 
         self.events_manager.start()
+
+        self._field_data_service = self.fluent_connection.create_service(
+            FieldDataService
+        )
+        self.field_info = FieldInfo(self._field_data_service)
+        self.field_data = FieldData(
+            self._field_data_service, self.field_info, _IsDataValid(self.scheme_eval)
+        )
+        self.field_data_streaming = FieldDataStreaming(
+            self._id, self._field_data_service
+        )
 
         self._finalizer = weakref.finalize(
             self,
