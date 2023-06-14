@@ -8,6 +8,7 @@ from typing import Any, Dict
 import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.session_shared import (  # noqa: F401
     _CODEGEN_MSG_DATAMODEL,
     _CODEGEN_MSG_TUI,
@@ -86,6 +87,7 @@ class BaseSession:
         self._uploader = None
         self._preferences = None
         self._solverworkflow = None
+        self.journal = Journal(self.scheme_eval)
 
     @property
     def id(self) -> str:
@@ -95,12 +97,12 @@ class BaseSession:
     def start_journal(self, file_path: str):
         """Executes tui command to start journal."""
         warnings.warn("Use -> journal.start()", DeprecationWarning)
-        self.fluent_connection.journal.start(file_path)
+        self.journal.start(file_path)
 
     def stop_journal(self):
         """Executes tui command to stop journal."""
         warnings.warn("Use -> journal.stop()", DeprecationWarning)
-        self.fluent_connection.journal.stop()
+        self.journal.stop()
 
     @classmethod
     def create_from_server_info_file(

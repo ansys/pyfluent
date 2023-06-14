@@ -9,7 +9,6 @@ import weakref
 
 import grpc
 
-from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services.batch_ops import BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE,
@@ -221,6 +220,7 @@ class FluentConnection:
         # self.datamodel_stream = DatamodelStream(self.datamodel_service_se)
         # self.datamodel_stream.start()
 
+        # Solver
         self._reduction_service = ReductionService(self._channel, self._metadata)
         self.reduction = Reduction(self._reduction_service)
 
@@ -236,12 +236,12 @@ class FluentConnection:
             self._field_data_service, self.field_info, _IsDataValid(self.scheme_eval)
         )
 
+        # Solver
         self.svar_service = SVARService(self._channel, self._metadata)
 
         self.field_data_streaming = FieldDataStreaming(
             self._id, self._field_data_service
         )
-        self.journal = Journal(self.scheme_eval)
 
         self._cleanup_on_exit = cleanup_on_exit
 
@@ -264,6 +264,9 @@ class FluentConnection:
             self._remote_instance,
         )
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
+
+    def create_service(self, service):
+        return service(self._channel, self._metadata)
 
     def check_health(self) -> str:
         """Check health of Fluent connection."""
