@@ -11,6 +11,9 @@ import weakref
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services.batch_ops import BatchOpsService
+from ansys.fluent.core.services.datamodel_tui import (
+    DatamodelService as DatamodelService_TUI,
+)
 from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.services.monitor import MonitorsService
 from ansys.fluent.core.session_shared import (  # noqa: F401
@@ -94,6 +97,10 @@ class BaseSession:
         self._preferences = None
         self._solverworkflow = None
         self.journal = Journal(self.scheme_eval)
+
+        self.datamodel_service_tui = self.fluent_connection.create_service(
+            DatamodelService_TUI
+        )
 
         self._batch_ops_service = self.fluent_connection.create_service(BatchOpsService)
         self._events_service = self.fluent_connection.create_service(EventsService)

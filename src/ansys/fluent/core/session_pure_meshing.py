@@ -7,6 +7,10 @@ import functools
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.services.meshing_queries import (
+    MeshingQueries,
+    MeshingQueriesService,
+)
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_base_meshing import BaseMeshing
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
@@ -32,8 +36,17 @@ class PureMeshing(BaseSession):
         """
         super(PureMeshing, self).__init__(fluent_connection=fluent_connection)
         self._base_meshing = BaseMeshing(
-            self.execute_tui, fluent_connection, self.get_fluent_version()
+            self.execute_tui,
+            fluent_connection,
+            self.get_fluent_version(),
+            self.datamodel_service_tui,
         )
+
+        self.meshing_queries_service = fluent_connection.create_service(
+            MeshingQueriesService
+        )
+        self.meshing_queries = MeshingQueries(self.meshing_queries_service)
+
         datamodel_service_se = fluent_connection.datamodel_service_se
         self.datamodel_streams = {}
         if pyfluent.DATAMODEL_USE_STATE_CACHE:

@@ -11,15 +11,8 @@ import grpc
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE,
 )
-from ansys.fluent.core.services.datamodel_tui import (
-    DatamodelService as DatamodelService_TUI,
-)
 from ansys.fluent.core.services.field_data import FieldData, FieldDataService, FieldInfo
 from ansys.fluent.core.services.health_check import HealthCheckService
-from ansys.fluent.core.services.meshing_queries import (
-    MeshingQueries,
-    MeshingQueriesService,
-)
 from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
 from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
@@ -183,12 +176,12 @@ class FluentConnection:
 
         self.transcript = Transcript(self._channel, self._metadata)
 
-        self.datamodel_service_tui = DatamodelService_TUI(self._channel, self._metadata)
+        # self.datamodel_service_tui = DatamodelService_TUI(self._channel, self._metadata)
 
-        self.meshing_queries_service = MeshingQueriesService(
-            self._channel, self._metadata
-        )
-        self.meshing_queries = MeshingQueries(self.meshing_queries_service)
+        # self.meshing_queries_service = MeshingQueriesService(
+        #     self._channel, self._metadata
+        # )
+        # self.meshing_queries = MeshingQueries(self.meshing_queries_service)
 
         self.datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
         self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
