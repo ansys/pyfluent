@@ -13,7 +13,7 @@ from ansys.fluent.core import examples
 def test_svars(new_solver_session):
     solver = new_solver_session
     import_filename = examples.download_file(
-        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
     solver.file.read(file_type="case", file_name=import_filename)
 
@@ -53,11 +53,12 @@ def test_svars(new_solver_session):
     )
 
     assert set(svars_info_wall_fluid.svars) == {
-        "SV_ADS_0",
         "SV_ADS_1",
         "SV_CENTROID",
+        "SV_H",
         "SV_K",
         "SV_O",
+        "SV_T",
         "SV_P",
         "SV_U",
         "SV_V",

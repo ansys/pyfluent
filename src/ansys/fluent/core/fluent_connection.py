@@ -176,13 +176,6 @@ class FluentConnection:
 
         self.transcript = Transcript(self._channel, self._metadata)
 
-        # self.datamodel_service_tui = DatamodelService_TUI(self._channel, self._metadata)
-
-        # self.meshing_queries_service = MeshingQueriesService(
-        #     self._channel, self._metadata
-        # )
-        # self.meshing_queries = MeshingQueries(self.meshing_queries_service)
-
         self.datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
         self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
         self.datamodel_events.start()
@@ -211,7 +204,9 @@ class FluentConnection:
         self._remote_instance = remote_instance
         self.launcher_args = launcher_args
 
-    def create_service(self, service):
+    def create_service(self, service, add_arg=None):
+        if add_arg:
+            return service(self._channel, self._metadata, add_arg)
         return service(self._channel, self._metadata)
 
     def check_health(self) -> str:
