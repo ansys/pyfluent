@@ -15,7 +15,9 @@ tui_logger = logging.getLogger("pyfluent.tui")
 
 
 class BaseMeshing:
-    def __init__(self, session_execute_tui, fluent_connection: FluentConnection):
+    def __init__(
+        self, session_execute_tui, fluent_connection: FluentConnection, fluent_version
+    ):
         """BaseMeshing session.
 
         Args:
@@ -34,13 +36,12 @@ class BaseMeshing:
         self._preferences = None
         self._session_execute_tui = session_execute_tui
         self._version = None
+        self._fluent_version = fluent_version
 
     def get_fluent_version(self):
         """Gets and returns the fluent version."""
-        pyfluent_logger.debug(
-            "Fluent version = " + str(self._fluent_connection.get_fluent_version())
-        )
-        return self._fluent_connection.get_fluent_version()
+        pyfluent_logger.debug("Fluent version = " + str(self._fluent_version))
+        return self._fluent_version
 
     @property
     def version(self):

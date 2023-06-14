@@ -31,7 +31,9 @@ class PureMeshing(BaseSession):
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
         """
         super(PureMeshing, self).__init__(fluent_connection=fluent_connection)
-        self._base_meshing = BaseMeshing(self.execute_tui, fluent_connection)
+        self._base_meshing = BaseMeshing(
+            self.execute_tui, fluent_connection, self.get_fluent_version()
+        )
         datamodel_service_se = fluent_connection.datamodel_service_se
         self.datamodel_streams = {}
         if pyfluent.DATAMODEL_USE_STATE_CACHE:

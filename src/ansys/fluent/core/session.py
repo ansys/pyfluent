@@ -150,6 +150,10 @@ class BaseSession:
             f'(tui-menu-execute {json.dumps(command)} "")'
         )
 
+    def get_fluent_version(self):
+        """Gets and returns the fluent version."""
+        return self.scheme_eval.version
+
     def __enter__(self):
         """Close the Fluent connection and exit Fluent."""
         return self

@@ -92,9 +92,6 @@ class FluentConnection:
         Gets the mode of the current instance of Fluent (meshing or
         solver).
 
-    get_fluent_version()
-        Gets and returns the fluent version.
-
     exit()
         Close the Fluent connection and exit Fluent.
     """
@@ -277,10 +274,6 @@ class FluentConnection:
             return "solver"
         else:
             return "meshing"
-
-    def get_fluent_version(self):
-        """Gets and returns the fluent version."""
-        return self.scheme_eval.version
 
     def start_transcript(
         self, file_path: str = None, write_to_stdout: bool = True
