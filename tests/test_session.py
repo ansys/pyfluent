@@ -269,13 +269,6 @@ def test_old_style_session(with_launching_container):
     session.exit()
 
 
-def test_get_fluent_mode(new_mesh_session):
-    session = new_mesh_session
-    assert session.fluent_connection.get_current_fluent_mode() == "meshing"
-    session = session.switch_to_solver()
-    assert session.fluent_connection.get_current_fluent_mode() == "solver"
-
-
 @pytest.mark.dev
 @pytest.mark.fluent_232
 @pytest.mark.skip("Failing in github")

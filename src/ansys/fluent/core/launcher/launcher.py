@@ -375,7 +375,9 @@ def _get_running_session_mode(
     else:
         try:
             session_mode = LaunchMode.get_mode(
-                fluent_connection.get_current_fluent_mode()
+                "solver"
+                if fluent_connection.scheme_eval.scheme_eval("(cx-solver-mode?)")
+                else "meshing"
             )
         except BaseException:
             raise RuntimeError("Fluent session password mismatch")

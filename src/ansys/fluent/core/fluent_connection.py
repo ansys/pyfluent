@@ -88,10 +88,8 @@ class FluentConnection:
 
     Methods
     -------
-    get_current_fluent_mode()
-        Gets the mode of the current instance of Fluent (meshing or
-        solver).
-
+    check_health()
+        Check health of Fluent connection.
     exit()
         Close the Fluent connection and exit Fluent.
     """
@@ -266,26 +264,6 @@ class FluentConnection:
             self._remote_instance,
         )
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
-
-    def get_current_fluent_mode(self):
-        """Gets the mode of the current instance of Fluent (meshing or
-        solver)."""
-        if self.scheme_eval.scheme_eval("(cx-solver-mode?)"):
-            return "solver"
-        else:
-            return "meshing"
-
-    def start_transcript(
-        self, file_path: str = None, write_to_stdout: bool = True
-    ) -> None:
-        """Start streaming of Fluent transcript."""
-        warnings.warn("Use -> transcript.start()", DeprecationWarning)
-        self.transcript.start(file_path, write_to_stdout)
-
-    def stop_transcript(self) -> None:
-        """Stop streaming of Fluent transcript."""
-        warnings.warn("Use -> transcript.stop()", DeprecationWarning)
-        self.transcript.stop()
 
     def check_health(self) -> str:
         """Check health of Fluent connection."""
