@@ -138,3 +138,30 @@ def list_loggers():
         if name.startswith("pyfluent"):
             pyfluent_loggers.append(name)
     return pyfluent_loggers
+
+
+def configure_env_var() -> None:
+    """Verifies whether PYFLUENT_LOGGING environment variable was defined in the system.
+    Executed once automatically on PyFluent initialization.
+
+    Notes
+    -----
+    The usual way to enable PyFluent logging to file is through :func:`enable()`.
+    ``PYFLUENT_LOGGING`` set to ``0`` or ``OFF`` is the same as if no environment variable was set.
+    If logging debug output to file is desired, without having to use :func:`enable()`,
+    set ``PYFLUENT_LOGGING`` to ``DEBUG`` instead.
+    See also the :ref:`logging user guide <ref_logging_env_var>`.
+    """
+    env_logging_level = os.getenv("PYFLUENT_LOGGING")
+    if env_logging_level:
+        if env_logging_level.isdigit():
+            env_logging_level = int(env_logging_level)
+        else:
+            env_logging_level = env_logging_level.upper()
+        if env_logging_level in [0, "OFF"] or is_active():
+            pass
+        else:
+            print(
+                "PYFLUENT_LOGGING environment variable specified, enabling logging..."
+            )
+            enable(env_logging_level)
