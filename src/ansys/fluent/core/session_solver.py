@@ -8,7 +8,8 @@ import threading
 
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
-from ansys.fluent.core.services.svar import SVARData, SVARInfo
+from ansys.fluent.core.services.reduction import Reduction, ReductionService
+from ansys.fluent.core.services.svar import SVARData, SVARInfo, SVARService
 from ansys.fluent.core.session import (
     _CODEGEN_MSG_TUI,
     BaseSession,
@@ -52,7 +53,12 @@ class Solver(BaseSession):
         self._version = None
         self._solverworkflow = None
         self._lck = threading.Lock()
-        self.svar_info = SVARInfo(self.fluent_connection.svar_service)
+        self.svar_service = self.fluent_connection.create_service(SVARService)
+        self.svar_info = SVARInfo(self.svar_service)
+        self._reduction_service = self.fluent_connection.create_service(
+            ReductionService
+        )
+        self.reduction = Reduction(self._reduction_service)
 
     def build_from_fluent_connection(self, fluent_connection):
         super(Solver, self).build_from_fluent_connection(fluent_connection)
@@ -62,7 +68,7 @@ class Solver(BaseSession):
     def svar_data(self) -> SVARData:
         """Return the SVARData handle."""
         try:
-            return SVARData(self.fluent_connection.svar_service, self.svar_info)
+            return SVARData(self.svar_service, self.svar_info)
         except RuntimeError:
             return None
 

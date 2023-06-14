@@ -20,10 +20,8 @@ from ansys.fluent.core.services.meshing_queries import (
     MeshingQueries,
     MeshingQueriesService,
 )
-from ansys.fluent.core.services.reduction import Reduction, ReductionService
 from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
 from ansys.fluent.core.services.settings import SettingsService
-from ansys.fluent.core.services.svar import SVARService
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents,
 )
@@ -183,24 +181,8 @@ class FluentConnection:
             FluentConnection._monitor_thread = MonitorThread()
             FluentConnection._monitor_thread.start()
 
-        # self._batch_ops_service = BatchOpsService(self._channel, self._metadata)
-
         self.transcript = Transcript(self._channel, self._metadata)
 
-        # self._events_service = EventsService(self._channel, self._metadata)
-        # self.events_manager = EventsManager(self._id, self._events_service)
-
-        # self._monitors_service = MonitorsService(self._channel, self._metadata)
-        # self.monitors_manager = MonitorsManager(self._id, self._monitors_service)
-
-        # self.events_manager.register_callback(
-        #     "InitializedEvent", self.monitors_manager.refresh
-        # )
-        # self.events_manager.register_callback(
-        #     "DataReadEvent", self.monitors_manager.refresh
-        # )
-        #
-        # self.events_manager.start()
         self.datamodel_service_tui = DatamodelService_TUI(self._channel, self._metadata)
 
         self.meshing_queries_service = MeshingQueriesService(
@@ -211,11 +193,6 @@ class FluentConnection:
         self.datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
         self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
         self.datamodel_events.start()
-        # self.datamodel_stream = DatamodelStream(self.datamodel_service_se)
-        # self.datamodel_stream.start()
-
-        self._reduction_service = ReductionService(self._channel, self._metadata)
-        self.reduction = Reduction(self._reduction_service)
 
         self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
         self.scheme_eval = SchemeEval(self._scheme_eval_service)
@@ -229,8 +206,6 @@ class FluentConnection:
             self._field_data_service, self.field_info, _IsDataValid(self.scheme_eval)
         )
 
-        self.svar_service = SVARService(self._channel, self._metadata)
-
         self.field_data_streaming = FieldDataStreaming(
             self._id, self._field_data_service
         )
@@ -242,20 +217,6 @@ class FluentConnection:
 
         self._remote_instance = remote_instance
         self.launcher_args = launcher_args
-        # self._finalizer = weakref.finalize(
-        #     self,
-        #     FluentConnection._exit,
-        #     self._channel,
-        #     self._cleanup_on_exit,
-        #     self.scheme_eval,
-        #     self.datamodel_service_se,
-        #     self.datamodel_events,
-        #     self.transcript,
-        #     # self.events_manager,
-        #     self.monitors_manager,
-        #     self._remote_instance,
-        # )
-        # FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
     def create_service(self, service):
         return service(self._channel, self._metadata)
@@ -264,10 +225,6 @@ class FluentConnection:
         """Check health of Fluent connection."""
         warnings.warn("Use -> health_check_service.status()", DeprecationWarning)
         return self.health_check_service.status()
-
-    # def exit(self) -> None:
-    #     """Close the Fluent connection and exit Fluent."""
-    #     self._finalizer()
 
     @staticmethod
     def _exit(
