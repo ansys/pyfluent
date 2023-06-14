@@ -10,7 +10,6 @@ from ansys.fluent.core import examples
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
-@pytest.mark.fluent_241
 def test_svars(new_solver_session):
     solver = new_solver_session
     import_filename = examples.download_file(
