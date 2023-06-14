@@ -11,6 +11,9 @@ import weakref
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services.batch_ops import BatchOpsService
+from ansys.fluent.core.services.datamodel_se import (
+    DatamodelService as DatamodelService_SE,
+)
 from ansys.fluent.core.services.datamodel_tui import (
     DatamodelService as DatamodelService_TUI,
 )
@@ -19,6 +22,9 @@ from ansys.fluent.core.services.monitor import MonitorsService
 from ansys.fluent.core.session_shared import (  # noqa: F401
     _CODEGEN_MSG_DATAMODEL,
     _CODEGEN_MSG_TUI,
+)
+from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
+    DatamodelEvents,
 )
 from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
@@ -102,6 +108,12 @@ class BaseSession:
             DatamodelService_TUI
         )
 
+        self.datamodel_service_se = self.fluent_connection.create_service(
+            DatamodelService_SE
+        )
+        self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
+        self.datamodel_events.start()
+
         self._batch_ops_service = self.fluent_connection.create_service(BatchOpsService)
         self._events_service = self.fluent_connection.create_service(EventsService)
         self.events_manager = EventsManager(
@@ -128,8 +140,8 @@ class BaseSession:
             self.fluent_connection._channel,
             self.fluent_connection._cleanup_on_exit,
             self.fluent_connection.scheme_eval,
-            self.fluent_connection.datamodel_service_se,
-            self.fluent_connection.datamodel_events,
+            self.datamodel_service_se,
+            self.datamodel_events,
             self.fluent_connection.transcript,
             self.events_manager,
             self.monitors_manager,

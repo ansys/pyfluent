@@ -21,6 +21,7 @@ class BaseMeshing:
         fluent_connection: FluentConnection,
         fluent_version,
         datamodel_service_tui,
+        datamodel_service_se,
     ):
         """BaseMeshing session.
 
@@ -30,7 +31,7 @@ class BaseMeshing:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
         """
         self._tui_service = datamodel_service_tui
-        self._se_service = fluent_connection.datamodel_service_se
+        self._se_service = datamodel_service_se
         self._fluent_connection = fluent_connection
         self._tui = None
         self._meshing = None

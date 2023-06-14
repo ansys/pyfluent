@@ -40,6 +40,7 @@ class PureMeshing(BaseSession):
             fluent_connection,
             self.get_fluent_version(),
             self.datamodel_service_tui,
+            self.datamodel_service_se,
         )
 
         self.meshing_queries_service = fluent_connection.create_service(
@@ -47,7 +48,7 @@ class PureMeshing(BaseSession):
         )
         self.meshing_queries = MeshingQueries(self.meshing_queries_service)
 
-        datamodel_service_se = fluent_connection.datamodel_service_se
+        datamodel_service_se = self.datamodel_service_se
         self.datamodel_streams = {}
         if pyfluent.DATAMODEL_USE_STATE_CACHE:
             for rules in self.__class__.rules:
