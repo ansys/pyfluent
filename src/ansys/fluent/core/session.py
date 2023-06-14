@@ -6,13 +6,19 @@ import logging
 import os
 from typing import Any, Dict
 import warnings
+import weakref
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
+from ansys.fluent.core.services.batch_ops import BatchOpsService
+from ansys.fluent.core.services.events import EventsService
+from ansys.fluent.core.services.monitor import MonitorsService
 from ansys.fluent.core.session_shared import (  # noqa: F401
     _CODEGEN_MSG_DATAMODEL,
     _CODEGEN_MSG_TUI,
 )
+from ansys.fluent.core.streaming_services.events_streaming import EventsManager
+from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 
 from .rpvars import RPVars
 
@@ -88,6 +94,45 @@ class BaseSession:
         self._preferences = None
         self._solverworkflow = None
         self.journal = Journal(self.scheme_eval)
+
+        self._batch_ops_service = self.fluent_connection.create_service(BatchOpsService)
+        self._events_service = self.fluent_connection.create_service(EventsService)
+        self.events_manager = EventsManager(
+            self.fluent_connection._id, self._events_service
+        )
+
+        self._monitors_service = self.fluent_connection.create_service(MonitorsService)
+        self.monitors_manager = MonitorsManager(
+            self.fluent_connection._id, self._monitors_service
+        )
+
+        self.events_manager.register_callback(
+            "InitializedEvent", self.monitors_manager.refresh
+        )
+        self.events_manager.register_callback(
+            "DataReadEvent", self.monitors_manager.refresh
+        )
+
+        self.events_manager.start()
+
+        self._finalizer = weakref.finalize(
+            self,
+            FluentConnection._exit,
+            self.fluent_connection._channel,
+            self.fluent_connection._cleanup_on_exit,
+            self.fluent_connection.scheme_eval,
+            self.fluent_connection.datamodel_service_se,
+            self.fluent_connection.datamodel_events,
+            self.fluent_connection.transcript,
+            self.events_manager,
+            self.monitors_manager,
+            self.fluent_connection._remote_instance,
+        )
+        FluentConnection._monitor_thread.cbs.append(self._finalizer)
+
+    def exit(self):
+        """Close the Fluent connection and exit Fluent."""
+        self._finalizer()
 
     @property
     def id(self) -> str:
