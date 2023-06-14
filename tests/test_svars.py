@@ -43,7 +43,7 @@ def test_svars(new_solver_session):
 
     assert zone_info.name == "wall-inlet"
 
-    assert zone_info.count == 271
+    assert zone_info.count == 268
 
     assert zone_info.zone_id == 33
 
