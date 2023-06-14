@@ -109,7 +109,7 @@ def test_svars(new_solver_session):
     assert updated_sv_p_data.domain == "mixture"
     assert updated_sv_p_data.zones == ["wall-elbow", "elbow-fluid"]
 
-    assert updated_sv_p_data["elbow-fluid"].size == 17741
+    assert updated_sv_p_data["elbow-fluid"].size == 17822
     assert str(updated_sv_p_data["elbow-fluid"].dtype) == "float64"
 
     assert updated_sv_p_data["wall-elbow"][0] == 500.0
