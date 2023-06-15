@@ -5,6 +5,7 @@ import threading
 import time
 from typing import Any, Callable, Dict, List, Optional, Tuple
 import warnings
+import weakref
 
 import grpc
 
@@ -111,6 +112,7 @@ class FluentConnection:
         """
         self._data_valid = False
         self._channel_str = None
+        self.finalizer_cbs = []
         if channel is not None:
             self._channel = channel
         else:
@@ -163,6 +165,24 @@ class FluentConnection:
         self._remote_instance = remote_instance
         self.launcher_args = launcher_args
 
+        self._finalizer = weakref.finalize(
+            self,
+            FluentConnection._exit,
+            self._channel,
+            self._cleanup_on_exit,
+            self.scheme_eval,
+            self.finalizer_cbs,
+            self._remote_instance,
+        )
+        FluentConnection._monitor_thread.cbs.append(self._finalizer)
+
+    def exit(self):
+        """Close the Fluent connection and exit Fluent."""
+        self._finalizer()
+
+    def register_finalizer_cbs(self, cb):
+        self.finalizer_cbs.append(cb)
+
     def create_service(self, service, add_arg=None):
         if add_arg:
             return service(self._channel, self._metadata, add_arg)
@@ -178,19 +198,12 @@ class FluentConnection:
         channel,
         cleanup_on_exit,
         scheme_eval,
-        datamodel_service_se,
-        datamodel_events,
-        transcript,
-        events_manager,
-        monitors_manager,
+        finalizer_cbs,
         remote_instance,
     ) -> None:
         if channel:
-            datamodel_service_se.unsubscribe_all_events()
-            datamodel_events.stop()
-            transcript.stop()
-            events_manager.stop()
-            monitors_manager.stop()
+            for cb in finalizer_cbs:
+                cb()
             if cleanup_on_exit:
                 try:
                     scheme_eval.exec(("(exit-server)",))

@@ -6,7 +6,6 @@ import logging
 import os
 from typing import Any, Dict
 import warnings
-import weakref
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
@@ -168,24 +167,13 @@ class BaseSession:
             SettingsService, add_arg=self.scheme_eval
         )
 
-        self._finalizer = weakref.finalize(
-            self,
-            FluentConnection._exit,
-            self.fluent_connection._channel,
-            self.fluent_connection._cleanup_on_exit,
-            self.fluent_connection.scheme_eval,
-            self.datamodel_service_se,
-            self.datamodel_events,
-            self.transcript,
-            self.events_manager,
-            self.monitors_manager,
-            self.fluent_connection._remote_instance,
+        self.fluent_connection.register_finalizer_cbs(
+            self.datamodel_service_se.unsubscribe_all_events
         )
-        FluentConnection._monitor_thread.cbs.append(self._finalizer)
-
-    def exit(self):
-        """Close the Fluent connection and exit Fluent."""
-        self._finalizer()
+        self.fluent_connection.register_finalizer_cbs(self.datamodel_events.stop)
+        self.fluent_connection.register_finalizer_cbs(self.transcript.stop)
+        self.fluent_connection.register_finalizer_cbs(self.events_manager.stop)
+        self.fluent_connection.register_finalizer_cbs(self.monitors_manager.stop)
 
     @property
     def id(self) -> str:
@@ -246,9 +234,7 @@ class BaseSession:
 
     def execute_tui(self, command: str) -> None:
         """Executes a tui command."""
-        self.fluent_connection.scheme_eval.scheme_eval(
-            f'(tui-menu-execute {json.dumps(command)} "")'
-        )
+        self.scheme_eval.scheme_eval(f'(tui-menu-execute {json.dumps(command)} "")')
 
     def get_fluent_version(self):
         """Gets and returns the fluent version."""
