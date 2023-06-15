@@ -232,11 +232,12 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
     assert not session.health_check_service.is_serving
 
 
+@pytest.mark.parametrize("file_format", ["jou", "py"])
 @pytest.mark.dev
 @pytest.mark.fluent_232
-def test_journal_creation(new_mesh_session):
+def test_journal_creation(file_format, new_mesh_session):
     fd, file_path = tempfile.mkstemp(
-        suffix=f"-{os.getpid()}.jou",
+        suffix=f"-{os.getpid()}.{file_format}",
         prefix="pyfluent-",
         dir=str(pyfluent.EXAMPLES_PATH),
     )
