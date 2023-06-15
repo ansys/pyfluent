@@ -10,6 +10,10 @@ on:
 env:
   DOCUMENTATION_CNAME: 'fluent.docs.pyansys.com'
   DOC_DEPLOYMENT_IMAGE_TAG: v23.1.0
+  ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+  PYFLUENT_START_INSTANCE: 0
+  PYFLUENT_TIMEOUT_FORCE_EXIT: 5
+  PYFLUENT_LAUNCH_CONTAINER: 1
 
 jobs:
   nightly_docs_build:
@@ -46,16 +50,11 @@ jobs:
       - name: Run API codegen
         run: make api-codegen
         env:
-          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-          PYFLUENT_START_INSTANCE: 0
-          PYFLUENT_LAUNCH_CONTAINER: 1
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
       - name: Build All Documentation
         run: make build-all-docs
         env:
-          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-          PYFLUENT_START_INSTANCE: 0
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
       - name: Zip HTML Documentation before upload

@@ -26,6 +26,10 @@ env:
   DOCUMENTATION_CNAME: 'fluent.docs.pyansys.com'
   PACKAGE_NAME: 'ansys-fluent-core'
   PACKAGE_NAMESPACE: 'ansys.fluent.core'
+  ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+  PYFLUENT_START_INSTANCE: 0
+  PYFLUENT_TIMEOUT_FORCE_EXIT: 5
+  PYFLUENT_LAUNCH_CONTAINER: 1
 
 jobs:
 
@@ -141,9 +145,6 @@ jobs:
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make api-codegen
         env:
-          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-          PYFLUENT_START_INSTANCE: 0
-          PYFLUENT_LAUNCH_CONTAINER: 1
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
       - name: Install again after codegen
@@ -162,8 +163,6 @@ jobs:
       - name: Build Source Documentation
         run: make build-doc-source
         env:
-          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-          PYFLUENT_START_INSTANCE: 0
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
       - name: Zip HTML Documentation before upload
@@ -247,9 +246,6 @@ jobs:
         if: steps.cache-222-api-code.outputs.cache-hit != 'true'
         run: make api-codegen
         env:
-          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-          PYFLUENT_START_INSTANCE: 0
-          PYFLUENT_LAUNCH_CONTAINER: 1
           FLUENT_IMAGE_TAG: v22.2.0
 
       - name: Print 22.2 Fluent version info
@@ -284,9 +280,6 @@ jobs:
         if: steps.cache-231-api-code.outputs.cache-hit != 'true'
         run: make api-codegen
         env:
-          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-          PYFLUENT_START_INSTANCE: 0
-          PYFLUENT_LAUNCH_CONTAINER: 1
           FLUENT_IMAGE_TAG: v23.1.0
 
       - name: Print 23.1 Fluent version info
@@ -365,8 +358,6 @@ jobs:
       - name: Unit Testing
         run: make unittest-dev-${{ matrix.version }}
         env:
-          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-          PYFLUENT_START_INSTANCE: 0
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Upload 23.1 Coverage Results to Codecov
@@ -441,9 +432,6 @@ jobs:
       - name: Run API codegen
         run: make api-codegen
         env:
-          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-          PYFLUENT_START_INSTANCE: 0
-          PYFLUENT_LAUNCH_CONTAINER: 1
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Print Fluent version info
@@ -458,8 +446,6 @@ jobs:
       - name: Unit Testing
         run: make unittest-dev-${{ matrix.version }}
         env:
-          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-          PYFLUENT_START_INSTANCE: 0
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
   release:
