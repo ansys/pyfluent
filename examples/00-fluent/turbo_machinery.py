@@ -98,7 +98,7 @@ solver_session.preferences.TurboWorkflow.FaceZoneSettings.OutletRegion(
 ###############################################################################
 # Updating periodic 1 region
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Change the default value to: "*per*1*, *per*"
+# Change the default value to: *per*1*, *per*
 
 solver_session.preferences.TurboWorkflow.FaceZoneSettings.Periodic1Region(
     "*per*1* *per*"
@@ -124,14 +124,20 @@ solver_session.preferences.TurboWorkflow.FaceZoneSettings.FZSearchOrder(
 # ~~~~~~~~~~~~~~~~~~
 # Describe the turbomachinery component.
 
+###############################################################################
+# .. image:: /_static/turbo_machinery_011.png
+#   :width: 500pt
+#   :align: center
+
 solver_session.workflow.TaskObject["Describe Component"].Arguments.set_state(
     {
         "ComponentName": "hannover",
         "ComponentType": "Axial Compressor",
         "NewEnableTipGapList": ["no", "yes", "no"],
-        "NewNumOfBladesList": ["26", "23", "30"],
+        "NewNumOfBladesList": ["30", "23", "26"],
         "NewRowNameList": ["s1", "r1", "igv"],
         "NewRowTypeList": ["stationary", "rotating", "stationary"],
+        "NumRows": 3,
         "OldEnableTipGapList": ["no", "yes", "no"],
         "OldNumOfBladesList": ["3", "3", "3"],
         "OldRowNameList": ["stator_1", "rotor_1", "stator_0"],
@@ -142,11 +148,6 @@ solver_session.workflow.TaskObject["Describe Component"].Arguments.set_state(
 
 solver_session.workflow.TaskObject["Describe Component"].Execute()
 
-
-###############################################################################
-# .. image:: /_static/turbo_machinery_011.png
-#   :width: 500pt
-#   :align: center
 
 ###############################################################################
 # Define blade row scope
@@ -229,40 +230,16 @@ solver_session.workflow.TaskObject["S1.gtm"].Arguments.set_state(
 
 solver_session.workflow.TaskObject["S1.gtm"].Execute()
 
-solver_session.workflow.TaskObject["Import Mesh"].Arguments.set_state(
-    {
-        "MeshFilePath": "",
-        "MeshName": "S1.gtm",
-    }
-)
-
-solver_session.workflow.TaskObject["Import Mesh"].Arguments.set_state(
-    {
-        "MeshFilePath": "",
-        "MeshFilePath_old": "",
-        "MeshName": "S1.gtm",
-    }
-)
-
-solver_session.workflow.TaskObject["Import Mesh"].Arguments.set_state(
-    {
-        "MeshFilePath": "",
-        "MeshFilePath_old": "",
-        "MeshName": "",
-    }
-)
-
 
 ###############################################################################
 # Associate mesh
 # ~~~~~~~~~~~~~~
 # Configure mesh associations between the cell zones and rows for each turbo component.
 
-solver_session.workflow.TaskObject["Associate Mesh"].Arguments.set_state(
-    {
-        "AMSelectComponentScope": "hannover_scope",
-    }
-)
+###############################################################################
+# .. image:: /_static/turbo_machinery_012.png
+#   :width: 500pt
+#   :align: center
 
 solver_session.workflow.TaskObject["Associate Mesh"].Arguments.set_state(
     {
@@ -310,11 +287,6 @@ solver_session.workflow.TaskObject["Associate Mesh"].Arguments.set_state(
     }
 )
 
-
-###############################################################################
-# .. image:: /_static/turbo_machinery_012.png
-#   :width: 500pt
-#   :align: center
 
 ###############################################################################
 # Define map regions
@@ -662,7 +634,7 @@ solver_session.workflow.TaskObject["Create CFD Model"].Execute()
 
 ###############################################################################
 # Define turbo physics
-# ~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~
 # Define the turbo-related physics conditions.
 
 solver_session.workflow.TaskObject["Define Turbo Physics"].Arguments.set_state(
@@ -680,6 +652,11 @@ solver_session.workflow.TaskObject["Define Turbo Physics"].Execute()
 # Turbo regions and zones
 # ~~~~~~~~~~~~~~~~~~~~~~~
 # Define the turbo-related region and zone boundary conditions.
+
+###############################################################################
+# .. image:: /_static/turbo_machinery_013.png
+#   :width: 500pt
+#   :align: center
 
 solver_session.workflow.TaskObject[
     "Define Turbo Regions and Zones"
@@ -743,6 +720,11 @@ solver_session.workflow.TaskObject["Define Turbo Topology"].AddChildAndUpdate()
 # ~~~~~~~~~~~~~~~~~~~~~~~
 # Define turbo-specific iso-surfaces.
 
+###############################################################################
+# .. image:: /_static/turbo_machinery_014.png
+#   :width: 500pt
+#   :align: center
+
 solver_session.workflow.TaskObject["Define Turbo Surfaces"].Arguments.set_state(
     {
         "IsoSurfaceNumList": ["surface 3", "surface 2", "surface 1"],
@@ -758,11 +740,72 @@ solver_session.workflow.TaskObject["Define Turbo Surfaces"].Execute()
 ###############################################################################
 # Create report definitions and monitors
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Finalize the workflow and to create postprocessing objects such as contour plots on the specified turbo-surfaces, as well as turbo-specific report definitions and monitors
+# Finalize the workflow and to create postprocessing objects such as contour plots
+# on the specified turbo-surfaces, as well as turbo-specific report definitions and monitors
 
 solver_session.workflow.TaskObject["Create Report Definitions & Monitors"].Execute()
 
-#########################################################################
+
+###############################################################################
+# Initialize flow field
+# ~~~~~~~~~~~~~~~~~~~~~
+# Initialize the flow field using hybrid initialization.
+
+solver_session.tui.solve.initialize.hyb_initialization()
+
+
+###############################################################################
+# Save case file
+# ~~~~~~~~~~~~~~
+# Save the case file as (``turbo_workflow.cas.h5``).
+
+solver_session.tui.file.write_case("turbo_workflow.cas.h5")
+
+###############################################################################
+# Solve for 100 iterations
+# ~~~~~~~~~~~~~~~~~~~~~~~~
+# Solve for 100 iterations.
+
+# - Residuals
+
+###############################################################################
+# .. image:: /_static/turbo_machinery_015.png
+#   :width: 500pt
+#   :align: center
+
+# - Isentropic Efficiency of the Compressor
+
+###############################################################################
+# .. image:: /_static/turbo_machinery_016.png
+#   :width: 500pt
+#   :align: center
+
+# - Pressure Ratio
+
+###############################################################################
+# .. image:: /_static/turbo_machinery_017.png
+#   :width: 500pt
+#   :align: center
+
+#  - Total Mass Flow Rate at the Outlet
+
+###############################################################################
+# .. image:: /_static/turbo_machinery_018.png
+#   :width: 500pt
+#   :align: center
+
+solver_session.tui.solve.iterate(100)
+
+
+###############################################################################
+# Save data file
+# ~~~~~~~~~~~~~~
+# Save the data file as (``turbo_workflow.dat.h5``).
+
+solver_session.tui.file.write_data("turbo_workflow.dat.h5")
+
+
+###############################################################################
 # Close Fluent
 # ~~~~~~~~~~~~
 # Close Fluent.
