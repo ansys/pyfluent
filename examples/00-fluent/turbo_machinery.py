@@ -61,7 +61,7 @@ inlet_guide_vane_file, rotor_file, stator_file = [
 # four processors.
 
 solver_session = pyfluent.launch_fluent(
-    precision="double", processor_count=4, mode="solver"
+    precision="double", processor_count=4, mode="solver", cwd=pyfluent.EXAMPLES_PATH
 )
 
 ###############################################################################
