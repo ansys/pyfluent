@@ -27,10 +27,11 @@ def test_1364(new_solver_session):
         }
     )
 
-    with pytest.raises(AttributeError) as e:
-        solver.solution.report_definitions.volume["xxx"].zone_names.allowed_values()
-    assert e.value.args[0] == "'zone_names' object has no attribute 'allowed_values'"
+    assert solver.solution.report_definitions.volume[
+        "xxx"
+    ].zone_names.allowed_values() == ["fluid"]
 
-    with pytest.raises(AttributeError) as e:
+    assert (
         solver.solution.report_definitions.volume["xxx"].expr_list.allowed_values()
-    assert e.value.args[0] == "'expr_list' object has no attribute 'allowed_values'"
+        == None
+    )
