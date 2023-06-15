@@ -220,7 +220,7 @@ class SettingsService:
         ret = {}
         ret["type"] = info.type
         if info.has_allowed_values:
-            ret["has_allowed_values"] = info.has_allowed_values
+            ret["has-allowed-values"] = info.has_allowed_values
         if info.children:
             ret["children"] = {
                 child.name: self._extract_static_info(child.value)
