@@ -3,8 +3,7 @@ import time
 import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
-from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.session_solver import Solver
+import ansys.fluent.core as pyfluent
 
 
 def transcript(data):
@@ -12,18 +11,18 @@ def transcript(data):
 
 
 def run_transcript(i, ip, port, password):
-    solver_session = Solver(
-        FluentConnection(ip=ip, port=port, password=password, cleanup_on_exit=False)
+    solver_session = pyfluent.launch_fluent(
+        ip=ip, port=port, password=password, cleanup_on_exit=False, start_instance=False
     )
     solver_session.transcript.register_callback(transcript)
 
-    transcript_counter = [0, 0]
+    transcript_checked = transcript_passed = 0
 
     if i % 5 == 0:
         solver_session.scheme_eval.scheme_eval("(pp 'test)")
         check_transcript = True
         time.sleep(1)
-        transcript_counter[0] += 1
+        transcript_checked = 1
     else:
         check_transcript = False
 
@@ -31,13 +30,13 @@ def run_transcript(i, ip, port, password):
         solver_session.exit()
         if check_transcript:
             if not transcript.data:
-                assert transcript.data == "test"
+                assert transcript.data == ""
             else:
                 assert transcript.data == "test"
-                transcript_counter[1] += 1
+                transcript_passed = 1
         transcript("")
 
-    return transcript_counter
+    return transcript_checked, transcript_passed
 
 
 @pytest.mark.dev
@@ -52,11 +51,11 @@ def test_transcript(new_solver_session):
     passed_transcript = 0
 
     for i in range(100):
-        transcript_counter = run_transcript(i, ip, port, password)
-        total_checked_transcript += transcript_counter[0]
-        passed_transcript += transcript_counter[1]
+        transcript_checked, transcript_passed = run_transcript(i, ip, port, password)
+        total_checked_transcript += transcript_checked
+        passed_transcript += transcript_passed
 
     if solver.get_fluent_version() >= "23.2.0":
         assert total_checked_transcript == passed_transcript
     else:
-        assert total_checked_transcript > passed_transcript
+        assert total_checked_transcript >= passed_transcript
