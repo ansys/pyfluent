@@ -13,7 +13,6 @@ import subprocess
 import tempfile
 import time
 from typing import Any, Dict, Union
-import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
@@ -28,7 +27,7 @@ import ansys.platform.instancemanagement as pypim
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
-logger = logging.getLogger("ansys.fluent.launcher")
+logger = logging.getLogger("pyfluent.launcher")
 
 
 def _is_windows():
@@ -230,7 +229,7 @@ def launch_remote_fluent(
     When calling this method, you must ensure that you are in an
     environment where PyPIM is configured. You can use the :func:
     `pypim.is_configured <ansys.platform.instancemanagement.is_configured>`
-    method to verify that PYPIM is configured.
+    method to verify that PyPIM is configured.
 
     Parameters
     ----------
@@ -351,7 +350,7 @@ def _connect_to_running_server(argvals, server_info_filepath: str):
     port = argvals.get("port", None)
     password = argvals.get("password", None)
     if ip and port:
-        warnings.warn(
+        logger.debug(
             "The server-info file was not parsed because ip and port were provided explicitly."
         )
     elif server_info_filepath:
@@ -691,6 +690,7 @@ def launch_fluent(
                     cleanup_on_exit=cleanup_on_exit,
                     start_transcript=start_transcript,
                     launcher_args=argvals,
+                    inside_container=True,
                 )
             )
         else:

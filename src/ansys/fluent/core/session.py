@@ -19,7 +19,7 @@ try:
 except Exception:
     root = Any
 
-data_model_logger = logging.getLogger("ansys.fluent.services.datamodel")
+datamodel_logger = logging.getLogger("pyfluent.datamodel")
 
 
 def _parse_server_info_file(filename: str):
@@ -39,7 +39,7 @@ def _get_datamodel_attributes(session, attribute: str):
         )
         return preferences_module.Root(session._se_service, attribute, [])
     except (ImportError, ModuleNotFoundError):
-        data_model_logger.warning(_CODEGEN_MSG_DATAMODEL)
+        datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
 
 
 def _get_preferences(session):
@@ -80,7 +80,6 @@ class BaseSession:
 
     def build_from_fluent_connection(self, fluent_connection: FluentConnection):
         self.fluent_connection = fluent_connection
-        self.scheme_eval = self.fluent_connection.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
         self._uploader = None
         self._preferences = None
@@ -135,10 +134,10 @@ class BaseSession:
         )
 
     def __enter__(self):
-        """Close the Fluent connection and exit Fluent."""
         return self
 
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any):
+        """Close the Fluent connection and exit Fluent."""
         self.fluent_connection.exit()
 
     def __getattr__(self, attr):

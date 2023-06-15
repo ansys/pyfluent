@@ -12,7 +12,7 @@ import ansys.platform.instancemanagement as pypim
 
 def test_launch_remote_instance(monkeypatch, new_solver_session):
     fluent = new_solver_session
-    # Create a mock pypim pretenting it is configured and returning a channel to an already running Fluent
+    # Create a mock pypim pretending it is configured and returning a channel to an already running Fluent
     mock_instance = pypim.Instance(
         definition_name="definitions/fake-fluent",
         name="instances/fake-fluent",
