@@ -5,6 +5,12 @@ on:
     - cron:  '0 4 * * *'
   workflow_dispatch:
 
+env:
+  ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+  PYFLUENT_START_INSTANCE: 0
+  PYFLUENT_TIMEOUT_FORCE_EXIT: 5
+  PYFLUENT_LAUNCH_CONTAINER: 1
+
 jobs:
   test:
     name: Unit Testing
@@ -34,8 +40,8 @@ jobs:
 
       - name: Retrieve PyFluent version
         run: |
-          echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(__version__)")" >> $GITHUB_OUTPUT
-          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(__version__)")"
+          echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
+          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
         id: version
 
       - name: Login to GitHub Container Registry
@@ -53,9 +59,6 @@ jobs:
       - name: Run 22.2 API codegen
         run: make api-codegen
         env:
-          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-          PYFLUENT_START_INSTANCE: 0
-          PYFLUENT_LAUNCH_CONTAINER: 1
           FLUENT_IMAGE_TAG: v22.2.0
 
       - name: Print 22.2 Fluent version info
@@ -71,9 +74,6 @@ jobs:
       - name: Run 23.1 API codegen
         run: make api-codegen
         env:
-          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-          PYFLUENT_START_INSTANCE: 0
-          PYFLUENT_LAUNCH_CONTAINER: 1
           FLUENT_IMAGE_TAG: v23.1.0
 
       - name: Print 23.1 Fluent version info
@@ -89,9 +89,6 @@ jobs:
       - name: Run 23.2 API codegen
         run: make api-codegen
         env:
-          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-          PYFLUENT_START_INSTANCE: 0
-          PYFLUENT_LAUNCH_CONTAINER: 1
           FLUENT_IMAGE_TAG: v23.2.0
 
       - name: Print 23.2 Fluent version info
@@ -99,38 +96,48 @@ jobs:
           cat src/ansys/fluent/core/fluent_version_232.py
           python -c "from ansys.fluent.core.solver.settings_231 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
+      - name: Pull 24.1 Fluent docker image
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: v24.1.0
+
+      - name: Run 24.1 API codegen
+        run: make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: v24.1.0
+
+      - name: Print 24.1 Fluent version info
+        run: |
+          cat src/ansys/fluent/core/fluent_version_241.py
+          python -c "from ansys.fluent.core.solver.settings_241 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+
       - name: Install again after codegen
         run: |
           rm -rf dist
           make install > /dev/null
 
-      - name: 22.2 Unit Testing
-        run: make unittest-all-222
-        continue-on-error: true
+      - name: 24.1 Unit Testing
+        run: make unittest-all-241
         env:
-          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-          PYFLUENT_START_INSTANCE: 0
-          FLUENT_IMAGE_TAG: v22.2.0
+          FLUENT_IMAGE_TAG: v24.1.0
+
+      - name: 23.2 Unit Testing
+        run: make unittest-all-232
+        env:
+          FLUENT_IMAGE_TAG: v23.2.0
 
       - name: 23.1 Unit Testing
         run: make unittest-all-231
-        continue-on-error: true
         env:
-          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-          PYFLUENT_START_INSTANCE: 0
           FLUENT_IMAGE_TAG: v23.1.0
 
       - name: Upload 23.1 Coverage Artifacts
         uses: actions/upload-artifact@v3
-        continue-on-error: true
         with:
           name: coverage_report
           path: ./htmlcov
 
-      - name: 23.2 Unit Testing
-        run: make unittest-all-232
-        continue-on-error: true
+      - name: 22.2 Unit Testing
+        run: make unittest-all-222
         env:
-          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-          PYFLUENT_START_INSTANCE: 0
-          FLUENT_IMAGE_TAG: v23.2.0
+          FLUENT_IMAGE_TAG: v22.2.0

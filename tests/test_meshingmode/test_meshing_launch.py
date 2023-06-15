@@ -8,6 +8,7 @@ import ansys.fluent.core as pyfluent
 
 @pytest.mark.mesh
 @pytest.mark.fluent_231
+@pytest.mark.codegen_required
 def test_launch_pure_meshing(load_mixing_elbow_pure_meshing):
     pure_meshing_session = load_mixing_elbow_pure_meshing
     assert pure_meshing_session.health_check_service.is_serving

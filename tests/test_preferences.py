@@ -1,7 +1,9 @@
+import pytest
 from util.meshing_workflow import new_mesh_session  # noqa: F401
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 
+@pytest.mark.codegen_required
 def test_solver_preferences(new_solver_session):
     solver = new_solver_session
 
@@ -34,6 +36,7 @@ def test_solver_preferences(new_solver_session):
     solver.exit()
 
 
+@pytest.mark.codegen_required
 def test_meshing_preferences(new_mesh_session):
     meshing = new_mesh_session
 

@@ -59,7 +59,7 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    url="https://github.com/pyansys/pyfluent",
-    python_requires=">=3.7",
+    url="https://github.com/ansys/pyfluent",
+    python_requires=">=3.8",
     install_requires=install_requires,
 )

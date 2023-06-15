@@ -42,6 +42,11 @@ an area-average of absolute pressure over the velocity inlet.
 
 Similarly one can use the other functions available currently with PyFluent.
 
+.. note::
+   The fluxes are evaluated on boundaries and face zones. So, for 'volume', 'mass_flow',
+   'mass_average' and 'mass_integrated_average' the chosen location cannot be a
+   user-defined surface.
+
 Usage of context
 ----------------
 
@@ -103,6 +108,9 @@ Compute the total volume of the specified locations.
 .. code-block:: python
 
   >>> reduction.volume(locations)
+
+.. note::
+   Only boundaries and face zones are allowed locations. It cannot be a user-defined surface.
 
 Volume average
 ~~~~~~~~~~~~~~
@@ -193,6 +201,9 @@ Compute the mass-weighted average value of the specified expression over the spe
 
   >>> reduction.mass_average(expression, locations)
 
+.. note::
+   Only boundaries and face zones are allowed locations. It cannot be a user-defined surface.
+
 Mass integrated average
 ~~~~~~~~~~~~~~~~~~~~~~~
 Compute the total mass-weighted value of the specified expression over the specified locations.
@@ -201,6 +212,9 @@ Compute the total mass-weighted value of the specified expression over the speci
 
   >>> reduction.mass_integrated_average(expression, locations)
 
+.. note::
+   Only boundaries and face zones are allowed locations. It cannot be a user-defined surface.
+
 Mass flow
 ~~~~~~~~~
 Compute the total mass flow rate of the specified locations.
@@ -208,6 +222,9 @@ Compute the total mass flow rate of the specified locations.
 .. code-block:: python
 
   >>> reduction.mass_flow(locations)
+
+.. note::
+   Only boundaries and face zones are allowed locations. It cannot be a user-defined surface.
 
 Mass flow average
 ~~~~~~~~~~~~~~~~~

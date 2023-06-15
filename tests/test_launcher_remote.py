@@ -12,7 +12,7 @@ import ansys.platform.instancemanagement as pypim
 
 def test_launch_remote_instance(monkeypatch, new_solver_session):
     fluent = new_solver_session
-    # Create a mock pypim pretenting it is configured and returning a channel to an already running Fluent
+    # Create a mock pypim pretending it is configured and returning a channel to an already running Fluent
     mock_instance = pypim.Instance(
         definition_name="definitions/fake-fluent",
         name="instances/fake-fluent",
@@ -52,13 +52,8 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
     # Assert: PyFluent went through the pypim workflow
     assert mock_is_configured.called
     assert mock_connect.called
-    if os.getenv("FLUENT_IMAGE_TAG"):
-        product_version = docker_image_version.get_version_for_filepath()
-    else:
-        product_version = "".join(launcher.get_ansys_version().split("."))[:-1]
-    mock_client.create_instance.assert_called_with(
-        "fluent-3ddp", product_version=product_version
-    )
+
+    mock_client.create_instance.assert_called_with("fluent-3ddp", product_version=None)
     assert mock_instance.wait_for_ready.called
     mock_instance.build_grpc_channel.assert_called_with()
 

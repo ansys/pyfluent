@@ -21,7 +21,6 @@ class MonitorsService(StreamingService):
         self._metadata = metadata
         super().__init__(
             stub=self._stub,
-            request=MonitorModule.StreamingRequest(),
             metadata=self._metadata,
         )
 

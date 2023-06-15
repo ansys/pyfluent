@@ -201,6 +201,7 @@ def test_update_cache_internal_names_as_keys(
 @pytest.mark.dev
 @pytest.mark.fluent_231
 @pytest.mark.fluent_232
+@pytest.mark.codegen_required
 def test_get_cached_values_in_command_arguments(new_mesh_session):
     new_mesh_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     new_mesh_session.workflow.TaskObject["Import Geometry"].Arguments = dict(

@@ -4,8 +4,8 @@
 Installation
 ============
 
-The ``ansys-fluent-core`` package supports Python 3.7 through
-Python 3.10 on Windows and Linux.
+The ``ansys-fluent-core`` package supports Python 3.8 through
+Python 3.11 on Windows and Linux.
 
 .. note::
    This page provides information for quickly installing and launching
@@ -28,7 +28,7 @@ latest ``ansys-fluent-core`` package with this code:
 
 .. code:: console
 
-   git clone https://github.com/pyansys/pyfluent.git
+   git clone https://github.com/ansys/pyfluent.git
    cd pyfluent
    pip install pip -U
    pip install -e .

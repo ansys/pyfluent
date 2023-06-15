@@ -29,6 +29,11 @@ unittest-dev-231:
 	@pip install -r requirements/requirements_tests.txt
 	@python -m pytest -v -m "dev and fluent_231" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html
 
+unittest-dev-241:
+	@echo "Running unittests"
+	@pip install -r requirements/requirements_tests.txt
+	@python -m pytest -v -m "dev and fluent_241" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html
+
 unittest-dev-232:
 	@echo "Running unittests"
 	@pip install -r requirements/requirements_tests.txt
@@ -40,17 +45,47 @@ unittest-all-222:
 	@pip install -r requirements/requirements_tests.txt
 	@python -m pytest -v -m "fluent_222" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html --durations=0
 
+unittest-all-222-no-codegen:
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
+	@echo "Running all unittests"
+	@pip install -r requirements/requirements_tests.txt
+	@python -m pytest -v -m "fluent_222 and not codegen_required" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html --durations=0
+
 unittest-all-231:
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@echo "Running all unittests"
 	@pip install -r requirements/requirements_tests.txt
 	@python -m pytest -v -m "fluent_231" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html --durations=0
 
+unittest-all-231-no-codegen:
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
+	@echo "Running all unittests"
+	@pip install -r requirements/requirements_tests.txt
+	@python -m pytest -v -m "fluent_231 and not codegen_required" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html --durations=0
+
+unittest-all-241:
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
+	@echo "Running all unittests"
+	@pip install -r requirements/requirements_tests.txt
+	@python -m pytest -v -m "fluent_241" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html --durations=0
+
+unittest-all-241-no-codegen:
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
+	@echo "Running all unittests"
+	@pip install -r requirements/requirements_tests.txt
+	@python -m pytest -v -m "fluent_241 and not codegen_required" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html --durations=0
+
 unittest-all-232:
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@echo "Running all unittests"
 	@pip install -r requirements/requirements_tests.txt
 	@python -m pytest -v -m "fluent_232" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html --durations=0
+
+unittest-all-232-no-codegen:
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
+	@echo "Running all unittests"
+	@pip install -r requirements/requirements_tests.txt
+	@python -m pytest -v -m "fluent_232 and not codegen_required" --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html --durations=0
 
 api-codegen:
 	@echo "Running API codegen"

@@ -4,11 +4,9 @@
 
 import functools
 
-from ansys.api.fluent.v0 import datamodel_se_pb2
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_base_meshing import BaseMeshing
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
@@ -38,21 +36,15 @@ class PureMeshing(BaseSession):
         self.datamodel_streams = {}
         if pyfluent.DATAMODEL_USE_STATE_CACHE:
             for rules in self.__class__.rules:
-                request = datamodel_se_pb2.DataModelRequest()
-                request.rules = rules
-                if pyfluent.DATAMODEL_USE_NOCOMMANDS_DIFF_STATE:
-                    request.diffstate = datamodel_se_pb2.DIFFSTATE_NOCOMMANDS
-                streaming = StreamingService(
-                    stub=datamodel_service_se._stub,
-                    request=request,
-                    metadata=datamodel_service_se._metadata,
-                )
-                stream = DatamodelStream(streaming)
+                stream = DatamodelStream(datamodel_service_se)
                 stream.register_callback(
                     functools.partial(DataModelCache.update_cache, rules=rules)
                 )
                 self.datamodel_streams[rules] = stream
-                stream.start()
+                stream.start(
+                    rules=rules,
+                    no_commands_diff_state=pyfluent.DATAMODEL_USE_NOCOMMANDS_DIFF_STATE,
+                )
 
     @property
     def tui(self):

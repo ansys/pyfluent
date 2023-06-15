@@ -38,24 +38,30 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
     image_tag = os.getenv("FLUENT_IMAGE_TAG", "v23.1.0")
     test_name = os.getenv("PYFLUENT_TEST_NAME", "none")
 
+    print("")
+
     try:
         subprocess.run(
             [
                 "docker",
                 "run",
-                "-d",
+                "--detach",
                 "--rm",
-                "-p",
+                "--publish",
                 f"{port}:{port}",
-                "-v",
+                "--volume",
                 f"{mounted_from}:{mounted_to}",
-                "-e",
+                "--env",
                 f"ANSYSLMD_LICENSE_FILE={license_server}",
-                "-e",
+                "--env",
                 f"REMOTING_PORTS={port}/portspan=2",
-                "-l",
+                "--label",
                 f"test_name={test_name}",
-                f"ghcr.io/pyansys/pyfluent:{image_tag}",
+                "--workdir",
+                f"{mounted_to}",
+                # "--shm-size",  # controls the amount of memory allocated, useful for debugging
+                # "512MiB",
+                f"ghcr.io/ansys/pyfluent:{image_tag}",
                 "-gu",
                 f"-sifile={container_sifile}",
             ]

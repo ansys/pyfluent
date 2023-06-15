@@ -36,7 +36,7 @@ from ansys.fluent.core.services.datamodel_tui import (
 )
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 
-logger = logging.getLogger("ansys.fluent.tui")
+logger = logging.getLogger("pyfluent.tui")
 
 _THIS_DIRNAME = os.path.dirname(__file__)
 
@@ -82,7 +82,7 @@ _XML_HELPSTRINGS = {}
 def _copy_tui_help_xml_file(version: str):
     if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
         image_tag = os.getenv("FLUENT_IMAGE_TAG", "v23.1.0")
-        image_name = f"ghcr.io/pyansys/pyfluent:{image_tag}"
+        image_name = f"ghcr.io/ansys/pyfluent:{image_tag}"
         container_name = uuid.uuid4().hex
         is_linux = platform.system() == "Linux"
         subprocess.run(

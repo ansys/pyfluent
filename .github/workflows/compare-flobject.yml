@@ -27,7 +27,7 @@ jobs:
       - name: Pull Fluent docker image
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: v23.2.0
+          FLUENT_IMAGE_TAG: v24.1.0
 
       - name: Compare flobject
         run: make compare-flobject

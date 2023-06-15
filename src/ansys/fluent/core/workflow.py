@@ -3,7 +3,7 @@ from typing import Iterator, Tuple
 
 from ansys.fluent.core.services.datamodel_se import PyCallableStateObject
 
-datamodel_logger = logging.getLogger("ansys.fluent.services.datamodel")
+datamodel_logger = logging.getLogger("pyfluent.datamodel")
 
 
 def _new_command_for_task(task, session):

@@ -1,17 +1,17 @@
 from ansys.fluent.core.datamodel_231.preferences import Root as preferences_root
 from ansys.fluent.core.datamodel_231.solverworkflow import Root as solverworkflow_root
 from ansys.fluent.core.datamodel_231.workflow import Root as workflow_root
-from ansys.fluent.core.solver.settings_231 import (
+from ansys.fluent.core.solver.settings_231.current_parametric_study import (
     current_parametric_study,
-    file,
-    mesh,
-    parallel,
-    parametric_studies,
-    report,
-    results,
-    setup,
-    solution,
 )
+from ansys.fluent.core.solver.settings_231.file import file
+from ansys.fluent.core.solver.settings_231.mesh import mesh
+from ansys.fluent.core.solver.settings_231.parallel import parallel
+from ansys.fluent.core.solver.settings_231.parametric_studies import parametric_studies
+from ansys.fluent.core.solver.settings_231.report import report
+from ansys.fluent.core.solver.settings_231.results import results
+from ansys.fluent.core.solver.settings_231.setup import setup
+from ansys.fluent.core.solver.settings_231.solution import solution
 from ansys.fluent.core.solver.tui_231 import main_menu
 
 class Solver:

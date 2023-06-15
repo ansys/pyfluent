@@ -16,6 +16,7 @@ import ansys.fluent.core as pyfluent
 
 
 @pytest.mark.nightly
+@pytest.mark.codegen_required
 def test_mixing_elbow_meshing_workflow(
     shared_watertight_workflow_session,
     mixing_elbow_geometry,
@@ -121,6 +122,7 @@ def test_mixing_elbow_meshing_workflow(
         meshing_session.tui.mesh.check_mesh()
 
 
+@pytest.mark.codegen_required
 def test_meshing_workflow_raises_exception_on_invalid_task_name(
     shared_watertight_workflow,
 ):
@@ -185,6 +187,7 @@ def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args_2(
 
 @pytest.mark.dev
 @pytest.mark.fluent_231
+@pytest.mark.codegen_required
 def test_command_args_datamodel_se(new_mesh_session):
     session_new = new_mesh_session
     w = session_new.workflow
@@ -197,6 +200,7 @@ def test_command_args_datamodel_se(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_231
+@pytest.mark.codegen_required
 def test_command_args_including_task_object_datamodel_se(new_mesh_session):
     session_new = new_mesh_session
     w = session_new.workflow
@@ -210,6 +214,7 @@ def test_command_args_including_task_object_datamodel_se(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_231
+@pytest.mark.codegen_required
 def test_meshing_object_commands(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH):
     session_new = new_mesh_session
     file_path = os.path.join(tmp_path, "sample_py_journal.txt")
@@ -230,6 +235,7 @@ def test_meshing_object_commands(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PA
 
 @pytest.mark.dev
 @pytest.mark.fluent_231
+@pytest.mark.codegen_required
 def test_attribute_query_list_types(new_mesh_session):
     session_new = new_mesh_session
     w = session_new.workflow
@@ -242,6 +248,7 @@ def test_attribute_query_list_types(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_231
+@pytest.mark.codegen_required
 def test_accessors_for_argument_sub_items(new_mesh_session):
     session_new = new_mesh_session
 
@@ -312,6 +319,7 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_231
+@pytest.mark.codegen_required
 def test_read_only_behaviour_of_command_arguments(new_mesh_session):
     session_new = new_mesh_session
     w = session_new.workflow
@@ -343,6 +351,7 @@ def test_read_only_behaviour_of_command_arguments(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_231
+@pytest.mark.codegen_required
 def test_sample_use_of_command_arguments(new_mesh_session):
     w = new_mesh_session.workflow
 
@@ -362,6 +371,7 @@ def test_sample_use_of_command_arguments(new_mesh_session):
     assert w.task("Import Geometry").CommandArguments.LengthUnit() == "in"
 
 
+@pytest.mark.codegen_required
 def test_dummy_journal_data_model_methods(new_mesh_session):
     session_new = new_mesh_session
 
@@ -605,6 +615,7 @@ def test_meshing_workflow_structure(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_231
+@pytest.mark.codegen_required
 def test_iterate_meshing_workflow_task_container(new_mesh_session):
     workflow = new_mesh_session.workflow
     workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
