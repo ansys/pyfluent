@@ -20,6 +20,7 @@ from ansys.fluent.core.services.datamodel_tui import (
 from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.services.field_data import FieldData, FieldDataService, FieldInfo
 from ansys.fluent.core.services.monitor import MonitorsService
+from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.session_shared import (  # noqa: F401
     _CODEGEN_MSG_DATAMODEL,
     _CODEGEN_MSG_TUI,
@@ -156,6 +157,10 @@ class BaseSession:
         )
         self.field_data_streaming = FieldDataStreaming(
             self._id, self._field_data_service
+        )
+
+        self.settings_service = self.fluent_connection.create_service(
+            SettingsService, add_arg=self.scheme_eval
         )
 
         self._finalizer = weakref.finalize(
