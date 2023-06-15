@@ -10,7 +10,6 @@ import grpc
 
 from ansys.fluent.core.services.health_check import HealthCheckService
 from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
-from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
 
 
 def _get_max_c_int_limit() -> int:
@@ -154,26 +153,13 @@ class FluentConnection:
             FluentConnection._monitor_thread = MonitorThread()
             FluentConnection._monitor_thread.start()
 
-        self.transcript = Transcript(self._channel, self._metadata)
-
+        # Move this service later.
+        # Currently, required by launcher to connect to a running session.
         self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
         self.scheme_eval = SchemeEval(self._scheme_eval_service)
 
-        # self._field_data_service = FieldDataService(self._channel, self._metadata)
-        # self.field_info = FieldInfo(self._field_data_service)
-        # self.field_data = FieldData(
-        #     self._field_data_service, self.field_info, _IsDataValid(self.scheme_eval)
-        # )
-        #
-        # self.field_data_streaming = FieldDataStreaming(
-        #     self._id, self._field_data_service
-        # )
-
         self._cleanup_on_exit = cleanup_on_exit
-
-        if start_transcript:
-            self.transcript.start()
-
+        self.start_transcript = start_transcript
         self._remote_instance = remote_instance
         self.launcher_args = launcher_args
 

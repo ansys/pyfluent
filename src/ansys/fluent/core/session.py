@@ -31,6 +31,7 @@ from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
 from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
+from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
 
 from .rpvars import RPVars
 
@@ -118,6 +119,10 @@ class BaseSession:
         self._solverworkflow = None
         self.journal = Journal(self.scheme_eval)
 
+        self.transcript = self.fluent_connection.create_service(Transcript)
+        if fluent_connection.start_transcript:
+            self.transcript.start()
+
         self.datamodel_service_tui = self.fluent_connection.create_service(
             DatamodelService_TUI
         )
@@ -171,7 +176,7 @@ class BaseSession:
             self.fluent_connection.scheme_eval,
             self.datamodel_service_se,
             self.datamodel_events,
-            self.fluent_connection.transcript,
+            self.transcript,
             self.events_manager,
             self.monitors_manager,
             self.fluent_connection._remote_instance,
