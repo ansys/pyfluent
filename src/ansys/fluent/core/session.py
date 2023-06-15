@@ -111,7 +111,6 @@ class BaseSession:
 
     def build_from_fluent_connection(self, fluent_connection: FluentConnection):
         self.fluent_connection = fluent_connection
-        self.scheme_eval = self.fluent_connection.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
         self._uploader = None
         self._preferences = None
@@ -241,10 +240,10 @@ class BaseSession:
         return self.scheme_eval.version
 
     def __enter__(self):
-        """Close the Fluent connection and exit Fluent."""
         return self
 
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any):
+        """Close the Fluent connection and exit Fluent."""
         self.fluent_connection.exit()
 
     def __getattr__(self, attr):

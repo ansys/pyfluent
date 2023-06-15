@@ -229,7 +229,7 @@ def launch_remote_fluent(
     When calling this method, you must ensure that you are in an
     environment where PyPIM is configured. You can use the :func:
     `pypim.is_configured <ansys.platform.instancemanagement.is_configured>`
-    method to verify that PYPIM is configured.
+    method to verify that PyPIM is configured.
 
     Parameters
     ----------
@@ -692,6 +692,7 @@ def launch_fluent(
                     cleanup_on_exit=cleanup_on_exit,
                     start_transcript=start_transcript,
                     launcher_args=argvals,
+                    inside_container=True,
                 )
             )
         else:

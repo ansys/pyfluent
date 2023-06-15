@@ -36,9 +36,14 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx_autodoc_typehints",
     "sphinx_copybutton",
-    "sphinx_gallery.gen_gallery",
     "sphinxemoji.sphinxemoji",
 ]
+
+skip_examples = int(os.getenv("PYFLUENT_SKIP_EXAMPLES_DOC", 0))
+if skip_examples:
+    pass
+else:
+    extensions.append("sphinx_gallery.gen_gallery")
 
 # Intersphinx mapping
 intersphinx_mapping = {
