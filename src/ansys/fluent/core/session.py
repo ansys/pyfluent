@@ -170,10 +170,10 @@ class BaseSession:
             self.datamodel_service_se.unsubscribe_all_events
         )
         for obj in (
-            self.datamodel_events, 
-            self.transcript, 
+            self.datamodel_events,
+            self.transcript,
             self.events_manager,
-            self.monitors_manager
+            self.monitors_manager,
         ):
             self.fluent_connection.register_finalizer_cbs(obj.stop)
 
