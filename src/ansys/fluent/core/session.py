@@ -4,7 +4,7 @@ import importlib
 import json
 import logging
 import os
-from typing import Any, Dict
+from typing import Any
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.session_shared import (  # noqa: F401
@@ -87,11 +87,7 @@ class BaseSession:
 
     @classmethod
     def create_from_server_info_file(
-        cls,
-        server_info_filepath: str,
-        cleanup_on_exit: bool = True,
-        start_transcript: bool = True,
-        launcher_args: Dict[str, Any] = None,
+        cls, server_info_filepath: str, **connection_kwargs
     ):
         """Create a Session instance from server-info file.
 
@@ -99,15 +95,11 @@ class BaseSession:
         ----------
         server_info_filepath : str
             Path to server-info file written out by Fluent server
-        cleanup_on_exit : bool, optional
-            When True, the connected Fluent session will be shut down
-            when PyFluent is exited or exit() is called on the session
-            instance, by default True.
-        start_transcript : bool, optional
-            The Fluent transcript is started in the client only when
-            start_transcript is True. It can be started and stopped
-            subsequently via method calls on the Session object.
-            Defaults to true.
+        **connection_kwargs : dict, optional
+            Additional keyword arguments may be specified, and they will be passed to the `FluentConnection`
+            being initialized. For example, ``cleanup_on_exit = True``, or ``start_transcript = True``.
+            See :func:`FluentConnection initialization <ansys.fluent.core.fluent_connection.FluentConnection.__init__>`
+            for more details and possible arguments.
 
         Returns
         -------
@@ -117,12 +109,7 @@ class BaseSession:
         ip, port, password = _parse_server_info_file(server_info_filepath)
         session = cls(
             fluent_connection=FluentConnection(
-                ip=ip,
-                port=port,
-                password=password,
-                cleanup_on_exit=cleanup_on_exit,
-                start_transcript=start_transcript,
-                launcher_args=launcher_args,
+                ip=ip, port=port, password=password, **connection_kwargs
             )
         )
         return session

@@ -349,7 +349,7 @@ def generate():
         len(_XML_HELPSTRINGS),
     )
     for k, _ in _XML_HELPSTRINGS.items():
-        logger.warning(k)
+        logger.info(k)
 
 
 if __name__ == "__main__":

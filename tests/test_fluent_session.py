@@ -11,6 +11,7 @@ from util.solver_workflow import (  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
+from ansys.fluent.core.fluent_connection import get_container_ids
 
 
 def _read_case(session):
@@ -54,14 +55,6 @@ def test_session_starts_no_transcript_if_disabled(
     assert not print_transcript.called
 
 
-def get_container_ids_set():
-    proc = subprocess.Popen(["docker", "ps", "-q"], stdout=subprocess.PIPE)
-    output_bytes = proc.stdout.read()
-    output_str = output_bytes.decode()
-    ids = output_str.strip().split()
-    return set(ids)
-
-
 def test_server_exits_when_session_goes_out_of_scope(with_launching_container) -> None:
     def f():
         session = pyfluent.launch_fluent()
@@ -73,7 +66,7 @@ def test_server_exits_when_session_goes_out_of_scope(with_launching_container) -
     fluent_host_pid, cortex_host, inside_container = f()
     time.sleep(5)
     if inside_container:
-        assert cortex_host not in get_container_ids_set()
+        assert cortex_host not in get_container_ids()
     else:
         assert not psutil.pid_exists(fluent_host_pid)
 
@@ -92,7 +85,7 @@ def test_server_does_not_exit_when_session_goes_out_of_scope(
     fluent_host_pid, cortex_host, inside_container, cortex_pwd = f()
     time.sleep(5)
     if inside_container:
-        assert cortex_host in get_container_ids_set()
+        assert cortex_host in get_container_ids()
         subprocess.Popen(["docker", "stop", cortex_host])  # cortex_host = container_id
     else:
         from pathlib import Path
@@ -132,6 +125,7 @@ def test_fluent_connection_properties(
     assert isinstance(session.connection_properties.cortex_pid, int)
     assert isinstance(session.connection_properties.cortex_host, str)
     assert isinstance(session.connection_properties.inside_container, bool)
+    assert isinstance(session.connection_properties.fluent_host_pid, int)
 
 
 def test_fluent_freeze_kill(
@@ -151,11 +145,11 @@ def test_fluent_freeze_kill(
     tmp_thread.start()
     tmp_thread.join(5)
     if tmp_thread.is_alive():
-        session.exit(timeout=0, timeout_force=True)
+        session.exit(timeout=1, timeout_force=True)
         tmp_thread.join()
     else:
         raise Exception("Test should have temporarily frozen Fluent, but did not.")
 
     time.sleep(1)
 
-    assert session.connection_properties.cortex_host not in get_container_ids_set()
+    assert session.connection_properties.cortex_host not in get_container_ids()

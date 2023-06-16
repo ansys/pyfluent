@@ -16,6 +16,7 @@ from typing import Any, Dict, Union
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
+import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.session_meshing import Meshing
@@ -344,8 +345,10 @@ def _await_fluent_launch(
         )
 
 
-def _connect_to_running_server(argvals, server_info_filepath: str):
-    """Connect to an already running session."""
+def _get_server_info(server_info_filepath: str, argvals: dict = None):
+    """Get server connection information of an already running session."""
+    if argvals is None:
+        argvals = {}
     ip = argvals.get("ip", None)
     port = argvals.get("port", None)
     password = argvals.get("password", None)
@@ -462,6 +465,7 @@ def launch_fluent(
     gpu: bool = None,
     cwd: str = None,
     topy: Union[str, list] = None,
+    start_watchdog: bool = None,
     **kwargs,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
     """Launch Fluent locally in server mode or connect to a running Fluent
@@ -559,6 +563,10 @@ def launch_fluent(
     topy: str or list, optional
         The string path to a Fluent journal file, or a list of such paths. Fluent will execute the
         journal(s) and write the equivalent Python journal(s).
+    start_watchdog: bool, optional
+        When show_gui is False, defaults to True, which means an independent watchdog process is run to ensure
+        that any local GUI-less Fluent sessions started by PyFluent are properly closed (or killed if frozen)
+        when the current Python process ends.
 
     Returns
     -------
@@ -584,6 +592,9 @@ def launch_fluent(
 
     del kwargs
     argvals = locals()
+
+    if start_watchdog is None and not show_gui:
+        start_watchdog = True
 
     new_session, meshing_mode, argvals, mode = _get_session_info(argvals, mode)
     _raise_exception_g_gu_in_windows_os(additional_arguments)
@@ -615,7 +626,12 @@ def launch_fluent(
                 cleanup_on_exit=cleanup_on_exit,
                 start_transcript=start_transcript,
                 launcher_args=argvals,
+                inside_container=False,
             )
+            if start_watchdog:
+                logger.debug("Launching Watchdog for local Fluent client...")
+                ip, port, password = _get_server_info(server_info_filepath)
+                watchdog.launch(os.getpid(), port, password, ip)
             if case_filepath:
                 if meshing_mode:
                     session.tui.file.read_case(case_filepath)
@@ -682,7 +698,8 @@ def launch_fluent(
             port, password = start_fluent_container(
                 host_mount_path, container_mount_path, args
             )
-            return new_session(
+
+            session = new_session(
                 fluent_connection=FluentConnection(
                     start_timeout=start_timeout,
                     port=port,
@@ -693,10 +710,14 @@ def launch_fluent(
                     inside_container=True,
                 )
             )
+
+            if start_watchdog:
+                logger.debug("Launching Watchdog for Fluent container...")
+                watchdog.launch(os.getpid(), port, password)
+
+            return session
         else:
-            ip, port, password = _connect_to_running_server(
-                argvals, server_info_filepath
-            )
+            ip, port, password = _get_server_info(server_info_filepath, argvals)
             fluent_connection = FluentConnection(
                 ip=ip,
                 port=port,
