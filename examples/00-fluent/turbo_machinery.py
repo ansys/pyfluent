@@ -747,7 +747,6 @@ solver_session.workflow.TaskObject["Define Turbo Surfaces"].Execute()
 
 solver_session.workflow.TaskObject["Create Report Definitions & Monitors"].Execute()
 
-
 ###############################################################################
 # Initialize flow field
 # ~~~~~~~~~~~~~~~~~~~~~
@@ -755,18 +754,17 @@ solver_session.workflow.TaskObject["Create Report Definitions & Monitors"].Execu
 
 solver_session.tui.solve.initialize.hyb_initialization()
 
-
 ###############################################################################
-# Save case file
-# ~~~~~~~~~~~~~~
-# Save the case file as (``turbo_workflow.cas.h5``).
+# Write case file
+# ~~~~~~~~~~~~~~~
+# Write the case file.
 
 solver_session.tui.file.write_case("turbo_workflow.cas.h5")
 
 ###############################################################################
-# Solve for 100 iterations
+# Solve for 25 iterations
 # ~~~~~~~~~~~~~~~~~~~~~~~~
-# Solve for 100 iterations.
+# Solve for 25 iterations (100 iterations is recommended, however for this example 25 is sufficient).
 
 # - Residuals
 
@@ -800,11 +798,11 @@ solver_session.tui.solve.iterate(25)
 
 
 ###############################################################################
-# Save case and data files
-# ~~~~~~~~~~~~~~~~~~~~~~~~
-# Save the case and data files.
+# Write final case file and data
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Write the final case file and the data.
 
-solver_session.tui.file.write_case_data("turbo_workflow.cas.h5")
+solver_session.tui.file.write_case_data("turbo_workflow1.cas.h5")
 
 
 ###############################################################################
