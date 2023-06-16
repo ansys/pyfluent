@@ -166,7 +166,7 @@ class BaseSession:
             SettingsService, add_arg=self.scheme_eval
         )
 
-        self.fluent_connection.register_finalizer_cbs(
+        self.fluent_connection.register_finalizer_cb(
             self.datamodel_service_se.unsubscribe_all_events
         )
         for obj in (
@@ -175,7 +175,7 @@ class BaseSession:
             self.events_manager,
             self.monitors_manager,
         ):
-            self.fluent_connection.register_finalizer_cbs(obj.stop)
+            self.fluent_connection.register_finalizer_cb(obj.stop)
 
     @property
     def id(self) -> str:

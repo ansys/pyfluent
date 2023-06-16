@@ -344,7 +344,7 @@ class FluentConnection:
         container_id = self.connection_properties.cortex_host
         subprocess.run(["docker", "kill", container_id])
 
-    def register_finalizer_cbs(self, cb):
+    def register_finalizer_cb(self, cb):
         self.finalizer_cbs.append(cb)
 
     def create_service(self, service, add_arg=None):
