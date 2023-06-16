@@ -50,7 +50,9 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
 inlet_guide_vane_file, rotor_file, stator_file = [
-    examples.download_file(CAD_file, "pyfluent/turbo_workflow")
+    examples.download_file(
+        CAD_file, "pyfluent/turbo_workflow", save_path=pyfluent.EXAMPLES_PATH
+    )
     for CAD_file in ["IGV.gtm", "R1.gtm", "S1.gtm"]
 ]
 
@@ -794,15 +796,15 @@ solver_session.tui.file.write_case("turbo_workflow.cas.h5")
 #   :width: 500pt
 #   :align: center
 
-solver_session.tui.solve.iterate(100)
+solver_session.tui.solve.iterate(25)
 
 
 ###############################################################################
-# Save data file
-# ~~~~~~~~~~~~~~
-# Save the data file as (``turbo_workflow.dat.h5``).
+# Save case and data files
+# ~~~~~~~~~~~~~~~~~~~~~~~~
+# Save the case and data files.
 
-solver_session.tui.file.write_data("turbo_workflow.dat.h5")
+solver_session.tui.file.write_case_data("turbo_workflow.cas.h5")
 
 
 ###############################################################################
