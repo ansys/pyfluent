@@ -3,7 +3,8 @@ import time
 import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
-import ansys.fluent.core as pyfluent
+from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.session_solver import Solver
 
 
 def transcript(data):
@@ -11,8 +12,8 @@ def transcript(data):
 
 
 def run_transcript(i, ip, port, password):
-    solver_session = pyfluent.launch_fluent(
-        ip=ip, port=port, password=password, cleanup_on_exit=False, start_instance=False
+    solver_session = Solver(
+        FluentConnection(ip=ip, port=port, password=password, cleanup_on_exit=False)
     )
     solver_session.transcript.register_callback(transcript)
 
