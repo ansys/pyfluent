@@ -111,6 +111,7 @@ class BaseSession:
 
     def build_from_fluent_connection(self, fluent_connection: FluentConnection):
         self.fluent_connection = fluent_connection
+        self.scheme_eval = self.fluent_connection.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
         self._uploader = None
         self._preferences = None
@@ -159,7 +160,7 @@ class BaseSession:
             self._field_data_service, self.field_info, _IsDataValid(self.scheme_eval)
         )
         self.field_data_streaming = FieldDataStreaming(
-            self._id, self._field_data_service
+            self.fluent_connection._id, self._field_data_service
         )
 
         self.settings_service = self.fluent_connection.create_service(
@@ -248,28 +249,6 @@ class BaseSession:
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any):
         """Close the Fluent connection and exit Fluent."""
         self.fluent_connection.exit()
-
-    def __getattr__(self, attr):
-        if attr == "root":
-            raise RuntimeError(
-                "Please use the new structure where the settings objects can be accessed directly."
-                " For example: 'solver.setup' or 'solver.solution'"
-            )
-        if attr == "solver":
-            raise RuntimeError(
-                "'Solver' is the parent object."
-                " Please use the new structure, where: session.solver => solver."
-            )
-        return getattr(self.fluent_connection, attr)
-
-    def __dir__(self):
-        return sorted(
-            set(
-                list(self.__dict__.keys())
-                + dir(type(self))
-                + dir(self.fluent_connection)
-            )
-        )
 
     def upload(self, file_path: str, remote_file_name: str = None):
         """Uploads a file on the server."""
