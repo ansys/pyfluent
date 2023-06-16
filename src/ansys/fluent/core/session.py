@@ -246,6 +246,9 @@ class BaseSession:
     def __enter__(self):
         return self
 
+    def exit(self):
+        self.fluent_connection.exit()
+
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any):
         """Close the Fluent connection and exit Fluent."""
         self.fluent_connection.exit()
