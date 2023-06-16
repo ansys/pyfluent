@@ -169,10 +169,13 @@ class BaseSession:
         self.fluent_connection.register_finalizer_cbs(
             self.datamodel_service_se.unsubscribe_all_events
         )
-        self.fluent_connection.register_finalizer_cbs(self.datamodel_events.stop)
-        self.fluent_connection.register_finalizer_cbs(self.transcript.stop)
-        self.fluent_connection.register_finalizer_cbs(self.events_manager.stop)
-        self.fluent_connection.register_finalizer_cbs(self.monitors_manager.stop)
+        for obj in (
+            self.datamodel_events, 
+            self.transcript, 
+            self.events_manager,
+            self.monitors_manager
+        ):
+            self.fluent_connection.register_finalizer_cbs(obj.stop)
 
     @property
     def id(self) -> str:
