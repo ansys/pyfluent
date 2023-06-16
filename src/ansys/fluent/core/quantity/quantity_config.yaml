@@ -1,0 +1,469 @@
+---
+# Fundamental Units
+# -----------------
+# 
+# kg:                           (Primitive unit string composed of `type`, `factor`, `offset`, and `dimension order`)
+#   type: Mass                  (Type associated with unit string)
+#   factor: 1                   (SI conversion factor)
+#   offset: 0                   (SI conversion offset)
+#   dimension_order: 1          (Order of parent unit string within a Dimensions list)
+
+fundamental_units:
+  kg:
+    type: Mass
+    factor: 1
+    offset: 0
+    dimension_order: 1
+  g:
+    type: Mass
+    factor: 0.001
+    offset: 0
+    dimension_order: 1
+  lb:
+    type: Mass
+    factor: 0.45359237
+    offset: 0
+    dimension_order: 1
+  lbm:
+    type: Mass
+    factor: 0.45359237
+    offset: 0
+    dimension_order: 1
+  slug:
+    type: Mass
+    factor: 14.59390293720637
+    offset: 0
+    dimension_order: 1
+  m:
+    type: Length
+    factor: 1
+    offset: 0
+    dimension_order: 2
+  cm:
+    type: Length
+    factor: 0.01
+    offset: 0
+    dimension_order: 2
+  ft:
+    type: Length
+    factor: 0.30479999999999996
+    offset: 0
+    dimension_order: 2
+  in:
+    type: Length
+    factor: 0.0254
+    offset: 0
+    dimension_order: 2
+  s:
+    type: Time
+    factor: 1
+    offset: 0
+    dimension_order: 3
+  A:
+    type: Current
+    factor: 1
+    offset: 0
+    dimension_order: 8
+  mol:
+    type: Chemical Amount
+    factor: 1
+    offset: 0
+    dimension_order: 6
+  slugmol:
+    type: Chemical Amount
+    factor: 14593.9
+    offset: 0
+    dimension_order: 6
+  cd:
+    type: Light
+    factor: 1
+    offset: 0
+    dimension_order: 7
+  sr:
+    type: Solid Angle
+    factor: 1
+    offset: 0
+    dimension_order: 9
+  radian:
+    type: Angle
+    factor: 1
+    offset: 0
+    dimension_order: 5
+  degree:
+    type: Angle
+    factor: 0.017453292519943295
+    offset: 0
+    dimension_order: 5
+  K:
+    type: Temperature
+    factor: 1
+    offset: 0
+    dimension_order: 4
+  C:
+    type: Temperature
+    factor: 1
+    offset: 273.15
+    dimension_order: 4
+  F:
+    type: Temperature
+    factor: 0.55555555555
+    offset: 459.67
+    dimension_order: 4
+  R:
+    type: Temperature
+    factor: 0.55555555555
+    offset: 0
+    dimension_order: 4
+  delta_K:
+    type: Temperature Difference
+    factor: 1
+    offset: 0
+    dimension_order: 4
+  delta_C:
+    type: Temperature Difference
+    factor: 1
+    offset: 0
+    dimension_order: 4
+  delta_F:
+    type: Temperature Difference
+    factor: 0.55555555555
+    offset: 0
+    dimension_order: 4
+  delta_R:
+    type: Temperature Difference
+    factor: 0.55555555555
+    offset: 0
+    dimension_order: 4
+
+# Derived Units
+# -------------
+# 
+# N:                           (Unit string derived from fundamental units `composition` and a onversion factor `factor`)
+#   composition: kg m s^-2     (Composition of fundamental units and values that the parent unit string are derived from)
+#   factor: 1                  (SI conversion factor from the parent unit string to the derived unit string contained within composition)
+
+derived_units:
+  N:
+    composition: kg m s^-2
+    factor: 1
+  Pa:
+    composition: N m^-2
+    factor: 1
+  W:
+    composition: N m s^-1
+    factor: 1
+  J:
+    composition: N m
+    factor: 1
+  V:
+    composition: A ohm
+    factor: 1
+  farad:
+    composition: N m V^-2
+    factor: 1
+  H:
+    composition: N m A^-2
+    factor: 1
+  S:
+    composition: ohm^-1
+    factor: 1
+  Wb:
+    composition: N m A^-1
+    factor: 1
+  T:
+    composition: Wb m^-2
+    factor: 1
+  dyne:
+    composition: g cm s^-2
+    factor: 1
+  erg:
+    composition: dyne cm
+    factor: 1
+  pdl:
+    composition: lbm ft s^-2
+    factor: 1
+  psi:
+    composition: lbf in^-2
+    factor: 1
+  lbf:
+    composition: slug ft s^-2
+    factor: 1
+  psf:
+    composition: lbf ft^-2
+    factor: 1
+  ohm:
+    composition: kg m^2 s^-3 A^-2
+    factor: 1
+  Hz:
+    composition: s^-1
+    factor: 1
+  l:
+    composition: m^3
+    factor: 0.001
+  gal:
+    composition: m^3
+    factor: 0.0037854117839999993
+  BTU:
+    composition: J
+    factor: 1055.056
+  cal:
+    composition: J
+    factor: 4.184
+  coulomb:
+    composition: A s
+    factor: 1
+
+# Multipliers
+# -----------
+#
+# Multiplier prefix : Multiplier prefix value
+
+multipliers:
+  d: 0.1
+  c: 0.01
+  m: 0.001
+  u: 1.0e-06
+  n: 1.0e-09
+  p: 1.0e-12
+  f: 1.0e-15
+  a: 1.0e-18
+  z: 1.0e-21
+  y: 1.0e-24
+  da: 10
+  h: 100
+  k: 1000
+  M: 1.0e+06
+  G: 1.0e+09
+  T: 1.0e+12
+  P: 1.0e+15
+  E: 1.0e+18
+  Z: 1.0e+21
+  Y: 1.0e+24
+
+# Unit Systems
+# ------------
+#
+# Predefined unit system refix : Unit system units
+
+unit_systems:
+  SI: 
+    - kg 
+    - m
+    - s
+    - K
+    - radian
+    - mol
+    - cd
+    - A
+    - sr
+  CGS:
+    - g
+    - cm
+    - s
+    - K
+    - radian
+    - mol
+    - cd
+    - A
+    - sr
+  BT:
+    - slug
+    - ft
+    - s
+    - R
+    - radian
+    - slugmol
+    - cd
+    - A
+    - sr
+
+# Quantity Map
+# ------------
+#
+# Quantity Name : Quantity unit string
+
+api_quantity_map:
+  Mass: kg
+  Length: m
+  Time: s
+  Temperature: K
+  Current: A
+  SubstanceAmount: mol
+  Light: cd
+  Angle: radian
+  SolidAngle: sr
+  Acceleration: m s^-2
+  Angular Acceleration: radian s^-2
+  Angular Velocity: radian s^-1
+  Area: m^2
+  Capacitance: farad
+  Compressibility: Pa^-1
+  Concentration: m^-3
+  Contact Resistance: m^2 s kg^-1
+  Current Transfer Coefficient: A m^-2 V^-1
+  Decay Constant: s^-1
+  Density: kg m^-3
+  Density Derivative: m^-2 s^2
+  Density Derivative wrt Pressure: m^-2 s^2
+  Density Derivative wrt Temperature: kg m^-3 K^-1
+  Dielectric Contact Resistance: farad^-1 m^2
+  Dynamic Viscosity: Pa s
+  Electric Charge: A s
+  Electric Charge Density: A s m^-3
+  Electric Charge Transfer Coefficient: farad m^-2
+  Electric Conductance Per Unit Area: S m^-2
+  Electric Current Density: A m^-2
+  Electric Current Source: A m^-3
+  Electric Field: V m^-1
+  Electric Flux Density: coulomb m^-2
+  Electrical Conductance: S
+  Electrical Conductivity: S m^-1
+  Electrical Contact Resistance: S^-1 m^2
+  Electrical Permittivity: A s V^-1 m^-1
+  Electrical Resistance: ohm
+  Electrical Resistivity: ohm m
+  Energy Density by Mass: J kg^-1
+  Energy Source: W m^-3
+  Energy Source Coefficient: W m^-3 K^-1
+  Enthalpy Variance: m^4 s^-4
+  Epsilon: m^2 s^-3
+  Epsilon Flux: W m^-2 s^-1
+  Epsilon Flux Coefficient: kg m^-2 s^-2
+  Epsilon Source: W m^-3 s^-1
+  Epsilon Source Coefficient: kg m^-3 s^-2
+  Flame Surface Density Source: m^-1 s^-1
+  Force: N
+  Force Density: N m^-3
+  Force Intensity: N m^-1
+  Force Per Angular Unit: N radian^-1
+  Fracture Energy: J m^-2
+  Fracture Energy Rate: J m^-2 s^-1
+  Frequency: Hz
+  Gasket Stiffness: Pa m^-1
+  Heat Flux: W m^-2
+  Heat Flux in: W m^-2
+  Heat Generation: W m^-3
+  Heat Rate: W
+  Heat Transfer Coefficient: W m^-2 K^-1
+  Impulse: N s
+  Impulse Per Angular Unit: N s radian^-1
+  Inductance: H
+  Interphase Transfer Coefficient: kg m^-2 s^-1
+  InvTemp1: K^-1
+  InvTemp2: K^-2
+  InvTemp3: K^-3
+  InvTemp4: K^-4
+  Inverse Angle: radian^-1
+  Inverse Area: m^-2
+  Inverse Length: m^-1
+  Inverse Stress: Pa^-1
+  Kinematic Diffusivity: m^2 s^-1
+  MAPDL Enthalpy: J m^-3
+  Magnetic Field: A m^-1
+  Magnetic Field Intensity: A m^-1
+  Magnetic Flux: Wb
+  Magnetic Flux Density: T
+  Magnetic Induction: T
+  Magnetic Permeability: H m^-1
+  Magnetic Potential: T m
+  Mass Concentration: kg m^-3
+  Mass Concentration Rate: kg m^-3 s^-1
+  Mass Flow: kg s^-1
+  Mass Flow Rate Per Area: kg s^-1 m^-2
+  Mass Flow Rate Per Length: kg s^-1 m^-1
+  Mass Flow Rate Per Volume: kg s^-1 m^-3
+  Mass Flow in: kg s^-1
+  Mass Flux: kg s^-1 m^-2
+  Mass Flux Coefficient: kg s^-1 m^-2
+  Mass Flux Pressure Coefficient: kg s^-1 m^-2 Pa^-1
+  Mass Fraction: kg kg^-1
+  Mass Per Area: kg m^-2
+  Mass Source: kg s^-1 m^-3
+  Mass Source Coefficient: kg s^-1 m^-3 Pa^-1
+  Material Impedance: kg m^-2 s^-1
+  Molar Concentration: mol m^-3
+  Molar Concentration Henry Coefficient: Pa m^3 mol^-1
+  Molar Concentration Rate: mol m^-3 s^-1
+  Molar Energy: J mol^-1
+  Molar Entropy: J mol^-1 K^-1
+  Molar Fraction: mol mol^-1
+  Molar Mass: kg kmol^-1
+  Molar Volume: m^3 mol^-1
+  Moment: N m
+  Moment of Inertia of Area: m^2 m^2
+  Moment of Inertia of Mass: kg m^2
+  Momentum Source: kg m^-2 s^-2
+  Momentum Source Lin Coeff: kg m^-3 s^-1
+  Momentum Source Quad Coeff: kg m^-4
+  Normalized Value: m m^-1
+  Number Source: m^-3 s^-1
+  Omega Source: kg m^-3 s^-2
+  PSD Acceleration: m^2 s^-4 Hz^-1
+  PSD Displacement: m^2 Hz^-1
+  PSD Force: N^2 Hz^-1
+  PSD Moment: N^2 m^2 Hz^-1
+  PSD Pressure: Pa^2 Hz^-1
+  PSD Strain: m^2 m^-2 Hz^-1
+  PSD Stress: Pa^2 Hz^-1
+  PSD Velocity: m^2 s^-2 Hz^-1
+  Per Mass: kg^-1
+  Per Mass Flow: s kg^-1
+  Per Time: s^-1
+  Per Time Cubed: s^-3
+  Per Time Squared: s^-2
+  Power Spectral Density: W Hz^-1
+  Pressure: Pa
+  Pressure Derivative wrt Temperature: Pa K^-1
+  Pressure Derivative wrt Volume: Pa kg m^-3
+  Pressure Gradient: Pa m^-1
+  Relative Permeability: H H^-1
+  Relative Permittivity: farad farad^-1
+  Rotational Damping: N m s radian^-1
+  Rotational Stiffness: N m radian^-1
+  Section Modulus: m^3
+  Seebeck Coefficient: V K^-1
+  Shear Strain: radian
+  Shear Strain Rate: s^-1
+  Shock Velocity: s m^-1
+  Soot Cross Coefficient: m^3 mol^-1 s^-1
+  Soot PX Facto: mol kg^-1 s^-1
+  Specific: kg kg^-1
+  Specific Concentration: mol kg^-1
+  Specific Energy: J kg^-1
+  Specific Enthalpy: J kg^-1
+  Specific Entropy: J kg^-1 K^-1
+  Specific Flame Surface Density: m^2 kg^-1
+  Specific Heat Capacity: J kg^-1 K^-1
+  Specific Volume: kg^-1 m^3
+  Specific Weight: N m^-3
+  Stiffness: N m^-1
+  Strain: m m^-1
+  Strength: Pa
+  Stress: Pa
+  Stress Intensity Factor: Pa m^0.5
+  Stress Per Temperature: Pa K^-1
+  Surface Charge Density: A s m^-2
+  Surface Force Density: N m^-2
+  Surface Power Density: W m^-2
+  Surface Tension: N m^-1
+  Temperature Difference: delta_K
+  Temperature Gradient: K m^-1
+  Temperature Variance: K^2
+  Temperature Variance Source: kg m^-3 s^-1 K^2
+  Thermal Capacitance: J K^-1
+  Thermal Conductance: W K^-1
+  Thermal Conductivity: W m^-1 K^-1
+  Thermal Contact Resistance: W^-1 m^2 K
+  Thermal Expansivity: K^-1
+  Torque: N m
+  Torsional Spring Constant: N m radian^-1
+  Total Mass Source Pressure Coefficient: kg s^-1 Pa^-1
+  Total Radiative Intensity: W m^-2 sr^-1
+  Translational Damping: N s m^-1
+  Turbulent Heat Flux: m^3 s^-3
+  Velocity: m s^-1
+  Volume: m^3
+  Volumetric: kg m^-3
+  Volumetric Flow: m^3 s^-1
+  Volumetric Flow in: m^3 s^-1
+  Warping Factor: m^6
