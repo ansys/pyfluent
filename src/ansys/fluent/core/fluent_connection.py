@@ -95,7 +95,7 @@ class _IsDataValid:
         return self._scheme_eval.scheme_eval("(data-valid?)")
 
 
-def get_container_ids() -> list[str]:
+def get_container_ids() -> List[str]:
     try:
         logger.debug("Attempting to get docker container IDs...")
         proc = subprocess.Popen(
