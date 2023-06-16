@@ -62,7 +62,7 @@ inlet_guide_vane_file, rotor_file, stator_file = [
 # Launch Fluent as a service in solver mode with double precision running on
 # four processors.
 
-solver_session = pyfluent.launch_fluent(
+solver = pyfluent.launch_fluent(
     precision="double", processor_count=4, mode="solver", cwd=pyfluent.EXAMPLES_PATH
 )
 
@@ -71,7 +71,7 @@ solver_session = pyfluent.launch_fluent(
 # ~~~~~~~~~~~~~~~~~~~
 # Initialize the turbo workflow.
 
-solver_session.workflow.InitializeWorkflow(WorkflowType="Turbo Workflow")
+solver.workflow.InitializeWorkflow(WorkflowType="Turbo Workflow")
 
 ###############################################################################
 # Edit turbo-related preferences
@@ -86,25 +86,21 @@ solver_session.workflow.InitializeWorkflow(WorkflowType="Turbo Workflow")
 # ~~~~~~~~~~~~~~~~~~~~~
 # Change the default value to: *inflow*, *in*
 
-solver_session.preferences.TurboWorkflow.FaceZoneSettings.InletRegion("*inflow* *in*")
+solver.preferences.TurboWorkflow.FaceZoneSettings.InletRegion("*inflow* *in*")
 
 ###############################################################################
 # Updating outlet region
 # ~~~~~~~~~~~~~~~~~~~~~~
 # Change the default value to: *outflow*, *out*
 
-solver_session.preferences.TurboWorkflow.FaceZoneSettings.OutletRegion(
-    "*outflow* *out*"
-)
+solver.preferences.TurboWorkflow.FaceZoneSettings.OutletRegion("*outflow* *out*")
 
 ###############################################################################
 # Updating periodic 1 region
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Change the default value to: *per*1*, *per*
 
-solver_session.preferences.TurboWorkflow.FaceZoneSettings.Periodic1Region(
-    "*per*1* *per*"
-)
+solver.preferences.TurboWorkflow.FaceZoneSettings.Periodic1Region("*per*1* *per*")
 
 ###############################################################################
 # Updating search order
@@ -114,7 +110,7 @@ solver_session.preferences.TurboWorkflow.FaceZoneSettings.Periodic1Region(
 # *per*1*, *per*2*, *per*b*, *high*per*, *per*, *hub*, *shr*, *cas*, *inflow*, *outflow*,
 # *in*, *out*
 
-solver_session.preferences.TurboWorkflow.FaceZoneSettings.FZSearchOrder(
+solver.preferences.TurboWorkflow.FaceZoneSettings.FZSearchOrder(
     "*int* *def* *bld* *blade* *tip*2* *tip*b* *tip*out* *tip* *sym* *per*1* *per*2* *per*b* *high*per* *per* *hub* *shr* *cas* *inflow* *outflow* *in* *out*"
 )
 
@@ -131,7 +127,7 @@ solver_session.preferences.TurboWorkflow.FaceZoneSettings.FZSearchOrder(
 #   :width: 500pt
 #   :align: center
 
-solver_session.workflow.TaskObject["Describe Component"].Arguments.set_state(
+solver.workflow.TaskObject["Describe Component"].Arguments.set_state(
     {
         "ComponentName": "hannover",
         "ComponentType": "Axial Compressor",
@@ -148,7 +144,7 @@ solver_session.workflow.TaskObject["Describe Component"].Arguments.set_state(
     }
 )
 
-solver_session.workflow.TaskObject["Describe Component"].Execute()
+solver.workflow.TaskObject["Describe Component"].Execute()
 
 
 ###############################################################################
@@ -156,13 +152,13 @@ solver_session.workflow.TaskObject["Describe Component"].Execute()
 # ~~~~~~~~~~~~~~~~~~~~~~
 # Define the scope of the blade-row analysis.
 
-solver_session.workflow.TaskObject["Define Blade Row Scope"].Arguments.set_state(
+solver.workflow.TaskObject["Define Blade Row Scope"].Arguments.set_state(
     {
         "ASSelectComponent": "hannover",
     }
 )
 
-solver_session.workflow.TaskObject["Define Blade Row Scope"].Execute()
+solver.workflow.TaskObject["Define Blade Row Scope"].Execute()
 
 
 ###############################################################################
@@ -170,67 +166,67 @@ solver_session.workflow.TaskObject["Define Blade Row Scope"].Execute()
 # ~~~~~~~~~~~
 # Import mesh files (IGV.gtm, R1.gtm, S1.gtm).
 
-solver_session.workflow.TaskObject["Import Mesh"].Arguments.set_state(
+solver.workflow.TaskObject["Import Mesh"].Arguments.set_state(
     {
         "MeshFilePath": f"{inlet_guide_vane_file};{rotor_file};{stator_file}",
     }
 )
 
-solver_session.workflow.TaskObject["Import Mesh"].AddChildAndUpdate()
+solver.workflow.TaskObject["Import Mesh"].AddChildAndUpdate()
 
-solver_session.workflow.TaskObject["Import Mesh"].Arguments.set_state(
+solver.workflow.TaskObject["Import Mesh"].Arguments.set_state(
     {
         "MeshFilePath": f"{inlet_guide_vane_file};{rotor_file};{stator_file}",
         "MeshName": "IGV.gtm",
     }
 )
 
-solver_session.workflow.TaskObject["Import Mesh"].InsertCompoundChildTask()
+solver.workflow.TaskObject["Import Mesh"].InsertCompoundChildTask()
 
-solver_session.workflow.TaskObject["IGV.gtm"].Arguments.set_state(
+solver.workflow.TaskObject["IGV.gtm"].Arguments.set_state(
     {
         "MeshFilePath": f"{inlet_guide_vane_file}",
         "MeshName": "IGV.gtm",
     }
 )
 
-solver_session.workflow.TaskObject["IGV.gtm"].Execute()
+solver.workflow.TaskObject["IGV.gtm"].Execute()
 
-solver_session.workflow.TaskObject["Import Mesh"].Arguments.set_state(
+solver.workflow.TaskObject["Import Mesh"].Arguments.set_state(
     {
         "MeshFilePath": f"{inlet_guide_vane_file};{rotor_file};{stator_file}",
         "MeshName": "R1.gtm",
     }
 )
 
-solver_session.workflow.TaskObject["Import Mesh"].InsertCompoundChildTask()
+solver.workflow.TaskObject["Import Mesh"].InsertCompoundChildTask()
 
-solver_session.workflow.TaskObject["R1.gtm"].Arguments.set_state(
+solver.workflow.TaskObject["R1.gtm"].Arguments.set_state(
     {
         "MeshFilePath": f"{rotor_file}",
         "MeshName": "R1.gtm",
     }
 )
 
-solver_session.workflow.TaskObject["R1.gtm"].Execute()
+solver.workflow.TaskObject["R1.gtm"].Execute()
 
-solver_session.workflow.TaskObject["Import Mesh"].Arguments.set_state(
+solver.workflow.TaskObject["Import Mesh"].Arguments.set_state(
     {
         "MeshFilePath": f"{inlet_guide_vane_file};{rotor_file};{stator_file}",
         "MeshName": "S1.gtm",
     }
 )
 
-solver_session.workflow.TaskObject["Import Mesh"].InsertCompoundChildTask()
+solver.workflow.TaskObject["Import Mesh"].InsertCompoundChildTask()
 
-solver_session.workflow.TaskObject["S1.gtm"].Arguments.set_state(
+solver.workflow.TaskObject["S1.gtm"].Arguments.set_state(
     {
         "MeshFilePath": f"{stator_file}",
         "MeshName": "S1.gtm",
     }
 )
 
-solver_session.workflow.TaskObject["S1.gtm"].Execute()
+solver.workflow.TaskObject["S1.gtm"].Execute()
 
 
 ###############################################################################
@@ -243,7 +239,7 @@ solver_session.workflow.TaskObject["S1.gtm"].Execute()
 #   :width: 500pt
 #   :align: center
 
-solver_session.workflow.TaskObject["Associate Mesh"].Arguments.set_state(
+solver.workflow.TaskObject["Associate Mesh"].Arguments.set_state(
     {
         "AMSelectComponentScope": "hannover_scope",
         "DefaultAMCellZonesList": [
@@ -255,9 +251,9 @@ solver_session.workflow.TaskObject["Associate Mesh"].Arguments.set_state(
     }
 )
 
-solver_session.workflow.TaskObject["Associate Mesh"].Execute()
+solver.workflow.TaskObject["Associate Mesh"].Execute()
 
-solver_session.workflow.TaskObject["IGV.gtm"].Arguments.set_state(
+solver.workflow.TaskObject["IGV.gtm"].Arguments.set_state(
     {
         "CellZones": ["igv.1", "igv.2"],
         "MeshFilePath": inlet_guide_vane_file,
@@ -265,7 +261,7 @@ solver_session.workflow.TaskObject["IGV.gtm"].Arguments.set_state(
     }
 )
 
-solver_session.workflow.TaskObject["R1.gtm"].Arguments.set_state(
+solver.workflow.TaskObject["R1.gtm"].Arguments.set_state(
     {
         "CellZones": ["r1"],
         "MeshFilePath": rotor_file,
@@ -273,7 +269,7 @@ solver_session.workflow.TaskObject["R1.gtm"].Arguments.set_state(
     }
 )
 
-solver_session.workflow.TaskObject["S1.gtm"].Arguments.set_state(
+solver.workflow.TaskObject["S1.gtm"].Arguments.set_state(
     {
         "CellZones": ["s1"],
         "MeshFilePath": stator_file,
@@ -281,7 +277,7 @@ solver_session.workflow.TaskObject["S1.gtm"].Arguments.set_state(
     }
 )
 
-solver_session.workflow.TaskObject["Associate Mesh"].Arguments.set_state(
+solver.workflow.TaskObject["Associate Mesh"].Arguments.set_state(
     {
         "AMSelectComponentScope": "hannover_scope",
         "DefaultAMCellZonesList": ["igv.1,igv.2", "r1", "s1"],
@@ -295,7 +291,7 @@ solver_session.workflow.TaskObject["Associate Mesh"].Arguments.set_state(
 # ~~~~~~~~~~~~~~~~~~
 # Define the face zones mapping to corresponding cell zones.
 
-solver_session.workflow.TaskObject["Map Regions"].Arguments.set_state(
+solver.workflow.TaskObject["Map Regions"].Arguments.set_state(
     {
         "DefaultMRFaceZoneList": [
             "r1:r1-hub-passage",
@@ -327,7 +323,7 @@ solver_session.workflow.TaskObject["Map Regions"].Arguments.set_state(
     }
 )
 
-solver_session.workflow.TaskObject["Map Regions"].Arguments.set_state(
+solver.workflow.TaskObject["Map Regions"].Arguments.set_state(
     {
         "DefaultMRFaceZoneList": [
             "r1:r1-hub-passage",
@@ -359,11 +355,11 @@ solver_session.workflow.TaskObject["Map Regions"].Arguments.set_state(
     }
 )
 
-solver_session.workflow.TaskObject["Map Regions"].InsertCompoundChildTask()
+solver.workflow.TaskObject["Map Regions"].InsertCompoundChildTask()
 
-solver_session.workflow.TaskObject["s1_region_info_1"].rename("s1_region_info")
+solver.workflow.TaskObject["s1_region_info_1"].rename("s1_region_info")
 
-solver_session.workflow.TaskObject["s1_region_info"].Arguments.set_state(
+solver.workflow.TaskObject["s1_region_info"].Arguments.set_state(
     {
         "DefaultMRFaceZoneList": [
             "s1:s1-hub-passage",
@@ -398,9 +394,9 @@ solver_session.workflow.TaskObject["s1_region_info"].Arguments.set_state(
     }
 )
 
-solver_session.workflow.TaskObject["s1_region_info"].State.set_state("Up-to-date")
+solver.workflow.TaskObject["s1_region_info"].State.set_state("Up-to-date")
 
-solver_session.workflow.TaskObject["Map Regions"].Arguments.set_state(
+solver.workflow.TaskObject["Map Regions"].Arguments.set_state(
     {
         "DefaultMRFaceZoneList": [
             "r1:r1-hub-passage",
@@ -432,11 +428,11 @@ solver_session.workflow.TaskObject["Map Regions"].Arguments.set_state(
     }
 )
 
-solver_session.workflow.TaskObject["Map Regions"].InsertCompoundChildTask()
+solver.workflow.TaskObject["Map Regions"].InsertCompoundChildTask()
 
-solver_session.workflow.TaskObject["r1_region_info_1"].rename("r1_region_info")
+solver.workflow.TaskObject["r1_region_info_1"].rename("r1_region_info")
 
-solver_session.workflow.TaskObject["r1_region_info"].Arguments.set_state(
+solver.workflow.TaskObject["r1_region_info"].Arguments.set_state(
     {
         "DefaultMRFaceZoneList": [
             "r1:r1-hub-passage",
@@ -471,9 +467,9 @@ solver_session.workflow.TaskObject["r1_region_info"].Arguments.set_state(
     }
 )
 
-solver_session.workflow.TaskObject["r1_region_info"].State.set_state("Up-to-date")
+solver.workflow.TaskObject["r1_region_info"].State.set_state("Up-to-date")
 
-solver_session.workflow.TaskObject["Map Regions"].Arguments.set_state(
+solver.workflow.TaskObject["Map Regions"].Arguments.set_state(
     {
         "DefaultMRFaceZoneList": [
             "r1:r1-hub-passage",
@@ -505,11 +501,11 @@ solver_session.workflow.TaskObject["Map Regions"].Arguments.set_state(
     }
 )
 
-solver_session.workflow.TaskObject["Map Regions"].InsertCompoundChildTask()
+solver.workflow.TaskObject["Map Regions"].InsertCompoundChildTask()
 
-solver_session.workflow.TaskObject["igv.1_region_info_1"].rename("igv.1_region_info")
+solver.workflow.TaskObject["igv.1_region_info_1"].rename("igv.1_region_info")
 
-solver_session.workflow.TaskObject["igv.1_region_info"].Arguments.set_state(
+solver.workflow.TaskObject["igv.1_region_info"].Arguments.set_state(
     {
         "DefaultMRFaceZoneList": [
             "igv.1:igv-hub-inblock",
@@ -544,9 +540,9 @@ solver_session.workflow.TaskObject["igv.1_region_info"].Arguments.set_state(
     }
 )
 
-solver_session.workflow.TaskObject["igv.1_region_info"].State.set_state("Up-to-date")
+solver.workflow.TaskObject["igv.1_region_info"].State.set_state("Up-to-date")
 
-solver_session.workflow.TaskObject["Map Regions"].Arguments.set_state(
+solver.workflow.TaskObject["Map Regions"].Arguments.set_state(
     {
         "DefaultMRFaceZoneList": [
             "r1:r1-hub-passage",
@@ -577,11 +573,11 @@ solver_session.workflow.TaskObject["Map Regions"].Arguments.set_state(
         "MRSelectCellZone": "igv.2",
     }
 )
-solver_session.workflow.TaskObject["Map Regions"].InsertCompoundChildTask()
+solver.workflow.TaskObject["Map Regions"].InsertCompoundChildTask()
 
-solver_session.workflow.TaskObject["igv.2_region_info_1"].rename("igv.2_region_info")
+solver.workflow.TaskObject["igv.2_region_info_1"].rename("igv.2_region_info")
 
-solver_session.workflow.TaskObject["igv.2_region_info"].Arguments.set_state(
+solver.workflow.TaskObject["igv.2_region_info"].Arguments.set_state(
     {
         "DefaultMRFaceZoneList": [
             "igv.2:igv-hub-passage",
@@ -615,9 +611,9 @@ solver_session.workflow.TaskObject["igv.2_region_info"].Arguments.set_state(
         "OldMRFaceZoneList": None,
     }
 )
-solver_session.workflow.TaskObject["igv.2_region_info"].State.set_state("Up-to-date")
+solver.workflow.TaskObject["igv.2_region_info"].State.set_state("Up-to-date")
 
-solver_session.workflow.TaskObject["Map Regions"].State.set_state("Up-to-date")
+solver.workflow.TaskObject["Map Regions"].State.set_state("Up-to-date")
 
 
 ###############################################################################
@@ -625,13 +621,13 @@ solver_session.workflow.TaskObject["Map Regions"].State.set_state("Up-to-date")
 # ~~~~~~~~~~~~~~~~
 # Create a formal CFD model based on the geometry.
 
-solver_session.workflow.TaskObject["Create CFD Model"].Arguments.set_state(
+solver.workflow.TaskObject["Create CFD Model"].Arguments.set_state(
     {
         "CFDMSelectMeshAssociation": "hannover_assoc",
     }
 )
 
-solver_session.workflow.TaskObject["Create CFD Model"].Execute()
+solver.workflow.TaskObject["Create CFD Model"].Execute()
 
 
 ###############################################################################
@@ -639,7 +635,7 @@ solver_session.workflow.TaskObject["Create CFD Model"].Execute()
 # ~~~~~~~~~~~~~~~~~~~~
 # Define the turbo-related physics conditions.
 
-solver_session.workflow.TaskObject["Define Turbo Physics"].Arguments.set_state(
+solver.workflow.TaskObject["Define Turbo Physics"].Arguments.set_state(
     {
         "States": {
             "Vrpm": 1790.708,
@@ -647,7 +643,7 @@ solver_session.workflow.TaskObject["Define Turbo Physics"].Arguments.set_state(
     }
 )
 
-solver_session.workflow.TaskObject["Define Turbo Physics"].Execute()
+solver.workflow.TaskObject["Define Turbo Physics"].Execute()
 
 
 ###############################################################################
@@ -660,9 +656,7 @@ solver_session.workflow.TaskObject["Define Turbo Physics"].Execute()
 #   :width: 500pt
 #   :align: center
 
-solver_session.workflow.TaskObject[
-    "Define Turbo Regions and Zones"
-].Arguments.set_state(
+solver.workflow.TaskObject["Define Turbo Regions and Zones"].Arguments.set_state(
     {
         "States": {
             "IOBC": {
@@ -681,7 +675,7 @@ solver_session.workflow.TaskObject[
     }
 )
 
-solver_session.workflow.TaskObject["Define Turbo Regions and Zones"].Execute()
+solver.workflow.TaskObject["Define Turbo Regions and Zones"].Execute()
 
 
 ###############################################################################
@@ -689,7 +683,7 @@ solver_session.workflow.TaskObject["Define Turbo Regions and Zones"].Execute()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Define the turbo-related topology and review the region definitions for the hub, shroud, and casing.
 
-solver_session.workflow.TaskObject["Define Turbo Topology"].Arguments.set_state(
+solver.workflow.TaskObject["Define Turbo Topology"].Arguments.set_state(
     {
         "DefaultTopologyNameList": [
             "hub",
@@ -714,7 +708,7 @@ solver_session.workflow.TaskObject["Define Turbo Topology"].Arguments.set_state(
     }
 )
 
-solver_session.workflow.TaskObject["Define Turbo Topology"].AddChildAndUpdate()
+solver.workflow.TaskObject["Define Turbo Topology"].AddChildAndUpdate()
 
 
 ###############################################################################
@@ -727,7 +721,7 @@ solver_session.workflow.TaskObject["Define Turbo Topology"].AddChildAndUpdate()
 #   :width: 500pt
 #   :align: center
 
-solver_session.workflow.TaskObject["Define Turbo Surfaces"].Arguments.set_state(
+solver.workflow.TaskObject["Define Turbo Surfaces"].Arguments.set_state(
     {
         "IsoSurfaceNumList": ["surface 3", "surface 2", "surface 1"],
         "NewIsoSurfaceNameList": ["twf_span_75", "twf_span_50", "twf_span_25"],
@@ -736,7 +730,7 @@ solver_session.workflow.TaskObject["Define Turbo Surfaces"].Arguments.set_state(
         "OldIsoSurfaceValueList": ["0.75", "0.5", "0.25"],
     }
 )
-solver_session.workflow.TaskObject["Define Turbo Surfaces"].Execute()
+solver.workflow.TaskObject["Define Turbo Surfaces"].Execute()
 
 
 ###############################################################################
@@ -745,64 +739,56 @@ solver_session.workflow.TaskObject["Define Turbo Surfaces"].Execute()
 # Finalize the workflow and to create postprocessing objects such as contour plots
 # on the specified turbo-surfaces, as well as turbo-specific report definitions and monitors
 
-solver_session.workflow.TaskObject["Create Report Definitions & Monitors"].Execute()
-
-###############################################################################
-# Initialize flow field
-# ~~~~~~~~~~~~~~~~~~~~~
-# Initialize the flow field using hybrid initialization.
-
-solver_session.tui.solve.initialize.hyb_initialization()
+solver.workflow.TaskObject["Create Report Definitions & Monitors"].Execute()
 
 ###############################################################################
 # Write case file
 # ~~~~~~~~~~~~~~~
 # Write the case file.
 
-solver_session.tui.file.write_case("turbo_workflow.cas.h5")
+solver.tui.file.write_case("turbo_workflow.cas.h5")
 
 ###############################################################################
 # Solve for 25 iterations
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Solve for 25 iterations (100 iterations is recommended, however for this example 25 is sufficient).
 
-# - Residuals
+solver.tui.solve.iterate(25)
+
+# Residuals
 
 ###############################################################################
 # .. image:: /_static/turbo_machinery_015.png
 #   :width: 500pt
 #   :align: center
 
-# - Isentropic Efficiency of the Compressor
+# Isentropic Efficiency of the Compressor
 
 ###############################################################################
 # .. image:: /_static/turbo_machinery_016.png
 #   :width: 500pt
 #   :align: center
 
-# - Pressure Ratio
+# Pressure Ratio
 
 ###############################################################################
 # .. image:: /_static/turbo_machinery_017.png
 #   :width: 500pt
 #   :align: center
 
-#  - Total Mass Flow Rate at the Outlet
+# Total Mass Flow Rate at the Outlet
 
 ###############################################################################
 # .. image:: /_static/turbo_machinery_018.png
 #   :width: 500pt
 #   :align: center
 
-solver_session.tui.solve.iterate(25)
-
-
 ###############################################################################
 # Write final case file and data
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Write the final case file and the data.
 
-solver_session.tui.file.write_case_data("turbo_workflow1.cas.h5")
+solver.tui.file.write_case_data("turbo_workflow1.cas.h5")
 
 
 ###############################################################################
@@ -810,6 +796,6 @@ solver_session.tui.file.write_case_data("turbo_workflow1.cas.h5")
 # ~~~~~~~~~~~~
 # Close Fluent.
 
-solver_session.exit()
+solver.exit()
 
 ###############################################################################
