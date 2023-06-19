@@ -378,7 +378,9 @@ def _get_running_session_mode(
     else:
         try:
             session_mode = LaunchMode.get_mode(
-                fluent_connection.get_current_fluent_mode()
+                "solver"
+                if fluent_connection.scheme_eval.scheme_eval("(cx-solver-mode?)")
+                else "meshing"
             )
         except BaseException:
             raise RuntimeError("Fluent session password mismatch")
@@ -526,8 +528,8 @@ def launch_fluent(
     start_transcript : bool, optional
         Whether to start streaming the Fluent transcript in the client. The
         default is ``True``. You can stop and start the streaming of the
-        Fluent transcript subsequently via the method calls, ``start_transcript()``
-        and ``stop_transcript()`` on the session object.
+        Fluent transcript subsequently via the method calls, ``transcript.start()``
+        and ``transcript.stop()`` on the session object.
     show_gui : bool, optional
         Whether to display the Fluent GUI, only when ``start_instance``
         is set to ``True``. The default is ``None``, which does not
