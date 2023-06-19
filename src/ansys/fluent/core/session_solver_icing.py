@@ -32,7 +32,7 @@ class SolverIcing(Solver):
 
     def get_fluent_version(self):
         """Gets and returns the fluent version."""
-        return self._fluent_connection.get_fluent_version()
+        return self.get_fluent_version()
 
     @property
     def version(self):
