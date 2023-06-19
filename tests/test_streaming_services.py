@@ -21,7 +21,7 @@ def run_transcript(i, ip, port, password):
     if i % 5 == 0:
         solver_session.scheme_eval.scheme_eval("(pp 'test)")
         check_transcript = True
-        time.sleep(1)
+        time.sleep(5)
         transcript_checked = 1
     else:
         check_transcript = False
