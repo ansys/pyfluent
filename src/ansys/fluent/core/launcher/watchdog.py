@@ -1,38 +1,34 @@
 import multiprocessing.pool
 import os
 from pathlib import Path
+import random
+import string
 import subprocess
 import sys
-
-# import threading
 import time
 
 import ansys.fluent.core as pyfluent
 
 IDLE_PERIOD = 2  # seconds
+WATCHDOG_INIT_FILE = "watchdog_{}_init"
 
 
 def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: str = None):
+    watchdog_id = "".join(
+        random.choices(
+            string.ascii_uppercase + string.ascii_lowercase + string.digits, k=6
+        )
+    )
+
     env_watchdog_debug = os.getenv("PYFLUENT_WATCHDOG_DEBUG", "off").upper()
     if env_watchdog_debug in [1, "1", "ON"]:
         print(f"Number of arguments: {len(sys.argv)} arguments.")
         print(f"Argument list: {sys.argv}")
 
-        import random
-        import string
-
-        watchdog_id = "".join(
-            random.choices(
-                string.ascii_uppercase + string.ascii_lowercase + string.digits, k=6
-            )
-        )
-
         print(
             f"PYFLUENT_WATCHDOG_DEBUG environment variable found, "
             f"enabling debugging for watchdog id {watchdog_id}..."
         )
-    else:
-        watchdog_id = ""
 
     logger = pyfluent.logging.get_logger("pyfluent.launcher")
 
@@ -46,6 +42,10 @@ def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: str = None):
 
     # Path to the Python interpreter executable
     python_executable = sys.executable
+    if os.name == "nt":
+        pythonw_executable = Path(sys.executable).parent / "pythonw.exe"
+        if pythonw_executable.exists():
+            python_executable = pythonw_executable
 
     # Command to be executed by the new process
     command_list = [
@@ -60,10 +60,10 @@ def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: str = None):
 
     logger.debug(f"Starting Watchdog logging to directory {os.getcwd()}")
 
-    kwargs = {"env": watchdog_env, "stdin": subprocess.DEVNULL}
+    kwargs = {"env": watchdog_env, "stdin": subprocess.DEVNULL, "close_fds": True}
 
     if os.name == "nt":
-        kwargs["shell"] = True
+        kwargs.update(shell=True)
         # https://learn.microsoft.com/en-us/windows/win32/procthread/process-creation-flags
         # https://docs.python.org/3/library/subprocess.html#windows-constants
         flags = 0
@@ -71,34 +71,52 @@ def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: str = None):
         flags |= subprocess.CREATE_NEW_PROCESS_GROUP
         flags |= subprocess.DETACHED_PROCESS
         flags |= subprocess.CREATE_BREAKAWAY_FROM_JOB
-        flags |= subprocess.IDLE_PRIORITY_CLASS
-        kwargs["creationflags"] = flags
+        flags |= subprocess.SW_HIDE
+        kwargs.update(creationflags=flags)
+
+    if os.name == "posix":
+        kwargs.update(start_new_session=True)
 
     if env_watchdog_debug in [1, "1", "ON"] and os.name != "nt":
-        kwargs["stdout"] = open(f"pyfluent_watchdog_out_{watchdog_id}.log", mode="w")
-        kwargs["stderr"] = open(f"pyfluent_watchdog_err_{watchdog_id}.log", mode="w")
-        kwargs["bufsize"] = 1
+        kwargs.update(
+            stdout=open(f"pyfluent_watchdog_out_{watchdog_id}.log", mode="w"),
+            stderr=open(f"pyfluent_watchdog_err_{watchdog_id}.log", mode="w"),
+            bufsize=1,
+        )
     else:
-        kwargs["stdout"] = subprocess.DEVNULL
-        kwargs["stderr"] = subprocess.DEVNULL
+        kwargs.update(stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
     logger.debug(f"kwargs: {kwargs}")
 
     if os.name == "nt":
         # https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/start
-        # os_cmd = ["start", r"/b"]
         os_cmd = ["start"]
-        # os_cmd = []
     else:
         os_cmd = []
-    # os_cmd = []
 
     cmd_send = os_cmd + command_list
     logger.debug(f"Command list: {cmd_send}")
 
-    subprocess.Popen(cmd_send, close_fds=True, **kwargs)
-    logger.debug(f"Waiting few secs for Watchdog, then proceeding.")
-    time.sleep(IDLE_PERIOD)
+    init_file = Path(WATCHDOG_INIT_FILE.format(watchdog_id))
+    if init_file.is_file():
+        init_file.unlink()
+
+    subprocess.Popen(cmd_send, **kwargs)
+
+    logger.debug(f"Waiting for Watchdog to initialize, then proceeding...")
+    i = 0.0
+    success = False
+    while i <= 10:
+        if init_file.is_file():
+            success = True
+            init_file.unlink()
+            break
+        i += 0.5
+        time.sleep(0.5)
+    if not success:
+        logger.warning(
+            "PyFluent Watchdog did not initialize correctly, proceeding without it..."
+        )
 
 
 if __name__ == "__main__":
@@ -135,7 +153,14 @@ if __name__ == "__main__":
     def got_sig(signum, _):
         logger.warning(f"Received {signal.Signals(signum).name}, ignoring it")
 
-    for sig in signal.valid_signals():
+    signals = signal.valid_signals()
+    if os.name == "posix":
+        try:
+            signals.remove(signal.SIGCHLD)
+        except AttributeError:
+            pass
+
+    for sig in signals:
         try:
             logger.debug(f"Handling signal {sig}")
             signal.signal(sig, got_sig)
@@ -182,9 +207,15 @@ if __name__ == "__main__":
 
     logger.debug("Fluent connection successful")
 
+    open(WATCHDOG_INIT_FILE.format(watchdog_id), "w").close()
+
     fluent_host_pid = fluent.connection_properties.fluent_host_pid
     cortex_pid = fluent.connection_properties.cortex_pid
     cortex_host = fluent.connection_properties.cortex_host
+
+    logger.debug(f"fluent_host_pid: {fluent_host_pid}")
+    logger.debug(f"cortex_pid: {cortex_pid}")
+    logger.debug(f"cortex_host: {cortex_host}")
 
     while True:
         if not psutil.pid_exists(launcher_pid):
@@ -203,26 +234,24 @@ if __name__ == "__main__":
         logger.debug("Waiting...")
         time.sleep(IDLE_PERIOD)
 
-    dead = []
-
+    down = []
     if not psutil.pid_exists(launcher_pid):
-        dead.append("Python")
-
+        down.append("Python")
     if fluent.connection_properties.inside_container:
         if cortex_host not in get_container_ids():
-            dead.append("Fluent container")
+            down.append("Fluent container")
 
     if (
         fluent.connection_properties.inside_container is False
         and not fluent._remote_instance
     ):
         if not psutil.pid_exists(fluent_host_pid):
-            dead.append("Fluent")
+            down.append("Fluent")
         if not psutil.pid_exists(cortex_pid):
-            dead.append("Cortex")
+            down.append("Cortex")
 
-    logger.debug(", ".join(dead) + " not running anymore")
-    # give some time as processes may be currently closing down
+    logger.debug(", ".join(down) + " not running anymore")
+    # wait a bit as processes may be currently closing down
     time.sleep(IDLE_PERIOD * 2)
 
     def _check_serving(fl):
@@ -239,19 +268,18 @@ if __name__ == "__main__":
 
     force = False
     if is_serving:
-        time.sleep(IDLE_PERIOD)
         logger.debug("Fluent client healthy, trying soft exit with timeout...")
-        fluent.exit(timeout=IDLE_PERIOD * 2, timeout_force=False)
+        fluent.exit(timeout=IDLE_PERIOD * 3, timeout_force=False)
         logger.debug("Waiting...")
-        time.sleep(IDLE_PERIOD)
+        time.sleep(IDLE_PERIOD * 2)
         if (
             fluent.connection_properties.inside_container
             and cortex_host in get_container_ids()
         ):
-            logger.debug("Exit call succeeded, but Fluent container remains...")
+            logger.debug("Exit call passed, but Fluent container remains...")
             force = True
         elif psutil.pid_exists(fluent_host_pid) or psutil.pid_exists(cortex_pid):
-            logger.debug("Exit call succeeded, but Fluent client remains...")
+            logger.debug("Exit call passed, but Fluent client remains...")
             force = True
         else:
             logger.debug("Exit call succeeded.")

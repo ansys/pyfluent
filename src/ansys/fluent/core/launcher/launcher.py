@@ -145,7 +145,7 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
     kwargs: Dict[str, Any] = {}
     kwargs.update(stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if _is_windows():
-        kwargs.update(creationflags=subprocess.CREATE_NEW_PROCESS_GROUP)
+        kwargs.update(shell=True, creationflags=subprocess.CREATE_NEW_PROCESS_GROUP)
     else:
         kwargs.update(shell=True, start_new_session=True)
     fluent_env = os.environ.copy()
@@ -406,8 +406,11 @@ def _generate_launch_string(
     server_info_filepath: str,
 ):
     """Generates the launch string to launch fluent."""
-    exe_path = get_fluent_exe_path(**argvals)
-    launch_string = str(exe_path)
+    if _is_windows():
+        exe_path = '"' + str(get_fluent_exe_path(**argvals)) + '"'
+    else:
+        exe_path = str(get_fluent_exe_path(**argvals))
+    launch_string = exe_path
     launch_string += _build_fluent_launch_args_string(**argvals)
     if meshing_mode:
         launch_string += " -meshing"
@@ -616,6 +619,9 @@ def launch_fluent(
                 kwargs.update(cwd=cwd)
             if topy:
                 launch_string += scm_to_py(topy)
+
+            if _is_windows():
+                launch_string = 'start "" ' + launch_string
 
             subprocess.Popen(launch_string, **kwargs)
 
