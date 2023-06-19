@@ -246,8 +246,8 @@ class BaseSession:
         """Gets and returns the fluent version."""
         return self.scheme_eval.version
 
-    def exit(self, timeout: float = None, timeout_force: bool = True) -> None:
-        self.fluent_connection.exit(timeout=timeout, timeout_force=timeout_force)
+    def exit(self, **kwargs) -> None:
+        self.fluent_connection.exit(**kwargs)
 
     def __enter__(self):
         return self
