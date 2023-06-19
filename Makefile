@@ -19,6 +19,11 @@ test-import:
 
 unittest: unittest-dev-231
 
+unittest-custom:
+	@echo "Running custom unittest"
+	@pip install -r requirements/requirements_tests.txt
+	@python -m pytest -v -k test_transcript  # Update custom testlist
+
 unittest-dev-222:
 	@echo "Running unittests"
 	@pip install -r requirements/requirements_tests.txt
