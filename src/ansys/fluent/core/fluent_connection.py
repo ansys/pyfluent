@@ -254,10 +254,6 @@ class FluentConnection:
         )
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
-    def exit(self):
-        """Close the Fluent connection and exit Fluent."""
-        self._finalizer()
-
     def force_exit(self):
         """
         Immediately terminates the Fluent client,

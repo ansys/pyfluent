@@ -44,9 +44,9 @@ def run_transcript(i, ip, port, password):
 @pytest.mark.fluent_232
 def test_transcript(new_solver_session):
     solver = new_solver_session
-    ip = solver._channel_str.split(":")[0]
-    port = int(solver._channel_str.split(":")[1])
-    password = solver._metadata[0][-1]
+    ip = solver.fluent_connection._channel_str.split(":")[0]
+    port = int(solver.fluent_connection._channel_str.split(":")[1])
+    password = solver.fluent_connection._metadata[0][-1]
 
     total_checked_transcript = 0
     passed_transcript = 0

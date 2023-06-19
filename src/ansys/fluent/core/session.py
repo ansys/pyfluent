@@ -167,6 +167,9 @@ class BaseSession:
             SettingsService, add_arg=self.scheme_eval
         )
 
+        self.health_check_service = fluent_connection.health_check_service
+        self.connection_properties = fluent_connection.connection_properties
+
         self.fluent_connection.register_finalizer_cb(
             self.datamodel_service_se.unsubscribe_all_events
         )
@@ -251,7 +254,7 @@ class BaseSession:
 
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any):
         """Close the Fluent connection and exit Fluent."""
-        self.fluent_connection.exit()
+        self.exit()
 
     def upload(self, file_path: str, remote_file_name: str = None):
         """Uploads a file on the server."""
