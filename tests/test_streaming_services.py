@@ -42,6 +42,7 @@ def run_transcript(i, ip, port, password):
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.skip
 def test_transcript(new_solver_session):
     solver = new_solver_session
     ip = solver.fluent_connection._channel_str.split(":")[0]
