@@ -21,7 +21,7 @@ def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: str = None):
     )
 
     env_watchdog_debug = os.getenv("PYFLUENT_WATCHDOG_DEBUG", "off").upper()
-    if env_watchdog_debug in [1, "1", "ON"]:
+    if env_watchdog_debug in ("1", "ON"):
         print(f"Number of arguments: {len(sys.argv)} arguments.")
         print(f"Argument list: {sys.argv}")
 
