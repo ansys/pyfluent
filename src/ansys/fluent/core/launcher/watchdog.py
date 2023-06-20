@@ -35,7 +35,7 @@ def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: str = None):
     watchdog_env = os.environ.copy()
 
     # No auto PyFluent logging to file on the watchdog
-    if watchdog_env.get("PYFLUENT_LOGGING"):
+    if "PYFLUENT_LOGGING" in watchdog_env:
         watchdog_env.pop("PYFLUENT_LOGGING")
 
     # disable additional services/addons?
@@ -77,7 +77,7 @@ def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: str = None):
     if os.name == "posix":
         kwargs.update(start_new_session=True)
 
-    if env_watchdog_debug in [1, "1", "ON"] and os.name != "nt":
+    if env_watchdog_debug in ("1", "ON") and os.name != "nt":
         kwargs.update(
             stdout=open(f"pyfluent_watchdog_out_{watchdog_id}.log", mode="w"),
             stderr=open(f"pyfluent_watchdog_err_{watchdog_id}.log", mode="w"),
@@ -141,7 +141,7 @@ if __name__ == "__main__":
 
     logger = pyfluent.logging.get_logger("pyfluent.watchdog")
 
-    if os.getenv("PYFLUENT_WATCHDOG_DEBUG", "off").upper() in [1, "1", "ON"]:
+    if os.getenv("PYFLUENT_WATCHDOG_DEBUG", "OFF").upper() in ("1", "ON"):
         pyfluent.logging.enable(custom_config=log_config)
         logger.setLevel("DEBUG")
         logger.handlers = pyfluent.logging.get_logger(
