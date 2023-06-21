@@ -1,3 +1,4 @@
+import os
 import subprocess
 
 import pytest
@@ -25,7 +26,8 @@ def pytest_collection_modifyitems(items, config):
 def with_launching_container(
     monkeypatch: pytest.MonkeyPatch, request: pytest.FixtureRequest
 ) -> None:
-    subprocess.run("docker stop $(docker ps -a -q)", shell=True)
+    if os.getenv("PYFLUENT_STOP_CONTAINERS_BEFORE_EACH_TEST") == "1":
+        subprocess.run("docker stop $(docker ps -a -q)", shell=True)
     monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "1")
     monkeypatch.setenv("PYFLUENT_TIMEOUT_FORCE_EXIT", "5")
     monkeypatch.setenv("PYFLUENT_TEST_NAME", request.node.name)
