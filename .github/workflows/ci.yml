@@ -379,7 +379,7 @@ jobs:
   build_test_232_241:
     name: Build and Test
     needs: test-import
-    runs-on: [self-hosted, pyfluent]
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
