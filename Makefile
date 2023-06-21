@@ -101,10 +101,14 @@ api-codegen:
 	@rm -rf env
 
 build-doc-source:
-	@git clean -fdx doc
-	@rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
+	@sudo rm -rf doc/source/api/meshing/datamodel
+	@sudo rm -rf doc/source/api/meshing/tui
+	@sudo rm -rf doc/source/api/solver/datamodel
+	@sudo rm -rf doc/source/api/solver/tui
+	@sudo rm -rf doc/source/api/solver/_autosummary/settings
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@pip install -r requirements/requirements_doc.txt
-	@make -W --keep-going -C doc html
+	@xvfb-run make -C doc html
 
 build-all-docs:
 	@python doc/settings_rstgen.py
