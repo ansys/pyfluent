@@ -120,6 +120,13 @@ def launch(main_pid: int, sv_port: int, sv_password: str, sv_ip: str = None):
 
 
 if __name__ == "__main__":
+    from multiprocessing.context import TimeoutError
+    import signal
+
+    import psutil
+
+    from ansys.fluent.core.fluent_connection import FluentConnection, get_container_ids
+
     print(
         "Starting PyFluent Watchdog process, do not manually close or terminate this process, "
         "it will automatically exit once finished.".upper()
@@ -127,11 +134,7 @@ if __name__ == "__main__":
 
     watchdog_id = sys.argv[5]
 
-    import psutil
-
     launcher_pid = int(sys.argv[1])
-
-    from ansys.fluent.core.fluent_connection import FluentConnection, get_container_ids
 
     # Configure logger for Watchdog process
     log_config = pyfluent.logging.get_default_config()
@@ -147,8 +150,6 @@ if __name__ == "__main__":
         logger.handlers = pyfluent.logging.get_logger(
             "pyfluent.general"
         ).handlers  # using same handlers as already defined
-
-    import signal
 
     def got_sig(signum, _):
         logger.warning(f"Received {signal.Signals(signum).name}, ignoring it")
@@ -178,8 +179,6 @@ if __name__ == "__main__":
 
     if ip == "None":
         ip = None
-
-    from multiprocessing.context import TimeoutError
 
     logger.debug("Attempting to connect to existing Fluent session...")
 
@@ -221,16 +220,25 @@ if __name__ == "__main__":
         if not psutil.pid_exists(launcher_pid):
             logger.debug("Python launcher down")
             break
-        if (
-            fluent.connection_properties.inside_container is False
-            and not fluent._remote_instance
-        ):
-            if not psutil.pid_exists(cortex_pid):
-                logger.debug("Cortex down")
-                break
-            if not psutil.pid_exists(fluent_host_pid):
-                logger.debug("Fluent down")
-                break
+        if not fluent._remote_instance:
+            if fluent.connection_properties.inside_container is False:
+                if not psutil.pid_exists(cortex_pid):
+                    logger.debug("Cortex down")
+                    break
+                if not psutil.pid_exists(fluent_host_pid):
+                    logger.debug("Fluent down")
+                    break
+            elif fluent.connection_properties.inside_container is True:
+                if not cortex_host in get_container_ids():
+                    logger.debug("Fluent container down")
+                    break
+                # additional wait due to expensive get_container_ids() call
+                time.sleep(IDLE_PERIOD * 2)
+            else:
+                logger.debug(
+                    "Undefined whether Fluent is inside a container or not, "
+                    "monitoring only the Python process..."
+                )
         logger.debug("Waiting...")
         time.sleep(IDLE_PERIOD)
 

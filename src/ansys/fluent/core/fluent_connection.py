@@ -253,6 +253,7 @@ class FluentConnection:
                 inside_container = True
             else:
                 logger.debug("Assuming Fluent is not running inside a container.")
+                inside_container = False
 
         self.connection_properties = FluentConnectionProperties(
             ip,
@@ -437,6 +438,7 @@ class FluentConnection:
                     _ = async_result.get(timeout=timeout)
                     logger.debug("session.exit() successful")
                     pool.close()
+                    return
                 except TimeoutError:
                     logger.debug("session.exit() timeout")
                     pool.terminate()
