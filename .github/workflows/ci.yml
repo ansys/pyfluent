@@ -2,7 +2,7 @@
 name: GitHub Actions
 
 on:
-  #pull_request:
+  pull_request:
   workflow_dispatch:
   push:
     tags:
