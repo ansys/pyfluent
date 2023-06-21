@@ -19,7 +19,6 @@ jobs:
 
   build_test:
     name: Build and Test
-    needs: test-import
     runs-on: [self-hosted, pyfluent]
     strategy:
       fail-fast: false
