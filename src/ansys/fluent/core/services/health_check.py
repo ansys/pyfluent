@@ -16,7 +16,7 @@ class HealthCheckService:
 
     Methods
     -------
-    check_health
+    check_health()
         Check the health of the Fluent connection.
     """
 
