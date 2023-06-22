@@ -54,7 +54,7 @@ class Task(PyCallableStateObject):
 
         Returns
         -------
-        upstreams : list
+        list
             Upstream task list.
         """
         return self._tasks_with_matching_attributes(
@@ -67,7 +67,7 @@ class Task(PyCallableStateObject):
 
         Returns
         -------
-        downstreams : list
+        list
             Downstream task list.
         """
         return self._tasks_with_matching_attributes(
@@ -92,7 +92,7 @@ class Task(PyCallableStateObject):
 
         Returns
         -------
-        children : list
+        list
             Ordered children.
         """
         return [
@@ -105,7 +105,7 @@ class Task(PyCallableStateObject):
 
         Returns
         -------
-        children : list
+        list
             Inactive ordered children.
         """
         return [
@@ -119,7 +119,7 @@ class Task(PyCallableStateObject):
 
         Returns
         -------
-        identifier : str
+        str
             The string identifier.
         """
         workflow_state = self._command_source._workflow_state()
@@ -136,7 +136,7 @@ class Task(PyCallableStateObject):
 
         Returns
         -------
-        index : int
+        int
             The integer index.
         """
         return int(self.get_id()[len("TaskObject") :])
@@ -269,7 +269,7 @@ class WorkflowWrapper:
 
         Returns
         -------
-        task : Task
+        Task
             wrapped task object.
         """
         return Task(self, name)
