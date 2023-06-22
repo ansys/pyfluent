@@ -73,11 +73,11 @@ jobs:
           path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
           retention-days: 7
 
-      - name: "Deploy development documentation"
-        if: matrix.image-tag == env.DOC_DEPLOYMENT_IMAGE_TAG
-        uses: ansys/actions/doc-deploy-dev@v4
-        with:
-            doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
-            decompress-artifact: true
-            cname: ${{ env.DOCUMENTATION_CNAME }}
-            token: ${{ secrets.GITHUB_TOKEN }}
+      #- name: "Deploy development documentation"
+      #  if: matrix.image-tag == env.DOC_DEPLOYMENT_IMAGE_TAG
+      #  uses: ansys/actions/doc-deploy-dev@v4
+      #  with:
+      #      doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
+      #      decompress-artifact: true
+      #      cname: ${{ env.DOCUMENTATION_CNAME }}
+      #      token: ${{ secrets.GITHUB_TOKEN }}
