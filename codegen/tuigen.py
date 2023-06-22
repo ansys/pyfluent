@@ -276,6 +276,8 @@ class TUIGenerator:
             ]
 
             f.write(f".. autoclass:: {self._tui_module}.{class_name}\n")
+            if class_name != "main_menu":
+                f.write("   :noindex:\n")
             f.write("   :members:\n")
             f.write("   :show-inheritance:\n")
             f.write("   :undoc-members:\n")

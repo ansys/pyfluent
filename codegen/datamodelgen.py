@@ -301,6 +301,8 @@ class DataModelGenerator:
             commands = sorted(info.commands)
 
             f.write(f".. autoclass:: {module_name}.{class_name}\n")
+            if class_name != "Root":
+                f.write("   :noindex:\n")
             f.write("   :members:\n")
             f.write("   :show-inheritance:\n")
             f.write("   :undoc-members:\n")
