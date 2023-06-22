@@ -299,7 +299,7 @@ Some sample use cases are demonstrated below:
 
 .. autosummary::
     :toctree: _autosummary
-    :template: flobject-class-template.rst
+    :template: noindex-class.rst
     :recursive:
 
     field_data.FieldTransaction

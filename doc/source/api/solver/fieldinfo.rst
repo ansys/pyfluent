@@ -90,7 +90,7 @@ calling the ``get_surfaces_info`` method.
 
 .. autosummary::
     :toctree: _autosummary
-    :template: flobject-class-template.rst
+    :template: noindex-class.rst
     :recursive:
 
     field_data.FieldInfo
