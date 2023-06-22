@@ -623,6 +623,7 @@ solver.workflow.TaskObject["Map Regions"].State.set_state("Up-to-date")
 
 solver.workflow.TaskObject["Create CFD Model"].Arguments.set_state(
     {
+        "AxisOfRotation": "Z",
         "CFDMSelectMeshAssociation": "hannover_assoc",
     }
 )
@@ -740,6 +741,13 @@ solver.workflow.TaskObject["Define Turbo Surfaces"].Execute()
 # on the specified turbo-surfaces, as well as turbo-specific report definitions and monitors
 
 solver.workflow.TaskObject["Create Report Definitions & Monitors"].Execute()
+
+###############################################################################
+# Initialize flow field
+# ~~~~~~~~~~~~~~~~~~~~~
+# Initialize the flow field using hybrid initialization.
+
+solver.tui.solve.initialize.hyb_initialization()
 
 ###############################################################################
 # Write case file
