@@ -3,7 +3,7 @@
 import os
 import pydoc
 
-import appdirs
+import platformdirs
 
 # Logging has to be set up before importing other PyFluent modules
 import ansys.fluent.core.logging as logging
@@ -49,7 +49,9 @@ def version_info() -> str:
 
 
 # Setup data directory
-USER_DATA_PATH = appdirs.user_data_dir(appname="ansys_fluent_core", appauthor="Ansys")
+USER_DATA_PATH = platformdirs.user_data_dir(
+    appname="ansys_fluent_core", appauthor="Ansys"
+)
 EXAMPLES_PATH = os.path.join(USER_DATA_PATH, "examples")
 
 # For Sphinx documentation build
