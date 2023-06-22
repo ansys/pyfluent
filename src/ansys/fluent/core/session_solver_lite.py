@@ -22,8 +22,8 @@ class SolverLite(Solver):
         super().__init__(
             fluent_connection=fluent_connection,
         )
-        self._tui_service = self.fluent_connection.datamodel_service_tui
-        self._settings_service = self.fluent_connection.settings_service
+        self._tui_service = self.datamodel_service_tui
+        self._settings_service = self.settings_service
         self._tui = None
         self._settings_root = None
 

@@ -44,7 +44,7 @@ class SolverIcing(Solver):
     def _flserver(self):
         """root datamodel object."""
         if self._flserver_root is None:
-            se = self.fluent_connection.datamodel_service_se
+            se = self.datamodel_service_se
             dm_module = tui_module = importlib.import_module(
                 f"ansys.fluent.core.datamodel_{self.version}.flicing"
             )

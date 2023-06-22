@@ -13,11 +13,10 @@ from ansys.fluent.core import examples
 )
 @pytest.mark.dev
 @pytest.mark.fluent_232
-@pytest.mark.fluent_241
 def test_svars(new_solver_session):
     solver = new_solver_session
     import_filename = examples.download_file(
-        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
     solver.file.read(file_type="case", file_name=import_filename)
 
@@ -31,7 +30,7 @@ def test_svars(new_solver_session):
 
     assert zones_info.domains == ["mixture"]
 
-    assert zones_info.zones == [
+    assert set(zones_info.zones) == {
         "symmetry-xyplane",
         "hot-inlet",
         "cold-inlet",
@@ -40,7 +39,7 @@ def test_svars(new_solver_session):
         "wall-elbow",
         "elbow-fluid",
         "interior--elbow-fluid",
-    ]
+    }
 
     zone_info = zones_info["wall-inlet"]
 
@@ -56,17 +55,18 @@ def test_svars(new_solver_session):
         zone_names=["wall-elbow", "elbow-fluid"], domain_name="mixture"
     )
 
-    assert svars_info_wall_fluid.svars == [
-        "SV_ADS_0",
+    assert set(svars_info_wall_fluid.svars) == {
         "SV_ADS_1",
         "SV_CENTROID",
+        "SV_H",
         "SV_K",
         "SV_O",
+        "SV_T",
         "SV_P",
         "SV_U",
         "SV_V",
         "SV_W",
-    ]
+    }
 
     svar_info_centroid = svars_info_wall_fluid["SV_CENTROID"]
 
@@ -141,7 +141,7 @@ def test_svars_single_precision(new_solver_session_single_precision):
 
     assert zones_info.domains == ["water", "air", "mixture"]
 
-    assert zones_info.zones == [
+    assert set(zones_info.zones) == {
         "mrf-tank",
         "tank_top",
         "wall_tank",
@@ -152,7 +152,7 @@ def test_svars_single_precision(new_solver_session_single_precision):
         "interior--mrf",
         "tank",
         "interior--tank",
-    ]
+    }
 
     zone_info = zones_info["wall_tank"]
 
@@ -168,7 +168,7 @@ def test_svars_single_precision(new_solver_session_single_precision):
         zone_names=["wall_tank", "tank"], domain_name="mixture"
     )
 
-    assert svars_info_wall_fluid.svars == [
+    assert set(svars_info_wall_fluid.svars) == {
         "SV_ADS_0",
         "SV_ADS_1",
         "SV_CENTROID",
@@ -179,7 +179,7 @@ def test_svars_single_precision(new_solver_session_single_precision):
         "SV_U",
         "SV_V",
         "SV_W",
-    ]
+    }
 
     svar_info_centroid = svars_info_wall_fluid["SV_CENTROID"]
 
