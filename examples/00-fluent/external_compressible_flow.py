@@ -63,7 +63,11 @@ wing_spaceclaim_file, wing_intermediary_file = [
 # four processors.
 
 meshing = pyfluent.launch_fluent(
-    precision="double", processor_count=4, mode="meshing", cwd=pyfluent.EXAMPLES_PATH
+    precision="double",
+    processor_count=4,
+    mode="meshing",
+    cwd=pyfluent.EXAMPLES_PATH,
+    product_version="23.1.0",
 )
 
 ###############################################################################
@@ -94,6 +98,7 @@ meshing.workflow.TaskObject["Import Geometry"].Execute()
 ###############################################################################
 # Add local sizing
 # ~~~~~~~~~~~~~~~~
+# Add local sizing controls to the faceted geometry.
 
 meshing.workflow.TaskObject["Add Local Sizing"].Arguments.set_state(
     {
@@ -132,6 +137,7 @@ meshing.workflow.TaskObject["Add Local Sizing"].AddChildAndUpdate()
 ###############################################################################
 # Generate surface mesh
 # ~~~~~~~~~~~~~~~~~~~~~
+# Generate the surface mash.
 
 meshing.workflow.TaskObject["Generate the Surface Mesh"].Arguments.set_state(
     {"CFDSurfaceMeshControls": {"MaxSize": 1000, "MinSize": 2}}
@@ -142,6 +148,7 @@ meshing.workflow.TaskObject["Generate the Surface Mesh"].Execute()
 ###############################################################################
 # Describe geometry
 # ~~~~~~~~~~~~~~~~~
+# Describe geometry and define the fluid region.
 
 meshing.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
     SetupTypeChanged=False
@@ -158,18 +165,22 @@ meshing.workflow.TaskObject["Describe Geometry"].Execute()
 ###############################################################################
 # Update boundaries
 # ~~~~~~~~~~~~~~~~~
+# Update the boundaries.
 
 meshing.workflow.TaskObject["Update Boundaries"].Execute()
 
 ###############################################################################
 # Update regions
 # ~~~~~~~~~~~~~~
+# Update the regions.
 
 meshing.workflow.TaskObject["Update Regions"].Execute()
 
 ###############################################################################
 # Add boundary layers
 # ~~~~~~~~~~~~~~~~~~~
+# Add boundary layers, which consist of setting properties for the
+# boundary layer mesh.
 
 meshing.workflow.TaskObject["Add Boundary Layers"].Arguments.set_state(
     {"NumberOfLayers": 12}
@@ -180,6 +191,8 @@ meshing.workflow.TaskObject["Add Boundary Layers"].AddChildAndUpdate()
 ###############################################################################
 # Generate volume mesh
 # ~~~~~~~~~~~~~~~~~~~~
+# Generate the volume mesh, which consists of setting properties for the
+# volume mesh.
 
 meshing.workflow.TaskObject["Generate the Volume Mesh"].Arguments.set_state(
     {
@@ -197,7 +210,7 @@ meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
 ###############################################################################
 # Check mesh in meshing mode
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Check the mesh in meshing mode
+# Check the mesh in meshing mode.
 
 meshing.tui.mesh.check_mesh()
 
