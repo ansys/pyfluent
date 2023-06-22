@@ -108,13 +108,13 @@ build-doc-source:
 	@sudo rm -rf doc/source/api/solver/_autosummary/settings
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@pip install -r requirements/requirements_doc.txt
-	@xvfb-run make -C doc html ARGS="-W --keep-going"
+	@xvfb-run make -C doc html
 
 build-all-docs:
 	@python doc/settings_rstgen.py
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@pip install -r requirements/requirements_doc.txt
-	@xvfb-run make -C doc html
+	@xvfb-run make -C doc html ARGS="-W --keep-going"
 
 compare-flobject:
 	@python .ci/compare_flobject.py
