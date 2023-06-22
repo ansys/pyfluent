@@ -71,7 +71,7 @@ class BaseMeshing:
 
     @property
     def _meshing_root(self):
-        """meshing datamodel root."""
+        """Datamodel root of meshing."""
         try:
             meshing_module = importlib.import_module(
                 f"ansys.fluent.core.datamodel_{self.version}.meshing"
@@ -95,7 +95,7 @@ class BaseMeshing:
 
     @property
     def _workflow_se(self):
-        """workflow datamodel root."""
+        """Datamodel root of workflow."""
         try:
             workflow_module = importlib.import_module(
                 f"ansys.fluent.core.datamodel_{self.version}.workflow"
@@ -114,7 +114,7 @@ class BaseMeshing:
 
     @property
     def PartManagement(self):
-        """PartManagement datamodel root."""
+        """Datamdoel root of PartManagement."""
         if self._part_management is None:
             try:
                 pm_module = importlib.import_module(
@@ -132,7 +132,7 @@ class BaseMeshing:
 
     @property
     def PMFileManagement(self):
-        """PMFileManagement datamodel root."""
+        """Datamodel root of PMFileManagement."""
         if self._pm_file_management is None:
             try:
                 pmfm_module = importlib.import_module(
@@ -150,7 +150,7 @@ class BaseMeshing:
 
     @property
     def preferences(self):
-        """preferences datamodel root."""
+        """Datamodel root of preferences."""
         if self._preferences is None:
             from ansys.fluent.core.session import _get_preferences
 
