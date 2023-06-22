@@ -454,8 +454,14 @@ class Group(SettingsBase[DictStateType]):
                 ret.append(query)
         return ret
 
-    def get_completer_info(self, prefix=""):
-        """Return list of [name, type, doc]"""
+    def get_completer_info(self, prefix="") -> List[List[str]]:
+        """Get completer info of all children.
+
+        Returns
+        -------
+        List[List[str]]
+            Name, type and docstring of all children.
+        """
         ret = []
         for child_name in self.child_names:
             if child_name.startswith(prefix):
@@ -888,8 +894,14 @@ class Action(Base):
             raise RuntimeError(f"{self.__class__.__name__} is not active")
         return attrs["arguments"] if attrs else None
 
-    def get_completer_info(self, prefix="", excluded=None):
-        """Return list of [name, type, doc]"""
+    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
+        """Get completer info of all arguments.
+
+        Returns
+        -------
+        List[List[str]]
+            Name, type and docstring of all arguments.
+        """
         excluded = excluded or []
         ret = []
         for argument_name in self.argument_names:
