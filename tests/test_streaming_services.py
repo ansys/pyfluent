@@ -21,7 +21,6 @@ def run_transcript(i, ip, port, password):
     transcript_passed = False
 
     if i % 5 == 0:
-
         time.sleep(0.5)
         session.scheme_eval.scheme_eval("(pp 'test)")
         time.sleep(0.5)
