@@ -67,14 +67,14 @@ jobs:
         run: |
           sudo apt install zip -y
           pushd doc/_build/html
-          zip -r ../../../HTML-Documentation-tag-${{ matrix.image-tag }}.zip .
+          zip -r ../../../HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip .
           popd
 
       - name: Upload HTML Documentation
         uses: actions/upload-artifact@v3
         with:
-          name: HTML-Documentation-tag-${{ matrix.image-tag }}
-          path: HTML-Documentation-tag-${{ matrix.image-tag }}.zip
+          name: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
           retention-days: 7
 
       #- name: "Deploy development documentation"
