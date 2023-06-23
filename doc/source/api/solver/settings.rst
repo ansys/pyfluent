@@ -293,8 +293,8 @@ list of surfaces::
 
 The following list summarizes common wildcards:
 
-- ``*`` indicates zero or more occurrences of the preceding element. For example, ``'in*'`` will list
-  only items starting with "in" such as in1 and in2, whereas *in* will list only items that have
+- ``*`` indicates zero or more occurrences of the preceding element. For example, ``'in*'`` lists
+  only items starting with "in" such as in1 and in2, whereas *in* lists only items that have
   the string "in" within the name.
 
 - ``?`` substitutes for a single unknown character. For example, ``'gr?y'`` would list "grey" and "gray".
@@ -304,14 +304,14 @@ The following list summarizes common wildcards:
   ``'[a-z]'`` would match anything starting with a character between "a" and "z" inclusively, or
   using ``'[0-9]'`` would match the initial character with any number between "0" and "9" inclusively.
 
-- ``^`` indicates a boolean NOT function, or negation. For example, ``'^*in*'`` would list anything
+- ``^`` indicates a Boolean NOT function, or negation. For example, ``'^*in*'`` would list anything
   not containing "in".
 
-- ``|`` indicates a boolean OR function. For example, ``'*part*|*solid*'`` would list anything
+- ``|`` indicates a Boolean OR function. For example, ``'*part*|*solid*'`` would list anything
   containing either "part" or "solid" such as "part2-solid-1", "part2-solid-2", "part-3",
   "solid", and "solid-1".
 
-- ``&`` indicates a boolean AND function. For example, ``'*part*&*solid*'`` would list anything
+- ``&`` indicates a Boolean AND function. For example, ``'*part*&*solid*'`` would list anything
   containing both "part" and "solid" such as "part2-solid-1" and "part2-solid-2".
 
 .. _settings_root_section:
