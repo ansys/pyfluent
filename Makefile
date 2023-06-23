@@ -108,7 +108,7 @@ build-doc-source:
 	@sudo rm -rf doc/source/api/solver/_autosummary/settings
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@pip install -r requirements/requirements_doc.txt
-	@set SPHINXOPTSEXTRA=-W --keep-going
+	@export SPHINXOPTSEXTRA=-W --keep-going
 	@xvfb-run make -C doc html
 
 build-all-docs:
