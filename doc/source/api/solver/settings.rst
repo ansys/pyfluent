@@ -275,7 +275,7 @@ commands:
 
 .. _settings_root_section:
 
-Supporting Wildcards
+Supporting wildcards
 --------------------
 You can use wildcards when using named objects, list objects, and string list settings.
 For named objects and list objects, for instance:
