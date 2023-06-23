@@ -102,7 +102,7 @@ class BaseSession:
     """
 
     def __init__(self, fluent_connection: FluentConnection):
-        """BaseSession
+        """BaseSession.
 
         Args:
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.

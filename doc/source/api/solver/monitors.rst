@@ -11,7 +11,7 @@ property in each solution-mode session object. It provides access to server moni
 
 .. autosummary::
     :toctree: _autosummary
-    :template: flobject-class-template.rst
+    :template: noindex-class.rst
     :recursive:
 
     MonitorsManager

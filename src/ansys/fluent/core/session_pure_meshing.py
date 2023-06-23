@@ -71,27 +71,27 @@ class PureMeshing(BaseSession):
 
     @property
     def meshing(self):
-        """meshing datamodel root."""
+        """Datamodel root of meshing."""
         return self._base_meshing.meshing
 
     @property
     def workflow(self):
-        """workflow datamodel root."""
+        """Datamodel root of workflow."""
         return self._base_meshing.workflow
 
     @property
     def PartManagement(self):
-        """PartManagement datamodel root."""
+        """Datamodel root of PartManagement."""
         return self._base_meshing.PartManagement
 
     @property
     def PMFileManagement(self):
-        """PMFileManagement datamodel root."""
+        """Datamodel root of PMFileManagement."""
         return self._base_meshing.PMFileManagement
 
     @property
     def preferences(self):
-        """preferences datamodel root."""
+        """Datamodel root of preferences."""
         return self._base_meshing.preferences
 
     def transfer_mesh_to_solvers(

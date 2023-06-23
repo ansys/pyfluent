@@ -26,6 +26,7 @@ ctxt : Any, optional
     object but any solver API object will suffice) to set
     the context of the call's execution. If the location
     objects are strings, then such a context is required
+
 Returns
 -------
 float or List[float]
