@@ -2,7 +2,7 @@
 #
 
 # You can set these variables from the command line.
-SPHINXOPTS    = -j auto -w build_errors.txt -N -q $(SPHINXOPTSEXTRA)
+SPHINXOPTS    = -j auto -W --keep-going -w build_errors.txt -N
 SPHINXBUILD   = sphinx-build
 SOURCEDIR     = source
 BUILDDIR      = _build
