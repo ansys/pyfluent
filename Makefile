@@ -114,7 +114,7 @@ build-all-docs:
 	@python doc/settings_rstgen.py
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@pip install -r requirements/requirements_doc.txt
-	@xvfb-run make -C doc html ARGS="-W --keep-going"
+	@xvfb-run make -W --keep-going -C doc html
 
 compare-flobject:
 	@python .ci/compare_flobject.py
