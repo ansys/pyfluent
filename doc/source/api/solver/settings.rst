@@ -272,9 +272,6 @@ commands:
   >>> solver.solution.run_calculation.get_active_command_names()
   ['iterate']
 
-
-.. _settings_root_section:
-
 Supporting wildcards
 --------------------
 You can use wildcards when using named objects, list objects, and string list settings.
@@ -339,6 +336,8 @@ containing either "part" or "solid" such as part2-solid-1, part2-solid-2, part-3
 solid, and solid-1.
 - `&` indicates a boolean AND function. For example, `*part*&*solid*` would list anything
 containing both "part" and "solid" such as part2-solid-1 and part2-solid-2.
+
+.. _settings_root_section:
 
 Root object
 -----------
