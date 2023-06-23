@@ -1,4 +1,4 @@
-""".. _ref_turbo_machinery_tui_api:
+""".. _ref_turbo_machinery_settings_api:
 
 Turbomachinery Setup and Analysis Using the Turbo Workflow
 ----------------------------------------------------------
@@ -747,21 +747,21 @@ solver.workflow.TaskObject["Create Report Definitions & Monitors"].Execute()
 # ~~~~~~~~~~~~~~~~~~~~~
 # Initialize the flow field using hybrid initialization.
 
-solver.tui.solve.initialize.hyb_initialization()
+solver.solution.initialization.hybrid_initialize()
 
 ###############################################################################
 # Write case file
 # ~~~~~~~~~~~~~~~
 # Write the case file.
 
-solver.tui.file.write_case("turbo_workflow.cas.h5")
+solver.file.write(file_name="turbo_workflow.cas.h5", file_type="case")
 
 ###############################################################################
 # Solve for 25 iterations
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Solve for 25 iterations (100 iterations is recommended, however for this example 25 is sufficient).
 
-solver.tui.solve.iterate(25)
+solver.solution.run_calculation.iterate(iter_count=25)
 
 # Residuals
 
@@ -796,7 +796,9 @@ solver.tui.solve.iterate(25)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Write the final case file and the data.
 
-solver.tui.file.write_case_data("turbo_workflow1.cas.h5")
+solver.file.write(file_name="turbo_workflow1.cas.h5", file_type="case")
+
+solver.file.write(file_name="turbo_workflow1.dat.h5", file_type="data")
 
 
 ###############################################################################

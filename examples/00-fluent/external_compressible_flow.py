@@ -1,4 +1,4 @@
-""".. _ref_external_compressible_flow_tui_api:
+""".. _ref_external_compressible_flow_settings_api:
 
 Modeling External Compressible Flow
 -----------------------------------
@@ -85,7 +85,7 @@ meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
 meshing.workflow.TaskObject["Import Geometry"].Arguments.set_state(
     {
-        "FileName": wing_spaceclaim_file,
+        "FileName": wing_intermediary_file,
     }
 )
 
@@ -239,66 +239,61 @@ solver = meshing.switch_to_solver()
 # reports a number of other mesh features that are checked. Any errors in the
 # mesh are reported.
 
-solver.tui.mesh.check()
+solver.mesh.check()
 
 ###############################################################################
 # Define model
 # ~~~~~~~~~~~~
 
-solver.tui.define.models.viscous.kw_sst("yes")
+solver.setup.models.viscous.model = "k-omega"
+
+solver.setup.models.viscous.k_omega_model = "sst"
 
 ###############################################################################
 # Define materials
 # ~~~~~~~~~~~~~~~~
 
-solver.setup.materials.fluid["air"].density.option = "ideal-gas"
+air = solver.setup.materials.fluid["air"]
 
-solver.setup.materials.fluid["air"].viscosity.option = "sutherland"
+air.density.option = "ideal-gas"
 
-solver.setup.materials.fluid[
-    "air"
-].viscosity.sutherland.option = "three-coefficient-method"
+air.viscosity.option = "sutherland"
 
-solver.setup.materials.fluid["air"].viscosity.sutherland.reference_viscosity = 1.716e-05
+air.viscosity.sutherland.option = "three-coefficient-method"
 
-solver.setup.materials.fluid["air"].viscosity.sutherland.reference_temperature = 273.11
+air.viscosity.sutherland.reference_viscosity = 1.716e-05
 
-solver.setup.materials.fluid["air"].viscosity.sutherland.effective_temperature = 110.56
+air.viscosity.sutherland.reference_temperature = 273.11
+
+air.viscosity.sutherland.effective_temperature = 110.56
 
 ###############################################################################
 # Boundary Conditions
 # ~~~~~~~~~~~~~~~~~~~
 
-solver.setup.boundary_conditions.pressure_far_field[
+pressure_farfield = solver.setup.boundary_conditions.pressure_far_field[
     "pressure_farfield"
-].gauge_pressure = 0
+]
 
-solver.setup.boundary_conditions.pressure_far_field["pressure_farfield"].m = 0.8395
+pressure_farfield.gauge_pressure = 0
 
-solver.setup.boundary_conditions.pressure_far_field["pressure_farfield"].t = 255.56
+pressure_farfield.m = 0.8395
 
-solver.setup.boundary_conditions.pressure_far_field["pressure_farfield"].flow_direction[
-    "x"
-].option = 0.998574
+pressure_farfield.t = 255.56
 
-solver.setup.boundary_conditions.pressure_far_field["pressure_farfield"].flow_direction[
-    "y"
-].option = 0.053382
+pressure_farfield.flow_direction[0] = 0.998574
 
-solver.setup.boundary_conditions.pressure_far_field[
-    "pressure_farfield"
-].turb_intensity = 5
+pressure_farfield.flow_direction[2] = 0.053382
 
-solver.setup.boundary_conditions.pressure_far_field[
-    "pressure_farfield"
-].turb_viscosity_ratio = 10
+pressure_farfield.turb_intensity = 0.05
 
+pressure_farfield.turb_viscosity_ratio = 10
 
 ###############################################################################
 # Operating Conditions
 # ~~~~~~~~~~~~~~~~~~~~
 
-solver.operating_conditions.operating_pressure = 80600
+solver.setup.general.operating_conditions.operating_pressure = 80600
 
 ###############################################################################
 # Initialize flow field
@@ -312,21 +307,21 @@ solver.solution.initialization.hybrid_initialize()
 # ~~~~~~~~~~~~~~
 # Solve the case file (``external_compressible1.cas.h5``).
 
-solver.file.write("external_compressible.cas.h5")
+solver.file.write(file_name="external_compressible.cas.h5", file_type="case")
 
 ###############################################################################
 # Solve for 25 iterations
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Solve for 25 iterations (100 iterations is recommended, however for this example 25 is sufficient).
 
-solver.solution.run_calculation.iterate(number_of_iterations=25)
+solver.solution.run_calculation.iterate(iter_count=25)
 
 ###############################################################################
 # Write final case file and data
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Write the final case file and the data.
 
-solver.file.write("external_compressible1.cas.h5")
+solver.file.write(file_name="external_compressible1.cas.h5", file_type="case")
 
 ###############################################################################
 # Close Fluent
