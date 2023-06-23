@@ -817,7 +817,7 @@ class MeshingQueries:
 
     def get_edge_zone_id_list_of_object(self, object) -> Any:
         """
-        Return a list of edge zones by ID in the specified face zone labels of an object
+        Return a list of edge zones by ID in the specified face zone labels of an object.
 
         .. code-block:: python
 
@@ -1005,7 +1005,7 @@ class MeshingQueries:
 
     def get_adjacent_cell_zones(self, list_or_name_or_pattern) -> Any:
         """
-        Return adjacent cell zones for given face zone
+        Return adjacent cell zones for given face zone.
 
         .. code-block:: python
 
@@ -1071,7 +1071,7 @@ class MeshingQueries:
 
     def get_adjacent_zones_by_edge_connectivity(self, list_or_name_or_pattern) -> Any:
         """
-        Return adjacent zones based on edge connectivity
+        Return adjacent zones based on edge connectivity.
 
         .. code-block:: python
 
@@ -1091,7 +1091,7 @@ class MeshingQueries:
 
     def get_adjacent_zones_by_node_connectivity(self, list_or_name_or_pattern) -> Any:
         """
-        Return adjacent zones based on node connectivity
+        Return adjacent zones based on node connectivity.
 
         .. code-block:: python
 

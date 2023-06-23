@@ -59,6 +59,7 @@ class InputParameter:
     @property
     def units(self) -> str:
         """Get the unit label of a Fluent input parameter.
+
         Returns
         -------
         str
@@ -69,6 +70,7 @@ class InputParameter:
     @property
     def numeric_value(self):
         """Get the numeric value of a Fluent input parameter.
+
         Returns
         -------
         float

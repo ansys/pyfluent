@@ -42,7 +42,7 @@ class SolverIcing(Solver):
 
     @property
     def _flserver(self):
-        """root datamodel object."""
+        """Root datamodel object."""
         if self._flserver_root is None:
             se = self.datamodel_service_se
             dm_module = tui_module = importlib.import_module(
@@ -53,5 +53,5 @@ class SolverIcing(Solver):
 
     @property
     def icing(self):
-        """instance of icing (Case.App) -> root datamodel object."""
+        """Instance of icing (Case.App) -> root datamodel object."""
         return self._flserver.Case.App
