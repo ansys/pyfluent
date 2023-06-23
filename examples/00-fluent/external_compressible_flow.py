@@ -63,11 +63,7 @@ wing_spaceclaim_file, wing_intermediary_file = [
 # four processors.
 
 meshing = pyfluent.launch_fluent(
-    precision="double",
-    processor_count=4,
-    mode="meshing",
-    cwd=pyfluent.EXAMPLES_PATH,
-    product_version="23.1.0",
+    precision="double", processor_count=4, mode="meshing", cwd=pyfluent.EXAMPLES_PATH
 )
 
 ###############################################################################
@@ -255,89 +251,82 @@ solver.tui.define.models.viscous.kw_sst("yes")
 # Define materials
 # ~~~~~~~~~~~~~~~~
 
-solver.tui.define.materials.change_create(
-    "air",
-    "air",
-    "yes",
-    "ideal-gas",
-    "no",
-    "no",
-    "yes",
-    "sutherland",
-    "three-coefficient-method",
-    "1.716e-05",
-    "273.11",
-    "110.56",
-    "no",
-    "no",
-    "no",
-)
+solver.setup.materials.fluid["air"].density.option = "ideal-gas"
+
+solver.setup.materials.fluid["air"].viscosity.option = "sutherland"
+
+solver.setup.materials.fluid[
+    "air"
+].viscosity.sutherland.option = "three-coefficient-method"
+
+solver.setup.materials.fluid["air"].viscosity.sutherland.reference_viscosity = 1.716e-05
+
+solver.setup.materials.fluid["air"].viscosity.sutherland.reference_temperature = 273.11
+
+solver.setup.materials.fluid["air"].viscosity.sutherland.effective_temperature = 110.56
 
 ###############################################################################
 # Boundary Conditions
 # ~~~~~~~~~~~~~~~~~~~
 
-solver.tui.define.boundary_conditions.pressure_far_field(
-    "pressure_farfield",
-    "no",
-    "0",
-    "no",
-    "0.8395",
-    "no",
-    "255.56",
-    "yes",
-    "no",
-    "0.998574",
-    "no",
-    "0",
-    "no",
-    "0.053382",
-    "no",
-    "no",
-    "yes",
-    "5",
-    "10",
-)
+solver.setup.boundary_conditions.pressure_far_field[
+    "pressure_farfield"
+].gauge_pressure = 0
+
+solver.setup.boundary_conditions.pressure_far_field["pressure_farfield"].m = 0.8395
+
+solver.setup.boundary_conditions.pressure_far_field["pressure_farfield"].t = 255.56
+
+solver.setup.boundary_conditions.pressure_far_field["pressure_farfield"].flow_direction[
+    "x"
+].option = 0.998574
+
+solver.setup.boundary_conditions.pressure_far_field["pressure_farfield"].flow_direction[
+    "y"
+].option = 0.053382
+
+solver.setup.boundary_conditions.pressure_far_field[
+    "pressure_farfield"
+].turb_intensity = 5
+
+solver.setup.boundary_conditions.pressure_far_field[
+    "pressure_farfield"
+].turb_viscosity_ratio = 10
+
 
 ###############################################################################
 # Operating Conditions
 # ~~~~~~~~~~~~~~~~~~~~
 
-solver.tui.define.operating_conditions.operating_pressure("80600")
-
-###############################################################################
-# Reference Values
-# ~~~~~~~~~~~~~~~~
-
-solver.tui.report.reference_values.compute.pressure_far_field("pressure_farfield")
+solver.operating_conditions.operating_pressure = 80600
 
 ###############################################################################
 # Initialize flow field
 # ~~~~~~~~~~~~~~~~~~~~~
 # Initialize the flow field using hybrid initialization.
 
-solver.tui.solve.initialize.hyb_initialization()
+solver.solution.initialization.hybrid_initialize()
 
 ###############################################################################
 # Save case file
 # ~~~~~~~~~~~~~~
 # Solve the case file (``external_compressible1.cas.h5``).
 
-solver.tui.file.write_case("external_compressible.cas.h5")
+solver.file.write("external_compressible.cas.h5")
 
 ###############################################################################
 # Solve for 25 iterations
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Solve for 25 iterations (100 iterations is recommended, however for this example 25 is sufficient).
 
-solver.tui.solve.iterate(25)
+solver.solution.run_calculation.iterate(number_of_iterations=25)
 
 ###############################################################################
 # Write final case file and data
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Write the final case file and the data.
 
-solver.tui.file.write_case_data("external_compressible1.cas.h5")
+solver.file.write("external_compressible1.cas.h5")
 
 ###############################################################################
 # Close Fluent
