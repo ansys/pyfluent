@@ -391,7 +391,7 @@ class DataModelGenerator:
                             heading=f"{first_heading}.datamodel.{name}",
                             module_name=f"ansys.fluent.core.datamodel_{self.version}.{name}",
                             class_name="Root",
-                            noindex=info.rules == "preferences" and mode != "solver",
+                            noindex=len(info.modes) > 1 and mode != "solver",
                         )
 
     def _delete_generated_files(self):
