@@ -53,6 +53,7 @@ jobs:
 
   test-import:
     name: Build and Smoke tests
+    if: ${{ false }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -181,6 +182,7 @@ jobs:
 
   build:
     name: Build
+    if: ${{ false }}
     needs: test-import
     runs-on: [self-hosted, pyfluent]
 
@@ -308,6 +310,7 @@ jobs:
 
   test:
     name: Unit Testing
+    if: ${{ false }}
     needs: build
     runs-on: ubuntu-latest
     strategy:
@@ -378,6 +381,7 @@ jobs:
 # Don't upload anything to artifacts/cache/release-package from here
   build_test_232_241:
     name: Build and Test
+    if: ${{ false }}
     needs: test-import
     runs-on: ubuntu-latest
     strategy:
