@@ -275,6 +275,71 @@ commands:
 
 .. _settings_root_section:
 
+Supporting Wildcards
+--------------------
+You can use wildcards when using named objects, list objects, and string list settings.
+For named objects and list objects, for instance:
+
+.. code-block::
+
+  >>> solver.setup.cell_zone_conditions.fluid["*"].source_terms["*mom*"]()
+
+can yield
+
+.. code-block::
+
+  {'fluid': {'source_terms': {'x-momentum': [], 'y-momentum': [], 'z-momentum': []}}}
+
+Also, when you have one ore more velocity inlets with "inlet" in their names:
+
+.. code-block::
+  >>> solver.setup.boundary_conditions.velocity_inlet["*inlet*"].vmag()
+
+yields
+
+.. code-block::
+
+  {'velo-inlet_2': {'vmag': {'option': 'value', 'value': 50}},
+  'velo-inlet_1': {'vmag': {'option': 'value', 'value': 35}}
+
+For string lists with allowed values, for instance:
+
+.. code-block::
+
+  >>> solver.results.graphics.contour['contour-1'].surfaces_list = 'in*'
+
+sets surfaces_list to all matches of surface names starting with"in" and when you prompt for the
+list of surfaces:
+
+
+.. code-block::
+  
+  >>> solver.results.graphics.contour['contour-1'].surfaces_list()
+
+you get
+
+.. code-block::
+  
+  ['in1', 'in2']
+
+The following list summarizes common wildcards:
+
+- `*` indicates zero or more occurrences of the preceding element. For example, `in*` will list
+only items starting with "in" such as in1 and in2, whereas *in* will list only items that have
+the string "in" within the name.
+- `?` substitutes for a single unknown character. For example, gr?y would list "grey" and "gray".
+- `[]` indicates a range of numbers or characters at the beginning of a string. For example, `[ot]`
+would match anything starting with "o" and anything starting with "t" in the name. Using
+`[a-z]` would match anything starting with a character between "a" and "z" inclusively, or
+using `[0-9]` would match the initial character with any number between "0" and "9" inclusively.
+- `^` indicates a boolean NOT function, or negation. For example, `^*in*` would list anything
+not containing "in".
+- `|` indicates a boolean OR function. For example, `*part*|*solid*` would list anything
+containing either "part" or "solid" such as part2-solid-1, part2-solid-2, part-3,
+solid, and solid-1.
+- `&` indicates a boolean AND function. For example, `*part*&*solid*` would list anything
+containing both "part" and "solid" such as part2-solid-1 and part2-solid-2.
+
 Root object
 -----------
 The ``root`` object (named solver in the preceding examples) is the top-level
