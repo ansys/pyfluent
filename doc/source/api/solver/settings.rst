@@ -308,7 +308,6 @@ For string lists with allowed values, for instance:
 sets surfaces_list to all matches of surface names starting with"in" and when you prompt for the
 list of surfaces:
 
-
 .. code-block::
   
   >>> solver.results.graphics.contour['contour-1'].surfaces_list()
