@@ -100,6 +100,7 @@ api-codegen:
 	@python codegen/allapigen.py
 	@rm -rf env
 
+build-doc-source: export SPHINXOPTSEXTRA="-W --keep-going"
 build-doc-source:
 	@sudo rm -rf doc/source/api/meshing/datamodel
 	@sudo rm -rf doc/source/api/meshing/tui
@@ -108,7 +109,6 @@ build-doc-source:
 	@sudo rm -rf doc/source/api/solver/_autosummary/settings
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@pip install -r requirements/requirements_doc.txt
-	@export SPHINXOPTSEXTRA="-W --keep-going"
 	@xvfb-run make -C doc html
 
 build-all-docs:
