@@ -100,7 +100,7 @@ api-codegen:
 	@python codegen/allapigen.py
 	@rm -rf env
 
-build-doc-source: export SPHINXOPTSEXTRA="-W --keep-going"
+build-doc-source: export SPHINXOPTSEXTRA=-W --keep-going
 build-doc-source:
 	@sudo rm -rf doc/source/api/meshing/datamodel
 	@sudo rm -rf doc/source/api/meshing/tui
