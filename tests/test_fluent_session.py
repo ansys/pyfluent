@@ -66,9 +66,9 @@ def test_server_exits_when_session_goes_out_of_scope(with_launching_container) -
     fluent_host_pid, cortex_host, inside_container = f()
 
     for _ in range(31):
-        if (
-            inside_container and cortex_host not in get_container_ids()
-        ) or not psutil.pid_exists(fluent_host_pid):
+        if (inside_container and cortex_host not in get_container_ids()) or (
+            not inside_container and not psutil.pid_exists(fluent_host_pid)
+        ):
             break
         time.sleep(1)
 
