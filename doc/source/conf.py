@@ -45,6 +45,8 @@ if skip_examples:
 else:
     extensions.append("sphinx_gallery.gen_gallery")
 
+typehints_document_rtype = False
+
 # Intersphinx mapping
 intersphinx_mapping = {
     "python": ("https://docs.python.org/", None),
