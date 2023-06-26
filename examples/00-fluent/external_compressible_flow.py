@@ -63,7 +63,10 @@ wing_spaceclaim_file, wing_intermediary_file = [
 # four processors.
 
 meshing = pyfluent.launch_fluent(
-    precision="double", processor_count=4, mode="meshing", cwd=pyfluent.EXAMPLES_PATH
+    precision="double",
+    processor_count=4,
+    mode="meshing",
+    cwd=pyfluent.EXAMPLES_PATH,
 )
 
 ###############################################################################
@@ -244,6 +247,10 @@ solver.mesh.check()
 ###############################################################################
 # Define model
 # ~~~~~~~~~~~~
+# Set the k-w sst turbulence model.
+
+# model : k-omega
+# k-omega model : sst
 
 solver.setup.models.viscous.model = "k-omega"
 
@@ -252,6 +259,14 @@ solver.setup.models.viscous.k_omega_model = "sst"
 ###############################################################################
 # Define materials
 # ~~~~~~~~~~~~~~~~
+# Modify the default material ``air`` to account for compressibility and variations of the thermophysical properties with temperature.
+
+# density : ideal-gas
+# viscosity : sutherland
+# viscosity method : three-coefficient-method
+# reference viscosity : 1.716e-05 [kg/(m s)]
+# reference temperature : 273.11 [K]
+# effective temperature : 110.56 [K]
 
 air = solver.setup.materials.fluid["air"]
 
@@ -270,6 +285,15 @@ air.viscosity.sutherland.effective_temperature = 110.56
 ###############################################################################
 # Boundary Conditions
 # ~~~~~~~~~~~~~~~~~~~
+# Set the boundary conditions for ``pressure_farfield``.
+
+# gauge pressure : 0 [Pa]
+# mach number : 0.8395
+# temperature : 255.56 [K]
+# x-component of flow direction : 0.998574
+# z-component of flow direction : 0.053382
+# turbulent intensity : 5 [%]
+# turbulent viscosity ratio : 10
 
 pressure_farfield = solver.setup.boundary_conditions.pressure_far_field[
     "pressure_farfield"
@@ -292,6 +316,9 @@ pressure_farfield.turb_viscosity_ratio = 10
 ###############################################################################
 # Operating Conditions
 # ~~~~~~~~~~~~~~~~~~~~
+# Set the operating conditions.
+
+# operating pressure : 80600 [Pa]
 
 solver.setup.general.operating_conditions.operating_pressure = 80600
 
