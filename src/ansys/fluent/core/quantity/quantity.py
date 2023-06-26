@@ -102,7 +102,7 @@ class Quantity(float):
             Name of caller function.
         Returns
         -------
-        : str
+        str
             SI unit string of new quantity.
         """
         # Cannot perform operations between quantities with opposing dimensions
@@ -127,7 +127,7 @@ class Quantity(float):
 
     @property
     def value(self):
-        """Real value"""
+        """Real value."""
         return self._value
 
     @value.setter
@@ -136,22 +136,22 @@ class Quantity(float):
 
     @property
     def units(self):
-        """Unit string"""
+        """Unit string."""
         return self._unit
 
     @property
     def si_value(self):
-        """SI conversion value"""
+        """SI conversion value."""
         return self._si_value
 
     @property
     def si_units(self):
-        """SI conversion unit string"""
+        """SI conversion unit string."""
         return self._si_units
 
     @property
     def dimensions(self):
-        """Dimensions"""
+        """Dimensions."""
         return self._dimensions.dimensions
 
     @property
@@ -161,7 +161,7 @@ class Quantity(float):
 
     @property
     def type(self):
-        """Type"""
+        """Type."""
         return self._type
 
     def to(self, to_units: str) -> "Quantity":
@@ -174,7 +174,7 @@ class Quantity(float):
 
         Returns
         -------
-        : Quantity
+        Quantity
             Quantity object containing desired quantity conversion.
         """
 
@@ -202,7 +202,7 @@ class Quantity(float):
 
         Returns
         -------
-        : Quantity
+        Quantity
             Quantity object containing desired unit system conversion.
         """
 

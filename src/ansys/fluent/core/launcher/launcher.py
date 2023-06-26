@@ -260,7 +260,10 @@ def launch_remote_fluent(
 
     Returns
     -------
-    Union[Meshing, PureMeshing, Solver, SolverIcing]
+    :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
+    :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
+    :class:`~ansys.fluent.core.session_solver.Solver`, \
+    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
         Session object.
     """
     pim = pypim.connect()
@@ -575,7 +578,10 @@ def launch_fluent(
 
     Returns
     -------
-    Union[Meshing, PureMeshing, Solver, SolverIcing]
+    :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
+    :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
+    :class:`~ansys.fluent.core.session_solver.Solver`, \
+    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
         Session object.
 
     Notes

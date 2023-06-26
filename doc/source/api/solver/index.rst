@@ -3,9 +3,10 @@
 Solver
 ======
 
-The ``solver`` module allows you to use Fluent solver capabilities from Python. You
-can use both :ref:`ref_solver_tui` commands and :ref:`ref_settings` to access Fluent
-events, monitoring, and field data (surface, scalar, and vector). 
+The :obj:`~ansys.fluent.core.session_solver.Solver` object allows you to use Fluent solver capabilities
+from Python. You can use both :ref:`TUI<ref_solver_tui>` commands
+and :ref:`settings objects <ref_settings>` to access Fluent events, monitoring,
+and field data (surface, scalar, and vector).
 
 .. currentmodule:: ansys.fluent.core.solver
 
