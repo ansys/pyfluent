@@ -256,22 +256,63 @@ The ``is_active()`` method returns ``True`` if an object or command
 is currently active.
 
 The ``get_active_child_names`` method returns a list of
-active children:
-
-.. code-block::
+active children::
 
   >>> solver.setup.models.get_active_child_names()
   ['energy', 'multiphase', 'viscous']
 
-
 The ``get_active_command_names`` method returns the list of active
-commands:
-
-.. code-block::
+commands::
 
   >>> solver.solution.run_calculation.get_active_command_names()
   ['iterate']
 
+Supporting wildcards
+--------------------
+You can use wildcards when using named objects, list objects, and string list settings.
+For named objects and list objects, for instance::
+
+  >>> solver.setup.cell_zone_conditions.fluid["*"].source_terms["*mom*"]()
+  {'fluid': {'source_terms': {'x-momentum': [], 'y-momentum': [], 'z-momentum': []}}}
+
+Also, when you have one or more velocity inlets with "inlet" in their names::
+
+  >>> solver.setup.boundary_conditions.velocity_inlet["*inlet*"].vmag()
+  {'velo-inlet_2': {'vmag': {'option': 'value', 'value': 50}},
+  'velo-inlet_1': {'vmag': {'option': 'value', 'value': 35}}
+
+For string lists with allowed values, for instance::
+
+  >>> solver.results.graphics.contour['contour-1'].surfaces_list = 'in*'
+
+sets ``surfaces_list`` to all matches of surface names starting with ``in``, so when you prompt for the
+list of surfaces::
+
+  >>> solver.results.graphics.contour['contour-1'].surfaces_list()
+  ['in1', 'in2']
+
+The following list summarizes common wildcards:
+
+- ``*`` indicates zero or more occurrences of the preceding element. For example, ``'in*'`` lists
+  only items starting with "in" such as in1 and in2, whereas *in* lists only items that have
+  the string "in" within the name.
+
+- ``?`` substitutes for a single unknown character. For example, ``'gr?y'`` would list "grey" and "gray".
+
+- ``[]`` indicates a range of numbers or characters at the beginning of a string. For example,
+  ``'[to]'`` would match anything starting with "t" and anything starting with "o" in the name. Using
+  ``'[a-z]'`` would match anything starting with a character between "a" and "z" inclusively, or
+  using ``'[0-9]'`` would match the initial character with any number between "0" and "9" inclusively.
+
+- ``^`` indicates a Boolean NOT function, or negation. For example, ``'^*in*'`` would list anything
+  not containing "in".
+
+- ``|`` indicates a Boolean OR function. For example, ``'*part*|*solid*'`` would list anything
+  containing either "part" or "solid" such as "part2-solid-1", "part2-solid-2", "part-3",
+  "solid", and "solid-1".
+
+- ``&`` indicates a Boolean AND function. For example, ``'*part*&*solid*'`` would list anything
+  containing both "part" and "solid" such as "part2-solid-1" and "part2-solid-2".
 
 .. _settings_root_section:
 
