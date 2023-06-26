@@ -54,7 +54,31 @@ Quantity
     >>> velocity_1 != velocity_3
     True
 
-.. automodule:: ansys.fluent.core.quantity
+.. automodule:: ansys.fluent.core.quantity.quantity
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+
+.. automodule:: ansys.fluent.core.quantity.dimensions
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+
+.. automodule:: ansys.fluent.core.quantity.quantity_map
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+
+.. automodule:: ansys.fluent.core.quantity.units_table
    :members:
    :show-inheritance:
    :undoc-members:

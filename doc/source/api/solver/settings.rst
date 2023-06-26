@@ -7,7 +7,8 @@ settings and issue commands to be executed in the Fluent solver.
 
 Accessing solver settings
 -------------------------
-An appropriate call to the ``launch_fluent`` function returns an object (named ``solver`` in
+An appropriate call to the :func:`~ansys.fluent.core.launcher.launcher.launch_fluent`
+function returns an object (named ``solver`` in
 the following code snippets) whose interface directly exposes the
 :ref:`root<settings_root_section>` of the solver settings hierarchy.
 
@@ -17,31 +18,43 @@ the following code snippets) whose interface directly exposes the
   >>> solver = pyfluent.launch_fluent(mode="solver")
 
 
-The ``solver`` object contains attributes such as ``file``, ``setup``, ``solution``, and
-``results``, which are also instances of settings objects. Note that the last three are
+The ``solver`` object contains attributes such as :obj:`~ansys.fluent.core.solver.settings_231.file.file`,
+:obj:`~ansys.fluent.core.solver.settings_231.setup.setup`,
+:obj:`~ansys.fluent.core.solver.settings_231.solution.solution`, and
+:obj:`~ansys.fluent.core.solver.settings_231.results.results`,
+which are also instances of settings objects. Note that the last three are
 top-level nodes in the outline tree view in Fluent's graphical user interface (GUI) --- much
 of this settings hierarchy has been designed in close alignment with this GUI hierarchy.
 
 Types of settings objects
 -------------------------
-A settings object can be one of the primitive types: ``Integer``, ``Real``,``String``, and
-``Boolean``. A settings object can also be one of the three types of container objects:
-``Group``, ``NamedObject``, and ``ListObject``.
+A settings object can be one of the primitive types: :obj:`~ansys.fluent.core.solver.flobject.Integer`,
+:obj:`~ansys.fluent.core.solver.flobject.Real`,
+:obj:`~ansys.fluent.core.solver.flobject.String`, and
+:obj:`~ansys.fluent.core.solver.flobject.Boolean`. A settings object can also be one of the three types
+of container objects: :obj:`~ansys.fluent.core.solver.flobject.Group`,
+:obj:`~ansys.fluent.core.solver.flobject.NamedObject`, and
+:obj:`~ansys.fluent.core.solver.flobject.ListObject`.
 
-- The ``Group`` type is a static container with predefined child objects that
-  can be accessed as attributes. For example, in ``setup.models.energy``
-  ``energy`` is a child of ``models``, which itself is a child of ``setup``, and each of those 
-  three objects is a ``Group``. The names of the child objects of a group can be accessed 
+- The :obj:`~ansys.fluent.core.solver.flobject.Group` type is a static container with predefined child objects that
+  can be accessed as attributes. For example, using the expression ``solver.setup.models.energy``,
+  which resolves to :obj:`~ansys.fluent.core.solver.settings_231.energy.energy`,
+  which is a child of :obj:`~ansys.fluent.core.solver.settings_231.models_1.models`,
+  which itself is a child of :obj:`~ansys.fluent.core.solver.settings_231.setup.setup`, and each of those
+  three objects is a ``Group``.
+  The names of the child objects of a group can be accessed
   via ``<Group>.child_names``.
 
-- The ``NamedObject`` type is a container holding dynamically created named objects. For
+- The :obj:`~ansys.fluent.core.solver.flobject.NamedObject` type is a container holding dynamically
+  created named objects. For
   a given ``NamedObject`` container, each contained object is of the same
   specific type. A given named object can be accessed using the index operator. For example,
   ``solver.setup.boundary_conditions.velocity_inlet['inlet2']`` yields a ``velocity_inlet``
   object with the name ``inlet2``, assuming it exists. The current list of named object
   children can be accessed via ``<NamedObject>.get_object_names()``.
 
-- The ``ListObject`` type is a container holding dynamically created unnamed objects of
+- The :obj:`~ansys.fluent.core.solver.flobject.ListObject` type is a container holding dynamically
+  created unnamed objects of
   its specified child type (accessible via a ``child_object_type`` attribute) in a
   list. Children of a ``ListObject`` object can be accessed using the index operator.
   For example, ``solver.setup.cell_zone_conditions.fluid['fluid-1'].source_terms['mass'][2]``
@@ -318,6 +331,5 @@ The following list summarizes common wildcards:
 
 Root object
 -----------
-The ``root`` object (named solver in the preceding examples) is the top-level
+The :obj:`~ansys.fluent.core.solver.settings_231.root.root` object (named solver in the preceding examples) is the top-level
 solver settings object. It contains all other settings objects in a hierarchical structure.
-For more information, see :ref:`root`.

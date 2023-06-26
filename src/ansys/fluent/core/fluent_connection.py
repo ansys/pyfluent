@@ -100,11 +100,11 @@ class FluentConnectionProperties:
     inside_container: bool = None
 
     def list_names(self) -> list:
-        """List all property names."""
+        """Returns list with all property names."""
         return [k for k, _ in vars(self).items()]
 
     def list_values(self) -> dict:
-        """Dictionary with all property names and values."""
+        """Returns dictionary with all property names and values."""
         return vars(self)
 
 

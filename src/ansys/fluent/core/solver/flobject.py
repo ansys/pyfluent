@@ -10,10 +10,10 @@ Calling an object will return its current value.
 
 Example
 -------
-r = flobject.get_root(proxy)
-is_energy_on = r.setup.models.energy.enabled()
-r.setup.models.energy.enabled = True
-r.boundary_conditions.velocity_inlet['inlet'].vmag.constant = 20
+>>> r = flobject.get_root(proxy)
+>>> is_energy_on = r.setup.models.energy.enabled()
+>>> r.setup.models.energy.enabled = True
+>>> r.boundary_conditions.velocity_inlet['inlet'].vmag.constant = 20
 """
 import collections
 import fnmatch
