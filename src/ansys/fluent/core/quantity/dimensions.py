@@ -25,7 +25,7 @@ class Dimensions(object):
             )
 
         self._units_table = q.UnitsTable()
-        unit_sys = unit_sys or "SI"
+        unit_sys = unit_sys or self._units_table.unit_systems["SI"]
 
         if units is not None:
             self._unit = units
@@ -36,7 +36,7 @@ class Dimensions(object):
                 dimensions=dimensions, unit_sys=unit_sys
             )
 
-    def _dim_to_units(self, dimensions: list, unit_sys: str) -> str:
+    def _dim_to_units(self, dimensions: list, unit_sys: list) -> str:
         """Convert a dimensions list into a unit string.
 
         Parameters
@@ -44,7 +44,7 @@ class Dimensions(object):
         dimensions : list
             List of unit dimensions.
 
-        unit_sys : str
+        unit_sys : list
             Unit system of dimensions.
 
         Returns
@@ -59,9 +59,9 @@ class Dimensions(object):
         # Define unit term and associated value from dimension with dimensions list
         for idx, dim in enumerate(dimensions):
             if dim == 1.0:
-                units += f"{self._units_table.unit_systems[unit_sys][idx]} "
+                units += f"{unit_sys[idx]} "
             elif dim != 0.0:
-                units += f"{self._units_table.unit_systems[unit_sys][idx]}^{dim} "
+                units += f"{unit_sys[idx]}^{dim} "
 
         return dimensions, units[:-1]
 
@@ -95,7 +95,9 @@ class Dimensions(object):
             # retrieve data associated with fundamental unit
             if unit_term in self._units_table.fundamental_units:
                 idx = (
-                    self._units_table.fundamental_units[unit_term]["dimension_order"]
+                    self._units_table.dimension_order[
+                        self._units_table.fundamental_units[unit_term]["type"]
+                    ]
                     - 1
                 )
                 dimensions[idx] += unit_term_power

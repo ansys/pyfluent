@@ -282,22 +282,25 @@ def test_to_39():
 
 
 def test_convert_40():
+    newSys = q.UnitSystem(unit_sys="SI")
     v = q.Quantity(2.0, "ft^-2")
-    convert = v.convert("SI")
+    convert = newSys.convert(v)
     assert convert.value == 2.0
     assert convert.units == "m^-2.0"
 
 
 def test_convert_41():
+    newSys = q.UnitSystem(unit_sys="CGS")
     v = q.Quantity(1.0, "mm^3")
-    convert = v.convert("CGS")
+    convert = newSys.convert(v)
     assert convert.value == 1.0
     assert convert.units == "cm^3.0"
 
 
 def test_convert_42():
+    newSys = q.UnitSystem(unit_sys="BT")
     v = q.Quantity(7.0, "K mol")
-    convert = v.convert("BT")
+    convert = newSys.convert(v)
     assert convert.value == 7.0
     assert convert.units == "R slugmol"
 
