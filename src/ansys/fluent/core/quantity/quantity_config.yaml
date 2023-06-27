@@ -1,12 +1,94 @@
 ---
+# Dimension Order
+# ---------------
+#
+# Dimension type : Order
+
+dimension_order:
+  Mass: 1
+  Length: 2
+  Time: 3
+  Temperature: 4
+  Temperature Difference: 4
+  Angle: 5 
+  Chemical Amount: 6
+  Light: 7
+  Current: 8
+  Solid Angle: 9
+
+# Multipliers
+# -----------
+#
+# Multiplier prefix : Multiplier prefix value
+
+multipliers:
+  d: 0.1
+  c: 0.01
+  m: 0.001
+  u: 1.0e-06
+  n: 1.0e-09
+  p: 1.0e-12
+  f: 1.0e-15
+  a: 1.0e-18
+  z: 1.0e-21
+  y: 1.0e-24
+  da: 10
+  h: 100
+  k: 1000
+  M: 1.0e+06
+  G: 1.0e+09
+  T: 1.0e+12
+  P: 1.0e+15
+  E: 1.0e+18
+  Z: 1.0e+21
+  Y: 1.0e+24
+
+# Unit Systems
+# ------------
+#
+# Predefined unit system refix : Unit system units
+
+unit_systems:
+  SI: 
+    - kg 
+    - m
+    - s
+    - K
+    - radian
+    - mol
+    - cd
+    - A
+    - sr
+  CGS:
+    - g
+    - cm
+    - s
+    - K
+    - radian
+    - mol
+    - cd
+    - A
+    - sr
+  BT:
+    - slug
+    - ft
+    - s
+    - R
+    - radian
+    - slugmol
+    - cd
+    - A
+    - sr
+
 # Fundamental Units
 # -----------------
+#
+# Custom units -> Add new units and their associated properties to the list below to use them within quantity. 
 # 
-# kg:                           (Primitive unit string composed of `type`, `factor`, `offset`, and `dimension order`)
-#   type: Mass                  (Type associated with unit string)
+# kg:                           (Primitive unit composed of `type`, `factor` and `offset`)
+#   type: Mass                  (Type associated with unit)
 #   factor: 1                   (SI conversion factor)
 #   offset: 0                   (SI conversion offset)
-#   dimension_order: 1          (Order of parent unit string within a Dimensions list)
 
 fundamental_units:
   kg:
@@ -187,87 +269,6 @@ derived_units:
   coulomb:
     composition: A s
     factor: 1
-
-# Dimension Order
-# ---------------
-#
-# Dimension type : Order
-
-dimension_order:
-  Mass: 1
-  Length: 2
-  Time: 3
-  Temperature: 4
-  Temperature Difference: 4
-  Angle: 5 
-  Chemical Amount: 6
-  Light: 7
-  Current: 8
-  Solid Angle: 9
-
-# Multipliers
-# -----------
-#
-# Multiplier prefix : Multiplier prefix value
-
-multipliers:
-  d: 0.1
-  c: 0.01
-  m: 0.001
-  u: 1.0e-06
-  n: 1.0e-09
-  p: 1.0e-12
-  f: 1.0e-15
-  a: 1.0e-18
-  z: 1.0e-21
-  y: 1.0e-24
-  da: 10
-  h: 100
-  k: 1000
-  M: 1.0e+06
-  G: 1.0e+09
-  T: 1.0e+12
-  P: 1.0e+15
-  E: 1.0e+18
-  Z: 1.0e+21
-  Y: 1.0e+24
-
-# Unit Systems
-# ------------
-#
-# Predefined unit system refix : Unit system units
-
-unit_systems:
-  SI: 
-    - kg 
-    - m
-    - s
-    - K
-    - radian
-    - mol
-    - cd
-    - A
-    - sr
-  CGS:
-    - g
-    - cm
-    - s
-    - K
-    - radian
-    - mol
-    - cd
-    - A
-    - sr
-  BT:
-    - slug
-    - ft
-    - s
-    - R
-    - radian
-    - slugmol
-    - cd
-    - A
-    - sr
 
 # Quantity Map
 # ------------

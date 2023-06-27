@@ -21,8 +21,6 @@ class Quantity(float):
     -------
     to()
         Converts to given unit string.
-    convert()
-        Converts to given unit system.
 
     Returns
     -------
@@ -192,31 +190,6 @@ class Quantity(float):
 
         return new_obj
 
-    def convert(self, to_sys: str) -> "Quantity":
-        """Perform unit system conversions.
-
-        Parameters
-        ----------
-        to_sys : str
-            Desired unit system to convert to.
-
-        Returns
-        -------
-        : Quantity
-            Quantity object containing desired unit system conversion.
-        """
-
-        # Verify specified system is supported
-        if to_sys not in self._units_table.unit_systems:
-            raise ValueError(
-                f"'{to_sys}' is not a supported unit system. Only {', '.join(self._units_table.unit_systems.keys())} are supported."
-            )
-
-        # Create new dimensions with desired unit system
-        new_dim = q.Dimensions(dimensions=self.dimensions, unit_sys=to_sys)
-
-        return Quantity(value=self.value, units=new_dim.units)
-
     def __str__(self):
         return f'({self.value}, "{self.units}")'
 
@@ -230,7 +203,7 @@ class Quantity(float):
         return Quantity(value=new_si_value, units=new_dimensions.units)
 
     def __mul__(self, __value):
-        new_units = self._arithmetic_precheck(__value, "__mul__")
+        new_units = self._arithmetic_precheck(__value, caller="__mul__")
         if isinstance(__value, Quantity):
             temp_dimensions = [
                 dim + __value.dimensions[idx] for idx, dim in enumerate(self.dimensions)
@@ -247,7 +220,7 @@ class Quantity(float):
         return self.__mul__(__value)
 
     def __truediv__(self, __value):
-        new_units = self._arithmetic_precheck(__value, "__truediv__")
+        new_units = self._arithmetic_precheck(__value, caller="__truediv__")
         if isinstance(__value, Quantity):
             temp_dimensions = [
                 dim - __value.dimensions[idx] for idx, dim in enumerate(self.dimensions)

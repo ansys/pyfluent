@@ -308,7 +308,8 @@ def test_convert_42():
 def test_convert_43():
     v = q.Quantity(7.0, "K mol")
     with pytest.raises(ValueError) as e:
-        convert = v.convert("")
+        newSys = q.UnitSystem(unit_sys="")
+        newSys.convert(v)
 
 
 def test_repr_44():

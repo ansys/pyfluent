@@ -10,6 +10,8 @@ class Dimensions(object):
         Unit string of quantity.
     dimensions: list
         List of dimensions.
+    unit_sys: str
+        Unit system used for creating units.
 
     Returns
     -------

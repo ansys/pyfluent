@@ -32,12 +32,12 @@ class UnitsTable(object):
         with open(qc_path, "r") as qc_yaml:
             qc_data = yaml.safe_load(qc_yaml)
 
+        self._dimension_order: dict = qc_data["dimension_order"]
+        self._multipliers: dict = qc_data["multipliers"]
+        self._unit_systems: dict = qc_data["unit_systems"]
         self._api_quantity_map: dict = qc_data["api_quantity_map"]
         self._fundamental_units: dict = qc_data["fundamental_units"]
         self._derived_units: dict = qc_data["derived_units"]
-        self._multipliers: dict = qc_data["multipliers"]
-        self._unit_systems: dict = qc_data["unit_systems"]
-        self._dimension_order: dict = qc_data["dimension_order"]
 
     def _has_multiplier(self, unit_term: str) -> bool:
         """Check if a unit term contains a multiplier.
