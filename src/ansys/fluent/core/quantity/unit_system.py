@@ -27,31 +27,29 @@ class UnitSystem:
         self._units_table = q.UnitsTable()
 
         if name and unit_sys:
-            raise UnitSystemError(error=NAME_AND_UNIT_SYS)
+            raise UnitSystemError.NAME_AND_UNIT_SYS()
 
         if base_units and unit_sys:
-            raise UnitSystemError(error=BASE_UNITS_AND_UNIT_SYS)
+            raise UnitSystemError.BASE_UNITS_AND_UNIT_SYS()
 
         if base_units:
             if len(base_units) != 9:
-                raise UnitSystemError(error=BASE_UNITS_LENGTH(len(base_units)))
+                raise UnitSystemError.BASE_UNITS_LENGTH(len(base_units))
 
             for idx, unit in enumerate(base_units):
                 if unit not in self._units_table.fundamental_units:
-                    raise UnitSystemError(error=UNIT_UNDEFINED(unit))
+                    raise UnitSystemError.UNIT_UNDEFINED(unit)
 
                 if (idx + 1) != self._units_table.dimension_order[
                     self._units_table.fundamental_units[unit]["type"]
                 ]:
-                    raise UnitSystemError(
-                        UNIT_ORDER(
-                            t1=list(self._units_table.dimension_order.keys())[idx],
-                            o1=idx + 1,
-                            t2=self._units_table.fundamental_units[unit]["type"],
-                            o2=self._units_table.dimension_order[
-                                self._units_table.fundamental_units[unit]["type"]
-                            ],
-                        )
+                    raise UnitSystemError.UNIT_ORDER(
+                        t1=list(self._units_table.dimension_order.keys())[idx],
+                        o1=idx + 1,
+                        t2=self._units_table.fundamental_units[unit]["type"],
+                        o2=self._units_table.dimension_order[
+                            self._units_table.fundamental_units[unit]["type"]
+                        ],
                     )
 
             self._name = name
@@ -59,7 +57,7 @@ class UnitSystem:
 
         if unit_sys is not None:
             if unit_sys not in self._units_table.unit_systems:
-                raise UnitSystemError(INVALID_UNIT_SYS(unit_sys))
+                raise UnitSystemError.INVALID_UNIT_SYS(unit_sys)
 
             self._name = unit_sys
             self._base_units = self._units_table.unit_systems[unit_sys]
@@ -98,32 +96,33 @@ class UnitSystem:
 class UnitSystemError(ValueError):
     """Custom unit system errors."""
 
-    def __init__(self, error):
-        """Quantity errors with custom messages.
+    def __init__(self, err):
+        super().__init__(err)
 
-        Parameters
-        ----------
-        error: str
-            Error message.
-        """
-        self._error = error
+    @classmethod
+    def NAME_AND_UNIT_SYS(cls):
+        return cls("Cannot define `name` when using a pre-defined unit system.")
 
-    def __str__(self):
-        return self._error
+    @classmethod
+    def BASE_UNITS_AND_UNIT_SYS(cls):
+        return cls("Cannot define `base_units` when using a pre-defined unit system.")
 
+    @classmethod
+    def BASE_UNITS_LENGTH(cls, len):
+        return cls(f"`base_units` must contain 9 units, currently there are {len}.")
 
-# Error messages
-NAME_AND_UNIT_SYS = "Cannot define `name` when using a pre-defined unit system."
-BASE_UNITS_AND_UNIT_SYS = (
-    "Cannot define `base_units` when using a pre-defined unit system."
-)
-BASE_UNITS_LENGTH = (
-    lambda len: f"`base_units` must contain 9 units, currently there are {len}."
-)
-UNIT_UNDEFINED = (
-    lambda unit: f"`{unit}` is an undefined unit. To use `{unit}` add it to the `fundamental_units` table within `quantity_config.yaml`."
-)
-UNIT_ORDER = (
-    lambda t1, o1, t2, o2: f"Expected unit of type: `{t1}` (order: {o1}), received unit of type: `{t2}` (order: {o2})."
-)
-INVALID_UNIT_SYS = lambda sys: f"`{sys}` is not a supported unit system."
+    @classmethod
+    def UNIT_UNDEFINED(cls, unit):
+        return cls(
+            f"`{unit}` is an undefined unit. To use `{unit}` add it to the `fundamental_units` table within `quantity_config.yaml`."
+        )
+
+    @classmethod
+    def UNIT_ORDER(cls, t1, o1, t2, o2):
+        return cls(
+            f"Expected unit of type: `{t1}` (order: {o1}), received unit of type: `{t2}` (order: {o2})."
+        )
+
+    @classmethod
+    def INVALID_UNIT_SYS(cls, sys):
+        return cls(f"`{sys}` is not a supported unit system.")
