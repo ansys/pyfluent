@@ -171,15 +171,27 @@ class PyLocalBaseMeta(type):
             obj = self if obj is None else obj
             parent = obj
             if getattr(obj, "_parent", None):
-                parent = self._get_root(obj._parent)
+                parent = self.get_root(obj._parent)
             return parent
+
+        return wrapper
+
+    @classmethod
+    def __create_get_session(cls):
+        def wrapper(self, obj=None):
+            obj = self if obj is None else obj
+            parent = obj
+            if getattr(obj, "_parent", None):
+                parent = self.get_root(obj._parent)
+            return parent.session
 
         return wrapper
 
     def __new__(cls, name, bases, attrs):
         attrs["_get_ancestors_by_type"] = cls.__create_get_ancestors_by_type()
         attrs["_get_ancestors_by_name"] = cls.__create_get_ancestors_by_name()
-        attrs["_get_root"] = cls.__create_get_root()
+        attrs["get_root"] = cls.__create_get_root()
+        attrs["get_session"] = cls.__create_get_session()
         return super(PyLocalBaseMeta, cls).__new__(cls, name, bases, attrs)
 
 
@@ -337,8 +349,7 @@ class PyReferenceObjectMeta(PyLocalBaseMeta):
     def __create_getattr(cls):
         def wrapper(self, item):
             if item == "_object":
-                # import pdb; pdb.set_trace()
-                top_most_parent = self._get_root(self)
+                top_most_parent = self.get_root(self)
 
                 if self.session_id is None:
                     self.session_id = top_most_parent.session.id

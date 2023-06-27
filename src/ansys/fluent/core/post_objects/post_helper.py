@@ -16,7 +16,7 @@ class PostAPIHelper:
             return "_dummy_surface_for_pyfluent:" + local_surface_name.lower()
 
         def _get_api_handle(self):
-            return self.obj._get_root().session.tui.surface
+            return self.obj.get_root().session.tui.surface
 
         def _delete_if_exist_on_server(self):
             field_info = self.obj._api_helper.field_info()
@@ -88,15 +88,15 @@ class PostAPIHelper:
 
     def __init__(self, obj):
         self.obj = obj
-        self.field_info = lambda: obj._get_root().session.field_info
-        self.field_data = lambda: obj._get_root().session.field_data
-        self.monitors_manager = lambda: obj._get_root().session.monitors_manager
-        self.id = lambda: obj._get_root().session.id
+        self.field_info = lambda: obj.get_root().session.field_info
+        self.field_data = lambda: obj.get_root().session.field_data
+        self.monitors_manager = lambda: obj.get_root().session.monitors_manager
+        self.id = lambda: obj.get_root().session.id
         if obj.__class__.__name__ == "Surface":
             self.surface_api = PostAPIHelper._SurfaceAPI(obj)
 
     def remote_surface_name(self, local_surface_name):
-        local_surfaces_provider = self.obj._get_root()._local_surfaces_provider()
+        local_surfaces_provider = self.obj.get_root()._local_surfaces_provider()
         if local_surface_name in list(local_surfaces_provider):
             return PostAPIHelper._SurfaceAPI.surface_name_on_server(local_surface_name)
         else:
@@ -140,6 +140,6 @@ class PostAPIHelper:
         return unit_info
 
     def _scheme_str_to_py_list(self, scheme_eval_str):
-        session = self.obj._get_root().session
+        session = self.obj.get_root().session
         str = session.scheme_eval.string_eval(scheme_eval_str)
         return list(filter(None, re.split(r'[\s()"\']', str)))
