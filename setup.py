@@ -31,6 +31,7 @@ install_requires = [
     "h5py>=3.8.0",
     "lxml>=4.9.2",
     "pyyaml",
+    "docker",
 ]
 
 

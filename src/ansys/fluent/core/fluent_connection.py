@@ -2,23 +2,25 @@ from ctypes import c_int, sizeof
 from dataclasses import dataclass
 import itertools
 import logging
-import multiprocessing
-from multiprocessing.context import TimeoutError
 import os
 from pathlib import Path
 import socket
 import subprocess
 import threading
 import time
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 import warnings
 import weakref
 
+from docker.errors import DockerException, NotFound
+from docker.models.containers import Container
 import grpc
 
 from ansys.fluent.core.services.health_check import HealthCheckService
 from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
+from ansys.fluent.core.utils.execution import timeout_exec
 from ansys.platform.instancemanagement import Instance
+import docker
 
 logger = logging.getLogger("pyfluent.general")
 
@@ -58,20 +60,33 @@ class MonitorThread(threading.Thread):
             cb()
 
 
-def get_container_ids() -> List[str]:
-    """Get a list of docker container IDs."""
+def get_container(container_id_or_name: str) -> Union[bool, Container, None]:
+    """Get the Docker container object.
+
+    Returns
+    -------
+    Union[bool, Container, None]
+        If the system is not correctly set up to run Docker containers, returns ``None``.
+        If the container was not found, returns ``False``.
+        If the container is found, returns the associated Docker container object.
+
+    Notes
+    -----
+    See `Docker container`_ for more information.
+
+    .. _Docker container: https://docker-py.readthedocs.io/en/stable/containers.html#docker.models.containers.Container
+
+    """
+    if not isinstance(container_id_or_name, str):
+        container_id_or_name = str(container_id_or_name)
     try:
-        logger.debug("Attempting to get docker container IDs...")
-        proc = subprocess.Popen(
-            ["docker", "ps", "-q"], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL
-        )
-        output_bytes = proc.stdout.read()
-        output_str = output_bytes.decode()
-        ids = output_str.strip().split()
-    except:
-        logger.warning("Failed to get docker container IDs.")
-        ids = []
-    return ids
+        docker_client = docker.from_env()
+        container = docker_client.containers.get(container_id_or_name)
+    except NotFound:  # NotFound is a child from DockerException
+        return False
+    except DockerException:
+        return None
+    return container
 
 
 @dataclass(frozen=True)
@@ -99,7 +114,7 @@ class FluentConnectionProperties:
     cortex_pid: int = None
     cortex_host: str = None
     fluent_host_pid: int = None
-    inside_container: bool = None
+    inside_container: Union[bool, Container, None] = None
 
     def list_names(self) -> list:
         """Returns list with all property names."""
@@ -248,14 +263,21 @@ class FluentConnection:
             cortex_pwd = None
             fluent_host_pid = None
 
-        if inside_container is None and not remote_instance and cortex_host is not None:
-            logger.debug("Checking if Fluent is running inside a container.")
-            if cortex_host in get_container_ids():
-                logger.debug("Fluent is running inside a container.")
-                inside_container = True
-            else:
-                logger.debug("Assuming Fluent is not running inside a container.")
-                inside_container = False
+        if (
+            (inside_container is None or inside_container is True)
+            and not remote_instance
+            and cortex_host is not None
+        ):
+            logger.info("Checking if Fluent is running inside a container.")
+            inside_container = get_container(cortex_host)
+            logger.debug(f"get_container({cortex_host}): {inside_container}")
+            if inside_container is False:
+                logger.info("Fluent is not running inside a container.")
+            elif inside_container is None:
+                logger.info(
+                    "The current system does not support Docker containers. "
+                    "Assuming Fluent is not inside a container."
+                )
 
         self.connection_properties = FluentConnectionProperties(
             ip,
@@ -293,7 +315,6 @@ class FluentConnection:
 
         Examples
         --------
-
         >>> import ansys.fluent.core as pyfluent
         >>> session = pyfluent.launch_fluent()
         >>> session.force_exit()
@@ -346,7 +367,7 @@ class FluentConnection:
 
     def force_exit_container(self):
         """
-        Immediately terminates the docker container running the Fluent client,
+        Immediately terminates the Fluent client running inside a container,
         losing unsaved progress and data.
 
         Notes
@@ -355,17 +376,26 @@ class FluentConnection:
         in that case use :func:`force_exit()`.
         If the Fluent session is responsive, prefer using :func:`exit()` instead.
         """
-        if not self.connection_properties.inside_container:
+        if self._remote_instance is not None:
             logger.error(
-                f"Session is not inside a container, cannot kill Fluent container. "
-                f"Use force_exit() instead."
+                f"Fluent is running remotely, cannot terminate Fluent container."
             )
             return
-        if self._remote_instance is not None:
-            logger.error(f"Fluent is running remotely, cannot kill Fluent container.")
+        container = self.connection_properties.inside_container
+        if not container:
+            logger.error(
+                f"Session is not inside a container, cannot terminate Fluent container. "
+                f"Try force_exit() instead."
+            )
             return
         container_id = self.connection_properties.cortex_host
-        subprocess.run(["docker", "kill", container_id])
+        pid = self.connection_properties.fluent_host_pid
+        cleanup_filename = f"cleanup-fluent-{container_id}-{pid}.sh"
+        logger.debug(f"Executing Fluent container cleanup script: {cleanup_filename}")
+        if get_container(container_id):
+            container.exec_run(["bash", cleanup_filename], detach=True)
+        else:
+            logger.debug(f"Container not found, cancelling cleanup script execution.")
 
     def register_finalizer_cb(self, cb):
         """Register a callback to run with the finalizer."""
@@ -438,26 +468,17 @@ class FluentConnection:
                     )
 
         if timeout is None:
+            logger.info("Finalizing Fluent connection...")
             self._finalizer()
         else:
             if not self.health_check_service.is_serving:
                 logger.debug("gRPC service not working, cancelling soft exit call.")
             else:
-                logger.debug("Attempting session.exit()")
+                logger.info("Attempting to finalize Fluent connection...")
 
-                def _connection_finalizer(connection):
-                    return connection._finalizer()
-
-                pool = multiprocessing.pool.ThreadPool(processes=1)
-                async_result = pool.apply_async(_connection_finalizer, args=(self,))
-                try:
-                    _ = async_result.get(timeout=timeout)
-                    logger.debug("session.exit() successful")
-                    pool.close()
+                success = timeout_exec(self._finalizer, timeout)
+                if success:
                     return
-                except TimeoutError:
-                    logger.debug("session.exit() timeout")
-                    pool.terminate()
 
             logger.debug("Continuing...")
             if timeout_force:
@@ -466,11 +487,13 @@ class FluentConnection:
                     return
                 elif self.connection_properties.inside_container:
                     logger.debug(
-                        "Fluent running inside container, killing container..."
+                        "Fluent running inside container, cleaning up Fluent inside container..."
                     )
                     self.force_exit_container()
                 else:
-                    logger.debug("Fluent running locally, killing processes...")
+                    logger.debug(
+                        "Fluent running locally, cleaning up Fluent processes..."
+                    )
                     self.force_exit()
                 logger.debug("Done.")
             else:
@@ -484,6 +507,7 @@ class FluentConnection:
         finalizer_cbs,
         remote_instance,
     ) -> None:
+        logger.debug("FluentConnection exit method called.")
         if channel:
             for cb in finalizer_cbs:
                 cb()

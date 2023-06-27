@@ -1,6 +1,7 @@
 """Wrapper over the health check grpc service of Fluent."""
-
 from enum import Enum
+import logging
+import sys
 from typing import List, Tuple
 
 import grpc
@@ -9,6 +10,8 @@ from ansys.api.fluent.v0 import health_pb2 as HealthCheckModule
 from ansys.api.fluent.v0 import health_pb2_grpc as HealthCheckGrpcModule
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
+
+logger = logging.getLogger("pyfluent.general")
 
 
 class HealthCheckService:
@@ -81,6 +84,10 @@ class HealthCheckService:
             try:
                 return self.check_health()
             except Exception:
+                ex_type, ex_value, _ = sys.exc_info()
+                logger.info(
+                    f"HealthCheckService.status() caught {ex_type.__name__}: {ex_value}"
+                )
                 return self.Status.NOT_SERVING.name
         else:
             return self.Status.NOT_SERVING.name

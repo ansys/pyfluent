@@ -18,7 +18,7 @@ from ansys.fluent.core.session import (
 )
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
-from ansys.fluent.core.utils.async_execution import asynchronous
+from ansys.fluent.core.utils.execution import asynchronous
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 from ansys.fluent.core.workflow import WorkflowWrapper
 
