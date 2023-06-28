@@ -36,6 +36,15 @@ def _is_windows():
     return platform.system() == "Windows"
 
 
+class LaunchMode(Enum):
+    """An enumeration over supported Fluent launch modes."""
+
+    LAUNCH_FLUENT_STANDALONE = 1
+    LAUNCH_FLUENT_PIM = 2
+    LAUNCH_FLUENT_CONTAINER = 3
+    CONNECT_WITH_RUNNING_FLUENT = 4
+
+
 class FluentVersion(Enum):
     """An enumeration over supported Fluent versions."""
 
@@ -112,8 +121,8 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
     return get_exe_path(get_fluent_root(FluentVersion(ansys_version)))
 
 
-class LaunchMode(Enum):
-    """An enumeration over supported launch modes."""
+class FluentMode(Enum):
+    """An enumeration over supported Fluent modes."""
 
     # Tuple: Name, Solver object type, Meshing flag, Launcher options
     MESHING_MODE = ("meshing", Meshing, True, [])
@@ -123,8 +132,8 @@ class LaunchMode(Enum):
 
     @staticmethod
     def get_mode(mode: str):
-        """Returns the LaunchMode based on the provided mode string."""
-        for m in LaunchMode:
+        """Returns the FluentMode based on the provided mode string."""
+        for m in FluentMode:
             if mode == m.value[0]:
                 return m
         else:
@@ -290,13 +299,13 @@ def launch_remote_fluent(
     )
 
 
-def _get_session_info(argvals, mode: Union[LaunchMode, str, None] = None):
+def _get_session_info(argvals, mode: Union[FluentMode, str, None] = None):
     """Updates the session information."""
     if mode is None:
-        mode = LaunchMode.SOLVER
+        mode = FluentMode.SOLVER
 
     if isinstance(mode, str):
-        mode = LaunchMode.get_mode(mode)
+        mode = FluentMode.get_mode(mode)
     new_session = mode.value[1]
     meshing_mode = mode.value[2]
     for k, v in mode.value[3]:
@@ -372,7 +381,7 @@ def _get_server_info(server_info_filepath: str, argvals: dict = None):
 
 
 def _get_running_session_mode(
-    fluent_connection: FluentConnection, mode: LaunchMode = None
+    fluent_connection: FluentConnection, mode: FluentMode = None
 ):
     """Get the mode of the running session if the mode has not been mentioned
     explicitly."""
@@ -380,7 +389,7 @@ def _get_running_session_mode(
         session_mode = mode
     else:
         try:
-            session_mode = LaunchMode.get_mode(
+            session_mode = FluentMode.get_mode(
                 "solver"
                 if fluent_connection.scheme_eval.scheme_eval("(cx-solver-mode?)")
                 else "meshing"
@@ -460,13 +469,13 @@ def launch_fluent(
     start_instance: bool = None,
     ip: str = None,
     port: int = None,
-    cleanup_on_exit: bool = True,
+    cleanup_on_exit: bool = None,
     start_transcript: bool = True,
     show_gui: bool = None,
     case_filepath: str = None,
     case_data_filepath: str = None,
     lightweight_mode: bool = False,
-    mode: Union[LaunchMode, str, None] = None,
+    mode: Union[FluentMode, str, None] = None,
     server_info_filepath: str = None,
     password: str = None,
     py: bool = None,
@@ -609,7 +618,23 @@ def launch_fluent(
 
     new_session, meshing_mode, argvals, mode = _get_session_info(argvals, mode)
     _raise_exception_g_gu_in_windows_os(additional_arguments)
+
+    import ansys.fluent.core as pyfluent
+
+    # TODO Replace start_instance argument with flunet_launch_mode in launch_fluent
     if _start_instance(start_instance):
+        flunet_launch_mode = LaunchMode.LAUNCH_FLUENT_STANDALONE
+    elif pypim.is_configured():
+        flunet_launch_mode = LaunchMode.LAUNCH_FLUENT_PIM
+    elif pyfluent.BUILDING_GALLERY or os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
+        flunet_launch_mode = LaunchMode.LAUNCH_FLUENT_CONTAINER
+    else:
+        flunet_launch_mode = LaunchMode.CONNECT_WITH_RUNNING_FLUENT
+
+    if cleanup_on_exit is None:
+        cleanup_on_exit = flunet_launch_mode != LaunchMode.CONNECT_WITH_RUNNING_FLUENT
+
+    if flunet_launch_mode == LaunchMode.LAUNCH_FLUENT_STANDALONE:
         server_info_filepath = _get_server_info_filepath()
         launch_string = _generate_launch_string(
             argvals, meshing_mode, show_gui, additional_arguments, server_info_filepath
@@ -620,7 +645,7 @@ def launch_fluent(
             sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
             if env is None:
                 env = {}
-            if mode != LaunchMode.SOLVER_ICING:
+            if mode != FluentMode.SOLVER_ICING:
                 env["APP_LAUNCHED_FROM_CLIENT"] = "1"  # disables flserver datamodel
             kwargs = _get_subprocess_kwargs_for_fluent(env)
             if cwd:
@@ -673,72 +698,70 @@ def launch_fluent(
             server_info_file = Path(server_info_filepath)
             if server_info_file.exists():
                 server_info_file.unlink()
-    else:
-        if pypim.is_configured():
-            logger.info(
-                "Starting Fluent remotely. The startup configuration will be ignored."
-            )
+    elif flunet_launch_mode == LaunchMode.LAUNCH_FLUENT_PIM:
+        logger.info(
+            "Starting Fluent remotely. The startup configuration will be ignored."
+        )
 
-            if product_version:
-                fluent_product_version = "".join(product_version.split("."))[:-1]
-            else:
-                fluent_product_version = None
-
-            return launch_remote_fluent(
-                session_cls=new_session,
-                start_timeout=start_timeout,
-                start_transcript=start_transcript,
-                product_version=fluent_product_version,
-                cleanup_on_exit=cleanup_on_exit,
-                meshing_mode=meshing_mode,
-                dimensionality=version,
-                launcher_args=argvals,
-            )
-        import ansys.fluent.core as pyfluent
-
-        if pyfluent.BUILDING_GALLERY or os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
-            args = _build_fluent_launch_args_string(**argvals).split()
-            if meshing_mode:
-                args.append(" -meshing")
-
-            host_mount_path = pyfluent.EXAMPLES_PATH
-            if not os.path.exists(host_mount_path):
-                os.makedirs(host_mount_path)
-
-            container_mount_path = os.getenv(
-                "PYFLUENT_CONTAINER_MOUNT_PATH", host_mount_path
-            )
-
-            port, password = start_fluent_container(
-                host_mount_path, container_mount_path, args
-            )
-
-            session = new_session(
-                fluent_connection=FluentConnection(
-                    start_timeout=start_timeout,
-                    port=port,
-                    password=password,
-                    cleanup_on_exit=cleanup_on_exit,
-                    start_transcript=start_transcript,
-                    launcher_args=argvals,
-                    inside_container=True,
-                )
-            )
-
-            if start_watchdog:
-                logger.debug("Launching Watchdog for Fluent container...")
-                watchdog.launch(os.getpid(), port, password)
-
-            return session
+        if product_version:
+            fluent_product_version = "".join(product_version.split("."))[:-1]
         else:
-            ip, port, password = _get_server_info(server_info_filepath, argvals)
-            fluent_connection = FluentConnection(
-                ip=ip,
+            fluent_product_version = None
+
+        return launch_remote_fluent(
+            session_cls=new_session,
+            start_timeout=start_timeout,
+            start_transcript=start_transcript,
+            product_version=fluent_product_version,
+            cleanup_on_exit=cleanup_on_exit,
+            meshing_mode=meshing_mode,
+            dimensionality=version,
+            launcher_args=argvals,
+        )
+
+    elif flunet_launch_mode == LaunchMode.LAUNCH_FLUENT_CONTAINER:
+        args = _build_fluent_launch_args_string(**argvals).split()
+        if meshing_mode:
+            args.append(" -meshing")
+
+        host_mount_path = pyfluent.EXAMPLES_PATH
+        if not os.path.exists(host_mount_path):
+            os.makedirs(host_mount_path)
+
+        container_mount_path = os.getenv(
+            "PYFLUENT_CONTAINER_MOUNT_PATH", host_mount_path
+        )
+
+        port, password = start_fluent_container(
+            host_mount_path, container_mount_path, args
+        )
+
+        session = new_session(
+            fluent_connection=FluentConnection(
+                start_timeout=start_timeout,
                 port=port,
                 password=password,
                 cleanup_on_exit=cleanup_on_exit,
                 start_transcript=start_transcript,
                 launcher_args=argvals,
+                inside_container=True,
             )
-            new_session = _get_running_session_mode(fluent_connection, mode)
-            return new_session(fluent_connection=fluent_connection)
+        )
+
+        if start_watchdog:
+            logger.debug("Launching Watchdog for Fluent container...")
+            watchdog.launch(os.getpid(), port, password)
+
+        return session
+    else:
+        ip, port, password = _get_server_info(server_info_filepath, argvals)
+        fluent_connection = FluentConnection(
+            ip=ip,
+            port=port,
+            password=password,
+            cleanup_on_exit=cleanup_on_exit,
+            start_transcript=start_transcript,
+            launcher_args=argvals,
+        )
+        new_session = _get_running_session_mode(fluent_connection, mode)
+        return new_session(fluent_connection=fluent_connection)
