@@ -130,7 +130,7 @@ def test_does_not_exit_fluent_by_default_when_connected_with_running_fluent(
     )
     session2.exit()
     time.sleep(5)
-    assert session1.fluent_connection.check_health() == "SERVING"
+    assert session1.health_check_service.is_serving
     session1.exit()
 
 
@@ -144,7 +144,7 @@ def test_exit_fluent_when_connected_with_running_fluent(monkeypatch) -> None:
     )
     session2.exit()
     time.sleep(5)
-    assert session1.fluent_connection.check_health() == "NOT_SERVING"
+    assert not session1.health_check_service.is_serving
 
 
 def test_fluent_connection_properties(

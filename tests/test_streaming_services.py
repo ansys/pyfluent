@@ -2,8 +2,7 @@ import time
 
 from util.solver_workflow import new_solver_session  # noqa: F401
 
-from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.session import BaseSession
+from ansys.fluent.core import connect_fluent
 
 
 def transcript(data):
@@ -12,9 +11,7 @@ def transcript(data):
 
 def run_transcript(i, ip, port, password):
     transcript("")
-    session = BaseSession(
-        FluentConnection(ip=ip, port=port, password=password, cleanup_on_exit=False)
-    )
+    session = connect_fluent(ip=ip, port=port, password=password, cleanup_on_exit=False)
     session.transcript.register_callback(transcript)
 
     transcript_checked = False

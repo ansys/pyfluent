@@ -15,6 +15,7 @@ from ansys.api.fluent.v0 import (
     scheme_eval_pb2,
     scheme_eval_pb2_grpc,
 )
+from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import connect_fluent, examples
 from ansys.fluent.core.examples import download_file
@@ -69,7 +70,7 @@ class MockSchemeEvalServicer(scheme_eval_pb2_grpc.SchemeEvalServicer):
         password = metadata.get("password", None)
         if password != "12345":
             context.set_code(grpc.StatusCode.UNAUTHENTICATED)
-            return scheme_eval_pb2.SchemeEvalResponse()
+        return scheme_eval_pb2.SchemeEvalResponse(output=SchemePointer(b=True))
 
 
 def test_create_session_by_passing_ip_and_port_and_password() -> None:
