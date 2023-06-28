@@ -33,7 +33,7 @@ class QuantityMap(object):
 
         Returns
         -------
-        : str
+        str
             Unit string representation of quantity map.
         """
         unit_dict = {
@@ -59,11 +59,10 @@ class QuantityMap(object):
 
     @property
     def units(self):
-        """Unit string representation of quantity map"""
-        return self._units
-
-
-class QuantityMapError(ValueError):
+        """Unit string representation of quantity map."""
+        return self._unit
+      
+   class QuantityMapError(ValueError):
     """Custom quantity map errors."""
 
     def __init__(self, err):

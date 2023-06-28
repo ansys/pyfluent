@@ -52,7 +52,7 @@ class Dimensions(object):
 
         Returns
         -------
-        units : str
+        str
             Unit string representation of dimensions.
         """
         # Ensure dimensions list contains 9 terms
@@ -82,7 +82,7 @@ class Dimensions(object):
 
         Returns
         -------
-        dimensions : list
+        list
             Dimensions representation of unit string.
         """
 
@@ -118,12 +118,12 @@ class Dimensions(object):
 
     @property
     def units(self):
-        """Unit string representation of dimensions"""
+        """Unit string representation of dimensions."""
         return self._unit
 
     @property
     def dimensions(self):
-        """Dimensions list"""
+        """Dimensions list."""
         return self._dimensions
 
 

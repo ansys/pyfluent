@@ -3,7 +3,8 @@
 Meshing
 =======
 The ``meshing`` module allows you to use Fluent meshing capabilities from Python.
-Meshing workflows and meshing TUI commands are available.
+:ref:`Meshing workflows <ref_meshing_datamodel_workflow>` and :ref:`meshing TUI commands <ref_meshing_tui>`
+are available.
 
 Workflow example
 ----------------

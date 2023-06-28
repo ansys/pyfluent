@@ -49,7 +49,7 @@ class UnitsTable(object):
 
         Returns
         -------
-        : bool
+        bool
             Boolean of multiplier within unit_term.
         """
         # Check if the unit term is not an existing fundamental or derived unit.
@@ -118,7 +118,7 @@ class UnitsTable(object):
 
         Returns
         -------
-        : tuple
+        tuple
             Tuple containing multiplier, base, and power of the unit term.
         """
         multiplier = ""
@@ -167,7 +167,7 @@ class UnitsTable(object):
 
         Returns
         -------
-        : tuple
+        tuple
             Tuple containing si_unitsing, si_multiplier and si_offset.
         """
 
@@ -232,7 +232,7 @@ class UnitsTable(object):
 
         Returns
         -------
-        unitsing : str
+        str
             Simplified unit string.
         """
         terms_and_powers = {}
@@ -267,7 +267,7 @@ class UnitsTable(object):
 
         Returns
         -------
-        : str
+        str
             Type of quantity.
         """
 
