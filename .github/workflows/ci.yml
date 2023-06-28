@@ -164,20 +164,19 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
-      # Enable the following during 23.2 release
-      # - name: Zip HTML Documentation before upload
-      #   run: |
-      #     sudo apt install zip -y
-      #     pushd doc/_build/html
-      #     zip -r ../../../HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip .
-      #     popd
+      - name: Zip HTML Documentation before upload
+        run: |
+          sudo apt install zip -y
+          pushd doc/_build/html
+          zip -r ../../../HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip .
+          popd
 
-      # - name: Upload HTML Documentation
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
-      #     path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
-      #     retention-days: 7
+      - name: Upload HTML Documentation
+        uses: actions/upload-artifact@v3
+        with:
+          name: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
+          retention-days: 7
 
   build:
     name: Build
@@ -396,20 +395,19 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      # Enable the following during 23.2 release
-      # - name: Upload 23.2 Coverage Results to Codecov
-      #   if: matrix.image-tag == 'v23.2.0' && github.event_name == 'push'
-      #   uses: codecov/codecov-action@v3
-      #   with:
-      #     root_dir: ${{ github.workspace }}
-      #     name: cov_xml.xml
+      - name: Upload 23.2 Coverage Results to Codecov
+        if: matrix.image-tag == 'v23.2.0' && github.event_name == 'push'
+        uses: codecov/codecov-action@v3
+        with:
+          root_dir: ${{ github.workspace }}
+          name: cov_xml.xml
 
-      # - name: Upload 23.2 Coverage Artifacts
-      #   if: matrix.image-tag == 'v23.2.0'
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: coverage_report
-      #     path: ./htmlcov
+      - name: Upload 23.2 Coverage Artifacts
+        if: matrix.image-tag == 'v23.2.0'
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage_report
+          path: ./htmlcov
 
 # Separate build+test job for 24.1 Fluent
 # Don't upload anything to artifacts/cache/release-package from here
