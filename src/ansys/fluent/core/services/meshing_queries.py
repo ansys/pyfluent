@@ -609,7 +609,7 @@ class MeshingQueries:
 
     docstring = None
 
-    def _get_allowed_region_type(self, region_type):
+    def __get_allowed_region_type(self, region_type):
         """
         Check region_type in available regions.
         """
@@ -664,7 +664,7 @@ class MeshingQueries:
         response = self.service.get_region_name_list_of_object(request)
         return response.regions
 
-    def get_allowed_region(self, region):
+    def _get_allowed_region(self, region):
         """
         Check region in available regions.
         """
@@ -868,7 +868,7 @@ class MeshingQueries:
 
         """
         self._get_allowed_object(mesh_object)
-        self._get_allowed_region_type(region_type)
+        self.__get_allowed_region_type(region_type)
         request = MeshingQueriesProtoModule.GetFaceZonesSharedByRegionsOfTypeRequest()
         request.mesh_object = mesh_object
         request.region_type = region_type
@@ -885,7 +885,7 @@ class MeshingQueries:
 
         """
         self._get_allowed_object(object)
-        self.get_allowed_region(region_name_list)
+        self._get_allowed_region(region_name_list)
         request = MeshingQueriesProtoModule.GetFaceZonesOfRegionsRequest()
         request.object = object
         for region in region_name_list:
@@ -967,7 +967,7 @@ class MeshingQueries:
 
         """
         self._get_allowed_object(object)
-        self.get_allowed_region(region_list)
+        self._get_allowed_region(region_list)
         request = MeshingQueriesProtoModule.GetFaceZoneIdListOfRegionsRequest()
         request.object = object
         for region in region_list:
@@ -1705,7 +1705,7 @@ class MeshingQueries:
 
         """
         self._get_allowed_object(object_name)
-        self.get_allowed_region(region_name)
+        self._get_allowed_region(region_name)
         request = MeshingQueriesProtoModule.GetRegionVolumeRequest()
         request.object_name = object_name
         request.region_name = region_name
