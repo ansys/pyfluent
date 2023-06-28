@@ -5,8 +5,8 @@ Quantity
 
 .. code-block:: python
 
-    >>> import ansys.fluent.core.quantity as q
-    >>> velocity_1 = q.Quantity(20.2, "m s^-1")
+    >>> import ansys.fluent.core.quantity.quantity as q
+    >>> velocity_1 = q.Quantity(20.2, units="m s^-1")
     >>> velocity_1
     Quantity (20.2, "m s^-1")
     >>> velocity_2 = q.Quantity(30.2, dimensions=[0.0, 1.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
@@ -17,11 +17,17 @@ Quantity
     Quantity (40.2, "m s^-1")
     >>> velocity_1.value
     20.2
-    >>> velocity_1.unit
+    >>> velocity_1.units
     'm s^-1'
-    >>> velocity_1.is_dimensionless()
+    >>> velocity_1.si_value
+    20.2
+    >>> velocity_1.si_units
+    'm s^-1'
+    >>> velocity_1.type
+    'Composite'
+    >>> velocity_1.is_dimensionless
     False
-    >>> velocity_1.get_dimensions_list()
+    >>> velocity_1.dimensions
     [0.0, 1.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
     >>> velocity_1.to("ft s^-1")
     Quantity (66.2729658792651, "ft s^-1")
@@ -48,7 +54,31 @@ Quantity
     >>> velocity_1 != velocity_3
     True
 
-.. automodule:: ansys.fluent.core.quantity
+.. automodule:: ansys.fluent.core.quantity.quantity
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+
+.. automodule:: ansys.fluent.core.quantity.dimensions
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+
+.. automodule:: ansys.fluent.core.quantity.quantity_map
+   :members:
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+
+.. automodule:: ansys.fluent.core.quantity.units_table
    :members:
    :show-inheritance:
    :undoc-members:

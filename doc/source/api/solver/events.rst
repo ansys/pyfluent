@@ -32,7 +32,7 @@ The following code triggers a callback at the end of every iteration.
 
 .. autosummary::
     :toctree: _autosummary
-    :template: flobject-class-template.rst
+    :template: noindex-class.rst
     :recursive:
 
     EventsManager

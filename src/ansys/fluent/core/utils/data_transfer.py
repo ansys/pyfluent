@@ -6,7 +6,7 @@ import tempfile
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.async_execution import asynchronous
 
-network_logger = logging.getLogger("ansys.fluent.networking")
+network_logger = logging.getLogger("pyfluent.networking")
 
 
 @asynchronous
@@ -84,7 +84,7 @@ def transfer_case(
                 try:
                     os.remove(full_file_name)
                 except BaseException as ex:
-                    network_logger.warn(
+                    network_logger.warning(
                         f"Encountered exception while cleaning up during case transfer {ex}"
                     )
             return

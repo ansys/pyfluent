@@ -10,10 +10,10 @@ Calling an object will return its current value.
 
 Example
 -------
-r = flobject.get_root(proxy)
-is_energy_on = r.setup.models.energy.enabled()
-r.setup.models.energy.enabled = True
-r.boundary_conditions.velocity_inlet['inlet'].vmag.constant = 20
+>>> r = flobject.get_root(proxy)
+>>> is_energy_on = r.setup.models.energy.enabled()
+>>> r.setup.models.energy.enabled = True
+>>> r.boundary_conditions.velocity_inlet['inlet'].vmag.constant = 20
 """
 import collections
 import fnmatch
@@ -29,7 +29,7 @@ import weakref
 
 from .error_message import allowed_name_error_message, allowed_values_error
 
-settings_logger = logging.getLogger("ansys.fluent.services.settings_api")
+settings_logger = logging.getLogger("pyfluent.settings_api")
 
 # Type hints
 RealType = NewType("real", Union[float, str])  # constant or expression
@@ -214,10 +214,6 @@ class Numerical(Property):
 
 class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
-
-    def allowed_values(self):
-        """Get the allowed values of the object."""
-        return self.get_attr("allowed-values", (list, str))
 
 
 class SettingsBase(Base, Generic[StateT]):
@@ -458,8 +454,14 @@ class Group(SettingsBase[DictStateType]):
                 ret.append(query)
         return ret
 
-    def get_completer_info(self, prefix=""):
-        """Return list of [name, type, doc]"""
+    def get_completer_info(self, prefix="") -> List[List[str]]:
+        """Get completer info of all children.
+
+        Returns
+        -------
+        List[List[str]]
+            Name, type and docstring of all children.
+        """
         ret = []
         for child_name in self.child_names:
             if child_name.startswith(prefix):
@@ -892,8 +894,14 @@ class Action(Base):
             raise RuntimeError(f"{self.__class__.__name__} is not active")
         return attrs["arguments"] if attrs else None
 
-    def get_completer_info(self, prefix="", excluded=None):
-        """Return list of [name, type, doc]"""
+    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
+        """Get completer info of all arguments.
+
+        Returns
+        -------
+        List[List[str]]
+            Name, type and docstring of all arguments.
+        """
         excluded = excluded or []
         ret = []
         for argument_name in self.argument_names:
@@ -1068,6 +1076,15 @@ class _NonCreatableNamedObjectMixin(
         child.set_state(value)
 
 
+class _HasAllowedValuesMixin:
+    def allowed_values(self):
+        """Get the allowed values of the object."""
+        try:
+            return self.get_attr("allowed-values", (list, str))
+        except BaseException as ex:
+            return []
+
+
 def get_cls(name, info, parent=None, version=None):
     """Create a class for the object identified by "path"."""
     try:
@@ -1078,7 +1095,7 @@ def get_cls(name, info, parent=None, version=None):
         obj_type = info["type"]
         base = _baseTypes.get(obj_type)
         if base is None:
-            settings_logger.error(
+            settings_logger.warning(
                 f"Unable to find base class for '{name}' "
                 f"(type = '{obj_type}'). "
                 f"Falling back to String."
@@ -1105,6 +1122,7 @@ def get_cls(name, info, parent=None, version=None):
         user_creatable = info.get("user-creatable?", False) or info.get(
             "user_creatable", False
         )
+
         if version == "222":
             user_creatable = True
 
@@ -1115,6 +1133,8 @@ def get_cls(name, info, parent=None, version=None):
             bases = bases + (_CreatableNamedObjectMixin,)
         elif obj_type == "named-object":
             bases = bases + (_NonCreatableNamedObjectMixin,)
+        elif info.get("has-allowed-values"):
+            bases += (_HasAllowedValuesMixin,)
 
         cls = type(pname, bases, dct)
 

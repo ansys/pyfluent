@@ -6,7 +6,7 @@ import warnings
 
 from ansys.fluent.core.services.datamodel_se import PyCallableStateObject
 
-datamodel_logger = logging.getLogger("ansys.fluent.services.datamodel")
+datamodel_logger = logging.getLogger("pyfluent.datamodel")
 
 
 def _new_command_for_task(task, session):
@@ -105,7 +105,7 @@ class BaseTask:
 
         Returns
         -------
-        upstreams : list
+        list
             Upstream task list.
         """
         return self._tasks_with_matching_attributes(
@@ -130,7 +130,7 @@ class BaseTask:
 
         Returns
         -------
-        downstreams : list
+        list
             Downstream task list.
         """
         return self._tasks_with_matching_attributes(
@@ -140,8 +140,9 @@ class BaseTask:
     def ordered_children(self, recompute=True) -> list:
         """Get the ordered task list held by this task. Sorting is in terms
         of the workflow order and only includes this task's top-level tasks, while other tasks
-        can be obtained by calling ordered_children() on a parent task. Given the
-        workflow::
+        can be obtained by calling ordered_children() on a parent task.
+
+        Given the workflow::
 
             Workflow
             ├── A
@@ -154,7 +155,7 @@ class BaseTask:
 
         Returns
         -------
-        children : list
+        list
             Ordered children.
         """
         if recompute:
@@ -193,7 +194,7 @@ class BaseTask:
 
         Returns
         -------
-        identifier : str
+        str
             The string identifier.
         """
         workflow_state = self._command_source._workflow_state()
@@ -210,7 +211,7 @@ class BaseTask:
 
         Returns
         -------
-        index : int
+        int
             The integer index.
         """
         return int(self.get_id()[len("TaskObject") :])

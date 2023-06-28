@@ -13,10 +13,10 @@ import subprocess
 import tempfile
 import time
 from typing import Any, Dict, Union
-import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
+import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.session_meshing import Meshing
@@ -28,7 +28,7 @@ import ansys.platform.instancemanagement as pypim
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
-logger = logging.getLogger("ansys.fluent.launcher")
+logger = logging.getLogger("pyfluent.launcher")
 
 
 def _is_windows():
@@ -145,7 +145,7 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
     kwargs: Dict[str, Any] = {}
     kwargs.update(stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if _is_windows():
-        kwargs.update(creationflags=subprocess.CREATE_NEW_PROCESS_GROUP)
+        kwargs.update(shell=True, creationflags=subprocess.CREATE_NEW_PROCESS_GROUP)
     else:
         kwargs.update(shell=True, start_new_session=True)
     fluent_env = os.environ.copy()
@@ -230,7 +230,7 @@ def launch_remote_fluent(
     When calling this method, you must ensure that you are in an
     environment where PyPIM is configured. You can use the :func:
     `pypim.is_configured <ansys.platform.instancemanagement.is_configured>`
-    method to verify that PYPIM is configured.
+    method to verify that PyPIM is configured.
 
     Parameters
     ----------
@@ -260,7 +260,10 @@ def launch_remote_fluent(
 
     Returns
     -------
-    Union[Meshing, PureMeshing, Solver, SolverIcing]
+    :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
+    :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
+    :class:`~ansys.fluent.core.session_solver.Solver`, \
+    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
         Session object.
     """
     pim = pypim.connect()
@@ -345,13 +348,15 @@ def _await_fluent_launch(
         )
 
 
-def _connect_to_running_server(argvals, server_info_filepath: str):
-    """Connect to an already running session."""
+def _get_server_info(server_info_filepath: str, argvals: dict = None):
+    """Get server connection information of an already running session."""
+    if argvals is None:
+        argvals = {}
     ip = argvals.get("ip", None)
     port = argvals.get("port", None)
     password = argvals.get("password", None)
     if ip and port:
-        warnings.warn(
+        logger.debug(
             "The server-info file was not parsed because ip and port were provided explicitly."
         )
     elif server_info_filepath:
@@ -376,7 +381,9 @@ def _get_running_session_mode(
     else:
         try:
             session_mode = LaunchMode.get_mode(
-                fluent_connection.get_current_fluent_mode()
+                "solver"
+                if fluent_connection.scheme_eval.scheme_eval("(cx-solver-mode?)")
+                else "meshing"
             )
         except BaseException:
             raise RuntimeError("Fluent session password mismatch")
@@ -404,8 +411,11 @@ def _generate_launch_string(
     server_info_filepath: str,
 ):
     """Generates the launch string to launch fluent."""
-    exe_path = get_fluent_exe_path(**argvals)
-    launch_string = str(exe_path)
+    if _is_windows():
+        exe_path = '"' + str(get_fluent_exe_path(**argvals)) + '"'
+    else:
+        exe_path = str(get_fluent_exe_path(**argvals))
+    launch_string = exe_path
     launch_string += _build_fluent_launch_args_string(**argvals)
     if meshing_mode:
         launch_string += " -meshing"
@@ -463,6 +473,7 @@ def launch_fluent(
     gpu: bool = None,
     cwd: str = None,
     topy: Union[str, list] = None,
+    start_watchdog: bool = None,
     **kwargs,
 ) -> Union[Meshing, PureMeshing, Solver, SolverIcing]:
     """Launch Fluent locally in server mode or connect to a running Fluent
@@ -520,8 +531,8 @@ def launch_fluent(
     start_transcript : bool, optional
         Whether to start streaming the Fluent transcript in the client. The
         default is ``True``. You can stop and start the streaming of the
-        Fluent transcript subsequently via the method calls, ``start_transcript()``
-        and ``stop_transcript()`` on the session object.
+        Fluent transcript subsequently via the method calls, ``transcript.start()``
+        and ``transcript.stop()`` on the session object.
     show_gui : bool, optional
         Whether to display the Fluent GUI, only when ``start_instance``
         is set to ``True``. The default is ``None``, which does not
@@ -560,10 +571,17 @@ def launch_fluent(
     topy: str or list, optional
         The string path to a Fluent journal file, or a list of such paths. Fluent will execute the
         journal(s) and write the equivalent Python journal(s).
+    start_watchdog: bool, optional
+        When show_gui is False, defaults to True, which means an independent watchdog process is run to ensure
+        that any local GUI-less Fluent sessions started by PyFluent are properly closed (or killed if frozen)
+        when the current Python process ends.
 
     Returns
     -------
-    Union[Meshing, PureMeshing, Solver, SolverIcing]
+    :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
+    :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
+    :class:`~ansys.fluent.core.session_solver.Solver`, \
+    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
         Session object.
 
     Notes
@@ -586,6 +604,9 @@ def launch_fluent(
     del kwargs
     argvals = locals()
 
+    if start_watchdog is None and not show_gui:
+        start_watchdog = True
+
     new_session, meshing_mode, argvals, mode = _get_session_info(argvals, mode)
     _raise_exception_g_gu_in_windows_os(additional_arguments)
     if _start_instance(start_instance):
@@ -607,6 +628,9 @@ def launch_fluent(
             if topy:
                 launch_string += scm_to_py(topy)
 
+            if _is_windows():
+                launch_string = 'start "" ' + launch_string
+
             subprocess.Popen(launch_string, **kwargs)
 
             _await_fluent_launch(server_info_filepath, start_timeout, sifile_last_mtime)
@@ -616,7 +640,12 @@ def launch_fluent(
                 cleanup_on_exit=cleanup_on_exit,
                 start_transcript=start_transcript,
                 launcher_args=argvals,
+                inside_container=False,
             )
+            if start_watchdog:
+                logger.debug("Launching Watchdog for local Fluent client...")
+                ip, port, password = _get_server_info(server_info_filepath)
+                watchdog.launch(os.getpid(), port, password, ip)
             if case_filepath:
                 if meshing_mode:
                     session.tui.file.read_case(case_filepath)
@@ -672,16 +701,19 @@ def launch_fluent(
             if meshing_mode:
                 args.append(" -meshing")
 
-            save_path = pyfluent.EXAMPLES_PATH
-            # Check if save path exists
-            if not os.path.exists(save_path):
-                os.makedirs(save_path)
+            host_mount_path = pyfluent.EXAMPLES_PATH
+            if not os.path.exists(host_mount_path):
+                os.makedirs(host_mount_path)
 
-            # Assumes the container OS will be able to create the
-            # EXAMPLES_PATH of host OS. With the Fluent docker
-            # container, the following currently works only in linux.
-            port, password = start_fluent_container(save_path, save_path, args)
-            return new_session(
+            container_mount_path = os.getenv(
+                "PYFLUENT_CONTAINER_MOUNT_PATH", host_mount_path
+            )
+
+            port, password = start_fluent_container(
+                host_mount_path, container_mount_path, args
+            )
+
+            session = new_session(
                 fluent_connection=FluentConnection(
                     start_timeout=start_timeout,
                     port=port,
@@ -689,12 +721,17 @@ def launch_fluent(
                     cleanup_on_exit=cleanup_on_exit,
                     start_transcript=start_transcript,
                     launcher_args=argvals,
+                    inside_container=True,
                 )
             )
+
+            if start_watchdog:
+                logger.debug("Launching Watchdog for Fluent container...")
+                watchdog.launch(os.getpid(), port, password)
+
+            return session
         else:
-            ip, port, password = _connect_to_running_server(
-                argvals, server_info_filepath
-            )
+            ip, port, password = _get_server_info(server_info_filepath, argvals)
             fluent_connection = FluentConnection(
                 ip=ip,
                 port=port,

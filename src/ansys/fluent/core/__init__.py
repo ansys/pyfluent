@@ -1,11 +1,15 @@
 """A package providing Fluent's Solver and Meshing capabilities in Python."""
 
-import logging.config
 import os
 import pydoc
 
-import appdirs
-import yaml
+import platformdirs
+
+# Logging has to be set up before importing other PyFluent modules
+import ansys.fluent.core.logging as logging
+
+logging.root_config()
+logging.configure_env_var()
 
 from ansys.fluent.core._version import __version__  # noqa: F401
 from ansys.fluent.core.launcher.launcher import (  # noqa: F401
@@ -44,21 +48,13 @@ def version_info() -> str:
     return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
 
-file_path = os.path.abspath(__file__)
-file_dir = os.path.dirname(file_path)
-yaml_path = os.path.join(file_dir, "logging_config.yaml")
-
-# Load the logging configuration from a YAML file
-with open(yaml_path, "rt") as f:
-    config = yaml.safe_load(f)
-
-# Configure the logging system
-logging.config.dictConfig(config)
-
 # Setup data directory
-USER_DATA_PATH = appdirs.user_data_dir(appname="ansys_fluent_core", appauthor="Ansys")
+USER_DATA_PATH = platformdirs.user_data_dir(
+    appname="ansys_fluent_core", appauthor="Ansys"
+)
 EXAMPLES_PATH = os.path.join(USER_DATA_PATH, "examples")
 
+# For Sphinx documentation build
 BUILDING_GALLERY = False
 
 # Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS

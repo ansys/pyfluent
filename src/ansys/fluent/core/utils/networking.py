@@ -7,7 +7,7 @@ import grpc
 
 from ansys.api.fluent.v0 import health_pb2, health_pb2_grpc
 
-network_logger = logging.getLogger("ansys.fluent.networking")
+network_logger = logging.getLogger("pyfluent.networking")
 
 
 def get_free_port() -> int:

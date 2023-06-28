@@ -145,9 +145,7 @@ class DataModelGenerator:
     def _get_static_info(self, rules: str, session: Session):
         request = DataModelProtoModule.GetStaticInfoRequest()
         request.rules = rules
-        response = session.fluent_connection.datamodel_service_se.get_static_info(
-            request
-        )
+        response = session.datamodel_service_se.get_static_info(request)
         return response.info
 
     def _populate_static_info(self):
@@ -282,7 +280,7 @@ class DataModelGenerator:
             f.write(f"{indent}        pass\n\n")
 
     def _write_doc_for_model_object(
-        self, info, doc_dir: Path, heading, module_name, class_name
+        self, info, doc_dir: Path, heading, module_name, class_name, noindex=True
     ) -> None:
         doc_dir.mkdir(exist_ok=True)
         index_file = doc_dir / "index.rst"
@@ -303,6 +301,8 @@ class DataModelGenerator:
             commands = sorted(info.commands)
 
             f.write(f".. autoclass:: {module_name}.{class_name}\n")
+            if noindex:
+                f.write("   :noindex:\n")
             f.write("   :members:\n")
             f.write("   :show-inheritance:\n")
             f.write("   :undoc-members:\n")
@@ -391,6 +391,7 @@ class DataModelGenerator:
                             heading=f"{first_heading}.datamodel.{name}",
                             module_name=f"ansys.fluent.core.datamodel_{self.version}.{name}",
                             class_name="Root",
+                            noindex=len(info.modes) > 1 and mode != "solver",
                         )
 
     def _delete_generated_files(self):

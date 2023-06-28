@@ -32,7 +32,7 @@ class SolverIcing(Solver):
 
     def get_fluent_version(self):
         """Gets and returns the fluent version."""
-        return self._fluent_connection.get_fluent_version()
+        return self.get_fluent_version()
 
     @property
     def version(self):
@@ -42,9 +42,9 @@ class SolverIcing(Solver):
 
     @property
     def _flserver(self):
-        """root datamodel object."""
+        """Root datamodel object."""
         if self._flserver_root is None:
-            se = self.fluent_connection.datamodel_service_se
+            se = self.datamodel_service_se
             dm_module = tui_module = importlib.import_module(
                 f"ansys.fluent.core.datamodel_{self.version}.flicing"
             )
@@ -53,5 +53,5 @@ class SolverIcing(Solver):
 
     @property
     def icing(self):
-        """instance of icing (Case.App) -> root datamodel object."""
+        """Instance of icing (Case.App) -> root datamodel object."""
         return self._flserver.Case.App

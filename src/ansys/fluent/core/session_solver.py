@@ -8,6 +8,8 @@ import threading
 
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
+from ansys.fluent.core.services.reduction import Reduction, ReductionService
+from ansys.fluent.core.services.svar import SVARData, SVARInfo, SVARService
 from ansys.fluent.core.session import (
     _CODEGEN_MSG_TUI,
     BaseSession,
@@ -20,8 +22,8 @@ from ansys.fluent.core.utils.async_execution import asynchronous
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 from ansys.fluent.core.workflow import WorkflowWrapper
 
-tui_logger = logging.getLogger("ansys.fluent.services.tui")
-data_model_logger = logging.getLogger("ansys.fluent.services.datamodel")
+tui_logger = logging.getLogger("pyfluent.tui")
+datamodel_logger = logging.getLogger("pyfluent.datamodel")
 
 
 class Solver(BaseSession):
@@ -42,19 +44,33 @@ class Solver(BaseSession):
 
     def _build_from_fluent_connection(self, fluent_connection):
         super(Solver, self).build_from_fluent_connection(fluent_connection)
-        self._tui_service = self.fluent_connection.datamodel_service_tui
-        self._se_service = self.fluent_connection.datamodel_service_se
-        self._settings_service = self.fluent_connection.settings_service
+        self._tui_service = self.datamodel_service_tui
+        self._se_service = self.datamodel_service_se
+        self._settings_service = self.settings_service
         self._tui = None
         self._workflow = None
         self._settings_root = None
         self._version = None
         self._solverworkflow = None
         self._lck = threading.Lock()
+        self.svar_service = self.fluent_connection.create_service(SVARService)
+        self.svar_info = SVARInfo(self.svar_service)
+        self._reduction_service = self.fluent_connection.create_service(
+            ReductionService
+        )
+        self.reduction = Reduction(self._reduction_service)
 
     def build_from_fluent_connection(self, fluent_connection):
         super(Solver, self).build_from_fluent_connection(fluent_connection)
         self._build_from_fluent_connection(fluent_connection)
+
+    @property
+    def svar_data(self) -> SVARData:
+        """Return the SVARData handle."""
+        try:
+            return SVARData(self.svar_service, self.svar_info)
+        except RuntimeError:
+            return None
 
     @property
     def version(self):
@@ -79,14 +95,14 @@ class Solver(BaseSession):
 
     @property
     def _workflow_se(self):
-        """workflow datamodel root."""
+        """Datamodel root for workflow."""
         try:
             workflow_module = importlib.import_module(
                 f"ansys.fluent.core.datamodel_{self.version}.workflow"
             )
             workflow_se = workflow_module.Root(self._se_service, "workflow", [])
         except (ImportError, ModuleNotFoundError):
-            data_model_logger.warning(_CODEGEN_MSG_DATAMODEL)
+            datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
             workflow_se = PyMenuGeneric(self._se_service, "workflow")
         return workflow_se
 
@@ -98,7 +114,7 @@ class Solver(BaseSession):
 
     @property
     def _root(self):
-        """root settings object."""
+        """Root settings object."""
         if self._settings_root is None:
             self._settings_root = settings_get_root(
                 flproxy=self._settings_service, version=self.version
@@ -107,59 +123,59 @@ class Solver(BaseSession):
 
     @property
     def file(self):
-        """file settings."""
+        """Settings for file."""
         return self._root.file
 
     @property
     def mesh(self):
-        """mesh settings."""
+        """Settings for mesh."""
         return self._root.mesh
 
     @property
     def setup(self):
-        """setup settings."""
+        """Settings for setup."""
         return self._root.setup
 
     @property
     def solution(self):
-        """solution settings."""
+        """Settings for solution."""
         return self._root.solution
 
     @property
     def results(self):
-        """results settings."""
+        """Settings for results."""
         return self._root.results
 
     @property
     def parametric_studies(self):
-        """parametric_studies settings."""
+        """Settings for parametric_studies."""
         return self._root.parametric_studies
 
     @property
     def current_parametric_study(self):
-        """current_parametric_study settings."""
+        """Settings for current_parametric_study."""
         return self._root.current_parametric_study
 
     @property
     def parallel(self):
-        """parallel settings."""
+        """Settings for parallel."""
         return self._root.parallel
 
     @property
     def report(self):
-        """report settings."""
+        """Settings for report."""
         return self._root.report
 
     @property
     def preferences(self):
-        """preferences datamodel root."""
+        """Datamodel root of preferences."""
         if self._preferences is None:
             self._preferences = _get_preferences(self)
         return self._preferences
 
     @property
     def solverworkflow(self):
-        """solverworkflow datamodel root."""
+        """Datamodel root of solverworkflow."""
         if self._solverworkflow is None:
             self._solverworkflow = _get_solverworkflow(self)
         return self._solverworkflow

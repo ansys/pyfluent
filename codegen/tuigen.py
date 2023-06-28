@@ -36,7 +36,7 @@ from ansys.fluent.core.services.datamodel_tui import (
 )
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 
-logger = logging.getLogger("ansys.fluent.tui")
+logger = logging.getLogger("pyfluent.tui")
 
 _THIS_DIRNAME = os.path.dirname(__file__)
 
@@ -182,7 +182,7 @@ class TUIGenerator:
         if Path(self._tui_doc_dir).exists():
             shutil.rmtree(Path(self._tui_doc_dir))
         self.session = pyfluent.launch_fluent(mode=mode)
-        self._service = self.session.fluent_connection.datamodel_service_tui
+        self._service = self.session.datamodel_service_tui
         self._main_menu = _TUIMenu([], "")
 
     def _populate_menu(self, menu: _TUIMenu, info: Dict[str, Any]):
@@ -253,7 +253,9 @@ class TUIGenerator:
             if not v.is_command:
                 self._write_menu_to_tui_file(v, indent)
 
-    def _write_doc_for_menu(self, menu, doc_dir: Path, heading, class_name) -> None:
+    def _write_doc_for_menu(
+        self, menu, doc_dir: Path, heading, class_name, noindex=True
+    ) -> None:
         doc_dir.mkdir(exist_ok=True)
         index_file = doc_dir / "index.rst"
         with open(index_file, "w", encoding="utf8") as f:
@@ -276,6 +278,8 @@ class TUIGenerator:
             ]
 
             f.write(f".. autoclass:: {self._tui_module}.{class_name}\n")
+            if noindex:
+                f.write("   :noindex:\n")
             f.write("   :members:\n")
             f.write("   :show-inheritance:\n")
             f.write("   :undoc-members:\n")
@@ -333,6 +337,7 @@ class TUIGenerator:
                 Path(self._tui_doc_dir),
                 self._tui_heading,
                 self._main_menu.name,
+                False,
             )
 
 
@@ -349,7 +354,7 @@ def generate():
         len(_XML_HELPSTRINGS),
     )
     for k, _ in _XML_HELPSTRINGS.items():
-        logger.warning(k)
+        logger.info(k)
 
 
 if __name__ == "__main__":

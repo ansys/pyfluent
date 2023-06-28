@@ -1,5 +1,4 @@
 from functools import partial
-import os
 
 import pytest
 from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invalid_arg,
@@ -12,7 +11,6 @@ from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invali
     shared_watertight_workflow_session,
 )
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core.meshing.faulttolerant import fault_tolerant_workflow
 from ansys.fluent.core.meshing.watertight import watertight_workflow
 
@@ -212,27 +210,6 @@ def test_command_args_including_task_object_datamodel_se(new_mesh_session):
     assert igt.arguments.CadImportOptions()
     assert igt.arguments.CadImportOptions.OneZonePer()
     assert igt.arguments.CadImportOptions.OneZonePer.getAttribValue("default")
-
-
-@pytest.mark.dev
-@pytest.mark.fluent_231
-@pytest.mark.codegen_required
-def test_meshing_object_commands(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH):
-    session_new = new_mesh_session
-    file_path = os.path.join(tmp_path, "sample_py_journal.txt")
-    m = session_new.meshing
-    m.execute_tui("(api-setup-python-console)")
-    m.execute_tui(f'(api-start-python-journal "{file_path}")')
-    m.switch_to_solver()
-    m.execute_tui(f"(api-stop-python-journal)")
-
-    with open(file_path) as f:
-        returned = f.readlines()
-
-    if os.path.exists(file_path):
-        os.remove(file_path)
-
-    assert returned
 
 
 @pytest.mark.dev

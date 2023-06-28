@@ -74,7 +74,7 @@ class FieldInfo:
 
     Methods
     -------
-    get_scalar_fields_range(field: str, node_value: bool, surface_ids: List[int])
+    get_scalar_fields_range(fields: List[str], node_value: bool, surface_ids: List[int])
     -> List[float]
         Get the range (minimum and maximum values) of the field.
 
@@ -93,34 +93,38 @@ class FieldInfo:
         self._service = service
 
     def get_scalar_fields_range(
-        self, field: str, node_value: bool = False, surface_ids: List[int] = None
-    ) -> List[float]:
+        self, fields: List[str], node_value: bool = False, surface_ids: List[int] = None
+    ) -> Dict[str, List[float]]:
         """Get the range (minimum and maximum values) of the field.
 
         Parameters
         ----------
-        field: str
-            Name of the field
+        fields: List[str]
+            List containing field names
         node_value: bool
         surface_ids : List[int], optional
             List of surface IDS for the surface data.
 
         Returns
         -------
-        List[float]
+        Union[List[float], Dict[str, List[float]]]
         """
-        if not surface_ids:
-            surface_ids = []
-        request = FieldDataProtoModule.GetRangeRequest()
-        request.fieldName = field
-        request.nodeValue = node_value
-        request.surfaceid.extend(
-            [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]
-        )
-        response = self._service.get_scalar_fields_range(request)
-        return [response.minimum, response.maximum]
+        range_data = {}
+        for field in fields:
+            if not surface_ids:
+                surface_ids = []
+            request = FieldDataProtoModule.GetRangeRequest()
+            request.fieldName = field
+            request.nodeValue = node_value
+            request.surfaceid.extend(
+                [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]
+            )
+            response = self._service.get_scalar_fields_range(request)
+            range_data[field] = [response.minimum, response.maximum]
 
-    def get_scalar_fields_info(self) -> dict:
+        return range_data
+
+    def get_scalar_fields_info(self) -> Dict[str, Dict]:
         """Get fields information (field name, domain, and section).
 
         Returns
@@ -138,7 +142,7 @@ class FieldInfo:
             for field_info in response.fieldInfo
         }
 
-    def get_vector_fields_info(self) -> dict:
+    def get_vector_fields_info(self) -> Dict[str, Dict]:
         """Get vector fields information (vector components).
 
         Returns
@@ -156,7 +160,7 @@ class FieldInfo:
             for vector_field_info in response.vectorFieldInfo
         }
 
-    def get_surfaces_info(self) -> dict:
+    def get_surfaces_info(self) -> Dict[str, Dict]:
         """Get surfaces information (surface name, ID, and type).
 
         Returns

@@ -24,4 +24,5 @@ def with_launching_container(
     monkeypatch: pytest.MonkeyPatch, request: pytest.FixtureRequest
 ) -> None:
     monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "1")
+    monkeypatch.setenv("PYFLUENT_TIMEOUT_FORCE_EXIT", "5")
     monkeypatch.setenv("PYFLUENT_TEST_NAME", request.node.name)

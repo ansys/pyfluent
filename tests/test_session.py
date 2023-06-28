@@ -232,11 +232,12 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
     assert not session.health_check_service.is_serving
 
 
+@pytest.mark.parametrize("file_format", ["jou", "py"])
 @pytest.mark.dev
 @pytest.mark.fluent_232
-def test_journal_creation(new_mesh_session):
+def test_journal_creation(file_format, new_mesh_session):
     fd, file_path = tempfile.mkstemp(
-        suffix=f"-{os.getpid()}.jou",
+        suffix=f"-{os.getpid()}.{file_format}",
         prefix="pyfluent-",
         dir=str(pyfluent.EXAMPLES_PATH),
     )
@@ -245,15 +246,17 @@ def test_journal_creation(new_mesh_session):
     prev_stat = Path(file_path).stat()
     prev_mtime = prev_stat.st_mtime
     prev_size = prev_stat.st_size
+    print(f"prev_stat: {prev_stat}")
+
+    print("Waiting")
+    time.sleep(1)
 
     session = new_mesh_session
     session.journal.start(file_path)
-    time.sleep(1)
     session = session.switch_to_solver()
-    time.sleep(1)
     session.journal.stop()
-    time.sleep(1)
     new_stat = Path(file_path).stat()
+    print(f"new_stat: {new_stat}")
     assert new_stat.st_mtime > prev_mtime
     assert new_stat.st_size > prev_size
 
@@ -265,13 +268,6 @@ def test_old_style_session(with_launching_container):
     session.solver.root.file.read(file_type="case", file_name=case_path)
     session.solver.tui.report.system.sys_stats()
     session.exit()
-
-
-def test_get_fluent_mode(new_mesh_session):
-    session = new_mesh_session
-    assert session.fluent_connection.get_current_fluent_mode() == "meshing"
-    session = session.switch_to_solver()
-    assert session.fluent_connection.get_current_fluent_mode() == "solver"
 
 
 @pytest.mark.dev

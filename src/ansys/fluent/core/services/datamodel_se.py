@@ -4,7 +4,6 @@ import functools
 import itertools
 import logging
 from typing import Any, Callable, Dict, Iterator, List, Tuple, Type
-import warnings
 
 import grpc
 
@@ -22,7 +21,7 @@ from ansys.fluent.core.services.streaming import StreamingService
 
 Path = List[Tuple[str, str]]
 
-logger = logging.getLogger("ansys.fluent.services.datamodel")
+logger = logging.getLogger("pyfluent.datamodel")
 
 
 class Attribute(Enum):
@@ -1055,7 +1054,7 @@ class PyCommand:
                 static_info,
             )
         except RuntimeError:
-            warnings.warn(
+            logger.warning(
                 "Create command arguments object is available from 23.1 onwards"
             )
             pass
