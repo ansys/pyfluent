@@ -13,4 +13,5 @@ def fault_tolerant_workflow(**launch_args) -> MeshingWorkflow:
     args.update(launch_args)
     session = launch_fluent(**args)
     meshing_workflow = session.workflow
+    meshing_workflow.fault_tolerant(dynamic_interface=dynamic_interface)
     return meshing_workflow

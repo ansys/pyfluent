@@ -6,7 +6,7 @@ import warnings
 
 from ansys.fluent.core.services.datamodel_se import PyCallableStateObject
 
-datamodel_logger = logging.getLogger("pyfluent.datamodel")
+logger = logging.getLogger("pyfluent.datamodel")
 
 
 def _new_command_for_task(task, session):
@@ -24,27 +24,29 @@ def _new_command_for_task(task, session):
 
 
 def init_task_accessors(obj):
-    # print("thread id in init_task_accessors", threading.get_ident())
-    # print("init_task_accessors")
+    logger.debug("init_task_accessors")
+    logger.debug(f"thread id in init_task_accessors {threading.get_ident()}")
     for task in obj.ordered_children(recompute=True):
         py_name = task.python_name()
-        # print("py_name:", py_name)
+        logger.debug(f"py_name: {py_name}")
         obj._python_task_names.append(py_name)
         if py_name not in obj._task_objects:
-            # print("adding", py_name, type(task))
+            logger.debug(f"adding {py_name} {type(task)}")
             obj._task_objects[py_name] = task
-        # else:
-        # print("Could not add task", py_name, type(getattr(obj, py_name, None)))
+        else:
+            logger.debug(
+                f"Could not add task {py_name} {type(getattr(obj, py_name, None))}"
+            )
         init_task_accessors(task)
 
 
 def refresh_task_accessors(obj):
-    # print("thread id in refresh_task_accessors", threading.get_ident())
+    logger.debug(f"thread id in refresh_task_accessors {threading.get_ident()}")
     old_task_names = set(obj._python_task_names)
-    # print("refresh_task_accessors old_task_names:", old_task_names)
+    logger.debug(f"refresh_task_accessors old_task_names: {old_task_names}")
     tasks = obj.ordered_children(recompute=True)
     current_task_names = [task.python_name() for task in tasks]
-    # print("current_task_names:", current_task_names)
+    logger.debug(f"current_task_names: {current_task_names}")
     current_task_name_set = set(current_task_names)
     created_task_names = current_task_name_set - old_task_names
     deleted_task_names = old_task_names - current_task_name_set
@@ -55,14 +57,16 @@ def refresh_task_accessors(obj):
             pass
     for task_name in created_task_names:
         if task_name not in obj._task_objects:
-            # print("Add task", task_name)
+            logger.debug(f"Add task {task_name}")
             obj._task_objects[task_name] = tasks[current_task_names.index(task_name)]
-        # else:
-        # print("Could not add task", task_name, type(getattr(obj, task_name, None)))
+        else:
+            logger.debug(
+                f"Could not add task {task_name} {type(getattr(obj, task_name, None))}"
+            )
     obj._python_task_names = current_task_names
-    # print("updated_task_names:", obj._python_task_names)
+    logger.debug(f"updated_task_names: {obj._python_task_names}")
     for task in tasks:
-        # print("next task", task.python_name(), id(task))
+        logger.debug(f"next task {task.python_name()} {id(task)}")
         refresh_task_accessors(task)
 
 
@@ -239,13 +243,12 @@ class BaseTask:
         try:
             return ArgumentWrapper(self, attr)
         except BaseException as ex:
-            # print(str(ex))
-            pass
+            logger.debug(str(ex))
         self._command_source._wait_on_refresh()
         return self._task_objects.get(attr, None)
 
     def __setattr__(self, attr, value):
-        datamodel_logger.debug(f"BaseTask.__setattr__({attr}, {value})")
+        logger.debug(f"BaseTask.__setattr__({attr}, {value})")
         if attr in self.__dict__:
             self.__dict__[attr] = value
         else:
@@ -307,7 +310,7 @@ class TaskContainer(PyCallableStateObject):
             yield self[name]
 
     def __getitem__(self, name):
-        datamodel_logger.debug(f"TaskContainer.__getitem__({name})")
+        logger.debug(f"TaskContainer.__getitem__({name})")
         return makeTask(self._container, name)
 
     def __getattr__(self, attr):
@@ -665,7 +668,7 @@ class WorkflowWrapper:
             if self._refresh_count > orig_refresh_count:
                 self._wait_on_refresh(time_unit=time_unit, skip_check=True)
         if not skip_check:
-            print("_wait_on_refresh time taken", time() - t0)
+            logger.debug("_wait_on_refresh time taken {time() - t0}")
 
     def _workflow_state(self):
         return self._workflow()
@@ -704,14 +707,14 @@ class WorkflowWrapper:
         init_task_accessors(self)
         if dynamic_interface:
             self._main_thread_ident = threading.get_ident()
-            # print("setting main thread to", self._main_thread_ident)
+            logger.debug(f"setting main thread to {self._main_thread_ident}")
 
             def refresh_after_sleep(_):
                 while self._refreshing:
-                    # print("Already _refreshing, ...")
+                    logger.debug("Already _refreshing, ...")
                     sleep(0.1)
                 self._refreshing = True
-                # print("Call refresh_task_accessors")
+                logger.debug("Call refresh_task_accessors")
                 refresh_task_accessors(self)
                 self._refresh_count += 1
                 self._refreshing = False

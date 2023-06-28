@@ -4,6 +4,7 @@ import pytest
 from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invalid_arg,
     assign_task_arguments,
     execute_task_with_pre_and_postcondition_checks,
+    exhaust_system_geometry,
     mixing_elbow_geometry,
     new_mesh_session,
     shared_mesh_session,
@@ -714,10 +715,10 @@ def test_watertight_workflow_dynamic_interface(
 
 # TODO upload fmd file to examples
 @pytest.mark.dev
-def test_fault_tolerant_workflow(with_launching_container):
+def test_fault_tolerant_workflow(with_launching_container, exhaust_system_geometry):
     fault_tolerant = fault_tolerant_workflow()
     part_management = fault_tolerant.part_management
-    filename = r"E:/engine_new.fmd"
+    filename = exhaust_system_geometry
     part_management.LoadFmdFile(FilePath=filename)
     part_management.MoveCADComponentsToNewObject(
         Paths=[r"/Bottom,1", r"/Left,1", r"/Others,1", r"/Right,1", r"/Top,1"]
