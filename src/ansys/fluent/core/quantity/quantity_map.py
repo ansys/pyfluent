@@ -63,7 +63,7 @@ class QuantityMap(object):
         return self._units
 
 
-class QuantityMapError(TypeError):
+class QuantityMapError(ValueError):
     """Custom quantity map errors."""
 
     def __init__(self, err):
@@ -71,4 +71,4 @@ class QuantityMapError(TypeError):
 
     @classmethod
     def UNKNOWN_MAP_ITEM(cls, item):
-        cls(f"`{item}` is not a valid quantity map item.")
+        return cls(f"`{item}` is not a valid quantity map item.")

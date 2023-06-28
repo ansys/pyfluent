@@ -127,7 +127,7 @@ class Dimensions(object):
         return self._dimensions
 
 
-class DimensionsError(TypeError):
+class DimensionsError(ValueError):
     """Custom dimensions errors."""
 
     def __init__(self, err):
@@ -135,8 +135,12 @@ class DimensionsError(TypeError):
 
     @classmethod
     def EXCESSIVE_PARAMETERS(cls):
-        cls("Dimensions only accepts 1 of the following: (units) or (dimensions).")
+        return cls(
+            "Dimensions only accepts 1 of the following: (units) or (dimensions)."
+        )
 
     @classmethod
     def EXCESSIVE_DIMENSIONS(cls, len):
-        cls(f"`dimensions` must contain 9 values or less, currently there are {len}.")
+        return cls(
+            f"`dimensions` must contain 9 values or less, currently there are {len}."
+        )
